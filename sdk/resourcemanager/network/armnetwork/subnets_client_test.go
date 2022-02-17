@@ -16,6 +16,7 @@ func TestSubnetsClient_BeginCreateOrUpdate(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createSUB", "westus")
@@ -43,8 +44,23 @@ func TestSubnetsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create subnet
@@ -64,8 +80,23 @@ func TestSubnetsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = subPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if subPoller.Poller.Done() {
+				subResp, err = subPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *subResp.Name, subName)
 }
 
@@ -75,6 +106,7 @@ func TestSubnetsClient_Get(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "getSUB", "westus")
@@ -102,8 +134,23 @@ func TestSubnetsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create subnet
@@ -123,8 +170,23 @@ func TestSubnetsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = subPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if subPoller.Poller.Done() {
+				subResp, err = subPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *subResp.Name, subName)
 
 	// get subnet
@@ -139,6 +201,7 @@ func TestSubnetsClient_List(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listSUB", "westus")
@@ -166,8 +229,23 @@ func TestSubnetsClient_List(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create subnet
@@ -187,8 +265,23 @@ func TestSubnetsClient_List(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = subPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if subPoller.Poller.Done() {
+				subResp, err = subPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *subResp.Name, subName)
 
 	// list subnet
@@ -202,6 +295,7 @@ func TestSubnetsClient_BeginDelete(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteSUB", "westus")
@@ -229,8 +323,23 @@ func TestSubnetsClient_BeginDelete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create subnet
@@ -250,14 +359,44 @@ func TestSubnetsClient_BeginDelete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = subPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if subPoller.Poller.Done() {
+				subResp, err = subPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *subResp.Name, subName)
 
 	// delete subnet
 	delPoller, err := subClient.BeginDelete(context.Background(), rgName, vnName, subName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var delResp armnetwork.SubnetsClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }

@@ -16,6 +16,7 @@ func TestIPGroupsClient_BeginCreateOrUpdate(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createIPG", "westus")
@@ -43,8 +44,23 @@ func TestIPGroupsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var resp armnetwork.IPGroupsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = ipgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if ipgPoller.Poller.Done() {
+				resp, err = ipgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = ipgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *resp.Name, ipgName)
 }
 
@@ -54,6 +70,7 @@ func TestIPGroupsClient_Get(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "getIPG", "westus")
@@ -81,8 +98,23 @@ func TestIPGroupsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var resp armnetwork.IPGroupsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = ipgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if ipgPoller.Poller.Done() {
+				resp, err = ipgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = ipgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *resp.Name, ipgName)
 
 	// get ip group
@@ -97,6 +129,7 @@ func TestIPGroupsClient_List(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listIPG", "westus")
@@ -124,8 +157,23 @@ func TestIPGroupsClient_List(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var resp armnetwork.IPGroupsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = ipgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if ipgPoller.Poller.Done() {
+				resp, err = ipgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = ipgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *resp.Name, ipgName)
 
 	// list ip group
@@ -139,6 +187,7 @@ func TestIPGroupsClient_BeginDelete(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteIPG", "westus")
@@ -166,13 +215,44 @@ func TestIPGroupsClient_BeginDelete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//resp, err := ipgPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var resp armnetwork.IPGroupsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = ipgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if ipgPoller.Poller.Done() {
+				resp, err = ipgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = ipgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *resp.Name, ipgName)
 
 	// delete ip group
 	delPoller, err := ipgClient.BeginDelete(context.Background(), rgName, ipgName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var delResp armnetwork.IPGroupsClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }

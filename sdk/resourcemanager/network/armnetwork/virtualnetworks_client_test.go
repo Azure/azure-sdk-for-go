@@ -16,6 +16,7 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createVN", "westus")
@@ -43,8 +44,23 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 }
 
@@ -54,6 +70,7 @@ func TestVirtualNetworksClient_Get(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "getVN", "westus")
@@ -81,8 +98,23 @@ func TestVirtualNetworksClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// get virtual network
@@ -97,6 +129,7 @@ func TestVirtualNetworksClient_List(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listVN", "westus")
@@ -124,8 +157,23 @@ func TestVirtualNetworksClient_List(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	//virtual network list
@@ -139,6 +187,7 @@ func TestVirtualNetworksClient_UpdateTags(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "updateVN", "westus")
@@ -166,8 +215,23 @@ func TestVirtualNetworksClient_UpdateTags(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	//virtual network update tags
@@ -193,6 +257,7 @@ func TestVirtualNetworksClient_BeginDelete(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteVN", "westus")
@@ -220,13 +285,44 @@ func TestVirtualNetworksClient_BeginDelete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	//virtual network delete
 	delPoller, err := vnClient.BeginDelete(context.Background(), rgName, vnName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var delResp armnetwork.VirtualNetworksClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }

@@ -180,10 +180,10 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 // If the named key already exists, Azure Key Vault creates
 // a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (responses.CreateECKey, error) {
-	keyType := KeyTypes.EC()
+	keyType := KeyTypeValues.EC()
 
 	if options != nil && options.HardwareProtected {
-		keyType = KeyTypes.ECHSM()
+		keyType = KeyTypeValues.ECHSM()
 	} else if options == nil {
 		options = &CreateECKeyOptions{}
 	}
@@ -233,10 +233,10 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 // If the named key already exists, Azure Key Vault creates
 // a new version of the key. It requires the keys/create permission.
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (responses.CreateOCTKey, error) {
-	keyType := KeyTypes.Oct()
+	keyType := KeyTypeValues.Oct()
 
 	if options != nil && options.HardwareProtected {
-		keyType = KeyTypes.OctHSM()
+		keyType = KeyTypeValues.OctHSM()
 	} else if options == nil {
 		options = &CreateOCTKeyOptions{}
 	}
@@ -290,10 +290,10 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 // If the named key already exists, Azure Key Vault creates
 // a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (responses.CreateRSAKey, error) {
-	keyType := KeyTypes.RSA()
+	keyType := KeyTypeValues.RSA()
 
 	if options != nil && options.HardwareProtected {
-		keyType = KeyTypes.RSAHSM()
+		keyType = KeyTypeValues.RSAHSM()
 	} else if options == nil {
 		options = &CreateRSAKeyOptions{}
 	}

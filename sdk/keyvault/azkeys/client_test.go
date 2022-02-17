@@ -159,7 +159,7 @@ func TestListKeys(t *testing.T) {
 				key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
 				require.NoError(t, err)
 
-				_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
+				_, err = client.CreateKey(ctx, key, KeyTypeValues.RSA(), nil)
 				require.NoError(t, err)
 			}
 
@@ -198,14 +198,14 @@ func TestGetKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
+			_, err = client.CreateKey(ctx, key, KeyTypeValues.RSA(), nil)
 			require.NoError(t, err)
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
-			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypes.RSA(), nil)
+			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeValues.RSA(), nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Attributes)
 		})
@@ -226,7 +226,7 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
+			_, err = client.CreateKey(ctx, key, KeyTypeValues.RSA(), nil)
 			require.NoError(t, err)
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
@@ -513,7 +513,7 @@ func TestImportKey(t *testing.T) {
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			r := KeyTypes.RSA()
+			r := KeyTypeValues.RSA()
 			jwk := JSONWebKey{
 				KeyType: &r,
 				KeyOps:  to.StringPtrArray("encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"),
@@ -724,7 +724,7 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 				LifetimeActions: []*LifetimeActions{
 					{
 						Action: &LifetimeActionsType{
-							Type: ActionTypes.Notify().ToPtr(),
+							Type: ActionTypeValues.Notify().ToPtr(),
 						},
 						Trigger: &LifetimeActionsTrigger{
 							TimeBeforeExpiry: to.StringPtr("P30D"),

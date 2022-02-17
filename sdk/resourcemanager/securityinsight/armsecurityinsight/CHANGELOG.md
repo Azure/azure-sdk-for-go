@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.1 (2022-02-17)
+- Move to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

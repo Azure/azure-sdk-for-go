@@ -228,40 +228,6 @@ func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
-//func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
-//	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
-//	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
-//	svcClient := getServiceClient(nil)
-//	containerClient, containerName := createNewContainer(c, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//	_, blobName := createNewBlockBlob(c, containerClient)
-//
-//	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
-//	_, err := containerClient.SetAccessPolicy(ctx, nil)
-//	_assert.NoError(err)
-//
-//	_assert.NoError(err)
-//	bsu2, err := NewServiceClient(svcClient.URL(), azcore.AnonymousCredential(), nil)
-//	_assert.NoError(err)
-//
-//	containerClient2 := bsu2.NewContainerClient(containerName)
-//	blobURL2 := containerClient2.NewBlockBlobClient(blobName)
-//
-//	// Get permissions via the original container URL so the request succeeds
-//	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-//	_assert(resp.BlobPublicAccess, chk.IsNil)
-//	_assert.NoError(err)
-//
-//	// If we cannot access a blob's data, we will also not be able to enumerate blobs
-//	p := containerClient2.ListBlobsFlat(nil)
-//	p.NextPage(ctx)
-//	err = p.Err() // grab the next page
-//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
-//
-//	_, err = blobURL2.Download(ctx, nil)
-//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
-//}
-
 func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
@@ -316,62 +282,6 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeContainer)
 }
-
-////// TODO: After Pacer is ready
-////func (s *azblobTestSuite) TestContainerSetPermissionsACLSinglePolicy() {
-////	svcClient := getServiceClient()
-////	credential, err := getGenericCredential("")
-////	if err != nil {
-////		c.Fatal("Invalid credential")
-////	}
-////	containerClient, containerName := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
-////	_, blobName := createNewBlockBlob(c, containerClient)
-////
-////	start := time.Now().UTC().Add(-15 * time.Second)
-////	expiry := start.Add(5 * time.Minute).UTC()
-////	listOnly := AccessPolicyPermission{List: true}.String()
-////	id := "0000"
-////	permissions := []SignedIdentifier{{
-////		ID: &id,
-////		AccessPolicy: &AccessPolicy{
-////			Start:      &start,
-////			Expiry:     &expiry,
-////			Permission: &listOnly,
-////		},
-////	}}
-////
-////	setAccessPolicyOptions := SetAccessPolicyOptions{
-////		ContainerAcquireLeaseOptions: ContainerAcquireLeaseOptions{
-////			ContainerACL: permissions,
-////		},
-////	}
-////	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-////	_assert.NoError(err)
-////
-////	serviceSASValues := BlobSASSignatureValues{Identifier: "0000", ContainerName: containerName}
-////	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
-////	if err != nil {
-////		s.T().Fatal(err)
-////	}
-////
-////	sasURL := svcClient.URL()
-////	sasURL.RawQuery = queryParams.Encode()
-////	sasPipeline := (NewAnonymousCredential(), PipelineOptions{})
-////	sasBlobServiceURL := NewServiceURL(sasURL, sasPipeline)
-////
-////	// Verifies that the SAS can access the resource
-////	sasContainer := sasBlobServiceURL.NewContainerClient(containerName)
-////	resp, err := sasContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_assert.NoError(err)
-////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-////
-////	// Verifies that successful sas access is not just because it's public
-////	anonymousBlobService := NewServiceURL(svcClient.URL(), sasPipeline)
-////	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
-////	_, err = anonymousContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
-////}
 
 func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 	stop := start(t)

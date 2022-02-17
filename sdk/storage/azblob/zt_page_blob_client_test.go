@@ -8,11 +8,13 @@ import (
 	"context"
 	"crypto/md5"
 	"io/ioutil"
+	"testing"
 	"time"
 
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {
@@ -25,7 +27,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -77,7 +79,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
@@ -149,7 +151,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
@@ -231,7 +233,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -298,7 +300,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	accessType := PublicAccessTypeBlob
@@ -352,7 +354,7 @@ func (s *azblobTestSuite) TestResizePageBlob() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -381,7 +383,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -428,7 +430,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -485,7 +487,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -511,7 +513,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -535,7 +537,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -565,7 +567,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -594,7 +596,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -621,7 +623,7 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -659,7 +661,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -697,7 +699,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -735,7 +737,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -773,7 +775,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -811,7 +813,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -847,7 +849,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -881,7 +883,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -915,7 +917,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -950,7 +952,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -985,7 +987,7 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1008,7 +1010,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1044,7 +1046,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1082,7 +1084,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1120,7 +1122,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1158,7 +1160,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1196,7 +1198,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1234,7 +1236,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1271,7 +1273,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1308,7 +1310,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1346,7 +1348,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1377,7 +1379,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1417,7 +1419,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1449,7 +1451,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1489,7 +1491,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1529,7 +1531,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1558,7 +1560,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1598,7 +1600,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1629,7 +1631,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(s.T(), containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	blobName := generateBlobName(testName)
@@ -1648,18 +1650,16 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	_assert.NoError(err)
 //}
 
-func setupClearPagesTest(_assert *assert.Assertions, testName string) (ContainerClient, PageBlobClient) {
+func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBlobClient) {
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
-	}
+	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(assert.New(t), blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1667,7 +1667,7 @@ func setupClearPagesTest(_assert *assert.Assertions, testName string) (Container
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	return containerClient, pbClient
 }
@@ -1682,7 +1682,7 @@ func validateClearPagesTest(_assert *assert.Assertions, pbClient PageBlobClient)
 func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes + 1}, nil)
@@ -1692,7 +1692,7 @@ func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1716,7 +1716,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1740,7 +1740,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1764,7 +1764,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1788,7 +1788,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1810,7 +1810,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -1830,7 +1830,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -1850,7 +1850,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -1871,7 +1871,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThan := int64(10)
@@ -1889,7 +1889,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	sequenceNumber := int64(10)
@@ -1916,7 +1916,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThan := int64(-1)
@@ -1934,7 +1934,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(10)
@@ -1952,7 +1952,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	sequenceNumber := int64(10)
@@ -1979,7 +1979,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
@@ -1997,7 +1997,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	sequenceNumber := int64(10)
@@ -2024,7 +2024,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	sequenceNumber := int64(10)
@@ -2051,7 +2051,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_assert, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberEqualTo := int64(-1)
@@ -2066,18 +2066,16 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidInput)
 }
 
-func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient, pbClient PageBlobClient) {
+func setupGetPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient, pbClient PageBlobClient) {
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
-	}
+	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient = createNewContainer(_assert, containerName, svcClient)
+	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
-	pbClient = createNewPageBlob(_assert, blobName, containerClient)
+	pbClient = createNewPageBlob(assert.New(t), blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -2085,7 +2083,7 @@ func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (contai
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	return
 }
 
@@ -2109,7 +2107,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2123,7 +2121,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
@@ -2134,7 +2132,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{-2, 500}, nil)
@@ -2144,7 +2142,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
@@ -2175,7 +2173,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 2000}, nil)
@@ -2186,7 +2184,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)
@@ -2202,7 +2200,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2225,7 +2223,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2250,7 +2248,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2273,7 +2271,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2297,7 +2295,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
@@ -2318,7 +2316,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -2338,7 +2336,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -2357,7 +2355,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -2376,7 +2374,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 }
 
 //nolint
-func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
+func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient,
 	pbClient PageBlobClient, snapshot string) {
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
@@ -2384,15 +2382,13 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 		recording = _context.recording
 	}
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
-	}
+	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient = createNewContainer(_assert, containerName, svcClient)
+	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateName(testName)
-	pbClient = createNewPageBlob(_assert, blobName, containerClient)
+	pbClient = createNewPageBlob(assert.New(t), blobName, containerClient)
 
 	r := getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -2400,10 +2396,10 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	snapshot = *resp.Snapshot
 
 	r = getReaderToGeneratedBytes(PageBlobPageBytes)
@@ -2412,7 +2408,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	return
 }
 
@@ -2432,7 +2428,7 @@ func validateDiffPageRanges(_assert *assert.Assertions, resp PageList, err error
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
@@ -2447,7 +2443,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
 	_assert.NoError(err)
@@ -2457,7 +2453,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
@@ -2478,7 +2474,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
@@ -2501,7 +2497,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
@@ -2522,7 +2518,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
@@ -2544,7 +2540,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -2565,7 +2561,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -2586,7 +2582,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
@@ -2606,7 +2602,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_assert, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -2632,7 +2628,7 @@ func (s *azblobTestSuite) TestBlobResizeZero() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2657,7 +2653,7 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2677,7 +2673,7 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2702,7 +2698,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2738,7 +2734,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2774,7 +2770,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2810,7 +2806,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2846,7 +2842,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2877,7 +2873,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2907,7 +2903,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2937,7 +2933,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2968,7 +2964,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -2996,7 +2992,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3035,7 +3031,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3073,7 +3069,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3111,7 +3107,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3149,7 +3145,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3187,7 +3183,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3220,7 +3216,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3252,7 +3248,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3284,7 +3280,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -3320,7 +3316,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient = createNewContainer(_assert, containerName, svcClient)
+//	containerClient = createNewContainer(s.T(), containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	accessType := PublicAccessTypeBlob
@@ -3364,7 +3360,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(s.T(), containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	blobName := generateBlobName(testName)

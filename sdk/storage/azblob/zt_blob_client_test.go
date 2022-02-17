@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -236,7 +237,7 @@ func TestBlobStartCopyMetadataNil(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -269,7 +270,7 @@ func TestBlobStartCopyMetadataEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -306,7 +307,7 @@ func TestBlobStartCopyMetadataInvalidField(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -335,7 +336,7 @@ func TestBlobStartCopySourceNonExistent(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -359,7 +360,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
@@ -370,7 +371,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 	serviceClient2, err := createServiceClient(t, testAccountSecondary)
 	require.NoError(t, err)
 
-	copyContainerClient := createNewContainer(_assert, "cpyc"+containerName, serviceClient2)
+	copyContainerClient := createNewContainer(t, "cpyc"+containerName, serviceClient2)
 	defer deleteContainer(_assert, copyContainerClient)
 	copyBlobName := "copyb" + generateBlobName(testName)
 	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
@@ -381,6 +382,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 }
 
 func TestBlobStartCopyUsingSASSrc(t *testing.T) {
+	recording.LiveOnly(t) // SAS are live only
 	stop := start(t)
 	defer stop()
 
@@ -390,7 +392,7 @@ func TestBlobStartCopyUsingSASSrc(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
@@ -425,7 +427,7 @@ func TestBlobStartCopyUsingSASSrc(t *testing.T) {
 	require.NoError(t, err)
 
 	copyContainerName := "copy" + generateContainerName(testName)
-	copyContainerClient := createNewContainer(_assert, copyContainerName, serviceClient2)
+	copyContainerClient := createNewContainer(t, copyContainerName, serviceClient2)
 	defer deleteContainer(_assert, copyContainerClient)
 
 	copyBlobName := "copy" + generateBlobName(testName)
@@ -468,7 +470,7 @@ func TestBlobStartCopyUsingSASDest(t *testing.T) {
 		}
 		require.NoError(t, err)
 
-		containerClient := createNewContainer(_assert, generateContainerName(testName)+strconv.Itoa(i), svcClient)
+		containerClient := createNewContainer(t, generateContainerName(testName)+strconv.Itoa(i), svcClient)
 		_, err := containerClient.SetAccessPolicy(ctx, nil)
 		require.NoError(t, err)
 
@@ -490,7 +492,7 @@ func TestBlobStartCopySourceIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -523,7 +525,7 @@ func TestBlobStartCopySourceIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -554,7 +556,7 @@ func TestBlobStartCopySourceIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -588,7 +590,7 @@ func TestBlobStartCopySourceIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -618,7 +620,7 @@ func TestBlobStartCopySourceIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -652,7 +654,7 @@ func TestBlobStartCopySourceIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -683,7 +685,7 @@ func TestBlobStartCopySourceIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -717,7 +719,7 @@ func TestBlobStartCopySourceIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -749,7 +751,7 @@ func TestBlobStartCopyDestIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -784,7 +786,7 @@ func TestBlobStartCopyDestIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -816,7 +818,7 @@ func TestBlobStartCopyDestIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -852,7 +854,7 @@ func TestBlobStartCopyDestIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -885,7 +887,7 @@ func TestBlobStartCopyDestIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -919,7 +921,7 @@ func TestBlobStartCopyDestIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -955,7 +957,7 @@ func TestBlobStartCopyDestIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -992,7 +994,7 @@ func TestBlobStartCopyDestIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1015,6 +1017,7 @@ func TestBlobStartCopyDestIfNoneMatchFalse(t *testing.T) {
 }
 
 func TestBlobAbortCopyInProgress(t *testing.T) {
+	recording.LiveOnly(t) // Fails because of random data
 	stop := start(t)
 	defer stop()
 
@@ -1024,7 +1027,7 @@ func TestBlobAbortCopyInProgress(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1050,7 +1053,7 @@ func TestBlobAbortCopyInProgress(t *testing.T) {
 	require.NoError(t, err)
 
 	copyContainerName := "copy" + generateContainerName(testName)
-	copyContainerClient := createNewContainer(_assert, copyContainerName, serviceClient2)
+	copyContainerClient := createNewContainer(t, copyContainerName, serviceClient2)
 
 	copyBlobName := "copy" + generateBlobName(testName)
 	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
@@ -1084,7 +1087,7 @@ func TestBlobAbortCopyNoCopyStarted(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1105,7 +1108,7 @@ func TestBlobSnapshotMetadata(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1135,7 +1138,7 @@ func TestBlobSnapshotMetadataEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1165,7 +1168,7 @@ func TestBlobSnapshotMetadataNil(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1194,7 +1197,7 @@ func TestBlobSnapshotMetadataInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1218,7 +1221,7 @@ func TestBlobSnapshotBlobNotExist(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1238,7 +1241,7 @@ func TestBlobSnapshotOfSnapshot(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1263,7 +1266,7 @@ func TestBlobSnapshotIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1296,7 +1299,7 @@ func TestBlobSnapshotIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1328,7 +1331,7 @@ func TestBlobSnapshotIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1360,7 +1363,7 @@ func TestBlobSnapshotIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1391,7 +1394,7 @@ func TestBlobSnapshotIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1420,7 +1423,7 @@ func TestBlobSnapshotIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1447,7 +1450,7 @@ func TestBlobSnapshotIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1475,7 +1478,7 @@ func TestBlobSnapshotIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1503,7 +1506,7 @@ func TestBlobDownloadDataNonExistentBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -1513,7 +1516,7 @@ func TestBlobDownloadDataNonExistentBlob(t *testing.T) {
 	require.Error(t, err)
 }
 
-func  TestBlobDownloadDataNegativeOffset(t *testing.T) {
+func TestBlobDownloadDataNegativeOffset(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1523,7 +1526,7 @@ func  TestBlobDownloadDataNegativeOffset(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1546,7 +1549,7 @@ func TestBlobDownloadDataOffsetOutOfRange(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1570,7 +1573,7 @@ func TestBlobDownloadDataCountNegative(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1593,7 +1596,7 @@ func TestBlobDownloadDataCountZero(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1621,7 +1624,7 @@ func TestBlobDownloadDataCountExact(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1649,7 +1652,7 @@ func TestBlobDownloadDataCountOutOfRange(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1676,7 +1679,7 @@ func TestBlobDownloadDataEmptyRangeStruct(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1704,7 +1707,7 @@ func TestBlobDownloadDataContentMD5(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1721,7 +1724,7 @@ func TestBlobDownloadDataContentMD5(t *testing.T) {
 	require.Equal(t, resp.ContentMD5, mdf[:])
 }
 
-func  TestBlobDownloadDataIfModifiedSinceTrue(t *testing.T) {
+func TestBlobDownloadDataIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1731,7 +1734,7 @@ func  TestBlobDownloadDataIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1765,7 +1768,7 @@ func TestBlobDownloadDataIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1797,7 +1800,7 @@ func TestBlobDownloadDataIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1829,7 +1832,7 @@ func TestBlobDownloadDataIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -1860,7 +1863,7 @@ func TestBlobDownloadDataIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1889,7 +1892,7 @@ func TestBlobDownloadDataIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1921,7 +1924,7 @@ func TestBlobDownloadDataIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1954,7 +1957,7 @@ func TestBlobDownloadDataIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -1982,7 +1985,7 @@ func TestBlobDeleteNonExistent(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2002,7 +2005,7 @@ func TestBlobDeleteSnapshot(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2078,7 +2081,7 @@ func TestBlobDeleteSnapshotsNoneWithSnapshots(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2109,7 +2112,7 @@ func TestBlobDeleteIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2142,7 +2145,7 @@ func TestBlobDeleteIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2173,7 +2176,7 @@ func TestBlobDeleteIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2196,7 +2199,7 @@ func TestBlobDeleteIfUnmodifiedSinceTrue(t *testing.T) {
 	validateBlobDeleted(t, bbClient.BlobClient)
 }
 
-func  TestBlobDeleteIfUnmodifiedSinceFalse(t *testing.T) {
+func TestBlobDeleteIfUnmodifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -2206,7 +2209,7 @@ func  TestBlobDeleteIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2237,7 +2240,7 @@ func TestBlobDeleteIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2266,7 +2269,7 @@ func TestBlobDeleteIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2298,7 +2301,7 @@ func TestBlobDeleteIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2330,7 +2333,7 @@ func TestBlobDeleteIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2358,7 +2361,7 @@ func TestBlobGetPropsAndMetadataIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2393,7 +2396,7 @@ func TestBlobGetPropsAndMetadataIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2430,7 +2433,7 @@ func TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2466,7 +2469,7 @@ func TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	blockBlobName := generateBlobName(testName)
@@ -2499,7 +2502,7 @@ func TestBlobGetPropsAndMetadataIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2528,7 +2531,7 @@ func TestBlobGetPropsOnMissingBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbClient := containerClient.NewBlobClient("MISSING")
@@ -2551,7 +2554,7 @@ func TestBlobGetPropsAndMetadataIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2580,7 +2583,7 @@ func TestBlobGetPropsAndMetadataIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2610,7 +2613,7 @@ func TestBlobGetPropsAndMetadataIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2641,7 +2644,7 @@ func TestBlobSetPropertiesBasic(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2665,7 +2668,7 @@ func TestBlobSetPropertiesEmptyValue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2703,7 +2706,7 @@ func TestBlobSetPropertiesIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2732,7 +2735,7 @@ func TestBlobSetPropertiesIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2765,7 +2768,7 @@ func TestBlobSetPropertiesIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2794,7 +2797,7 @@ func TestBlobSetPropertiesIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -2821,7 +2824,7 @@ func TestBlobSetPropertiesIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2847,7 +2850,7 @@ func TestBlobSetPropertiesIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2868,7 +2871,7 @@ func TestBlobSetPropertiesIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2891,7 +2894,7 @@ func TestBlobSetPropertiesIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2915,7 +2918,7 @@ func TestBlobSetMetadataNil(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2942,7 +2945,7 @@ func TestBlobSetMetadataEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2969,7 +2972,7 @@ func TestBlobSetMetadataInvalidField(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -2997,7 +3000,7 @@ func TestBlobSetMetadataIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -3028,7 +3031,7 @@ func TestBlobSetMetadataIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -3057,7 +3060,7 @@ func TestBlobSetMetadataIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -3088,7 +3091,7 @@ func TestBlobSetMetadataIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbName := generateBlobName(testName)
@@ -3117,7 +3120,7 @@ func TestBlobSetMetadataIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3145,7 +3148,7 @@ func TestBlobSetMetadataIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3169,7 +3172,7 @@ func TestBlobSetMetadataIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3195,7 +3198,7 @@ func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3213,7 +3216,7 @@ func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 
 //nolint
 func testBlobServiceClientDeleteImpl(_ *assert.Assertions, _ ServiceClient) error {
-	//containerClient := createNewContainer(_assert, "gocblobserviceclientdeleteimpl", svcClient)
+	//containerClient := createNewContainer(t, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_assert, containerClient)
 	//bbClient := createNewBlockBlob(_assert, "goblobserviceclientdeleteimpl", containerClient)
 	//
@@ -3264,7 +3267,7 @@ func TestBlobSetTierAllTiers(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3278,7 +3281,7 @@ func TestBlobSetTierAllTiers(t *testing.T) {
 	require.NoError(t, err)
 
 	premContainerName := "prem" + generateContainerName(testName)
-	premContainerClient := createNewContainer(_assert, premContainerName, premiumServiceClient)
+	premContainerClient := createNewContainer(t, premContainerName, premiumServiceClient)
 	defer deleteContainer(_assert, premContainerClient)
 
 	pbClient := createNewPageBlob(_assert, blockBlobName, premContainerClient)
@@ -3443,7 +3446,7 @@ func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -3462,8 +3465,8 @@ func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
 	// Then inject the retryable error.
 	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
 
-	buf, err := ioutil.ReadAll(reader)
 	t.Skip("The range specified is invalid for the current size of the resource")
+	buf, err := ioutil.ReadAll(reader)
 	require.NoError(t, err)
 	require.EqualValues(t, buf, []byte(blockBlobDefaultData))
 }

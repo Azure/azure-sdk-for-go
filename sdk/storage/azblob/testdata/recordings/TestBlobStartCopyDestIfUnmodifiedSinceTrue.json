@@ -9,21 +9,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
-        "ETag": "\u00220x8D9F1984A4BAA74\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:39 GMT",
+        "ETag": "\u00220x8D9F22D1C15239D\u0022",
+        "Last-Modified": "Thu, 17 Feb 2022 15:49:40 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "c3476f2e-e01e-0057-2281-23dfee000000",
+        "x-ms-request-id": "a143e2f8-101e-0088-4615-2494d4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -39,7 +39,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": "R29CbG9ja0Jsb2JEYXRh",
@@ -47,15 +47,15 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
-        "ETag": "\u00220x8D9F1984A5C37E5\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:39 GMT",
+        "ETag": "\u00220x8D9F22D1C2513B1\u0022",
+        "Last-Modified": "Thu, 17 Feb 2022 15:49:40 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "c3476f9d-e01e-0057-5b81-23dfee000000",
+        "x-ms-request-id": "a143e355-101e-0088-1915-2494d4000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12"
       },
@@ -72,7 +72,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": "R29CbG9ja0Jsb2JEYXRh",
@@ -80,15 +80,15 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
-        "ETag": "\u00220x8D9F1984A6A1885\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:40 GMT",
+        "ETag": "\u00220x8D9F22D1C334267\u0022",
+        "Last-Modified": "Thu, 17 Feb 2022 15:49:41 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "c3476ff5-e01e-0057-0d81-23dfee000000",
+        "x-ms-request-id": "a143e39c-101e-0088-5915-2494d4000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12"
       },
@@ -102,26 +102,26 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "If-Unmodified-Since": "Wed, 16 Feb 2022 22:04:32 GMT",
+        "If-Unmodified-Since": "Thu, 17 Feb 2022 15:49:49 GMT",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
         "x-ms-copy-source": "https://fakestorageaccount.blob.core.windows.net/gocblobstartcopydestifunmodifiedsincetrue/gotestblobblobstartcopydestifunmodifiedsincetrue",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
-        "ETag": "\u00220x8D9F1984A83902E\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:40 GMT",
+        "ETag": "\u00220x8D9F22D1C425B47\u0022",
+        "Last-Modified": "Thu, 17 Feb 2022 15:49:41 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-copy-id": "b08dbff0-c275-4539-a1ed-625ebe6eb6ab",
+        "x-ms-copy-id": "9bd3f05f-293e-4524-a763-e55005756524",
         "x-ms-copy-status": "success",
-        "x-ms-request-id": "c3477088-e01e-0057-6781-23dfee000000",
+        "x-ms-request-id": "a143e3f6-101e-0088-2e15-2494d4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -133,7 +133,7 @@
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
@@ -143,9 +143,9 @@
         "Content-Length": "15",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
         "Content-Type": "application/octet-stream",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
-        "ETag": "\u00220x8D9F1984A83902E\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:40 GMT",
+        "ETag": "\u00220x8D9F22D1C425B47\u0022",
+        "Last-Modified": "Thu, 17 Feb 2022 15:49:41 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -153,15 +153,15 @@
         "x-ms-access-tier": "Hot",
         "x-ms-access-tier-inferred": "true",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-copy-completion-time": "Wed, 16 Feb 2022 22:04:23 GMT",
-        "x-ms-copy-id": "b08dbff0-c275-4539-a1ed-625ebe6eb6ab",
+        "x-ms-copy-completion-time": "Thu, 17 Feb 2022 15:49:41 GMT",
+        "x-ms-copy-id": "9bd3f05f-293e-4524-a763-e55005756524",
         "x-ms-copy-progress": "15/15",
         "x-ms-copy-source": "https://fakestorageaccount.blob.core.windows.net/gocblobstartcopydestifunmodifiedsincetrue/gotestblobblobstartcopydestifunmodifiedsincetrue",
         "x-ms-copy-status": "success",
-        "x-ms-creation-time": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-creation-time": "Thu, 17 Feb 2022 15:49:41 GMT",
         "x-ms-lease-state": "available",
         "x-ms-lease-status": "unlocked",
-        "x-ms-request-id": "c3477108-e01e-0057-3b81-23dfee000000",
+        "x-ms-request-id": "a143e471-101e-0088-1915-2494d4000000",
         "x-ms-server-encrypted": "true",
         "x-ms-version": "2019-12-12"
       },
@@ -175,19 +175,19 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 22:04:23 GMT",
+        "x-ms-date": "Thu, 17 Feb 2022 15:49:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 22:04:22 GMT",
+        "Date": "Thu, 17 Feb 2022 15:49:41 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "c3477148-e01e-0057-6481-23dfee000000",
+        "x-ms-request-id": "a143e4cb-101e-0088-6715-2494d4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

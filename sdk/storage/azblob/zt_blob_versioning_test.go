@@ -24,7 +24,7 @@ func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
 
@@ -57,7 +57,7 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	abClient := createNewAppendBlob(_assert, generateBlobName(testName), containerClient)
 
@@ -92,7 +92,7 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	bbName := generateName(testName)
@@ -135,7 +135,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
@@ -168,7 +168,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
@@ -230,7 +230,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //
@@ -278,7 +278,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL, _ := getBlockBlobClient(c, containerClient)
 //
@@ -319,7 +319,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
 //	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
@@ -361,7 +361,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	testSize := 4 * 1024 * 1024 // 4MB
@@ -429,7 +429,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	testSize := 2 * 1024 * 1024 // 1MB
@@ -481,7 +481,7 @@ func TestPutBlockListReturnsVID(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
@@ -520,7 +520,7 @@ func TestCreatePageBlobReturnsVID(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	pbClob := createNewPageBlob(_assert, generateBlobName(testName), containerClient)

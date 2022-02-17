@@ -15,8 +15,13 @@ import (
 func TestMain(m *testing.M) {
 	// 1. Set up session level sanitizers
 	switch recording.GetRecordMode() {
-	// case recording.PlaybackMode:
-	// 	continue
+	case recording.PlaybackMode:
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			ExcludedHeaders: []string{"x-ms-tags"},
+		})
+		if err != nil {
+			panic(err)
+		}
 	case recording.RecordingMode:
 		vals := [][]string{
 			{"STORAGE_ACCOUNT_NAME", "fakestorageaccount"},
@@ -64,10 +69,10 @@ func getCredential(accountType testAccountType) (*SharedKeyCredential, error) {
 		accountKey = recording.GetEnvVariable("STORAGE_ACCOUNT_Key", "fakestorageaccountkeykey")
 	case testAccountPremium:
 		accountName = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_NAME", "premfakestorageaccount")
-		accountKey = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_Key", "premfakestorageaccountkeykey")
+		accountKey = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_Key", "fakestorageaccountkeykey")
 	case testAccountSecondary:
 		accountName = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_NAME", "secondaryfakestorageaccount")
-		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", "secondaryfakestorageaccountkeykey")
+		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", "fakestorageaccountkeykey")
 	default:
 		return nil, fmt.Errorf("invalid test account type: %s", accountType)
 	}
@@ -105,16 +110,17 @@ func createServiceClientFromConnectionString(t *testing.T, accountType testAccou
 
 	var accountName string
 	var accountKey string
+	fakeaccountkey := "fakestorageaccountkeykey"
 	switch accountType {
 	case testAccountDefault:
 		accountName = recording.GetEnvVariable("STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-		accountKey = recording.GetEnvVariable("STORAGE_ACCOUNT_Key", "fakestorageaccountkeykey")
+		accountKey = recording.GetEnvVariable("STORAGE_ACCOUNT_Key", fakeaccountkey)
 	case testAccountPremium:
 		accountName = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_NAME", "premfakestorageaccount")
-		accountKey = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_Key", "premfakestorageaccountkeykey")
+		accountKey = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_Key", fakeaccountkey)
 	case testAccountSecondary:
 		accountName = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_NAME", "secondaryfakestorageaccount")
-		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", "secondaryfakestorageaccountkeykey")
+		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", fakeaccountkey)
 	default:
 		return ServiceClient{}, fmt.Errorf("invalid test account type: %s", accountType)
 	}

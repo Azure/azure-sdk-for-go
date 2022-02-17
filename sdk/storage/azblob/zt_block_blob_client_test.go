@@ -12,11 +12,13 @@ import (
 	"io"
 	"io/ioutil"
 	"strings"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestStageGetBlocks() {
@@ -29,7 +31,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -106,7 +108,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
@@ -205,7 +207,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
@@ -301,7 +303,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
@@ -369,7 +371,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
@@ -423,7 +425,7 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -453,7 +455,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -483,7 +485,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -511,7 +513,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -538,7 +540,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -574,7 +576,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -615,7 +617,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -655,7 +657,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -691,7 +693,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -726,7 +728,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -761,7 +763,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -799,7 +801,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
@@ -829,23 +831,20 @@ func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient)
 	_assert.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
-func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
-	testName string) (ContainerClient, BlockBlobClient, []string) {
+func setupPutBlockListTest(t *testing.T, _context *testContext, testName string) (ContainerClient, BlockBlobClient, []string) {
 
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
-	}
+	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blobName, containerClient)
 
 	blockIDs := generateBlockIDsList(1)
 	_, err = bbClient.StageBlock(ctx, blockIDs[0], internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	return containerClient, bbClient, blockIDs
 }
 
@@ -853,7 +852,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
@@ -873,7 +872,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -895,7 +894,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	getPropertyResp, err := containerClient.GetProperties(ctx, nil)
@@ -917,7 +916,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -939,7 +938,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -961,7 +960,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -980,7 +979,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -999,7 +998,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -1019,7 +1018,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
@@ -1037,7 +1036,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
@@ -1054,7 +1053,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
@@ -1091,7 +1090,7 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
@@ -1121,7 +1120,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 	}
 
 	containerName := "test" + generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
@@ -1156,7 +1155,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 4 * 1024 * 1024 // 4 MB
@@ -1220,7 +1219,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
@@ -1327,7 +1326,7 @@ func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	standardTier, rehydrateTier, rehydratePriority := AccessTierArchive, AccessTierCool, RehydratePriorityStandard
@@ -1361,7 +1360,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName1 := "rehydration_test_blob_1"
@@ -1419,7 +1418,7 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(s.T(), containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	sourceBlobName := generateBlobName(testName)

@@ -96,7 +96,7 @@ func TestContainerCreateNameCollision(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -394,13 +394,12 @@ func TestContainerDelete(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
 	require.NoError(t, err)
@@ -688,7 +687,7 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	// initialize a blob and create a snapshot of it
@@ -729,7 +728,7 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
@@ -936,7 +935,7 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	blobNames := make([]string, 2)
 	blobName := generateBlobName(testName)
@@ -972,7 +971,7 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobNames := make([]string, 2)
@@ -1028,7 +1027,7 @@ func TestContainerGetPropertiesAndMetadataNoMetadata(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -1125,7 +1124,7 @@ func TestContainerSetMetadataInvalidField(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -1188,7 +1187,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	containerClient, _ := createNewContainer(_assert, testName, svcClient)
+//	containerClient, _ := createNewContainer(t, testName, svcClient)
 //
 //	defer deleteContainer(_assert, containerClient)
 //
@@ -1254,7 +1253,7 @@ func TestListBlobIncludeMetadata(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)

@@ -35,7 +35,7 @@ func TestServiceClientFromConnectionString(t *testing.T) {
 
 	svcClient, err := createServiceClientFromConnectionString(t, testAccountDefault)
 	require.NoError(t, err)
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 }
 
@@ -176,7 +176,7 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 //	expectedResults := make(map[string]bool)
 //	for i := 0; i < numContainers; i++ {
 //		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)
-//		containerClient := createNewContainer(_assert, containerName, svcClient)
+//		containerClient := createNewContainer(t, containerName, svcClient)
 //		containers[i] = containerClient
 //		expectedResults[containerName] = false
 //	}
@@ -234,9 +234,9 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient1 := createNewContainer(_assert, generateContainerName(testName)+"1", svcClient)
+	containerClient1 := createNewContainer(t, generateContainerName(testName)+"1", svcClient)
 	defer deleteContainer(_assert, containerClient1)
-	containerClient2 := createNewContainer(_assert, generateContainerName(testName)+"2", svcClient)
+	containerClient2 := createNewContainer(t, generateContainerName(testName)+"2", svcClient)
 	defer deleteContainer(_assert, containerClient2)
 
 	count := 0

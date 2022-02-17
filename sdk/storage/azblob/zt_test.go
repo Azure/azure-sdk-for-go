@@ -26,6 +26,7 @@ import (
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -262,12 +263,12 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
+func createNewContainer(t *testing.T, containerName string, serviceClient ServiceClient) ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }
 

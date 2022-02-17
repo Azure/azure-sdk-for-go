@@ -23,7 +23,7 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
@@ -40,7 +40,7 @@ func TestSetAccessPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -79,7 +79,7 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
@@ -128,7 +128,7 @@ func TestSetNullAccessPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
@@ -160,7 +160,7 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -238,7 +238,7 @@ func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeBlob
@@ -265,7 +265,7 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -293,7 +293,7 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -337,7 +337,7 @@ func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -401,7 +401,7 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -462,7 +462,7 @@ func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -506,7 +506,7 @@ func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 
@@ -524,7 +524,7 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
 

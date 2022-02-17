@@ -41,6 +41,7 @@ func TestVirtualMachinesClient_BeginDelete(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteVM", "westus")
@@ -53,8 +54,23 @@ func TestVirtualMachinesClient_BeginDelete(t *testing.T) {
 	// delete virtual machine
 	delPoller, err := vmClient.BeginDelete(context.Background(), rgName, *vm.Name, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var delResp armcompute.VirtualMachinesClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }
 
@@ -105,6 +121,7 @@ func TestVirtualMachinesClient_BeginUpdate(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "updateVM", "westus")
@@ -127,8 +144,23 @@ func TestVirtualMachinesClient_BeginUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	updateResp, err := updatePoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//updateResp, err := updatePoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var updateResp armcompute.VirtualMachinesClientUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = updatePoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if updatePoller.Poller.Done() {
+				updateResp, err = updatePoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		updateResp, err = updatePoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *updateResp.Name, *vm.Name)
 }
 
@@ -136,6 +168,7 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID, cred, opt)
 	vnName, err := createRandomName(t, "network")
 	require.NoError(t, err)
+	ctx := context.Background()
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
@@ -153,8 +186,24 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	//require.Equal(t, *vnResp.Name, vnName)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create subnet
@@ -174,8 +223,23 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = subPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if subPoller.Poller.Done() {
+				subResp, err = subPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *subResp.Name, subName)
 
 	// create public ip address
@@ -195,8 +259,23 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	ipResp, err := ipPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//ipResp, err := ipPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var ipResp armnetwork.PublicIPAddressesClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = ipPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if ipPoller.Poller.Done() {
+				ipResp, err = ipPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		ipResp, err = ipPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *ipResp.Name, ipName)
 
 	// create network security group
@@ -246,8 +325,23 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	nsgResp, err := nsgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//nsgResp, err := nsgPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var nsgResp armnetwork.SecurityGroupsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = nsgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if nsgPoller.Poller.Done() {
+				nsgResp, err = nsgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		nsgResp, err = nsgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *nsgResp.Name, nsgName)
 
 	// create network interface
@@ -284,8 +378,23 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	nicResp, err := nicPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//nicResp, err := nicPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var nicResp armnetwork.InterfacesClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = nicPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if nicPoller.Poller.Done() {
+				nicResp, err = nicPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		nicResp, err = nicPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *nicResp.Name, nicName)
 
 	// create virtual machine
@@ -340,8 +449,23 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	vmResp, err := vmPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vmResp, err := vmPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vmResp armcompute.VirtualMachinesClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vmPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vmPoller.Poller.Done() {
+				vmResp, err = vmPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vmResp, err = vmPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vmResp.Name, vmName)
 	return vmClient, &vmResp.VirtualMachine
 }

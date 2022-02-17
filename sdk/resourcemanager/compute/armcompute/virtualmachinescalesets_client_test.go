@@ -23,6 +23,7 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 
 	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
 	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createVMSS", "westus2")
@@ -60,8 +61,23 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vnPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vnPoller.Poller.Done() {
+				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vnResp.Name, vnName)
 
 	// create virtual machine scale set
@@ -127,7 +143,22 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		},
 		nil,
 	)
-	vmssResp, err := vmssPoller.PollUntilDone(context.Background(), 10*time.Second)
-	require.NoError(t, err)
+	//vmssResp, err := vmssPoller.PollUntilDone(context.Background(), 10*time.Second)
+	//require.NoError(t, err)
+	var vmssResp armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vmssPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vmssPoller.Poller.Done() {
+				vmssResp, err = vmssPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vmssResp, err = vmssPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, *vmssResp.Name, vmssName)
 }

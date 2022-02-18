@@ -170,7 +170,8 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application
 |`AZURE_TENANT_ID`|id of the application's Azure Active Directory tenant
-|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM-encoded certificate file including private key (without password protection)
+|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM-encoded certificate file including private key
+|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file
 
 #### Username and password
 

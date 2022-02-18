@@ -37,8 +37,8 @@ type EnvironmentCredentialOptions struct {
 // Service principal with certificate:
 // - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
 // - AZURE_CLIENT_ID: the service principal's client ID
-// - AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key. The
-//   certificate must not be password-protected.
+// - AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key.
+// - AZURE_CLIENT_CERTIFICATE_PASSWORD: password of the certificate file.
 //
 // User with username and password:
 // - AZURE_CLIENT_ID: the application's client ID
@@ -79,7 +79,11 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
 		}
-		certs, key, err := ParseCertificates(certData, nil)
+		var password []byte
+		if v := os.Getenv("AZURE_CLIENT_CERTIFICATE_PASSWORD"); v != "" {
+			password = []byte(v)
+		}
+		certs, key, err := ParseCertificates(certData, password)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}

@@ -10,7 +10,7 @@ package armpolicyinsights
 
 const (
 	moduleName    = "armpolicyinsights"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )
 
 // ComplianceState - The compliance state that should be set on the resource.

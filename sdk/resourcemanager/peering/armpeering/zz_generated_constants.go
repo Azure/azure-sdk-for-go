@@ -10,7 +10,7 @@ package armpeering
 
 const (
 	moduleName    = "armpeering"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ConnectionState - The state of the connection.

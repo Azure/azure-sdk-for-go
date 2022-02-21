@@ -10,7 +10,7 @@ package armsynapse
 
 const (
 	moduleName    = "armsynapse"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 type AzureADOnlyAuthenticationName string

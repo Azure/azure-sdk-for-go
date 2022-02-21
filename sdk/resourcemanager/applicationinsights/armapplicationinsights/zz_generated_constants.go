@@ -10,7 +10,7 @@ package armapplicationinsights
 
 const (
 	moduleName    = "armapplicationinsights"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ApplicationType - Type of application being monitored.

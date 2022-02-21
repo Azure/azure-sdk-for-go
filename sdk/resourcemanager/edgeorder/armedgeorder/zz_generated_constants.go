@@ -10,7 +10,7 @@ package armedgeorder
 
 const (
 	moduleName    = "armedgeorder"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ActionStatusEnum - Describes whether the order item is deletable or not.

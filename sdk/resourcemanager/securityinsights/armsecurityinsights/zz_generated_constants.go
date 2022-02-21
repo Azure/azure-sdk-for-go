@@ -10,7 +10,7 @@ package armsecurityinsights
 
 const (
 	moduleName    = "armsecurityinsights"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )
 
 // ActionType - The type of the automation rule action

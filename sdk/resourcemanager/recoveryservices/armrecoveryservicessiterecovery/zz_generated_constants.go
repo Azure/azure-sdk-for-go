@@ -10,7 +10,7 @@ package armrecoveryservicessiterecovery
 
 const (
 	moduleName    = "armrecoveryservicessiterecovery"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.

@@ -10,7 +10,7 @@ package armdomainservices
 
 const (
 	moduleName    = "armdomainservices"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

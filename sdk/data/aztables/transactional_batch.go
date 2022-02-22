@@ -37,6 +37,18 @@ const (
 	TransactionTypeInsertReplace TransactionType = "insertreplace"
 )
 
+// PossibleTransactionTypeValues returns the possible values for the TransactionType const type.
+func PossibleTransactionTypeValues() []TransactionType {
+	return []TransactionType{
+		TransactionTypeAdd,
+		TransactionTypeUpdateMerge,
+		TransactionTypeUpdateReplace,
+		TransactionTypeDelete,
+		TransactionTypeInsertMerge,
+		TransactionTypeInsertReplace,
+	}
+}
+
 type oDataErrorMessage struct {
 	Lang  string `json:"lang"`
 	Value string `json:"value"`

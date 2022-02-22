@@ -25,6 +25,7 @@ type ServiceClient struct {
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
@@ -38,6 +39,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 
 // NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
 // Call this method when serviceURL contains a SAS token.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	con := generated.NewConnection(serviceURL, conOptions)
@@ -49,6 +51,7 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))

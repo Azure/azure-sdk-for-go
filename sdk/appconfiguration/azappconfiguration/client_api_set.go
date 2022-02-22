@@ -12,12 +12,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// SetConfigurationSettingResponse contains the response from SetConfigurationSetting method.
 type SetConfigurationSettingResponse configurationSettingResponse
 
+// SetConfigurationSettingOptions contains the optional parameters for the SetConfigurationSetting method.
 type SetConfigurationSettingOptions struct {
+	// If set to true and the configuration setting exists in the configuration store, overwrite the setting
+	// if the passed-in configuration setting is the same version as the one in the configuration store.
+	// The setting versions are the same if their ETag fields match.
 	OnlyIfUnchanged bool
 }
 
+// SetConfigurationSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
 func (c *Client) SetConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {

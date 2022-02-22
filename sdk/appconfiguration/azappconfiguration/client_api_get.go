@@ -15,8 +15,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// GetConfigurationSettingOptions contains the optional parameters for the GetConfigurationSetting method.
 type GetConfigurationSettingOptions struct {
-	OnlyIfChanged  bool
+	// If set to true, only retrieve the setting from the configuration store if it has changed since the client last retrieved it.
+	// It is determined to have changed if the ETag field on the passed-in configuration setting is different from the ETag
+	// of the setting in the configuration store.
+	OnlyIfChanged bool
+
+	// The setting will be retrieved exactly as it existed at the provided time.
 	AcceptDateTime *time.Time
 }
 
@@ -34,6 +40,7 @@ func (cs ConfigurationSetting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, a
 	}
 }
 
+// GetConfigurationSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *GetConfigurationSettingOptions) (GetConfigurationSettingResponse, error) {
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time

@@ -14,9 +14,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// SetReadOnlyResponse contains the response from SetReadOnly method.
 type SetReadOnlyResponse configurationSettingResponse
 
+// SetReadOnlyOptions contains the optional parameters for the SetReadOnly method.
 type SetReadOnlyOptions struct {
+	// If set to true and the configuration setting exists in the configuration store, update the setting
+	// if the passed-in configuration setting is the same version as the one in the configuration store.
+	// The setting versions are the same if their ETag fields match.
 	OnlyIfUnchanged bool
 }
 
@@ -34,6 +39,7 @@ func (cs ConfigurationSetting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag
 	}
 }
 
+// SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, setting ConfigurationSetting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {

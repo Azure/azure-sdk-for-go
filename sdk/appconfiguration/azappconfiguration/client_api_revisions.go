@@ -12,9 +12,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// GetRevisionsPager is a Pager for revision list operations.
+//
+// NextPage should be called first. It fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
 type GetRevisionsPager interface {
+	// PageResponse returns the current GetRevisionsPage.
 	PageResponse() GetRevisionsPage
+
+	// Err returns an error if there was an error on the last request.
 	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not.
 	NextPage(context.Context) bool
 }
 
@@ -22,21 +33,23 @@ type getRevisionsPager struct {
 	genPager *generated.AzureAppConfigurationClientGetRevisionsPager
 }
 
-func (l *getRevisionsPager) PageResponse() GetRevisionsPage {
-	return getRevisionsPageFromGenerated(l.genPager.PageResponse())
+func (p *getRevisionsPager) PageResponse() GetRevisionsPage {
+	return getRevisionsPageFromGenerated(p.genPager.PageResponse())
 }
 
-func (l *getRevisionsPager) Err() error {
-	return l.genPager.Err()
+func (p *getRevisionsPager) Err() error {
+	return p.genPager.Err()
 }
 
-func (l *getRevisionsPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+func (p *getRevisionsPager) NextPage(ctx context.Context) bool {
+	return p.genPager.NextPage(ctx)
 }
 
+// GetRevisionsOptions contains the optional parameters for the GetRevisions method.
 type GetRevisionsOptions struct {
 }
 
+// GetRevisions retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
 func (c *Client) GetRevisions(selector SettingSelector, options *GetRevisionsOptions) GetRevisionsPager {
 	_ = options
 	return c.appConfigClient.GetRevisions(selector.toGenerated())

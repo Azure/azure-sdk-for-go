@@ -15,14 +15,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
 type ConfigurationSettingResult struct {
 	ConfigurationSetting
-	ETag      *azcore.ETag
+
+	// ETag of the configuration setting.
+	ETag *azcore.ETag
+
+	// Sync token for the Azure App Configuration client, corresponding to the curent state of the client.
 	SyncToken *string
 }
 
 type configurationSettingResponse struct {
-	Result      ConfigurationSettingResult
+	// Contains the configuration setting returned by Azure App Configuration client methods.
+	Result ConfigurationSettingResult
+
+	// Contains the raw HTTP response from Azure App Configuration client method invocation.
 	RawResponse *http.Response
 }
 
@@ -70,13 +78,20 @@ func responseFromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDele
 	}
 }
 
+// GetConfigurationSettingResult contains the configuration setting retrieved by GetConfigurationSetting method.
 type GetConfigurationSettingResult struct {
 	ConfigurationSettingResult
+
+	// Contains the timestamp of when the configuration setting was last modified.
 	LastModified *time.Time
 }
 
+// GetConfigurationSettingResponse contains the response from GetConfigurationSetting method.
 type GetConfigurationSettingResponse struct {
-	Result      GetConfigurationSettingResult
+	// Contains the configuration setting returned by the GetConfigurationSetting method.
+	Result GetConfigurationSettingResult
+
+	// Contains the raw HTTP response from Azure App Configuration client method invocation.
 	RawResponse *http.Response
 }
 
@@ -101,13 +116,21 @@ func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValue
 	}
 }
 
+// ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
 type GetRevisionsResult struct {
-	Items     []ConfigurationSetting
+	// Contains the configuration settings returned that match the setting selector provided.
+	Items []ConfigurationSetting
+
+	// Sync token for the Azure App Configuration client, corresponding to the curent state of the client.
 	SyncToken *string
 }
 
+// GetRevisionsPage contains the response returned from the GetRevisions method call.
 type GetRevisionsPage struct {
-	GetRevisionsResult
+	// Contains the configuration settings returned by the GetRevisions method call.
+	Result GetRevisionsResult
+
+	// Contains the raw HTTP response from Azure App Configuration client method invocation.
 	RawResponse *http.Response
 }
 
@@ -120,7 +143,7 @@ func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetKey
 	}
 
 	return GetRevisionsPage{
-		GetRevisionsResult: GetRevisionsResult{
+		Result: GetRevisionsResult{
 			Items:     css,
 			SyncToken: g.SyncToken,
 		},

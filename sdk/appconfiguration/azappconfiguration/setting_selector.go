@@ -12,19 +12,37 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// Fields to retrieve from a configuration setting.
 type SettingFields string
 
 const (
-	SettingFieldsKey          = SettingFields(generated.Enum6Key)
-	SettingFieldsLabel        = SettingFields(generated.Enum6Label)
-	SettingFieldsValue        = SettingFields(generated.Enum6Value)
-	SettingFieldsContentType  = SettingFields(generated.Enum6ContentType)
-	SettingFieldsETag         = SettingFields(generated.Enum6Etag)
+	// The primary identifier of a configuration setting.
+	SettingFieldsKey = SettingFields(generated.Enum6Key)
+
+	// A label used to group configuration settings.
+	SettingFieldsLabel = SettingFields(generated.Enum6Label)
+
+	// The value of the configuration setting.
+	SettingFieldsValue = SettingFields(generated.Enum6Value)
+
+	// The content type of the configuration setting's value.
+	SettingFieldsContentType = SettingFields(generated.Enum6ContentType)
+
+	// An ETag indicating the version of a configuration setting within a configuration store.
+	SettingFieldsETag = SettingFields(generated.Enum6Etag)
+
+	// The last time a modifying operation was performed on the given configuration setting.
 	SettingFieldsLastModified = SettingFields(generated.Enum6LastModified)
-	SettingFieldsIsReadOnly   = SettingFields(generated.Enum6Locked)
-	SettingFieldsTags         = SettingFields(generated.Enum6Tags)
+
+	// A value indicating whether the configuration setting is read-only.
+	SettingFieldsIsReadOnly = SettingFields(generated.Enum6Locked)
+
+	// A list of tags that can help identify what a configuration setting may be applicable for.
+	SettingFieldsTags = SettingFields(generated.Enum6Tags)
 )
 
+// SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities
+// from the configuration store, and optionally allows indicating which fields of each setting to retrieve.
 type SettingSelector struct {
 	keyFilter      *string
 	labelFilter    *string
@@ -43,28 +61,35 @@ var allSettingFields []SettingFields = []SettingFields{
 	SettingFieldsTags,
 }
 
-func NewSettingSelector(key string) SettingSelector {
+// NewSettingSelector creates a new setting selector.
+func NewSettingSelector() SettingSelector {
 	return SettingSelector{fields: allSettingFields}
 }
 
+// WithKeyFilter creates a copy of the setting selector with the key filter provided.
 func (ss SettingSelector) WithKeyFilter(keyFilter string) SettingSelector {
 	result := ss
 	result.keyFilter = &keyFilter
 	return result
 }
 
-func (ss SettingSelector) WittLabelFilter(labelFilter string) SettingSelector {
+// WithLabelFilter creates a copy of the setting selector with the label filter provided.
+func (ss SettingSelector) WithLabelFilter(labelFilter string) SettingSelector {
 	result := ss
 	result.labelFilter = &labelFilter
 	return result
 }
 
+// WithAcceptDateTime creates a copy of the setting selector with the time
+// that specifies a point in time in the revision history of the selected entities to retrieve.
 func (ss SettingSelector) WithAcceptDateTime(acceptDateTime time.Time) SettingSelector {
 	result := ss
 	result.acceptDateTime = &acceptDateTime
 	return result
 }
 
+// WithAcceptDateTime creates a copy of the setting selector with the fields
+// to retrieve for each setting in the retrieved group.
 func (ss SettingSelector) WithFields(fields []SettingFields) SettingSelector {
 	result := ss
 	result.fields = fields

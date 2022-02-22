@@ -19,11 +19,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
+// Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
 	appConfigClient *generated.AzureAppConfigurationClient
 	syncTokenPolicy *internal.SyncTokenPolicy
 }
 
+// ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
 }
@@ -51,14 +53,15 @@ func getDefaultScope(endpoint string) (string, error) {
 	return url.Scheme + "://" + url.Host + "/.default", nil
 }
 
-func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+// NewClient returns a pointer to a Client object affinitized to an endpointUrl.
+func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
 	genOptions := options.toConnectionOptions()
 
-	tokenScope, err := getDefaultScope(endpoint)
+	tokenScope, err := getDefaultScope(endpointUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -72,13 +75,14 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
-		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
+		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil
 }
 
-func (c *Client) UpdateSyncToken(token *string) {
-	c.syncTokenPolicy.AddToken(*token)
+// UpdateSyncToken sets an external synchronization token to ensure service requests receive up-to-date values.
+func (c *Client) UpdateSyncToken(token string) {
+	c.syncTokenPolicy.AddToken(token)
 }
 
 const timeFormat = time.RFC3339Nano

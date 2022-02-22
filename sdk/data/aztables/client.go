@@ -45,6 +45,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 
 // NewClientWithNoCredential creates a Client struct in the context of the table specified in the serviceURL.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>?<SAS token>".
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -62,6 +63,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 
 // NewClientWithSharedKey creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with a shared key.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}

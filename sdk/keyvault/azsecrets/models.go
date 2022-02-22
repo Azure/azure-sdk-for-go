@@ -15,7 +15,7 @@ import (
 // DeletedSecret consists of the previous ID, attributes, tags, and information on when it will be purged.
 type DeletedSecret struct {
 	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The content type of the secret.
 	ContentType *string `json:"contentType,omitempty"`
@@ -50,7 +50,7 @@ type DeletedSecret struct {
 // Secret - A secret consisting of a value, id and its attributes.
 type Secret struct {
 	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The content type of the secret.
 	ContentType *string `json:"contentType,omitempty"`
@@ -71,8 +71,8 @@ type Secret struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// Attributes - The secret management attributes.
-type Attributes struct {
+// Properties - The secret management properties.
+type Properties struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -97,7 +97,7 @@ type Attributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
-func (s *Attributes) toGenerated() *internal.SecretAttributes {
+func (s *Properties) toGenerated() *internal.SecretAttributes {
 	if s == nil {
 		return nil
 	}
@@ -113,11 +113,11 @@ func (s *Attributes) toGenerated() *internal.SecretAttributes {
 }
 
 // create a SecretAttributes object from an internal.SecretAttributes object
-func secretAttributesFromGenerated(i *internal.SecretAttributes) *Attributes {
+func secretAttributesFromGenerated(i *internal.SecretAttributes) *Properties {
 	if i == nil {
 		return nil
 	}
-	return &Attributes{
+	return &Properties{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
 		Enabled:         i.Enabled,
@@ -131,7 +131,7 @@ func secretAttributesFromGenerated(i *internal.SecretAttributes) *Attributes {
 // SecretItem contains secret metadata.
 type SecretItem struct {
 	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
@@ -153,7 +153,7 @@ func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
 	}
 
 	return SecretItem{
-		Attributes:  secretAttributesFromGenerated(i.Attributes),
+		Properties:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
 		Tags:        convertPtrMap(i.Tags),
@@ -164,7 +164,7 @@ func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
 // DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretItem struct {
 	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
@@ -195,7 +195,7 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 	}
 
 	return DeletedSecretItem{
-		Attributes:         secretAttributesFromGenerated(i.Attributes),
+		Properties:         secretAttributesFromGenerated(i.Attributes),
 		ContentType:        i.ContentType,
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,
@@ -225,7 +225,7 @@ func convertPtrMap(m map[string]*string) map[string]string {
 	return ret
 }
 
-func createPtrMap(m map[string]string) map[string]*string {
+func convertToGeneratedMap(m map[string]string) map[string]*string {
 	if m == nil {
 		return nil
 	}

@@ -103,19 +103,19 @@ func TestSecretTags(t *testing.T) {
 	require.Equal(t, 1, len(getResp.Tags))
 	require.Equal(t, "Val1", getResp.Tags["Tag1"])
 
-	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, Properties{
-		SecretAttributes: &Attributes{
+	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
+		SecretAttributes: &Properties{
 			ExpiresOn: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
 		},
-	}, &UpdateSecretPropertiesOptions{})
+	})
 	require.NoError(t, err)
 	require.Equal(t, 1, len(updateResp.Tags))
 	require.Equal(t, "Val1", updateResp.Tags["Tag1"])
 
 	// Delete the tags
-	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, Properties{
+	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
 		Tags: make(map[string]string),
-	}, nil)
+	})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(updateResp.Tags))
 	require.NotEqual(t, "Val1", updateResp.Tags["Tag1"])
@@ -269,14 +269,14 @@ func TestDeleteSecret(t *testing.T) {
 
 	finalResp, err := resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
-	require.NotNil(t, finalResp.Attributes)
+	require.NotNil(t, finalResp.Properties)
 	require.NotNil(t, finalResp.DeletedOn)
 	require.NotNil(t, finalResp.ID)
 	require.NotNil(t, finalResp.ScheduledPurgeDate)
 
 	deleteResp, err := client.GetDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.NotNil(t, deleteResp.Attributes)
+	require.NotNil(t, deleteResp.Properties)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -344,21 +344,19 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
-	expires := time.Now().Add(48 * time.Hour)
-	nb := time.Now().Add(-24 * time.Hour)
-	params := Properties{
+	options := &UpdateSecretPropertiesOptions{
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
-		SecretAttributes: &Attributes{
+		SecretAttributes: &Properties{
 			Enabled:   to.BoolPtr(true),
-			ExpiresOn: &expires,
-			NotBefore: &nb,
+			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
+			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
 		},
 	}
 
-	_, err = client.UpdateSecretProperties(context.Background(), secret, params, nil)
+	_, err = client.UpdateSecretProperties(context.Background(), secret, options)
 	require.NoError(t, err)
 
 	getResp, err = client.GetSecret(context.Background(), secret, nil)

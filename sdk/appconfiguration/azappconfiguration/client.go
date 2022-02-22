@@ -15,8 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-	"sdk/appconfiguration/azappconfiguration/internal"
-	"sdk/appconfiguration/azappconfiguration/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type Client struct {

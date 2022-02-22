@@ -9,7 +9,7 @@ package azappconfiguration
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"sdk/appconfiguration/azappconfiguration/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 func (cs ConfigurationSetting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutKeyValueOptions {

@@ -9,7 +9,7 @@ package azappconfiguration
 import (
 	"time"
 
-	"sdk/appconfiguration/azappconfiguration/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type SettingFields string

@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"sdk/appconfiguration/azappconfiguration/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type GetConfigurationSettingOptions struct {

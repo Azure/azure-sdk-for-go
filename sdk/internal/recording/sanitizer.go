@@ -109,6 +109,17 @@ func handleProxyResponse(resp *http.Response, err error) error {
 	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
 }
 
+// handleTestLevelSanitizer sets the "x-recording-id" header if options.TestInstance is not nil
+func handleTestLevelSanitizer(req *http.Request, options *RecordingOptions) {
+	if options == nil || options.TestInstance == nil {
+		return
+	}
+
+	if recordingID := GetRecordingId(options.TestInstance); recordingID != "" {
+		req.Header.Set(IDHeader, recordingID)
+	}
+}
+
 // AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
 // is the value to replace with, and regex is the string to match in the body. If your regex includes a group
 // options.GroupForReplace specifies which group to replace
@@ -125,6 +136,7 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		JSONPath        string `json:"jsonPath"`
@@ -162,6 +174,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value           string `json:"value"`
@@ -198,6 +211,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Key             string `json:"key"`
@@ -233,6 +247,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "GeneralRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value           string `json:"value"`
@@ -271,6 +286,7 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Key             string `json:"key"`
@@ -306,6 +322,8 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "OAuthResponseSanitizer")
+	handleTestLevelSanitizer(req, options)
+
 	return handleProxyResponse(client.Do(req))
 }
 
@@ -323,12 +341,14 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "RemoveHeaderSanitizer")
+	handleTestLevelSanitizer(req, options)
+
 	if options.TestInstance != nil {
 		recordingID := GetRecordingId(options.TestInstance)
 		if recordingID == "" {
 			return fmt.Errorf("did not find a recording ID for test with name '%s'. Did you make sure to call Start?", options.TestInstance.Name())
 		}
-		req.Header.Set("x-recording-id", recordingID)
+		req.Header.Set(IDHeader, recordingID)
 	}
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -360,6 +380,7 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value string `json:"value"`
@@ -392,6 +413,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	if value != "" {
 		marshalled, err := json.MarshalIndent(struct {
@@ -426,7 +448,7 @@ func ResetProxy(options *RecordingOptions) error {
 		if recordingID == "" {
 			return fmt.Errorf("did not find a recording ID for test with name '%s'. Did you make sure to call Start?", options.TestInstance.Name())
 		}
-		req.Header.Set("x-recording-id", recordingID)
+		req.Header.Set(IDHeader, recordingID)
 	}
 
 	if err != nil {

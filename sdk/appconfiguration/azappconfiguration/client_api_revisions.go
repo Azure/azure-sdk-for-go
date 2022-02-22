@@ -6,4 +6,38 @@
 
 package azappconfiguration
 
-// GetRevisions
+import (
+	"context"
+
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
+)
+
+type GetRevisionsPager interface {
+	PageResponse() GetRevisionsPage
+	Err() error
+	NextPage(context.Context) bool
+}
+
+type getRevisionsPager struct {
+	genPager *generated.AzureAppConfigurationClientGetRevisionsPager
+}
+
+func (l *getRevisionsPager) PageResponse() GetRevisionsPage {
+	return getRevisionsPageFromGenerated(l.genPager.PageResponse())
+}
+
+func (l *getRevisionsPager) Err() error {
+	return l.genPager.Err()
+}
+
+func (l *getRevisionsPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+type GetRevisionsOptions struct {
+}
+
+func (c *Client) GetRevisions(selector SettingSelector, options *GetRevisionsOptions) GetRevisionsPager {
+	_ = options
+	return c.appConfigClient.GetRevisions(selector.toGenerated())
+}

@@ -9,7 +9,7 @@ package azappconfiguration
 import (
 	"time"
 
-	"sdk/appconfiguration/sdk/appconfiguration/azappconfiguration/internal/generated"
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type SettingFields string
@@ -26,10 +26,67 @@ const (
 )
 
 type SettingSelector struct {
-	KeyFilter      *string
-	LabelFilter    *string
-	AcceptDateTime *time.Time
-	Fields         []SettingFields
+	keyFilter      *string
+	labelFilter    *string
+	acceptDateTime *time.Time
+	fields         []SettingFields
 }
 
-const SettingSelectorFilterAny string = "*"
+var allSettingFields []SettingFields = []SettingFields{
+	SettingFieldsKey,
+	SettingFieldsLabel,
+	SettingFieldsValue,
+	SettingFieldsContentType,
+	SettingFieldsETag,
+	SettingFieldsLastModified,
+	SettingFieldsIsReadOnly,
+	SettingFieldsTags,
+}
+
+func NewSettingSelector(key string) SettingSelector {
+	return SettingSelector{fields: allSettingFields}
+}
+
+func (ss SettingSelector) WithKeyFilter(keyFilter string) SettingSelector {
+	result := ss
+	result.keyFilter = &keyFilter
+	return result
+}
+
+func (ss SettingSelector) WittLabelFilter(labelFilter string) SettingSelector {
+	result := ss
+	result.labelFilter = &labelFilter
+	return result
+}
+
+func (ss SettingSelector) WithAcceptDateTime(acceptDateTime time.Time) SettingSelector {
+	result := ss
+	result.acceptDateTime = &acceptDateTime
+	return result
+}
+
+func (ss SettingSelector) WithFields(fields []SettingFields) SettingSelector {
+	result := ss
+	result.fields = fields
+	return result
+}
+
+func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGetRevisionsOptions {
+	var dt *string
+	if sc.acceptDateTime != nil {
+		str := sc.acceptDateTime.Format(timeFormat)
+		dt = &str
+	}
+
+	sf := make([]generated.Enum6Tags, len(sc.fields))
+	for i := range sc.fields {
+		sf[i] = (generated.Enum6Tags)(sc.fields[i])
+	}
+
+	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
+		AcceptDateTime: dt,
+		Key:            sc.keyFilter,
+		Label:          sc.labelFilter,
+		Select:         sf,
+	}
+}

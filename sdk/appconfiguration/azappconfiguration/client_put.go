@@ -9,7 +9,7 @@ package azappconfiguration
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"sdk/appconfiguration/sdk/appconfiguration/azappconfiguration/internal/generated"
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 func (cs ConfigurationSetting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutKeyValueOptions {
@@ -17,6 +17,6 @@ func (cs ConfigurationSetting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNon
 		Entity:      cs.toGenerated(),
 		IfMatch:     (*string)(ifMatch),
 		IfNoneMatch: (*string)(ifNoneMatch),
-		Label:       cs.Label,
+		Label:       cs.label,
 	}
 }

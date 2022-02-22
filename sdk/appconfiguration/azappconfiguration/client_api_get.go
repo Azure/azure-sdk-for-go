@@ -8,10 +8,11 @@ package azappconfiguration
 
 import (
 	"context"
-	"sdk/appconfiguration/sdk/appconfiguration/azappconfiguration/internal/generated"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type GetConfigurationSettingOptions struct {
@@ -20,11 +21,16 @@ type GetConfigurationSettingOptions struct {
 }
 
 func (cs ConfigurationSetting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
-	dt := acceptDateTime.Format(timeFormat)
+	var dt *string
+	if acceptDateTime != nil {
+		str := acceptDateTime.Format(timeFormat)
+		dt = &str
+	}
+
 	return &generated.AzureAppConfigurationClientGetKeyValueOptions{
-		AcceptDatetime: &dt,
+		AcceptDatetime: dt,
 		IfNoneMatch:    (*string)(ifNoneMatch),
-		Label:          cs.Label,
+		Label:          cs.label,
 	}
 }
 
@@ -39,7 +45,7 @@ func (c *Client) GetConfigurationSetting(ctx context.Context, setting Configurat
 		acceptDateTime = options.AcceptDateTime
 	}
 
-	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
+	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
 		return GetConfigurationSettingResponse{}, err
 	}

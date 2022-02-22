@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"sdk/appconfiguration/sdk/appconfiguration/azappconfiguration/internal/generated"
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type ConfigurationSettingResult struct {
@@ -96,6 +96,33 @@ func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValue
 				SyncToken:            g.SyncToken,
 			},
 			LastModified: t,
+		},
+		RawResponse: g.RawResponse,
+	}
+}
+
+type GetRevisionsResult struct {
+	Items     []ConfigurationSetting
+	SyncToken *string
+}
+
+type GetRevisionsPage struct {
+	GetRevisionsResult
+	RawResponse *http.Response
+}
+
+func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetKeyValuesResponse) GetRevisionsPage {
+	var css []ConfigurationSetting
+	for _, cs := range g.Items {
+		if cs != nil {
+			css = append(css, configurationSettingFromGenerated(cs))
+		}
+	}
+
+	return GetRevisionsPage{
+		GetRevisionsResult: GetRevisionsResult{
+			Items:     css,
+			SyncToken: g.SyncToken,
 		},
 		RawResponse: g.RawResponse,
 	}

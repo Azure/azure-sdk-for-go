@@ -19,7 +19,7 @@ type AddConfigurationSettingOptions struct {
 
 func (c *Client) AddConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *AddConfigurationSettingOptions) (AddConfigurationSettingResponse, error) {
 	etagAny := azcore.ETagAny
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.key, setting.toGeneratedPutOptions(nil, &etagAny))
 	if err != nil {
 		return AddConfigurationSettingResponse{}, err
 	}

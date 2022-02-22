@@ -8,9 +8,10 @@ package azappconfiguration
 
 import (
 	"context"
-	"sdk/appconfiguration/sdk/appconfiguration/azappconfiguration/internal/generated"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
+	"sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 type DeleteConfigurationSettingResponse configurationSettingResponse
@@ -22,7 +23,7 @@ type DeleteConfigurationSettingOptions struct {
 func (cs ConfigurationSetting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
 	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
 		IfMatch: (*string)(ifMatch),
-		Label:   cs.Label,
+		Label:   cs.label,
 	}
 }
 
@@ -32,7 +33,7 @@ func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Configu
 		ifMatch = setting.etag
 	}
 
-	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
+	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
 		return DeleteConfigurationSettingResponse{}, err
 	}

@@ -24,7 +24,7 @@ func (c *Client) SetConfigurationSetting(ctx context.Context, setting Configurat
 		ifMatch = setting.etag
 	}
 
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.key, setting.toGeneratedPutOptions(ifMatch, nil))
 	if err != nil {
 		return SetConfigurationSettingResponse{}, err
 	}

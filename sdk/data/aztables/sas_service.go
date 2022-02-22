@@ -98,7 +98,7 @@ func (v SASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredentia
 		"\n",
 	)
 
-	signature, err := credential.ComputeHMACSHA256(stringToSign)
+	signature, err := credential.computeHMACSHA256(stringToSign)
 	p.signature = signature
 	return p, err
 }

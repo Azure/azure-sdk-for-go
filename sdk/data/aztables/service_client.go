@@ -155,23 +155,6 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPager is a Pager for Table List operations
-//
-// NextPage should be called first. It fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListTablesPager interface {
-	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListTablesPage
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-	// Err returns an error if there was an error on the last request
-	Err() error
-}
-
 // ListTablesPage contains the properties of a single page response from a ListTables operation
 type ListTablesPage struct {
 	// RawResponse contains the underlying HTTP response.
@@ -184,7 +167,7 @@ type ListTablesPage struct {
 	ODataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Tables []*ResponseProperties `json:"value,omitempty"`
+	Tables []*TableProperties `json:"value,omitempty"`
 }
 
 func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
@@ -192,7 +175,7 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryRespon
 		return nil
 	}
 
-	var value []*ResponseProperties
+	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
@@ -206,12 +189,12 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryRespon
 	}
 }
 
-// ResponseProperties contains the properties for a single Table
-type ResponseProperties struct {
+// TableProperties contains the properties for a single Table
+type TableProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`
 
-	// The id of the table.
+	// The ID of the table.
 	ODataID *string `json:"odata.id,omitempty"`
 
 	// The odata type of the table.
@@ -222,12 +205,12 @@ type ResponseProperties struct {
 }
 
 // Convets a generated TableResponseProperties to a ResponseProperties
-func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *TableProperties {
 	if g == nil {
 		return nil
 	}
 
-	return &ResponseProperties{
+	return &TableProperties{
 		TableName:     g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,
@@ -235,7 +218,15 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 }
 
-type tableQueryResponsePager struct {
+// ListTablesPager is a Pager for Table List operations
+//
+// NextPage should be called first. It fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
+//
+// PageResponse returns the results from the page most recently fetched from the service.
+type ListTablesPager struct {
 	client            *generated.TableClient
 	current           *generated.TableClientQueryResponse
 	tableQueryOptions *generated.TableClientQueryOptions
@@ -246,7 +237,7 @@ type tableQueryResponsePager struct {
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
+func (p *ListTablesPager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
 		return false
 	}
@@ -258,12 +249,12 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
+func (p *ListTablesPager) PageResponse() ListTablesPage {
 	return *fromGeneratedTableQueryResponseEnvelope(p.current)
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *tableQueryResponsePager) Err() error {
+func (p *ListTablesPager) Err() error {
 	return p.err
 }
 
@@ -278,7 +269,7 @@ func (p *tableQueryResponsePager) Err() error {
 //
 // List returns a Pager, which allows iteration through each page of results.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
-	return &tableQueryResponsePager{
+	return ListTablesPager{
 		client:            t.client,
 		listOptions:       listOptions,
 		tableQueryOptions: new(generated.TableClientQueryOptions),

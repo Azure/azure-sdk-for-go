@@ -141,7 +141,7 @@ func ExampleClient_SubmitTransaction() {
 		panic(err)
 	}
 	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.Add,
+		ActionType: aztables.TransactionTypeAdd,
 		Entity:     marshalled,
 	})
 
@@ -160,7 +160,7 @@ func ExampleClient_SubmitTransaction() {
 		panic(err)
 	}
 	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.UpdateMerge,
+		ActionType: aztables.TransactionTypeUpdateMerge,
 		Entity:     marshalled,
 	})
 
@@ -179,7 +179,7 @@ func ExampleClient_SubmitTransaction() {
 		panic(err)
 	}
 	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.InsertReplace,
+		ActionType: aztables.TransactionTypeInsertReplace,
 		Entity:     marshalled,
 	})
 
@@ -198,7 +198,7 @@ func ExampleClient_SubmitTransaction() {
 		panic(err)
 	}
 	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.Delete,
+		ActionType: aztables.TransactionTypeDelete,
 		Entity:     marshalled,
 	})
 

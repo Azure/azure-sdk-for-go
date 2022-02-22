@@ -29,12 +29,12 @@ import (
 type TransactionType string
 
 const (
-	Add           TransactionType = "add"
-	UpdateMerge   TransactionType = "updatemerge"
-	UpdateReplace TransactionType = "updatereplace"
-	Delete        TransactionType = "delete"
-	InsertMerge   TransactionType = "insertmerge"
-	InsertReplace TransactionType = "insertreplace"
+	TransactionTypeAdd           TransactionType = "add"
+	TransactionTypeUpdateMerge   TransactionType = "updatemerge"
+	TransactionTypeUpdateReplace TransactionType = "updatereplace"
+	TransactionTypeDelete        TransactionType = "delete"
+	TransactionTypeInsertMerge   TransactionType = "insertmerge"
+	TransactionTypeInsertReplace TransactionType = "insertreplace"
 )
 
 type oDataErrorMessage struct {
@@ -302,7 +302,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	}
 
 	switch transactionAction.ActionType {
-	case Delete:
+	case TransactionTypeDelete:
 		ifMatch := string(azcore.ETagAny)
 		if transactionAction.IfMatch != nil {
 			ifMatch = string(*transactionAction.IfMatch)
@@ -320,7 +320,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-	case Add:
+	case TransactionTypeAdd:
 		req, err = t.client.InsertEntityCreateRequest(
 			ctx,
 			generated.Enum1Three0,
@@ -334,9 +334,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-	case UpdateMerge:
+	case TransactionTypeUpdateMerge:
 		fallthrough
-	case InsertMerge:
+	case TransactionTypeInsertMerge:
 		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
@@ -356,9 +356,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if isCosmosEndpoint(t.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
-	case UpdateReplace:
+	case TransactionTypeUpdateReplace:
 		fallthrough
-	case InsertReplace:
+	case TransactionTypeInsertReplace:
 		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))

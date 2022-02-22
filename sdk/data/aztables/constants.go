@@ -44,6 +44,6 @@ func (c ResponseFormat) ToPtr() *ResponseFormat {
 type EntityUpdateMode string
 
 const (
-	ReplaceEntity EntityUpdateMode = "replace"
-	MergeEntity   EntityUpdateMode = "merge"
+	EntityUpdateModeReplace EntityUpdateMode = "replace"
+	EntityUpdateModeMerge   EntityUpdateMode = "merge"
 )

@@ -31,7 +31,7 @@ func TestBatchAdd(t *testing.T) {
 			for _, e := range *entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalled})
+				batch = append(batch, TransactionAction{ActionType: TransactionTypeAdd, Entity: marshalled})
 			}
 
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
@@ -74,7 +74,7 @@ func TestBatchInsert(t *testing.T) {
 				batch = append(
 					batch,
 					TransactionAction{
-						ActionType: InsertMerge,
+						ActionType: TransactionTypeInsertMerge,
 						Entity:     marshalled,
 					},
 				)
@@ -116,7 +116,7 @@ func TestBatchMixed(t *testing.T) {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
 				batch = append(batch, TransactionAction{
-					ActionType: Add,
+					ActionType: TransactionTypeAdd,
 					Entity:     marshalled,
 				})
 			}
@@ -155,7 +155,7 @@ func TestBatchMixed(t *testing.T) {
 			require.NoError(t, err)
 			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
 			batch2 = append(batch2, TransactionAction{
-				ActionType: UpdateMerge,
+				ActionType: TransactionTypeUpdateMerge,
 				Entity:     marshalledMergeEntity,
 				IfMatch:    &etag,
 			})
@@ -163,7 +163,7 @@ func TestBatchMixed(t *testing.T) {
 			// create a delete action for the second added entity
 			marshalledSecondEntity, err := json.Marshal((*entitiesToCreate)[1])
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeDelete, Entity: marshalledSecondEntity})
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
@@ -174,15 +174,15 @@ func TestBatchMixed(t *testing.T) {
 			}
 			marshalledThirdEntity, err := json.Marshal(replaceProperties)
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeInsertReplace, Entity: marshalledThirdEntity})
 
 			// Add the remaining 2 entities.
 			marshalled4thEntity, err := json.Marshal((*entitiesToCreate)[3])
 			require.NoError(t, err)
 			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: UpdateMerge, Entity: marshalled4thEntity})
-			batch2 = append(batch2, TransactionAction{ActionType: InsertMerge, Entity: marshalled5thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeUpdateMerge, Entity: marshalled4thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeInsertMerge, Entity: marshalled5thEntity})
 
 			resp, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
@@ -244,7 +244,7 @@ func TestBatchError(t *testing.T) {
 			for _, e := range *entitiesToCreate {
 				marshalledEntity, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalledEntity})
+				batch = append(batch, TransactionAction{ActionType: TransactionTypeAdd, Entity: marshalledEntity})
 			}
 
 			_, err = client.SubmitTransaction(ctx, batch, nil)
@@ -274,35 +274,35 @@ func TestBatchComplex(t *testing.T) {
 			marshalled1, err := json.Marshal(edmEntity)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled1,
 			})
 
 			marshalled2, err := json.Marshal(edmEntity2)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled2,
 			})
 
 			marshalled3, err := json.Marshal(edmEntity3)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled3,
 			})
 
 			marshalled4, err := json.Marshal(edmEntity4)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled4,
 			})
 
 			marshalled5, err := json.Marshal(edmEntity5)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled5,
 			})
 
@@ -320,21 +320,21 @@ func TestBatchComplex(t *testing.T) {
 			marshalled1, err = json.Marshal(edmEntity)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: InsertMerge,
+				ActionType: TransactionTypeInsertMerge,
 				Entity:     marshalled1,
 			})
 
 			marshalled2, err = json.Marshal(edmEntity2)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: InsertReplace,
+				ActionType: TransactionTypeInsertReplace,
 				Entity:     marshalled2,
 			})
 
 			marshalled3, err = json.Marshal(edmEntity3)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: Delete,
+				ActionType: TransactionTypeDelete,
 				Entity:     marshalled3,
 			})
 

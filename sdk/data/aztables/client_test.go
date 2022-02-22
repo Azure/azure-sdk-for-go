@@ -159,7 +159,7 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: MergeEntity})
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Nil(t, updateErr)
 
 			var qResp ListEntitiesPage
@@ -191,7 +191,7 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: MergeEntity})
+			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Error(t, updateErr)
 		})
 	}
@@ -208,7 +208,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -230,7 +230,7 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
@@ -264,10 +264,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}

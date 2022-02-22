@@ -132,12 +132,17 @@ func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (Delet
 type ListEntitiesOptions struct {
 	// OData filter expression.
 	Filter *string
-	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+
+	// Select expression using OData notation. Limits the columns on each record
+	// to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
+
 	// Maximum number of records to return.
 	Top *int32
+
 	// The PartitionKey to start paging from
 	PartitionKey *string
+
 	// The RowKey to start paging from
 	RowKey *string
 }
@@ -209,26 +214,13 @@ func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (List
 
 // ListEntitiesPager is a Pager for Table entity query results.
 //
-// NextPage should be called first. It fetches the next available page of results from the service.
+// NextPage should be called first, it fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
 // If the result is false, the value of Err() will indicate if an error occurred.
 //
 // PageResponse returns the results from the page most recently fetched from the service.
-type ListEntitiesPager interface {
-	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListEntitiesPage
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-	// Err returns an error if there was an error on the last request
-	Err() error
-	// NextPagePartitionKey returns the PartitionKey for the current page
-	NextPagePartitionKey() *string
-	// NextPageRowKey returns the RowKey for the current page
-	NextPageRowKey() *string
-}
-
-type tableEntityQueryResponsePager struct {
+type ListEntitiesPager struct {
 	tableClient       *Client
 	current           *ListEntitiesPage
 	tableQueryOptions *generated.TableClientQueryEntitiesOptions
@@ -236,18 +228,18 @@ type tableEntityQueryResponsePager struct {
 	err               error
 }
 
-func (p *tableEntityQueryResponsePager) NextPagePartitionKey() *string {
+func (p *ListEntitiesPager) NextPagePartitionKey() *string {
 	return p.tableQueryOptions.NextPartitionKey
 }
 
-func (p *tableEntityQueryResponsePager) NextPageRowKey() *string {
+func (p *ListEntitiesPager) NextPageRowKey() *string {
 	return p.tableQueryOptions.NextRowKey
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
+func (p *ListEntitiesPager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.ContinuationNextPartitionKey == nil && p.current.ContinuationNextRowKey == nil) {
 		return false
 	}
@@ -272,12 +264,12 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesPage {
+func (p *ListEntitiesPager) PageResponse() ListEntitiesPage {
 	return *p.current
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *tableEntityQueryResponsePager) Err() error {
+func (p *ListEntitiesPager) Err() error {
 	return p.err
 }
 
@@ -298,7 +290,7 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}
-	return &tableEntityQueryResponsePager{
+	return ListEntitiesPager{
 		tableClient: t,
 		listOptions: listOptions,
 		tableQueryOptions: &generated.TableClientQueryEntitiesOptions{
@@ -505,7 +497,7 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntit
 func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
 		options = &UpdateEntityOptions{
-			UpdateMode: MergeEntity,
+			UpdateMode: EntityUpdateModeMerge,
 		}
 	}
 
@@ -527,7 +519,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case MergeEntity:
+	case EntityUpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -538,7 +530,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			&generated.QueryOptions{},
 		)
 		return updateEntityResponseFromMergeGenerated(&resp), err
-	case ReplaceEntity:
+	case EntityUpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -603,7 +595,7 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	if options == nil {
 		options = &InsertEntityOptions{
-			UpdateMode: MergeEntity,
+			UpdateMode: EntityUpdateModeMerge,
 		}
 	}
 	var mapEntity map[string]interface{}
@@ -619,7 +611,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case MergeEntity:
+	case EntityUpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -630,7 +622,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 			&generated.QueryOptions{},
 		)
 		return insertEntityFromGeneratedMerge(&resp), err
-	case ReplaceEntity:
+	case EntityUpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,

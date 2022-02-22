@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-02-22)
+### Breaking Changes
+
+- Function `*EmergingIssuesClient.Get` parameter(s) have been changed from `(context.Context, Enum0, *EmergingIssuesClientGetOptions)` to `(context.Context, *EmergingIssuesClientGetOptions)`
+- Const `Enum0Default` has been removed
+- Function `Enum0.ToPtr` has been removed
+- Function `PossibleEnum0Values` has been removed
+- Struct `ErrorResponse` has been removed
+
+
+## 0.3.1 (2022-02-22)
+
+### Other Changes
+
+- Remove the go_mod_tidy_hack.go file.
+
 ## 0.3.0 (2022-01-13)
 ### Breaking Changes
 

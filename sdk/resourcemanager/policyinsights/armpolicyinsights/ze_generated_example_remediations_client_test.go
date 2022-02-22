@@ -25,8 +25,7 @@ func ExampleRemediationsClient_ListDeploymentsAtManagementGroup() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
-	pager := client.ListDeploymentsAtManagementGroup(armpolicyinsights.Enum0("Microsoft.Management"),
-		"<management-group-id>",
+	pager := client.ListDeploymentsAtManagementGroup("<management-group-id>",
 		"<remediation-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -61,7 +60,6 @@ func ExampleRemediationsClient_CancelAtManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
 	res, err := client.CancelAtManagementGroup(ctx,
-		armpolicyinsights.Enum0("Microsoft.Management"),
 		"<management-group-id>",
 		"<remediation-name>",
 		nil)
@@ -79,8 +77,7 @@ func ExampleRemediationsClient_ListForManagementGroup() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
-	pager := client.ListForManagementGroup(armpolicyinsights.Enum0("Microsoft.Management"),
-		"<management-group-id>",
+	pager := client.ListForManagementGroup("<management-group-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -114,7 +111,6 @@ func ExampleRemediationsClient_CreateOrUpdateAtManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
-		armpolicyinsights.Enum0("Microsoft.Management"),
 		"<management-group-id>",
 		"<remediation-name>",
 		armpolicyinsights.Remediation{
@@ -138,7 +134,6 @@ func ExampleRemediationsClient_GetAtManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
 	res, err := client.GetAtManagementGroup(ctx,
-		armpolicyinsights.Enum0("Microsoft.Management"),
 		"<management-group-id>",
 		"<remediation-name>",
 		nil)
@@ -157,7 +152,6 @@ func ExampleRemediationsClient_DeleteAtManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
 	res, err := client.DeleteAtManagementGroup(ctx,
-		armpolicyinsights.Enum0("Microsoft.Management"),
 		"<management-group-id>",
 		"<remediation-name>",
 		nil)

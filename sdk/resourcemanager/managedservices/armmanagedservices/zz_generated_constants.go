@@ -10,7 +10,7 @@ package armmanagedservices
 
 const (
 	moduleName    = "armmanagedservices"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // MultiFactorAuthProvider - The multi-factor authorization provider to be used for just-in-time access requests.

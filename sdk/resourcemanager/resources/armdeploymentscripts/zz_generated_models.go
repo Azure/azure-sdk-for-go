@@ -160,7 +160,7 @@ type AzureCliScriptProperties struct {
 	Timeout *string `json:"timeout,omitempty"`
 
 	// READ-ONLY; List of script outputs.
-	Outputs map[string]map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of the script execution. This only appears in the response.
 	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -335,7 +335,7 @@ type AzurePowerShellScriptProperties struct {
 	Timeout *string `json:"timeout,omitempty"`
 
 	// READ-ONLY; List of script outputs.
-	Outputs map[string]map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of the script execution. This only appears in the response.
 	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -540,7 +540,7 @@ type DeploymentScriptPropertiesBase struct {
 	StorageAccountSettings *StorageAccountConfiguration `json:"storageAccountSettings,omitempty"`
 
 	// READ-ONLY; List of script outputs.
-	Outputs map[string]map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of the script execution. This only appears in the response.
 	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -598,17 +598,10 @@ type EnvironmentVariable struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// Error - Deployment scripts error response.
-type Error struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`

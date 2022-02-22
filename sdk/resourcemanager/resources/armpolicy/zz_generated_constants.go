@@ -10,7 +10,7 @@ package armpolicy
 
 const (
 	moduleName    = "armpolicy"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.3.1"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.

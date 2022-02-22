@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v61.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp`
+
 ## `v61.5.0`
 
 ### New Packages

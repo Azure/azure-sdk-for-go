@@ -10,7 +10,7 @@ package armchangeanalysis
 
 const (
 	moduleName    = "armchangeanalysis"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ChangeCategory - The change category.

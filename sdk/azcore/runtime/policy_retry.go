@@ -175,6 +175,12 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	}
 }
 
+// WithRetryOptions adds the specified RetryOptions to the parent context.
+// Use this to specify custom RetryOptions at the API-call level.
+func WithRetryOptions(parent context.Context, options policy.RetryOptions) context.Context {
+	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
+}
+
 // ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)
 
 // This struct is used when sending a body to the network

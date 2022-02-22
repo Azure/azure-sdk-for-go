@@ -92,7 +92,8 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 	return &generated.TableClientCreateOptions{}
 }
 
-// Create creates a table with the specified name.
+// Create creates a table with the specified name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
@@ -123,7 +124,8 @@ func deleteTableResponseFromGen(g *generated.TableClientDeleteResponse) DeleteTa
 	}
 }
 
-// Delete deletes a table by name.
+// Delete deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	if options == nil {
 		options = &DeleteTableOptions{}
@@ -276,7 +278,7 @@ func (p *tableQueryResponsePager) Err() error {
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results.
+// List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
@@ -305,7 +307,8 @@ func (g *GetStatisticsOptions) toGenerated() *generated.ServiceClientGetStatisti
 	return &generated.ServiceClientGetStatisticsOptions{}
 }
 
-// GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
+// GetStatistics retrieves all the statistics for an account with Geo-redundancy established. If the service returns a non-successful
+// HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
@@ -351,6 +354,8 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
+// If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
@@ -375,7 +380,7 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesR
 	}
 }
 
-// SetProperties allows the user to set cors , metrics, and logging rules for the account.
+// SetProperties allows the user to set cors, metrics, and logging rules for the account.
 //
 // Cors: A slice of CorsRules.
 //
@@ -383,7 +388,9 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesR
 //
 // HoursMetrics: A summary of request statistics grouped in minute aggregates for tables
 //
-// Logging: Azure Analytics logging settings
+// Logging: Azure Analytics logging settings. If the service returns a non-successful HTTP
+// status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}

@@ -1,5 +1,58 @@
 # Release History
 
+## 0.4.0 (2022-02-22)
+### Breaking Changes
+
+- Type of `ClientGetOptions.Expand` has been changed from `*Enum0` to `*ManagementGroupExpandType`
+- Type of `EntitiesClientListOptions.Search` has been changed from `*Enum2` to `*EntitySearchType`
+- Type of `EntitiesClientListOptions.View` has been changed from `*Enum3` to `*EntityViewParameterType`
+- Const `Enum2ChildrenOnly` has been removed
+- Const `Enum0Path` has been removed
+- Const `Enum3FullHierarchy` has been removed
+- Const `Enum2ParentAndFirstLevelChildren` has been removed
+- Const `Enum2ParentOnly` has been removed
+- Const `Enum3Audit` has been removed
+- Const `Enum3SubscriptionsOnly` has been removed
+- Const `Enum2AllowedChildren` has been removed
+- Const `Enum0Ancestors` has been removed
+- Const `Enum3GroupsOnly` has been removed
+- Const `Enum0Children` has been removed
+- Const `Enum2AllowedParents` has been removed
+- Function `PossibleEnum3Values` has been removed
+- Function `PossibleEnum2Values` has been removed
+- Function `Enum3.ToPtr` has been removed
+- Function `Enum0.ToPtr` has been removed
+- Function `Enum2.ToPtr` has been removed
+- Function `PossibleEnum0Values` has been removed
+- Function `EntityHierarchyItemProperties.MarshalJSON` has been removed
+- Struct `EntityHierarchyItem` has been removed
+- Struct `EntityHierarchyItemProperties` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `OperationResults` has been removed
+
+### Features Added
+
+- New const `EntitySearchTypeAllowedChildren`
+- New const `EntityViewParameterTypeSubscriptionsOnly`
+- New const `EntitySearchTypeAllowedParents`
+- New const `ManagementGroupExpandTypePath`
+- New const `EntitySearchTypeParentOnly`
+- New const `EntityViewParameterTypeAudit`
+- New const `EntitySearchTypeParentAndFirstLevelChildren`
+- New const `ManagementGroupExpandTypeChildren`
+- New const `EntityViewParameterTypeFullHierarchy`
+- New const `EntitySearchTypeChildrenOnly`
+- New const `EntityViewParameterTypeGroupsOnly`
+- New const `ManagementGroupExpandTypeAncestors`
+- New function `EntityViewParameterType.ToPtr() *EntityViewParameterType`
+- New function `PossibleManagementGroupExpandTypeValues() []ManagementGroupExpandType`
+- New function `PossibleEntitySearchTypeValues() []EntitySearchType`
+- New function `PossibleEntityViewParameterTypeValues() []EntityViewParameterType`
+- New function `ManagementGroupExpandType.ToPtr() *ManagementGroupExpandType`
+- New function `EntitySearchType.ToPtr() *EntitySearchType`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

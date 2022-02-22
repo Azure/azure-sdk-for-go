@@ -44,7 +44,7 @@ type AuthorizationCodeCredential struct {
 // clientID: The application's client ID.
 // authCode: The authorization code received from the authorization code flow. Note that authorization codes are single-use.
 // redirectURL: The application's redirect URL. Must match the redirect URL used to request the authorization code.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURL string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)

@@ -92,12 +92,17 @@ func TestLocPollerSimple(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, nil)
+	ctxWithResp := IncludeResponse(context.Background())
+	resp, err := lro.PollUntilDone(ctxWithResp, time.Second, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	respFromCtx := ResponseFromContext(ctxWithResp)
+	if respFromCtx != resp {
+		t.Fatal("response from context doesn't match returned response")
 	}
 }
 

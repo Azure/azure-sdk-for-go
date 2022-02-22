@@ -34,17 +34,17 @@ type FluxConfigOperationStatusClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FluxConfigOperationStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &FluxConfigOperationStatusClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -61,7 +61,7 @@ func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore
 // operationID - operation Id
 // options - FluxConfigOperationStatusClientGetOptions contains the optional parameters for the FluxConfigOperationStatusClient.Get
 // method.
-func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (FluxConfigOperationStatusClientGetResponse, error) {
+func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (FluxConfigOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationID, options)
 	if err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err
@@ -77,7 +77,7 @@ func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resource
 }
 
 // getCreateRequest creates the Get request.
-func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (*policy.Request, error) {
+func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

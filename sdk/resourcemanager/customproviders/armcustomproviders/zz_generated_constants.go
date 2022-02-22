@@ -10,7 +10,7 @@ package armcustomproviders
 
 const (
 	moduleName    = "armcustomproviders"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ActionRouting - The routing types that are supported for action requests.

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListDirectPeeringLocations.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListDirectPeeringLocations.json
 func ExampleLocationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,7 +24,7 @@ func ExampleLocationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armpeering.NewLocationsClient("<subscription-id>", cred, nil)
-	pager := client.List(armpeering.Enum14("Direct"),
+	pager := client.List(armpeering.PeeringLocationsKind("Direct"),
 		&armpeering.LocationsClientListOptions{DirectPeeringType: nil})
 	for {
 		nextResult := pager.NextPage(ctx)

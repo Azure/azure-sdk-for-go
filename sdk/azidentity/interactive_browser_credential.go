@@ -50,7 +50,7 @@ type InteractiveBrowserCredential struct {
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListLegacyPeerings.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListLegacyPeerings.json
 func ExampleLegacyPeeringsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,8 +25,8 @@ func ExampleLegacyPeeringsClient_List() {
 	ctx := context.Background()
 	client := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
 	pager := client.List("<peering-location>",
-		armpeering.Enum1("Exchange"),
-		nil)
+		armpeering.LegacyPeeringsKind("Exchange"),
+		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
 	for {
 		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {

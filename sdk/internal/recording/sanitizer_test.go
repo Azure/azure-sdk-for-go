@@ -682,11 +682,11 @@ func TestResetSanitizers(t *testing.T) {
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 
 	// Add a sanitizer
-	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, nil)
+	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	// Remove all sanitizers
-	err = ResetProxy(nil)
+	err = ResetProxy(&RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)

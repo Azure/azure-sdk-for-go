@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeeringService.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeeringService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleServicesClient_Get() {
 	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeeringService.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreatePeeringService.json
 func ExampleServicesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,8 +49,10 @@ func ExampleServicesClient_CreateOrUpdate() {
 		armpeering.Service{
 			Location: to.StringPtr("<location>"),
 			Properties: &armpeering.ServiceProperties{
-				PeeringServiceLocation: to.StringPtr("<peering-service-location>"),
-				PeeringServiceProvider: to.StringPtr("<peering-service-provider>"),
+				PeeringServiceLocation:         to.StringPtr("<peering-service-location>"),
+				PeeringServiceProvider:         to.StringPtr("<peering-service-provider>"),
+				ProviderBackupPeeringLocation:  to.StringPtr("<provider-backup-peering-location>"),
+				ProviderPrimaryPeeringLocation: to.StringPtr("<provider-primary-peering-location>"),
 			},
 		},
 		nil)
@@ -60,7 +62,7 @@ func ExampleServicesClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeeringService.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeletePeeringService.json
 func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +79,7 @@ func ExampleServicesClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/UpdatePeeringServiceTags.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/UpdatePeeringServiceTags.json
 func ExampleServicesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +103,7 @@ func ExampleServicesClient_Update() {
 	log.Printf("Response result: %#v\n", res.ServicesClientUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringServicesByResourceGroup.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeeringServicesByResourceGroup.json
 func ExampleServicesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +127,7 @@ func ExampleServicesClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringServicesBySubscription.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeeringServicesBySubscription.json
 func ExampleServicesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,5 +147,20 @@ func ExampleServicesClient_ListBySubscription() {
 		for _, v := range pager.PageResponse().Value {
 			log.Printf("Pager result: %#v\n", v)
 		}
+	}
+}
+
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/InitializeConnectionMonitor.json
+func ExampleServicesClient_InitializeConnectionMonitor() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	_, err = client.InitializeConnectionMonitor(ctx,
+		nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

@@ -46,7 +46,7 @@ type ClientCertificateCredential struct {
 // clientID: The application's client ID.
 // certs: one or more certificates, for example as returned by ParseCertificates()
 // key: the signing certificate's private key, for example as returned by ParseCertificates()
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")

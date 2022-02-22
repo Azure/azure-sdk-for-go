@@ -33,7 +33,7 @@ type ClientSecretCredential struct {
 // tenantID: The application's Azure Active Directory tenant or directory ID.
 // clientID: The application's client ID.
 // clientSecret: One of the application's client secrets.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)

@@ -26,8 +26,8 @@ func ExampleClusterExtensionTypeClient_Get() {
 	client := armkubernetesconfiguration.NewClusterExtensionTypeClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.ContainerService"),
-		armkubernetesconfiguration.Enum1("managedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.ContainerService"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("managedClusters"),
 		"<cluster-name>",
 		"<extension-type-name>",
 		nil)

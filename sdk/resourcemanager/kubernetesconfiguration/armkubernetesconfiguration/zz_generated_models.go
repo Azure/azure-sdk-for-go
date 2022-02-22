@@ -40,31 +40,6 @@ type BucketDefinition struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// BucketPatchDefinition - Parameters to reconcile to the GitRepository source kind type.
-type BucketPatchDefinition struct {
-	// Plaintext access key used to securely access the S3 bucket
-	AccessKey *string `json:"accessKey,omitempty"`
-
-	// The bucket name to sync from the url endpoint for the flux configuration.
-	BucketName *string `json:"bucketName,omitempty"`
-
-	// Specify whether to use insecure communication when puling data from the S3 bucket.
-	Insecure *bool `json:"insecure,omitempty"`
-
-	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
-	LocalAuthRef *string `json:"localAuthRef,omitempty"`
-
-	// The interval at which to re-reconcile the cluster git repository source with the remote.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
-
-	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
-
-	// The URL to sync for the flux configuration S3 bucket.
-	URL *string `json:"url,omitempty"`
-}
-
 // ClusterExtensionTypeClientGetOptions contains the optional parameters for the ClusterExtensionTypeClient.Get method.
 type ClusterExtensionTypeClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -163,7 +138,7 @@ type DependsOnDefinition struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -196,13 +171,6 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "target", e.Target)
 	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Extension - The Extension object.

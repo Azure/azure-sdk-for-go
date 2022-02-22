@@ -1,5 +1,51 @@
 # Release History
 
+## 0.3.0 (2022-02-22)
+### Breaking Changes
+
+- Function `*SourceControlConfigurationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, SourceControlConfiguration, *SourceControlConfigurationsClientCreateOrUpdateOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, SourceControlConfiguration, *SourceControlConfigurationsClientCreateOrUpdateOptions)`
+- Function `*SourceControlConfigurationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *SourceControlConfigurationsClientBeginDeleteOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *SourceControlConfigurationsClientBeginDeleteOptions)`
+- Function `*OperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, string, *OperationStatusClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, string, *OperationStatusClientGetOptions)`
+- Function `*ExtensionsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, Extension, *ExtensionsClientBeginCreateOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, Extension, *ExtensionsClientBeginCreateOptions)`
+- Function `*ExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, PatchExtension, *ExtensionsClientBeginUpdateOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, PatchExtension, *ExtensionsClientBeginUpdateOptions)`
+- Function `*FluxConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, FluxConfiguration, *FluxConfigurationsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, FluxConfiguration, *FluxConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*ClusterExtensionTypeClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *ClusterExtensionTypeClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *ClusterExtensionTypeClientGetOptions)`
+- Function `*FluxConfigOperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, string, *FluxConfigOperationStatusClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, string, *FluxConfigOperationStatusClientGetOptions)`
+- Function `*OperationStatusClient.List` parameter(s) have been changed from `(string, Enum0, Enum1, string, *OperationStatusClientListOptions)` to `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *OperationStatusClientListOptions)`
+- Function `*ClusterExtensionTypesClient.List` parameter(s) have been changed from `(string, Enum0, Enum1, string, *ClusterExtensionTypesClientListOptions)` to `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *ClusterExtensionTypesClientListOptions)`
+- Function `*SourceControlConfigurationsClient.List` parameter(s) have been changed from `(string, Enum0, Enum1, string, *SourceControlConfigurationsClientListOptions)` to `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *SourceControlConfigurationsClientListOptions)`
+- Function `*FluxConfigurationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *FluxConfigurationsClientBeginDeleteOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *FluxConfigurationsClientBeginDeleteOptions)`
+- Function `*ExtensionsClient.List` parameter(s) have been changed from `(string, Enum0, Enum1, string, *ExtensionsClientListOptions)` to `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *ExtensionsClientListOptions)`
+- Function `*SourceControlConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *SourceControlConfigurationsClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *SourceControlConfigurationsClientGetOptions)`
+- Function `*ExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *ExtensionsClientBeginDeleteOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *ExtensionsClientBeginDeleteOptions)`
+- Function `*FluxConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *FluxConfigurationsClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *FluxConfigurationsClientGetOptions)`
+- Function `*FluxConfigurationsClient.List` parameter(s) have been changed from `(string, Enum0, Enum1, string, *FluxConfigurationsClientListOptions)` to `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *FluxConfigurationsClientListOptions)`
+- Function `*FluxConfigurationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, FluxConfigurationPatch, *FluxConfigurationsClientBeginUpdateOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, FluxConfigurationPatch, *FluxConfigurationsClientBeginUpdateOptions)`
+- Function `*ExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, Enum0, Enum1, string, string, *ExtensionsClientGetOptions)` to `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *ExtensionsClientGetOptions)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Const `Enum0MicrosoftKubernetes` has been removed
+- Const `Enum1ConnectedClusters` has been removed
+- Const `Enum0MicrosoftContainerService` has been removed
+- Const `Enum1ManagedClusters` has been removed
+- Function `PossibleEnum0Values` has been removed
+- Function `Enum0.ToPtr` has been removed
+- Function `PossibleEnum1Values` has been removed
+- Function `Enum1.ToPtr` has been removed
+- Struct `BucketPatchDefinition` has been removed
+- Struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New const `ExtensionsClusterResourceNameConnectedClusters`
+- New const `ExtensionsClusterRpMicrosoftKubernetes`
+- New const `ExtensionsClusterResourceNameManagedClusters`
+- New const `ExtensionsClusterRpMicrosoftContainerService`
+- New function `PossibleExtensionsClusterResourceNameValues() []ExtensionsClusterResourceName`
+- New function `ExtensionsClusterResourceName.ToPtr() *ExtensionsClusterResourceName`
+- New function `ExtensionsClusterRp.ToPtr() *ExtensionsClusterRp`
+- New function `PossibleExtensionsClusterRpValues() []ExtensionsClusterRp`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

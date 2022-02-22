@@ -10,7 +10,7 @@ package armkubernetesconfiguration
 
 const (
 	moduleName    = "armkubernetesconfiguration"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ClusterTypes - Cluster types
@@ -86,43 +86,43 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-type Enum0 string
+type ExtensionsClusterResourceName string
 
 const (
-	Enum0MicrosoftContainerService Enum0 = "Microsoft.ContainerService"
-	Enum0MicrosoftKubernetes       Enum0 = "Microsoft.Kubernetes"
+	ExtensionsClusterResourceNameConnectedClusters ExtensionsClusterResourceName = "connectedClusters"
+	ExtensionsClusterResourceNameManagedClusters   ExtensionsClusterResourceName = "managedClusters"
 )
 
-// PossibleEnum0Values returns the possible values for the Enum0 const type.
-func PossibleEnum0Values() []Enum0 {
-	return []Enum0{
-		Enum0MicrosoftContainerService,
-		Enum0MicrosoftKubernetes,
+// PossibleExtensionsClusterResourceNameValues returns the possible values for the ExtensionsClusterResourceName const type.
+func PossibleExtensionsClusterResourceNameValues() []ExtensionsClusterResourceName {
+	return []ExtensionsClusterResourceName{
+		ExtensionsClusterResourceNameConnectedClusters,
+		ExtensionsClusterResourceNameManagedClusters,
 	}
 }
 
-// ToPtr returns a *Enum0 pointing to the current value.
-func (c Enum0) ToPtr() *Enum0 {
+// ToPtr returns a *ExtensionsClusterResourceName pointing to the current value.
+func (c ExtensionsClusterResourceName) ToPtr() *ExtensionsClusterResourceName {
 	return &c
 }
 
-type Enum1 string
+type ExtensionsClusterRp string
 
 const (
-	Enum1ConnectedClusters Enum1 = "connectedClusters"
-	Enum1ManagedClusters   Enum1 = "managedClusters"
+	ExtensionsClusterRpMicrosoftContainerService ExtensionsClusterRp = "Microsoft.ContainerService"
+	ExtensionsClusterRpMicrosoftKubernetes       ExtensionsClusterRp = "Microsoft.Kubernetes"
 )
 
-// PossibleEnum1Values returns the possible values for the Enum1 const type.
-func PossibleEnum1Values() []Enum1 {
-	return []Enum1{
-		Enum1ConnectedClusters,
-		Enum1ManagedClusters,
+// PossibleExtensionsClusterRpValues returns the possible values for the ExtensionsClusterRp const type.
+func PossibleExtensionsClusterRpValues() []ExtensionsClusterRp {
+	return []ExtensionsClusterRp{
+		ExtensionsClusterRpMicrosoftContainerService,
+		ExtensionsClusterRpMicrosoftKubernetes,
 	}
 }
 
-// ToPtr returns a *Enum1 pointing to the current value.
-func (c Enum1) ToPtr() *Enum1 {
+// ToPtr returns a *ExtensionsClusterRp pointing to the current value.
+func (c ExtensionsClusterRp) ToPtr() *ExtensionsClusterRp {
 	return &c
 }
 

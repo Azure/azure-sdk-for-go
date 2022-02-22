@@ -29,17 +29,17 @@ type Client struct {
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	s, err := NewServiceClient(rawServiceURL, cred, options)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	return s.NewClient(tableName), nil
 }
@@ -47,17 +47,17 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // NewClientWithNoCredential creates a Client struct in the context of the table specified in the serviceURL.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>?<SAS token>".
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	s, err := NewServiceClientWithNoCredential(rawServiceURL, options)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	return s.NewClient(tableName), nil
 }
@@ -65,17 +65,17 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 // NewClientWithSharedKey creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with a shared key.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	s, err := NewServiceClientWithSharedKey(rawServiceURL, cred, options)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 	return s.NewClient(tableName), nil
 }

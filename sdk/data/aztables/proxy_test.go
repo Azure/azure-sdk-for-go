@@ -79,7 +79,7 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
+func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (Client, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -94,7 +94,7 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 	return NewClientWithSharedKey(serviceURL, &cred, options)
 }
 
-func createClientForRecordingWithNoCredential(t *testing.T, tableName string, serviceURL string) (*Client, error) {
+func createClientForRecordingWithNoCredential(t *testing.T, tableName string, serviceURL string) (Client, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -109,7 +109,7 @@ func createClientForRecordingWithNoCredential(t *testing.T, tableName string, se
 	return NewClientWithNoCredential(serviceURL, options)
 }
 
-func createServiceClientForRecording(t *testing.T, serviceURL string, cred SharedKeyCredential) (*ServiceClient, error) {
+func createServiceClientForRecording(t *testing.T, serviceURL string, cred SharedKeyCredential) (ServiceClient, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -119,7 +119,7 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, cred Share
 	return NewServiceClientWithSharedKey(serviceURL, &cred, options)
 }
 
-func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL string) (*ServiceClient, error) {
+func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL string) (ServiceClient, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -129,8 +129,8 @@ func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL st
 	return NewServiceClientWithNoCredential(serviceURL, options)
 }
 
-func initClientTest(t *testing.T, service string, createTable bool) (*Client, func()) {
-	var client *Client
+func initClientTest(t *testing.T, service string, createTable bool) (Client, func()) {
+	var client Client
 	var err error
 	if service == string(storageEndpoint) {
 		client, err = createStorageClient(t)
@@ -156,8 +156,8 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 	}
 }
 
-func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
-	var client *ServiceClient
+func initServiceTest(t *testing.T, service string) (ServiceClient, func()) {
+	var client ServiceClient
 	var err error
 	if service == string(storageEndpoint) {
 		client, err = createStorageServiceClient(t)
@@ -187,7 +187,7 @@ func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func createStorageClient(t *testing.T) (*Client, error) {
+func createStorageClient(t *testing.T) (Client, error) {
 	var cred *SharedKeyCredential
 	var err error
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
@@ -209,7 +209,7 @@ func createStorageClient(t *testing.T) (*Client, error) {
 	return createClientForRecording(t, tableName, serviceURL, *cred)
 }
 
-func createCosmosClient(t *testing.T) (*Client, error) {
+func createCosmosClient(t *testing.T) (Client, error) {
 	var cred *SharedKeyCredential
 	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakeaccount")
 	if recording.GetRecordMode() == "playback" {
@@ -227,7 +227,7 @@ func createCosmosClient(t *testing.T) (*Client, error) {
 	return createClientForRecording(t, tableName, serviceURL, *cred)
 }
 
-func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
+func createStorageServiceClient(t *testing.T) (ServiceClient, error) {
 	var cred *SharedKeyCredential
 	var err error
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
@@ -246,7 +246,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	return createServiceClientForRecording(t, serviceURL, *cred)
 }
 
-func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
+func createCosmosServiceClient(t *testing.T) (ServiceClient, error) {
 	var cred *SharedKeyCredential
 	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakeaccount")
 	if recording.GetRecordMode() == "playback" {
@@ -267,7 +267,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func clearAllTables(service *ServiceClient) error {
+func clearAllTables(service ServiceClient) error {
 	pager := service.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()

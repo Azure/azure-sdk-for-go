@@ -26,11 +26,11 @@ type ServiceClient struct {
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
 	con := generated.NewConnection(serviceURL, conOptions)
-	return &ServiceClient{
+	return ServiceClient{
 		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		con:     con,
@@ -40,10 +40,10 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
 // Call this method when serviceURL contains a SAS token.
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	con := generated.NewConnection(serviceURL, conOptions)
-	return &ServiceClient{
+	return ServiceClient{
 		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		con:     con,
@@ -52,12 +52,12 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
 
 	con := generated.NewConnection(serviceURL, conOptions)
-	return &ServiceClient{
+	return ServiceClient{
 		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		cred:    cred,
@@ -77,8 +77,8 @@ func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.Cli
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
-func (t *ServiceClient) NewClient(tableName string) *Client {
-	return &Client{
+func (t *ServiceClient) NewClient(tableName string) Client {
+	return Client{
 		client:  t.client,
 		name:    tableName,
 		service: t,
@@ -97,7 +97,7 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 
 // Create creates a table with the specified name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
-func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}

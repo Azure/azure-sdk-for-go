@@ -5,6 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
+* Changes `Attributes` to `Properties`
+* Changes `Secret.KID` to `Secret.KeyID`
+* Changes `DeletedSecretBundle` to `DeletedSecret`
+* Changes `DeletedDate` to `DeletedOn`, `Created` to `CreatedOn`, and `Updated` to `UpdatedOn`
+* Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
+* Changes `Item` to `SecretItem`
 
 ### Bugs Fixed
 

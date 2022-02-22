@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeerAsn.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeerAsn.json
 func ExamplePeerAsnsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExamplePeerAsnsClient_Get() {
 	log.Printf("Response result: %#v\n", res.PeerAsnsClientGetResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeerAsn.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreatePeerAsn.json
 func ExamplePeerAsnsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,13 +47,22 @@ func ExamplePeerAsnsClient_CreateOrUpdate() {
 		armpeering.PeerAsn{
 			Properties: &armpeering.PeerAsnProperties{
 				PeerAsn: to.Int32Ptr(65000),
-				PeerContactInfo: &armpeering.ContactInfo{
-					Emails: []*string{
-						to.StringPtr("abc@contoso.com"),
-						to.StringPtr("xyz@contoso.com")},
-					Phone: []*string{
-						to.StringPtr("+1 (234) 567-8900")},
-				},
+				PeerContactDetail: []*armpeering.ContactDetail{
+					{
+						Email: to.StringPtr("<email>"),
+						Phone: to.StringPtr("<phone>"),
+						Role:  armpeering.Role("Noc").ToPtr(),
+					},
+					{
+						Email: to.StringPtr("<email>"),
+						Phone: to.StringPtr("<phone>"),
+						Role:  armpeering.Role("Policy").ToPtr(),
+					},
+					{
+						Email: to.StringPtr("<email>"),
+						Phone: to.StringPtr("<phone>"),
+						Role:  armpeering.Role("Technical").ToPtr(),
+					}},
 				PeerName: to.StringPtr("<peer-name>"),
 			},
 		},
@@ -64,7 +73,7 @@ func ExamplePeerAsnsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.PeerAsnsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeerAsn.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeletePeerAsn.json
 func ExamplePeerAsnsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +89,7 @@ func ExamplePeerAsnsClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeerAsnsBySubscription.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeerAsnsBySubscription.json
 func ExamplePeerAsnsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

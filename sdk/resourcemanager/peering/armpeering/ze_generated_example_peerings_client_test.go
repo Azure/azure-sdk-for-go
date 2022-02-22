@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeering.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeering.json
 func ExamplePeeringsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExamplePeeringsClient_Get() {
 	log.Printf("Response result: %#v\n", res.PeeringsClientGetResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreateDirectPeering.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreateDirectPeering.json
 func ExamplePeeringsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,14 +67,7 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 							UseForPeeringService:   to.BoolPtr(false),
 						},
 						{
-							BandwidthInMbps: to.Int32Ptr(10000),
-							BgpSession: &armpeering.BgpSession{
-								MaxPrefixesAdvertisedV4: to.Int32Ptr(1000),
-								MaxPrefixesAdvertisedV6: to.Int32Ptr(100),
-								MD5AuthenticationKey:    to.StringPtr("<md5authentication-key>"),
-								SessionPrefixV4:         to.StringPtr("<session-prefix-v4>"),
-								SessionPrefixV6:         to.StringPtr("<session-prefix-v6>"),
-							},
+							BandwidthInMbps:        to.Int32Ptr(10000),
 							ConnectionIdentifier:   to.StringPtr("<connection-identifier>"),
 							PeeringDBFacilityID:    to.Int32Ptr(99999),
 							SessionAddressProvider: armpeering.SessionAddressProvider("Microsoft").ToPtr(),
@@ -84,12 +77,11 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 					PeerAsn: &armpeering.SubResource{
 						ID: to.StringPtr("<id>"),
 					},
-					UseForPeeringService: to.BoolPtr(false),
 				},
 				PeeringLocation: to.StringPtr("<peering-location>"),
 			},
 			SKU: &armpeering.SKU{
-				Name: armpeering.Name("Basic_Direct_Free").ToPtr(),
+				Name: to.StringPtr("<name>"),
 			},
 		},
 		nil)
@@ -99,7 +91,7 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.PeeringsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeering.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeletePeering.json
 func ExamplePeeringsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +108,7 @@ func ExamplePeeringsClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/UpdatePeeringTags.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/UpdatePeeringTags.json
 func ExamplePeeringsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +132,7 @@ func ExamplePeeringsClient_Update() {
 	log.Printf("Response result: %#v\n", res.PeeringsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringsByResourceGroup.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeeringsByResourceGroup.json
 func ExamplePeeringsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +156,7 @@ func ExamplePeeringsClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringsBySubscription.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeeringsBySubscription.json
 func ExamplePeeringsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -16,17 +16,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListLegacyPeerings.json
-func ExampleLegacyPeeringsClient_List() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListCdnPeeringPrefixes.json
+func ExampleCdnPeeringPrefixesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
+	client := armpeering.NewCdnPeeringPrefixesClient("<subscription-id>", cred, nil)
 	pager := client.List("<peering-location>",
-		armpeering.LegacyPeeringsKind("Exchange"),
-		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
+		nil)
 	for {
 		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {

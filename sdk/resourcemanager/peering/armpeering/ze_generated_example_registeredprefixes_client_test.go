@@ -17,79 +17,78 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeeringServicePrefix.json
-func ExamplePrefixesClient_Get() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetRegisteredPrefix.json
+func ExampleRegisteredPrefixesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewRegisteredPrefixesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
-		&armpeering.PrefixesClientGetOptions{Expand: nil})
+		"<peering-name>",
+		"<registered-prefix-name>",
+		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.PrefixesClientGetResult)
+	log.Printf("Response result: %#v\n", res.RegisteredPrefixesClientGetResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreatePeeringServicePrefix.json
-func ExamplePrefixesClient_CreateOrUpdate() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreateRegisteredPrefix.json
+func ExampleRegisteredPrefixesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewRegisteredPrefixesClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
-		armpeering.ServicePrefix{
-			Properties: &armpeering.ServicePrefixProperties{
-				PeeringServicePrefixKey: to.StringPtr("<peering-service-prefix-key>"),
-				Prefix:                  to.StringPtr("<prefix>"),
+		"<peering-name>",
+		"<registered-prefix-name>",
+		armpeering.RegisteredPrefix{
+			Properties: &armpeering.RegisteredPrefixProperties{
+				Prefix: to.StringPtr("<prefix>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.PrefixesClientCreateOrUpdateResult)
+	log.Printf("Response result: %#v\n", res.RegisteredPrefixesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeletePeeringServicePrefix.json
-func ExamplePrefixesClient_Delete() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeleteRegisteredPrefix.json
+func ExampleRegisteredPrefixesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewRegisteredPrefixesClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
+		"<peering-name>",
+		"<registered-prefix-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPrefixesByPeeringService.json
-func ExamplePrefixesClient_ListByPeeringService() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListRegisteredPrefixesByPeering.json
+func ExampleRegisteredPrefixesClient_ListByPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
-	pager := client.ListByPeeringService("<resource-group-name>",
-		"<peering-service-name>",
-		&armpeering.PrefixesClientListByPeeringServiceOptions{Expand: nil})
+	client := armpeering.NewRegisteredPrefixesClient("<subscription-id>", cred, nil)
+	pager := client.ListByPeering("<resource-group-name>",
+		"<peering-name>",
+		nil)
 	for {
 		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {

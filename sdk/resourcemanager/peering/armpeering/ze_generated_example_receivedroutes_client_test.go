@@ -12,21 +12,27 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListLegacyPeerings.json
-func ExampleLegacyPeeringsClient_List() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeeringReceivedRoutes.json
+func ExampleReceivedRoutesClient_ListByPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
-	pager := client.List("<peering-location>",
-		armpeering.LegacyPeeringsKind("Exchange"),
-		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
+	client := armpeering.NewReceivedRoutesClient("<subscription-id>", cred, nil)
+	pager := client.ListByPeering("<resource-group-name>",
+		"<peering-name>",
+		&armpeering.ReceivedRoutesClientListByPeeringOptions{Prefix: to.StringPtr("<prefix>"),
+			AsPath:                  to.StringPtr("<as-path>"),
+			OriginAsValidationState: to.StringPtr("<origin-as-validation-state>"),
+			RpkiValidationState:     to.StringPtr("<rpki-validation-state>"),
+			SkipToken:               nil,
+		})
 	for {
 		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {

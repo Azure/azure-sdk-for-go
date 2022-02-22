@@ -6,72 +6,74 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                @AlexGhiondea @jsquire
+/.github/                @AlexGhiondea @jsquire @jhendrixMSFT @rickwinter
 
 #############
 # SDK (track2)
 ############# 
 
 # Catch all for non-code project files and unowned files | folders
-*                        @rickwinter @jhendrixMSFT
-/sdk/                    @rickwinter @chlowell @richardpark-msft @seankane-msft
+*                             @rickwinter @jhendrixMSFT
+/sdk/                         @rickwinter @chlowell @richardpark-msft @seankane-msft
 
 # Samples
-/samples/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Core
-/sdk/azcore/             @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/         @chlowell @jhendrixMSFT @rickwinter
+/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter
 
 # PRLabel: %Internal
-/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
-# PRLabel: %KeyVault
-/sdk/keyvault/           @seankane-msft @jhendrixMSFT
-
-# PRLabel: %Storage
-/sdk/storage/            @jhendrixMSFT @seankane-msft
+# PRLabel: %App Configuration
+/sdk/appconfiguration/        @antkmsft @seankane-msft @jhendrixMSFT
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/      @ealsur @ausfeldt 
+/sdk/data/azcosmos/           @ealsur @ausfeldt 
 
 # PRLabel: %Tables
-/sdk/data/aztables/      @seankane-msft @jhendrixMSFT 
+/sdk/data/aztables/           @seankane-msft @jhendrixMSFT 
+
+# PRLabel: %KeyVault
+/sdk/keyvault/                @seankane-msft @jhendrixMSFT
 
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
 
 # PRLabel: %Service Bus
-/sdk/messaging/internal   @richardpark-msft @jhendrixMSFT 
+/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT 
 
 # PRLabel: %Mgmt
-/sdk/resourcemanager/    @ArcturusZhang @lirenhe
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe
 
+# PRLabel: %Storage
+/sdk/storage/                 @jhendrixMSFT @seankane-msft
 
 ###########
 # Eng Sys
 ###########
-/eng/                    @benbp @weshaggard
-/**/ci.yml               @benbp
-/**/tests.yml            @benbp
+/eng/                         @benbp @weshaggard
+/**/ci.yml                    @benbp
+/**/tests.yml                 @benbp
 
 # PRLabel: %EngSys
-/sdk/template/           @benbp @weshaggard
+/sdk/template/                @benbp @weshaggard
 
 #############
 # SDK (track1 and track1.5)
 #############
 
 # PRLabel: %Track1
-/profiles/               @ArcturusZhang @lirenhe
+/profiles/                    @ArcturusZhang @lirenhe
 
 # PRLabel: %Track1
-/services/               @ArcturusZhang @lirenhe
+/services/                    @ArcturusZhang @lirenhe
 
 # PRLabel: %Track1
-/storage/                @jhendrixMSFT
+/storage/                     @jhendrixMSFT
 
 # PRLabel: %Track1
-/version/                @ArcturusZhang @lirenhe
+/version/                     @ArcturusZhang @lirenhe

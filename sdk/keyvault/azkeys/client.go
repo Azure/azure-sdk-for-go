@@ -493,7 +493,7 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 			Tags:               convertGeneratedMap(i.Tags),
 			Managed:            i.Managed,
 			RecoveryID:         i.RecoveryID,
-			DeletedOn:        i.DeletedDate,
+			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 	}
@@ -631,7 +631,7 @@ func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (D
 		RawResponse: s.RawResponse,
 		DeletedKey: DeletedKey{
 			RecoveryID:         s.deleteResponse.RecoveryID,
-			DeletedOn:        s.deleteResponse.DeletedDate,
+			DeletedOn:          s.deleteResponse.DeletedDate,
 			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
 			Tags:               convertGeneratedMap(s.deleteResponse.Tags),
 			Managed:            s.deleteResponse.Managed,
@@ -1293,7 +1293,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	if i.Attributes != nil {
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			CreatedOn:    i.Attributes.Created,
+			CreatedOn:  i.Attributes.Created,
 			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
@@ -1426,7 +1426,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	if i.Attributes != nil {
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			CreatedOn:    i.Attributes.Created,
+			CreatedOn:  i.Attributes.Created,
 			UpdatedOn:  i.Attributes.Updated,
 		}
 	}

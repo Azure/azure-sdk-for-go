@@ -34,17 +34,17 @@ type ClusterVersionsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterVersionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &ClusterVersionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -111,7 +111,7 @@ func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (Clu
 // clusterVersion - The cluster code version.
 // options - ClusterVersionsClientGetByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.GetByEnvironment
 // method.
-func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (ClusterVersionsClientGetByEnvironmentResponse, error) {
+func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment ClusterVersionsEnvironment, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (ClusterVersionsClientGetByEnvironmentResponse, error) {
 	req, err := client.getByEnvironmentCreateRequest(ctx, location, environment, clusterVersion, options)
 	if err != nil {
 		return ClusterVersionsClientGetByEnvironmentResponse{}, err
@@ -127,7 +127,7 @@ func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, locat
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
-func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions/{clusterVersion}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -221,7 +221,7 @@ func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (Cl
 // environment - The operating system of the cluster. The default means all.
 // options - ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
 // method.
-func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment Enum14, options *ClusterVersionsClientListByEnvironmentOptions) (ClusterVersionsClientListByEnvironmentResponse, error) {
+func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment ClusterVersionsEnvironment, options *ClusterVersionsClientListByEnvironmentOptions) (ClusterVersionsClientListByEnvironmentResponse, error) {
 	req, err := client.listByEnvironmentCreateRequest(ctx, location, environment, options)
 	if err != nil {
 		return ClusterVersionsClientListByEnvironmentResponse{}, err
@@ -237,7 +237,7 @@ func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, loca
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.
-func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, options *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, options *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

@@ -105,7 +105,7 @@ func TestSecretTags(t *testing.T) {
 
 	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, Properties{
 		SecretAttributes: &Attributes{
-			Expires: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
+			ExpiresOn: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
 		},
 	}, &UpdateSecretPropertiesOptions{})
 	require.NoError(t, err)
@@ -267,11 +267,16 @@ func TestDeleteSecret(t *testing.T) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), delay())
+	finalResp, err := resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
+	require.NotNil(t, finalResp.Attributes)
+	require.NotNil(t, finalResp.DeletedOn)
+	require.NotNil(t, finalResp.ID)
+	require.NotNil(t, finalResp.ScheduledPurgeDate)
 
-	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
+	deleteResp, err := client.GetDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
+	require.NotNil(t, deleteResp.Attributes)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -348,7 +353,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 		},
 		SecretAttributes: &Attributes{
 			Enabled:   to.BoolPtr(true),
-			Expires:   &expires,
+			ExpiresOn: &expires,
 			NotBefore: &nb,
 		},
 	}

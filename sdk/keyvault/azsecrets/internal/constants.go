@@ -10,7 +10,7 @@ package internal
 
 const (
 	moduleName    = "internal"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.5.1"
 )
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for secrets in the current vault. If it

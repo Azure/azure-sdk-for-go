@@ -94,7 +94,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			KID:         i.Kid,
+			KeyID:       i.Kid,
 			Managed:     i.Managed,
 		},
 	}
@@ -187,7 +187,7 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 
 // DeletedSecretResponse contains the response for a Client.DeleteSecret operation.
 type DeleteSecretResponse struct {
-	DeletedSecretBundle
+	DeletedSecret
 	// RawResponse holds the underlying HTTP response
 	RawResponse *http.Response
 }
@@ -197,26 +197,24 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 		return nil
 	}
 	return &DeleteSecretResponse{
-		DeletedSecretBundle: DeletedSecretBundle{
-			Secret: Secret{
-				ContentType: i.ContentType,
-				ID:          i.ID,
-				Tags:        convertPtrMap(i.Tags),
-				Value:       i.Value,
-				KID:         i.Kid,
-				Managed:     i.Managed,
-				Attributes: &Attributes{
-					Enabled:         i.Attributes.Enabled,
-					Expires:         i.Attributes.Expires,
-					NotBefore:       i.Attributes.NotBefore,
-					Created:         i.Attributes.Created,
-					Updated:         i.Attributes.Updated,
-					RecoverableDays: i.Attributes.RecoverableDays,
-					RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
-				},
+		DeletedSecret: DeletedSecret{
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Value:       i.Value,
+			KeyID:       i.Kid,
+			Managed:     i.Managed,
+			Attributes: &Attributes{
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				NotBefore:       i.Attributes.NotBefore,
+				CreatedOn:       i.Attributes.Created,
+				UpdatedOn:       i.Attributes.Updated,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
 			RecoveryID:         i.RecoveryID,
-			DeletedDate:        i.DeletedDate,
+			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 		RawResponse: i.RawResponse,
@@ -299,7 +297,7 @@ func (s *startDeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Dura
 		}
 		time.Sleep(t)
 	}
-	return DeleteSecretResponse{}, nil
+	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
 }
 
 type DeleteSecretPollerResponse struct {
@@ -358,15 +356,7 @@ func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDelet
 
 // GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
 type GetDeletedSecretResponse struct {
-	Secret
-	// The url of the recovery object, used to identify and recover the deleted secret.
-	RecoveryID *string `json:"recoveryId,omitempty"`
-
-	// READ-ONLY; The time when the secret was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	DeletedSecret
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -375,11 +365,19 @@ type GetDeletedSecretResponse struct {
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
 	return GetDeletedSecretResponse{
-		RawResponse:        i.RawResponse,
-		RecoveryID:         i.RecoveryID,
-		DeletedDate:        i.DeletedDate,
-		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Secret:             secretFromGenerated(i.DeletedSecretBundle),
+		RawResponse: i.RawResponse,
+		DeletedSecret: DeletedSecret{
+			Attributes:         secretAttributesFromGenerated(i.Attributes),
+			ContentType:        i.ContentType,
+			ID:                 i.ID,
+			RecoveryID:         i.RecoveryID,
+			Tags:               convertPtrMap(i.Tags),
+			Value:              i.Value,
+			DeletedOn:          i.DeletedDate,
+			KeyID:              i.Kid,
+			Managed:            i.Managed,
+			ScheduledPurgeDate: i.ScheduledPurgeDate,
+		},
 	}
 }
 
@@ -419,7 +417,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			KID:         i.Kid,
+			KeyID:       i.Kid,
 			Managed:     i.Managed,
 		},
 	}
@@ -526,14 +524,14 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			KID:         i.Kid,
+			KeyID:       i.Kid,
 			Managed:     i.Managed,
 			Attributes: &Attributes{
 				Enabled:         i.Attributes.Enabled,
-				Expires:         i.Attributes.Expires,
+				ExpiresOn:       i.Attributes.Expires,
 				NotBefore:       i.Attributes.NotBefore,
-				Created:         i.Attributes.Created,
-				Updated:         i.Attributes.Updated,
+				CreatedOn:       i.Attributes.Created,
+				UpdatedOn:       i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
@@ -668,10 +666,10 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	if i.Attributes != nil {
 		a = &Attributes{
 			Enabled:         i.Attributes.Enabled,
-			Expires:         i.Attributes.Expires,
+			ExpiresOn:       i.Attributes.Expires,
 			NotBefore:       i.Attributes.NotBefore,
-			Created:         i.Attributes.Created,
-			Updated:         i.Attributes.Updated,
+			CreatedOn:       i.Attributes.Created,
+			UpdatedOn:       i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 		}
@@ -684,7 +682,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			KID:         i.Kid,
+			KeyID:       i.Kid,
 			Managed:     i.Managed,
 		},
 	}
@@ -876,12 +874,12 @@ type ListSecretVersionsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []Item `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsPage {
-	var secrets []Item
+	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -968,12 +966,12 @@ type ListSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []Item `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsPage {
-	var secrets []Item
+	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

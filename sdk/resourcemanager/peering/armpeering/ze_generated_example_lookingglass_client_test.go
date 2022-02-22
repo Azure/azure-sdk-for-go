@@ -16,27 +16,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListLegacyPeerings.json
-func ExampleLegacyPeeringsClient_List() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/LookingGlassInvokeCommand.json
+func ExampleLookingGlassClient_Invoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
-	pager := client.List("<peering-location>",
-		armpeering.LegacyPeeringsKind("Exchange"),
-		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
-		}
+	client := armpeering.NewLookingGlassClient("<subscription-id>", cred, nil)
+	res, err := client.Invoke(ctx,
+		armpeering.LookingGlassCommand("Traceroute"),
+		armpeering.LookingGlassSourceType("AzureRegion"),
+		"<source-location>",
+		"<destination-ip>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LookingGlassClientInvokeResult)
 }

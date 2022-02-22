@@ -10,8 +10,31 @@ package armpeering
 
 const (
 	moduleName    = "armpeering"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
+
+// Command - Invoked command
+type Command string
+
+const (
+	CommandBgpRoute   Command = "BgpRoute"
+	CommandPing       Command = "Ping"
+	CommandTraceroute Command = "Traceroute"
+)
+
+// PossibleCommandValues returns the possible values for the Command const type.
+func PossibleCommandValues() []Command {
+	return []Command{
+		CommandBgpRoute,
+		CommandPing,
+		CommandTraceroute,
+	}
+}
+
+// ToPtr returns a *Command pointing to the current value.
+func (c Command) ToPtr() *Command {
+	return &c
+}
 
 // ConnectionState - The state of the connection.
 type ConnectionState string
@@ -53,7 +76,10 @@ const (
 	DirectPeeringTypeCdn      DirectPeeringType = "Cdn"
 	DirectPeeringTypeEdge     DirectPeeringType = "Edge"
 	DirectPeeringTypeInternal DirectPeeringType = "Internal"
+	DirectPeeringTypeIx       DirectPeeringType = "Ix"
+	DirectPeeringTypeIxRs     DirectPeeringType = "IxRs"
 	DirectPeeringTypeTransit  DirectPeeringType = "Transit"
+	DirectPeeringTypeVoice    DirectPeeringType = "Voice"
 )
 
 // PossibleDirectPeeringTypeValues returns the possible values for the DirectPeeringType const type.
@@ -62,7 +88,10 @@ func PossibleDirectPeeringTypeValues() []DirectPeeringType {
 		DirectPeeringTypeCdn,
 		DirectPeeringTypeEdge,
 		DirectPeeringTypeInternal,
+		DirectPeeringTypeIx,
+		DirectPeeringTypeIxRs,
 		DirectPeeringTypeTransit,
+		DirectPeeringTypeVoice,
 	}
 }
 
@@ -75,83 +104,19 @@ type Enum0 string
 
 const (
 	Enum0Available   Enum0 = "Available"
-	Enum0UnAvailable Enum0 = "UnAvailable"
+	Enum0Unavailable Enum0 = "Unavailable"
 )
 
 // PossibleEnum0Values returns the possible values for the Enum0 const type.
 func PossibleEnum0Values() []Enum0 {
 	return []Enum0{
 		Enum0Available,
-		Enum0UnAvailable,
+		Enum0Unavailable,
 	}
 }
 
 // ToPtr returns a *Enum0 pointing to the current value.
 func (c Enum0) ToPtr() *Enum0 {
-	return &c
-}
-
-type Enum1 string
-
-const (
-	Enum1Direct   Enum1 = "Direct"
-	Enum1Exchange Enum1 = "Exchange"
-)
-
-// PossibleEnum1Values returns the possible values for the Enum1 const type.
-func PossibleEnum1Values() []Enum1 {
-	return []Enum1{
-		Enum1Direct,
-		Enum1Exchange,
-	}
-}
-
-// ToPtr returns a *Enum1 pointing to the current value.
-func (c Enum1) ToPtr() *Enum1 {
-	return &c
-}
-
-type Enum14 string
-
-const (
-	Enum14Direct   Enum14 = "Direct"
-	Enum14Exchange Enum14 = "Exchange"
-)
-
-// PossibleEnum14Values returns the possible values for the Enum14 const type.
-func PossibleEnum14Values() []Enum14 {
-	return []Enum14{
-		Enum14Direct,
-		Enum14Exchange,
-	}
-}
-
-// ToPtr returns a *Enum14 pointing to the current value.
-func (c Enum14) ToPtr() *Enum14 {
-	return &c
-}
-
-type Enum15 string
-
-const (
-	Enum15Cdn      Enum15 = "Cdn"
-	Enum15Edge     Enum15 = "Edge"
-	Enum15Internal Enum15 = "Internal"
-	Enum15Transit  Enum15 = "Transit"
-)
-
-// PossibleEnum15Values returns the possible values for the Enum15 const type.
-func PossibleEnum15Values() []Enum15 {
-	return []Enum15{
-		Enum15Cdn,
-		Enum15Edge,
-		Enum15Internal,
-		Enum15Transit,
-	}
-}
-
-// ToPtr returns a *Enum15 pointing to the current value.
-func (c Enum15) ToPtr() *Enum15 {
 	return &c
 }
 
@@ -201,16 +166,16 @@ func (c Kind) ToPtr() *Kind {
 type LearnedType string
 
 const (
-	LearnedTypeNone       LearnedType = "None"
-	LearnedTypeViaPartner LearnedType = "ViaPartner"
-	LearnedTypeViaSession LearnedType = "ViaSession"
+	LearnedTypeNone               LearnedType = "None"
+	LearnedTypeViaServiceProvider LearnedType = "ViaServiceProvider"
+	LearnedTypeViaSession         LearnedType = "ViaSession"
 )
 
 // PossibleLearnedTypeValues returns the possible values for the LearnedType const type.
 func PossibleLearnedTypeValues() []LearnedType {
 	return []LearnedType{
 		LearnedTypeNone,
-		LearnedTypeViaPartner,
+		LearnedTypeViaServiceProvider,
 		LearnedTypeViaSession,
 	}
 }
@@ -220,36 +185,119 @@ func (c LearnedType) ToPtr() *LearnedType {
 	return &c
 }
 
-// Name - The name of the peering SKU.
-type Name string
+type LegacyPeeringsKind string
 
 const (
-	NameBasicDirectFree        Name = "Basic_Direct_Free"
-	NameBasicExchangeFree      Name = "Basic_Exchange_Free"
-	NamePremiumDirectFree      Name = "Premium_Direct_Free"
-	NamePremiumDirectMetered   Name = "Premium_Direct_Metered"
-	NamePremiumDirectUnlimited Name = "Premium_Direct_Unlimited"
-	NamePremiumExchangeMetered Name = "Premium_Exchange_Metered"
+	LegacyPeeringsKindDirect   LegacyPeeringsKind = "Direct"
+	LegacyPeeringsKindExchange LegacyPeeringsKind = "Exchange"
 )
 
-// PossibleNameValues returns the possible values for the Name const type.
-func PossibleNameValues() []Name {
-	return []Name{
-		NameBasicDirectFree,
-		NameBasicExchangeFree,
-		NamePremiumDirectFree,
-		NamePremiumDirectMetered,
-		NamePremiumDirectUnlimited,
-		NamePremiumExchangeMetered,
+// PossibleLegacyPeeringsKindValues returns the possible values for the LegacyPeeringsKind const type.
+func PossibleLegacyPeeringsKindValues() []LegacyPeeringsKind {
+	return []LegacyPeeringsKind{
+		LegacyPeeringsKindDirect,
+		LegacyPeeringsKindExchange,
 	}
 }
 
-// ToPtr returns a *Name pointing to the current value.
-func (c Name) ToPtr() *Name {
+// ToPtr returns a *LegacyPeeringsKind pointing to the current value.
+func (c LegacyPeeringsKind) ToPtr() *LegacyPeeringsKind {
 	return &c
 }
 
-// PrefixValidationState - The prefix validation state
+type LookingGlassCommand string
+
+const (
+	LookingGlassCommandBgpRoute   LookingGlassCommand = "BgpRoute"
+	LookingGlassCommandPing       LookingGlassCommand = "Ping"
+	LookingGlassCommandTraceroute LookingGlassCommand = "Traceroute"
+)
+
+// PossibleLookingGlassCommandValues returns the possible values for the LookingGlassCommand const type.
+func PossibleLookingGlassCommandValues() []LookingGlassCommand {
+	return []LookingGlassCommand{
+		LookingGlassCommandBgpRoute,
+		LookingGlassCommandPing,
+		LookingGlassCommandTraceroute,
+	}
+}
+
+// ToPtr returns a *LookingGlassCommand pointing to the current value.
+func (c LookingGlassCommand) ToPtr() *LookingGlassCommand {
+	return &c
+}
+
+type LookingGlassSourceType string
+
+const (
+	LookingGlassSourceTypeAzureRegion LookingGlassSourceType = "AzureRegion"
+	LookingGlassSourceTypeEdgeSite    LookingGlassSourceType = "EdgeSite"
+)
+
+// PossibleLookingGlassSourceTypeValues returns the possible values for the LookingGlassSourceType const type.
+func PossibleLookingGlassSourceTypeValues() []LookingGlassSourceType {
+	return []LookingGlassSourceType{
+		LookingGlassSourceTypeAzureRegion,
+		LookingGlassSourceTypeEdgeSite,
+	}
+}
+
+// ToPtr returns a *LookingGlassSourceType pointing to the current value.
+func (c LookingGlassSourceType) ToPtr() *LookingGlassSourceType {
+	return &c
+}
+
+type PeeringLocationsDirectPeeringType string
+
+const (
+	PeeringLocationsDirectPeeringTypeCdn      PeeringLocationsDirectPeeringType = "Cdn"
+	PeeringLocationsDirectPeeringTypeEdge     PeeringLocationsDirectPeeringType = "Edge"
+	PeeringLocationsDirectPeeringTypeInternal PeeringLocationsDirectPeeringType = "Internal"
+	PeeringLocationsDirectPeeringTypeIx       PeeringLocationsDirectPeeringType = "Ix"
+	PeeringLocationsDirectPeeringTypeIxRs     PeeringLocationsDirectPeeringType = "IxRs"
+	PeeringLocationsDirectPeeringTypeTransit  PeeringLocationsDirectPeeringType = "Transit"
+	PeeringLocationsDirectPeeringTypeVoice    PeeringLocationsDirectPeeringType = "Voice"
+)
+
+// PossiblePeeringLocationsDirectPeeringTypeValues returns the possible values for the PeeringLocationsDirectPeeringType const type.
+func PossiblePeeringLocationsDirectPeeringTypeValues() []PeeringLocationsDirectPeeringType {
+	return []PeeringLocationsDirectPeeringType{
+		PeeringLocationsDirectPeeringTypeCdn,
+		PeeringLocationsDirectPeeringTypeEdge,
+		PeeringLocationsDirectPeeringTypeInternal,
+		PeeringLocationsDirectPeeringTypeIx,
+		PeeringLocationsDirectPeeringTypeIxRs,
+		PeeringLocationsDirectPeeringTypeTransit,
+		PeeringLocationsDirectPeeringTypeVoice,
+	}
+}
+
+// ToPtr returns a *PeeringLocationsDirectPeeringType pointing to the current value.
+func (c PeeringLocationsDirectPeeringType) ToPtr() *PeeringLocationsDirectPeeringType {
+	return &c
+}
+
+type PeeringLocationsKind string
+
+const (
+	PeeringLocationsKindDirect   PeeringLocationsKind = "Direct"
+	PeeringLocationsKindExchange PeeringLocationsKind = "Exchange"
+)
+
+// PossiblePeeringLocationsKindValues returns the possible values for the PeeringLocationsKind const type.
+func PossiblePeeringLocationsKindValues() []PeeringLocationsKind {
+	return []PeeringLocationsKind{
+		PeeringLocationsKindDirect,
+		PeeringLocationsKindExchange,
+	}
+}
+
+// ToPtr returns a *PeeringLocationsKind pointing to the current value.
+func (c PeeringLocationsKind) ToPtr() *PeeringLocationsKind {
+	return &c
+}
+
+// PrefixValidationState - The prefix validation state.
 type PrefixValidationState string
 
 const (
@@ -259,6 +307,7 @@ const (
 	PrefixValidationStatePending  PrefixValidationState = "Pending"
 	PrefixValidationStateUnknown  PrefixValidationState = "Unknown"
 	PrefixValidationStateVerified PrefixValidationState = "Verified"
+	PrefixValidationStateWarning  PrefixValidationState = "Warning"
 )
 
 // PossiblePrefixValidationStateValues returns the possible values for the PrefixValidationState const type.
@@ -270,6 +319,7 @@ func PossiblePrefixValidationStateValues() []PrefixValidationState {
 		PrefixValidationStatePending,
 		PrefixValidationStateUnknown,
 		PrefixValidationStateVerified,
+		PrefixValidationStateWarning,
 	}
 }
 
@@ -300,6 +350,35 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 
 // ToPtr returns a *ProvisioningState pointing to the current value.
 func (c ProvisioningState) ToPtr() *ProvisioningState {
+	return &c
+}
+
+// Role - The role of the contact.
+type Role string
+
+const (
+	RoleEscalation Role = "Escalation"
+	RoleNoc        Role = "Noc"
+	RoleOther      Role = "Other"
+	RolePolicy     Role = "Policy"
+	RoleService    Role = "Service"
+	RoleTechnical  Role = "Technical"
+)
+
+// PossibleRoleValues returns the possible values for the Role const type.
+func PossibleRoleValues() []Role {
+	return []Role{
+		RoleEscalation,
+		RoleNoc,
+		RoleOther,
+		RolePolicy,
+		RoleService,
+		RoleTechnical,
+	}
+}
+
+// ToPtr returns a *Role pointing to the current value.
+func (c Role) ToPtr() *Role {
 	return &c
 }
 

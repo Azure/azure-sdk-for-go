@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-// ServiceLocationsClient contains the methods for the PeeringServiceLocations group.
-// Don't use this type directly, use NewServiceLocationsClient() instead.
-type ServiceLocationsClient struct {
+// ServiceCountriesClient contains the methods for the PeeringServiceCountries group.
+// Don't use this type directly, use NewServiceCountriesClient() instead.
+type ServiceCountriesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewServiceLocationsClient creates a new instance of ServiceLocationsClient with the specified values.
+// NewServiceCountriesClient creates a new instance of ServiceCountriesClient with the specified values.
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceLocationsClient {
+func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceCountriesClient {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -41,7 +41,7 @@ func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCre
 	if len(ep) == 0 {
 		ep = arm.AzurePublicCloud
 	}
-	client := &ServiceLocationsClient{
+	client := &ServiceCountriesClient{
 		subscriptionID: subscriptionID,
 		host:           string(ep),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
@@ -49,24 +49,24 @@ func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCre
 	return client
 }
 
-// List - Lists all of the available locations for peering service.
+// List - Lists all of the available countries for peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - ServiceLocationsClientListOptions contains the optional parameters for the ServiceLocationsClient.List method.
-func (client *ServiceLocationsClient) List(options *ServiceLocationsClientListOptions) *ServiceLocationsClientListPager {
-	return &ServiceLocationsClientListPager{
+// options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.List method.
+func (client *ServiceCountriesClient) List(options *ServiceCountriesClientListOptions) *ServiceCountriesClientListPager {
+	return &ServiceCountriesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServiceLocationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceLocationListResult.NextLink)
+		advancer: func(ctx context.Context, resp ServiceCountriesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceCountryListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, options *ServiceLocationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations"
+func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, options *ServiceCountriesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -76,9 +76,6 @@ func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Country != nil {
-		reqQP.Set("country", *options.Country)
-	}
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -86,10 +83,10 @@ func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceLocationsClient) listHandleResponse(resp *http.Response) (ServiceLocationsClientListResponse, error) {
-	result := ServiceLocationsClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceLocationListResult); err != nil {
-		return ServiceLocationsClientListResponse{}, err
+func (client *ServiceCountriesClient) listHandleResponse(resp *http.Response) (ServiceCountriesClientListResponse, error) {
+	result := ServiceCountriesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceCountryListResult); err != nil {
+		return ServiceCountriesClientListResponse{}, err
 	}
 	return result, nil
 }

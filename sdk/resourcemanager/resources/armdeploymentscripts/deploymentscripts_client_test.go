@@ -75,8 +75,23 @@ func TestDeploymentScriptsClient_BeginCreate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 }
 
@@ -138,8 +153,23 @@ func TestDeploymentScriptsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// get deployment scripts
@@ -206,8 +236,23 @@ func TestDeploymentScriptsClient_GetLogs(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// get log
@@ -274,8 +319,23 @@ func TestDeploymentScriptsClient_GetLogsDefault(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
 	getResp, err := deploymentScriptsClient.GetLogsDefault(ctx, rgName, scriptName, nil)
@@ -341,8 +401,23 @@ func TestDeploymentScriptsClient_Update(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// update deployment script
@@ -420,8 +495,23 @@ func TestDeploymentScriptsClient_Delete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	//dsResp, err := dsPollerResp.PollUntilDone(ctx, 10*time.Second)
+	//require.NoError(t, err)
+	var dsResp armdeploymentscripts.ClientCreateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = dsPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if dsPollerResp.Poller.Done() {
+				dsResp, err = dsPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		dsResp, err = dsPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// delete deployment script

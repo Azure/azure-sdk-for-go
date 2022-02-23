@@ -129,7 +129,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 		RawResponse: g.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyFromGenerated(g.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(g.Key),
 			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
@@ -186,7 +186,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 		RawResponse: g.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyFromGenerated(g.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(g.Key),
 			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
@@ -247,7 +247,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -333,7 +333,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -446,7 +446,7 @@ func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKe
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -807,7 +807,7 @@ func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDel
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -920,7 +920,7 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -1108,7 +1108,7 @@ func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyR
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -1168,7 +1168,7 @@ func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse)
 		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
+			JSONWebKey:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
@@ -1262,7 +1262,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 		RawResponse: resp.RawResponse,
 		Key: Key{
 			Properties:    keyPropertiesFromGenerated(resp.Attributes),
-			Key:           jsonWebKeyFromGenerated(resp.Key),
+			JSONWebKey:           jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
 			Tags:          convertGeneratedMap(resp.Tags),
 			Managed:       resp.Managed,

@@ -48,8 +48,8 @@ func ExampleClient_CreateRSAKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
-	fmt.Println(*resp.Key.KeyType)
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 }
 
 func ExampleClient_CreateECKey() {
@@ -68,8 +68,8 @@ func ExampleClient_CreateECKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
-	fmt.Println(*resp.Key.KeyType)
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 }
 
 func ExampleClient_GetKey() {
@@ -88,7 +88,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+	fmt.Println(*resp.JSONWebKey.ID)
 }
 
 func ExampleClient_UpdateKeyProperties() {

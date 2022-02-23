@@ -82,7 +82,7 @@ type Key struct {
 	Properties *Properties `json:"attributes,omitempty"`
 
 	// The Json web key.
-	Key *JSONWebKey `json:"key,omitempty"`
+	JSONWebKey *JSONWebKey `json:"key,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`

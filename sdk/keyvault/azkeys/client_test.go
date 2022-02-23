@@ -113,7 +113,7 @@ func TestCreateECKey(t *testing.T) {
 
 			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.JSONWebKey)
 
 			cleanUpKey(t, client, key)
 		})
@@ -682,8 +682,8 @@ func TestRotateKey(t *testing.T) {
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
-			require.NotEqual(t, createResp.Key.N, resp.Key.N)
+			require.NotEqual(t, *createResp.JSONWebKey.ID, *resp.JSONWebKey.ID)
+			require.NotEqual(t, createResp.JSONWebKey.N, resp.JSONWebKey.N)
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
 			require.Error(t, err)

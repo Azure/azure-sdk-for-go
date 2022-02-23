@@ -49,7 +49,7 @@ func ExampleSettingsClient_Get() {
 	ctx := context.Background()
 	client := armsecurity.NewSettingsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
-		armsecurity.Enum77("MCAS"),
+		armsecurity.SettingName("MCAS"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -66,7 +66,7 @@ func ExampleSettingsClient_Update() {
 	ctx := context.Background()
 	client := armsecurity.NewSettingsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
-		armsecurity.Enum77("MCAS"),
+		armsecurity.SettingName("MCAS"),
 		&armsecurity.DataExportSettings{
 			Kind: armsecurity.SettingKind("DataExportSettings").ToPtr(),
 			Properties: &armsecurity.DataExportSettingProperties{

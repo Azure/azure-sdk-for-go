@@ -56,11 +56,10 @@ func NewAdaptiveNetworkHardeningsClient(subscriptionID string, credential azcore
 // resourceType - The type of the resource.
 // resourceName - Name of the resource.
 // adaptiveNetworkHardeningResourceName - The name of the Adaptive Network Hardening resource.
-// adaptiveNetworkHardeningEnforceAction - Enforces the given rules on the NSG(s) listed in the request
 // options - AdaptiveNetworkHardeningsClientBeginEnforceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.BeginEnforce
 // method.
-func (client *AdaptiveNetworkHardeningsClient) BeginEnforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum51, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (AdaptiveNetworkHardeningsClientEnforcePollerResponse, error) {
-	resp, err := client.enforce(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, adaptiveNetworkHardeningEnforceAction, body, options)
+func (client *AdaptiveNetworkHardeningsClient) BeginEnforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (AdaptiveNetworkHardeningsClientEnforcePollerResponse, error) {
+	resp, err := client.enforce(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, body, options)
 	if err != nil {
 		return AdaptiveNetworkHardeningsClientEnforcePollerResponse{}, err
 	}
@@ -79,8 +78,8 @@ func (client *AdaptiveNetworkHardeningsClient) BeginEnforce(ctx context.Context,
 
 // Enforce - Enforces the given rules on the NSG(s) listed in the request
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum51, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*http.Response, error) {
-	req, err := client.enforceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, adaptiveNetworkHardeningEnforceAction, body, options)
+func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*http.Response, error) {
+	req, err := client.enforceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +94,7 @@ func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, reso
 }
 
 // enforceCreateRequest creates the Enforce request.
-func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum51, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*policy.Request, error) {
+func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings/{adaptiveNetworkHardeningResourceName}/{adaptiveNetworkHardeningEnforceAction}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -121,10 +120,7 @@ func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.
 		return nil, errors.New("parameter adaptiveNetworkHardeningResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningResourceName}", url.PathEscape(adaptiveNetworkHardeningResourceName))
-	if adaptiveNetworkHardeningEnforceAction == "" {
-		return nil, errors.New("parameter adaptiveNetworkHardeningEnforceAction cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningEnforceAction}", url.PathEscape(string(adaptiveNetworkHardeningEnforceAction)))
+	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningEnforceAction}", url.PathEscape("enforce"))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err

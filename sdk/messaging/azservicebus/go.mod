@@ -25,3 +25,5 @@ require (
 	// used in examples only
 	nhooyr.io/websocket v1.8.6
 )
+
+replace github.com/Azure/go-amqp => github.com/jhendrixMSFT/go-amqp v0.12.7-0.20220223194726-7606dea0a242

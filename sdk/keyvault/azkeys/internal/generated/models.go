@@ -916,8 +916,8 @@ func (k *KeyRestoreParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// KeyRotationPolicy - Management policy for a key.
-type KeyRotationPolicy struct {
+// RotationPolicy - Management policy for a key.
+type RotationPolicy struct {
 	// The key rotation policy attributes.
 	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
 
@@ -931,7 +931,7 @@ type KeyRotationPolicy struct {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicy.
-func (k KeyRotationPolicy) MarshalJSON() ([]byte, error) {
+func (k RotationPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "attributes", k.Attributes)
 	populate(objectMap, "id", k.ID)

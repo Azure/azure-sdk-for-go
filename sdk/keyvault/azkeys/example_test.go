@@ -44,11 +44,11 @@ func ExampleClient_CreateRSAKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{KeySize: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.KeyID)
+	fmt.Println(*resp.Key.ID)
 	fmt.Println(*resp.Key.KeyType)
 }
 
@@ -64,11 +64,11 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.KeyCurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.KeyID)
+	fmt.Println(*resp.Key.ID)
 	fmt.Println(*resp.Key.KeyType)
 }
 
@@ -88,7 +88,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.KeyID)
+	fmt.Println(*resp.Key.ID)
 }
 
 func ExampleClient_UpdateKeyProperties() {
@@ -107,7 +107,7 @@ func ExampleClient_UpdateKeyProperties() {
 		Tags: map[string]string{
 			"Tag1": "val1",
 		},
-		KeyProperties: &azkeys.KeyProperties{
+		Properties: &azkeys.Properties{
 			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})
@@ -137,7 +137,7 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Successfully deleted key %s", *pollResp.Key.KeyID)
+	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
 func ExampleClient_ListPropertiesOfKeys() {
@@ -155,7 +155,7 @@ func ExampleClient_ListPropertiesOfKeys() {
 	pager := client.ListPropertiesOfKeys(nil)
 	for pager.NextPage(context.TODO()) {
 		for _, key := range pager.PageResponse().Keys {
-			fmt.Println(*key.KeyID)
+			fmt.Println(*key.ID)
 		}
 	}
 

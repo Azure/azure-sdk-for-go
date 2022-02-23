@@ -16,13 +16,13 @@ func TestToPtrMethods(t *testing.T) {
 	d := DeletionRecoveryLevelCustomizedRecoverable
 	require.Equal(t, d.ToPtr(), &d)
 
-	j := KeyCurveNameP256
+	j := CurveNameP256
 	require.Equal(t, j.ToPtr(), &j)
 
-	o := KeyOperationDecrypt
+	o := OperationDecrypt
 	require.Equal(t, o.ToPtr(), &o)
 
-	a := KeyEncryptionAlgorithmRSAAESKEYWRAP256
+	a := EncryptionAlgorithmRSAAESKEYWRAP256
 	require.Equal(t, a.ToPtr(), &a)
 }
 

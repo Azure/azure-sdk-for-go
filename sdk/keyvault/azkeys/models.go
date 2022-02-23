@@ -12,8 +12,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
-// KeyProperties - The attributes of a key managed by the key vault service.
-type KeyProperties struct {
+// Properties - The properties of a key managed by the key vault service.
+type Properties struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -42,7 +42,7 @@ type KeyProperties struct {
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
-func (k *KeyProperties) toGenerated() *generated.KeyAttributes {
+func (k *Properties) toGenerated() *generated.KeyAttributes {
 	if k == nil {
 		return nil
 	}
@@ -59,12 +59,12 @@ func (k *KeyProperties) toGenerated() *generated.KeyAttributes {
 }
 
 // converts *generated.KeyAttributes to *KeyAttributes
-func keyPropertiesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
+func keyPropertiesFromGenerated(i *generated.KeyAttributes) *Properties {
 	if i == nil {
-		return &KeyProperties{}
+		return &Properties{}
 	}
 
-	return &KeyProperties{
+	return &Properties{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
 		Enabled:         i.Enabled,
@@ -76,16 +76,16 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
 	}
 }
 
-// KeyVaultKey - A KeyVaultKey consists of a WebKey plus its attributes.
-type KeyVaultKey struct {
+// Key - A Key consists of a WebKey plus its attributes.
+type Key struct {
 	// The key management properties.
-	Properties *KeyProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
 
 	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -97,7 +97,7 @@ type KeyVaultKey struct {
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see KeyCurveName.
-	Crv *KeyCurveName `json:"crv,omitempty"`
+	Crv *CurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -116,7 +116,7 @@ type JSONWebKey struct {
 	KeyOps []*string `json:"key_ops,omitempty"`
 
 	// Key identifier.
-	KeyID *string `json:"kid,omitempty"`
+	ID *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 	KeyType *KeyType `json:"kty,omitempty"`
@@ -150,14 +150,14 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:     (*KeyCurveName)(i.Crv),
+		Crv:     (*CurveName)(i.Crv),
 		D:       i.D,
 		DP:      i.DP,
 		DQ:      i.DQ,
 		E:       i.E,
 		K:       i.K,
 		KeyOps:  i.KeyOps,
-		KeyID:   i.Kid,
+		ID:   i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
 		P:       i.P,
@@ -179,7 +179,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		E:      j.E,
 		K:      j.K,
 		KeyOps: j.KeyOps,
-		Kid:    j.KeyID,
+		Kid:    j.ID,
 		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
@@ -191,45 +191,13 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 	}
 }
 
-// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-type KeyType string
-
-const (
-	// EC - Elliptic Curve.
-	KeyTypeEC KeyType = "EC"
-
-	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
-	KeyTypeECHSM KeyType = "EC-HSM"
-
-	// Oct - Octet sequence (used to represent symmetric keys)
-	KeyTypeOct KeyType = "oct"
-
-	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
-	KeyTypeOctHSM KeyType = "oct-HSM"
-
-	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
-	KeyTypeRSA KeyType = "RSA"
-
-	// RSAHSM - RSA with a private key which is not exportable from the HSM.
-	KeyTypeRSAHSM KeyType = "RSA-HSM"
-)
-
-func (k KeyType) ToPtr() *KeyType {
-	return &k
-}
-
-// convert KeyType to *generated.JSONWebKeyType
-func (j KeyType) toGenerated() *generated.JSONWebKeyType {
-	return generated.JSONWebKeyType(j).ToPtr()
-}
-
 // KeyItem - The key item containing key metadata.
 type KeyItem struct {
 	// The key management properties.
-	Properties *KeyProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Key identifier.
-	KeyID *string `json:"kid,omitempty"`
+	ID *string `json:"kid,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -246,7 +214,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 
 	return &KeyItem{
 		Properties: keyPropertiesFromGenerated(i.Attributes),
-		KeyID:      i.Kid,
+		ID:      i.Kid,
 		Tags:       convertGeneratedMap(i.Tags),
 		Managed:    i.Managed,
 	}
@@ -255,7 +223,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 // DeletedKey - A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
 	// The key management properties.
-	Properties *KeyProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
@@ -264,7 +232,7 @@ type DeletedKey struct {
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
 	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -283,10 +251,10 @@ type DeletedKey struct {
 // DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyItem struct {
 	// The key management attributes.
-	Properties *KeyProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Key identifier.
-	KeyID *string `json:"kid,omitempty"`
+	ID *string `json:"kid,omitempty"`
 
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
@@ -315,7 +283,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Properties: &KeyProperties{
+		Properties: &Properties{
 			Enabled:         i.Attributes.Enabled,
 			ExpiresOn:       i.Attributes.Expires,
 			NotBefore:       i.Attributes.NotBefore,
@@ -324,13 +292,13 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		},
-		KeyID:   i.Kid,
+		ID:   i.Kid,
 		Tags:    convertGeneratedMap(i.Tags),
 		Managed: i.Managed,
 	}
 }
 
-type KeyReleasePolicy struct {
+type ReleasePolicy struct {
 	// Content type and version of key release policy
 	ContentType *string `json:"contentType,omitempty"`
 
@@ -342,7 +310,7 @@ type KeyReleasePolicy struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
-func (k *KeyReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
+func (k *ReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
 	if k == nil {
 		return nil
 	}
@@ -354,21 +322,21 @@ func (k *KeyReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
 	}
 }
 
-func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
+func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *ReleasePolicy {
 	if i == nil {
 		return nil
 	}
-	return &KeyReleasePolicy{
+	return &ReleasePolicy{
 		ContentType:   i.ContentType,
 		EncodedPolicy: i.EncodedPolicy,
 		Immutable:     i.Immutable,
 	}
 }
 
-// KeyRotationPolicy - Management policy for a key.
-type KeyRotationPolicy struct {
+// RotationPolicy - Management policy for a key.
+type RotationPolicy struct {
 	// The key rotation policy attributes.
-	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+	Attributes *RotationPolicyAttributes `json:"attributes,omitempty"`
 
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
 	// one for notify. Notification time would be
@@ -379,8 +347,8 @@ type KeyRotationPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// KeyRotationPolicyAttributes - The key rotation policy attributes.
-type KeyRotationPolicyAttributes struct {
+// RotationPolicyAttributes - The key rotation policy attributes.
+type RotationPolicyAttributes struct {
 	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months:
 	// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
 	ExpiryTime *string `json:"expiryTime,omitempty"`
@@ -392,7 +360,7 @@ type KeyRotationPolicyAttributes struct {
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-func (k KeyRotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
+func (k RotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
 	return &generated.KeyRotationPolicyAttributes{
 		ExpiryTime: k.ExpiryTime,
 		Created:    k.CreatedOn,

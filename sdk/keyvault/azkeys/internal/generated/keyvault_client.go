@@ -516,7 +516,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Cont
 // getKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
 func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
 	result := KeyVaultClientGetKeyRotationPolicyResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.RotationPolicy); err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
 	return result, nil
@@ -1148,7 +1148,7 @@ func (client *KeyVaultClient) updateKeyHandleResponse(resp *http.Response) (KeyV
 // keyRotationPolicy - The policy for the key.
 // options - KeyVaultClientUpdateKeyRotationPolicyOptions contains the optional parameters for the KeyVaultClient.UpdateKeyRotationPolicy
 // method.
-func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
+func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy RotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
 	req, err := client.updateKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, keyRotationPolicy, options)
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
@@ -1164,7 +1164,7 @@ func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vault
 }
 
 // updateKeyRotationPolicyCreateRequest creates the UpdateKeyRotationPolicy request.
-func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (*policy.Request, error) {
+func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy RotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys/{key-name}/rotationpolicy"
@@ -1186,7 +1186,7 @@ func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.C
 // updateKeyRotationPolicyHandleResponse handles the UpdateKeyRotationPolicy response.
 func (client *KeyVaultClient) updateKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
 	result := KeyVaultClientUpdateKeyRotationPolicyResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.RotationPolicy); err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
 	return result, nil

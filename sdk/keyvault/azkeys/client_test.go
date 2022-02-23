@@ -136,7 +136,7 @@ func TestCreateOCTKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
+			resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{Size: to.Int32Ptr(256), HardwareProtected: true})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
@@ -233,7 +233,7 @@ func TestDeleteKey(t *testing.T) {
 			deleteResp, err := resp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 			require.NotNil(t, deleteResp.Key)
-			require.NotNil(t, deleteResp.Key.KeyID)
+			require.NotNil(t, deleteResp.Key.ID)
 
 			_, err = client.GetKey(ctx, key, nil)
 			require.Error(t, err)
@@ -395,7 +395,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 				Tags: map[string]string{
 					"Tag1": "Val1",
 				},
-				KeyProperties: &KeyProperties{
+				Properties: &Properties{
 					ExpiresOn: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
@@ -445,14 +445,14 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 
 			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
 				HardwareProtected: to.BoolPtr(true),
-				KeyProperties: &KeyProperties{
+				Properties: &Properties{
 					Exportable: to.BoolPtr(true),
 				},
-				ReleasePolicy: &KeyReleasePolicy{
+				ReleasePolicy: &ReleasePolicy{
 					Immutable:     to.BoolPtr(true),
 					EncodedPolicy: marshalledPolicy,
 				},
-				KeyOperations: []*KeyOperation{KeyOperationEncrypt.ToPtr(), KeyOperationDecrypt.ToPtr()},
+				Operations: []*Operation{OperationEncrypt.ToPtr(), OperationDecrypt.ToPtr()},
 			})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
@@ -473,7 +473,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				ReleasePolicy: &KeyReleasePolicy{
+				ReleasePolicy: &ReleasePolicy{
 					Immutable:     to.BoolPtr(true),
 					EncodedPolicy: newMarshalledPolicy,
 				},
@@ -654,7 +654,7 @@ func TestGetDeletedKey(t *testing.T) {
 
 			resp, err := client.GetDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
-			require.Contains(t, *resp.Key.KeyID, key)
+			require.Contains(t, *resp.Key.ID, key)
 
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
@@ -682,7 +682,7 @@ func TestRotateKey(t *testing.T) {
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			require.NotEqual(t, *createResp.Key.KeyID, *resp.Key.KeyID)
+			require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
 			require.NotEqual(t, createResp.Key.N, resp.Key.N)
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
@@ -783,7 +783,7 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 			defer cleanUpKey(t, client, key)
 
 			_, err = client.UpdateKeyRotationPolicy(ctx, key, &UpdateKeyRotationPolicyOptions{
-				Attributes: &KeyRotationPolicyAttributes{
+				Attributes: &RotationPolicyAttributes{
 					ExpiryTime: to.StringPtr("P90D"),
 				},
 				LifetimeActions: []*LifetimeActions{

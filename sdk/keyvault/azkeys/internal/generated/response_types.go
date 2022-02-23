@@ -115,7 +115,7 @@ type KeyVaultClientGetKeyRotationPolicyResponse struct {
 
 // KeyVaultClientGetKeyRotationPolicyResult contains the result from method KeyVaultClient.GetKeyRotationPolicy.
 type KeyVaultClientGetKeyRotationPolicyResult struct {
-	KeyRotationPolicy
+	RotationPolicy
 }
 
 // KeyVaultClientGetKeyVersionsResponse contains the response from method KeyVaultClient.GetKeyVersions.
@@ -265,7 +265,7 @@ type KeyVaultClientUpdateKeyRotationPolicyResponse struct {
 
 // KeyVaultClientUpdateKeyRotationPolicyResult contains the result from method KeyVaultClient.UpdateKeyRotationPolicy.
 type KeyVaultClientUpdateKeyRotationPolicyResult struct {
-	KeyRotationPolicy
+	RotationPolicy
 }
 
 // KeyVaultClientVerifyResponse contains the response from method KeyVaultClient.Verify.

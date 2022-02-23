@@ -28,7 +28,6 @@ func ExamplePolicyStatesClient_ListQueryResultsForManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.PolicyStatesResource("latest"),
-		armpolicyinsights.Enum0("Microsoft.Management"),
 		"<management-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -63,8 +62,7 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForManagementGroup(ctx,
-		armpolicyinsights.Enum6("latest"),
-		armpolicyinsights.Enum0("Microsoft.Management"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<management-group-name>",
 		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(0),
 			Filter:    to.StringPtr("<filter>"),
@@ -125,7 +123,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForSubscription(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
 		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(5),
 			Filter:    nil,
@@ -187,7 +185,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForResourceGroup(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
 		"<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -249,7 +247,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForResource(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(2),
 			Filter:    nil,
@@ -318,7 +316,6 @@ func ExamplePolicyStatesClient_ListQueryResultsForPolicySetDefinition() {
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.PolicyStatesResource("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-set-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -353,9 +350,8 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForPolicySetDefinition(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-set-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(1),
 			Filter:    to.StringPtr("<filter>"),
@@ -383,7 +379,6 @@ func ExamplePolicyStatesClient_ListQueryResultsForPolicyDefinition() {
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.PolicyStatesResource("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -418,9 +413,8 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForPolicyDefinition(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -448,7 +442,6 @@ func ExamplePolicyStatesClient_ListQueryResultsForSubscriptionLevelPolicyAssignm
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.PolicyStatesResource("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -483,9 +476,8 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForSubscriptionLevelPolicyAssignment(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -514,7 +506,6 @@ func ExamplePolicyStatesClient_ListQueryResultsForResourceGroupLevelPolicyAssign
 	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.PolicyStatesResource("latest"),
 		"<subscription-id>",
 		"<resource-group-name>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -549,10 +540,9 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	res, err := client.SummarizeForResourceGroupLevelPolicyAssignment(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceType("latest"),
 		"<subscription-id>",
 		"<resource-group-name>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,

@@ -27,8 +27,7 @@ func ExamplePolicyEventsClient_ListQueryResultsForManagementGroup() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.Enum1("default"),
-		armpolicyinsights.Enum0("Microsoft.Management"),
+	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<management-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -62,7 +61,7 @@ func ExamplePolicyEventsClient_ListQueryResultsForSubscription() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForSubscription(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    to.StringPtr("<filter>"),
@@ -96,7 +95,7 @@ func ExamplePolicyEventsClient_ListQueryResultsForResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroup(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForResourceGroup(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
 		"<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -131,7 +130,7 @@ func ExamplePolicyEventsClient_ListQueryResultsForResource() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResource(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForResource(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -165,9 +164,8 @@ func ExamplePolicyEventsClient_ListQueryResultsForPolicySetDefinition() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-set-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -201,9 +199,8 @@ func ExamplePolicyEventsClient_ListQueryResultsForPolicyDefinition() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -237,9 +234,8 @@ func ExamplePolicyEventsClient_ListQueryResultsForSubscriptionLevelPolicyAssignm
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -273,10 +269,9 @@ func ExamplePolicyEventsClient_ListQueryResultsForResourceGroupLevelPolicyAssign
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceType("default"),
 		"<subscription-id>",
 		"<resource-group-name>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,

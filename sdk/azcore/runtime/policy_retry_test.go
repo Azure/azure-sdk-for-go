@@ -12,6 +12,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"strings"
 	"testing"
@@ -295,8 +296,9 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	srv.AppendError(errors.New("bogus error"))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	pl := pipeline.NewPipeline(srv, pipeline.PolicyFunc(includeResponsePolicy), NewRetryPolicy(testRetryOptions()))
+	ctxWithResp := IncludeResponse(context.Background())
+	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -307,6 +309,10 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
+	}
+	respFromCtx := ResponseFromContext(ctxWithResp)
+	if respFromCtx != resp {
+		t.Fatal("response from context doesn't match returned response")
 	}
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
@@ -390,6 +396,23 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 }
 
 func TestWithRetryOptions(t *testing.T) {
+	ctx := WithRetryOptions(context.Background(), policy.RetryOptions{
+		MaxRetries: math.MaxInt32,
+	})
+	if ctx == nil {
+		t.Fatal("nil context")
+	}
+	raw := ctx.Value(shared.CtxWithRetryOptionsKey{})
+	opts, ok := raw.(policy.RetryOptions)
+	if !ok {
+		t.Fatalf("unexpected type %T", raw)
+	}
+	if opts.MaxRetries != math.MaxInt32 {
+		t.Fatalf("unexpected value %d", opts.MaxRetries)
+	}
+}
+
+func TestWithRetryOptionsE2E(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.RepeatResponse(9, mock.WithStatusCode(http.StatusRequestTimeout))
@@ -399,7 +422,7 @@ func TestWithRetryOptions(t *testing.T) {
 	customOptions := *defaultOptions
 	customOptions.MaxRetries = 10
 	customOptions.MaxRetryDelay = 200 * time.Millisecond
-	retryCtx := policy.WithRetryOptions(context.Background(), customOptions)
+	retryCtx := WithRetryOptions(context.Background(), customOptions)
 	req, err := NewRequest(retryCtx, http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

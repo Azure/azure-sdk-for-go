@@ -34,17 +34,17 @@ type ManagementClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -72,7 +72,7 @@ func (client *ManagementClient) CheckServiceProviderAvailability(ctx context.Con
 
 // checkServiceProviderAvailabilityCreateRequest creates the CheckServiceProviderAvailability request.
 func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput, options *ManagementClientCheckServiceProviderAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability"
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/checkServiceProviderAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -82,7 +82,7 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput)

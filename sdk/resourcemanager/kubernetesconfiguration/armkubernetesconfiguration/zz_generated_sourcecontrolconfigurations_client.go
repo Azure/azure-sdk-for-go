@@ -34,17 +34,17 @@ type SourceControlConfigurationsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewSourceControlConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &SourceControlConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -61,7 +61,7 @@ func NewSourceControlConfigurationsClient(subscriptionID string, credential azco
 // sourceControlConfiguration - Properties necessary to Create KubernetesConfiguration.
 // options - SourceControlConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the SourceControlConfigurationsClient.CreateOrUpdate
 // method.
-func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (SourceControlConfigurationsClientCreateOrUpdateResponse, error) {
+func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (SourceControlConfigurationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration, options)
 	if err != nil {
 		return SourceControlConfigurationsClientCreateOrUpdateResponse{}, err
@@ -77,7 +77,7 @@ func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Cont
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,7 +135,7 @@ func (client *SourceControlConfigurationsClient) createOrUpdateHandleResponse(re
 // sourceControlConfigurationName - Name of the Source Control Configuration.
 // options - SourceControlConfigurationsClientBeginDeleteOptions contains the optional parameters for the SourceControlConfigurationsClient.BeginDelete
 // method.
-func (client *SourceControlConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (SourceControlConfigurationsClientDeletePollerResponse, error) {
+func (client *SourceControlConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (SourceControlConfigurationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
 	if err != nil {
 		return SourceControlConfigurationsClientDeletePollerResponse{}, err
@@ -156,7 +156,7 @@ func (client *SourceControlConfigurationsClient) BeginDelete(ctx context.Context
 // Delete - This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
 // the source repo.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -172,7 +172,7 @@ func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Con
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +220,7 @@ func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context
 // sourceControlConfigurationName - Name of the Source Control Configuration.
 // options - SourceControlConfigurationsClientGetOptions contains the optional parameters for the SourceControlConfigurationsClient.Get
 // method.
-func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (SourceControlConfigurationsClientGetResponse, error) {
+func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (SourceControlConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
 	if err != nil {
 		return SourceControlConfigurationsClientGetResponse{}, err
@@ -236,7 +236,7 @@ func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resour
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -292,7 +292,7 @@ func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Re
 // clusterName - The name of the kubernetes cluster.
 // options - SourceControlConfigurationsClientListOptions contains the optional parameters for the SourceControlConfigurationsClient.List
 // method.
-func (client *SourceControlConfigurationsClient) List(resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *SourceControlConfigurationsClientListOptions) *SourceControlConfigurationsClientListPager {
+func (client *SourceControlConfigurationsClient) List(resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *SourceControlConfigurationsClientListOptions) *SourceControlConfigurationsClientListPager {
 	return &SourceControlConfigurationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -305,7 +305,7 @@ func (client *SourceControlConfigurationsClient) List(resourceGroupName string, 
 }
 
 // listCreateRequest creates the List request.
-func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *SourceControlConfigurationsClientListOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *SourceControlConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

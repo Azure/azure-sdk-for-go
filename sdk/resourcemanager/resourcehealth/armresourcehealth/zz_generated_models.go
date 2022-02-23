@@ -414,18 +414,6 @@ type EmergingIssuesGetResult struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error details.
-type ErrorResponse struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details *string `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
 // ImpactedRegion - Object of impacted region.
 type ImpactedRegion struct {
 	// The impacted region id.

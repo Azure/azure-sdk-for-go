@@ -34,17 +34,17 @@ type LocationsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &LocationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -53,7 +53,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // If the operation fails it returns an *azcore.ResponseError type.
 // kind - The kind of the peering.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(kind Enum14, options *LocationsClientListOptions) *LocationsClientListPager {
+func (client *LocationsClient) List(kind PeeringLocationsKind, options *LocationsClientListOptions) *LocationsClientListPager {
 	return &LocationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -66,7 +66,7 @@ func (client *LocationsClient) List(kind Enum14, options *LocationsClientListOpt
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Enum14, options *LocationsClientListOptions) (*policy.Request, error) {
+func (client *LocationsClient) listCreateRequest(ctx context.Context, kind PeeringLocationsKind, options *LocationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +81,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Enum1
 	if options != nil && options.DirectPeeringType != nil {
 		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
 	}
-	reqQP.Set("api-version", "2019-08-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

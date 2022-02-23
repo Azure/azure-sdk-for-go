@@ -33,8 +33,8 @@ jobs:
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: 'profiles services storage'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
+      go.list.filter: 'profiles services storage sdk/appconfiguration/azappconfiguration'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune -o -path ./sdk/appconfiguration/azappconfiguration -prune -o -path ./sdk/appconfiguration/azappconfiguration/internal -prune'
 
     steps:
     - task: GoTool@0

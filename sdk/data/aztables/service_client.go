@@ -115,6 +115,7 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 
 // Response object from a ServiceClient.DeleteTable or Client.Delete operation
 type DeleteTableResponse struct {
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
@@ -225,9 +226,9 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 
 // ListTablesPager is a Pager for Table List operations
 //
-// NextPage should be called first. It fetches the next available page of results from the service.
+// Call NextPage first to fetch the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
+// Results fetched from the service can be evaluated by calling PageResponse on the Pager.
 // If the result is false, the value of Err() will indicate if an error occurred.
 //
 // PageResponse returns the results from the page most recently fetched from the service.
@@ -282,8 +283,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 }
 
 // GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
-type GetStatisticsOptions struct {
-}
+type GetStatisticsOptions struct {}
 
 type GetStatisticsResponse struct {
 	RawResponse    *http.Response
@@ -311,15 +311,16 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
-type GetPropertiesOptions struct {
-}
+type GetPropertiesOptions struct {}
 
 func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
 	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
 type GetPropertiesResponse struct {
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+
 	// The set of CORS rules.
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
@@ -365,6 +366,7 @@ func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetProperti
 }
 
 type SetPropertiesResponse struct {
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 

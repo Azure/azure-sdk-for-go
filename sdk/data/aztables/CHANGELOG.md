@@ -5,6 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
+* Prefixed all `TransactionType` constants with `TransactionType`.
+* Prefixed all `EntityUpdateMode` constants with `EntityUpdateMode`.
+* Changed the `SharedKeyCredential.ComputeHMACSHA256` method to a private method.
+* Changed the `ListTablesPager` and `ListEntitiesPager` to structs.
+* Renamed the `ResponseProperties` type to `TableProperties`.
+* Returns `Client` and `ServiceClient` by value instead of by reference.
 
 ### Bugs Fixed
 

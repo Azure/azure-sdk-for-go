@@ -182,5 +182,5 @@ func TestConfigurationSettingPrivateFieldGetters(t *testing.T) {
 	tv, ok := cs.GetTags()["tagKey"]
 	require.Equal(t, ok, true)
 	require.Equal(t, tv, &tagValue)
-	require.Equal(t, len(cs.GetTags()), 1)
+	require.Len(t, cs.GetTags(), 1)
 }

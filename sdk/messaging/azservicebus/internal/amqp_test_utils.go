@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
@@ -46,13 +47,50 @@ type FakeAMQPLinks struct {
 
 type FakeAMQPReceiver struct {
 	AMQPReceiver
-	Closed int
-	Drain  int
+	Closed           int
+	Drain            int
+	RequestedCredits uint32
+
+	ReceiveResults chan struct {
+		M *amqp.Message
+		E error
+	}
+}
+
+func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
+	r.RequestedCredits += credit
+	return nil
 }
 
 func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 	r.Drain++
-	return nil
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
+}
+
+func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
+	select {
+	case res := <-r.ReceiveResults:
+		return res.M, res.E
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
+	select {
+	case res := <-r.ReceiveResults:
+		return res.M, res.E
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+		return nil, nil
+	}
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -61,12 +99,17 @@ func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 }
 
 func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
-	return &LinksWithID{
-		Sender:   l.Sender,
-		Receiver: l.Receiver,
-		RPC:      l.RPC,
-		ID:       l.Revision,
-	}, l.Err
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+		return &LinksWithID{
+			Sender:   l.Sender,
+			Receiver: l.Receiver,
+			RPC:      l.RPC,
+			ID:       l.Revision,
+		}, l.Err
+	}
 }
 
 func (l *FakeAMQPLinks) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {

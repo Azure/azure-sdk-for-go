@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ProtectionPolicies_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
 func ExampleProtectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleProtectionPoliciesClient_Get() {
 	log.Printf("Response result: %#v\n", res.ProtectionPoliciesClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ProtectionPoliciesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
 func ExampleProtectionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

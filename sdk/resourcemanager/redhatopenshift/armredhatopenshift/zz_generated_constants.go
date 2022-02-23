@@ -10,7 +10,7 @@ package armredhatopenshift
 
 const (
 	moduleName    = "armredhatopenshift"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ProvisioningState - ProvisioningState represents a provisioning state.

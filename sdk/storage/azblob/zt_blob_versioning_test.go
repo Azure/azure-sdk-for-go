@@ -144,7 +144,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 
 		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
 		_assert.Nil(err)
-		d1, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
+		d1, err := ioutil.ReadAll(dResp.Body(nil))
 		_assert.Nil(err)
 		_assert.NotEqual(*dResp.Version, "")
 		_assert.EqualValues(string(d1), string(data[i]))
@@ -398,7 +398,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //
 //	downloadResp, err := destBlob.BlobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+//	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 //	_assert.Nil(err)
 //	_assert(destData, chk.DeepEquals, sourceData)
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
@@ -502,7 +502,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	contentData, err := ioutil.ReadAll(contentResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }

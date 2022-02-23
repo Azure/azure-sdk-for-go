@@ -6,9 +6,11 @@ package azservicebus
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -267,6 +269,12 @@ func TestSessionReceiver_Detach(t *testing.T) {
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
+
+	azlog.SetListener(func(e azlog.Event, s string) {
+		fmt.Printf("%s %s\n", e, s)
+	})
+
+	defer azlog.SetListener(nil)
 
 	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)

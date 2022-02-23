@@ -34,17 +34,17 @@ type ClusterExtensionTypesClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewClusterExtensionTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterExtensionTypesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &ClusterExtensionTypesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -59,7 +59,7 @@ func NewClusterExtensionTypesClient(subscriptionID string, credential azcore.Tok
 // clusterName - The name of the kubernetes cluster.
 // options - ClusterExtensionTypesClientListOptions contains the optional parameters for the ClusterExtensionTypesClient.List
 // method.
-func (client *ClusterExtensionTypesClient) List(resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesClientListOptions) *ClusterExtensionTypesClientListPager {
+func (client *ClusterExtensionTypesClient) List(resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *ClusterExtensionTypesClientListOptions) *ClusterExtensionTypesClientListPager {
 	return &ClusterExtensionTypesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -72,7 +72,7 @@ func (client *ClusterExtensionTypesClient) List(resourceGroupName string, cluste
 }
 
 // listCreateRequest creates the List request.
-func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesClientListOptions) (*policy.Request, error) {
+func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *ClusterExtensionTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

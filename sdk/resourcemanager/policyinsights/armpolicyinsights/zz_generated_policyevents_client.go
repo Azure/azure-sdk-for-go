@@ -34,16 +34,16 @@ type PolicyEventsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyEventsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &PolicyEventsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -51,15 +51,14 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 // ListQueryResultsForManagementGroup - Queries policy events for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupName - Management group name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEventsResource Enum1, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForManagementGroupPager {
+func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEventsResource PolicyEventsResourceType, managementGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForManagementGroupPager {
 	return &PolicyEventsClientListQueryResultsForManagementGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyEventsResource, managementGroupsNamespace, managementGroupName, options)
+			return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyEventsResource, managementGroupName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForManagementGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
@@ -68,16 +67,13 @@ func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEvent
 }
 
 // listQueryResultsForManagementGroupCreateRequest creates the ListQueryResultsForManagementGroup request.
-func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyEventsResource Enum1, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyEventsResource}", url.PathEscape(string(policyEventsResource)))
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupName == "" {
 		return nil, errors.New("parameter managementGroupName cannot be empty")
 	}
@@ -130,16 +126,14 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyDefinitionName - Policy definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicyDefinitionPager {
+func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicyDefinitionPager {
 	return &PolicyEventsClientListQueryResultsForPolicyDefinitionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, authorizationNamespace, policyDefinitionName, options)
+			return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policyDefinitionName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
@@ -148,7 +142,7 @@ func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEven
 }
 
 // listQueryResultsForPolicyDefinitionCreateRequest creates the ListQueryResultsForPolicyDefinition request.
-func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -158,10 +152,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateReque
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyDefinitionName == "" {
 		return nil, errors.New("parameter policyDefinitionName cannot be empty")
 	}
@@ -214,16 +205,14 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policySetDefinitionName - Policy set definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicySetDefinitionPager {
+func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForPolicySetDefinitionPager {
 	return &PolicyEventsClientListQueryResultsForPolicySetDefinitionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, authorizationNamespace, policySetDefinitionName, options)
+			return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyEventsResource, subscriptionID, policySetDefinitionName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
@@ -232,7 +221,7 @@ func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyE
 }
 
 // listQueryResultsForPolicySetDefinitionCreateRequest creates the ListQueryResultsForPolicySetDefinition request.
-func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -242,10 +231,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRe
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
 	}
@@ -300,7 +286,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 // resourceID - Resource ID.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResource Enum1, resourceID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourcePager {
+func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResource PolicyEventsResourceType, resourceID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourcePager {
 	return &PolicyEventsClientListQueryResultsForResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -313,7 +299,7 @@ func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResour
 }
 
 // listQueryResultsForResourceCreateRequest creates the ListQueryResultsForResource request.
-func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx context.Context, policyEventsResource Enum1, resourceID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, resourceID string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -374,7 +360,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 // resourceGroupName - Resource group name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsResource Enum1, subscriptionID string, resourceGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupPager {
+func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupPager {
 	return &PolicyEventsClientListQueryResultsForResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -387,7 +373,7 @@ func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsR
 }
 
 // listQueryResultsForResourceGroupCreateRequest creates the ListQueryResultsForResourceGroup request.
-func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -450,16 +436,14 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource Enum1, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager {
+func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager {
 	return &PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, authorizationNamespace, policyAssignmentName, options)
+			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, resourceGroupName, policyAssignmentName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
@@ -468,7 +452,7 @@ func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAss
 }
 
 // listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForResourceGroupLevelPolicyAssignment request.
-func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -482,10 +466,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
@@ -540,7 +521,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 // subscriptionID - Microsoft Azure subscription ID.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsResource Enum1, subscriptionID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionPager {
+func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsResource PolicyEventsResourceType, subscriptionID string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionPager {
 	return &PolicyEventsClientListQueryResultsForSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -553,7 +534,7 @@ func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsRe
 }
 
 // listQueryResultsForSubscriptionCreateRequest creates the ListQueryResultsForSubscription request.
-func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -611,16 +592,14 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager {
+func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager {
 	return &PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, authorizationNamespace, policyAssignmentName, options)
+			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyEventsResource, subscriptionID, policyAssignmentName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyEventsQueryResults.ODataNextLink)
@@ -629,7 +608,7 @@ func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssi
 }
 
 // listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForSubscriptionLevelPolicyAssignment request.
-func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource Enum1, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
@@ -639,10 +618,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssi
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}

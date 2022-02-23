@@ -78,43 +78,43 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 	}
 }
 
-// JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type JSONWebKeyCurveName string
+// KeyCurveName - Elliptic curve name. For valid values, see KeyCurveName.
+type KeyCurveName string
 
 const (
-	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
+	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	KeyCurveNameP256 KeyCurveName = "P-256"
 
-	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
+	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
+	KeyCurveNameP256K KeyCurveName = "P-256K"
 
-	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
+	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	KeyCurveNameP384 KeyCurveName = "P-384"
 
-	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
+	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	KeyCurveNameP521 KeyCurveName = "P-521"
 )
 
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
+// ToPtr returns a *KeyCurveName pointing to the current value.
+func (c KeyCurveName) ToPtr() *KeyCurveName {
 	return &c
 }
 
-// JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
-type JSONWebKeyOperation string
+// KeyOperation - JSON web key operations. For more information, see KeyOperation.
+type KeyOperation string
 
 const (
-	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
-	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
+	KeyOperationDecrypt   KeyOperation = "decrypt"
+	KeyOperationEncrypt   KeyOperation = "encrypt"
+	KeyOperationImport    KeyOperation = "import"
+	KeyOperationSign      KeyOperation = "sign"
+	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
+	KeyOperationVerify    KeyOperation = "verify"
+	KeyOperationWrapKey   KeyOperation = "wrapKey"
 )
 
-// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
-func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+// ToPtr returns a *KeyOperation pointing to the current value.
+func (c KeyOperation) ToPtr() *KeyOperation {
 	return &c
 }
 

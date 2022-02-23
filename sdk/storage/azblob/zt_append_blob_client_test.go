@@ -202,7 +202,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
 	_assert.Nil(err)
 	_assert.Equal(destData, sourceData)
-	_ = downloadResp.Body(RetryReaderOptions{}).Close()
+	_ = downloadResp.Body(nil).Close()
 }
 
 //nolint
@@ -294,7 +294,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 

@@ -261,6 +261,7 @@ func (p *SubscriptionPager) getNext(ctx context.Context) (*ListSubscriptionsResp
 		}
 
 		all = append(all, &SubscriptionPropertiesItem{
+			TopicName:              p.topicName,
 			SubscriptionName:       env.Title,
 			SubscriptionProperties: *props,
 		})

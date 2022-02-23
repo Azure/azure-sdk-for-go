@@ -867,7 +867,7 @@ type KeyProperties struct {
 // KeyReleaseParameters - The release key parameters.
 type KeyReleaseParameters struct {
 	// REQUIRED; The attestation assertion for the target of the key release.
-	Target *string `json:"target,omitempty"`
+	TargetAttestationToken *string `json:"target,omitempty"`
 
 	// The encryption algorithm to use to protected the exported key material
 	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
@@ -881,14 +881,19 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
+	EncodedPolicy []byte `json:"data,omitempty"`
+
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyReleasePolicy.
 func (k KeyReleasePolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "contentType", k.ContentType)
-	populateByteArray(objectMap, "data", k.Data, runtime.Base64URLFormat)
+	populateByteArray(objectMap, "data", k.EncodedPolicy, runtime.Base64URLFormat)
+	populate(objectMap, "immutable", k.Immutable)
 	return json.Marshal(objectMap)
 }
 
@@ -905,7 +910,10 @@ func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &k.ContentType)
 			delete(rawMsg, key)
 		case "data":
-			err = runtime.DecodeByteArray(string(val), &k.Data, runtime.Base64URLFormat)
+			err = runtime.DecodeByteArray(string(val), &k.EncodedPolicy, runtime.Base64URLFormat)
+			delete(rawMsg, key)
+		case "immutable":
+			err = unpopulate(val, &k.Immutable)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1112,11 +1120,6 @@ type KeyVaultClientDeleteKeyOptions struct {
 
 // KeyVaultClientEncryptOptions contains the optional parameters for the KeyVaultClient.Encrypt method.
 type KeyVaultClientEncryptOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KeyVaultClientExportOptions contains the optional parameters for the KeyVaultClient.Export method.
-type KeyVaultClientExportOptions struct {
 	// placeholder for future optional parameters
 }
 

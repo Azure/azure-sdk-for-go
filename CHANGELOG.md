@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## `v61.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp`
+
+## `v61.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-01-02-preview/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-08-01/storage`
+
+## `v61.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub`
+
 ## `v61.3.0`
 
 ### New Packages

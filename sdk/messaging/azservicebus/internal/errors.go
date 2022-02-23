@@ -114,13 +114,10 @@ func GetRecoveryKind(err error) recoveryKind {
 
 	var netErr net.Error
 
-	if errors.As(err, &netErr) {
-		// ie, just retry
-		return RecoveryKindNone
-	}
-
-	// this is a carryover from another library. I haven't seen this in the wild.
-	if errors.Is(err, io.EOF) {
+	// these are errors that can flow from the go-amqp connection to
+	// us. There's work underway to improve this but for now we can handle
+	// these as "catastrophic" errors and reset everything.
+	if errors.Is(err, io.EOF) || errors.As(err, &netErr) {
 		return RecoveryKindConn
 	}
 
@@ -175,7 +172,13 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 
 		// simple timeouts
-		if me.Resp.Code == 408 || me.Resp.Code == 503 {
+		if me.Resp.Code == 408 || me.Resp.Code == 503 ||
+			// internal server errors are worth retrying (they will typically lead
+			// to a more actionable error). A simple example of this is when you're
+			// in the middle of an operation and the link is detached. Sometimes you'll get
+			// the detached event immediately, but sometimes you'll get an intermediate 500
+			// indicating your original operation was cancelled.
+			me.Resp.Code == 500 {
 			return RecoveryKindNone
 		}
 	}

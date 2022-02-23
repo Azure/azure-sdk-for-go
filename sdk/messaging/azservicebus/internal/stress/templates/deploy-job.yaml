@@ -9,6 +9,7 @@ spec:
       # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
       image:  {{ .Values.image }}
       command: ['/app/stress']
+      imagePullPolicy: Always
       args: 
       - "tests"
       # (this is injected automatically. The full list of scenarios is in `../values.yaml`)

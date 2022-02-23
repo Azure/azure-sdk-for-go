@@ -42,7 +42,7 @@ New (using `azservicebus`):
 ```go
 // new code
 
-client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
+client, err := azservicebus.NewClientFromConnectionString(connectionString, nil)
 ```
 
 ### Sending messages
@@ -64,29 +64,33 @@ Sending messages in batches is similar, except that the focus has been moved mor
 towards giving the user full control using the `MessageBatch` type.
 
 ```go
-batch, err := sender.NewMessageBatch(context.TODO(), nil)
-
-// can be called multiple times
-err := batch.AddMessage(&azservicebus.Message{
-  Body: []byte("hello world"),
-})
+// Create a message batch. It will automatically be sized for the Service Bus
+// Namespace's maximum message size.
+messageBatch, err := sender.NewMessageBatch(context.TODO(), nil)
 
 if err != nil {
-  switch err {
-  case azservicebus.ErrMessageTooLarge:
-    // At this point you can do a few things:
-    // 1. Ignore this message
-    // 2. Send this batch (it's full) and create a new batch.
-    //
-    // The batch can still be used after this error if you have
-    // smaller messages you'd still like to add in.
-    fmt.Printf("Failed to add message to batch\n")
-  default:
-    exitOnError("Error while trying to add message to batch", err)
-  }
+  panic(err)
 }
 
-sender.SendMessageBatch(context.TODO(), batch)
+// Add a message to our message batch. This can be called multiple times.
+err = messageBatch.AddMessage(&azservicebus.Message{
+    Body: []byte(fmt.Sprintf("hello world")),
+})
+
+if errors.Is(err, azservicebus.ErrMessageTooLarge) {
+  fmt.Printf("Message batch is full. We should send it and create a new one.\n")
+
+  // send what we have since the batch is full
+  err := sender.SendMessageBatch(context.TODO(), messageBatch)
+
+  if err != nil {
+    panic(err)
+  }
+  
+  // Create a new batch, add this message and start again.
+} else if err != nil {
+  panic(err)
+}
 ```
 
 ### Processing and receiving messages
@@ -105,8 +109,7 @@ receiver, err := client.NewReceiverForQueue(queue, nil)
 receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
 // receiving multiple messages at a time. 
-var messages []*azservicebus.ReceivedMessage
-messages, err = receiver.ReceiveMessages(context.TODO(), numMessages, nil)
+messages, err := receiver.ReceiveMessages(context.TODO(), numMessages, nil)
 ```
 
 ### Using dead letter queues
@@ -134,7 +137,7 @@ Now, in `azservicebus`:
 ```go
 // new code
 
-receiver, err = client.NewReceiverForQueue(
+receiver, err := client.NewReceiverForQueue(
 	queueName,
 	&azservicebus.ReceiverOptions{
 		ReceiveMode: azservicebus.ReceiveModePeekLock,
@@ -143,7 +146,7 @@ receiver, err = client.NewReceiverForQueue(
 
 //or
 
-receiver, err = client.NewReceiverForSubscription(
+receiver, err := client.NewReceiverForSubscription(
   topicName,
   subscriptionName,
   &azservicebus.ReceiverOptions{
@@ -178,7 +181,7 @@ Now, using `azservicebus`:
 // with a Receiver
 messages, err := receiver.ReceiveMessages(ctx, 10, nil)
 
-for _, m := range messages {
+for _, message := range messages {
   err = receiver.CompleteMessage(ctx, message)
 }
 ```
@@ -191,7 +194,7 @@ In `azservicebus`:
 
 ```go
 credential, err := azidentity.NewDefaultAzureCredential(nil)
-client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
+client, err := azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 ```
 
 # Entity management using admin.Client
@@ -199,6 +202,7 @@ client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>"
 Administration features, like creating queues, topics and subscriptions, has been moved into a dedicated client (admin.Client).
 
 ```go
+// note: import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
 
 // create a queue with default properties
@@ -223,8 +227,8 @@ sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), "queue"
 
 // managing session state
 sessionData, err := sessionReceiver.GetSessionState(context.TODO())
-err := sessionReceiver.SetSessionState(context.TODO(), []byte("data"))
+err = sessionReceiver.SetSessionState(context.TODO(), []byte("data"))
 
 // renewing the lock associated with the session
-err := sessionReceiver.RenewSessionLock(context.TODO())
+err = sessionReceiver.RenewSessionLock(context.TODO())
 ```

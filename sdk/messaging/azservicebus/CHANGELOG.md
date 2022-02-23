@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.4 (Unreleased)
+## 0.3.6 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,29 @@
 
 ### Bugs Fixed
 
-- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix.
+- Fix connection recovery in situations where network errors bubble up from go-amqp (#17048)
 
 ### Other Changes
+
+## 0.3.5 (2022-02-10)
+
+### Bugs Fixed
+
+- Fix panic() when go-amqp was returning an incorrect error on drain failures. (#17036)
+
+## 0.3.4 (2022-02-08)
+
+### Features Added
+
+- Allow RetryOptions to be configured in the options for azservicebus.Client as well and admin.Client(#16831)
+- Add in the MessageState property to the ReceivedMessage. (#16985)
+
+### Bugs Fixed
+
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)
+- Multiple fixes to address connection/link recovery (#16831)
+- Fixing panic() when the links haven't been initialized (early cancellation) (#16941)
+- Handle 500 as a retryable code (no recovery needed) (#16925)
 
 ## 0.3.3 (2022-01-12)
 

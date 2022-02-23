@@ -160,6 +160,10 @@ func TestDeferredMessages(t *testing.T) {
 
 	t.Run("Defer", func(t *testing.T) {
 		msg := testStuff.deferMessageForTest(t)
+		require.EqualValues(t, MessageStateDeferred, msg.State)
+
+		peekedMsg := peekSingleMessageForTest(t, receiver)
+		require.EqualValues(t, MessageStateDeferred, peekedMsg.State)
 
 		// double defer!
 		err := receiver.DeferMessage(ctx, msg, &DeferMessageOptions{

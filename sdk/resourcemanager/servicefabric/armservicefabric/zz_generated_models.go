@@ -1461,21 +1461,6 @@ type EndpointRangeDescription struct {
 	StartPort *int32 `json:"startPort,omitempty"`
 }
 
-// ErrorModel - The structure of the error.
-type ErrorModel struct {
-	// The error details.
-	Error *ErrorModelError `json:"error,omitempty"`
-}
-
-// ErrorModelError - The error details.
-type ErrorModelError struct {
-	// The error code.
-	Code *string `json:"code,omitempty"`
-
-	// The error message.
-	Message *string `json:"message,omitempty"`
-}
-
 // ManagedIdentity - Describes the managed identities for an Azure resource.
 type ManagedIdentity struct {
 	// The type of managed identity for the resource.

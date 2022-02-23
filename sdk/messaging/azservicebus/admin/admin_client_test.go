@@ -25,13 +25,13 @@ import (
 func TestAdminClient_UsingIdentity(t *testing.T) {
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	adminClient, err := NewClient(ns, envCred, nil)
+	adminClient, err := NewClient(ns, cred, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
@@ -655,6 +655,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	for i, expectedTopic := range expectedSubscriptions {
 		props, exists := all[expectedTopic]
 		require.True(t, exists)
+		require.Equal(t, topicName, props.TopicName)
 		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
 	}
 }

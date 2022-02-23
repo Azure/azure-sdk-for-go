@@ -10,7 +10,7 @@ package armsubscription
 
 const (
 	moduleName    = "armsubscription"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // AcceptOwnership - The accept ownership state of the resource.

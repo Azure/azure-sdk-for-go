@@ -44,7 +44,7 @@ func ExampleClusterVersionsClient_GetByEnvironment() {
 	client := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
 	res, err := client.GetByEnvironment(ctx,
 		"<location>",
-		armservicefabric.Enum14("Windows"),
+		armservicefabric.ClusterVersionsEnvironment("Windows"),
 		"<cluster-version>",
 		nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleClusterVersionsClient_ListByEnvironment() {
 	client := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
 	res, err := client.ListByEnvironment(ctx,
 		"<location>",
-		armservicefabric.Enum14("Windows"),
+		armservicefabric.ClusterVersionsEnvironment("Windows"),
 		nil)
 	if err != nil {
 		log.Fatal(err)

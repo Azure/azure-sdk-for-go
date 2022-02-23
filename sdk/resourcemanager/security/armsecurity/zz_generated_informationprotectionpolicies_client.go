@@ -54,7 +54,7 @@ func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, o
 // informationProtectionPolicy - Information protection policy.
 // options - InformationProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the InformationProtectionPoliciesClient.CreateOrUpdate
 // method.
-func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
+func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, informationProtectionPolicyName, informationProtectionPolicy, options)
 	if err != nil {
 		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
@@ -70,7 +70,7 @@ func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Co
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
@@ -104,7 +104,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(
 // informationProtectionPolicyName - Name of the information protection policy.
 // options - InformationProtectionPoliciesClientGetOptions contains the optional parameters for the InformationProtectionPoliciesClient.Get
 // method.
-func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesClientGetOptions) (InformationProtectionPoliciesClientGetResponse, error) {
+func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, options *InformationProtectionPoliciesClientGetOptions) (InformationProtectionPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, informationProtectionPolicyName, options)
 	if err != nil {
 		return InformationProtectionPoliciesClientGetResponse{}, err
@@ -120,7 +120,7 @@ func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scop
 }
 
 // getCreateRequest creates the Get request.
-func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesClientGetOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, options *InformationProtectionPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {

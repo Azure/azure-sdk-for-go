@@ -1,5 +1,79 @@
 # Release History
 
+## 0.4.0 (2022-02-23)
+### Breaking Changes
+
+- Function `*AdvancedThreatProtectionClient.Get` parameter(s) have been changed from `(context.Context, string, Enum5, *AdvancedThreatProtectionClientGetOptions)` to `(context.Context, string, *AdvancedThreatProtectionClientGetOptions)`
+- Function `*AdaptiveNetworkHardeningsClient.BeginEnforce` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Enum51, AdaptiveNetworkHardeningEnforceRequest, *AdaptiveNetworkHardeningsClientBeginEnforceOptions)` to `(context.Context, string, string, string, string, string, AdaptiveNetworkHardeningEnforceRequest, *AdaptiveNetworkHardeningsClientBeginEnforceOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientBeginDeleteOptions)` to `(context.Context, string, string, string, string, *ServerVulnerabilityAssessmentClientBeginDeleteOptions)`
+- Function `*TasksClient.UpdateSubscriptionLevelTaskState` parameter(s) have been changed from `(context.Context, string, Enum16, *TasksClientUpdateSubscriptionLevelTaskStateOptions)` to `(context.Context, string, TaskUpdateActionType, *TasksClientUpdateSubscriptionLevelTaskStateOptions)`
+- Function `*SettingsClient.Get` parameter(s) have been changed from `(context.Context, Enum77, *SettingsClientGetOptions)` to `(context.Context, SettingName, *SettingsClientGetOptions)`
+- Function `*AdvancedThreatProtectionClient.Create` parameter(s) have been changed from `(context.Context, string, Enum5, AdvancedThreatProtectionSetting, *AdvancedThreatProtectionClientCreateOptions)` to `(context.Context, string, AdvancedThreatProtectionSetting, *AdvancedThreatProtectionClientCreateOptions)`
+- Function `*JitNetworkAccessPoliciesClient.Initiate` parameter(s) have been changed from `(context.Context, string, string, Enum56, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesClientInitiateOptions)` to `(context.Context, string, string, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesClientInitiateOptions)`
+- Function `*TasksClient.UpdateResourceGroupLevelTaskState` parameter(s) have been changed from `(context.Context, string, string, Enum16, *TasksClientUpdateResourceGroupLevelTaskStateOptions)` to `(context.Context, string, string, TaskUpdateActionType, *TasksClientUpdateResourceGroupLevelTaskStateOptions)`
+- Function `*SettingsClient.Update` parameter(s) have been changed from `(context.Context, Enum77, SettingClassification, *SettingsClientUpdateOptions)` to `(context.Context, SettingName, SettingClassification, *SettingsClientUpdateOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, *ServerVulnerabilityAssessmentClientCreateOrUpdateOptions)`
+- Function `*InformationProtectionPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, Enum18, InformationProtectionPolicy, *InformationProtectionPoliciesClientCreateOrUpdateOptions)` to `(context.Context, string, InformationProtectionPolicyName, InformationProtectionPolicy, *InformationProtectionPoliciesClientCreateOrUpdateOptions)`
+- Function `*InformationProtectionPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, Enum18, *InformationProtectionPoliciesClientGetOptions)` to `(context.Context, string, InformationProtectionPolicyName, *InformationProtectionPoliciesClientGetOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientGetOptions)` to `(context.Context, string, string, string, string, *ServerVulnerabilityAssessmentClientGetOptions)`
+- Const `Enum5Current` has been removed
+- Const `Enum16Resolve` has been removed
+- Const `Enum77Sentinel` has been removed
+- Const `Enum77WDATP` has been removed
+- Const `Enum77MCAS` has been removed
+- Const `Enum51Enforce` has been removed
+- Const `Enum18Custom` has been removed
+- Const `Enum16Dismiss` has been removed
+- Const `Enum16Activate` has been removed
+- Const `Enum56Initiate` has been removed
+- Const `Enum77WDATPEXCLUDELINUXPUBLICPREVIEW` has been removed
+- Const `Enum16Close` has been removed
+- Const `Enum18Effective` has been removed
+- Const `Enum16Start` has been removed
+- Const `Enum31Default` has been removed
+- Function `Enum51.ToPtr` has been removed
+- Function `PossibleEnum56Values` has been removed
+- Function `PossibleEnum5Values` has been removed
+- Function `PossibleEnum31Values` has been removed
+- Function `PossibleEnum77Values` has been removed
+- Function `Enum77.ToPtr` has been removed
+- Function `Enum31.ToPtr` has been removed
+- Function `Enum16.ToPtr` has been removed
+- Function `Enum56.ToPtr` has been removed
+- Function `PossibleEnum51Values` has been removed
+- Function `Enum18.ToPtr` has been removed
+- Function `PossibleEnum16Values` has been removed
+- Function `Enum5.ToPtr` has been removed
+- Function `PossibleEnum18Values` has been removed
+
+### Features Added
+
+- New const `InformationProtectionPolicyNameEffective`
+- New const `SupportedCloudEnumGCP`
+- New const `TaskUpdateActionTypeDismiss`
+- New const `SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW`
+- New const `SettingNameWDATP`
+- New const `TaskUpdateActionTypeActivate`
+- New const `TaskUpdateActionTypeStart`
+- New const `TaskUpdateActionTypeClose`
+- New const `InformationProtectionPolicyNameCustom`
+- New const `SettingNameSentinel`
+- New const `SettingNameMCAS`
+- New const `OfferingTypeInformationProtectionAws`
+- New const `TaskUpdateActionTypeResolve`
+- New function `InformationProtectionAwsOffering.MarshalJSON() ([]byte, error)`
+- New function `InformationProtectionPolicyName.ToPtr() *InformationProtectionPolicyName`
+- New function `TaskUpdateActionType.ToPtr() *TaskUpdateActionType`
+- New function `*InformationProtectionAwsOffering.UnmarshalJSON([]byte) error`
+- New function `SettingName.ToPtr() *SettingName`
+- New function `*InformationProtectionAwsOffering.GetCloudOffering() *CloudOffering`
+- New function `PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType`
+- New function `PossibleInformationProtectionPolicyNameValues() []InformationProtectionPolicyName`
+- New function `PossibleSettingNameValues() []SettingName`
+- New struct `InformationProtectionAwsOffering`
+- New struct `InformationProtectionAwsOfferingInformationProtection`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

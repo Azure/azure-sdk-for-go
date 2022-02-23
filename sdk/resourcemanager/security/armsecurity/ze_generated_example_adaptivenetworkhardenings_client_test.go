@@ -81,7 +81,6 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 		"<resource-type>",
 		"<resource-name>",
 		"<adaptive-network-hardening-resource-name>",
-		armsecurity.Enum51("enforce"),
 		armsecurity.AdaptiveNetworkHardeningEnforceRequest{
 			NetworkSecurityGroups: []*string{
 				to.StringPtr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),

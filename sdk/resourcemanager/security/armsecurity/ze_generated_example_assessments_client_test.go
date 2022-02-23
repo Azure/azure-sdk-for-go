@@ -71,7 +71,7 @@ func ExampleAssessmentsClient_CreateOrUpdate() {
 		"<assessment-name>",
 		armsecurity.Assessment{
 			Properties: &armsecurity.AssessmentProperties{
-				ResourceDetails: &armsecurity.AzureResourceDetails{
+				ResourceDetails: &armsecurity.ResourceDetails{
 					Source: armsecurity.Source("Azure").ToPtr(),
 				},
 				Status: &armsecurity.AssessmentStatus{

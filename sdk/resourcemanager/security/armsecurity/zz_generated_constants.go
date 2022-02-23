@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -679,148 +679,6 @@ func (c EnforcementSupport) ToPtr() *EnforcementSupport {
 	return &c
 }
 
-type Enum16 string
-
-const (
-	Enum16Activate Enum16 = "Activate"
-	Enum16Close    Enum16 = "Close"
-	Enum16Dismiss  Enum16 = "Dismiss"
-	Enum16Resolve  Enum16 = "Resolve"
-	Enum16Start    Enum16 = "Start"
-)
-
-// PossibleEnum16Values returns the possible values for the Enum16 const type.
-func PossibleEnum16Values() []Enum16 {
-	return []Enum16{
-		Enum16Activate,
-		Enum16Close,
-		Enum16Dismiss,
-		Enum16Resolve,
-		Enum16Start,
-	}
-}
-
-// ToPtr returns a *Enum16 pointing to the current value.
-func (c Enum16) ToPtr() *Enum16 {
-	return &c
-}
-
-type Enum18 string
-
-const (
-	Enum18Custom    Enum18 = "custom"
-	Enum18Effective Enum18 = "effective"
-)
-
-// PossibleEnum18Values returns the possible values for the Enum18 const type.
-func PossibleEnum18Values() []Enum18 {
-	return []Enum18{
-		Enum18Custom,
-		Enum18Effective,
-	}
-}
-
-// ToPtr returns a *Enum18 pointing to the current value.
-func (c Enum18) ToPtr() *Enum18 {
-	return &c
-}
-
-type Enum31 string
-
-const (
-	Enum31Default Enum31 = "default"
-)
-
-// PossibleEnum31Values returns the possible values for the Enum31 const type.
-func PossibleEnum31Values() []Enum31 {
-	return []Enum31{
-		Enum31Default,
-	}
-}
-
-// ToPtr returns a *Enum31 pointing to the current value.
-func (c Enum31) ToPtr() *Enum31 {
-	return &c
-}
-
-type Enum5 string
-
-const (
-	Enum5Current Enum5 = "current"
-)
-
-// PossibleEnum5Values returns the possible values for the Enum5 const type.
-func PossibleEnum5Values() []Enum5 {
-	return []Enum5{
-		Enum5Current,
-	}
-}
-
-// ToPtr returns a *Enum5 pointing to the current value.
-func (c Enum5) ToPtr() *Enum5 {
-	return &c
-}
-
-type Enum51 string
-
-const (
-	Enum51Enforce Enum51 = "enforce"
-)
-
-// PossibleEnum51Values returns the possible values for the Enum51 const type.
-func PossibleEnum51Values() []Enum51 {
-	return []Enum51{
-		Enum51Enforce,
-	}
-}
-
-// ToPtr returns a *Enum51 pointing to the current value.
-func (c Enum51) ToPtr() *Enum51 {
-	return &c
-}
-
-type Enum56 string
-
-const (
-	Enum56Initiate Enum56 = "initiate"
-)
-
-// PossibleEnum56Values returns the possible values for the Enum56 const type.
-func PossibleEnum56Values() []Enum56 {
-	return []Enum56{
-		Enum56Initiate,
-	}
-}
-
-// ToPtr returns a *Enum56 pointing to the current value.
-func (c Enum56) ToPtr() *Enum56 {
-	return &c
-}
-
-type Enum77 string
-
-const (
-	Enum77MCAS                           Enum77 = "MCAS"
-	Enum77Sentinel                       Enum77 = "Sentinel"
-	Enum77WDATP                          Enum77 = "WDATP"
-	Enum77WDATPEXCLUDELINUXPUBLICPREVIEW Enum77 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-)
-
-// PossibleEnum77Values returns the possible values for the Enum77 const type.
-func PossibleEnum77Values() []Enum77 {
-	return []Enum77{
-		Enum77MCAS,
-		Enum77Sentinel,
-		Enum77WDATP,
-		Enum77WDATPEXCLUDELINUXPUBLICPREVIEW,
-	}
-}
-
-// ToPtr returns a *Enum77 pointing to the current value.
-func (c Enum77) ToPtr() *Enum77 {
-	return &c
-}
-
 // EventSource - A valid event source type.
 type EventSource string
 
@@ -1021,6 +879,26 @@ func (c ImplementationEffort) ToPtr() *ImplementationEffort {
 	return &c
 }
 
+type InformationProtectionPolicyName string
+
+const (
+	InformationProtectionPolicyNameCustom    InformationProtectionPolicyName = "custom"
+	InformationProtectionPolicyNameEffective InformationProtectionPolicyName = "effective"
+)
+
+// PossibleInformationProtectionPolicyNameValues returns the possible values for the InformationProtectionPolicyName const type.
+func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPolicyName {
+	return []InformationProtectionPolicyName{
+		InformationProtectionPolicyNameCustom,
+		InformationProtectionPolicyNameEffective,
+	}
+}
+
+// ToPtr returns a *InformationProtectionPolicyName pointing to the current value.
+func (c InformationProtectionPolicyName) ToPtr() *InformationProtectionPolicyName {
+	return &c
+}
+
 // Intent - The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
 // Center's supported kill chain intents.
 type Intent string
@@ -1129,6 +1007,7 @@ const (
 	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
 	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
 	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
+	OfferingTypeInformationProtectionAws OfferingType = "InformationProtectionAws"
 )
 
 // PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
@@ -1137,6 +1016,7 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeCspmMonitorAws,
 		OfferingTypeDefenderForContainersAws,
 		OfferingTypeDefenderForServersAws,
+		OfferingTypeInformationProtectionAws,
 	}
 }
 
@@ -1844,6 +1724,30 @@ func (c SettingKind) ToPtr() *SettingKind {
 	return &c
 }
 
+type SettingName string
+
+const (
+	SettingNameMCAS                           SettingName = "MCAS"
+	SettingNameSentinel                       SettingName = "Sentinel"
+	SettingNameWDATP                          SettingName = "WDATP"
+	SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW SettingName = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+)
+
+// PossibleSettingNameValues returns the possible values for the SettingName const type.
+func PossibleSettingNameValues() []SettingName {
+	return []SettingName{
+		SettingNameMCAS,
+		SettingNameSentinel,
+		SettingNameWDATP,
+		SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW,
+	}
+}
+
+// ToPtr returns a *SettingName pointing to the current value.
+func (c SettingName) ToPtr() *SettingName {
+	return &c
+}
+
 // Severity - The sub-assessment severity level
 type Severity string
 
@@ -2047,12 +1951,14 @@ type SupportedCloudEnum string
 
 const (
 	SupportedCloudEnumAWS SupportedCloudEnum = "AWS"
+	SupportedCloudEnumGCP SupportedCloudEnum = "GCP"
 )
 
 // PossibleSupportedCloudEnumValues returns the possible values for the SupportedCloudEnum const type.
 func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
 	return []SupportedCloudEnum{
 		SupportedCloudEnumAWS,
+		SupportedCloudEnumGCP,
 	}
 }
 
@@ -2103,6 +2009,32 @@ func PossibleTacticsValues() []Tactics {
 
 // ToPtr returns a *Tactics pointing to the current value.
 func (c Tactics) ToPtr() *Tactics {
+	return &c
+}
+
+type TaskUpdateActionType string
+
+const (
+	TaskUpdateActionTypeActivate TaskUpdateActionType = "Activate"
+	TaskUpdateActionTypeClose    TaskUpdateActionType = "Close"
+	TaskUpdateActionTypeDismiss  TaskUpdateActionType = "Dismiss"
+	TaskUpdateActionTypeResolve  TaskUpdateActionType = "Resolve"
+	TaskUpdateActionTypeStart    TaskUpdateActionType = "Start"
+)
+
+// PossibleTaskUpdateActionTypeValues returns the possible values for the TaskUpdateActionType const type.
+func PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType {
+	return []TaskUpdateActionType{
+		TaskUpdateActionTypeActivate,
+		TaskUpdateActionTypeClose,
+		TaskUpdateActionTypeDismiss,
+		TaskUpdateActionTypeResolve,
+		TaskUpdateActionTypeStart,
+	}
+}
+
+// ToPtr returns a *TaskUpdateActionType pointing to the current value.
+func (c TaskUpdateActionType) ToPtr() *TaskUpdateActionType {
 	return &c
 }
 

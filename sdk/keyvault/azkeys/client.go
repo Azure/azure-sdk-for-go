@@ -320,7 +320,7 @@ func (l ListKeysOptions) toGenerated() *generated.KeyVaultClientGetKeysOptions {
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListKeys(options *ListKeysOptions) *responses.ListKeysPager {
+func (c *Client) NewListKeysPager(options *ListKeysOptions) *responses.ListKeysPager {
 	if options == nil {
 		options = &ListKeysOptions{}
 	}
@@ -629,7 +629,7 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 
 // ListDeletedKeys lists all versions of the specified key. The full key identifier and attributes are provided
 // in the response. No values are returned for the keys. This operation requires the keys/list permission.
-func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *responses.ListDeletedKeysPager {
+func (c *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *responses.ListDeletedKeysPager {
 	if options == nil {
 		options = &ListDeletedKeysOptions{}
 	}
@@ -655,7 +655,7 @@ func (l *ListKeyVersionsOptions) toGenerated() *generated.KeyVaultClientGetKeyVe
 // ListKeyVersions lists all versions of the specified key. The full key identifer and
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
-func (c *Client) ListKeyVersions(keyName string, options *ListKeyVersionsOptions) *responses.ListKeyVersionsPager {
+func (c *Client) NewListKeyVersionsPager(keyName string, options *ListKeyVersionsOptions) *responses.ListKeyVersionsPager {
 	if options == nil {
 		options = &ListKeyVersionsOptions{}
 	}

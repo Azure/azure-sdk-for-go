@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Prevented a data race in `DefaultAzureCredential` and `ChainedTokenCredential`
 
 ### Other Changes
 * Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01

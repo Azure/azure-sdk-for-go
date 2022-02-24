@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
@@ -300,5 +301,41 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 	}
 	if successfulCredential.getTokenCalls != 2 {
 		t.Fatalf("The successful credential getToken should have been called twice")
+	}
+}
+
+type staticCredential struct {
+	err error
+	tk  *azcore.AccessToken
+}
+
+func (c *staticCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	return c.tk, c.err
+}
+
+func TestChainedTokenCredential_Race(t *testing.T) {
+	for _, b := range []bool{true, false} {
+		t.Run(fmt.Sprintf("RetrySources_%v", b), func(t *testing.T) {
+			success, _ := NewChainedTokenCredential(
+				[]azcore.TokenCredential{&staticCredential{tk: &azcore.AccessToken{Token: "*", ExpiresOn: time.Now().Add(time.Hour)}}},
+				&ChainedTokenCredentialOptions{RetrySources: b},
+			)
+			failure, _ := NewChainedTokenCredential(
+				[]azcore.TokenCredential{&staticCredential{err: newAuthenticationFailedError("", "", nil)}},
+				&ChainedTokenCredentialOptions{RetrySources: b},
+			)
+			unavailable, _ := NewChainedTokenCredential(
+				[]azcore.TokenCredential{&staticCredential{err: newCredentialUnavailableError("", "")}},
+				&ChainedTokenCredentialOptions{RetrySources: b},
+			)
+			for i := 0; i < 5; i++ {
+				go func() {
+					tro := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
+					success.GetToken(context.Background(), tro)
+					failure.GetToken(context.Background(), tro)
+					unavailable.GetToken(context.Background(), tro)
+				}()
+			}
+		})
 	}
 }

@@ -194,7 +194,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 
 // CreateECKey can be used to create a new elliptic key curve in Azure Key Vault. If the
 // named key already exists, Azure Key Vault creates a new version of the key.
-// EC key can be created on standard vaults, ECHSM can be created on Premium SKU Vaults or Managed HSMs.
+// EC keys can be created in Standard or Premium SKU vaults, ECHSM can be created in Premium SKU vaults or Managed HSMs.
 // It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := EC

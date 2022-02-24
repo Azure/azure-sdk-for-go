@@ -15,14 +15,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
 	appConfigClient *generated.AzureAppConfigurationClient
-	syncTokenPolicy *internal.SyncTokenPolicy
+	syncTokenPolicy *syncTokenPolicy
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -66,7 +65,7 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 		return nil, err
 	}
 
-	syncTokenPolicy := internal.NewSyncTokenPolicy()
+	syncTokenPolicy := newSyncTokenPolicy()
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
 		runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil),
@@ -80,9 +79,36 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 	}, nil
 }
 
+// NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
+	genOptions := options.toConnectionOptions()
+
+	endpoint, credential, secret, err := parseConnectionString(connectionString)
+	if err == nil {
+		return nil, err
+	}
+
+	syncTokenPolicy := newSyncTokenPolicy()
+	genOptions.PerRetryPolicies = append(
+		genOptions.PerRetryPolicies,
+		runtime.hmacAuthenticationPolicy(credential, secret),
+		syncTokenPolicy,
+	)
+
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	return &Client{
+		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
+		syncTokenPolicy: syncTokenPolicy,
+	}, nil
+}
+
 // UpdateSyncToken sets an external synchronization token to ensure service requests receive up-to-date values.
 func (c *Client) UpdateSyncToken(token string) {
-	c.syncTokenPolicy.AddToken(token)
+	c.syncTokenPolicy.addToken(token)
 }
 
 const timeFormat = time.RFC3339Nano

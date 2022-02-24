@@ -9,7 +9,7 @@
 package generated
 
 const (
-	ModuleName    = "generated"
+	ModuleName    = "azappconfiguration"
 	ModuleVersion = "v0.1.0"
 )
 

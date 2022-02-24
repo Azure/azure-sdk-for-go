@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package internal
+package azappconfiguration
 
 import (
 	"errors"
@@ -21,12 +21,12 @@ type syncToken struct {
 	seqNo int64
 }
 
-type SyncTokenPolicy struct {
+type syncTokenPolicy struct {
 	syncTokens map[string]syncToken
 }
 
-func NewSyncTokenPolicy() *SyncTokenPolicy {
-	return &SyncTokenPolicy{}
+func newSyncTokenPolicy() *syncTokenPolicy {
+	return &syncTokenPolicy{}
 }
 
 func parseToken(tok string) (syncToken, error) {
@@ -94,7 +94,7 @@ func parseToken(tok string) (syncToken, error) {
 	return syncToken{}, errors.New("didn't parse all the required parts")
 }
 
-func (policy *SyncTokenPolicy) AddToken(tok string) {
+func (policy *syncTokenPolicy) addToken(tok string) {
 	for _, t := range strings.Split(tok, ",") {
 		if st, err := parseToken(t); err == nil {
 			if existing := policy.syncTokens[st.id]; existing.seqNo < st.seqNo {
@@ -104,21 +104,20 @@ func (policy *SyncTokenPolicy) AddToken(tok string) {
 	}
 }
 
-const headerName = "Sync-Token"
-
-func (policy *SyncTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (policy *syncTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+	const syncTokenHeaderName = "Sync-Token"
 	var tokens []string
 	for _, st := range policy.syncTokens {
 		tokens = append(tokens, st.id)
 	}
 
-	req.Raw().Header[headerName] = tokens
+	req.Raw().Header[syncTokenHeaderName] = tokens
 
 	resp, err := req.Next()
 
 	if err != nil {
-		for _, st := range resp.Header[headerName] {
-			policy.AddToken(st)
+		for _, st := range resp.Header[syncTokenHeaderName] {
+			policy.addToken(st)
 		}
 	}
 

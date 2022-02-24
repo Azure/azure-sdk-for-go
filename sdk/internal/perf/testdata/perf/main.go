@@ -8,6 +8,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 func main() {
 	perf.Run(map[string]perf.PerfMethods{
 		"NoOpTest":  {Register: nil, New: NewNoOpTest},
-		"SleepTest": {Register: nil, New: NewSleepTest},
+		"SleepTest": {Register: sleepTestRegister, New: NewSleepTest},
 	})
 }

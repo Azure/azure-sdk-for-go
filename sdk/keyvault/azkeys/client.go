@@ -193,8 +193,9 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 }
 
 // CreateECKey can be used to create a new elliptic key curve in Azure Key Vault. If the
-// named key already exists, Azure Key Vault creates a new version of the key. It requires
-// the keys/create permission. Pass nil to use the default options.
+// named key already exists, Azure Key Vault creates a new version of the key.
+// EC key can be created on standard vaults, ECHSM can be created on Premium SKU Vaults or Managed HSMs.
+// It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := EC
 
@@ -254,8 +255,9 @@ func createOctKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 }
 
 // CreateOctKey can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates a new version of the key. It requires
-// the keys/create permission. Pass nil to use the default options.
+// If the named key already exists, Azure Key Vault creates a new version of the key.
+// An oct-HSM key can only be created with a Managed HSM vault.
+// It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateOctKeyOptions) (CreateOctKeyResponse, error) {
 	keyType := OctHSM
 
@@ -340,8 +342,9 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 }
 
 // CreateRSAKey can be used to create a new RSA key in Azure Key Vault. If the named key already
-//  exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-// Pass nil to use the default options.
+// exists, Azure Key Vault creates a new version of the key. // RSA key can be created on standard
+// vaults, RSAHSM can be created on Premium SKU Vaults or Managed HSMs.
+// It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := RSA
 

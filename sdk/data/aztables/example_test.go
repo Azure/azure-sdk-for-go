@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -209,7 +210,11 @@ func ExampleClient_SubmitTransaction() {
 
 	for _, subResp := range *resp.TransactionResponses {
 		if subResp.StatusCode != http.StatusAccepted {
-			fmt.Println(subResp.Body)
+			body, err := ioutil.ReadAll(subResp.Body)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(body))
 		}
 	}
 }
@@ -522,7 +527,7 @@ func ExampleServiceClient_ListTables() {
 		response := pager.PageResponse()
 		fmt.Printf("There are %d tables in page #%d\n", len(response.Tables), pageCount)
 		for _, table := range response.Tables {
-			fmt.Printf("\tTableName: %s\n", *table.TableName)
+			fmt.Printf("\tTableName: %s\n", *table.Name)
 		}
 		pageCount += 1
 	}

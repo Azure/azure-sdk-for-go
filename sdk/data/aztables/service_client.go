@@ -106,8 +106,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 }
 
 // Options for Client.Delete and ServiceClient.DeleteTable methods
-type DeleteTableOptions struct {
-}
+type DeleteTableOptions struct {}
 
 func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
@@ -207,7 +206,7 @@ type TableProperties struct {
 	ODataType *string `json:"odata.type,omitempty"`
 
 	// The name of the table.
-	TableName *string `json:"TableName,omitempty"`
+	Name *string `json:"TableName,omitempty"`
 }
 
 // Convets a generated TableResponseProperties to a ResponseProperties
@@ -217,7 +216,7 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 
 	return &TableProperties{
-		TableName:     g.TableName,
+		Name:     g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,
 		ODataType:     g.ODataType,

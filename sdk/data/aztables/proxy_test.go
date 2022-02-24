@@ -272,7 +272,7 @@ func clearAllTables(service ServiceClient) error {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		for _, v := range resp.Tables {
-			_, err := service.DeleteTable(ctx, *v.TableName, nil)
+			_, err := service.DeleteTable(ctx, *v.Name, nil)
 			if err != nil {
 				return err
 			}

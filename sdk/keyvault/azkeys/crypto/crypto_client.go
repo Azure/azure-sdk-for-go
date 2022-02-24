@@ -154,7 +154,7 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) Enc
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -222,7 +222,7 @@ func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) Dec
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -290,7 +290,7 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) Wra
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -358,7 +358,7 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse)
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -409,7 +409,7 @@ func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignRespo
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}

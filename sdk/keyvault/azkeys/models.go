@@ -157,7 +157,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		E:       i.E,
 		K:       i.K,
 		KeyOps:  i.KeyOps,
-		ID:   i.Kid,
+		ID:      i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
 		P:       i.P,
@@ -214,7 +214,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 
 	return &KeyItem{
 		Properties: keyPropertiesFromGenerated(i.Attributes),
-		ID:      i.Kid,
+		ID:         i.Kid,
 		Tags:       convertGeneratedMap(i.Tags),
 		Managed:    i.Managed,
 	}
@@ -292,7 +292,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		},
-		ID:   i.Kid,
+		ID:      i.Kid,
 		Tags:    convertGeneratedMap(i.Tags),
 		Managed: i.Managed,
 	}

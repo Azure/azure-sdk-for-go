@@ -136,7 +136,7 @@ func TestCreateOCTKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
+			resp, err := client.CreateOctKey(ctx, key, &CreateOctKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 

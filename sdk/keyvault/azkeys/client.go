@@ -212,8 +212,8 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 	return createECKeyResponseFromGenerated(resp), nil
 }
 
-// CreateOCTKeyOptions contains the optional parameters for the Client.CreateOCTKey method
-type CreateOCTKeyOptions struct {
+// CreateOctKeyOptions contains the optional parameters for the Client.CreateOCTKey method
+type CreateOctKeyOptions struct {
 	// Hardware Protected OCT Key
 	HardwareProtected bool
 
@@ -225,7 +225,7 @@ type CreateOCTKeyOptions struct {
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
-func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
 		KeySize: c.KeySize,
@@ -233,16 +233,16 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	}
 }
 
-// CreateOCTKeyResponse contains the response from method Client.CreateOCTKey.
-type CreateOCTKeyResponse struct {
+// CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
+type CreateOctKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // convert generated response to CreateOCTKeyResponse
-func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
-	return CreateOCTKeyResponse{
+func createOctKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
+	return CreateOctKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
@@ -253,24 +253,24 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 	}
 }
 
-// CreateOCTKey can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
+// CreateOctKey can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
 // If the named key already exists, Azure Key Vault creates a new version of the key. It requires
 // the keys/create permission. Pass nil to use the default options.
-func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
+func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateOctKeyOptions) (CreateOctKeyResponse, error) {
 	keyType := OctHSM
 
 	if options != nil && !options.HardwareProtected {
 		keyType = Oct
 	} else if options == nil {
-		options = &CreateOCTKeyOptions{}
+		options = &CreateOctKeyOptions{}
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
-		return CreateOCTKeyResponse{}, err
+		return CreateOctKeyResponse{}, err
 	}
 
-	return createOCTKeyResponseFromGenerated(resp), nil
+	return createOctKeyResponseFromGenerated(resp), nil
 }
 
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.

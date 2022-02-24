@@ -18,11 +18,12 @@ import (
 )
 
 func TestIncludeResponse(t *testing.T) {
-	ctx := IncludeResponse(context.Background())
+	ctx, respFn := WithCaptureResponse(context.Background())
 	require.NotNil(t, ctx)
 	raw := ctx.Value(shared.CtxIncludeResponseKey{})
 	_, ok := raw.(**http.Response)
 	require.Truef(t, ok, "unexpected type %T", raw)
+	require.Nil(t, respFn())
 }
 
 func TestIncludeResponsePolicy(t *testing.T) {
@@ -30,21 +31,14 @@ func TestIncludeResponsePolicy(t *testing.T) {
 	defer close()
 	// add a generic HTTP 200 response
 	srv.SetResponse()
-	// raw response policy is automatically added during pipeline construction
+	// include response policy is automatically added during pipeline construction
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	ctx := context.Background()
-	req, err := NewRequest(ctx, http.MethodGet, srv.URL())
+	ctxWithResp, respFn := WithCaptureResponse(context.Background())
+	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	require.NoError(t, err)
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.Nil(t, ResponseFromContext(ctx))
-	ctxWithResp := IncludeResponse(context.Background())
-	req, err = NewRequest(ctxWithResp, http.MethodGet, srv.URL())
-	require.NoError(t, err)
-	resp, err = pl.Do(req)
-	require.NoError(t, err)
-	rawResp := ResponseFromContext(ctxWithResp)
+	rawResp := respFn()
 	require.NotNil(t, rawResp)
 	require.Equal(t, rawResp, resp)
 }

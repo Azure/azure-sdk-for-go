@@ -27,19 +27,13 @@ func includeResponsePolicy(req *policy.Request) (*http.Response, error) {
 	return resp, err
 }
 
-// IncludeResponse applies the HTTP response retrieval annotation to the parent context.
-// Call runtime.ResponseFromContext() to retrieve the HTTP response from the context.
-func IncludeResponse(parent context.Context) context.Context {
-	var rawResp *http.Response
-	return context.WithValue(parent, shared.CtxIncludeResponseKey{}, &rawResp)
-}
-
-// ResponseFromContext retrieves the raw HTTP response from the specified context.
-// Disabled by default.  Use policy.IncludeResponse() to enable on the calling context.
-func ResponseFromContext(ctx context.Context) *http.Response {
-	if httpOutRaw := ctx.Value(shared.CtxIncludeResponseKey{}); httpOutRaw != nil {
-		httpOut := httpOutRaw.(**http.Response)
-		return *httpOut
+// WithCaptureResponse applies the HTTP response retrieval annotation to the parent context.
+// Call the returned function to retrieve the HTTP response after the request has completed.
+// The created context is NOT safe to use across multiple goroutines.
+func WithCaptureResponse(parent context.Context) (context.Context, func() *http.Response) {
+	var resp *http.Response
+	return context.WithValue(parent, shared.CtxIncludeResponseKey{}, &resp), func() *http.Response {
+		cap := &resp
+		return *cap
 	}
-	return nil
 }

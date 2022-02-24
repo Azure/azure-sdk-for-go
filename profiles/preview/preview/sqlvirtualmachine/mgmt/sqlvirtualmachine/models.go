@@ -12,7 +12,7 @@ package sqlvirtualmachine
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2017-03-01-preview/sqlvirtualmachine"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine"
 )
 
 const (
@@ -22,94 +22,145 @@ const (
 type BackupScheduleType = original.BackupScheduleType
 
 const (
-	Automated BackupScheduleType = original.Automated
-	Manual    BackupScheduleType = original.Manual
+	BackupScheduleTypeAutomated BackupScheduleType = original.BackupScheduleTypeAutomated
+	BackupScheduleTypeManual    BackupScheduleType = original.BackupScheduleTypeManual
 )
 
 type ClusterConfiguration = original.ClusterConfiguration
 
 const (
-	Domainful ClusterConfiguration = original.Domainful
+	ClusterConfigurationDomainful ClusterConfiguration = original.ClusterConfigurationDomainful
 )
 
 type ClusterManagerType = original.ClusterManagerType
 
 const (
-	WSFC ClusterManagerType = original.WSFC
+	ClusterManagerTypeWSFC ClusterManagerType = original.ClusterManagerTypeWSFC
+)
+
+type Commit = original.Commit
+
+const (
+	CommitASYNCHRONOUSCOMMIT Commit = original.CommitASYNCHRONOUSCOMMIT
+	CommitSYNCHRONOUSCOMMIT  Commit = original.CommitSYNCHRONOUSCOMMIT
 )
 
 type ConnectivityType = original.ConnectivityType
 
 const (
-	LOCAL   ConnectivityType = original.LOCAL
-	PRIVATE ConnectivityType = original.PRIVATE
-	PUBLIC  ConnectivityType = original.PUBLIC
+	ConnectivityTypeLOCAL   ConnectivityType = original.ConnectivityTypeLOCAL
+	ConnectivityTypePRIVATE ConnectivityType = original.ConnectivityTypePRIVATE
+	ConnectivityTypePUBLIC  ConnectivityType = original.ConnectivityTypePUBLIC
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday    DayOfWeek = original.Friday
-	Monday    DayOfWeek = original.Monday
-	Saturday  DayOfWeek = original.Saturday
-	Sunday    DayOfWeek = original.Sunday
-	Thursday  DayOfWeek = original.Thursday
-	Tuesday   DayOfWeek = original.Tuesday
-	Wednesday DayOfWeek = original.Wednesday
+	DayOfWeekFriday    DayOfWeek = original.DayOfWeekFriday
+	DayOfWeekMonday    DayOfWeek = original.DayOfWeekMonday
+	DayOfWeekSaturday  DayOfWeek = original.DayOfWeekSaturday
+	DayOfWeekSunday    DayOfWeek = original.DayOfWeekSunday
+	DayOfWeekThursday  DayOfWeek = original.DayOfWeekThursday
+	DayOfWeekTuesday   DayOfWeek = original.DayOfWeekTuesday
+	DayOfWeekWednesday DayOfWeek = original.DayOfWeekWednesday
+)
+
+type DaysOfWeek = original.DaysOfWeek
+
+const (
+	DaysOfWeekFriday    DaysOfWeek = original.DaysOfWeekFriday
+	DaysOfWeekMonday    DaysOfWeek = original.DaysOfWeekMonday
+	DaysOfWeekSaturday  DaysOfWeek = original.DaysOfWeekSaturday
+	DaysOfWeekSunday    DaysOfWeek = original.DaysOfWeekSunday
+	DaysOfWeekThursday  DaysOfWeek = original.DaysOfWeekThursday
+	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
+	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
 type DiskConfigurationType = original.DiskConfigurationType
 
 const (
-	ADD    DiskConfigurationType = original.ADD
-	EXTEND DiskConfigurationType = original.EXTEND
-	NEW    DiskConfigurationType = original.NEW
+	DiskConfigurationTypeADD    DiskConfigurationType = original.DiskConfigurationTypeADD
+	DiskConfigurationTypeEXTEND DiskConfigurationType = original.DiskConfigurationTypeEXTEND
+	DiskConfigurationTypeNEW    DiskConfigurationType = original.DiskConfigurationTypeNEW
+)
+
+type Failover = original.Failover
+
+const (
+	FailoverAUTOMATIC Failover = original.FailoverAUTOMATIC
+	FailoverMANUAL    Failover = original.FailoverMANUAL
 )
 
 type FullBackupFrequencyType = original.FullBackupFrequencyType
 
 const (
-	Daily  FullBackupFrequencyType = original.Daily
-	Weekly FullBackupFrequencyType = original.Weekly
+	FullBackupFrequencyTypeDaily  FullBackupFrequencyType = original.FullBackupFrequencyTypeDaily
+	FullBackupFrequencyTypeWeekly FullBackupFrequencyType = original.FullBackupFrequencyTypeWeekly
 )
 
 type IdentityType = original.IdentityType
 
 const (
-	SystemAssigned IdentityType = original.SystemAssigned
+	IdentityTypeNone           IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned IdentityType = original.IdentityTypeSystemAssigned
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	System OperationOrigin = original.System
-	User   OperationOrigin = original.User
+	OperationOriginSystem OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser   OperationOrigin = original.OperationOriginUser
+)
+
+type ReadableSecondary = original.ReadableSecondary
+
+const (
+	ReadableSecondaryALL      ReadableSecondary = original.ReadableSecondaryALL
+	ReadableSecondaryNO       ReadableSecondary = original.ReadableSecondaryNO
+	ReadableSecondaryREADONLY ReadableSecondary = original.ReadableSecondaryREADONLY
+)
+
+type Role = original.Role
+
+const (
+	RolePRIMARY   Role = original.RolePRIMARY
+	RoleSECONDARY Role = original.RoleSECONDARY
 )
 
 type SQLImageSku = original.SQLImageSku
 
 const (
-	Developer  SQLImageSku = original.Developer
-	Enterprise SQLImageSku = original.Enterprise
-	Express    SQLImageSku = original.Express
-	Standard   SQLImageSku = original.Standard
-	Web        SQLImageSku = original.Web
+	SQLImageSkuDeveloper  SQLImageSku = original.SQLImageSkuDeveloper
+	SQLImageSkuEnterprise SQLImageSku = original.SQLImageSkuEnterprise
+	SQLImageSkuExpress    SQLImageSku = original.SQLImageSkuExpress
+	SQLImageSkuStandard   SQLImageSku = original.SQLImageSkuStandard
+	SQLImageSkuWeb        SQLImageSku = original.SQLImageSkuWeb
 )
 
 type SQLManagementMode = original.SQLManagementMode
 
 const (
-	Full        SQLManagementMode = original.Full
-	LightWeight SQLManagementMode = original.LightWeight
-	NoAgent     SQLManagementMode = original.NoAgent
+	SQLManagementModeFull        SQLManagementMode = original.SQLManagementModeFull
+	SQLManagementModeLightWeight SQLManagementMode = original.SQLManagementModeLightWeight
+	SQLManagementModeNoAgent     SQLManagementMode = original.SQLManagementModeNoAgent
 )
 
 type SQLServerLicenseType = original.SQLServerLicenseType
 
 const (
-	AHUB SQLServerLicenseType = original.AHUB
-	DR   SQLServerLicenseType = original.DR
-	PAYG SQLServerLicenseType = original.PAYG
+	SQLServerLicenseTypeAHUB SQLServerLicenseType = original.SQLServerLicenseTypeAHUB
+	SQLServerLicenseTypeDR   SQLServerLicenseType = original.SQLServerLicenseTypeDR
+	SQLServerLicenseTypePAYG SQLServerLicenseType = original.SQLServerLicenseTypePAYG
 )
 
 type SQLVMGroupImageSku = original.SQLVMGroupImageSku
@@ -122,15 +173,15 @@ const (
 type SQLWorkloadType = original.SQLWorkloadType
 
 const (
-	DW      SQLWorkloadType = original.DW
-	GENERAL SQLWorkloadType = original.GENERAL
-	OLTP    SQLWorkloadType = original.OLTP
+	SQLWorkloadTypeDW      SQLWorkloadType = original.SQLWorkloadTypeDW
+	SQLWorkloadTypeGENERAL SQLWorkloadType = original.SQLWorkloadTypeGENERAL
+	SQLWorkloadTypeOLTP    SQLWorkloadType = original.SQLWorkloadTypeOLTP
 )
 
 type ScaleType = original.ScaleType
 
 const (
-	HA ScaleType = original.HA
+	ScaleTypeHA ScaleType = original.ScaleTypeHA
 )
 
 type StorageWorkloadType = original.StorageWorkloadType
@@ -142,6 +193,9 @@ const (
 )
 
 type AdditionalFeaturesServerConfigurations = original.AdditionalFeaturesServerConfigurations
+type AgConfiguration = original.AgConfiguration
+type AgReplica = original.AgReplica
+type AssessmentSettings = original.AssessmentSettings
 type AutoBackupSettings = original.AutoBackupSettings
 type AutoPatchingSettings = original.AutoPatchingSettings
 type AvailabilityGroupListener = original.AvailabilityGroupListener
@@ -180,16 +234,22 @@ type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
 type SQLConnectivityUpdateSettings = original.SQLConnectivityUpdateSettings
+type SQLInstanceSettings = original.SQLInstanceSettings
 type SQLStorageSettings = original.SQLStorageSettings
 type SQLStorageUpdateSettings = original.SQLStorageUpdateSettings
+type SQLTempDbSettings = original.SQLTempDbSettings
 type SQLVirtualMachine = original.SQLVirtualMachine
 type SQLVirtualMachinesClient = original.SQLVirtualMachinesClient
 type SQLVirtualMachinesCreateOrUpdateFutureType = original.SQLVirtualMachinesCreateOrUpdateFutureType
 type SQLVirtualMachinesDeleteFutureType = original.SQLVirtualMachinesDeleteFutureType
+type SQLVirtualMachinesRedeployFutureType = original.SQLVirtualMachinesRedeployFutureType
+type SQLVirtualMachinesStartAssessmentFutureType = original.SQLVirtualMachinesStartAssessmentFutureType
 type SQLVirtualMachinesUpdateFutureType = original.SQLVirtualMachinesUpdateFutureType
 type SQLWorkloadTypeUpdateSettings = original.SQLWorkloadTypeUpdateSettings
+type Schedule = original.Schedule
 type ServerConfigurationsManagementSettings = original.ServerConfigurationsManagementSettings
 type StorageConfigurationSettings = original.StorageConfigurationSettings
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type Update = original.Update
 type WsfcDomainCredentials = original.WsfcDomainCredentials
@@ -258,14 +318,26 @@ func PossibleClusterConfigurationValues() []ClusterConfiguration {
 func PossibleClusterManagerTypeValues() []ClusterManagerType {
 	return original.PossibleClusterManagerTypeValues()
 }
+func PossibleCommitValues() []Commit {
+	return original.PossibleCommitValues()
+}
 func PossibleConnectivityTypeValues() []ConnectivityType {
 	return original.PossibleConnectivityTypeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return original.PossibleDaysOfWeekValues()
+}
 func PossibleDiskConfigurationTypeValues() []DiskConfigurationType {
 	return original.PossibleDiskConfigurationTypeValues()
+}
+func PossibleFailoverValues() []Failover {
+	return original.PossibleFailoverValues()
 }
 func PossibleFullBackupFrequencyTypeValues() []FullBackupFrequencyType {
 	return original.PossibleFullBackupFrequencyTypeValues()
@@ -275,6 +347,12 @@ func PossibleIdentityTypeValues() []IdentityType {
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
+}
+func PossibleReadableSecondaryValues() []ReadableSecondary {
+	return original.PossibleReadableSecondaryValues()
+}
+func PossibleRoleValues() []Role {
+	return original.PossibleRoleValues()
 }
 func PossibleSQLImageSkuValues() []SQLImageSku {
 	return original.PossibleSQLImageSkuValues()

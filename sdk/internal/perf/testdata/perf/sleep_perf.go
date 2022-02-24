@@ -13,8 +13,8 @@ import (
 )
 
 type sleepTestOptions struct {
-	initialDelayMs int
-	instanceGrowthFactor float64
+	initialDelayMs        int
+	instanceGrowthFactor  float64
 	iterationGrowthFactor float64
 }
 
@@ -51,7 +51,7 @@ type sleepPerfTest struct {
 }
 
 func (g *globalSleepPerfTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	i := time.Duration(float64(sleepTestOpts.initialDelayMs) * math.Pow(sleepTestOpts.instanceGrowthFactor, float64(g.count))) * time.Millisecond
+	i := time.Duration(float64(sleepTestOpts.initialDelayMs)*math.Pow(sleepTestOpts.instanceGrowthFactor, float64(g.count))) * time.Millisecond
 	s := &sleepPerfTest{sleepInterval: i}
 	g.count += 1
 	return s, nil
@@ -59,7 +59,7 @@ func (g *globalSleepPerfTest) NewPerfTest(ctx context.Context, options *perf.Per
 
 func (s *sleepPerfTest) Run(ctx context.Context) error {
 	time.Sleep(s.sleepInterval)
-	s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds()) * sleepTestOpts.iterationGrowthFactor) * time.Nanosecond
+	s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds())*sleepTestOpts.iterationGrowthFactor) * time.Nanosecond
 	return nil
 }
 

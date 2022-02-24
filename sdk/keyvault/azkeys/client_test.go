@@ -123,9 +123,6 @@ func TestCreateECKey(t *testing.T) {
 func TestCreateOCTKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == REGULARTEST {
-				t.Skip("OCT Key is HSM only")
-			}
 			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
@@ -136,11 +133,16 @@ func TestCreateOCTKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
-			require.NoError(t, err)
-			require.NotNil(t, resp.Key)
+			resp, err := client.CreateOctKey(ctx, key, &CreateOctKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
 
-			cleanUpKey(t, client, key)
+			if testType == REGULARTEST {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.NotNil(t, resp.Key)
+
+				cleanUpKey(t, client, key)
+			}
 		})
 	}
 }

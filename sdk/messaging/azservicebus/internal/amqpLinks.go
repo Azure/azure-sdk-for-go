@@ -47,6 +47,10 @@ type AMQPLinks interface {
 	// are called. All functions will return `ErrLinksClosed`
 	Close(ctx context.Context, permanent bool) error
 
+	// CloseIfNeeded closes the links or connection if the error is recoverable.
+	// Use this if you don't want to recreate the connection/links at this point.
+	CloseIfNeeded(ctx context.Context, err error) recoveryKind
+
 	// ClosedPermanently is true if AMQPLinks.Close(ctx, true) has been called.
 	ClosedPermanently() bool
 }
@@ -324,6 +328,36 @@ func (l *AMQPLinksImpl) Close(ctx context.Context, permanent bool) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	return l.closeWithoutLocking(ctx, permanent)
+}
+
+// CloseIfNeeded closes the links or connection if the error is recoverable.
+// Use this if you want to make it so the _next_ call on your Sender/Receiver
+// eats the cost of recovery, instead of doing it immediately. This is useful
+// if you're trying to exit out of a function quickly but still need to react
+// to a returned error.
+func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
+	rk := GetRecoveryKind(err)
+
+	switch rk {
+	case RecoveryKindLink:
+		_ = l.closeWithoutLocking(ctx, false)
+		return rk
+	case RecoveryKindConn:
+		_ = l.ns.Close(ctx)
+		_ = l.closeWithoutLocking(ctx, false)
+		return rk
+	case RecoveryKindFatal:
+		// it's not entirely clear what the right cleanup would be here, so we leave that up to the
+		// calling application.
+		return rk
+	case RecoveryKindNone:
+		return rk
+	default:
+		panic(fmt.Sprintf("Unhandled recovery kind %s for error %s", rk, err.Error()))
+	}
 }
 
 // initWithoutLocking will create a new link, unconditionally.

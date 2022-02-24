@@ -108,6 +108,10 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
 }
 
 func GetRecoveryKind(err error) recoveryKind {
+	if err == nil {
+		return RecoveryKindNone
+	}
+
 	if IsCancelError(err) {
 		return RecoveryKindFatal
 	}

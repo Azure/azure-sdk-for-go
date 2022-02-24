@@ -934,66 +934,6 @@ func TestDeploymentsClient_GetAtManagementGroupScope(t *testing.T) {
 	require.Equal(t, deploymentName, *getResp.Name)
 }
 
-func TestDeploymentsClient_CancelAtManagementGroupScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create management group
-	managementGroupsClient := armmanagementgroups.NewClient(cred, opt)
-	groupName := "20000000-0001-0000-0000-000000000123456"
-	mgPoller, err := managementGroupsClient.BeginCreateOrUpdate(
-		ctx,
-		groupName,
-		armmanagementgroups.CreateManagementGroupRequest{
-			Name: to.StringPtr(groupName),
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, groupName, *mgResp.Name)
-	defer cleanupManagement(t, managementGroupsClient, groupName)
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtManagementGroupScope(
-		ctx,
-		groupName,
-		deploymentName,
-		armresources.ScopedDeployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// cancel deployment
-	// cannot be cancelled because it has provisioning state 'Succeeded'
-	_, err = deploymentsClient.CancelAtManagementGroupScope(ctx, groupName, deploymentName, nil)
-	require.Error(t, err)
-	//require.NoError(t, err)
-	//require.Equal(t, 200, cancelResp.RawResponse.StatusCode)
-}
-
 func TestDeploymentsClient_BeginValidateAtManagementGroupScope(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -1004,7 +944,7 @@ func TestDeploymentsClient_BeginValidateAtManagementGroupScope(t *testing.T) {
 
 	// create management group
 	managementGroupsClient := armmanagementgroups.NewClient(cred, opt)
-	groupName := "20000000-0001-0000-0000-000000000123456"
+	groupName, _ := createRandomName(t, "mg")
 	mgPoller, err := managementGroupsClient.BeginCreateOrUpdate(
 		ctx,
 		groupName,
@@ -1206,41 +1146,6 @@ func TestDeploymentsClient_CheckExistenceAtTenantScope(t *testing.T) {
 	require.False(t, resp.Success)
 }
 
-func TestDeploymentsClient_BeginCreateOrUpdateAtTenantScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtTenantScope(
-		ctx,
-		deploymentName,
-		armresources.ScopedDeployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-}
-
 func TestDeploymentsClient_ListAtTenantScope(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -1278,6 +1183,431 @@ func TestDeploymentsClient_ListAtTenantScope(t *testing.T) {
 	// list deployment
 	listResp := deploymentsClient.ListAtTenantScope(nil)
 	require.NoError(t, listResp.Err())
+}
+
+func TestDeploymentsClient_CheckExistenceAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// check deployment existence
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "dep")
+	require.NoError(t, err)
+	resp, err := deploymentsClient.CheckExistenceAtSubscriptionScope(ctx, deploymentName, nil)
+	require.NoError(t, err)
+	require.False(t, resp.Success)
+}
+
+func TestDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+}
+
+func TestDeploymentsClient_ListAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// list deployment
+	listResp := deploymentsClient.ListAtSubscriptionScope(nil)
+	require.True(t, listResp.NextPage(ctx))
+}
+
+func TestDeploymentsClient_GetAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// get deployment
+	getResp, err := deploymentsClient.GetAtSubscriptionScope(ctx, deploymentName, nil)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *getResp.Name)
+}
+
+func TestDeploymentsClient_BeginWhatIfAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// what if deployment
+	whatIfPoller, err := deploymentsClient.BeginWhatIfAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.DeploymentWhatIf{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentWhatIfProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	whatIfResp, err := whatIfPoller.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, 200, whatIfResp.RawResponse.StatusCode)
+}
+
+func TestDeploymentsClient_BeginValidateAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// validate deployment
+	validatePoller, err := deploymentsClient.BeginValidateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	validateResp, err := validatePoller.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, 200, validateResp.RawResponse.StatusCode)
+}
+
+func TestDeploymentsClient_ExportTemplateAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// export template deployment
+	exportResp, err := deploymentsClient.ExportTemplateAtSubscriptionScope(ctx, deploymentName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, exportResp.Template)
+}
+
+func TestDeploymentsClient_BeginDeleteAtSubscriptionScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
+		ctx,
+		deploymentName,
+		armresources.Deployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// delete deployment
+	delPoller, err := deploymentsClient.BeginDeleteAtSubscriptionScope(ctx, deploymentName, nil)
+	require.NoError(t, err)
+	delResp, err := delPoller.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, 204, delResp.RawResponse.StatusCode)
+}
+
+/* not have authorization to perform action
+func TestDeploymentsClient_CancelAtManagementGroupScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create management group
+	managementGroupsClient := armmanagementgroups.NewClient(cred, opt)
+	groupName := "20000000-0001-0000-0000-000000000123456"
+	mgPoller, err := managementGroupsClient.BeginCreateOrUpdate(
+		ctx,
+		groupName,
+		armmanagementgroups.CreateManagementGroupRequest{
+			Name: to.StringPtr(groupName),
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, groupName, *mgResp.Name)
+	defer cleanupManagement(t, managementGroupsClient, groupName)
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtManagementGroupScope(
+		ctx,
+		*mgResp.ID,
+		deploymentName,
+		armresources.ScopedDeployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
+
+	// cancel deployment
+	// cannot be cancelled because it has provisioning state 'Succeeded'
+	_, err = deploymentsClient.CancelAtManagementGroupScope(ctx, groupName, deploymentName, nil)
+	require.Error(t, err)
+	//require.NoError(t, err)
+	//require.Equal(t, 200, cancelResp.RawResponse.StatusCode)
+}
+
+func TestDeploymentsClient_BeginCreateOrUpdateAtTenantScope(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
+
+	// create deployment
+	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	deploymentName, err := createRandomName(t, "rs")
+	require.NoError(t, err)
+	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtTenantScope(
+		ctx,
+		deploymentName,
+		armresources.ScopedDeployment{
+			Location: to.StringPtr("West US"),
+			Properties: &armresources.DeploymentProperties{
+				Mode: armresources.DeploymentModeIncremental.ToPtr(),
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+				ParametersLink: &armresources.ParametersLink{
+					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
+				},
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, deploymentName, *resp.Name)
 }
 
 func TestDeploymentsClient_GetAtTenantScope(t *testing.T) {
@@ -1558,195 +1888,6 @@ func TestDeploymentsClient_BeginDeleteAtTenantScope(t *testing.T) {
 	require.Equal(t, 200, delResp.RawResponse.StatusCode)
 }
 
-func TestDeploymentsClient_CheckExistenceAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// check deployment existence
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "dep")
-	require.NoError(t, err)
-	resp, err := deploymentsClient.CheckExistenceAtSubscriptionScope(ctx, deploymentName, nil)
-	require.NoError(t, err)
-	require.False(t, resp.Success)
-}
-
-func TestDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-}
-
-func TestDeploymentsClient_ListAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// list deployment
-	listResp := deploymentsClient.ListAtSubscriptionScope(nil)
-	require.True(t, listResp.NextPage(ctx))
-}
-
-func TestDeploymentsClient_GetAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// get deployment
-	getResp, err := deploymentsClient.GetAtSubscriptionScope(ctx, deploymentName, nil)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *getResp.Name)
-}
-
-func TestDeploymentsClient_BeginWhatIfAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// what if deployment
-	whatIfPoller, err := deploymentsClient.BeginWhatIfAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.DeploymentWhatIf{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentWhatIfProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	whatIfResp, err := whatIfPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, 200, whatIfResp.RawResponse.StatusCode)
-}
-
 func TestDeploymentsClient_CancelAtSubscriptionScope(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -1786,143 +1927,4 @@ func TestDeploymentsClient_CancelAtSubscriptionScope(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 200, cancelResp.RawResponse.StatusCode)
 }
-
-func TestDeploymentsClient_BeginValidateAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// validate deployment
-	validatePoller, err := deploymentsClient.BeginValidateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	validateResp, err := validatePoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, 200, validateResp.RawResponse.StatusCode)
-}
-
-func TestDeploymentsClient_ExportTemplateAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// export template deployment
-	exportResp, err := deploymentsClient.ExportTemplateAtSubscriptionScope(ctx, deploymentName, nil)
-	require.NoError(t, err)
-	require.NotNil(t, exportResp.Template)
-}
-
-func TestDeploymentsClient_BeginDeleteAtSubscriptionScope(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create deployment
-	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
-		ctx,
-		deploymentName,
-		armresources.Deployment{
-			Location: to.StringPtr("West US"),
-			Properties: &armresources.DeploymentProperties{
-				Mode: armresources.DeploymentModeIncremental.ToPtr(),
-				TemplateLink: &armresources.TemplateLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-				ParametersLink: &armresources.ParametersLink{
-					URI: to.StringPtr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"),
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
-
-	// delete deployment
-	delPoller, err := deploymentsClient.BeginDeleteAtSubscriptionScope(ctx, deploymentName, nil)
-	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, 204, delResp.RawResponse.StatusCode)
-}
+*/

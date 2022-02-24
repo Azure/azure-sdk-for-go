@@ -12,7 +12,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -20,17 +20,17 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 04:04:10 GMT",
+        "Date": "Thu, 24 Feb 2022 03:28:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "cdfb6611-bc66-40bd-b3d9-3964c4667536",
-        "x-ms-ratelimit-remaining-subscription-writes": "1150",
-        "x-ms-request-id": "cdfb6611-bc66-40bd-b3d9-3964c4667536",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040410Z:cdfb6611-bc66-40bd-b3d9-3964c4667536"
+        "x-ms-correlation-request-id": "8f145264-f0f4-422b-88b8-5edc4b1747b6",
+        "x-ms-ratelimit-remaining-subscription-writes": "1118",
+        "x-ms-request-id": "8f145264-f0f4-422b-88b8-5edc4b1747b6",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T032813Z:8f145264-f0f4-422b-88b8-5edc4b1747b6"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608",
@@ -53,7 +53,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -62,16 +62,16 @@
         "Content-Encoding": "gzip",
         "Content-Length": "11715",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 04:04:10 GMT",
+        "Date": "Thu, 24 Feb 2022 03:28:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "a2c5d603-4b54-483f-873a-ceeb74a1c6ea",
-        "x-ms-ratelimit-remaining-subscription-reads": "11924",
-        "x-ms-request-id": "a2c5d603-4b54-483f-873a-ceeb74a1c6ea",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040411Z:a2c5d603-4b54-483f-873a-ceeb74a1c6ea"
+        "x-ms-correlation-request-id": "abcbd955-1a3a-4bee-868c-7ce1ae464f2d",
+        "x-ms-ratelimit-remaining-subscription-reads": "11853",
+        "x-ms-request-id": "abcbd955-1a3a-4bee-868c-7ce1ae464f2d",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T032814Z:abcbd955-1a3a-4bee-868c-7ce1ae464f2d"
       },
       "ResponseBody": {
         "value": [
@@ -80,7 +80,7 @@
             "tagName": "tag1",
             "count": {
               "type": "Total",
-              "value": 3
+              "value": 4
             },
             "values": [
               {
@@ -88,7 +88,7 @@
                 "tagValue": "value1",
                 "count": {
                   "type": "Total",
-                  "value": 3
+                  "value": 4
                 }
               }
             ]
@@ -116,7 +116,7 @@
             "tagName": "Creator",
             "count": {
               "type": "Total",
-              "value": 19
+              "value": 16
             },
             "values": [
               {
@@ -124,7 +124,7 @@
                 "tagValue": "Automatically added by NRMS Azure Policy",
                 "count": {
                   "type": "Total",
-                  "value": 19
+                  "value": 16
                 }
               }
             ]
@@ -134,7 +134,7 @@
             "tagName": "NRMS-Info",
             "count": {
               "type": "Total",
-              "value": 19
+              "value": 16
             },
             "values": [
               {
@@ -142,7 +142,7 @@
                 "tagValue": "http://aka.ms/nrms",
                 "count": {
                   "type": "Total",
-                  "value": 19
+                  "value": 16
                 }
               }
             ]
@@ -152,7 +152,7 @@
             "tagName": "NRMS-Version",
             "count": {
               "type": "Total",
-              "value": 19
+              "value": 16
             },
             "values": [
               {
@@ -160,7 +160,7 @@
                 "tagValue": "2019-03-20",
                 "count": {
                   "type": "Total",
-                  "value": 19
+                  "value": 16
                 }
               }
             ]

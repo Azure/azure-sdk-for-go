@@ -13,7 +13,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "21",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "location": "westus"
@@ -23,15 +23,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "243",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:54:15 GMT",
+        "Date": "Thu, 24 Feb 2022 03:18:18 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "e7b2506b-43cb-41f7-8de6-8e267db04a61",
-        "x-ms-ratelimit-remaining-subscription-writes": "1182",
-        "x-ms-request-id": "e7b2506b-43cb-41f7-8de6-8e267db04a61",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035416Z:e7b2506b-43cb-41f7-8de6-8e267db04a61"
+        "x-ms-correlation-request-id": "cb227e85-b671-462e-a2ff-0ae83ce66e01",
+        "x-ms-ratelimit-remaining-subscription-writes": "1150",
+        "x-ms-request-id": "cb227e85-b671-462e-a2ff-0ae83ce66e01",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031819Z:cb227e85-b671-462e-a2ff-0ae83ce66e01"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-check23634536558",
@@ -54,24 +54,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 15 Feb 2022 03:55:11 GMT",
+        "Date": "Thu, 24 Feb 2022 03:19:13 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1URVNUUkc6MkRDSEVDSzIzNjM0NTM2NTU4LVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "6dd9d941-80bd-4014-898f-273562b0c145",
-        "x-ms-ratelimit-remaining-subscription-deletes": "14990",
-        "x-ms-request-id": "6dd9d941-80bd-4014-898f-273562b0c145",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035511Z:6dd9d941-80bd-4014-898f-273562b0c145"
+        "x-ms-correlation-request-id": "e108b63f-fd9c-499b-8a56-c9669f29c2fb",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14971",
+        "x-ms-request-id": "e108b63f-fd9c-499b-8a56-c9669f29c2fb",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031914Z:e108b63f-fd9c-499b-8a56-c9669f29c2fb"
       },
       "ResponseBody": null
     }

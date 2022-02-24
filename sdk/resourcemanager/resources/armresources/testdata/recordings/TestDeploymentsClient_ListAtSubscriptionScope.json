@@ -13,7 +13,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "330",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "location": "West US",
@@ -29,21 +29,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585567098858168677?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585559344723733562?api-version=2021-04-01",
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:50:03 GMT",
+        "Date": "Thu, 24 Feb 2022 03:13:35 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "accc5356-bf5e-4da9-b39d-b519f3b6d8b3",
-        "x-ms-ratelimit-remaining-subscription-writes": "1198",
-        "x-ms-request-id": "accc5356-bf5e-4da9-b39d-b519f3b6d8b3",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035004Z:accc5356-bf5e-4da9-b39d-b519f3b6d8b3"
+        "x-ms-correlation-request-id": "8f3aad47-1a70-44db-8c68-08f83c581ce7",
+        "x-ms-ratelimit-remaining-subscription-writes": "1165",
+        "x-ms-request-id": "8f3aad47-1a70-44db-8c68-08f83c581ce7",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031335Z:8f3aad47-1a70-44db-8c68-08f83c581ce7"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875",
@@ -62,59 +62,25 @@
           "parameters": {},
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-02-15T03:50:03.0014882Z",
-          "duration": "PT0.0004298S",
-          "correlationId": "accc5356-bf5e-4da9-b39d-b519f3b6d8b3",
+          "timestamp": "2022-02-24T03:13:34.9637421Z",
+          "duration": "PT0.0009206S",
+          "correlationId": "8f3aad47-1a70-44db-8c68-08f83c581ce7",
           "providers": [],
           "dependencies": []
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585567098858168677?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585559344723733562?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585567098858168677?api-version=2021-04-01",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585559344723733562?api-version=2021-04-01",
         ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "21",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:50:04 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "83a00e99-b742-4437-a14e-34d13d23f51b",
-        "x-ms-ratelimit-remaining-subscription-reads": "11993",
-        "x-ms-request-id": "83a00e99-b742-4437-a14e-34d13d23f51b",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035004Z:83a00e99-b742-4437-a14e-34d13d23f51b"
-      },
-      "ResponseBody": {
-        "status": "Accepted"
-      }
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585567098858168677?api-version=2021-04-01",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875/operationStatuses/08585567098858168677?api-version=2021-04-01",
-        ":scheme": "https",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -123,16 +89,16 @@
         "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:50:14 GMT",
+        "Date": "Thu, 24 Feb 2022 03:13:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "7fda4d0a-5e0e-4c55-965f-48d89b39e7bf",
-        "x-ms-ratelimit-remaining-subscription-reads": "11992",
-        "x-ms-request-id": "7fda4d0a-5e0e-4c55-965f-48d89b39e7bf",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035015Z:7fda4d0a-5e0e-4c55-965f-48d89b39e7bf"
+        "x-ms-correlation-request-id": "06fdb309-6e27-4e57-9e4f-730cd888f279",
+        "x-ms-ratelimit-remaining-subscription-reads": "11923",
+        "x-ms-request-id": "06fdb309-6e27-4e57-9e4f-730cd888f279",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031336Z:06fdb309-6e27-4e57-9e4f-730cd888f279"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -148,7 +114,7 @@
         ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -157,16 +123,16 @@
         "Content-Encoding": "gzip",
         "Content-Length": "806",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:50:15 GMT",
+        "Date": "Thu, 24 Feb 2022 03:13:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "14014ccc-5fe2-42d2-a551-f6250e66924f",
-        "x-ms-ratelimit-remaining-subscription-reads": "11991",
-        "x-ms-request-id": "14014ccc-5fe2-42d2-a551-f6250e66924f",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035015Z:14014ccc-5fe2-42d2-a551-f6250e66924f"
+        "x-ms-correlation-request-id": "b4817331-9667-4b91-b619-272c345a8046",
+        "x-ms-ratelimit-remaining-subscription-reads": "11922",
+        "x-ms-request-id": "b4817331-9667-4b91-b619-272c345a8046",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031337Z:b4817331-9667-4b91-b619-272c345a8046"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs459496875",
@@ -185,9 +151,9 @@
           "parameters": {},
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-02-15T03:50:05.8611786Z",
-          "duration": "PT2.8601202S",
-          "correlationId": "accc5356-bf5e-4da9-b39d-b519f3b6d8b3",
+          "timestamp": "2022-02-24T03:13:36.1785638Z",
+          "duration": "PT1.2157423S",
+          "correlationId": "8f3aad47-1a70-44db-8c68-08f83c581ce7",
           "providers": [],
           "dependencies": [],
           "outputs": {},
@@ -206,7 +172,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -214,20 +180,983 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 03:50:18 GMT",
+        "Date": "Thu, 24 Feb 2022 03:13:39 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "55266b11-e129-43bb-b1c2-7d301c861177",
-        "x-ms-ratelimit-remaining-subscription-reads": "11990",
-        "x-ms-request-id": "55266b11-e129-43bb-b1c2-7d301c861177",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T035019Z:55266b11-e129-43bb-b1c2-7d301c861177"
+        "x-ms-correlation-request-id": "104a83c8-78ea-4534-ba6e-f57a470992bd",
+        "x-ms-ratelimit-remaining-subscription-reads": "11921",
+        "x-ms-request-id": "104a83c8-78ea-4534-ba6e-f57a470992bd",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T031340Z:104a83c8-78ea-4534-ba6e-f57a470992bd"
       },
       "ResponseBody": {
         "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
+            "name": "deployGetResourceProperties-grao7txirj5iy",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "11928146704897767725",
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-17T08:30:01.524398Z",
+              "duration": "PT0.4214828S",
+              "correlationId": "8c52c52b-d70c-4997-9045-3a7b3beac1b5",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {
+                "resource": {
+                  "type": "Object",
+                  "value": {
+                    "apiVersion": "2019-07-01",
+                    "location": "eastus",
+                    "sku": {
+                      "name": "Basic_A0",
+                      "tier": "Basic",
+                      "capacity": 1
+                    },
+                    "tags": {
+                      "azsecpack": "nonprod",
+                      "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
+                    },
+                    "properties": {
+                      "singlePlacementGroup": true,
+                      "upgradePolicy": {
+                        "mode": "Manual",
+                        "automaticOSUpgradePolicy": {
+                          "enableAutomaticOSUpgrade": false,
+                          "disableAutomaticRollback": false
+                        }
+                      },
+                      "virtualMachineProfile": {
+                        "osProfile": {
+                          "computerNamePrefix": "vmss",
+                          "adminUsername": "sample-user",
+                          "windowsConfiguration": {
+                            "provisionVMAgent": true,
+                            "enableAutomaticUpdates": true
+                          },
+                          "secrets": [],
+                          "allowExtensionOperations": true,
+                          "requireGuestProvisionSignal": true
+                        },
+                        "storageProfile": {
+                          "osDisk": {
+                            "osType": "Windows",
+                            "createOption": "FromImage",
+                            "caching": "None",
+                            "managedDisk": {
+                              "storageAccountType": "Standard_LRS"
+                            },
+                            "diskSizeGB": 127
+                          },
+                          "imageReference": {
+                            "publisher": "MicrosoftWindowsServer",
+                            "offer": "WindowsServer",
+                            "sku": "2019-Datacenter",
+                            "version": "latest"
+                          }
+                        },
+                        "networkProfile": {
+                          "networkInterfaceConfigurations": [
+                            {
+                              "name": "vmss2029024728",
+                              "properties": {
+                                "primary": true,
+                                "enableAcceleratedNetworking": false,
+                                "dnsSettings": {
+                                  "dnsServers": []
+                                },
+                                "enableIPForwarding": true,
+                                "ipConfigurations": [
+                                  {
+                                    "name": "vmss2029024728",
+                                    "properties": {
+                                      "subnet": {
+                                        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Network/virtualNetworks/network2029024728/subnets/subnet2029024728"
+                                      },
+                                      "privateIPAddressVersion": "IPv4"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "extensionProfile": {
+                          "extensions": [
+                            {
+                              "name": "Microsoft.Azure.Security.AntimalwareSignature.AntimalwareConfiguration",
+                              "properties": {
+                                "autoUpgradeMinorVersion": true,
+                                "enableAutomaticUpgrade": true,
+                                "publisher": "Microsoft.Azure.Security.AntimalwareSignature",
+                                "type": "AntimalwareConfiguration",
+                                "typeHandlerVersion": "2.0",
+                                "settings": {}
+                              }
+                            },
+                            {
+                              "name": "Microsoft.Azure.Geneva.GenevaMonitoring",
+                              "properties": {
+                                "autoUpgradeMinorVersion": true,
+                                "enableAutomaticUpgrade": true,
+                                "publisher": "Microsoft.Azure.Geneva",
+                                "type": "GenevaMonitoring",
+                                "typeHandlerVersion": "2.0",
+                                "settings": {}
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "provisioningState": "Succeeded",
+                      "overprovision": false,
+                      "doNotRunExtensionsOnOverprovisionedVMs": false,
+                      "uniqueId": "7dcfdabf-deb4-4ea1-8fae-94cf6f52fa11"
+                    },
+                    "condition": true,
+                    "deploymentResourceLineInfo": {
+                      "lineNumber": 1,
+                      "linePosition": 2822
+                    },
+                    "existing": false,
+                    "isConditionTrue": true,
+                    "subscriptionId": "92f95d8f-3c67-4124-91c7-8cf07cdbf241",
+                    "resourceGroupName": "createVMSS2029024728",
+                    "scope": "",
+                    "resourceId": "Microsoft.Compute/virtualMachineScaleSets/vmss2029024728",
+                    "referenceApiVersion": "2019-07-01",
+                    "isTemplateResource": false,
+                    "isAction": false,
+                    "provisioningOperation": "Read"
+                  }
+                }
+              },
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_9414678188510279951",
+            "name": "PolicyDeployment_9414678188510279951",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "12957040454302177446",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": "createVMSS2029024728"
+                },
+                "location": {
+                  "type": "String",
+                  "value": "eastus"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vmss2029024728"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:30:29.2410885Z",
+              "duration": "PT13M53.7151667S",
+              "correlationId": "8c52c52b-d70c-4997-9045-3a7b3beac1b5",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-grao7txirj5iy"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-grao7txirj5iy"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2029024728",
+                      "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
+                      "resourceName": "vmss2029024728",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-grao7txirj5iy"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-grao7txirj5iy"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-grao7txirj5iy"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Resources/deployments/deployAddUAName-grao7txirj5iy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-grao7txirj5iy"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "ResourceGroupBeingDeleted",
+                    "message": "The resource group \u0027createVMSS2029024728\u0027 is in deprovisioning state and cannot perform this operation."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_2832967897701647884",
+            "name": "PolicyDeployment_2832967897701647884",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "2422177615728575126",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": ""
+                },
+                "location": {
+                  "type": "String",
+                  "value": "westus2"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vm2960129634"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:16:42.9125096Z",
+              "duration": "PT28.4489583S",
+              "correlationId": "8d2f3c1c-629d-4006-886e-a2c57242b893",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-h23jen4yqaffy"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-h23jen4yqaffy"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm2960129634",
+                      "resourceType": "Microsoft.Compute/virtualMachines",
+                      "resourceName": "vm2960129634",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-h23jen4yqaffy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-h23jen4yqaffy"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-h23jen4yqaffy"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-h23jen4yqaffy",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-h23jen4yqaffy"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-h23jen4yqaffy",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-h23jen4yqaffy"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "InvalidResourceNamespace",
+                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_12162663922102033944",
+            "name": "PolicyDeployment_12162663922102033944",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "2422177615728575126",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": ""
+                },
+                "location": {
+                  "type": "String",
+                  "value": "westus2"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vm2472196970"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:12:00.1255694Z",
+              "duration": "PT26.3988811S",
+              "correlationId": "7b6fa787-e54f-4ca0-acb3-ec70f9214baf",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-s6fevybg3y626"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-s6fevybg3y626"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm2472196970",
+                      "resourceType": "Microsoft.Compute/virtualMachines",
+                      "resourceName": "vm2472196970",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-s6fevybg3y626",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-s6fevybg3y626"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-s6fevybg3y626"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-s6fevybg3y626",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-s6fevybg3y626"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-s6fevybg3y626",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-s6fevybg3y626"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "InvalidResourceNamespace",
+                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_4024816518872810487",
+            "name": "PolicyDeployment_4024816518872810487",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "2422177615728575126",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": ""
+                },
+                "location": {
+                  "type": "String",
+                  "value": "westus2"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vm1871597066"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:10:41.3649057Z",
+              "duration": "PT27.5898816S",
+              "correlationId": "4829e719-e22a-4642-9dcc-5d9069a79169",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-jcz6w2xxrxpay"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-jcz6w2xxrxpay"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm1871597066",
+                      "resourceType": "Microsoft.Compute/virtualMachines",
+                      "resourceName": "vm1871597066",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-jcz6w2xxrxpay",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-jcz6w2xxrxpay"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-jcz6w2xxrxpay"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-jcz6w2xxrxpay",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-jcz6w2xxrxpay"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-jcz6w2xxrxpay",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-jcz6w2xxrxpay"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "InvalidResourceNamespace",
+                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_4482395336996744046",
+            "name": "PolicyDeployment_4482395336996744046",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "2422177615728575126",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": ""
+                },
+                "location": {
+                  "type": "String",
+                  "value": "westus2"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vm559849312"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:07:57.6928509Z",
+              "duration": "PT30.2598155S",
+              "correlationId": "a38be133-e3cb-4d5e-88a1-ad8353907afb",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-ru4tkycoglac4"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-ru4tkycoglac4"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm559849312",
+                      "resourceType": "Microsoft.Compute/virtualMachines",
+                      "resourceName": "vm559849312",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-ru4tkycoglac4",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-ru4tkycoglac4"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-ru4tkycoglac4"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-ru4tkycoglac4",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-ru4tkycoglac4"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-ru4tkycoglac4",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-ru4tkycoglac4"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "InvalidResourceNamespace",
+                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_2522615752694177622",
+            "name": "PolicyDeployment_2522615752694177622",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "2422177615728575126",
+              "parameters": {
+                "resourceGroup": {
+                  "type": "String",
+                  "value": ""
+                },
+                "location": {
+                  "type": "String",
+                  "value": "westus2"
+                },
+                "resourceName": {
+                  "type": "String",
+                  "value": "vm741214678"
+                },
+                "azSecPackAutoConfigReadyTagValue": {
+                  "type": "Bool",
+                  "value": false
+                }
+              },
+              "mode": "Incremental",
+              "provisioningState": "Failed",
+              "timestamp": "2022-02-17T08:07:03.9224558Z",
+              "duration": "PT26.0312013S",
+              "correlationId": "91e12372-5deb-4ad1-b020-0dc916360f13",
+              "providers": [
+                {
+                  "namespace": "Microsoft.Resources",
+                  "resourceTypes": [
+                    {
+                      "resourceType": "resourceGroups",
+                      "locations": [
+                        "eastus"
+                      ]
+                    },
+                    {
+                      "resourceType": "deployments",
+                      "locations": [
+                        null,
+                        "eastus"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployUAName-paaclmwl2n6be"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-paaclmwl2n6be"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm741214678",
+                      "resourceType": "Microsoft.Compute/virtualMachines",
+                      "resourceName": "vm741214678",
+                      "apiVersion": "2019-07-01"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-paaclmwl2n6be",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployGetResourceProperties-paaclmwl2n6be"
+                },
+                {
+                  "dependsOn": [
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+                      "resourceType": "Microsoft.Resources/resourceGroups",
+                      "resourceName": "AzSecPackAutoConfigRG"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployUAName-paaclmwl2n6be"
+                    },
+                    {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-paaclmwl2n6be",
+                      "resourceType": "Microsoft.Resources/deployments",
+                      "resourceName": "deployGetResourceProperties-paaclmwl2n6be"
+                    }
+                  ],
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-paaclmwl2n6be",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "deployAddUAName-paaclmwl2n6be"
+                }
+              ],
+              "error": {
+                "code": "DeploymentFailed",
+                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
+                "details": [
+                  {
+                    "code": "InvalidResourceNamespace",
+                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-h23jen4yqaffy",
+            "name": "deployGetResourceProperties-h23jen4yqaffy",
+            "type": "Microsoft.Resources/deployments",
+            "location": "eastus",
+            "properties": {
+              "templateHash": "12385795167846861614",
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-15T06:46:25.0679281Z",
+              "duration": "PT0.3530837S",
+              "correlationId": "31dc7476-cd94-4781-81ac-2aefa74c6782",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {
+                "resource": {
+                  "type": "Object",
+                  "value": {
+                    "apiVersion": "2019-07-01",
+                    "location": "westus2",
+                    "tags": {
+                      "azsecpack": "nonprod",
+                      "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
+                    },
+                    "properties": {
+                      "vmId": "2f45b76f-85af-495b-9810-43cc04333e3a",
+                      "hardwareProfile": {
+                        "vmSize": "Standard_F2s"
+                      },
+                      "storageProfile": {
+                        "imageReference": {
+                          "publisher": "MicrosoftWindowsServer",
+                          "offer": "WindowsServer",
+                          "sku": "2019-Datacenter",
+                          "version": "latest",
+                          "exactVersion": "17763.3128.220202"
+                        },
+                        "osDisk": {
+                          "osType": "Windows",
+                          "name": "disk2960129634",
+                          "createOption": "FromImage",
+                          "caching": "ReadWrite",
+                          "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/updateVM2960129634/providers/Microsoft.Compute/disks/disk2960129634"
+                          },
+                          "diskSizeGB": 127
+                        },
+                        "dataDisks": []
+                      },
+                      "osProfile": {
+                        "computerName": "sample-compute",
+                        "adminUsername": "sample-user",
+                        "windowsConfiguration": {
+                          "provisionVMAgent": true,
+                          "enableAutomaticUpdates": true
+                        },
+                        "secrets": [],
+                        "allowExtensionOperations": true,
+                        "requireGuestProvisionSignal": true
+                      },
+                      "networkProfile": {
+                        "networkInterfaces": [
+                          {
+                            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/updateVM2960129634/providers/Microsoft.Network/networkInterfaces/nic2960129634"
+                          }
+                        ]
+                      },
+                      "provisioningState": "Succeeded"
+                    },
+                    "condition": true,
+                    "deploymentResourceLineInfo": {
+                      "lineNumber": 1,
+                      "linePosition": 2814
+                    },
+                    "existing": false,
+                    "isConditionTrue": true,
+                    "subscriptionId": "92f95d8f-3c67-4124-91c7-8cf07cdbf241",
+                    "resourceGroupName": "updateVM2960129634",
+                    "scope": "",
+                    "resourceId": "Microsoft.Compute/virtualMachines/vm2960129634",
+                    "referenceApiVersion": "2019-07-01",
+                    "isTemplateResource": false,
+                    "isAction": false,
+                    "provisioningOperation": "Read"
+                  }
+                }
+              },
+              "outputResources": []
+            }
+          },
           {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-iswat5bqy4isg",
             "name": "deployGetResourceProperties-iswat5bqy4isg",
@@ -470,878 +1399,6 @@
                   "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest/providers/Microsoft.Compute/virtualMachines/qiaozhavmtest"
                 }
               ]
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
-            "name": "deployGetResourceProperties-grao7txirj5iy",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "196354100468323298",
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-14T03:58:23.2281531Z",
-              "duration": "PT0.7922859S",
-              "correlationId": "675e70a6-1b25-428d-ac21-35bca2d3ab2e",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {
-                "resource": {
-                  "type": "Object",
-                  "value": {
-                    "apiVersion": "2019-07-01",
-                    "location": "eastus",
-                    "sku": {
-                      "name": "Basic_A0",
-                      "tier": "Basic",
-                      "capacity": 1
-                    },
-                    "tags": {
-                      "azsecpack": "nonprod",
-                      "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
-                    },
-                    "properties": {
-                      "singlePlacementGroup": true,
-                      "upgradePolicy": {
-                        "mode": "Manual",
-                        "automaticOSUpgradePolicy": {
-                          "enableAutomaticOSUpgrade": false,
-                          "disableAutomaticRollback": false
-                        }
-                      },
-                      "virtualMachineProfile": {
-                        "osProfile": {
-                          "computerNamePrefix": "vmss",
-                          "adminUsername": "sample-user",
-                          "windowsConfiguration": {
-                            "provisionVMAgent": true,
-                            "enableAutomaticUpdates": true
-                          },
-                          "secrets": [],
-                          "allowExtensionOperations": true,
-                          "requireGuestProvisionSignal": true
-                        },
-                        "storageProfile": {
-                          "osDisk": {
-                            "osType": "Windows",
-                            "createOption": "FromImage",
-                            "caching": "None",
-                            "managedDisk": {
-                              "storageAccountType": "Standard_LRS"
-                            },
-                            "diskSizeGB": 127
-                          },
-                          "imageReference": {
-                            "publisher": "MicrosoftWindowsServer",
-                            "offer": "WindowsServer",
-                            "sku": "2019-Datacenter",
-                            "version": "latest"
-                          }
-                        },
-                        "networkProfile": {
-                          "networkInterfaceConfigurations": [
-                            {
-                              "name": "vmss2029024728",
-                              "properties": {
-                                "primary": true,
-                                "enableAcceleratedNetworking": false,
-                                "dnsSettings": {
-                                  "dnsServers": []
-                                },
-                                "enableIPForwarding": true,
-                                "ipConfigurations": [
-                                  {
-                                    "name": "vmss2029024728",
-                                    "properties": {
-                                      "subnet": {
-                                        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Network/virtualNetworks/network2029024728/subnets/subnet2029024728"
-                                      },
-                                      "privateIPAddressVersion": "IPv4"
-                                    }
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "extensionProfile": {
-                          "extensions": [
-                            {
-                              "name": "Microsoft.Azure.Security.AntimalwareSignature.AntimalwareConfiguration",
-                              "properties": {
-                                "autoUpgradeMinorVersion": true,
-                                "enableAutomaticUpgrade": true,
-                                "publisher": "Microsoft.Azure.Security.AntimalwareSignature",
-                                "type": "AntimalwareConfiguration",
-                                "typeHandlerVersion": "2.0",
-                                "settings": {}
-                              }
-                            },
-                            {
-                              "name": "Microsoft.Azure.Geneva.GenevaMonitoring",
-                              "properties": {
-                                "autoUpgradeMinorVersion": true,
-                                "enableAutomaticUpgrade": true,
-                                "publisher": "Microsoft.Azure.Geneva",
-                                "type": "GenevaMonitoring",
-                                "typeHandlerVersion": "2.0",
-                                "settings": {}
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      "provisioningState": "Succeeded",
-                      "overprovision": false,
-                      "doNotRunExtensionsOnOverprovisionedVMs": false,
-                      "uniqueId": "c18f2e8f-475f-40df-9080-ae4264d21a9d"
-                    },
-                    "condition": true,
-                    "deploymentResourceLineInfo": {
-                      "lineNumber": 1,
-                      "linePosition": 2822
-                    },
-                    "existing": false,
-                    "isConditionTrue": true,
-                    "subscriptionId": "92f95d8f-3c67-4124-91c7-8cf07cdbf241",
-                    "resourceGroupName": "createVMSS2029024728",
-                    "scope": "",
-                    "resourceId": "Microsoft.Compute/virtualMachineScaleSets/vmss2029024728",
-                    "referenceApiVersion": "2019-07-01",
-                    "isTemplateResource": false,
-                    "isAction": false,
-                    "provisioningOperation": "Read"
-                  }
-                }
-              },
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_9414678188510279951",
-            "name": "PolicyDeployment_9414678188510279951",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "12957040454302177446",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": "createVMSS2029024728"
-                },
-                "location": {
-                  "type": "String",
-                  "value": "eastus"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vmss2029024728"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:59:04.5599041Z",
-              "duration": "PT12M8.0379538S",
-              "correlationId": "675e70a6-1b25-428d-ac21-35bca2d3ab2e",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-grao7txirj5iy"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-grao7txirj5iy"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2029024728",
-                      "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
-                      "resourceName": "vmss2029024728",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-grao7txirj5iy"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-grao7txirj5iy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-grao7txirj5iy"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-grao7txirj5iy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-grao7txirj5iy"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createVMSS2029024728/providers/Microsoft.Resources/deployments/deployAddUAName-grao7txirj5iy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-grao7txirj5iy"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "ResourceGroupBeingDeleted",
-                    "message": "The resource group \u0027createVMSS2029024728\u0027 is in deprovisioning state and cannot perform this operation."
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_2832967897701647884",
-            "name": "PolicyDeployment_2832967897701647884",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "2422177615728575126",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": ""
-                },
-                "location": {
-                  "type": "String",
-                  "value": "westus2"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vm2960129634"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:47:10.8474572Z",
-              "duration": "PT29.1309571S",
-              "correlationId": "a7900498-a4ab-4070-9381-616e1b98c213",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-h23jen4yqaffy"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-h23jen4yqaffy"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm2960129634",
-                      "resourceType": "Microsoft.Compute/virtualMachines",
-                      "resourceName": "vm2960129634",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-h23jen4yqaffy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-h23jen4yqaffy"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-h23jen4yqaffy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-h23jen4yqaffy"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-h23jen4yqaffy",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-h23jen4yqaffy"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-h23jen4yqaffy",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-h23jen4yqaffy"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "InvalidResourceNamespace",
-                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_12162663922102033944",
-            "name": "PolicyDeployment_12162663922102033944",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "2422177615728575126",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": ""
-                },
-                "location": {
-                  "type": "String",
-                  "value": "westus2"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vm2472196970"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:43:55.3741784Z",
-              "duration": "PT28.4884274S",
-              "correlationId": "c1931460-033a-476c-bba3-f8f615ecb9bb",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-s6fevybg3y626"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-s6fevybg3y626"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm2472196970",
-                      "resourceType": "Microsoft.Compute/virtualMachines",
-                      "resourceName": "vm2472196970",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-s6fevybg3y626",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-s6fevybg3y626"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-s6fevybg3y626",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-s6fevybg3y626"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-s6fevybg3y626",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-s6fevybg3y626"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-s6fevybg3y626",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-s6fevybg3y626"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "InvalidResourceNamespace",
-                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_4024816518872810487",
-            "name": "PolicyDeployment_4024816518872810487",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "2422177615728575126",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": ""
-                },
-                "location": {
-                  "type": "String",
-                  "value": "westus2"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vm1871597066"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:41:57.3443817Z",
-              "duration": "PT27.8469111S",
-              "correlationId": "5ea0f580-b7c6-4fd7-9e37-93a6ba7569f6",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-jcz6w2xxrxpay"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-jcz6w2xxrxpay"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm1871597066",
-                      "resourceType": "Microsoft.Compute/virtualMachines",
-                      "resourceName": "vm1871597066",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-jcz6w2xxrxpay",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-jcz6w2xxrxpay"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-jcz6w2xxrxpay",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-jcz6w2xxrxpay"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-jcz6w2xxrxpay",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-jcz6w2xxrxpay"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-jcz6w2xxrxpay",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-jcz6w2xxrxpay"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "InvalidResourceNamespace",
-                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_4482395336996744046",
-            "name": "PolicyDeployment_4482395336996744046",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "2422177615728575126",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": ""
-                },
-                "location": {
-                  "type": "String",
-                  "value": "westus2"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vm559849312"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:39:18.5875627Z",
-              "duration": "PT25.8313065S",
-              "correlationId": "c8ae3949-60f3-4cdc-9b16-c53de7ffb65a",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-ru4tkycoglac4"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-ru4tkycoglac4"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm559849312",
-                      "resourceType": "Microsoft.Compute/virtualMachines",
-                      "resourceName": "vm559849312",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-ru4tkycoglac4",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-ru4tkycoglac4"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-ru4tkycoglac4",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-ru4tkycoglac4"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-ru4tkycoglac4",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-ru4tkycoglac4"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-ru4tkycoglac4",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-ru4tkycoglac4"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "InvalidResourceNamespace",
-                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/PolicyDeployment_2522615752694177622",
-            "name": "PolicyDeployment_2522615752694177622",
-            "type": "Microsoft.Resources/deployments",
-            "location": "eastus",
-            "properties": {
-              "templateHash": "2422177615728575126",
-              "parameters": {
-                "resourceGroup": {
-                  "type": "String",
-                  "value": ""
-                },
-                "location": {
-                  "type": "String",
-                  "value": "westus2"
-                },
-                "resourceName": {
-                  "type": "String",
-                  "value": "vm741214678"
-                },
-                "azSecPackAutoConfigReadyTagValue": {
-                  "type": "Bool",
-                  "value": false
-                }
-              },
-              "mode": "Incremental",
-              "provisioningState": "Failed",
-              "timestamp": "2022-02-14T03:37:38.1812088Z",
-              "duration": "PT27.6820275S",
-              "correlationId": "1d62ed8d-6e20-4f7e-8ca7-e7d22094796e",
-              "providers": [
-                {
-                  "namespace": "Microsoft.Resources",
-                  "resourceTypes": [
-                    {
-                      "resourceType": "resourceGroups",
-                      "locations": [
-                        "eastus"
-                      ]
-                    },
-                    {
-                      "resourceType": "deployments",
-                      "locations": [
-                        null,
-                        "eastus"
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "dependencies": [
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployUAName-paaclmwl2n6be"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-paaclmwl2n6be"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/vm741214678",
-                      "resourceType": "Microsoft.Compute/virtualMachines",
-                      "resourceName": "vm741214678",
-                      "apiVersion": "2019-07-01"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-paaclmwl2n6be",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployGetResourceProperties-paaclmwl2n6be"
-                },
-                {
-                  "dependsOn": [
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
-                      "resourceType": "Microsoft.Resources/resourceGroups",
-                      "resourceName": "AzSecPackAutoConfigRG"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.Resources/deployments/deployUAName-paaclmwl2n6be",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployUAName-paaclmwl2n6be"
-                    },
-                    {
-                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployGetResourceProperties-paaclmwl2n6be",
-                      "resourceType": "Microsoft.Resources/deployments",
-                      "resourceName": "deployGetResourceProperties-paaclmwl2n6be"
-                    }
-                  ],
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/deployAddUAName-paaclmwl2n6be",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "deployAddUAName-paaclmwl2n6be"
-                }
-              ],
-              "error": {
-                "code": "DeploymentFailed",
-                "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/DeployOperations for usage details.",
-                "details": [
-                  {
-                    "code": "InvalidResourceNamespace",
-                    "message": "The resource namespace \u0027subscriptions\u0027 is invalid."
-                  }
-                ]
-              }
             }
           },
           {
@@ -18845,9 +18902,9 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:50:05.8611786Z",
-              "duration": "PT2.8601202S",
-              "correlationId": "accc5356-bf5e-4da9-b39d-b519f3b6d8b3",
+              "timestamp": "2022-02-24T03:13:36.1785638Z",
+              "duration": "PT1.2157423S",
+              "correlationId": "8f3aad47-1a70-44db-8c68-08f83c581ce7",
               "providers": [],
               "dependencies": [],
               "outputs": {},
@@ -18871,165 +18928,9 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:49:57.1970858Z",
-              "duration": "PT0.9682013S",
-              "correlationId": "fb16cf19-9185-43fb-9094-bc39c7ec1c25",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs1707707600",
-            "name": "rs1707707600",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:48:53.2803059Z",
-              "duration": "PT2.5243906S",
-              "correlationId": "d72c52d0-a898-4ea6-bc4a-95a8da1bdd46",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs3061151336",
-            "name": "rs3061151336",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:48:34.7413146Z",
-              "duration": "PT2.5140503S",
-              "correlationId": "6083e4a0-9104-4955-9bf8-2ad564c8afe4",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs2283042427",
-            "name": "rs2283042427",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:48:22.4967835Z",
-              "duration": "PT1.2257581S",
-              "correlationId": "f75ad5dd-033e-4171-8d6b-d5559674e582",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs137292058",
-            "name": "rs137292058",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:48:11.018563Z",
-              "duration": "PT1.2960519S",
-              "correlationId": "7edafc00-c788-482a-bc3e-70ea336e0930",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs1463115026",
-            "name": "rs1463115026",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:47:50.4470776Z",
-              "duration": "PT2.9201823S",
-              "correlationId": "d144c0ff-dbcd-4e2e-9b43-e7bec180d8b3",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs2163442270",
-            "name": "rs2163442270",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:47:36.7660798Z",
-              "duration": "PT0.8673136S",
-              "correlationId": "137e5c03-e3a9-4bf6-9418-df6bb4ddef07",
+              "timestamp": "2022-02-24T03:13:20.1030107Z",
+              "duration": "PT1.0116935S",
+              "correlationId": "6535e6bc-925e-44de-9eed-475443c96146",
               "providers": [],
               "dependencies": [],
               "outputs": {},
@@ -19053,61 +18954,9 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:47:19.9762457Z",
-              "duration": "PT1.3618131S",
-              "correlationId": "8c0a5718-5f55-48dd-9a8f-3744046b521c",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs1680632921",
-            "name": "rs1680632921",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:14:31.743643Z",
-              "duration": "PT2.8110971S",
-              "correlationId": "da27f3db-543b-41fa-bc64-8c3947e872b3",
-              "providers": [],
-              "dependencies": [],
-              "outputs": {},
-              "outputResources": []
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs284275121",
-            "name": "rs284275121",
-            "type": "Microsoft.Resources/deployments",
-            "location": "westus",
-            "properties": {
-              "templateLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
-                "contentVersion": "1.0.0.0"
-              },
-              "templateHash": "653051900461279848",
-              "parametersLink": {
-                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-              },
-              "parameters": {},
-              "mode": "Incremental",
-              "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T03:13:40.7595633Z",
-              "duration": "PT1.6587644S",
-              "correlationId": "339b13b1-95a7-4f31-aae0-6976f5e951cf",
+              "timestamp": "2022-02-24T03:12:19.1223796Z",
+              "duration": "PT2.8520432S",
+              "correlationId": "4ddbbaac-0142-4de3-a657-1bff8dd11536",
               "providers": [],
               "dependencies": [],
               "outputs": {},
@@ -19131,9 +18980,9 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T02:23:03.5349652Z",
-              "duration": "PT2.3327126S",
-              "correlationId": "a5511431-ae9d-45c9-825b-41b926645a5b",
+              "timestamp": "2022-02-24T02:15:50.2183855Z",
+              "duration": "PT2.2853213S",
+              "correlationId": "b42fa305-21ef-4e4e-956f-cbd7cfd741ad",
               "providers": [],
               "dependencies": [],
               "outputs": {},
@@ -19157,9 +19006,35 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T02:22:47.1683156Z",
-              "duration": "PT2.1010877S",
-              "correlationId": "b9f2c8fe-2eec-4a0b-ad50-82a72b4e465e",
+              "timestamp": "2022-02-24T02:15:42.7230795Z",
+              "duration": "PT0.841933S",
+              "correlationId": "321903b2-aa15-45aa-9d38-596bf26fe1bf",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs284275121",
+            "name": "rs284275121",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T02:15:03.9778257Z",
+              "duration": "PT0.8887042S",
+              "correlationId": "3b33c064-38f4-4642-8ef0-69340c1ad663",
               "providers": [],
               "dependencies": [],
               "outputs": {},
@@ -19183,9 +19058,165 @@
               "parameters": {},
               "mode": "Incremental",
               "provisioningState": "Succeeded",
-              "timestamp": "2022-02-15T02:22:17.4201112Z",
-              "duration": "PT0.9607966S",
-              "correlationId": "06c0a883-0e0d-4563-8a13-5d2d3ecd01eb",
+              "timestamp": "2022-02-24T02:14:57.133042Z",
+              "duration": "PT0.9951525S",
+              "correlationId": "79c0a442-6c7c-4a69-994e-8954b3c389ad",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs1707707600",
+            "name": "rs1707707600",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:47:25.7484561Z",
+              "duration": "PT1.3994103S",
+              "correlationId": "66ff421c-6227-49a2-a00a-ab08613cb68b",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs3061151336",
+            "name": "rs3061151336",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:47:16.9626377Z",
+              "duration": "PT0.9280484S",
+              "correlationId": "5dc9b62d-ccde-4724-a0e6-94156e0b869d",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs2283042427",
+            "name": "rs2283042427",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:47:06.5089453Z",
+              "duration": "PT1.1047689S",
+              "correlationId": "f12c01ac-fba3-489d-9327-55d61829d978",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs137292058",
+            "name": "rs137292058",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:46:46.7500251Z",
+              "duration": "PT2.3998922S",
+              "correlationId": "2ac9aa88-6308-4df2-a52a-2bff4f1ac9d0",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs1463115026",
+            "name": "rs1463115026",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:46:35.4096219Z",
+              "duration": "PT1.3465984S",
+              "correlationId": "547b5f60-629f-4c05-9287-b205e72c7a45",
+              "providers": [],
+              "dependencies": [],
+              "outputs": {},
+              "outputResources": []
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deployments/rs2163442270",
+            "name": "rs2163442270",
+            "type": "Microsoft.Resources/deployments",
+            "location": "westus",
+            "properties": {
+              "templateLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json",
+                "contentVersion": "1.0.0.0"
+              },
+              "templateHash": "653051900461279848",
+              "parametersLink": {
+                "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+              },
+              "parameters": {},
+              "mode": "Incremental",
+              "provisioningState": "Succeeded",
+              "timestamp": "2022-02-24T01:46:22.9743419Z",
+              "duration": "PT1.0359556S",
+              "correlationId": "6dbfce98-b8e8-45ec-83ed-288081c0310a",
               "providers": [],
               "dependencies": [],
               "outputs": {},

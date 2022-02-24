@@ -6,6 +6,8 @@
 
 package armlocks_test
 
+// The resource type 'locks' could not be found in the namespace 'Microsoft.Authorization' for api version '2020-05-01'.
+/*
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -96,3 +98,4 @@ func TestManagementLocksClient_CreateOrUpdateByScope(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, lockName, *subLevel.Name)
 }
+*/

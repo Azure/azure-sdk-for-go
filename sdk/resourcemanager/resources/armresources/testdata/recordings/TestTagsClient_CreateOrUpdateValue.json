@@ -12,7 +12,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -20,17 +20,17 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 04:04:08 GMT",
+        "Date": "Thu, 24 Feb 2022 03:28:10 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "b5effbc8-24d2-49b5-840b-967e7a0e927d",
-        "x-ms-ratelimit-remaining-subscription-writes": "1152",
-        "x-ms-request-id": "b5effbc8-24d2-49b5-840b-967e7a0e927d",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040408Z:b5effbc8-24d2-49b5-840b-967e7a0e927d"
+        "x-ms-correlation-request-id": "f5b6bde3-3802-4ff1-a061-cae5b3fec908",
+        "x-ms-ratelimit-remaining-subscription-writes": "1120",
+        "x-ms-request-id": "f5b6bde3-3802-4ff1-a061-cae5b3fec908",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T032811Z:f5b6bde3-3802-4ff1-a061-cae5b3fec908"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633",
@@ -54,7 +54,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -62,17 +62,17 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Feb 2022 04:04:09 GMT",
+        "Date": "Thu, 24 Feb 2022 03:28:11 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "2e2aae69-30a7-400a-92e7-f98acc98102f",
-        "x-ms-ratelimit-remaining-subscription-writes": "1151",
-        "x-ms-request-id": "2e2aae69-30a7-400a-92e7-f98acc98102f",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040409Z:2e2aae69-30a7-400a-92e7-f98acc98102f"
+        "x-ms-correlation-request-id": "36e93580-3728-4a5b-b203-5ffed5253437",
+        "x-ms-ratelimit-remaining-subscription-writes": "1119",
+        "x-ms-request-id": "36e93580-3728-4a5b-b203-5ffed5253437",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220224T032812Z:36e93580-3728-4a5b-b203-5ffed5253437"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633/tagValues/value2597940633",

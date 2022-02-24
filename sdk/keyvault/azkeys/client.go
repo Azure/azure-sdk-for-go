@@ -342,7 +342,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 }
 
 // CreateRSAKey can be used to create a new RSA key in Azure Key Vault. If the named key already
-// exists, Azure Key Vault creates a new version of the key. RSA key can be created on standard
+// exists, Azure Key Vault creates a new version of the key. RSA keys can be created in Standard or
 // Premium SKU vaults, RSAHSM can be created in Premium SKU vaults or Managed HSMs.
 // It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {

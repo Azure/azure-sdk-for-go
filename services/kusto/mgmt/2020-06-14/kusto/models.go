@@ -2996,7 +2996,7 @@ type ReadOnlyFollowingDatabaseProperties struct {
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
 	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
-	// Statistics - The statistics of the database.
+	// Statistics - READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 	// LeaderClusterResourceID - READ-ONLY; The name of the leader cluster
 	LeaderClusterResourceID *string `json:"leaderClusterResourceId,omitempty"`
@@ -3011,9 +3011,6 @@ func (rofdp ReadOnlyFollowingDatabaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rofdp.HotCachePeriod != nil {
 		objectMap["hotCachePeriod"] = rofdp.HotCachePeriod
-	}
-	if rofdp.Statistics != nil {
-		objectMap["statistics"] = rofdp.Statistics
 	}
 	return json.Marshal(objectMap)
 }
@@ -3147,7 +3144,7 @@ type ReadWriteDatabaseProperties struct {
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
 	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
-	// Statistics - The statistics of the database.
+	// Statistics - READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 	// IsFollowed - READ-ONLY; Indicates whether the database is followed.
 	IsFollowed *bool `json:"isFollowed,omitempty"`
@@ -3161,9 +3158,6 @@ func (rwdp ReadWriteDatabaseProperties) MarshalJSON() ([]byte, error) {
 	}
 	if rwdp.HotCachePeriod != nil {
 		objectMap["hotCachePeriod"] = rwdp.HotCachePeriod
-	}
-	if rwdp.Statistics != nil {
-		objectMap["statistics"] = rwdp.Statistics
 	}
 	return json.Marshal(objectMap)
 }

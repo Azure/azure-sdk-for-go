@@ -762,7 +762,7 @@ type DatabaseProperties struct {
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
 	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
-	// Statistics - The statistics of the database.
+	// Statistics - READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 }
 
@@ -774,9 +774,6 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dp.HotCachePeriod != nil {
 		objectMap["hotCachePeriod"] = dp.HotCachePeriod
-	}
-	if dp.Statistics != nil {
-		objectMap["statistics"] = dp.Statistics
 	}
 	return json.Marshal(objectMap)
 }

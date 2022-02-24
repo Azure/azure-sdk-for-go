@@ -368,7 +368,7 @@ var _ PrivateEndpointConnectionsClientAPI = (*documentdb.PrivateEndpointConnecti
 
 // ServiceClientAPI contains the set of methods on the ServiceClient type.
 type ServiceClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters documentdb.ServiceResource) (result documentdb.ServiceCreateFuture, err error)
+	Create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters documentdb.ServiceResourceCreateUpdateParameters) (result documentdb.ServiceCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, serviceName string) (result documentdb.ServiceDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, serviceName string) (result documentdb.ServiceResource, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.ServiceResourceListResult, err error)

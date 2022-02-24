@@ -32,7 +32,8 @@ func NewRestorableDatabaseAccountsClientWithBaseURI(baseURI string, subscription
 	return RestorableDatabaseAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetByLocation retrieves the properties of an existing Azure Cosmos DB restorable database account.
+// GetByLocation retrieves the properties of an existing Azure Cosmos DB restorable database account.  This call
+// requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - the instanceId GUID of a restorable database account.
@@ -114,7 +115,8 @@ func (client RestorableDatabaseAccountsClient) GetByLocationResponder(resp *http
 	return
 }
 
-// List lists all the restorable Azure Cosmos DB database accounts available under the subscription.
+// List lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
 func (client RestorableDatabaseAccountsClient) List(ctx context.Context) (result RestorableDatabaseAccountsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDatabaseAccountsClient.List")
@@ -192,7 +194,7 @@ func (client RestorableDatabaseAccountsClient) ListResponder(resp *http.Response
 }
 
 // ListByLocation lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a
-// region.
+// region.  This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 func (client RestorableDatabaseAccountsClient) ListByLocation(ctx context.Context, location string) (result RestorableDatabaseAccountsListResult, err error) {

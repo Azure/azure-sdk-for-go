@@ -117,7 +117,7 @@ type AttachedDatabaseConfigurationListResult struct {
 // AttachedDatabaseConfigurationProperties class representing the an attached database configuration
 // properties of kind specific.
 type AttachedDatabaseConfigurationProperties struct {
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// DatabaseName - The name of the database which you would like to attach, use * if you want to follow all current and future databases.
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -134,9 +134,6 @@ type AttachedDatabaseConfigurationProperties struct {
 // MarshalJSON is the custom marshaler for AttachedDatabaseConfigurationProperties.
 func (adcp AttachedDatabaseConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if adcp.ProvisioningState != "" {
-		objectMap["provisioningState"] = adcp.ProvisioningState
-	}
 	if adcp.DatabaseName != nil {
 		objectMap["databaseName"] = adcp.DatabaseName
 	}
@@ -672,7 +669,7 @@ type ClusterPrincipalProperties struct {
 	TenantName *string `json:"tenantName,omitempty"`
 	// PrincipalName - READ-ONLY; The principal name
 	PrincipalName *string `json:"principalName,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -691,9 +688,6 @@ func (cpp ClusterPrincipalProperties) MarshalJSON() ([]byte, error) {
 	if cpp.PrincipalType != "" {
 		objectMap["principalType"] = cpp.PrincipalType
 	}
-	if cpp.ProvisioningState != "" {
-		objectMap["provisioningState"] = cpp.ProvisioningState
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -701,7 +695,7 @@ func (cpp ClusterPrincipalProperties) MarshalJSON() ([]byte, error) {
 type ClusterProperties struct {
 	// State - READ-ONLY; The state of the resource. Possible values include: 'StateCreating', 'StateUnavailable', 'StateRunning', 'StateDeleting', 'StateDeleted', 'StateStopping', 'StateStopped', 'StateStarting', 'StateUpdating'
 	State State `json:"state,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// URI - READ-ONLY; The cluster URI.
 	URI *string `json:"uri,omitempty"`
@@ -734,9 +728,6 @@ type ClusterProperties struct {
 // MarshalJSON is the custom marshaler for ClusterProperties.
 func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cp.ProvisioningState != "" {
-		objectMap["provisioningState"] = cp.ProvisioningState
-	}
 	if cp.TrustedExternalTenants != nil {
 		objectMap["trustedExternalTenants"] = cp.TrustedExternalTenants
 	}
@@ -1625,7 +1616,7 @@ type DatabasePrincipalProperties struct {
 	TenantName *string `json:"tenantName,omitempty"`
 	// PrincipalName - READ-ONLY; The principal name
 	PrincipalName *string `json:"principalName,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1643,9 +1634,6 @@ func (dpp DatabasePrincipalProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dpp.PrincipalType != "" {
 		objectMap["principalType"] = dpp.PrincipalType
-	}
-	if dpp.ProvisioningState != "" {
-		objectMap["provisioningState"] = dpp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -2184,8 +2172,38 @@ type EventGridConnectionProperties struct {
 	IgnoreFirstRecord *bool `json:"ignoreFirstRecord,omitempty"`
 	// BlobStorageEventType - The name of blob storage event type to process. Possible values include: 'BlobStorageEventTypeMicrosoftStorageBlobCreated', 'BlobStorageEventTypeMicrosoftStorageBlobRenamed'
 	BlobStorageEventType BlobStorageEventType `json:"blobStorageEventType,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventGridConnectionProperties.
+func (egcp EventGridConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if egcp.StorageAccountResourceID != nil {
+		objectMap["storageAccountResourceId"] = egcp.StorageAccountResourceID
+	}
+	if egcp.EventHubResourceID != nil {
+		objectMap["eventHubResourceId"] = egcp.EventHubResourceID
+	}
+	if egcp.ConsumerGroup != nil {
+		objectMap["consumerGroup"] = egcp.ConsumerGroup
+	}
+	if egcp.TableName != nil {
+		objectMap["tableName"] = egcp.TableName
+	}
+	if egcp.MappingRuleName != nil {
+		objectMap["mappingRuleName"] = egcp.MappingRuleName
+	}
+	if egcp.DataFormat != "" {
+		objectMap["dataFormat"] = egcp.DataFormat
+	}
+	if egcp.IgnoreFirstRecord != nil {
+		objectMap["ignoreFirstRecord"] = egcp.IgnoreFirstRecord
+	}
+	if egcp.BlobStorageEventType != "" {
+		objectMap["blobStorageEventType"] = egcp.BlobStorageEventType
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventGridDataConnection class representing an Event Grid data connection.
@@ -2330,10 +2348,40 @@ type EventHubConnectionProperties struct {
 	EventSystemProperties *[]string `json:"eventSystemProperties,omitempty"`
 	// Compression - The event hub messages compression type. Possible values include: 'CompressionNone', 'CompressionGZip'
 	Compression Compression `json:"compression,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ManagedIdentityResourceID - The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.
 	ManagedIdentityResourceID *string `json:"managedIdentityResourceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventHubConnectionProperties.
+func (ehcp EventHubConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehcp.EventHubResourceID != nil {
+		objectMap["eventHubResourceId"] = ehcp.EventHubResourceID
+	}
+	if ehcp.ConsumerGroup != nil {
+		objectMap["consumerGroup"] = ehcp.ConsumerGroup
+	}
+	if ehcp.TableName != nil {
+		objectMap["tableName"] = ehcp.TableName
+	}
+	if ehcp.MappingRuleName != nil {
+		objectMap["mappingRuleName"] = ehcp.MappingRuleName
+	}
+	if ehcp.DataFormat != "" {
+		objectMap["dataFormat"] = ehcp.DataFormat
+	}
+	if ehcp.EventSystemProperties != nil {
+		objectMap["eventSystemProperties"] = ehcp.EventSystemProperties
+	}
+	if ehcp.Compression != "" {
+		objectMap["compression"] = ehcp.Compression
+	}
+	if ehcp.ManagedIdentityResourceID != nil {
+		objectMap["managedIdentityResourceId"] = ehcp.ManagedIdentityResourceID
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventHubDataConnection class representing an event hub data connection.
@@ -2545,8 +2593,35 @@ type IotHubConnectionProperties struct {
 	EventSystemProperties *[]string `json:"eventSystemProperties,omitempty"`
 	// SharedAccessPolicyName - The name of the share access policy
 	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubConnectionProperties.
+func (ihcp IotHubConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihcp.IotHubResourceID != nil {
+		objectMap["iotHubResourceId"] = ihcp.IotHubResourceID
+	}
+	if ihcp.ConsumerGroup != nil {
+		objectMap["consumerGroup"] = ihcp.ConsumerGroup
+	}
+	if ihcp.TableName != nil {
+		objectMap["tableName"] = ihcp.TableName
+	}
+	if ihcp.MappingRuleName != nil {
+		objectMap["mappingRuleName"] = ihcp.MappingRuleName
+	}
+	if ihcp.DataFormat != "" {
+		objectMap["dataFormat"] = ihcp.DataFormat
+	}
+	if ihcp.EventSystemProperties != nil {
+		objectMap["eventSystemProperties"] = ihcp.EventSystemProperties
+	}
+	if ihcp.SharedAccessPolicyName != nil {
+		objectMap["sharedAccessPolicyName"] = ihcp.SharedAccessPolicyName
+	}
+	return json.Marshal(objectMap)
 }
 
 // IotHubDataConnection class representing an iot hub data connection.
@@ -3182,13 +3257,13 @@ func (rofd *ReadOnlyFollowingDatabase) UnmarshalJSON(body []byte) error {
 
 // ReadOnlyFollowingDatabaseProperties class representing the Kusto database properties.
 type ReadOnlyFollowingDatabaseProperties struct {
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SoftDeletePeriod - READ-ONLY; The time the data should be kept before it stops being accessible to queries in TimeSpan.
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
 	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
-	// Statistics - The statistics of the database.
+	// Statistics - READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 	// LeaderClusterResourceID - READ-ONLY; The name of the leader cluster
 	LeaderClusterResourceID *string `json:"leaderClusterResourceId,omitempty"`
@@ -3201,14 +3276,8 @@ type ReadOnlyFollowingDatabaseProperties struct {
 // MarshalJSON is the custom marshaler for ReadOnlyFollowingDatabaseProperties.
 func (rofdp ReadOnlyFollowingDatabaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rofdp.ProvisioningState != "" {
-		objectMap["provisioningState"] = rofdp.ProvisioningState
-	}
 	if rofdp.HotCachePeriod != nil {
 		objectMap["hotCachePeriod"] = rofdp.HotCachePeriod
-	}
-	if rofdp.Statistics != nil {
-		objectMap["statistics"] = rofdp.Statistics
 	}
 	return json.Marshal(objectMap)
 }
@@ -3336,13 +3405,13 @@ func (rwd *ReadWriteDatabase) UnmarshalJSON(body []byte) error {
 
 // ReadWriteDatabaseProperties class representing the Kusto database properties.
 type ReadWriteDatabaseProperties struct {
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SoftDeletePeriod - The time the data should be kept before it stops being accessible to queries in TimeSpan.
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
 	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
-	// Statistics - The statistics of the database.
+	// Statistics - READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 	// IsFollowed - READ-ONLY; Indicates whether the database is followed.
 	IsFollowed *bool `json:"isFollowed,omitempty"`
@@ -3351,17 +3420,11 @@ type ReadWriteDatabaseProperties struct {
 // MarshalJSON is the custom marshaler for ReadWriteDatabaseProperties.
 func (rwdp ReadWriteDatabaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rwdp.ProvisioningState != "" {
-		objectMap["provisioningState"] = rwdp.ProvisioningState
-	}
 	if rwdp.SoftDeletePeriod != nil {
 		objectMap["softDeletePeriod"] = rwdp.SoftDeletePeriod
 	}
 	if rwdp.HotCachePeriod != nil {
 		objectMap["hotCachePeriod"] = rwdp.HotCachePeriod
-	}
-	if rwdp.Statistics != nil {
-		objectMap["statistics"] = rwdp.Statistics
 	}
 	return json.Marshal(objectMap)
 }
@@ -3491,8 +3554,26 @@ type ScriptProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 	// ContinueOnErrors - Flag that indicates whether to continue if one of the command fails.
 	ContinueOnErrors *bool `json:"continueOnErrors,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptProperties.
+func (sp ScriptProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ScriptURL != nil {
+		objectMap["scriptUrl"] = sp.ScriptURL
+	}
+	if sp.ScriptURLSasToken != nil {
+		objectMap["scriptUrlSasToken"] = sp.ScriptURLSasToken
+	}
+	if sp.ForceUpdateTag != nil {
+		objectMap["forceUpdateTag"] = sp.ForceUpdateTag
+	}
+	if sp.ContinueOnErrors != nil {
+		objectMap["continueOnErrors"] = sp.ContinueOnErrors
+	}
+	return json.Marshal(objectMap)
 }
 
 // ScriptsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

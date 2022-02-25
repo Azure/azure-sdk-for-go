@@ -30,7 +30,7 @@ func TestDeploymentOperationsClient_List(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	temp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
@@ -76,7 +76,7 @@ func TestDeploymentOperationsClient_Get(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	temp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(

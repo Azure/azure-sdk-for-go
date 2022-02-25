@@ -34,7 +34,7 @@ func TestDeploymentsClient_CheckExistence(t *testing.T) {
 
 	// check existence deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	resp, err := deploymentsClient.CheckExistence(ctx, rgName, deploymentName, nil)
 	require.NoError(t, err)
 	require.False(t, resp.Success)

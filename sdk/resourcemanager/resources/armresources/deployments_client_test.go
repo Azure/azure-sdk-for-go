@@ -107,7 +107,7 @@ func TestDeploymentsClient_BeginCreateOrUpdate(t *testing.T) {
 
 // create deployment
 func createDeployment(ctx context.Context, t *testing.T, client *armresources.DeploymentsClient, rgName string) *armresources.DeploymentExtended {
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	tmp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := client.BeginCreateOrUpdate(
@@ -206,7 +206,7 @@ func TestDeploymentsClient_BeginWhatIf(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	tmp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
@@ -431,7 +431,7 @@ func TestDeploymentsClient_BeginCreateOrUpdateAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	temp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtScope(
@@ -485,7 +485,7 @@ func TestDeploymentsClient_ListAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	temp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtScope(
@@ -543,7 +543,7 @@ func TestDeploymentsClient_GetAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
+	deploymentName, _ := createRandomName(t, "rs")
 	temp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtScope(

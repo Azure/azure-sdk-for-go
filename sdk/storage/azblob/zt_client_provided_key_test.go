@@ -60,7 +60,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	}
 
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
@@ -114,7 +114,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
@@ -171,7 +171,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -289,7 +289,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -403,7 +403,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -449,7 +449,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -487,7 +487,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
@@ -546,7 +546,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
@@ -601,7 +601,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -711,7 +711,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -808,7 +808,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
@@ -865,7 +865,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
@@ -913,7 +913,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -998,7 +998,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -1074,7 +1074,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -1169,7 +1169,7 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	pbName := generateBlobName(testName)
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
@@ -1222,7 +1222,7 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	pbName := generateBlobName(testName)
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
@@ -1249,7 +1249,7 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
@@ -1295,7 +1295,7 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
@@ -1334,7 +1334,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
@@ -1383,7 +1383,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)

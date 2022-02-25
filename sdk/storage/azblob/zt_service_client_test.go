@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -30,13 +31,12 @@ func TestServiceClientFromConnectionString(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 
 	svcClient, err := createServiceClientFromConnectionString(t, testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 }
 
 func TestListContainersBasic(t *testing.T) {
@@ -183,7 +183,7 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 //
 //	defer func() {
 //		for i := range containers {
-//			deleteContainer(_assert, containers[i])
+//			deleteContainer(t, containers[i])
 //		}
 //	}()
 //
@@ -229,15 +229,14 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient1 := createNewContainer(t, generateContainerName(testName)+"1", svcClient)
-	defer deleteContainer(_assert, containerClient1)
+	defer deleteContainer(t, containerClient1)
 	containerClient2 := createNewContainer(t, generateContainerName(testName)+"2", svcClient)
-	defer deleteContainer(_assert, containerClient2)
+	defer deleteContainer(t, containerClient2)
 
 	count := 0
 	pager := svcClient.ListContainers(nil)
@@ -258,7 +257,7 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 ////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
 ////	svcClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(t, containerClient)
 ////
 ////	illegalMaxResults := []int32{-2, 0}
 ////	for _, num := range illegalMaxResults {
@@ -311,7 +310,7 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -323,7 +322,7 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -344,7 +343,7 @@ func TestAccountDeleteRetentionPolicyEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -369,7 +368,7 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -380,7 +379,7 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(ctx)

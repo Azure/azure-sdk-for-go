@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -40,7 +41,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize,
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
@@ -143,7 +144,7 @@ func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, b
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -303,7 +304,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -508,7 +509,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 		Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
 			// simulate doing some work (HTTP call in real scenarios)
 			// later chunks later longer to finish
-			time.Sleep(time.Second * time.Duration(offset))
+			recording.Sleep(time.Second * time.Duration(offset))
 			// simulate having gotten data and write it to the memory mapped file
 			mmf.write("input")
 
@@ -533,5 +534,5 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true
-	time.Sleep(time.Second * 5)
+	recording.Sleep(time.Second * 5)
 }

@@ -61,7 +61,7 @@ func TestDeserializeORSPolicies(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(s.T(), containerClient)
 //
 //	bbName := generateBlobName(testName)
 //	bbClient := createNewBlockBlob(_assert, bbName, containerClient)

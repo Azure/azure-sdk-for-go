@@ -24,13 +24,12 @@ func TestSetBlobTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -68,13 +67,12 @@ func TestSetBlobTagsWithVID(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -127,13 +125,12 @@ func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -165,13 +162,12 @@ func TestStageBlockWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
@@ -232,7 +228,6 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -240,7 +235,7 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := generateData(contentSize)
@@ -336,7 +331,6 @@ func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -344,7 +338,7 @@ func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 1 * 1024 * 1024 // 1MB
 	r, sourceData := generateData(contentSize)
@@ -421,13 +415,12 @@ func TestGetPropertiesReturnsTagsCount(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
@@ -461,7 +454,7 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -496,7 +489,7 @@ func TestListBlobReturnsTags(t *testing.T) {
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
 	blobClient := createNewBlockBlob(_assert, blobName, containerClient)
@@ -544,13 +537,13 @@ func TestListBlobReturnsTags(t *testing.T) {
 //	}
 //
 //	containerClient1 := createNewContainer(t, generateContainerName(testName) + "1", svcClient)
-//	defer deleteContainer(_assert, containerClient1)
+//	defer deleteContainer(t, containerClient1)
 //
 //	containerClient2 := createNewContainer(t, generateContainerName(testName) + "2", svcClient)
-//	defer deleteContainer(_assert, containerClient2)
+//	defer deleteContainer(t, containerClient2)
 //
 //	containerClient3 := createNewContainer(t, generateContainerName(testName) + "3", svcClient)
-//	defer deleteContainer(_assert, containerClient3)
+//	defer deleteContainer(t, containerClient3)
 //
 //	blobTagsMap1 := map[string]string{
 //		"tag2": "tagsecond",
@@ -673,7 +666,7 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	pbClient := createNewPageBlob(_assert, "src"+generateBlobName(testName), containerClient)
 
@@ -750,7 +743,7 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	pbClient := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
 
@@ -783,13 +776,12 @@ func TestCreateAppendBlobWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := getAppendBlobClient(generateBlobName(testName), containerClient)
 

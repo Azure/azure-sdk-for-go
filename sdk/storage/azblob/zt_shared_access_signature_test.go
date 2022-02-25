@@ -18,7 +18,7 @@ package azblob
 //
 //	containerClient := createNewContainer(_assert, containerName, serviceClient)
 //	_assert.NoError(err)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(s.T(), containerClient)
 //
 //	resources := AccountSASResourceTypes{
 //		Object:    true,

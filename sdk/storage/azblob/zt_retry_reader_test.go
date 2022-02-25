@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -397,7 +398,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 
 		// set up timed cancellation from separate goroutine
 		go func() {
-			time.Sleep(sleepDuration * 5)
+			recording.Sleep(sleepDuration * 5)
 			err := retryReader.Close()
 			if err != nil {
 				return

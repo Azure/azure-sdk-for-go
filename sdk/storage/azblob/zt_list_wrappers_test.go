@@ -26,7 +26,7 @@ func TestBlobListWrapper(t *testing.T) {
 
 	_, err = containerClient.Create(ctx, nil)
 	require.NoError(t, err)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
@@ -65,7 +65,7 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 
 	_, err = containerClient.Create(ctx, nil)
 	_assert.NoError(err)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 

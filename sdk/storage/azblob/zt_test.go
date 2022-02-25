@@ -273,10 +273,10 @@ func createNewContainer(t *testing.T, containerName string, serviceClient Servic
 	return containerClient
 }
 
-func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient) {
+func deleteContainer(t *testing.T, containerClient ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
-	_assert.NoError(err)
-	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
+	require.NoError(t, err)
+	require.Equal(t, deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
 func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {

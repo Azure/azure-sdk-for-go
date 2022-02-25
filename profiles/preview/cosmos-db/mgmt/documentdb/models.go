@@ -12,7 +12,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-06-15/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb"
 )
 
 const (
@@ -37,6 +37,13 @@ const (
 	AnalyticalStorageSchemaTypeWellDefined  AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaTypeWellDefined
 )
 
+type AuthenticationMethod = original.AuthenticationMethod
+
+const (
+	AuthenticationMethodCassandra AuthenticationMethod = original.AuthenticationMethodCassandra
+	AuthenticationMethodNone      AuthenticationMethod = original.AuthenticationMethodNone
+)
+
 type BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatus
 
 const (
@@ -53,6 +60,14 @@ const (
 	BackupPolicyTypePeriodic   BackupPolicyType = original.BackupPolicyTypePeriodic
 )
 
+type BackupStorageRedundancy = original.BackupStorageRedundancy
+
+const (
+	BackupStorageRedundancyGeo   BackupStorageRedundancy = original.BackupStorageRedundancyGeo
+	BackupStorageRedundancyLocal BackupStorageRedundancy = original.BackupStorageRedundancyLocal
+	BackupStorageRedundancyZone  BackupStorageRedundancy = original.BackupStorageRedundancyZone
+)
+
 type CompositePathSortOrder = original.CompositePathSortOrder
 
 const (
@@ -65,6 +80,17 @@ type ConflictResolutionMode = original.ConflictResolutionMode
 const (
 	ConflictResolutionModeCustom         ConflictResolutionMode = original.ConflictResolutionModeCustom
 	ConflictResolutionModeLastWriterWins ConflictResolutionMode = original.ConflictResolutionModeLastWriterWins
+)
+
+type ConnectionState = original.ConnectionState
+
+const (
+	ConnectionStateDatacenterToDatacenterNetworkError           ConnectionState = original.ConnectionStateDatacenterToDatacenterNetworkError
+	ConnectionStateInternalError                                ConnectionState = original.ConnectionStateInternalError
+	ConnectionStateInternalOperatorToDataCenterCertificateError ConnectionState = original.ConnectionStateInternalOperatorToDataCenterCertificateError
+	ConnectionStateOK                                           ConnectionState = original.ConnectionStateOK
+	ConnectionStateOperatorToDataCenterNetworkError             ConnectionState = original.ConnectionStateOperatorToDataCenterNetworkError
+	ConnectionStateUnknown                                      ConnectionState = original.ConnectionStateUnknown
 )
 
 type ConnectorOffer = original.ConnectorOffer
@@ -149,11 +175,46 @@ const (
 	KeyKindSecondaryReadonly KeyKind = original.KeyKindSecondaryReadonly
 )
 
+type ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningState
+
+const (
+	ManagedCassandraProvisioningStateCanceled  ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateCanceled
+	ManagedCassandraProvisioningStateCreating  ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateCreating
+	ManagedCassandraProvisioningStateDeleting  ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateDeleting
+	ManagedCassandraProvisioningStateFailed    ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateFailed
+	ManagedCassandraProvisioningStateSucceeded ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateSucceeded
+	ManagedCassandraProvisioningStateUpdating  ManagedCassandraProvisioningState = original.ManagedCassandraProvisioningStateUpdating
+)
+
+type ManagedCassandraResourceIdentityType = original.ManagedCassandraResourceIdentityType
+
+const (
+	ManagedCassandraResourceIdentityTypeNone           ManagedCassandraResourceIdentityType = original.ManagedCassandraResourceIdentityTypeNone
+	ManagedCassandraResourceIdentityTypeSystemAssigned ManagedCassandraResourceIdentityType = original.ManagedCassandraResourceIdentityTypeSystemAssigned
+)
+
 type NetworkACLBypass = original.NetworkACLBypass
 
 const (
 	NetworkACLBypassAzureServices NetworkACLBypass = original.NetworkACLBypassAzureServices
 	NetworkACLBypassNone          NetworkACLBypass = original.NetworkACLBypassNone
+)
+
+type NodeState = original.NodeState
+
+const (
+	NodeStateJoining NodeState = original.NodeStateJoining
+	NodeStateLeaving NodeState = original.NodeStateLeaving
+	NodeStateMoving  NodeState = original.NodeStateMoving
+	NodeStateNormal  NodeState = original.NodeStateNormal
+	NodeStateStopped NodeState = original.NodeStateStopped
+)
+
+type NodeStatus = original.NodeStatus
+
+const (
+	NodeStatusDown NodeStatus = original.NodeStatusDown
+	NodeStatusUp   NodeStatus = original.NodeStatusUp
 )
 
 type OperationType = original.OperationType
@@ -281,6 +342,21 @@ type BackupPolicyMigrationState = original.BackupPolicyMigrationState
 type BaseClient = original.BaseClient
 type BasicBackupPolicy = original.BasicBackupPolicy
 type Capability = original.Capability
+type Capacity = original.Capacity
+type CassandraClusterPublicStatus = original.CassandraClusterPublicStatus
+type CassandraClusterPublicStatusDataCentersItem = original.CassandraClusterPublicStatusDataCentersItem
+type CassandraClusterPublicStatusDataCentersItemNodesItem = original.CassandraClusterPublicStatusDataCentersItemNodesItem
+type CassandraClustersClient = original.CassandraClustersClient
+type CassandraClustersCreateUpdateFuture = original.CassandraClustersCreateUpdateFuture
+type CassandraClustersDeallocateFuture = original.CassandraClustersDeallocateFuture
+type CassandraClustersDeleteFuture = original.CassandraClustersDeleteFuture
+type CassandraClustersInvokeCommandFuture = original.CassandraClustersInvokeCommandFuture
+type CassandraClustersStartFuture = original.CassandraClustersStartFuture
+type CassandraClustersUpdateFuture = original.CassandraClustersUpdateFuture
+type CassandraDataCentersClient = original.CassandraDataCentersClient
+type CassandraDataCentersCreateUpdateFuture = original.CassandraDataCentersCreateUpdateFuture
+type CassandraDataCentersDeleteFuture = original.CassandraDataCentersDeleteFuture
+type CassandraDataCentersUpdateFuture = original.CassandraDataCentersUpdateFuture
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
 type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
@@ -310,15 +386,21 @@ type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesR
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
 type CassandraTableResource = original.CassandraTableResource
+type Certificate = original.Certificate
 type CloudError = original.CloudError
 type ClusterKey = original.ClusterKey
+type ClusterResource = original.ClusterResource
+type ClusterResourceProperties = original.ClusterResourceProperties
 type CollectionClient = original.CollectionClient
 type CollectionPartitionClient = original.CollectionPartitionClient
 type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
 type CollectionRegionClient = original.CollectionRegionClient
 type Column = original.Column
+type CommandOutput = original.CommandOutput
+type CommandPostBody = original.CommandPostBody
 type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
+type ConnectionError = original.ConnectionError
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
 type ContinuousBackupInformation = original.ContinuousBackupInformation
@@ -326,6 +408,8 @@ type ContinuousBackupRestoreLocation = original.ContinuousBackupRestoreLocation
 type ContinuousModeBackupPolicy = original.ContinuousModeBackupPolicy
 type CorsPolicy = original.CorsPolicy
 type CreateUpdateOptions = original.CreateUpdateOptions
+type DataCenterResource = original.DataCenterResource
+type DataCenterResourceProperties = original.DataCenterResourceProperties
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
@@ -385,7 +469,16 @@ type IPAddressOrRange = original.IPAddressOrRange
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
+type ListClusters = original.ListClusters
+type ListDataCenters = original.ListDataCenters
 type Location = original.Location
+type LocationGetResult = original.LocationGetResult
+type LocationListResult = original.LocationListResult
+type LocationProperties = original.LocationProperties
+type LocationsClient = original.LocationsClient
+type ManagedCassandraARMResourceProperties = original.ManagedCassandraARMResourceProperties
+type ManagedCassandraManagedServiceIdentity = original.ManagedCassandraManagedServiceIdentity
+type ManagedCassandraReaperStatus = original.ManagedCassandraReaperStatus
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type Metric = original.Metric
@@ -420,6 +513,7 @@ type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture = original.MongoD
 type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture
 type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture
 type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture
+type MongoDBResourcesRetrieveContinuousBackupInformationFuture = original.MongoDBResourcesRetrieveContinuousBackupInformationFuture
 type MongoDBResourcesUpdateMongoDBCollectionThroughputFuture = original.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture
 type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture
 type MongoIndex = original.MongoIndex
@@ -571,6 +665,7 @@ type SQLUserDefinedFunctionGetPropertiesResource = original.SQLUserDefinedFuncti
 type SQLUserDefinedFunctionGetResults = original.SQLUserDefinedFunctionGetResults
 type SQLUserDefinedFunctionListResult = original.SQLUserDefinedFunctionListResult
 type SQLUserDefinedFunctionResource = original.SQLUserDefinedFunctionResource
+type SeedNode = original.SeedNode
 type SpatialSpec = original.SpatialSpec
 type SystemData = original.SystemData
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
@@ -603,6 +698,18 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewCassandraClustersClient(subscriptionID string) CassandraClustersClient {
+	return original.NewCassandraClustersClient(subscriptionID)
+}
+func NewCassandraClustersClientWithBaseURI(baseURI string, subscriptionID string) CassandraClustersClient {
+	return original.NewCassandraClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCassandraDataCentersClient(subscriptionID string) CassandraDataCentersClient {
+	return original.NewCassandraDataCentersClient(subscriptionID)
+}
+func NewCassandraDataCentersClientWithBaseURI(baseURI string, subscriptionID string) CassandraDataCentersClient {
+	return original.NewCassandraDataCentersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCassandraResourcesClient(subscriptionID string) CassandraResourcesClient {
 	return original.NewCassandraResourcesClient(subscriptionID)
@@ -657,6 +764,12 @@ func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
 }
 func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
 	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
 	return original.NewMongoDBResourcesClient(subscriptionID)
@@ -787,17 +900,26 @@ func PossibleAPITypeValues() []APIType {
 func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 	return original.PossibleAnalyticalStorageSchemaTypeValues()
 }
+func PossibleAuthenticationMethodValues() []AuthenticationMethod {
+	return original.PossibleAuthenticationMethodValues()
+}
 func PossibleBackupPolicyMigrationStatusValues() []BackupPolicyMigrationStatus {
 	return original.PossibleBackupPolicyMigrationStatusValues()
 }
 func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	return original.PossibleBackupPolicyTypeValues()
 }
+func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
+	return original.PossibleBackupStorageRedundancyValues()
+}
 func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	return original.PossibleCompositePathSortOrderValues()
 }
 func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 	return original.PossibleConflictResolutionModeValues()
+}
+func PossibleConnectionStateValues() []ConnectionState {
+	return original.PossibleConnectionStateValues()
 }
 func PossibleConnectorOfferValues() []ConnectorOffer {
 	return original.PossibleConnectorOfferValues()
@@ -829,8 +951,20 @@ func PossibleIndexingModeValues() []IndexingMode {
 func PossibleKeyKindValues() []KeyKind {
 	return original.PossibleKeyKindValues()
 }
+func PossibleManagedCassandraProvisioningStateValues() []ManagedCassandraProvisioningState {
+	return original.PossibleManagedCassandraProvisioningStateValues()
+}
+func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraResourceIdentityType {
+	return original.PossibleManagedCassandraResourceIdentityTypeValues()
+}
 func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	return original.PossibleNetworkACLBypassValues()
+}
+func PossibleNodeStateValues() []NodeState {
+	return original.PossibleNodeStateValues()
+}
+func PossibleNodeStatusValues() []NodeStatus {
+	return original.PossibleNodeStatusValues()
 }
 func PossibleOperationTypeValues() []OperationType {
 	return original.PossibleOperationTypeValues()

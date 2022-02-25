@@ -7,24 +7,24 @@ import (
 	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestContainerPropertiesSerialization(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
+	etag := azcore.ETag("etag")
 
-	properties := &CosmosContainerProperties{
-		Id:           "someId",
-		ETag:         "someEtag",
+	properties := ContainerProperties{
+		ID:           "someId",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
-		ResourceId:   "someResourceId",
-		LastModified: &now,
+		ResourceID:   "someResourceId",
+		LastModified: nowAsUnix,
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths:   []string{"somePath"},
-			Version: PartitionKeyDefinitionVersion2,
+			Version: 2,
 		},
 		IndexingPolicy: &IndexingPolicy{
 			IncludedPaths: []IncludedPath{
@@ -60,30 +60,30 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	otherProperties := &CosmosContainerProperties{}
+	otherProperties := &ContainerProperties{}
 	err = json.Unmarshal(jsonString, otherProperties)
 	if err != nil {
 		t.Fatal(err, string(jsonString))
 	}
 
-	if properties.Id != otherProperties.Id {
-		t.Errorf("Expected Id to be %s, but got %s", properties.Id, otherProperties.Id)
+	if properties.ID != otherProperties.ID {
+		t.Errorf("Expected Id to be %s, but got %s", properties.ID, otherProperties.ID)
 	}
 
-	if properties.ETag != otherProperties.ETag {
-		t.Errorf("Expected ETag to be %s, but got %s", properties.ETag, otherProperties.ETag)
+	if *properties.ETag != *otherProperties.ETag {
+		t.Errorf("Expected ETag to be %s, but got %s", *properties.ETag, *otherProperties.ETag)
 	}
 
 	if properties.SelfLink != otherProperties.SelfLink {
 		t.Errorf("Expected SelfLink to be %s, but got %s", properties.SelfLink, otherProperties.SelfLink)
 	}
 
-	if properties.ResourceId != otherProperties.ResourceId {
-		t.Errorf("Expected ResourceId to be %s, but got %s", properties.ResourceId, otherProperties.ResourceId)
+	if properties.ResourceID != otherProperties.ResourceID {
+		t.Errorf("Expected ResourceId to be %s, but got %s", properties.ResourceID, otherProperties.ResourceID)
 	}
 
-	if properties.LastModified.Time != otherProperties.LastModified.Time {
-		t.Errorf("Expected LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), otherProperties.LastModified.Time.UTC())
+	if properties.LastModified != otherProperties.LastModified {
+		t.Errorf("Expected LastModified.Time to be %v, but got %v", properties.LastModified, otherProperties.LastModified)
 	}
 
 	if otherProperties.AnalyticalStoreTimeToLiveInSeconds != nil {
@@ -158,7 +158,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 func TestContainerPropertiesSerializationWithTTL(t *testing.T) {
 	jsonString := []byte(`{"defaultTtl": 10, "analyticalStorageTtl": 20}`)
 
-	properties := &CosmosContainerProperties{}
+	properties := &ContainerProperties{}
 	err := json.Unmarshal(jsonString, properties)
 	if err != nil {
 		t.Fatal(err, string(jsonString))

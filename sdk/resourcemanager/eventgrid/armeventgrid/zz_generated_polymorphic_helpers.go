@@ -101,25 +101,6 @@ func unmarshalDeadLetterDestinationClassification(rawMsg json.RawMessage) (DeadL
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalDeadLetterDestinationClassificationArray(rawMsg json.RawMessage) ([]DeadLetterDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]DeadLetterDestinationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDeadLetterDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalDeliveryAttributeMappingClassification(rawMsg json.RawMessage) (DeliveryAttributeMappingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -189,25 +170,6 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalEventSubscriptionDestinationClassificationArray(rawMsg json.RawMessage) ([]EventSubscriptionDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]EventSubscriptionDestinationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalEventSubscriptionDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSchemaMappingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -224,23 +186,4 @@ func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSch
 		b = &InputSchemaMapping{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalInputSchemaMappingClassificationArray(rawMsg json.RawMessage) ([]InputSchemaMappingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]InputSchemaMappingClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalInputSchemaMappingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
 }

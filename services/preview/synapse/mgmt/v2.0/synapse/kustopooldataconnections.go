@@ -35,7 +35,7 @@ func NewKustoPoolDataConnectionsClientWithBaseURI(baseURI string, subscriptionID
 // CheckNameAvailability checks that the data connection name is valid and is not already in use.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // dataConnectionName - the name of the data connection.
@@ -130,7 +130,7 @@ func (client KustoPoolDataConnectionsClient) CheckNameAvailabilityResponder(resp
 // CreateOrUpdate creates or updates a data connection.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // dataConnectionName - the name of the data connection.
@@ -227,7 +227,7 @@ func (client KustoPoolDataConnectionsClient) CreateOrUpdateResponder(resp *http.
 // DataConnectionValidationMethod checks that the data connection parameters are valid.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // parameters - the data connection parameters supplied to the CreateOrUpdate operation.
@@ -322,7 +322,7 @@ func (client KustoPoolDataConnectionsClient) DataConnectionValidationMethodRespo
 // Delete deletes the data connection with the given name.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // dataConnectionName - the name of the data connection.
@@ -415,7 +415,7 @@ func (client KustoPoolDataConnectionsClient) DeleteResponder(resp *http.Response
 // Get returns a data connection.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // dataConnectionName - the name of the data connection.
@@ -506,7 +506,7 @@ func (client KustoPoolDataConnectionsClient) GetResponder(resp *http.Response) (
 // ListByDatabase returns the list of data connections of the given Kusto pool database.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 func (client KustoPoolDataConnectionsClient) ListByDatabase(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string) (result DataConnectionListResult, err error) {
@@ -595,7 +595,7 @@ func (client KustoPoolDataConnectionsClient) ListByDatabaseResponder(resp *http.
 // Update updates a data connection.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // dataConnectionName - the name of the data connection.

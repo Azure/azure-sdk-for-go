@@ -18,25 +18,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// NewKeyCredential creates an KeyCredential containing the
 // account's primary or secondary key.
-func NewSharedKeyCredential(accountKey string) (*SharedKeyCredential, error) {
-	c := SharedKeyCredential{}
-	if err := c.SetAccountKey(accountKey); err != nil {
-		return nil, err
+func NewKeyCredential(accountKey string) (KeyCredential, error) {
+	c := KeyCredential{}
+	if err := c.Update(accountKey); err != nil {
+		return c, err
 	}
-	return &c, nil
+	return c, nil
 }
 
-// SharedKeyCredential contains an account's name and its primary or secondary key.
+// KeyCredential contains an account's name and its primary or secondary key.
 // It is immutable making it shareable and goroutine-safe.
-type SharedKeyCredential struct {
-	// Only the NewSharedKeyCredential method should set these; all other methods should treat them as read-only
+type KeyCredential struct {
+	// Only the KeyCredential method should set these; all other methods should treat them as read-only
 	accountKey atomic.Value // []byte
 }
 
-// SetAccountKey replaces the existing account key with the specified account key.
-func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
+// Update replaces the existing account key with the specified account key.
+func (c *KeyCredential) Update(accountKey string) error {
 	bytes, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
 		return fmt.Errorf("decode account key: %w", err)
@@ -46,14 +46,14 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request
-func (c *SharedKeyCredential) computeHMACSHA256(s string) (base64String string) {
+func (c *KeyCredential) computeHMACSHA256(s string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	_, _ = h.Write([]byte(s))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Request) (string, error) {
-	var opValues cosmosOperationContext
+func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Request) (string, error) {
+	var opValues pipelineRequestOptions
 	value := ""
 
 	if req.OperationValue(&opValues) {
@@ -75,7 +75,7 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *polic
 }
 
 //where date is like time.RFC1123 but hard-codes GMT as the time zone
-func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
+func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
 	if method == "" || resourceType == "" {
 		return ""
 	}
@@ -88,10 +88,10 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType,
 }
 
 type sharedKeyCredPolicy struct {
-	cred *SharedKeyCredential
+	cred KeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *SharedKeyCredential) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred KeyCredential) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
@@ -117,7 +117,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.Response, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
+		log.Write(log.EventResponse, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
 	}
 	return response, err
 }

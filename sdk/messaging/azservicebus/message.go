@@ -4,63 +4,106 @@
 package azservicebus
 
 import (
-	"context"
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
-type (
-	// ReceivedMessage is a received message from a Client.NewReceiver() or Client.NewProcessor().
-	ReceivedMessage struct {
-		Message
+// ReceivedMessage is a received message from a Client.NewReceiver().
+type ReceivedMessage struct {
+	MessageID string
 
-		LockToken              [16]byte
-		DeliveryCount          uint32
-		LockedUntil            *time.Time // `mapstructure:"x-opt-locked-until"`
-		SequenceNumber         *int64     // :"x-opt-sequence-number"`
-		EnqueuedSequenceNumber *int64     // :"x-opt-enqueue-sequence-number"`
-		EnqueuedTime           *time.Time // :"x-opt-enqueued-time"`
-		DeadLetterSource       *string    // :"x-opt-deadletter-source"`
+	ContentType      *string
+	CorrelationID    *string
+	SessionID        *string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
 
-		// available in the raw AMQP message, but not exported by default
-		// GroupSequence  *uint32
+	TimeToLive *time.Duration
 
-		rawAMQPMessage *amqp.Message
+	PartitionKey            *string
+	TransactionPartitionKey *string
+	ScheduledEnqueueTime    *time.Time
 
-		// deferred indicates we received it using ReceiveDeferredMessages. These messages
-		// will still go through the normal Receiver.Settle functions but internally will
-		// always be settled with the management link.
-		deferred bool
-	}
+	ApplicationProperties map[string]interface{}
 
-	// Message is a SendableMessage which can be sent using a Client.NewSender().
-	Message struct {
-		ID string
+	LockToken              [16]byte
+	DeliveryCount          uint32
+	LockedUntil            *time.Time
+	SequenceNumber         *int64
+	EnqueuedSequenceNumber *int64
+	EnqueuedTime           *time.Time
+	ExpiresAt              *time.Time
 
-		ContentType   string
-		CorrelationID string
-		// Body corresponds to the first []byte array in the Data section of an AMQP message.
-		Body             []byte
-		SessionID        *string
-		Subject          string
-		ReplyTo          string
-		ReplyToSessionID string
-		To               string
-		TimeToLive       *time.Duration
+	DeadLetterErrorDescription *string
+	DeadLetterReason           *string
+	DeadLetterSource           *string
 
-		PartitionKey            *string
-		TransactionPartitionKey *string
-		ScheduledEnqueueTime    *time.Time
+	// State represents the current state of the message (Active, Scheduled, Deferred).
+	State MessageState
 
-		ApplicationProperties map[string]interface{}
-		Format                uint32
-	}
+	// available in the raw AMQP message, but not exported by default
+	// GroupSequence  *uint32
+
+	rawAMQPMessage *amqp.Message
+
+	// deferred indicates we received it using ReceiveDeferredMessages. These messages
+	// will still go through the normal Receiver.Settle functions but internally will
+	// always be settled with the management link.
+	deferred bool
+}
+
+// MessageState represents the current state of a message (Active, Scheduled, Deferred).
+type MessageState int32
+
+const (
+	// MessageStateActive indicates the message is active.
+	MessageStateActive MessageState = 0
+	// MessageStateDeferred indicates the message is deferred.
+	MessageStateDeferred MessageState = 1
+	// MessageStateScheduled indicates the message is scheduled.
+	MessageStateScheduled MessageState = 2
 )
+
+// Body returns the body for this received message.
+// If the body not compatible with ReceivedMessage this function will return an error.
+func (rm *ReceivedMessage) Body() ([]byte, error) {
+	// TODO: does this come back as a zero length array if the body is empty (which is allowed)
+	if rm.rawAMQPMessage.Data == nil || len(rm.rawAMQPMessage.Data) != 1 {
+		return nil, errors.New("AMQP message Data section is improperly encoded for ReceivedMessage")
+	}
+
+	return rm.rawAMQPMessage.Data[0], nil
+}
+
+// Message is a message with a body and commonly used properties.
+type Message struct {
+	MessageID *string
+
+	ContentType   *string
+	CorrelationID *string
+	// Body corresponds to the first []byte array in the Data section of an AMQP message.
+	Body             []byte
+	SessionID        *string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
+	TimeToLive       *time.Duration
+
+	PartitionKey            *string
+	TransactionPartitionKey *string
+	ScheduledEnqueueTime    *time.Time
+
+	ApplicationProperties map[string]interface{}
+}
 
 // Service Bus custom properties
 const (
@@ -76,24 +119,8 @@ const (
 	enqueuedTimeAnnotation           = "x-opt-enqueued-time"
 	deadLetterSourceAnnotation       = "x-opt-deadletter-source"
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
+	messageStateAnnotation           = "x-opt-message-state"
 )
-
-// Set implements tab.Carrier
-func (m *Message) Set(key string, value interface{}) {
-	if m.ApplicationProperties == nil {
-		m.ApplicationProperties = make(map[string]interface{})
-	}
-	m.ApplicationProperties[key] = value
-}
-
-// GetKeyValues implements tab.Carrier
-func (m *Message) GetKeyValues() map[string]interface{} {
-	return m.ApplicationProperties
-}
-
-func (m *Message) messageType() string {
-	return "Message"
-}
 
 func (m *Message) toAMQPMessage() *amqp.Message {
 	amqpMsg := amqp.NewMessage(m.Body)
@@ -105,16 +132,10 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 		amqpMsg.Header.TTL = *m.TimeToLive
 	}
 
-	// TODO: I don't think this should be strictly required. Need to
-	// look into why it won't send properly without one.
-	var messageID = m.ID
+	var messageID interface{}
 
-	if messageID == "" {
-		uuid, err := uuid.NewV4()
-
-		if err == nil {
-			messageID = uuid.String()
-		}
+	if m.MessageID != nil {
+		messageID = *m.MessageID
 	}
 
 	amqpMsg.Properties = &amqp.MessageProperties{
@@ -122,14 +143,17 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 	}
 
 	if m.SessionID != nil {
-		amqpMsg.Properties.GroupID = *m.SessionID
+		amqpMsg.Properties.GroupID = m.SessionID
 	}
 
 	// if m.GroupSequence != nil {
 	// 	amqpMsg.Properties.GroupSequence = *m.GroupSequence
 	// }
 
-	amqpMsg.Properties.CorrelationID = m.CorrelationID
+	if m.CorrelationID != nil {
+		amqpMsg.Properties.CorrelationID = *m.CorrelationID
+	}
+
 	amqpMsg.Properties.ContentType = m.ContentType
 	amqpMsg.Properties.Subject = m.Subject
 	amqpMsg.Properties.To = m.To
@@ -185,23 +209,21 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // newReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *ReceivedMessage {
+func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		Message: Message{
-			Body: amqpMsg.GetData(),
-		},
 		rawAMQPMessage: amqpMsg,
+		State:          MessageStateActive,
 	}
 
 	if amqpMsg.Properties != nil {
 		if id, ok := amqpMsg.Properties.MessageID.(string); ok {
-			msg.ID = id
+			msg.MessageID = id
 		}
-		msg.SessionID = &amqpMsg.Properties.GroupID
+		msg.SessionID = amqpMsg.Properties.GroupID
 		//msg.GroupSequence = &amqpMsg.Properties.GroupSequence
 
 		if id, ok := amqpMsg.Properties.CorrelationID.(string); ok {
-			msg.CorrelationID = id
+			msg.CorrelationID = &id
 		}
 		msg.ContentType = amqpMsg.Properties.ContentType
 		msg.Subject = amqpMsg.Properties.Subject
@@ -218,6 +240,14 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		msg.ApplicationProperties = make(map[string]interface{}, len(amqpMsg.ApplicationProperties))
 		for key, value := range amqpMsg.ApplicationProperties {
 			msg.ApplicationProperties[key] = value
+		}
+
+		if deadLetterErrorDescription, ok := amqpMsg.ApplicationProperties["DeadLetterErrorDescription"]; ok {
+			msg.DeadLetterErrorDescription = to.StringPtr(deadLetterErrorDescription.(string))
+		}
+
+		if deadLetterReason, ok := amqpMsg.ApplicationProperties["DeadLetterReason"]; ok {
+			msg.DeadLetterReason = to.StringPtr(deadLetterReason.(string))
 		}
 	}
 
@@ -257,6 +287,15 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 			msg.TransactionPartitionKey = to.StringPtr(viaPartitionKey.(string))
 		}
 
+		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {
+		case 1:
+			msg.State = MessageStateDeferred
+		case 2:
+			msg.State = MessageStateScheduled
+		default:
+			msg.State = MessageStateActive
+		}
+
 		// TODO: annotation propagation is a thing. Currently these are only stored inside
 		// of the underlying AMQP message, but not inside of the message itself.
 
@@ -289,7 +328,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if err == nil {
 			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
-			tab.For(ctxForLogging).Info(fmt.Sprintf("msg.DeliveryTag could not be converted into a UUID: %s", err.Error()))
+			log.Writef(internal.EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
 		}
 	}
 
@@ -299,7 +338,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 	}
 
-	msg.Format = amqpMsg.Format
+	if msg.EnqueuedTime != nil && msg.TimeToLive != nil {
+		expiresAt := msg.EnqueuedTime.Add(*msg.TimeToLive)
+		msg.ExpiresAt = &expiresAt
+	}
+
 	return msg
 }
 
@@ -329,4 +372,17 @@ func uuidFromLockTokenBytes(bytes []byte) (*amqp.UUID, error) {
 	amqpUUID := amqp.UUID(lockTokenBytes)
 
 	return &amqpUUID, nil
+}
+
+func asInt64(v interface{}, defVal int64) int64 {
+	switch v2 := v.(type) {
+	case int32:
+		return int64(v2)
+	case int64:
+		return int64(v2)
+	case int:
+		return int64(v2)
+	default:
+		return defVal
+	}
 }

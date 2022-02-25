@@ -40,7 +40,7 @@ type Poller struct {
 
 // New creates a new Poller from the provided initial response.
 func New(resp *http.Response, pollerID string) (*Poller, error) {
-	log.Write(log.LongRunningOperation, "Using Location poller.")
+	log.Write(log.EventLRO, "Using Location poller.")
 	locURL := resp.Header.Get(shared.HeaderLocation)
 	if locURL == "" {
 		return nil, errors.New("response is missing Location header")

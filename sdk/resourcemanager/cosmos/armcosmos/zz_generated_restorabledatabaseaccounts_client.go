@@ -11,49 +11,68 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RestorableDatabaseAccountsClient contains the methods for the RestorableDatabaseAccounts group.
 // Don't use this type directly, use NewRestorableDatabaseAccountsClient() instead.
 type RestorableDatabaseAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorableDatabaseAccountsClient creates a new instance of RestorableDatabaseAccountsClient with the specified values.
-func NewRestorableDatabaseAccountsClient(con *arm.Connection, subscriptionID string) *RestorableDatabaseAccountsClient {
-	return &RestorableDatabaseAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewRestorableDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableDatabaseAccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &RestorableDatabaseAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// GetByLocation - Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*'
-// permission.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableDatabaseAccountsClient) GetByLocation(ctx context.Context, location string, instanceID string, options *RestorableDatabaseAccountsGetByLocationOptions) (RestorableDatabaseAccountsGetByLocationResponse, error) {
+// GetByLocation - Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Cosmos DB region, with spaces between words and each word capitalized.
+// instanceID - The instanceId GUID of a restorable database account.
+// options - RestorableDatabaseAccountsClientGetByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.GetByLocation
+// method.
+func (client *RestorableDatabaseAccountsClient) GetByLocation(ctx context.Context, location string, instanceID string, options *RestorableDatabaseAccountsClientGetByLocationOptions) (RestorableDatabaseAccountsClientGetByLocationResponse, error) {
 	req, err := client.getByLocationCreateRequest(ctx, location, instanceID, options)
 	if err != nil {
-		return RestorableDatabaseAccountsGetByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientGetByLocationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableDatabaseAccountsGetByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientGetByLocationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDatabaseAccountsGetByLocationResponse{}, client.getByLocationHandleError(resp)
+		return RestorableDatabaseAccountsClientGetByLocationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByLocationHandleResponse(resp)
 }
 
 // getByLocationCreateRequest creates the GetByLocation request.
-func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableDatabaseAccountsGetByLocationOptions) (*policy.Request, error) {
+func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableDatabaseAccountsClientGetByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,117 +86,97 @@ func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx c
 		return nil, errors.New("parameter instanceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByLocationHandleResponse handles the GetByLocation response.
-func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsGetByLocationResponse, error) {
-	result := RestorableDatabaseAccountsGetByLocationResponse{RawResponse: resp}
+func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientGetByLocationResponse, error) {
+	result := RestorableDatabaseAccountsClientGetByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountGetResult); err != nil {
-		return RestorableDatabaseAccountsGetByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientGetByLocationResponse{}, err
 	}
 	return result, nil
 }
 
-// getByLocationHandleError handles the GetByLocation error response.
-func (client *RestorableDatabaseAccountsClient) getByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
-// permission.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableDatabaseAccountsClient) List(ctx context.Context, options *RestorableDatabaseAccountsListOptions) (RestorableDatabaseAccountsListResponse, error) {
+// List - Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RestorableDatabaseAccountsClientListOptions contains the optional parameters for the RestorableDatabaseAccountsClient.List
+// method.
+func (client *RestorableDatabaseAccountsClient) List(ctx context.Context, options *RestorableDatabaseAccountsClientListOptions) (RestorableDatabaseAccountsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return RestorableDatabaseAccountsListResponse{}, err
+		return RestorableDatabaseAccountsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableDatabaseAccountsListResponse{}, err
+		return RestorableDatabaseAccountsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDatabaseAccountsListResponse{}, client.listHandleError(resp)
+		return RestorableDatabaseAccountsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableDatabaseAccountsClient) listCreateRequest(ctx context.Context, options *RestorableDatabaseAccountsListOptions) (*policy.Request, error) {
+func (client *RestorableDatabaseAccountsClient) listCreateRequest(ctx context.Context, options *RestorableDatabaseAccountsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Response) (RestorableDatabaseAccountsListResponse, error) {
-	result := RestorableDatabaseAccountsListResponse{RawResponse: resp}
+func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientListResponse, error) {
+	result := RestorableDatabaseAccountsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountsListResult); err != nil {
-		return RestorableDatabaseAccountsListResponse{}, err
+		return RestorableDatabaseAccountsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *RestorableDatabaseAccountsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByLocation - Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region. This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
+// ListByLocation - Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region.
+// This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
 // permission.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableDatabaseAccountsClient) ListByLocation(ctx context.Context, location string, options *RestorableDatabaseAccountsListByLocationOptions) (RestorableDatabaseAccountsListByLocationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Cosmos DB region, with spaces between words and each word capitalized.
+// options - RestorableDatabaseAccountsClientListByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.ListByLocation
+// method.
+func (client *RestorableDatabaseAccountsClient) ListByLocation(ctx context.Context, location string, options *RestorableDatabaseAccountsClientListByLocationOptions) (RestorableDatabaseAccountsClientListByLocationResponse, error) {
 	req, err := client.listByLocationCreateRequest(ctx, location, options)
 	if err != nil {
-		return RestorableDatabaseAccountsListByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableDatabaseAccountsListByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDatabaseAccountsListByLocationResponse{}, client.listByLocationHandleError(resp)
+		return RestorableDatabaseAccountsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByLocationHandleResponse(resp)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx context.Context, location string, options *RestorableDatabaseAccountsListByLocationOptions) (*policy.Request, error) {
+func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx context.Context, location string, options *RestorableDatabaseAccountsClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,35 +186,22 @@ func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx 
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *RestorableDatabaseAccountsClient) listByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsListByLocationResponse, error) {
-	result := RestorableDatabaseAccountsListByLocationResponse{RawResponse: resp}
+func (client *RestorableDatabaseAccountsClient) listByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientListByLocationResponse, error) {
+	result := RestorableDatabaseAccountsClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountsListResult); err != nil {
-		return RestorableDatabaseAccountsListByLocationResponse{}, err
+		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *RestorableDatabaseAccountsClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

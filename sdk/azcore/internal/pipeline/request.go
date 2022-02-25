@@ -136,11 +136,6 @@ func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
 	return nil
 }
 
-// SkipBodyDownload will disable automatic downloading of the response body.
-func (req *Request) SkipBodyDownload() {
-	req.SetOperationValue(shared.BodyDownloadPolicyOpValues{Skip: true})
-}
-
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.
 func (req *Request) RewindBody() error {
 	if req.body != nil {

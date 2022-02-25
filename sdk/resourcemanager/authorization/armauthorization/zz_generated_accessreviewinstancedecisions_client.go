@@ -11,45 +11,64 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewInstanceDecisionsClient contains the methods for the AccessReviewInstanceDecisions group.
 // Don't use this type directly, use NewAccessReviewInstanceDecisionsClient() instead.
 type AccessReviewInstanceDecisionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccessReviewInstanceDecisionsClient creates a new instance of AccessReviewInstanceDecisionsClient with the specified values.
-func NewAccessReviewInstanceDecisionsClient(con *arm.Connection, subscriptionID string) *AccessReviewInstanceDecisionsClient {
-	return &AccessReviewInstanceDecisionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstanceDecisionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &AccessReviewInstanceDecisionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get access review instance decisions
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstanceDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsListOptions) *AccessReviewInstanceDecisionsListPager {
-	return &AccessReviewInstanceDecisionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// options - AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.List
+// method.
+func (client *AccessReviewInstanceDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) *AccessReviewInstanceDecisionsClientListPager {
+	return &AccessReviewInstanceDecisionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scheduleDefinitionID, id, options)
 		},
-		advancer: func(ctx context.Context, resp AccessReviewInstanceDecisionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AccessReviewInstanceDecisionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewDecisionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewInstanceDecisionsClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsListOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceDecisionsClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -63,7 +82,7 @@ func (client *AccessReviewInstanceDecisionsClient) listCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +94,10 @@ func (client *AccessReviewInstanceDecisionsClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewInstanceDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceDecisionsListResponse, error) {
-	result := AccessReviewInstanceDecisionsListResponse{RawResponse: resp}
+func (client *AccessReviewInstanceDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceDecisionsClientListResponse, error) {
+	result := AccessReviewInstanceDecisionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecisionListResult); err != nil {
-		return AccessReviewInstanceDecisionsListResponse{}, err
+		return AccessReviewInstanceDecisionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AccessReviewInstanceDecisionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

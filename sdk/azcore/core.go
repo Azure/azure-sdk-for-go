@@ -10,8 +10,15 @@ import (
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+// AccessToken represents an Azure service bearer access token with expiry information.
+type AccessToken = shared.AccessToken
+
+// TokenCredential represents a credential capable of providing an OAuth token.
+type TokenCredential = shared.TokenCredential
 
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
@@ -27,9 +34,13 @@ func NullValue(v interface{}) interface{} {
 	v, found := nullables[t]
 	if !found {
 		var o reflect.Value
-		if k := t.Kind(); k == reflect.Slice || k == reflect.Map {
-			o = reflect.New(t) // *[]type / *map[]
-			o = o.Elem()       // []type / map[]
+		if k := t.Kind(); k == reflect.Map {
+			o = reflect.MakeMap(t)
+		} else if k == reflect.Slice {
+			// empty slices appear to all point to the same data block
+			// which causes comparisons to become ambiguous.  so we create
+			// a slice with len/cap of one which ensures a unique address.
+			o = reflect.MakeSlice(t, 1, 1)
 		} else {
 			o = reflect.New(t.Elem())
 		}

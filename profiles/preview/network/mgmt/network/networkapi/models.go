@@ -9,7 +9,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-03-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-05-01/network/networkapi"
 
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
@@ -44,6 +44,9 @@ type ExpressRoutePortsClientAPI = original.ExpressRoutePortsClientAPI
 type ExpressRoutePortsLocationsClientAPI = original.ExpressRoutePortsLocationsClientAPI
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI
 type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
+type FirewallPolicyIdpsSignaturesClientAPI = original.FirewallPolicyIdpsSignaturesClientAPI
+type FirewallPolicyIdpsSignaturesFilterValuesClientAPI = original.FirewallPolicyIdpsSignaturesFilterValuesClientAPI
+type FirewallPolicyIdpsSignaturesOverridesClientAPI = original.FirewallPolicyIdpsSignaturesOverridesClientAPI
 type FirewallPolicyRuleCollectionGroupsClientAPI = original.FirewallPolicyRuleCollectionGroupsClientAPI
 type FlowLogsClientAPI = original.FlowLogsClientAPI
 type HubRouteTablesClientAPI = original.HubRouteTablesClientAPI
@@ -81,6 +84,7 @@ type RouteFilterRulesClientAPI = original.RouteFilterRulesClientAPI
 type RouteFiltersClientAPI = original.RouteFiltersClientAPI
 type RouteTablesClientAPI = original.RouteTablesClientAPI
 type RoutesClientAPI = original.RoutesClientAPI
+type RoutingIntentClientAPI = original.RoutingIntentClientAPI
 type SecurityGroupsClientAPI = original.SecurityGroupsClientAPI
 type SecurityPartnerProvidersClientAPI = original.SecurityPartnerProvidersClientAPI
 type SecurityRulesClientAPI = original.SecurityRulesClientAPI

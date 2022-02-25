@@ -15,14 +15,14 @@ func TestItemCRUD(t *testing.T) {
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := CosmosContainerProperties{
-		Id: "aContainer",
+	properties := ContainerProperties{
+		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
 	}
 
-	resp, err := database.CreateContainer(context.TODO(), properties, nil, nil)
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
@@ -32,15 +32,21 @@ func TestItemCRUD(t *testing.T) {
 		"value": "2",
 	}
 
-	container := resp.ContainerProperties.Container
-	pk, err := NewPartitionKey("1")
+	container, _ := database.NewContainer("aContainer")
+	pk := NewPartitionKeyString("1")
+
+	marshalled, err := json.Marshal(item)
 	if err != nil {
-		t.Fatalf("Failed to create pk: %v", err)
+		t.Fatal(err)
 	}
 
-	itemResponse, err := container.CreateItem(context.TODO(), pk, item, nil)
+	itemResponse, err := container.CreateItem(context.TODO(), pk, marshalled, nil)
 	if err != nil {
 		t.Fatalf("Failed to create item: %v", err)
+	}
+
+	if itemResponse.SessionToken == "" {
+		t.Fatalf("Session token is empty")
 	}
 
 	// No content on write by default
@@ -70,7 +76,11 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "3"
-	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	marshalled, err = json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", marshalled, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)
 	}
@@ -92,7 +102,11 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "4"
-	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	marshalled, err = json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemResponse, err = container.UpsertItem(context.TODO(), pk, marshalled, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to upsert item: %v", err)
 	}

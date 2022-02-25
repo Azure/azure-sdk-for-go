@@ -11,47 +11,66 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SchemaClient contains the methods for the Schema group.
 // Don't use this type directly, use NewSchemaClient() instead.
 type SchemaClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSchemaClient creates a new instance of SchemaClient with the specified values.
-func NewSchemaClient(con *arm.Connection, subscriptionID string) *SchemaClient {
-	return &SchemaClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SchemaClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &SchemaClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the schema for a given workspace.
-// If the operation fails it returns a generic error.
-func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *SchemaGetOptions) (SchemaGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - SchemaClientGetOptions contains the optional parameters for the SchemaClient.Get method.
+func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *SchemaClientGetOptions) (SchemaClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return SchemaGetResponse{}, err
+		return SchemaClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SchemaGetResponse{}, err
+		return SchemaClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SchemaGetResponse{}, client.getHandleError(resp)
+		return SchemaClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SchemaGetOptions) (*policy.Request, error) {
+func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SchemaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/schema"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,7 +84,7 @@ func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,22 +96,10 @@ func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchemaClient) getHandleResponse(resp *http.Response) (SchemaGetResponse, error) {
-	result := SchemaGetResponse{RawResponse: resp}
+func (client *SchemaClient) getHandleResponse(resp *http.Response) (SchemaClientGetResponse, error) {
+	result := SchemaClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SearchGetSchemaResponse); err != nil {
-		return SchemaGetResponse{}, err
+		return SchemaClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SchemaClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

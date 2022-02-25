@@ -34,7 +34,7 @@ func NewSQLPoolSchemasClientWithBaseURI(baseURI string, subscriptionID string) S
 // Get get Sql Pool schema
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 func (client SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string) (result SQLPoolSchema, err error) {
@@ -123,7 +123,7 @@ func (client SQLPoolSchemasClient) GetResponder(resp *http.Response) (result SQL
 // List gets schemas of a given SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // filter - an OData filter expression that filters elements in the collection.
 func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result SQLPoolSchemaListResultPage, err error) {

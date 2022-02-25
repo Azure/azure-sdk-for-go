@@ -17,7 +17,8 @@ Param (
   [Parameter(Mandatory=$True)]
   [string] $ModulePath,
   [string] $NewVersionString,
-  [string] $ReleaseDate
+  [string] $ReleaseDate,
+  [boolean] $ReplaceLatestEntryTitle=$false
  )
 
 . (Join-Path $PSScriptRoot ".." common scripts common.ps1)
@@ -63,6 +64,10 @@ $newVersionFileContent | Set-Content -Path $moduleProperties.VersionFile -NoNewl
 
 $unreleased = $incrementVersion
 $updateExisting = !$incrementVersion
+
+if ($ReplaceLatestEntryTitle) {
+  $updateExisting = $ReplaceLatestEntryTitle
+}
 
 # Update change log entry
 & "${RepoRoot}/eng/common/scripts/Update-ChangeLog.ps1" `

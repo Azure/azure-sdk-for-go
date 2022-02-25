@@ -137,12 +137,13 @@ type ExceptionResponse struct {
 
 // BasicLimitJSONObject limitJson abstract class.
 type BasicLimitJSONObject interface {
+	AsLimitObject() (*LimitObject, bool)
 	AsLimitJSONObject() (*LimitJSONObject, bool)
 }
 
 // LimitJSONObject limitJson abstract class.
 type LimitJSONObject struct {
-	// LimitObjectType - Possible values include: 'LimitObjectTypeLimitJSONObject'
+	// LimitObjectType - Possible values include: 'LimitObjectTypeLimitJSONObject', 'LimitObjectTypeLimitValue'
 	LimitObjectType LimitObjectType `json:"limitObjectType,omitempty"`
 }
 
@@ -154,6 +155,10 @@ func unmarshalBasicLimitJSONObject(body []byte) (BasicLimitJSONObject, error) {
 	}
 
 	switch m["limitObjectType"] {
+	case string(LimitObjectTypeLimitValue):
+		var lo LimitObject
+		err := json.Unmarshal(body, &lo)
+		return lo, err
 	default:
 		var ljo LimitJSONObject
 		err := json.Unmarshal(body, &ljo)
@@ -189,6 +194,11 @@ func (ljo LimitJSONObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsLimitObject is the BasicLimitJSONObject implementation for LimitJSONObject.
+func (ljo LimitJSONObject) AsLimitObject() (*LimitObject, bool) {
+	return nil, false
+}
+
 // AsLimitJSONObject is the BasicLimitJSONObject implementation for LimitJSONObject.
 func (ljo LimitJSONObject) AsLimitJSONObject() (*LimitJSONObject, bool) {
 	return &ljo, true
@@ -203,10 +213,41 @@ func (ljo LimitJSONObject) AsBasicLimitJSONObject() (BasicLimitJSONObject, bool)
 type LimitObject struct {
 	// Value - The quota/limit value
 	Value *int32 `json:"value,omitempty"`
-	// LimitObjectType - Possible values include: 'LimitTypeLimitValue'
-	LimitObjectType LimitType `json:"limitObjectType,omitempty"`
 	// LimitType - Possible values include: 'LimitTypesIndependent', 'LimitTypesShared'
 	LimitType LimitTypes `json:"limitType,omitempty"`
+	// LimitObjectType - Possible values include: 'LimitObjectTypeLimitJSONObject', 'LimitObjectTypeLimitValue'
+	LimitObjectType LimitObjectType `json:"limitObjectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LimitObject.
+func (lo LimitObject) MarshalJSON() ([]byte, error) {
+	lo.LimitObjectType = LimitObjectTypeLimitValue
+	objectMap := make(map[string]interface{})
+	if lo.Value != nil {
+		objectMap["value"] = lo.Value
+	}
+	if lo.LimitType != "" {
+		objectMap["limitType"] = lo.LimitType
+	}
+	if lo.LimitObjectType != "" {
+		objectMap["limitObjectType"] = lo.LimitObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLimitObject is the BasicLimitJSONObject implementation for LimitObject.
+func (lo LimitObject) AsLimitObject() (*LimitObject, bool) {
+	return &lo, true
+}
+
+// AsLimitJSONObject is the BasicLimitJSONObject implementation for LimitObject.
+func (lo LimitObject) AsLimitJSONObject() (*LimitJSONObject, bool) {
+	return nil, false
+}
+
+// AsBasicLimitJSONObject is the BasicLimitJSONObject implementation for LimitObject.
+func (lo LimitObject) AsBasicLimitJSONObject() (BasicLimitJSONObject, bool) {
+	return &lo, true
 }
 
 // Limits quota limits.
@@ -374,15 +415,6 @@ type LimitsResponse struct {
 	Value *[]CurrentQuotaLimitBase `json:"value,omitempty"`
 	// NextLink - The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// LimitValue the resource quota limit.
-type LimitValue struct {
-	LimitObjectType *string `json:"limitObjectType,omitempty"`
-	// Value - The quota/limit value
-	Value *int32 `json:"value,omitempty"`
-	// LimitType - Possible values include: 'LimitTypesIndependent', 'LimitTypesShared'
-	LimitType LimitTypes `json:"limitType,omitempty"`
 }
 
 // OperationDisplay ...

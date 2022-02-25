@@ -11,46 +11,66 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIProductClient contains the methods for the APIProduct group.
 // Don't use this type directly, use NewAPIProductClient() instead.
 type APIProductClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIProductClient creates a new instance of APIProductClient with the specified values.
-func NewAPIProductClient(con *arm.Connection, subscriptionID string) *APIProductClient {
-	return &APIProductClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIProductClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &APIProductClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByApis - Lists all Products, which the API is part of.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) *APIProductListByApisPager {
-	return &APIProductListByApisPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// options - APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.ListByApis method.
+func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *APIProductClientListByApisPager {
+	return &APIProductClientListByApisPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByApisCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APIProductListByApisResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp APIProductClientListByApisResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductCollection.NextLink)
 		},
 	}
 }
 
 // listByApisCreateRequest creates the ListByApis request.
-func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) (*policy.Request, error) {
+func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/products"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -68,7 +88,7 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,30 +102,17 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByApisHandleResponse handles the ListByApis response.
-func (client *APIProductClient) listByApisHandleResponse(resp *http.Response) (APIProductListByApisResponse, error) {
-	result := APIProductListByApisResponse{RawResponse: resp}
+func (client *APIProductClient) listByApisHandleResponse(resp *http.Response) (APIProductClientListByApisResponse, error) {
+	result := APIProductClientListByApisResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductCollection); err != nil {
-		return APIProductListByApisResponse{}, err
+		return APIProductClientListByApisResponse{}, err
 	}
 	return result, nil
-}
-
-// listByApisHandleError handles the ListByApis error response.
-func (client *APIProductClient) listByApisHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

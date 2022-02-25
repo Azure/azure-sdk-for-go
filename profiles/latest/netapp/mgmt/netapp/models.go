@@ -12,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp"
 )
 
 const (
@@ -27,6 +27,12 @@ const (
 	ActiveDirectoryStatusError    ActiveDirectoryStatus = original.ActiveDirectoryStatusError
 	ActiveDirectoryStatusInUse    ActiveDirectoryStatus = original.ActiveDirectoryStatusInUse
 	ActiveDirectoryStatusUpdating ActiveDirectoryStatus = original.ActiveDirectoryStatusUpdating
+)
+
+type ApplicationType = original.ApplicationType
+
+const (
+	ApplicationTypeSAPHANA ApplicationType = original.ApplicationTypeSAPHANA
 )
 
 type AvsDataStore = original.AvsDataStore
@@ -75,6 +81,13 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type EnableSubvolumes = original.EnableSubvolumes
+
+const (
+	EnableSubvolumesDisabled EnableSubvolumes = original.EnableSubvolumesDisabled
+	EnableSubvolumesEnabled  EnableSubvolumes = original.EnableSubvolumesEnabled
 )
 
 type EncryptionType = original.EncryptionType
@@ -214,6 +227,7 @@ type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
 type FilePathAvailabilityRequest = original.FilePathAvailabilityRequest
 type HourlySchedule = original.HourlySchedule
+type LdapSearchScopeOpt = original.LdapSearchScopeOpt
 type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type MonthlySchedule = original.MonthlySchedule
@@ -224,6 +238,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PlacementKeyValuePairs = original.PlacementKeyValuePairs
 type PoolChangeRequest = original.PoolChangeRequest
 type PoolPatchProperties = original.PoolPatchProperties
 type PoolProperties = original.PoolProperties
@@ -253,14 +268,30 @@ type SnapshotPolicyPatch = original.SnapshotPolicyPatch
 type SnapshotPolicyProperties = original.SnapshotPolicyProperties
 type SnapshotPolicyVolumeList = original.SnapshotPolicyVolumeList
 type SnapshotProperties = original.SnapshotProperties
+type SnapshotRestoreFiles = original.SnapshotRestoreFiles
 type SnapshotsClient = original.SnapshotsClient
 type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
+type SnapshotsRestoreFilesFuture = original.SnapshotsRestoreFilesFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
 type SubscriptionQuotaItem = original.SubscriptionQuotaItem
 type SubscriptionQuotaItemList = original.SubscriptionQuotaItemList
 type SubscriptionQuotaItemProperties = original.SubscriptionQuotaItemProperties
+type SubvolumeInfo = original.SubvolumeInfo
+type SubvolumeModel = original.SubvolumeModel
+type SubvolumeModelProperties = original.SubvolumeModelProperties
+type SubvolumePatchParams = original.SubvolumePatchParams
+type SubvolumePatchRequest = original.SubvolumePatchRequest
+type SubvolumeProperties = original.SubvolumeProperties
+type SubvolumesClient = original.SubvolumesClient
+type SubvolumesCreateFuture = original.SubvolumesCreateFuture
+type SubvolumesDeleteFuture = original.SubvolumesDeleteFuture
+type SubvolumesGetMetadataFuture = original.SubvolumesGetMetadataFuture
+type SubvolumesList = original.SubvolumesList
+type SubvolumesListIterator = original.SubvolumesListIterator
+type SubvolumesListPage = original.SubvolumesListPage
+type SubvolumesUpdateFuture = original.SubvolumesUpdateFuture
 type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type Vault = original.Vault
@@ -270,6 +301,16 @@ type VaultsClient = original.VaultsClient
 type Volume = original.Volume
 type VolumeBackupProperties = original.VolumeBackupProperties
 type VolumeBackups = original.VolumeBackups
+type VolumeGroup = original.VolumeGroup
+type VolumeGroupDetails = original.VolumeGroupDetails
+type VolumeGroupList = original.VolumeGroupList
+type VolumeGroupListProperties = original.VolumeGroupListProperties
+type VolumeGroupMetaData = original.VolumeGroupMetaData
+type VolumeGroupProperties = original.VolumeGroupProperties
+type VolumeGroupVolumeProperties = original.VolumeGroupVolumeProperties
+type VolumeGroupsClient = original.VolumeGroupsClient
+type VolumeGroupsCreateFuture = original.VolumeGroupsCreateFuture
+type VolumeGroupsDeleteFuture = original.VolumeGroupsDeleteFuture
 type VolumeList = original.VolumeList
 type VolumeListIterator = original.VolumeListIterator
 type VolumeListPage = original.VolumeListPage
@@ -370,11 +411,29 @@ func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
 func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSubvolumesClient(subscriptionID string) SubvolumesClient {
+	return original.NewSubvolumesClient(subscriptionID)
+}
+func NewSubvolumesClientWithBaseURI(baseURI string, subscriptionID string) SubvolumesClient {
+	return original.NewSubvolumesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubvolumesListIterator(page SubvolumesListPage) SubvolumesListIterator {
+	return original.NewSubvolumesListIterator(page)
+}
+func NewSubvolumesListPage(cur SubvolumesList, getNextPage func(context.Context, SubvolumesList) (SubvolumesList, error)) SubvolumesListPage {
+	return original.NewSubvolumesListPage(cur, getNextPage)
+}
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)
 }
 func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
 	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVolumeGroupsClient(subscriptionID string) VolumeGroupsClient {
+	return original.NewVolumeGroupsClient(subscriptionID)
+}
+func NewVolumeGroupsClientWithBaseURI(baseURI string, subscriptionID string) VolumeGroupsClient {
+	return original.NewVolumeGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVolumeListIterator(page VolumeListPage) VolumeListIterator {
 	return original.NewVolumeListIterator(page)
@@ -394,6 +453,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return original.PossibleActiveDirectoryStatusValues()
 }
+func PossibleApplicationTypeValues() []ApplicationType {
+	return original.PossibleApplicationTypeValues()
+}
 func PossibleAvsDataStoreValues() []AvsDataStore {
 	return original.PossibleAvsDataStoreValues()
 }
@@ -411,6 +473,9 @@ func PossibleChownModeValues() []ChownMode {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleEnableSubvolumesValues() []EnableSubvolumes {
+	return original.PossibleEnableSubvolumesValues()
 }
 func PossibleEncryptionTypeValues() []EncryptionType {
 	return original.PossibleEncryptionTypeValues()

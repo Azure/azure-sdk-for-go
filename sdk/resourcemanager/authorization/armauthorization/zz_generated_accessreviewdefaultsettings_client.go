@@ -11,54 +11,71 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewDefaultSettingsClient contains the methods for the AccessReviewDefaultSettings group.
 // Don't use this type directly, use NewAccessReviewDefaultSettingsClient() instead.
 type AccessReviewDefaultSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccessReviewDefaultSettingsClient creates a new instance of AccessReviewDefaultSettingsClient with the specified values.
-func NewAccessReviewDefaultSettingsClient(con *arm.Connection, subscriptionID string) *AccessReviewDefaultSettingsClient {
-	return &AccessReviewDefaultSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAccessReviewDefaultSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewDefaultSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &AccessReviewDefaultSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get access review default settings for the subscription
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewDefaultSettingsClient) Get(ctx context.Context, options *AccessReviewDefaultSettingsGetOptions) (AccessReviewDefaultSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Get
+// method.
+func (client *AccessReviewDefaultSettingsClient) Get(ctx context.Context, options *AccessReviewDefaultSettingsClientGetOptions) (AccessReviewDefaultSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return AccessReviewDefaultSettingsGetResponse{}, err
+		return AccessReviewDefaultSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewDefaultSettingsGetResponse{}, err
+		return AccessReviewDefaultSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewDefaultSettingsGetResponse{}, client.getHandleError(resp)
+		return AccessReviewDefaultSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, options *AccessReviewDefaultSettingsGetOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, options *AccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,52 +87,42 @@ func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccessReviewDefaultSettingsClient) getHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsGetResponse, error) {
-	result := AccessReviewDefaultSettingsGetResponse{RawResponse: resp}
+func (client *AccessReviewDefaultSettingsClient) getHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsClientGetResponse, error) {
+	result := AccessReviewDefaultSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDefaultSettings); err != nil {
-		return AccessReviewDefaultSettingsGetResponse{}, err
+		return AccessReviewDefaultSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AccessReviewDefaultSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Put - Get access review default settings for the subscription
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewDefaultSettingsClient) Put(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsPutOptions) (AccessReviewDefaultSettingsPutResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// properties - Access review schedule settings.
+// options - AccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Put
+// method.
+func (client *AccessReviewDefaultSettingsClient) Put(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsClientPutOptions) (AccessReviewDefaultSettingsClientPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, properties, options)
 	if err != nil {
-		return AccessReviewDefaultSettingsPutResponse{}, err
+		return AccessReviewDefaultSettingsClientPutResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewDefaultSettingsPutResponse{}, err
+		return AccessReviewDefaultSettingsClientPutResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewDefaultSettingsPutResponse{}, client.putHandleError(resp)
+		return AccessReviewDefaultSettingsClientPutResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsPutOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,23 +134,10 @@ func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Co
 }
 
 // putHandleResponse handles the Put response.
-func (client *AccessReviewDefaultSettingsClient) putHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsPutResponse, error) {
-	result := AccessReviewDefaultSettingsPutResponse{RawResponse: resp}
+func (client *AccessReviewDefaultSettingsClient) putHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsClientPutResponse, error) {
+	result := AccessReviewDefaultSettingsClientPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDefaultSettings); err != nil {
-		return AccessReviewDefaultSettingsPutResponse{}, err
+		return AccessReviewDefaultSettingsClientPutResponse{}, err
 	}
 	return result, nil
-}
-
-// putHandleError handles the Put error response.
-func (client *AccessReviewDefaultSettingsClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

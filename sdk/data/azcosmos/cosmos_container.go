@@ -5,138 +5,142 @@ package azcosmos
 
 import (
 	"context"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// A CosmosContainer lets you perform read, update, change throughput, and delete container operations.
+// A ContainerClient lets you perform read, update, change throughput, and delete container operations.
 // It also lets you perform read, update, change throughput, and delete item operations.
-type CosmosContainer struct {
+type ContainerClient struct {
 	// The Id of the Cosmos container
-	Id string
+	id string
 	// The database that contains the container
-	Database *CosmosDatabase
+	database *DatabaseClient
 	// The resource link
 	link string
 }
 
-func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
-	return &CosmosContainer{
-		Id:       id,
-		Database: database,
-		link:     createLink(database.link, pathSegmentCollection, id)}
+func newContainer(id string, database *DatabaseClient) (*ContainerClient, error) {
+	return &ContainerClient{
+		id:       id,
+		database: database,
+		link:     createLink(database.link, pathSegmentCollection, id)}, nil
+}
+
+// ID returns the identifier of the Cosmos container.
+func (c *ContainerClient) ID() string {
+	return c.id
 }
 
 // Read obtains the information for a Cosmos container.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Read(
+// o - Options for the operation.
+func (c *ContainerClient) Read(
 	ctx context.Context,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+	o *ReadContainerOptions) (ContainerResponse, error) {
+	if o == nil {
+		o = &ReadContainerOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeCollection,
 		resourceAddress: c.link,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendGetRequest(
+	azResponse, err := c.database.client.sendGetRequest(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
+		o,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse)
 }
 
 // Replace a Cosmos container.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Replace(
+// o - Options for the operation.
+func (c *ContainerClient) Replace(
 	ctx context.Context,
-	containerProperties CosmosContainerProperties,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+	containerProperties ContainerProperties,
+	o *ReplaceContainerOptions) (ContainerResponse, error) {
+	if o == nil {
+		o = &ReplaceContainerOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeCollection,
 		resourceAddress: c.link,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendPutRequest(
+	azResponse, err := c.database.client.sendPutRequest(
 		path,
 		ctx,
 		containerProperties,
 		operationContext,
-		requestOptions,
+		o,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse)
 }
 
 // Delete a Cosmos container.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Delete(
+// o - Options for the operation.
+func (c *ContainerClient) Delete(
 	ctx context.Context,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+	o *DeleteContainerOptions) (ContainerResponse, error) {
+	if o == nil {
+		o = &DeleteContainerOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeCollection,
 		resourceAddress: c.link,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendDeleteRequest(
+	azResponse, err := c.database.client.sendDeleteRequest(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
+		o,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse)
 }
 
 // ReadThroughput obtains the provisioned throughput information for the container.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReadThroughput(
+// o - Options for the operation.
+func (c *ContainerClient) ReadThroughput(
 	ctx context.Context,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &ThroughputRequestOptions{}
+	o *ThroughputOptions) (ThroughputResponse, error) {
+	if o == nil {
+		o = &ThroughputOptions{}
 	}
 
 	rid, err := c.getRID(ctx)
@@ -144,20 +148,20 @@ func (c *CosmosContainer) ReadThroughput(
 		return ThroughputResponse{}, err
 	}
 
-	offers := &cosmosOffers{connection: c.Database.client.connection}
-	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+	offers := &cosmosOffers{client: c.database.client}
+	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
 // ReplaceThroughput updates the provisioned throughput for the container.
 // ctx - The context for the request.
 // throughputProperties - The throughput configuration of the container.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReplaceThroughput(
+// o - Options for the operation.
+func (c *ContainerClient) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &ThroughputRequestOptions{}
+	o *ThroughputOptions) (ThroughputResponse, error) {
+	if o == nil {
+		o = &ThroughputOptions{}
 	}
 
 	rid, err := c.getRID(ctx)
@@ -165,101 +169,102 @@ func (c *CosmosContainer) ReplaceThroughput(
 		return ThroughputResponse{}, err
 	}
 
-	offers := &cosmosOffers{connection: c.Database.client.connection}
-	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+	offers := &cosmosOffers{client: c.database.client}
+	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
 // Creates an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to create.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) CreateItem(
+// o - Options for the operation.
+func (c *ContainerClient) CreateItem(
 	ctx context.Context,
-	partitionKey *PartitionKey,
-	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
-
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
-	if err != nil {
-		return CosmosItemResponse{}, err
+	partitionKey PartitionKey,
+	item []byte,
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
 	}
 
-	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+	if o == nil {
+		o = &ItemOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
-	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
-	}
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendPostRequest(
+	azResponse, err := c.database.client.sendPostRequest(
 		path,
 		ctx,
 		item,
 		operationContext,
-		requestOptions,
-		addHeader)
+		o,
+		nil)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Upserts (create or replace) an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to upsert.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) UpsertItem(
+// o - Options for the operation.
+func (c *ContainerClient) UpsertItem(
 	ctx context.Context,
-	partitionKey *PartitionKey,
-	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
-
-	addHeaderInternal, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
-	if err != nil {
-		return CosmosItemResponse{}, err
+	partitionKey PartitionKey,
+	item []byte,
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
 	}
 
 	addHeader := func(r *policy.Request) {
-		addHeaderInternal(r)
 		r.Raw().Header.Add(cosmosHeaderIsUpsert, "true")
 	}
 
-	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+	if o == nil {
+		o = &ItemOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
-	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
-	}
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendPostRequest(
+	azResponse, err := c.database.client.sendPostRequest(
 		path,
 		ctx,
 		item,
 		operationContext,
-		requestOptions,
+		o,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Replaces an item in a Cosmos container.
@@ -267,166 +272,138 @@ func (c *CosmosContainer) UpsertItem(
 // partitionKey - The partition key of the item to replace.
 // itemId - The id of the item to replace.
 // item - The content to be used to replace.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReplaceItem(
+// o - Options for the operation.
+func (c *ContainerClient) ReplaceItem(
 	ctx context.Context,
-	partitionKey *PartitionKey,
+	partitionKey PartitionKey,
 	itemId string,
-	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
-
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
-	if err != nil {
-		return CosmosItemResponse{}, err
+	item []byte,
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
 	}
 
-	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+	if o == nil {
+		o = &ItemOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
-	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
-	}
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendPutRequest(
+	azResponse, err := c.database.client.sendPutRequest(
 		path,
 		ctx,
 		item,
 		operationContext,
-		requestOptions,
-		addHeader)
+		o,
+		nil)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Reads an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to read.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReadItem(
+// o - Options for the operation.
+func (c *ContainerClient) ReadItem(
 	ctx context.Context,
-	partitionKey *PartitionKey,
+	partitionKey PartitionKey,
 	itemId string,
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
-
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, false)
-	if err != nil {
-		return CosmosItemResponse{}, err
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
 	}
 
-	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+	if o == nil {
+		o = &ItemOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
-	}
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
+		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendGetRequest(
+	azResponse, err := c.database.client.sendGetRequest(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
-		addHeader)
+		o,
+		nil)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to delete.
-// requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) DeleteItem(
+// o - Options for the operation.
+func (c *ContainerClient) DeleteItem(
 	ctx context.Context,
-	partitionKey *PartitionKey,
+	partitionKey PartitionKey,
 	itemId string,
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
-
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
-	if err != nil {
-		return CosmosItemResponse{}, err
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
 	}
 
-	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+	if o == nil {
+		o = &ItemOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
-	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
-	}
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	azResponse, err := c.Database.client.connection.sendDeleteRequest(
+	azResponse, err := c.database.client.sendDeleteRequest(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
-		addHeader)
+		o,
+		nil)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
-func (c *CosmosContainer) buildRequestEnricher(
-	partitionKey *PartitionKey,
-	requestOptions *CosmosItemRequestOptions,
-	writeOperation bool) (func(r *policy.Request), error) {
-	if partitionKey == nil {
-		return nil, errors.New("partitionKey is required")
-	}
-
-	pk, err := partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
-	var enableContentResponseOnWrite bool
-	if requestOptions == nil {
-		enableContentResponseOnWrite = c.Database.client.options.EnableContentResponseOnWrite
-	} else {
-		enableContentResponseOnWrite = requestOptions.EnableContentResponseOnWrite
-	}
-
-	return func(r *policy.Request) {
-		r.Raw().Header.Add(cosmosHeaderPartitionKey, pk)
-		if writeOperation && !enableContentResponseOnWrite {
-			r.Raw().Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
-		}
-	}, nil
-}
-
-func (c *CosmosContainer) getRID(ctx context.Context) (string, error) {
+func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	containerResponse, err := c.Read(ctx, nil)
 	if err != nil {
 		return "", err
 	}
 
-	return containerResponse.ContainerProperties.ResourceId, nil
+	return containerResponse.ContainerProperties.ResourceID, nil
 }

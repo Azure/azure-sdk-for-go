@@ -9,6 +9,9 @@
 package internal
 
 import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 	"strings"
 	"time"
 )
@@ -39,4 +42,28 @@ func (t *timeRFC1123) UnmarshalText(data []byte) error {
 	p, err := time.Parse(time.RFC1123, string(data))
 	*t = timeRFC1123(p)
 	return err
+}
+
+func populateTimeRFC1123(m map[string]interface{}, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+		return
+	} else if reflect.ValueOf(t).IsNil() {
+		return
+	}
+	m[k] = (*timeRFC1123)(t)
+}
+
+func unpopulateTimeRFC1123(data json.RawMessage, t **time.Time) error {
+	if data == nil || strings.EqualFold(string(data), "null") {
+		return nil
+	}
+	var aux timeRFC1123
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	*t = (*time.Time)(&aux)
+	return nil
 }

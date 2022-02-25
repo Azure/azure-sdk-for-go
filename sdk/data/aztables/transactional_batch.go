@@ -119,7 +119,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.client.Con.Endpoint(), "$batch"))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.con.Endpoint(), "$batch"))
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -154,7 +154,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, err
 	}
 
-	resp, err := t.client.Con.Pipeline().Do(req)
+	resp, err := t.con.Pipeline().Do(req)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -165,7 +165,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	}
 
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return TransactionResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 	return *transactionResponse, nil
 }
@@ -223,7 +223,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 				retError := newTableTransactionError(errorBody, resp)
 				ret := retError.(*transactionError)
 				ret.statusCode = r.StatusCode
-				return &result, runtime.NewResponseError(retError, resp)
+				return &result, runtime.NewResponseError(resp)
 			}
 		}
 		innerResponses[i] = *r
@@ -300,41 +300,78 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if _, ok := entity[rowKey]; !ok {
 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
-	// Consider empty ETags as '*'
-	if transactionAction.IfMatch == nil {
-		star := azcore.ETagAny
-		transactionAction.IfMatch = &star
-	}
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), string(*transactionAction.IfMatch), &generated.TableDeleteEntityOptions{}, qo)
+		ifMatch := string(azcore.ETagAny)
+		if transactionAction.IfMatch != nil {
+			ifMatch = string(*transactionAction.IfMatch)
+		}
+		req, err = t.client.DeleteEntityCreateRequest(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			entity[partitionKey].(string),
+			entity[rowKey].(string),
+			ifMatch,
+			&generated.TableClientDeleteEntityOptions{},
+			qo,
+		)
 		if err != nil {
 			return err
 		}
 	case Add:
-		req, err = t.client.InsertEntityCreateRequest(ctx, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.InsertEntityCreateRequest(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			&generated.TableClientInsertEntityOptions{
+				TableEntityProperties: entity,
+				ResponsePreference:    generated.ResponseFormatReturnNoContent.ToPtr(),
+			},
+			qo,
+		)
 		if err != nil {
 			return err
 		}
 	case UpdateMerge:
 		fallthrough
 	case InsertMerge:
-		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
+		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
 		}
-		req, err = t.client.MergeEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		req, err = t.client.MergeEntityCreateRequest(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			entity[partitionKey].(string),
+			entity[rowKey].(string),
+			opts,
+			&generated.QueryOptions{},
+		)
 		if err != nil {
 			return err
 		}
-		if isCosmosEndpoint(t.client.Con.Endpoint()) {
+		if isCosmosEndpoint(t.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
-		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: to.StringPtr(string(*transactionAction.IfMatch))}, qo)
+		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
+		if transactionAction.IfMatch != nil {
+			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+		}
+		req, err = t.client.UpdateEntityCreateRequest(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			entity[partitionKey].(string),
+			entity[rowKey].(string),
+			opts,
+			&generated.QueryOptions{},
+		)
 		if err != nil {
 			return err
 		}

@@ -33,7 +33,7 @@ func NewKustoPoolsClientWithBaseURI(baseURI string, subscriptionID string) Kusto
 
 // AddLanguageExtensions add a list of language extensions that can run within KQL queries.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // languageExtensionsToAdd - the language extensions to add.
@@ -213,7 +213,7 @@ func (client KustoPoolsClient) CheckNameAvailabilityResponder(resp *http.Respons
 
 // CreateOrUpdate create or update a Kusto pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // kustoPoolName - the name of the Kusto pool.
 // parameters - the Kusto pool parameters supplied to the CreateOrUpdate operation.
@@ -330,7 +330,7 @@ func (client KustoPoolsClient) CreateOrUpdateResponder(resp *http.Response) (res
 
 // Delete deletes a Kusto pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // kustoPoolName - the name of the Kusto pool.
 func (client KustoPoolsClient) Delete(ctx context.Context, workspaceName string, resourceGroupName string, kustoPoolName string) (result KustoPoolsDeleteFuture, err error) {
@@ -419,7 +419,7 @@ func (client KustoPoolsClient) DeleteResponder(resp *http.Response) (result auto
 
 // DetachFollowerDatabases detaches all followers of a database owned by this Kusto Pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // followerDatabaseToRemove - the follower databases properties to remove.
@@ -515,7 +515,7 @@ func (client KustoPoolsClient) DetachFollowerDatabasesResponder(resp *http.Respo
 
 // Get gets a Kusto pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) Get(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result KustoPool, err error) {
@@ -603,7 +603,7 @@ func (client KustoPoolsClient) GetResponder(resp *http.Response) (result KustoPo
 // ListByWorkspace list all Kusto pools
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client KustoPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result KustoPoolListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/KustoPoolsClient.ListByWorkspace")
@@ -688,7 +688,7 @@ func (client KustoPoolsClient) ListByWorkspaceResponder(resp *http.Response) (re
 // ListFollowerDatabases returns a list of databases that are owned by this Kusto Pool and were followed by another
 // Kusto Pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) ListFollowerDatabases(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result FollowerDatabaseListResult, err error) {
@@ -775,7 +775,7 @@ func (client KustoPoolsClient) ListFollowerDatabasesResponder(resp *http.Respons
 
 // ListLanguageExtensions returns a list of language extensions that can run within KQL queries.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) ListLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result LanguageExtensionsList, err error) {
@@ -860,9 +860,86 @@ func (client KustoPoolsClient) ListLanguageExtensionsResponder(resp *http.Respon
 	return
 }
 
+// ListSkus lists eligible SKUs for Kusto Pool resource.
+func (client KustoPoolsClient) ListSkus(ctx context.Context) (result SkuDescriptionList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/KustoPoolsClient.ListSkus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("synapse.KustoPoolsClient", "ListSkus", err.Error())
+	}
+
+	req, err := client.ListSkusPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.KustoPoolsClient", "ListSkus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.KustoPoolsClient", "ListSkus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.KustoPoolsClient", "ListSkus", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListSkusPreparer prepares the ListSkus request.
+func (client KustoPoolsClient) ListSkusPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/skus", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSkusSender sends the ListSkus request. The method will close the
+// http.Response Body if it receives an error.
+func (client KustoPoolsClient) ListSkusSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSkusResponder handles the response to the ListSkus request. The method always
+// closes the http.Response Body.
+func (client KustoPoolsClient) ListSkusResponder(resp *http.Response) (result SkuDescriptionList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListSkusByResource returns the SKUs available for the provided resource.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) ListSkusByResource(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result ListResourceSkusResult, err error) {
@@ -949,7 +1026,7 @@ func (client KustoPoolsClient) ListSkusByResourceResponder(resp *http.Response) 
 
 // RemoveLanguageExtensions remove a list of language extensions that can run within KQL queries.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // languageExtensionsToRemove - the language extensions to remove.
@@ -1041,7 +1118,7 @@ func (client KustoPoolsClient) RemoveLanguageExtensionsResponder(resp *http.Resp
 
 // Start starts a Kusto pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) Start(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result KustoPoolsStartFuture, err error) {
@@ -1130,7 +1207,7 @@ func (client KustoPoolsClient) StartResponder(resp *http.Response) (result autor
 
 // Stop stops a Kusto pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolsClient) Stop(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result KustoPoolsStopFuture, err error) {
@@ -1219,7 +1296,7 @@ func (client KustoPoolsClient) StopResponder(resp *http.Response) (result autore
 
 // Update update a Kusto Kusto Pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // kustoPoolName - the name of the Kusto pool.
 // parameters - the Kusto pool parameters supplied to the Update operation.

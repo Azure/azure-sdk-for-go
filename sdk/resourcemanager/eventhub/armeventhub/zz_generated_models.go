@@ -10,10 +10,9 @@ package armeventhub
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessKeys - Namespace/EventHub Connection String
@@ -42,21 +41,23 @@ type AccessKeys struct {
 
 // ArmDisasterRecovery - Single item in List or Get Alias(Disaster Recovery configuration) operation
 type ArmDisasterRecovery struct {
-	Resource
 	// Properties required to the Create Or Update Alias(Disaster Recovery configurations)
 	Properties *ArmDisasterRecoveryProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ArmDisasterRecovery.
-func (a ArmDisasterRecovery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ArmDisasterRecoveryListResult - The result of the List Alias(Disaster Recovery configuration) operation.
@@ -87,7 +88,8 @@ type ArmDisasterRecoveryProperties struct {
 	// READ-ONLY; Number of entities pending to be replicated.
 	PendingReplicationOperationsCount *int64 `json:"pendingReplicationOperationsCount,omitempty" azure:"ro"`
 
-	// READ-ONLY; Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'
+	// READ-ONLY; Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded'
+	// or 'Failed'
 	ProvisioningState *ProvisioningStateDR `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'
@@ -96,21 +98,23 @@ type ArmDisasterRecoveryProperties struct {
 
 // AuthorizationRule - Single item in a List or Get AuthorizationRule operation
 type AuthorizationRule struct {
-	Resource
 	// Properties supplied to create or update AuthorizationRule
 	Properties *AuthorizationRuleProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AuthorizationRule.
-func (a AuthorizationRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AuthorizationRuleListResult - The response from the List namespace operation.
@@ -170,13 +174,16 @@ type CaptureDescription struct {
 	// A value that indicates whether capture description is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in New API Version
+	// Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in
+	// New API Version
 	Encoding *EncodingCaptureDescription `json:"encoding,omitempty"`
 
-	// The time window allows you to set the frequency with which the capture to Azure Blobs will happen, value should between 60 to 900 seconds
+	// The time window allows you to set the frequency with which the capture to Azure Blobs will happen, value should between
+	// 60 to 900 seconds
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
 
-	// The size window defines the amount of data built up in your Event Hub before an capture operation, value should be between 10485760 to 524288000 bytes
+	// The size window defines the amount of data built up in your Event Hub before an capture operation, value should be between
+	// 10485760 to 524288000 bytes
 	SizeLimitInBytes *int32 `json:"sizeLimitInBytes,omitempty"`
 
 	// A value that indicates whether to Skip Empty Archives
@@ -203,24 +210,42 @@ type CheckNameAvailabilityResult struct {
 
 // Cluster - Single Event Hubs Cluster resource in List or Get operations.
 type Cluster struct {
-	TrackedResource
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Event Hubs Cluster properties supplied in responses in List or Get operations.
 	Properties *ClusterProperties `json:"properties,omitempty"`
 
 	// Properties of the cluster SKU.
 	SKU *ClusterSKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Cluster.
 func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -258,7 +283,8 @@ type ClusterProperties struct {
 
 // ClusterQuotaConfigurationProperties - Contains all settings for the cluster.
 type ClusterQuotaConfigurationProperties struct {
-	// All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed on the cluster.
+	// All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed
+	// on the cluster.
 	Settings map[string]*string `json:"settings,omitempty"`
 }
 
@@ -278,53 +304,54 @@ type ClusterSKU struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ClustersBeginCreateOrUpdateOptions contains the optional parameters for the Clusters.BeginCreateOrUpdate method.
-type ClustersBeginCreateOrUpdateOptions struct {
+// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
+type ClustersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginDeleteOptions contains the optional parameters for the Clusters.BeginDelete method.
-type ClustersBeginDeleteOptions struct {
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateOptions contains the optional parameters for the Clusters.BeginUpdate method.
-type ClustersBeginUpdateOptions struct {
+// ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
+type ClustersClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetOptions contains the optional parameters for the Clusters.Get method.
-type ClustersGetOptions struct {
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListAvailableClusterRegionOptions contains the optional parameters for the Clusters.ListAvailableClusterRegion method.
-type ClustersListAvailableClusterRegionOptions struct {
+// ClustersClientListAvailableClusterRegionOptions contains the optional parameters for the ClustersClient.ListAvailableClusterRegion
+// method.
+type ClustersClientListAvailableClusterRegionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListByResourceGroupOptions contains the optional parameters for the Clusters.ListByResourceGroup method.
-type ClustersListByResourceGroupOptions struct {
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListBySubscriptionOptions contains the optional parameters for the Clusters.ListBySubscription method.
-type ClustersListBySubscriptionOptions struct {
+// ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription method.
+type ClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListNamespacesOptions contains the optional parameters for the Clusters.ListNamespaces method.
-type ClustersListNamespacesOptions struct {
+// ClustersClientListNamespacesOptions contains the optional parameters for the ClustersClient.ListNamespaces method.
+type ClustersClientListNamespacesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationGetOptions contains the optional parameters for the Configuration.Get method.
-type ConfigurationGetOptions struct {
+// ConfigurationClientGetOptions contains the optional parameters for the ConfigurationClient.Get method.
+type ConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationPatchOptions contains the optional parameters for the Configuration.Patch method.
-type ConfigurationPatchOptions struct {
+// ConfigurationClientPatchOptions contains the optional parameters for the ConfigurationClient.Patch method.
+type ConfigurationClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -339,21 +366,23 @@ type ConnectionState struct {
 
 // ConsumerGroup - Single item in List or Get Consumer group operation
 type ConsumerGroup struct {
-	Resource
 	// Single item in List or Get Consumer group operation
 	Properties *ConsumerGroupProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ConsumerGroup.
-func (c ConsumerGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConsumerGroupListResult - The result to the List Consumer Group operation.
@@ -375,8 +404,8 @@ func (c ConsumerGroupListResult) MarshalJSON() ([]byte, error) {
 
 // ConsumerGroupProperties - Single item in List or Get Consumer group operation
 type ConsumerGroupProperties struct {
-	// User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list
-	// of teams and their contact information also
+	// User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store
+	// descriptive data, such as list of teams and their contact information also
 	// user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`
 
@@ -390,8 +419,8 @@ type ConsumerGroupProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ConsumerGroupProperties.
 func (c ConsumerGroupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(c.CreatedAt))
-	populate(objectMap, "updatedAt", (*timeRFC3339)(c.UpdatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", c.CreatedAt)
+	populateTimeRFC3339(objectMap, "updatedAt", c.UpdatedAt)
 	populate(objectMap, "userMetadata", c.UserMetadata)
 	return json.Marshal(objectMap)
 }
@@ -406,14 +435,10 @@ func (c *ConsumerGroupProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.CreatedAt)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpdatedAt)
 			delete(rawMsg, key)
 		case "userMetadata":
 			err = unpopulate(val, &c.UserMetadata)
@@ -426,25 +451,28 @@ func (c *ConsumerGroupProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ConsumerGroupsCreateOrUpdateOptions contains the optional parameters for the ConsumerGroups.CreateOrUpdate method.
-type ConsumerGroupsCreateOrUpdateOptions struct {
+// ConsumerGroupsClientCreateOrUpdateOptions contains the optional parameters for the ConsumerGroupsClient.CreateOrUpdate
+// method.
+type ConsumerGroupsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConsumerGroupsDeleteOptions contains the optional parameters for the ConsumerGroups.Delete method.
-type ConsumerGroupsDeleteOptions struct {
+// ConsumerGroupsClientDeleteOptions contains the optional parameters for the ConsumerGroupsClient.Delete method.
+type ConsumerGroupsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConsumerGroupsGetOptions contains the optional parameters for the ConsumerGroups.Get method.
-type ConsumerGroupsGetOptions struct {
+// ConsumerGroupsClientGetOptions contains the optional parameters for the ConsumerGroupsClient.Get method.
+type ConsumerGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConsumerGroupsListByEventHubOptions contains the optional parameters for the ConsumerGroups.ListByEventHub method.
-type ConsumerGroupsListByEventHubOptions struct {
-	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element
-	// will include a skip parameter that specifies a starting point to use for subsequent calls.
+// ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
+// method.
+type ConsumerGroupsClientListByEventHubOptions struct {
+	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skip parameter that specifies
+	// a starting point to use for subsequent calls.
 	Skip *int32
 	// May be used to limit the number of results to the most recent N usageDetails.
 	Top *int32
@@ -461,73 +489,92 @@ type Destination struct {
 
 // DestinationProperties - Properties describing the storage account, blob container and archive name format for capture destination
 type DestinationProperties struct {
-	// Blob naming convention for archive, e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
-	// (Namespace,EventHub .. etc) are mandatory
+	// Blob naming convention for archive, e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
+	// Here all the parameters (Namespace,EventHub .. etc) are mandatory
 	// irrespective of order
 	ArchiveNameFormat *string `json:"archiveNameFormat,omitempty"`
 
 	// Blob container Name
 	BlobContainer *string `json:"blobContainer,omitempty"`
 
+	// The Azure Data Lake Store name for the captured events
+	DataLakeAccountName *string `json:"dataLakeAccountName,omitempty"`
+
+	// The destination folder path for the captured events
+	DataLakeFolderPath *string `json:"dataLakeFolderPath,omitempty"`
+
+	// Subscription Id of Azure Data Lake Store
+	DataLakeSubscriptionID *string `json:"dataLakeSubscriptionId,omitempty"`
+
 	// Resource id of the storage account to be used to create the blobs
 	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
 }
 
-// DisasterRecoveryConfigsBreakPairingOptions contains the optional parameters for the DisasterRecoveryConfigs.BreakPairing method.
-type DisasterRecoveryConfigsBreakPairingOptions struct {
+// DisasterRecoveryConfigsClientBreakPairingOptions contains the optional parameters for the DisasterRecoveryConfigsClient.BreakPairing
+// method.
+type DisasterRecoveryConfigsClientBreakPairingOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsCheckNameAvailabilityOptions contains the optional parameters for the DisasterRecoveryConfigs.CheckNameAvailability method.
-type DisasterRecoveryConfigsCheckNameAvailabilityOptions struct {
+// DisasterRecoveryConfigsClientCheckNameAvailabilityOptions contains the optional parameters for the DisasterRecoveryConfigsClient.CheckNameAvailability
+// method.
+type DisasterRecoveryConfigsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsCreateOrUpdateOptions contains the optional parameters for the DisasterRecoveryConfigs.CreateOrUpdate method.
-type DisasterRecoveryConfigsCreateOrUpdateOptions struct {
+// DisasterRecoveryConfigsClientCreateOrUpdateOptions contains the optional parameters for the DisasterRecoveryConfigsClient.CreateOrUpdate
+// method.
+type DisasterRecoveryConfigsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsDeleteOptions contains the optional parameters for the DisasterRecoveryConfigs.Delete method.
-type DisasterRecoveryConfigsDeleteOptions struct {
+// DisasterRecoveryConfigsClientDeleteOptions contains the optional parameters for the DisasterRecoveryConfigsClient.Delete
+// method.
+type DisasterRecoveryConfigsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsFailOverOptions contains the optional parameters for the DisasterRecoveryConfigs.FailOver method.
-type DisasterRecoveryConfigsFailOverOptions struct {
+// DisasterRecoveryConfigsClientFailOverOptions contains the optional parameters for the DisasterRecoveryConfigsClient.FailOver
+// method.
+type DisasterRecoveryConfigsClientFailOverOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigs.GetAuthorizationRule method.
-type DisasterRecoveryConfigsGetAuthorizationRuleOptions struct {
+// DisasterRecoveryConfigsClientGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigsClient.GetAuthorizationRule
+// method.
+type DisasterRecoveryConfigsClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsGetOptions contains the optional parameters for the DisasterRecoveryConfigs.Get method.
-type DisasterRecoveryConfigsGetOptions struct {
+// DisasterRecoveryConfigsClientGetOptions contains the optional parameters for the DisasterRecoveryConfigsClient.Get method.
+type DisasterRecoveryConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigs.ListAuthorizationRules method.
-type DisasterRecoveryConfigsListAuthorizationRulesOptions struct {
+// DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListAuthorizationRules
+// method.
+type DisasterRecoveryConfigsClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsListKeysOptions contains the optional parameters for the DisasterRecoveryConfigs.ListKeys method.
-type DisasterRecoveryConfigsListKeysOptions struct {
+// DisasterRecoveryConfigsClientListKeysOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListKeys
+// method.
+type DisasterRecoveryConfigsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsListOptions contains the optional parameters for the DisasterRecoveryConfigs.List method.
-type DisasterRecoveryConfigsListOptions struct {
+// DisasterRecoveryConfigsClientListOptions contains the optional parameters for the DisasterRecoveryConfigsClient.List method.
+type DisasterRecoveryConfigsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // EHNamespace - Single Namespace item in List or Get Operation
 type EHNamespace struct {
-	TrackedResource
 	// Properties of BYOK Identity description
 	Identity *Identity `json:"identity,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
 
 	// Namespace properties supplied for create namespace operation.
 	Properties *EHNamespaceProperties `json:"properties,omitempty"`
@@ -535,18 +582,34 @@ type EHNamespace struct {
 	// Properties of sku resource
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EHNamespace.
 func (e EHNamespace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", e.ID)
 	populate(objectMap, "identity", e.Identity)
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
 	populate(objectMap, "sku", e.SKU)
 	populate(objectMap, "systemData", e.SystemData)
+	populate(objectMap, "tags", e.Tags)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -588,6 +651,9 @@ func (e EHNamespaceListResult) MarshalJSON() ([]byte, error) {
 
 // EHNamespaceProperties - Namespace properties supplied for create namespace operation.
 type EHNamespaceProperties struct {
+	// Alternate name specified when alias and namespace names are same.
+	AlternateName *string `json:"alternateName,omitempty"`
+
 	// Cluster ARM ID of the Namespace.
 	ClusterArmID *string `json:"clusterArmId,omitempty"`
 
@@ -603,7 +669,8 @@ type EHNamespaceProperties struct {
 	// Value that indicates whether Kafka is enabled for eventhub namespace.
 	KafkaEnabled *bool `json:"kafkaEnabled,omitempty"`
 
-	// Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true)
+	// Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. ( '0' if
+	// AutoInflateEnabled = true)
 	MaximumThroughputUnits *int32 `json:"maximumThroughputUnits,omitempty"`
 
 	// List of private endpoint connections.
@@ -634,8 +701,9 @@ type EHNamespaceProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type EHNamespaceProperties.
 func (e EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "alternateName", e.AlternateName)
 	populate(objectMap, "clusterArmId", e.ClusterArmID)
-	populate(objectMap, "createdAt", (*timeRFC3339)(e.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", e.CreatedAt)
 	populate(objectMap, "disableLocalAuth", e.DisableLocalAuth)
 	populate(objectMap, "encryption", e.Encryption)
 	populate(objectMap, "isAutoInflateEnabled", e.IsAutoInflateEnabled)
@@ -646,7 +714,7 @@ func (e EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "serviceBusEndpoint", e.ServiceBusEndpoint)
 	populate(objectMap, "status", e.Status)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(e.UpdatedAt))
+	populateTimeRFC3339(objectMap, "updatedAt", e.UpdatedAt)
 	populate(objectMap, "zoneRedundant", e.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
@@ -660,13 +728,14 @@ func (e *EHNamespaceProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "alternateName":
+			err = unpopulate(val, &e.AlternateName)
+			delete(rawMsg, key)
 		case "clusterArmId":
 			err = unpopulate(val, &e.ClusterArmID)
 			delete(rawMsg, key)
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.CreatedAt)
 			delete(rawMsg, key)
 		case "disableLocalAuth":
 			err = unpopulate(val, &e.DisableLocalAuth)
@@ -699,9 +768,7 @@ func (e *EHNamespaceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.Status)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.UpdatedAt)
 			delete(rawMsg, key)
 		case "zoneRedundant":
 			err = unpopulate(val, &e.ZoneRedundant)
@@ -735,190 +802,129 @@ func (e Encryption) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Error response indicates Event Hub service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
-type ErrorResponse struct {
-	raw string
-	// Error code.
-	Code *string `json:"code,omitempty"`
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
 
-	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// EventHubListResult - The result of the List EventHubs operation.
-type EventHubListResult struct {
-	// Link to the next set of results. Not empty if Value contains incomplete list of EventHubs.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Result of the List EventHubs operation.
-	Value []*Eventhub `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHubListResult.
-func (e EventHubListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
+func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
+	populate(objectMap, "additionalInfo", e.AdditionalInfo)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
 	return json.Marshal(objectMap)
 }
 
-// EventHubsCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the EventHubs.CreateOrUpdateAuthorizationRule method.
-type EventHubsCreateOrUpdateAuthorizationRuleOptions struct {
+// ErrorResponse - Error response indicates Event Hub service is not able to process the incoming request. The reason is provided
+// in the error message.
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// EventHubsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.CreateOrUpdateAuthorizationRule
+// method.
+type EventHubsClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsCreateOrUpdateOptions contains the optional parameters for the EventHubs.CreateOrUpdate method.
-type EventHubsCreateOrUpdateOptions struct {
+// EventHubsClientCreateOrUpdateOptions contains the optional parameters for the EventHubsClient.CreateOrUpdate method.
+type EventHubsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsDeleteAuthorizationRuleOptions contains the optional parameters for the EventHubs.DeleteAuthorizationRule method.
-type EventHubsDeleteAuthorizationRuleOptions struct {
+// EventHubsClientDeleteAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.DeleteAuthorizationRule
+// method.
+type EventHubsClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsDeleteOptions contains the optional parameters for the EventHubs.Delete method.
-type EventHubsDeleteOptions struct {
+// EventHubsClientDeleteOptions contains the optional parameters for the EventHubsClient.Delete method.
+type EventHubsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsGetAuthorizationRuleOptions contains the optional parameters for the EventHubs.GetAuthorizationRule method.
-type EventHubsGetAuthorizationRuleOptions struct {
+// EventHubsClientGetAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.GetAuthorizationRule
+// method.
+type EventHubsClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsGetOptions contains the optional parameters for the EventHubs.Get method.
-type EventHubsGetOptions struct {
+// EventHubsClientGetOptions contains the optional parameters for the EventHubsClient.Get method.
+type EventHubsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsListAuthorizationRulesOptions contains the optional parameters for the EventHubs.ListAuthorizationRules method.
-type EventHubsListAuthorizationRulesOptions struct {
+// EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.ListAuthorizationRules
+// method.
+type EventHubsClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsListByNamespaceOptions contains the optional parameters for the EventHubs.ListByNamespace method.
-type EventHubsListByNamespaceOptions struct {
-	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element
-	// will include a skip parameter that specifies a starting point to use for subsequent calls.
+// EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.ListByNamespace method.
+type EventHubsClientListByNamespaceOptions struct {
+	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skip parameter that specifies
+	// a starting point to use for subsequent calls.
 	Skip *int32
 	// May be used to limit the number of results to the most recent N usageDetails.
 	Top *int32
 }
 
-// EventHubsListKeysOptions contains the optional parameters for the EventHubs.ListKeys method.
-type EventHubsListKeysOptions struct {
+// EventHubsClientListKeysOptions contains the optional parameters for the EventHubsClient.ListKeys method.
+type EventHubsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsRegenerateKeysOptions contains the optional parameters for the EventHubs.RegenerateKeys method.
-type EventHubsRegenerateKeysOptions struct {
+// EventHubsClientRegenerateKeysOptions contains the optional parameters for the EventHubsClient.RegenerateKeys method.
+type EventHubsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Eventhub - Single item in List or Get Event Hub operation
 type Eventhub struct {
-	Resource
 	// Properties supplied to the Create Or Update Event Hub operation.
-	Properties *EventhubProperties `json:"properties,omitempty"`
+	Properties *Properties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Eventhub.
-func (e Eventhub) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// EventhubProperties - Properties supplied to the Create Or Update Event Hub operation.
-type EventhubProperties struct {
-	// Properties of capture description
-	CaptureDescription *CaptureDescription `json:"captureDescription,omitempty"`
-
-	// Number of days to retain the events for this Event Hub, value should be 1 to 7 days
-	MessageRetentionInDays *int64 `json:"messageRetentionInDays,omitempty"`
-
-	// Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions.
-	PartitionCount *int64 `json:"partitionCount,omitempty"`
-
-	// Enumerates the possible values for the status of the Event Hub.
-	Status *EntityStatus `json:"status,omitempty"`
-
-	// READ-ONLY; Exact time the Event Hub was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current number of shards on the Event Hub.
-	PartitionIDs []*string `json:"partitionIds,omitempty" azure:"ro"`
-
-	// READ-ONLY; The exact time the message was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventhubProperties.
-func (e EventhubProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "captureDescription", e.CaptureDescription)
-	populate(objectMap, "createdAt", (*timeRFC3339)(e.CreatedAt))
-	populate(objectMap, "messageRetentionInDays", e.MessageRetentionInDays)
-	populate(objectMap, "partitionCount", e.PartitionCount)
-	populate(objectMap, "partitionIds", e.PartitionIDs)
-	populate(objectMap, "status", e.Status)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(e.UpdatedAt))
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventhubProperties.
-func (e *EventhubProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "captureDescription":
-			err = unpopulate(val, &e.CaptureDescription)
-			delete(rawMsg, key)
-		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.CreatedAt = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "messageRetentionInDays":
-			err = unpopulate(val, &e.MessageRetentionInDays)
-			delete(rawMsg, key)
-		case "partitionCount":
-			err = unpopulate(val, &e.PartitionCount)
-			delete(rawMsg, key)
-		case "partitionIds":
-			err = unpopulate(val, &e.PartitionIDs)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &e.Status)
-			delete(rawMsg, key)
-		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.UpdatedAt = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Identity - Properties to configure Identity for Bring your Own Keys
@@ -960,6 +966,23 @@ type KeyVaultProperties struct {
 	KeyVersion *string `json:"keyVersion,omitempty"`
 }
 
+// ListResult - The result of the List EventHubs operation.
+type ListResult struct {
+	// Link to the next set of results. Not empty if Value contains incomplete list of EventHubs.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Result of the List EventHubs operation.
+	Value []*Eventhub `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListResult.
+func (l ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
 // NWRuleSetIPRules - The response from the List namespace operation.
 type NWRuleSetIPRules struct {
 	// The IP Filter Action
@@ -978,97 +1001,130 @@ type NWRuleSetVirtualNetworkRules struct {
 	Subnet *Subnet `json:"subnet,omitempty"`
 }
 
-// NamespacesBeginCreateOrUpdateOptions contains the optional parameters for the Namespaces.BeginCreateOrUpdate method.
-type NamespacesBeginCreateOrUpdateOptions struct {
+// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+type NamespacesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesBeginDeleteOptions contains the optional parameters for the Namespaces.BeginDelete method.
-type NamespacesBeginDeleteOptions struct {
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCheckNameAvailabilityOptions contains the optional parameters for the Namespaces.CheckNameAvailability method.
-type NamespacesCheckNameAvailabilityOptions struct {
+// NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
+// method.
+type NamespacesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the Namespaces.CreateOrUpdateAuthorizationRule method.
-type NamespacesCreateOrUpdateAuthorizationRuleOptions struct {
+// NamespacesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.CreateOrUpdateAuthorizationRule
+// method.
+type NamespacesClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCreateOrUpdateNetworkRuleSetOptions contains the optional parameters for the Namespaces.CreateOrUpdateNetworkRuleSet method.
-type NamespacesCreateOrUpdateNetworkRuleSetOptions struct {
+// NamespacesClientCreateOrUpdateNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.CreateOrUpdateNetworkRuleSet
+// method.
+type NamespacesClientCreateOrUpdateNetworkRuleSetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesDeleteAuthorizationRuleOptions contains the optional parameters for the Namespaces.DeleteAuthorizationRule method.
-type NamespacesDeleteAuthorizationRuleOptions struct {
+// NamespacesClientDeleteAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.DeleteAuthorizationRule
+// method.
+type NamespacesClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetAuthorizationRuleOptions contains the optional parameters for the Namespaces.GetAuthorizationRule method.
-type NamespacesGetAuthorizationRuleOptions struct {
+// NamespacesClientGetAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.GetAuthorizationRule
+// method.
+type NamespacesClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetNetworkRuleSetOptions contains the optional parameters for the Namespaces.GetNetworkRuleSet method.
-type NamespacesGetNetworkRuleSetOptions struct {
+// NamespacesClientGetNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.GetNetworkRuleSet method.
+type NamespacesClientGetNetworkRuleSetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetOptions contains the optional parameters for the Namespaces.Get method.
-type NamespacesGetOptions struct {
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListAuthorizationRulesOptions contains the optional parameters for the Namespaces.ListAuthorizationRules method.
-type NamespacesListAuthorizationRulesOptions struct {
+// NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
+// method.
+type NamespacesClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListByResourceGroupOptions contains the optional parameters for the Namespaces.ListByResourceGroup method.
-type NamespacesListByResourceGroupOptions struct {
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
+// method.
+type NamespacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListKeysOptions contains the optional parameters for the Namespaces.ListKeys method.
-type NamespacesListKeysOptions struct {
+// NamespacesClientListKeysOptions contains the optional parameters for the NamespacesClient.ListKeys method.
+type NamespacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListOptions contains the optional parameters for the Namespaces.List method.
-type NamespacesListOptions struct {
+// NamespacesClientListNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.ListNetworkRuleSet
+// method.
+type NamespacesClientListNetworkRuleSetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesRegenerateKeysOptions contains the optional parameters for the Namespaces.RegenerateKeys method.
-type NamespacesRegenerateKeysOptions struct {
+// NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
+type NamespacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesUpdateOptions contains the optional parameters for the Namespaces.Update method.
-type NamespacesUpdateOptions struct {
+// NamespacesClientRegenerateKeysOptions contains the optional parameters for the NamespacesClient.RegenerateKeys method.
+type NamespacesClientRegenerateKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
+type NamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // NetworkRuleSet - Description of topic resource.
 type NetworkRuleSet struct {
-	Resource
 	// NetworkRuleSet properties
 	Properties *NetworkRuleSetProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
-func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
+// NetworkRuleSetListResult - The response of the List NetworkRuleSet operation
+type NetworkRuleSetListResult struct {
+	// Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Result of the List NetworkRuleSet operation
+	Value []*NetworkRuleSet `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetworkRuleSetListResult.
+func (n NetworkRuleSetListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "systemData", n.SystemData)
+	populate(objectMap, "nextLink", n.NextLink)
+	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -1103,26 +1159,39 @@ func (n NetworkRuleSetProperties) MarshalJSON() ([]byte, error) {
 
 // Operation - A Event Hub REST API operation
 type Operation struct {
-	// The object that represents the operation.
+	// Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+
+	// Properties of the operation
+	Properties map[string]interface{} `json:"properties,omitempty"`
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
-// OperationDisplay - The object that represents the operation.
+// OperationDisplay - Operation display payload
 type OperationDisplay struct {
-	// READ-ONLY; Operation type: Read, write, delete, etc.
+	// READ-ONLY; Localized friendly description for the operation
+	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Localized friendly name for the operation
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; Service provider: Microsoft.EventHub
+	// READ-ONLY; Resource provider of the operation
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource on which the operation is performed: Invoice, etc.
+	// READ-ONLY; Resource of the operation
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of the request to list Event Hub operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Event Hub operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1139,8 +1208,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1152,21 +1221,23 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - Properties of the PrivateEndpointConnection.
 type PrivateEndpointConnection struct {
-	Resource
 	// Properties of the PrivateEndpointConnection.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
@@ -1198,23 +1269,27 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *EndPointProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.CreateOrUpdate method.
-type PrivateEndpointConnectionsCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1254,8 +1329,8 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1276,7 +1351,98 @@ func (p PrivateLinkResourcesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RegenerateAccessKeyParameters - Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs to be reset.
+// Properties supplied to the Create Or Update Event Hub operation.
+type Properties struct {
+	// Properties of capture description
+	CaptureDescription *CaptureDescription `json:"captureDescription,omitempty"`
+
+	// Number of days to retain the events for this Event Hub, value should be 1 to 7 days
+	MessageRetentionInDays *int64 `json:"messageRetentionInDays,omitempty"`
+
+	// Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions.
+	PartitionCount *int64 `json:"partitionCount,omitempty"`
+
+	// Enumerates the possible values for the status of the Event Hub.
+	Status *EntityStatus `json:"status,omitempty"`
+
+	// READ-ONLY; Exact time the Event Hub was created.
+	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current number of shards on the Event Hub.
+	PartitionIDs []*string `json:"partitionIds,omitempty" azure:"ro"`
+
+	// READ-ONLY; The exact time the message was updated.
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "captureDescription", p.CaptureDescription)
+	populateTimeRFC3339(objectMap, "createdAt", p.CreatedAt)
+	populate(objectMap, "messageRetentionInDays", p.MessageRetentionInDays)
+	populate(objectMap, "partitionCount", p.PartitionCount)
+	populate(objectMap, "partitionIds", p.PartitionIDs)
+	populate(objectMap, "status", p.Status)
+	populateTimeRFC3339(objectMap, "updatedAt", p.UpdatedAt)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Properties.
+func (p *Properties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "captureDescription":
+			err = unpopulate(val, &p.CaptureDescription)
+			delete(rawMsg, key)
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &p.CreatedAt)
+			delete(rawMsg, key)
+		case "messageRetentionInDays":
+			err = unpopulate(val, &p.MessageRetentionInDays)
+			delete(rawMsg, key)
+		case "partitionCount":
+			err = unpopulate(val, &p.PartitionCount)
+			delete(rawMsg, key)
+		case "partitionIds":
+			err = unpopulate(val, &p.PartitionIDs)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &p.Status)
+			delete(rawMsg, key)
+		case "updatedAt":
+			err = unpopulateTimeRFC3339(val, &p.UpdatedAt)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RegenerateAccessKeyParameters - Parameters supplied to the Regenerate Authorization Rule operation, specifies which key
+// needs to be reset.
 type RegenerateAccessKeyParameters struct {
 	// REQUIRED; The access key to regenerate.
 	KeyType *KeyType `json:"keyType,omitempty"`
@@ -1285,29 +1451,16 @@ type RegenerateAccessKeyParameters struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// Resource - The resource definition.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SKU parameters supplied to the create namespace operation
@@ -1315,12 +1468,139 @@ type SKU struct {
 	// REQUIRED; Name of this SKU.
 	Name *SKUName `json:"name,omitempty"`
 
-	// The Event Hubs throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium
-	// tier, where value should be 0 to 10 premium units.
+	// The Event Hubs throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event
+	// Hubs premium units for Premium tier, where value should be 0 to 10 premium units.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// The billing tier of this particular SKU.
 	Tier *SKUTier `json:"tier,omitempty"`
+}
+
+// SchemaGroup - Single item in List or Get Schema Group operation
+type SchemaGroup struct {
+	Properties *SchemaGroupProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SchemaGroupListResult - The result of the List SchemaGroup operation.
+type SchemaGroupListResult struct {
+	// Link to the next set of results. Not empty if Value contains incomplete list of Schema Groups.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Result of the List SchemaGroups operation.
+	Value []*SchemaGroup `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SchemaGroupListResult.
+func (s SchemaGroupListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+type SchemaGroupProperties struct {
+	// dictionary object for SchemaGroup group properties
+	GroupProperties     map[string]*string   `json:"groupProperties,omitempty"`
+	SchemaCompatibility *SchemaCompatibility `json:"schemaCompatibility,omitempty"`
+	SchemaType          *SchemaType          `json:"schemaType,omitempty"`
+
+	// READ-ONLY; Exact time the Schema Group was created.
+	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ETag value.
+	ETag *string `json:"eTag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Exact time the Schema Group was updated
+	UpdatedAtUTC *time.Time `json:"updatedAtUtc,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SchemaGroupProperties.
+func (s SchemaGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdAtUtc", s.CreatedAtUTC)
+	populate(objectMap, "eTag", s.ETag)
+	populate(objectMap, "groupProperties", s.GroupProperties)
+	populate(objectMap, "schemaCompatibility", s.SchemaCompatibility)
+	populate(objectMap, "schemaType", s.SchemaType)
+	populateTimeRFC3339(objectMap, "updatedAtUtc", s.UpdatedAtUTC)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SchemaGroupProperties.
+func (s *SchemaGroupProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAtUtc":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAtUTC)
+			delete(rawMsg, key)
+		case "eTag":
+			err = unpopulate(val, &s.ETag)
+			delete(rawMsg, key)
+		case "groupProperties":
+			err = unpopulate(val, &s.GroupProperties)
+			delete(rawMsg, key)
+		case "schemaCompatibility":
+			err = unpopulate(val, &s.SchemaCompatibility)
+			delete(rawMsg, key)
+		case "schemaType":
+			err = unpopulate(val, &s.SchemaType)
+			delete(rawMsg, key)
+		case "updatedAtUtc":
+			err = unpopulateTimeRFC3339(val, &s.UpdatedAtUTC)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SchemaRegistryClientCreateOrUpdateOptions contains the optional parameters for the SchemaRegistryClient.CreateOrUpdate
+// method.
+type SchemaRegistryClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistryClientDeleteOptions contains the optional parameters for the SchemaRegistryClient.Delete method.
+type SchemaRegistryClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistryClientGetOptions contains the optional parameters for the SchemaRegistryClient.Get method.
+type SchemaRegistryClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.ListByNamespace
+// method.
+type SchemaRegistryClientListByNamespaceOptions struct {
+	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skip parameter that specifies
+	// a starting point to use for subsequent calls.
+	Skip *int32
+	// May be used to limit the number of results to the most recent N usageDetails.
+	Top *int32
 }
 
 // Subnet - Properties supplied for Subnet
@@ -1353,10 +1633,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1372,9 +1652,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -1383,9 +1661,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -1403,25 +1679,31 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - Definition of resource.
 type TrackedResource struct {
-	Resource
 	// Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UserAssignedIdentity - Recognized Dictionary value.

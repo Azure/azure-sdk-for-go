@@ -12,11 +12,13 @@ type LimitObjectType string
 const (
 	// LimitObjectTypeLimitJSONObject ...
 	LimitObjectTypeLimitJSONObject LimitObjectType = "LimitJsonObject"
+	// LimitObjectTypeLimitValue ...
+	LimitObjectTypeLimitValue LimitObjectType = "LimitValue"
 )
 
 // PossibleLimitObjectTypeValues returns an array of possible values for the LimitObjectType const type.
 func PossibleLimitObjectTypeValues() []LimitObjectType {
-	return []LimitObjectType{LimitObjectTypeLimitJSONObject}
+	return []LimitObjectType{LimitObjectTypeLimitJSONObject, LimitObjectTypeLimitValue}
 }
 
 // LimitType enumerates the values for limit type.

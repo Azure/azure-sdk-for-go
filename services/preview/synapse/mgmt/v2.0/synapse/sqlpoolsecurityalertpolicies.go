@@ -35,7 +35,7 @@ func NewSQLPoolSecurityAlertPoliciesClientWithBaseURI(baseURI string, subscripti
 // CreateOrUpdate create or update a Sql pool's security alert policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the Sql pool security alert policy.
 func (client SQLPoolSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters SQLPoolSecurityAlertPolicy) (result SQLPoolSecurityAlertPolicy, err error) {
@@ -126,7 +126,7 @@ func (client SQLPoolSecurityAlertPoliciesClient) CreateOrUpdateResponder(resp *h
 // Get get a Sql pool's security alert policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolSecurityAlertPolicy, err error) {
 	if tracing.IsEnabled() {
@@ -214,7 +214,7 @@ func (client SQLPoolSecurityAlertPoliciesClient) GetResponder(resp *http.Respons
 // List get a list of Sql pool's security alert policies.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolSecurityAlertPoliciesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ListSQLPoolSecurityAlertPoliciesPage, err error) {
 	if tracing.IsEnabled() {

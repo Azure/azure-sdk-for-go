@@ -15,27 +15,15 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"sort"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // Payload reads and returns the response body or an error.
 // On a successful read, the response body is cached.
+// Subsequent reads will access the cached value.
 func Payload(resp *http.Response) ([]byte, error) {
-	// r.Body won't be a nopClosingBytesReader if downloading was skipped
-	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
-		return buf.Bytes(), nil
-	}
-	bytesBody, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-	if err != nil {
-		return nil, err
-	}
-	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
-	return bytesBody, nil
+	return shared.Payload(resp)
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
@@ -111,7 +99,7 @@ func removeBOM(resp *http.Response) error {
 	// UTF8
 	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
 	if len(trimmed) < len(payload) {
-		resp.Body.(*nopClosingBytesReader).Set(trimmed)
+		resp.Body.(*shared.NopClosingBytesReader).Set(trimmed)
 	}
 	return nil
 }
@@ -144,44 +132,5 @@ func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
 		return err
 	default:
 		return fmt.Errorf("unrecognized byte array format: %d", format)
-	}
-}
-
-// writeRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are
-// not nil, then these are also written into the Buffer.
-func writeRequestWithResponse(b *bytes.Buffer, req *policy.Request, resp *http.Response, err error) {
-	// Write the request into the buffer.
-	fmt.Fprint(b, "   "+req.Raw().Method+" "+req.Raw().URL.String()+"\n")
-	writeHeader(b, req.Raw().Header)
-	if resp != nil {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   RESPONSE Status: "+resp.Status+"\n")
-		writeHeader(b, resp.Header)
-	}
-	if err != nil {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   ERROR:\n"+err.Error()+"\n")
-	}
-}
-
-// formatHeaders appends an HTTP request's or response's header into a Buffer.
-func writeHeader(b *bytes.Buffer, header http.Header) {
-	if len(header) == 0 {
-		b.WriteString("   (no headers)\n")
-		return
-	}
-	keys := make([]string, 0, len(header))
-	// Alphabetize the headers
-	for k := range header {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		// Redact the value of any Authorization header to prevent security information from persisting in logs
-		value := interface{}("REDACTED")
-		if !strings.EqualFold(k, "Authorization") {
-			value = header[k]
-		}
-		fmt.Fprintf(b, "   %s: %+v\n", k, value)
 	}
 }

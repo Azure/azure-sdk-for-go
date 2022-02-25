@@ -2,16 +2,13 @@ parameters:
   - name:  ServiceDirectory
     type: string
     default: ''
-  - name:  GoWorkspace
-    type: string
-    default: ''
   - name:  Image
     type: string
     default: ''
   - name:  GoVersion
     type: string
     default: ''
-  - name:  RunTests
+  - name:  TestProxy
     type: boolean
     default: false
   - name: EnvVars
@@ -28,7 +25,6 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - task: Powershell@2
     displayName: Vet
@@ -39,54 +35,59 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - ${{ if eq(parameters.RunTests, 'true') }}:
+  - pwsh: |
+      go install github.com/jstemmer/go-junit-report@v0.9.1
+      go install github.com/axw/gocov/gocov@v1.0.0
+      go install github.com/AlekSi/gocov-xml@v1.0.0
+      go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+    displayName: "Install Coverage and Junit Dependencies"
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - template: /eng/common/testproxy/test-proxy-tool.yml
+
+  - task: PowerShell@2
+    displayName: 'Run Tests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/run_tests.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+      pwsh: true
+    env:
+      GO111MODULE: 'on'
+      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+      ${{ insert }}: ${{ parameters.EnvVars }}
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
     - pwsh: |
-        go install github.com/jstemmer/go-junit-report@v0.9.1
-        go install github.com/axw/gocov/gocov@v1.0.0
-        go install github.com/AlekSi/gocov-xml@v1.0.0
-        go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
-        go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
-      displayName: "Install Coverage and Junit Dependencies"
-      workingDirectory: '${{parameters.GoWorkspace}}'
-
-    - template: /eng/common/testproxy/test-proxy-docker.yml
-
-    - task: PowerShell@2
-      displayName: 'Run Tests'
-      inputs:
-        targetType: 'filePath'
-        filePath: ./eng/scripts/run_tests.ps1
-        arguments: '${{ parameters.ServiceDirectory }}'
-        pwsh: true
-      env:
-        GO111MODULE: 'on'
-        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-        ${{ insert }}: ${{ parameters.EnvVars }}
-
-    - pwsh: |
-        docker logs ambitious_azsdk_test_proxy
-      displayName: 'Dump Docker logs'
+        # $(Build.SourcesDirectory)/test-proxy.log is the hardcoded output log location for the test-proxy-tool.yml
+        cat $(Build.SourcesDirectory)/test-proxy.log
+      displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
-    - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
-      displayName: 'Generate Coverage XML'
-      env:
-        GO111MODULE: 'off'
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generate BOM'
+    condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
+    inputs:
+      BuildDropPath: $(Build.ArtifactStagingDirectory)
 
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testRunner: JUnit
-        testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
-        testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
-        failTaskOnFailedTests: true
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+      ArtifactName: 'manifest'
+      CustomCondition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
 
-    - task: PublishCodeCoverageResults@1
-      condition: succeededOrFailed()
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: './coverage.xml'
-        additionalCodeCoverageFiles: './coverage.html'
-        failIfCoverageEmpty: true
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/report.xml'
+      testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: './coverage.xml'
+      additionalCodeCoverageFiles: './coverage.html'

@@ -382,31 +382,31 @@ func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
 	}
-	require.Equal(t, r.HostScheme(), "https://localhost:5001")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 
 	r.UseHTTPS = false
-	require.Equal(t, r.HostScheme(), "http://localhost:5000")
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
-	require.Equal(t, GetEnvVariable(t, "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	require.NotEqual(t, GetEnvVariable(t, "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = RecordingMode
+	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+	recordMode = temp
 
-	r.Init()
-	require.Equal(t, r.Host, "localhost:5000")
-	require.Equal(t, r.Scheme, "http")
+	r.UseHTTPS = false
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
 	r.UseHTTPS = true
-	r.Init()
-	require.Equal(t, r.Host, "localhost:5001")
-	require.Equal(t, r.Scheme, "https")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
-var packagePath = "sdk/internal/recording"
+var packagePath = "sdk/internal/recording/testdata"
 
 func TestStartStop(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -415,9 +415,9 @@ func TestStartStop(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(UpstreamURIHeader, "https://www.bing.com/")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
@@ -425,34 +425,28 @@ func TestStartStop(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./recordings/TestStartStop.json")
+	jsonFile, err := os.Open("./testdata/recordings/TestStartStop.json")
 	require.NoError(t, err)
 	defer jsonFile.Close()
 }
 
-func TestUriSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+func TestStartStopRecordingClient(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
 
-	err := StartRecording(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddUriSanitizer("replacement", "bing", nil)
+	client, err := NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	client, err := GetHTTPClient(t)
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
 	require.NoError(t, err)
-
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
-
-	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
-	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
@@ -460,61 +454,38 @@ func TestUriSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./recordings/TestUriSanitizer.json")
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
-	defer jsonFile.Close()
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := ioutil.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	require.Equal(t, data.Entries[0].RequestUri, "https://www.replacement.com/")
-}
-
-func TestProxyCert(t *testing.T) {
-	_, err := getRootCas(t)
-	require.NoError(t, err)
-
-	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
-	require.True(t, ok)
-	err = os.Unsetenv("PROXY_CERT")
-	require.NoError(t, err)
-
-	_, err = getRootCas(t)
-	require.NoError(t, err)
-
-	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
-	require.NoError(t, err)
-	_, err = GetHTTPClient(t)
-	require.Error(t, err)
-
-	os.Setenv("PROXY_CERT", tempProxyCert)
+	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
+	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
 func TestStopRecordingNoStart(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StopRecording(t, nil)
+	err := Stop(t, nil)
 	require.Error(t, err)
 
-	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
+	jsonFile, err := os.Open("./testdata/recordings/TestStopRecordingNoStart.json")
 	require.Error(t, err)
 	defer jsonFile.Close()
-}
-
-type RecordingFileStruct struct {
-	Entries []Entry `json:"Entries"`
-}
-
-type Entry struct {
-	RequestUri string `json:"RequestUri"`
 }
 
 func TestLiveModeOnly(t *testing.T) {
@@ -543,18 +514,103 @@ func TestBadAzureRecordMode(t *testing.T) {
 	temp := recordMode
 
 	recordMode = "badvalue"
-	err := StartRecording(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.Error(t, err)
 
 	recordMode = temp
 }
 
 func TestBackwardSlashPath(t *testing.T) {
+	t.Skip("Temporarily skipping due to changes in test-proxy.")
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	packagePathBackslash := "sdk\\internal\\recordings"
+	packagePathBackslash := "sdk\\internal\\recording\\testdata"
 
-	err := StartRecording(t, packagePathBackslash, nil)
-	require.Error(t, err)
+	err := Start(t, packagePathBackslash, nil)
+	require.NoError(t, err)
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+}
+
+func TestLiveOnly(t *testing.T) {
+	require.Equal(t, IsLiveOnly(t), false)
+	LiveOnly(t)
+	require.Equal(t, IsLiveOnly(t), true)
+}
+
+func TestHostAndScheme(t *testing.T) {
+	r := RecordingOptions{UseHTTPS: true}
+	require.Equal(t, r.scheme(), "https")
+	require.Equal(t, r.host(), "localhost:5001")
+
+	r.UseHTTPS = false
+	require.Equal(t, r.scheme(), "http")
+	require.Equal(t, r.host(), "localhost:5000")
+}
+
+func TestFindProxyCertLocation(t *testing.T) {
+	savedValue, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		defer os.Setenv("PROXY_CERT", savedValue)
+	}
+
+	if ok {
+		location, err := findProxyCertLocation()
+		require.NoError(t, err)
+		require.Contains(t, location, "dotnet-devcert.crt")
+	}
+
+	err := os.Unsetenv("PROXY_CERT")
+	require.NoError(t, err)
+
+	location, err := findProxyCertLocation()
+	require.NoError(t, err)
+	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
+}
+
+func TestVariables(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = Stop(t, &RecordingOptions{Variables: map[string]interface{}{"key1": "value1", "key2": "1"}})
+	require.NoError(t, err)
+
+	recordMode = PlaybackMode
+	err = Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	variables := GetVariables(t)
+	require.Equal(t, variables["key1"], "value1")
+	require.Equal(t, variables["key2"], "1")
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
 }

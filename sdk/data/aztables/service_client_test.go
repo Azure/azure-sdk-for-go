@@ -4,18 +4,14 @@
 package aztables
 
 import (
-	"context"
 	"fmt"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
-
-const tableNamePrefix = "tableName"
 
 func TestServiceErrorsServiceClient(t *testing.T) {
 	for _, service := range services {
@@ -26,14 +22,14 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
 
-			_, err = service.CreateTable(context.Background(), tableName, nil)
+			_, err = service.CreateTable(ctx, tableName, nil)
 			require.NoError(t, err)
 
 			// Create a duplicate table to produce an error
-			_, err = service.CreateTable(context.Background(), tableName, nil)
+			_, err = service.CreateTable(ctx, tableName, nil)
 			require.Error(t, err)
 
-			_, err = service.DeleteTable(context.Background(), tableName, nil)
+			_, err = service.DeleteTable(ctx, tableName, nil)
 			require.NoError(t, err)
 		})
 	}
@@ -163,28 +159,28 @@ func TestListTables(t *testing.T) {
 
 // This functionality is only available on storage accounts
 func TestGetStatistics(t *testing.T) {
-	var cred azcore.Credential
+	var cred *SharedKeyCredential
 	var err error
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	stop := func() {
-		err = recording.StopRecording(t, nil)
+		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 	defer stop()
 
-	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
 
 	if recording.GetRecordMode() == "playback" {
-		cred, err = NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+		cred, err = NewSharedKeyCredential("fakeaccount", "fakeAccountKey==")
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
 	}
 
 	serviceURL := storageURI(accountName + "-secondary")
-	service, err := createServiceClientForRecording(t, serviceURL, cred)
+	service, err := createServiceClientForRecording(t, serviceURL, *cred)
 	require.NoError(t, err)
 
 	resp, err := service.GetStatistics(ctx, nil)
@@ -369,7 +365,7 @@ func TestRetentionTooLong(t *testing.T) {
 func TestGetAccountSASToken(t *testing.T) {
 	cred, err := NewSharedKeyCredential("myAccountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	require.NoError(t, err)
-	service, err := NewServiceClient("https://myAccountName.table.core.windows.net", cred, nil)
+	service, err := NewServiceClientWithSharedKey("https://myAccountName.table.core.windows.net", cred, nil)
 	require.NoError(t, err)
 
 	resources := AccountSASResourceTypes{Service: true}
@@ -380,4 +376,16 @@ func TestGetAccountSASToken(t *testing.T) {
 	sas, err := service.GetAccountSASToken(resources, perms, start, end)
 	require.NoError(t, err)
 	require.Equal(t, "https://myAccountName.table.core.windows.net/?se=2021-09-09T14%3A30%3A00Z&sig=m%2F%2FxhMvxidHaswzZRpyuiHykqnTppPi%2BQ9S5xHMksIQ%3D&sp=r&spr=https&srt=s&ss=t&st=2021-09-08T14%3A30%3A00Z&sv=2019-02-02", sas)
+}
+
+func TestGetAccountSASTokenError(t *testing.T) {
+	cred := NewFakeCredential("fakeaccount", "fakekey")
+	service, err := NewServiceClient("https://myAccountName.table.core.windows.net", cred, nil)
+	require.NoError(t, err)
+
+	resources := AccountSASResourceTypes{Service: true}
+	perms := AccountSASPermissions{Read: true}
+
+	_, err = service.GetAccountSASToken(resources, perms, time.Now(), time.Now().Add(time.Hour))
+	require.Error(t, err)
 }

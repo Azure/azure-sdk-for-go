@@ -47,31 +47,31 @@ const (
 type AgreementType = original.AgreementType
 
 const (
-	AS2          AgreementType = original.AS2
-	Edifact      AgreementType = original.Edifact
-	NotSpecified AgreementType = original.NotSpecified
-	X12          AgreementType = original.X12
+	AgreementTypeAS2          AgreementType = original.AgreementTypeAS2
+	AgreementTypeEdifact      AgreementType = original.AgreementTypeEdifact
+	AgreementTypeNotSpecified AgreementType = original.AgreementTypeNotSpecified
+	AgreementTypeX12          AgreementType = original.AgreementTypeX12
 )
 
 type AzureAsyncOperationState = original.AzureAsyncOperationState
 
 const (
-	Canceled  AzureAsyncOperationState = original.Canceled
-	Failed    AzureAsyncOperationState = original.Failed
-	Pending   AzureAsyncOperationState = original.Pending
-	Succeeded AzureAsyncOperationState = original.Succeeded
+	AzureAsyncOperationStateCanceled  AzureAsyncOperationState = original.AzureAsyncOperationStateCanceled
+	AzureAsyncOperationStateFailed    AzureAsyncOperationState = original.AzureAsyncOperationStateFailed
+	AzureAsyncOperationStatePending   AzureAsyncOperationState = original.AzureAsyncOperationStatePending
+	AzureAsyncOperationStateSucceeded AzureAsyncOperationState = original.AzureAsyncOperationStateSucceeded
 )
 
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday    DayOfWeek = original.Friday
-	Monday    DayOfWeek = original.Monday
-	Saturday  DayOfWeek = original.Saturday
-	Sunday    DayOfWeek = original.Sunday
-	Thursday  DayOfWeek = original.Thursday
-	Tuesday   DayOfWeek = original.Tuesday
-	Wednesday DayOfWeek = original.Wednesday
+	DayOfWeekFriday    DayOfWeek = original.DayOfWeekFriday
+	DayOfWeekMonday    DayOfWeek = original.DayOfWeekMonday
+	DayOfWeekSaturday  DayOfWeek = original.DayOfWeekSaturday
+	DayOfWeekSunday    DayOfWeek = original.DayOfWeekSunday
+	DayOfWeekThursday  DayOfWeek = original.DayOfWeekThursday
+	DayOfWeekTuesday   DayOfWeek = original.DayOfWeekTuesday
+	DayOfWeekWednesday DayOfWeek = original.DayOfWeekWednesday
 )
 
 type DaysOfWeek = original.DaysOfWeek
@@ -138,12 +138,12 @@ const (
 type EventLevel = original.EventLevel
 
 const (
-	Critical      EventLevel = original.Critical
-	Error         EventLevel = original.Error
-	Informational EventLevel = original.Informational
-	LogAlways     EventLevel = original.LogAlways
-	Verbose       EventLevel = original.Verbose
-	Warning       EventLevel = original.Warning
+	EventLevelCritical      EventLevel = original.EventLevelCritical
+	EventLevelError         EventLevel = original.EventLevelError
+	EventLevelInformational EventLevel = original.EventLevelInformational
+	EventLevelLogAlways     EventLevel = original.EventLevelLogAlways
+	EventLevelVerbose       EventLevel = original.EventLevelVerbose
+	EventLevelWarning       EventLevel = original.EventLevelWarning
 )
 
 type HashingAlgorithm = original.HashingAlgorithm
@@ -221,9 +221,9 @@ const (
 type IntegrationServiceEnvironmentSkuScaleType = original.IntegrationServiceEnvironmentSkuScaleType
 
 const (
-	Automatic IntegrationServiceEnvironmentSkuScaleType = original.Automatic
-	Manual    IntegrationServiceEnvironmentSkuScaleType = original.Manual
-	None      IntegrationServiceEnvironmentSkuScaleType = original.None
+	IntegrationServiceEnvironmentSkuScaleTypeAutomatic IntegrationServiceEnvironmentSkuScaleType = original.IntegrationServiceEnvironmentSkuScaleTypeAutomatic
+	IntegrationServiceEnvironmentSkuScaleTypeManual    IntegrationServiceEnvironmentSkuScaleType = original.IntegrationServiceEnvironmentSkuScaleTypeManual
+	IntegrationServiceEnvironmentSkuScaleTypeNone      IntegrationServiceEnvironmentSkuScaleType = original.IntegrationServiceEnvironmentSkuScaleTypeNone
 )
 
 type KeyType = original.KeyType
@@ -232,6 +232,14 @@ const (
 	KeyTypeNotSpecified KeyType = original.KeyTypeNotSpecified
 	KeyTypePrimary      KeyType = original.KeyTypePrimary
 	KeyTypeSecondary    KeyType = original.KeyTypeSecondary
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	ManagedServiceIdentityTypeNone           ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeUserAssigned   ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type MapType = original.MapType
@@ -255,7 +263,7 @@ const (
 type OpenAuthenticationProviderType = original.OpenAuthenticationProviderType
 
 const (
-	AAD OpenAuthenticationProviderType = original.AAD
+	OpenAuthenticationProviderTypeAAD OpenAuthenticationProviderType = original.OpenAuthenticationProviderTypeAAD
 )
 
 type ParameterType = original.ParameterType
@@ -342,14 +350,14 @@ const (
 type SwaggerSchemaType = original.SwaggerSchemaType
 
 const (
-	Array   SwaggerSchemaType = original.Array
-	Boolean SwaggerSchemaType = original.Boolean
-	File    SwaggerSchemaType = original.File
-	Integer SwaggerSchemaType = original.Integer
-	Null    SwaggerSchemaType = original.Null
-	Number  SwaggerSchemaType = original.Number
-	Object  SwaggerSchemaType = original.Object
-	String  SwaggerSchemaType = original.String
+	SwaggerSchemaTypeArray   SwaggerSchemaType = original.SwaggerSchemaTypeArray
+	SwaggerSchemaTypeBoolean SwaggerSchemaType = original.SwaggerSchemaTypeBoolean
+	SwaggerSchemaTypeFile    SwaggerSchemaType = original.SwaggerSchemaTypeFile
+	SwaggerSchemaTypeInteger SwaggerSchemaType = original.SwaggerSchemaTypeInteger
+	SwaggerSchemaTypeNull    SwaggerSchemaType = original.SwaggerSchemaTypeNull
+	SwaggerSchemaTypeNumber  SwaggerSchemaType = original.SwaggerSchemaTypeNumber
+	SwaggerSchemaTypeObject  SwaggerSchemaType = original.SwaggerSchemaTypeObject
+	SwaggerSchemaTypeString  SwaggerSchemaType = original.SwaggerSchemaTypeString
 )
 
 type TrackEventsOperationOptions = original.TrackEventsOperationOptions
@@ -642,7 +650,13 @@ type IntegrationServiceEnvironmentAccessEndpoint = original.IntegrationServiceEn
 type IntegrationServiceEnvironmentListResult = original.IntegrationServiceEnvironmentListResult
 type IntegrationServiceEnvironmentListResultIterator = original.IntegrationServiceEnvironmentListResultIterator
 type IntegrationServiceEnvironmentListResultPage = original.IntegrationServiceEnvironmentListResultPage
+type IntegrationServiceEnvironmentManagedAPI = original.IntegrationServiceEnvironmentManagedAPI
+type IntegrationServiceEnvironmentManagedAPIDeploymentParameters = original.IntegrationServiceEnvironmentManagedAPIDeploymentParameters
+type IntegrationServiceEnvironmentManagedAPIListResult = original.IntegrationServiceEnvironmentManagedAPIListResult
+type IntegrationServiceEnvironmentManagedAPIListResultIterator = original.IntegrationServiceEnvironmentManagedAPIListResultIterator
+type IntegrationServiceEnvironmentManagedAPIListResultPage = original.IntegrationServiceEnvironmentManagedAPIListResultPage
 type IntegrationServiceEnvironmentManagedAPIOperationsClient = original.IntegrationServiceEnvironmentManagedAPIOperationsClient
+type IntegrationServiceEnvironmentManagedAPIProperties = original.IntegrationServiceEnvironmentManagedAPIProperties
 type IntegrationServiceEnvironmentManagedApisClient = original.IntegrationServiceEnvironmentManagedApisClient
 type IntegrationServiceEnvironmentManagedApisDeleteFuture = original.IntegrationServiceEnvironmentManagedApisDeleteFuture
 type IntegrationServiceEnvironmentManagedApisPutFuture = original.IntegrationServiceEnvironmentManagedApisPutFuture
@@ -673,8 +687,7 @@ type KeyVaultReference = original.KeyVaultReference
 type ListKeyVaultKeysDefinition = original.ListKeyVaultKeysDefinition
 type ManagedAPI = original.ManagedAPI
 type ManagedAPIListResult = original.ManagedAPIListResult
-type ManagedAPIListResultIterator = original.ManagedAPIListResultIterator
-type ManagedAPIListResultPage = original.ManagedAPIListResultPage
+type ManagedServiceIdentity = original.ManagedServiceIdentity
 type NetworkConfiguration = original.NetworkConfiguration
 type OpenAuthenticationAccessPolicies = original.OpenAuthenticationAccessPolicies
 type OpenAuthenticationAccessPolicy = original.OpenAuthenticationAccessPolicy
@@ -722,6 +735,7 @@ type SwaggerXML = original.SwaggerXML
 type TrackingEvent = original.TrackingEvent
 type TrackingEventErrorInfo = original.TrackingEventErrorInfo
 type TrackingEventsDefinition = original.TrackingEventsDefinition
+type UserAssignedIdentity = original.UserAssignedIdentity
 type Workflow = original.Workflow
 type WorkflowFilter = original.WorkflowFilter
 type WorkflowListResult = original.WorkflowListResult
@@ -909,6 +923,12 @@ func NewIntegrationServiceEnvironmentListResultIterator(page IntegrationServiceE
 func NewIntegrationServiceEnvironmentListResultPage(cur IntegrationServiceEnvironmentListResult, getNextPage func(context.Context, IntegrationServiceEnvironmentListResult) (IntegrationServiceEnvironmentListResult, error)) IntegrationServiceEnvironmentListResultPage {
 	return original.NewIntegrationServiceEnvironmentListResultPage(cur, getNextPage)
 }
+func NewIntegrationServiceEnvironmentManagedAPIListResultIterator(page IntegrationServiceEnvironmentManagedAPIListResultPage) IntegrationServiceEnvironmentManagedAPIListResultIterator {
+	return original.NewIntegrationServiceEnvironmentManagedAPIListResultIterator(page)
+}
+func NewIntegrationServiceEnvironmentManagedAPIListResultPage(cur IntegrationServiceEnvironmentManagedAPIListResult, getNextPage func(context.Context, IntegrationServiceEnvironmentManagedAPIListResult) (IntegrationServiceEnvironmentManagedAPIListResult, error)) IntegrationServiceEnvironmentManagedAPIListResultPage {
+	return original.NewIntegrationServiceEnvironmentManagedAPIListResultPage(cur, getNextPage)
+}
 func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID string) IntegrationServiceEnvironmentManagedAPIOperationsClient {
 	return original.NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID)
 }
@@ -944,12 +964,6 @@ func NewIntegrationServiceEnvironmentsClient(subscriptionID string) IntegrationS
 }
 func NewIntegrationServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentsClient {
 	return original.NewIntegrationServiceEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagedAPIListResultIterator(page ManagedAPIListResultPage) ManagedAPIListResultIterator {
-	return original.NewManagedAPIListResultIterator(page)
-}
-func NewManagedAPIListResultPage(cur ManagedAPIListResult, getNextPage func(context.Context, ManagedAPIListResult) (ManagedAPIListResult, error)) ManagedAPIListResultPage {
-	return original.NewManagedAPIListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -1142,6 +1156,9 @@ func PossibleIntegrationServiceEnvironmentSkuScaleTypeValues() []IntegrationServ
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
 }
 func PossibleMapTypeValues() []MapType {
 	return original.PossibleMapTypeValues()

@@ -9,7 +9,6 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
@@ -190,7 +189,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 }
@@ -269,7 +268,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 
@@ -347,7 +346,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	blobURLWithSAS := blobParts.URL()
 	_assert.NotNil(blobURLWithSAS)
 
-	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.NewAnonymousCredential(), nil)
+	blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
 	_assert.Nil(err)
 
 	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
@@ -1307,7 +1306,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 

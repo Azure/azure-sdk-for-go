@@ -11,42 +11,63 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GroupUserClient contains the methods for the GroupUser group.
 // Don't use this type directly, use NewGroupUserClient() instead.
 type GroupUserClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGroupUserClient creates a new instance of GroupUserClient with the specified values.
-func NewGroupUserClient(con *arm.Connection, subscriptionID string) *GroupUserClient {
-	return &GroupUserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GroupUserClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &GroupUserClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckEntityExists - Checks that user entity specified by identifier is associated with the group entity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCheckEntityExistsOptions) (GroupUserCheckEntityExistsResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - GroupUserClientCheckEntityExistsOptions contains the optional parameters for the GroupUserClient.CheckEntityExists
+// method.
+func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCheckEntityExistsOptions) (GroupUserClientCheckEntityExistsResponse, error) {
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
-		return GroupUserCheckEntityExistsResponse{}, err
+		return GroupUserClientCheckEntityExistsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GroupUserCheckEntityExistsResponse{}, err
+		return GroupUserClientCheckEntityExistsResponse{}, err
 	}
-	result := GroupUserCheckEntityExistsResponse{RawResponse: resp}
+	result := GroupUserClientCheckEntityExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -54,7 +75,7 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCheckEntityExistsOptions) (*policy.Request, error) {
+func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -76,36 +97,41 @@ func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // Create - Add existing user to existing group
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GroupUserClient) Create(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCreateOptions) (GroupUserCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - GroupUserClientCreateOptions contains the optional parameters for the GroupUserClient.Create method.
+func (client *GroupUserClient) Create(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCreateOptions) (GroupUserClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
-		return GroupUserCreateResponse{}, err
+		return GroupUserClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GroupUserCreateResponse{}, err
+		return GroupUserClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return GroupUserCreateResponse{}, client.createHandleError(resp)
+		return GroupUserClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *GroupUserClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCreateOptions) (*policy.Request, error) {
+func (client *GroupUserClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,58 +153,50 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserCreateResponse, error) {
-	result := GroupUserCreateResponse{RawResponse: resp}
+func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserClientCreateResponse, error) {
+	result := GroupUserClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return GroupUserCreateResponse{}, err
+		return GroupUserClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *GroupUserClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Remove existing user from existing group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserDeleteOptions) (GroupUserDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - GroupUserClientDeleteOptions contains the optional parameters for the GroupUserClient.Delete method.
+func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientDeleteOptions) (GroupUserClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
-		return GroupUserDeleteResponse{}, err
+		return GroupUserClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GroupUserDeleteResponse{}, err
+		return GroupUserClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return GroupUserDeleteResponse{}, client.deleteHandleError(resp)
+		return GroupUserClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GroupUserDeleteResponse{RawResponse: resp}, nil
+	return GroupUserClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserDeleteOptions) (*policy.Request, error) {
+func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -200,46 +218,37 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *GroupUserClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists a collection of user entities associated with the group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) *GroupUserListPager {
-	return &GroupUserListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// options - GroupUserClientListOptions contains the optional parameters for the GroupUserClient.List method.
+func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *GroupUserClientListPager {
+	return &GroupUserClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
 		},
-		advancer: func(ctx context.Context, resp GroupUserListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GroupUserClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) (*policy.Request, error) {
+func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -257,7 +266,7 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,30 +280,17 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserListResponse, error) {
-	result := GroupUserListResponse{RawResponse: resp}
+func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserClientListResponse, error) {
+	result := GroupUserClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
-		return GroupUserListResponse{}, err
+		return GroupUserClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *GroupUserClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

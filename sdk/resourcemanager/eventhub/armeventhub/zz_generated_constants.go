@@ -9,8 +9,8 @@
 package armeventhub
 
 const (
-	module  = "armeventhub"
-	version = "v0.1.0"
+	moduleName    = "armeventhub"
+	moduleVersion = "v0.3.1"
 )
 
 type AccessRights string
@@ -100,8 +100,8 @@ func (c DefaultAction) ToPtr() *DefaultAction {
 	return &c
 }
 
-// EncodingCaptureDescription - Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in
-// New API Version
+// EncodingCaptureDescription - Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate'
+// will be deprecated in New API Version
 type EncodingCaptureDescription string
 
 const (
@@ -276,7 +276,8 @@ func (c PrivateLinkConnectionStatus) ToPtr() *PrivateLinkConnectionStatus {
 	return &c
 }
 
-// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'
+// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or
+// 'Succeeded' or 'Failed'
 type ProvisioningStateDR string
 
 const (
@@ -386,6 +387,48 @@ func PossibleSKUTierValues() []SKUTier {
 
 // ToPtr returns a *SKUTier pointing to the current value.
 func (c SKUTier) ToPtr() *SKUTier {
+	return &c
+}
+
+type SchemaCompatibility string
+
+const (
+	SchemaCompatibilityBackward SchemaCompatibility = "Backward"
+	SchemaCompatibilityForward  SchemaCompatibility = "Forward"
+	SchemaCompatibilityNone     SchemaCompatibility = "None"
+)
+
+// PossibleSchemaCompatibilityValues returns the possible values for the SchemaCompatibility const type.
+func PossibleSchemaCompatibilityValues() []SchemaCompatibility {
+	return []SchemaCompatibility{
+		SchemaCompatibilityBackward,
+		SchemaCompatibilityForward,
+		SchemaCompatibilityNone,
+	}
+}
+
+// ToPtr returns a *SchemaCompatibility pointing to the current value.
+func (c SchemaCompatibility) ToPtr() *SchemaCompatibility {
+	return &c
+}
+
+type SchemaType string
+
+const (
+	SchemaTypeAvro    SchemaType = "Avro"
+	SchemaTypeUnknown SchemaType = "Unknown"
+)
+
+// PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
+func PossibleSchemaTypeValues() []SchemaType {
+	return []SchemaType{
+		SchemaTypeAvro,
+		SchemaTypeUnknown,
+	}
+}
+
+// ToPtr returns a *SchemaType pointing to the current value.
+func (c SchemaType) ToPtr() *SchemaType {
 	return &c
 }
 

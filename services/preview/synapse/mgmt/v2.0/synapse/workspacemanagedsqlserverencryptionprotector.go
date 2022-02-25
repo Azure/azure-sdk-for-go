@@ -36,7 +36,7 @@ func NewWorkspaceManagedSQLServerEncryptionProtectorClientWithBaseURI(baseURI st
 // CreateOrUpdate updates workspace managed sql server's encryption protector.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // parameters - the requested encryption protector resource state.
 func (client WorkspaceManagedSQLServerEncryptionProtectorClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters EncryptionProtector) (result WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -130,7 +130,7 @@ func (client WorkspaceManagedSQLServerEncryptionProtectorClient) CreateOrUpdateR
 // Get get workspace managed sql server's encryption protector.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerEncryptionProtectorClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result EncryptionProtector, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerEncryptionProtectorClient.Get")
@@ -216,7 +216,7 @@ func (client WorkspaceManagedSQLServerEncryptionProtectorClient) GetResponder(re
 // List get list of encryption protectors for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerEncryptionProtectorClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result EncryptionProtectorListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerEncryptionProtectorClient.List")
@@ -343,7 +343,7 @@ func (client WorkspaceManagedSQLServerEncryptionProtectorClient) ListComplete(ct
 // Revalidate revalidates workspace managed sql server's existing encryption protector.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerEncryptionProtectorClient) Revalidate(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceManagedSQLServerEncryptionProtectorRevalidateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerEncryptionProtectorClient.Revalidate")

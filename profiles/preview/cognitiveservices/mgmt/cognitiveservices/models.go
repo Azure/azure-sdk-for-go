@@ -12,7 +12,7 @@ package cognitiveservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-04-30/cognitiveservices"
+	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices"
 )
 
 const (
@@ -32,6 +32,31 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type DeploymentProvisioningState = original.DeploymentProvisioningState
+
+const (
+	DeploymentProvisioningStateAccepted  DeploymentProvisioningState = original.DeploymentProvisioningStateAccepted
+	DeploymentProvisioningStateCreating  DeploymentProvisioningState = original.DeploymentProvisioningStateCreating
+	DeploymentProvisioningStateDeleting  DeploymentProvisioningState = original.DeploymentProvisioningStateDeleting
+	DeploymentProvisioningStateFailed    DeploymentProvisioningState = original.DeploymentProvisioningStateFailed
+	DeploymentProvisioningStateMoving    DeploymentProvisioningState = original.DeploymentProvisioningStateMoving
+	DeploymentProvisioningStateSucceeded DeploymentProvisioningState = original.DeploymentProvisioningStateSucceeded
+)
+
+type DeploymentScaleType = original.DeploymentScaleType
+
+const (
+	DeploymentScaleTypeManual DeploymentScaleType = original.DeploymentScaleTypeManual
+)
+
+type HostingModel = original.HostingModel
+
+const (
+	HostingModelConnectedContainer    HostingModel = original.HostingModelConnectedContainer
+	HostingModelDisconnectedContainer HostingModel = original.HostingModelDisconnectedContainer
+	HostingModelWeb                   HostingModel = original.HostingModelWeb
 )
 
 type KeyName = original.KeyName
@@ -171,8 +196,33 @@ type BaseClient = original.BaseClient
 type CallRateLimit = original.CallRateLimit
 type CheckDomainAvailabilityParameter = original.CheckDomainAvailabilityParameter
 type CheckSkuAvailabilityParameter = original.CheckSkuAvailabilityParameter
+type CommitmentCost = original.CommitmentCost
+type CommitmentPeriod = original.CommitmentPeriod
+type CommitmentPlan = original.CommitmentPlan
+type CommitmentPlanListResult = original.CommitmentPlanListResult
+type CommitmentPlanListResultIterator = original.CommitmentPlanListResultIterator
+type CommitmentPlanListResultPage = original.CommitmentPlanListResultPage
+type CommitmentPlanProperties = original.CommitmentPlanProperties
+type CommitmentPlansClient = original.CommitmentPlansClient
+type CommitmentPlansDeleteFuture = original.CommitmentPlansDeleteFuture
+type CommitmentQuota = original.CommitmentQuota
+type CommitmentTier = original.CommitmentTier
+type CommitmentTierListResult = original.CommitmentTierListResult
+type CommitmentTierListResultIterator = original.CommitmentTierListResultIterator
+type CommitmentTierListResultPage = original.CommitmentTierListResultPage
+type CommitmentTiersClient = original.CommitmentTiersClient
 type DeletedAccountsClient = original.DeletedAccountsClient
 type DeletedAccountsPurgeFuture = original.DeletedAccountsPurgeFuture
+type Deployment = original.Deployment
+type DeploymentListResult = original.DeploymentListResult
+type DeploymentListResultIterator = original.DeploymentListResultIterator
+type DeploymentListResultPage = original.DeploymentListResultPage
+type DeploymentModel = original.DeploymentModel
+type DeploymentProperties = original.DeploymentProperties
+type DeploymentScaleSettings = original.DeploymentScaleSettings
+type DeploymentsClient = original.DeploymentsClient
+type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
+type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
 type DomainAvailability = original.DomainAvailability
 type Encryption = original.Encryption
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
@@ -242,11 +292,47 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCommitmentPlanListResultIterator(page CommitmentPlanListResultPage) CommitmentPlanListResultIterator {
+	return original.NewCommitmentPlanListResultIterator(page)
+}
+func NewCommitmentPlanListResultPage(cur CommitmentPlanListResult, getNextPage func(context.Context, CommitmentPlanListResult) (CommitmentPlanListResult, error)) CommitmentPlanListResultPage {
+	return original.NewCommitmentPlanListResultPage(cur, getNextPage)
+}
+func NewCommitmentPlansClient(subscriptionID string) CommitmentPlansClient {
+	return original.NewCommitmentPlansClient(subscriptionID)
+}
+func NewCommitmentPlansClientWithBaseURI(baseURI string, subscriptionID string) CommitmentPlansClient {
+	return original.NewCommitmentPlansClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommitmentTierListResultIterator(page CommitmentTierListResultPage) CommitmentTierListResultIterator {
+	return original.NewCommitmentTierListResultIterator(page)
+}
+func NewCommitmentTierListResultPage(cur CommitmentTierListResult, getNextPage func(context.Context, CommitmentTierListResult) (CommitmentTierListResult, error)) CommitmentTierListResultPage {
+	return original.NewCommitmentTierListResultPage(cur, getNextPage)
+}
+func NewCommitmentTiersClient(subscriptionID string) CommitmentTiersClient {
+	return original.NewCommitmentTiersClient(subscriptionID)
+}
+func NewCommitmentTiersClientWithBaseURI(baseURI string, subscriptionID string) CommitmentTiersClient {
+	return original.NewCommitmentTiersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDeletedAccountsClient(subscriptionID string) DeletedAccountsClient {
 	return original.NewDeletedAccountsClient(subscriptionID)
 }
 func NewDeletedAccountsClientWithBaseURI(baseURI string, subscriptionID string) DeletedAccountsClient {
 	return original.NewDeletedAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
+	return original.NewDeploymentListResultIterator(page)
+}
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return original.NewDeploymentListResultPage(cur, getNextPage)
+}
+func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClient(subscriptionID)
+}
+func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -292,6 +378,15 @@ func PossibleActionTypeValues() []ActionType {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
+	return original.PossibleDeploymentProvisioningStateValues()
+}
+func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
+	return original.PossibleDeploymentScaleTypeValues()
+}
+func PossibleHostingModelValues() []HostingModel {
+	return original.PossibleHostingModelValues()
 }
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()

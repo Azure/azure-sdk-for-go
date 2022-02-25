@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 )
 
-// GenerateOptions deserialize from generate_options.json file in root directory of azure-sdk-for-go
+// GenerateOptions deserialize from eng/generate_options.json file in root directory of azure-sdk-for-go
 type GenerateOptions struct {
 	AutorestArguments []string `json:"autorestArguments"`
 	AdditionalOptions []string `json:"additionalOptions,omitempty"`

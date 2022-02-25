@@ -7,8 +7,6 @@
 package policy
 
 import (
-	"context"
-	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
@@ -56,6 +54,15 @@ type LogOptions struct {
 	// The default value is false.
 	// NOTE: enabling this can lead to disclosure of sensitive information, use with care.
 	IncludeBody bool
+
+	// AllowedHeaders is the slice of headers to log with their values intact.
+	// All headers not in the slice will have their values REDACTED.
+	// Applies to request and response headers.
+	AllowedHeaders []string
+
+	// AllowedQueryParams is the slice of query parameters to log with their values intact.
+	// All query parameters not in the slice will have their values REDACTED.
+	AllowedQueryParams []string
 }
 
 // RetryOptions configures the retry policy's behavior.
@@ -89,7 +96,7 @@ type RetryOptions struct {
 
 // TelemetryOptions configures the telemetry policy's behavior.
 type TelemetryOptions struct {
-	// ApplicationID is an application-specific identification string used in telemetry.
+	// ApplicationID is an application-specific identification string to add to the User-Agent.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
 
@@ -98,23 +105,9 @@ type TelemetryOptions struct {
 }
 
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
-type TokenRequestOptions struct {
-	// Scopes contains the list of permission scopes required for the token.
-	Scopes []string
-	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
-	// it will override the tenant ID that was added at credential creation time.
-	TenantID string
-}
+type TokenRequestOptions = shared.TokenRequestOptions
 
-// WithHTTPHeader adds the specified http.Header to the parent context.
-// Use this to specify custom HTTP headers at the API-call level.
-// Any overlapping headers will have their values replaced with the values specified here.
-func WithHTTPHeader(parent context.Context, header http.Header) context.Context {
-	return context.WithValue(parent, shared.CtxWithHTTPHeaderKey{}, header)
-}
-
-// WithRetryOptions adds the specified RetryOptions to the parent context.
-// Use this to specify custom RetryOptions at the API-call level.
-func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
-	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
+// BearerTokenOptions configures the bearer token policy's behavior.
+type BearerTokenOptions struct {
+	// placeholder for future options
 }

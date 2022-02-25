@@ -11,79 +11,84 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BgpServiceCommunitiesClient contains the methods for the BgpServiceCommunities group.
 // Don't use this type directly, use NewBgpServiceCommunitiesClient() instead.
 type BgpServiceCommunitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBgpServiceCommunitiesClient creates a new instance of BgpServiceCommunitiesClient with the specified values.
-func NewBgpServiceCommunitiesClient(con *arm.Connection, subscriptionID string) *BgpServiceCommunitiesClient {
-	return &BgpServiceCommunitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewBgpServiceCommunitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BgpServiceCommunitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &BgpServiceCommunitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets all the available bgp service communities.
-// If the operation fails it returns the *CloudError error type.
-func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesListOptions) *BgpServiceCommunitiesListPager {
-	return &BgpServiceCommunitiesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.List
+// method.
+func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesClientListOptions) *BgpServiceCommunitiesClientListPager {
+	return &BgpServiceCommunitiesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp BgpServiceCommunitiesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BgpServiceCommunitiesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BgpServiceCommunityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BgpServiceCommunitiesClient) listCreateRequest(ctx context.Context, options *BgpServiceCommunitiesListOptions) (*policy.Request, error) {
+func (client *BgpServiceCommunitiesClient) listCreateRequest(ctx context.Context, options *BgpServiceCommunitiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BgpServiceCommunitiesClient) listHandleResponse(resp *http.Response) (BgpServiceCommunitiesListResponse, error) {
-	result := BgpServiceCommunitiesListResponse{RawResponse: resp}
+func (client *BgpServiceCommunitiesClient) listHandleResponse(resp *http.Response) (BgpServiceCommunitiesClientListResponse, error) {
+	result := BgpServiceCommunitiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BgpServiceCommunityListResult); err != nil {
-		return BgpServiceCommunitiesListResponse{}, err
+		return BgpServiceCommunitiesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BgpServiceCommunitiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

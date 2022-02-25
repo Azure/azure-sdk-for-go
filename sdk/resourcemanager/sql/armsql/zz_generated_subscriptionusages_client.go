@@ -11,47 +11,66 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SubscriptionUsagesClient contains the methods for the SubscriptionUsages group.
 // Don't use this type directly, use NewSubscriptionUsagesClient() instead.
 type SubscriptionUsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubscriptionUsagesClient creates a new instance of SubscriptionUsagesClient with the specified values.
-func NewSubscriptionUsagesClient(con *arm.Connection, subscriptionID string) *SubscriptionUsagesClient {
-	return &SubscriptionUsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionUsagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &SubscriptionUsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a subscription usage metric.
-// If the operation fails it returns a generic error.
-func (client *SubscriptionUsagesClient) Get(ctx context.Context, locationName string, usageName string, options *SubscriptionUsagesGetOptions) (SubscriptionUsagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the region where the resource is located.
+// usageName - Name of usage metric to return.
+// options - SubscriptionUsagesClientGetOptions contains the optional parameters for the SubscriptionUsagesClient.Get method.
+func (client *SubscriptionUsagesClient) Get(ctx context.Context, locationName string, usageName string, options *SubscriptionUsagesClientGetOptions) (SubscriptionUsagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, usageName, options)
 	if err != nil {
-		return SubscriptionUsagesGetResponse{}, err
+		return SubscriptionUsagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionUsagesGetResponse{}, err
+		return SubscriptionUsagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionUsagesGetResponse{}, client.getHandleError(resp)
+		return SubscriptionUsagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, locationName string, usageName string, options *SubscriptionUsagesGetOptions) (*policy.Request, error) {
+func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, locationName string, usageName string, options *SubscriptionUsagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages/{usageName}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -65,7 +84,7 @@ func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,42 +96,33 @@ func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, lo
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (SubscriptionUsagesGetResponse, error) {
-	result := SubscriptionUsagesGetResponse{RawResponse: resp}
+func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (SubscriptionUsagesClientGetResponse, error) {
+	result := SubscriptionUsagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUsage); err != nil {
-		return SubscriptionUsagesGetResponse{}, err
+		return SubscriptionUsagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubscriptionUsagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByLocation - Gets all subscription usage metrics in a given location.
-// If the operation fails it returns a generic error.
-func (client *SubscriptionUsagesClient) ListByLocation(locationName string, options *SubscriptionUsagesListByLocationOptions) *SubscriptionUsagesListByLocationPager {
-	return &SubscriptionUsagesListByLocationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the region where the resource is located.
+// options - SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.ListByLocation
+// method.
+func (client *SubscriptionUsagesClient) ListByLocation(locationName string, options *SubscriptionUsagesClientListByLocationOptions) *SubscriptionUsagesClientListByLocationPager {
+	return &SubscriptionUsagesClientListByLocationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp SubscriptionUsagesListByLocationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubscriptionUsagesClientListByLocationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionUsageListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *SubscriptionUsagesListByLocationOptions) (*policy.Request, error) {
+func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *SubscriptionUsagesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -122,7 +132,7 @@ func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,22 +144,10 @@ func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *SubscriptionUsagesClient) listByLocationHandleResponse(resp *http.Response) (SubscriptionUsagesListByLocationResponse, error) {
-	result := SubscriptionUsagesListByLocationResponse{RawResponse: resp}
+func (client *SubscriptionUsagesClient) listByLocationHandleResponse(resp *http.Response) (SubscriptionUsagesClientListByLocationResponse, error) {
+	result := SubscriptionUsagesClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUsageListResult); err != nil {
-		return SubscriptionUsagesListByLocationResponse{}, err
+		return SubscriptionUsagesClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *SubscriptionUsagesClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

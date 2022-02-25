@@ -111,9 +111,7 @@ func TestNewPoller(t *testing.T) {
 		Header:     http.Header{},
 	}
 	firstResp.Header.Set(shared.HeaderRetryAfter, "1")
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
-		return errors.New("failed")
-	})
+	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -132,6 +130,13 @@ func TestNewPoller(t *testing.T) {
 		t.Fatal("unexpected empty resume token")
 	}
 	resp, err = p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp != nil {
+		t.Fatal("expected nil response")
+	}
+	resp, err = p.PollUntilDone(context.Background(), time.Second, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -157,9 +162,7 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL(), Fg: srv.URL()}, firstResp, pl, func(*http.Response) error {
-		return errors.New("failed")
-	})
+	p := NewPoller(&fakePoller{Ep: srv.URL(), Fg: srv.URL()}, firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -167,7 +170,7 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 		Shape string `json:"shape"`
 	}
 	var w widget
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, &w)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, &w)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -195,14 +198,14 @@ func TestNewPollerFail1(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
-		return errors.New("failed")
-	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	} else if s := err.Error(); s != "failed" {
-		t.Fatalf("unexpected error %s", s)
+	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
+	var respErr *shared.ResponseError
+	if !errors.As(err, &respErr) {
+		t.Fatalf("unexpected error type %T", err)
+	}
+	if respErr.StatusCode != http.StatusConflict {
+		t.Fatalf("unexpected terminal status code %d", respErr.StatusCode)
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
@@ -218,14 +221,14 @@ func TestNewPollerFail2(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
-		return errors.New("failed")
-	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	} else if s := err.Error(); s != "failed" {
-		t.Fatalf("unexpected error %s", s)
+	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
+	var respErr *shared.ResponseError
+	if !errors.As(err, &respErr) {
+		t.Fatalf("unexpected error type %T", err)
+	}
+	if respErr.StatusCode != http.StatusCreated {
+		t.Fatalf("unexpected terminal status code %d", respErr.StatusCode)
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
@@ -241,10 +244,8 @@ func TestNewPollerError(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
-		return errors.New("failed")
-	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	} else if s := err.Error(); s != "fatal" {

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Client is the struct for interacting with a KeyVault Secrets instance
@@ -25,39 +26,21 @@ type Client struct {
 
 // ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
-	// Transport sets the transport for making HTTP requests.
-	Transport policy.Transporter
-
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
-
-	// PerCallPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request.
-	PerCallPolicies []policy.Policy
-
-	// PerRetryPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request, and for each retry request.
-	PerTryPolicies []policy.Policy
+	azcore.ClientOptions
 }
 
-func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
+func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	if c == nil {
 		return nil
 	}
 
-	return &internal.ConnectionOptions{
-		HTTPClient:       c.Transport,
+	return &policy.ClientOptions{
+		Logging:          c.Logging,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
-		Logging:          c.Logging,
+		Transport:        c.Transport,
 		PerCallPolicies:  c.PerCallPolicies,
-		PerRetryPolicies: c.PerTryPolicies,
+		PerRetryPolicies: c.PerRetryPolicies,
 	}
 }
 
@@ -67,12 +50,15 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	conn := internal.NewConnection(credential, options.toConnectionOptions())
+	conOptions := options.toConnectionOptions()
+
+	conOptions.PerRetryPolicies = append(
+		conOptions.PerRetryPolicies,
+		shared.NewKeyVaultChallengePolicy(credential),
+	)
 
 	return &Client{
-		kvClient: &internal.KeyVaultClient{
-			Con: conn,
-		},
+		kvClient: internal.NewKeyVaultClient(conOptions),
 		vaultUrl: vaultUrl,
 	}, nil
 }
@@ -283,11 +269,15 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+	var httpErr *azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		if httpErr.StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -337,9 +327,9 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 	}
 
 	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return DeleteSecretPollerResponse{}, err
 		}
 	}
@@ -389,7 +379,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Secret:             secretFromGenerated(i.SecretBundle),
+		Secret:             secretFromGenerated(i.DeletedSecretBundle),
 	}
 }
 
@@ -449,14 +439,10 @@ type Properties struct {
 
 // convert the publicly exposed version to the generated version
 func (s Properties) toGenerated() internal.SecretUpdateParameters {
-	var secAttribs *internal.SecretAttributes
-	if s.SecretAttributes != nil {
-		secAttribs = s.SecretAttributes.toGenerated()
-	}
 	return internal.SecretUpdateParameters{
 		ContentType:      s.ContentType,
 		Tags:             createPtrMap(s.Tags),
-		SecretAttributes: secAttribs,
+		SecretAttributes: s.SecretAttributes.toGenerated(),
 	}
 }
 
@@ -634,9 +620,9 @@ func (b *beginRecoverPoller) Done() bool {
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
 	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
@@ -728,9 +714,9 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 	}
 
 	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return RecoverDeletedSecretPollerResponse{}, err
 		}
 	}

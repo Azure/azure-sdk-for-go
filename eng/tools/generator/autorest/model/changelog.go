@@ -54,6 +54,14 @@ func (c Changelog) ToCompactMarkdown() string {
 	return writeChangelogForPackage(c.Modified)
 }
 
+// Seperate change summary text get
+func (c Changelog) GetChangeSummary() string {
+	if c.NewPackage || c.RemovedPackage {
+		return ""
+	}
+	return getSummaries(c.Modified.BreakingChanges, c.Modified.AdditiveChanges)
+}
+
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
 	if c.RemovedPackage {
@@ -69,26 +77,28 @@ func (c Changelog) GetBreakingChangeItems() []string {
 
 func writeChangelogForPackage(r *report.Package) string {
 	if r == nil || r.IsEmpty() {
-		return "No exported changes"
+		return "### Other Changes\n"
 	}
 
 	md := &markdown.Writer{}
 
 	// write breaking changes
-	md.WriteHeader("Breaking Changes")
-	for _, item := range getBreakingChanges(r.BreakingChanges) {
-		md.WriteListItem(item)
+	breakings := getBreakingChanges(r.BreakingChanges)
+	if len(breakings) > 0 {
+		md.WriteHeader("Breaking Changes")
+		for _, item := range breakings {
+			md.WriteListItem(item)
+		}
 	}
 
 	// write additional changes
-	md.WriteHeader("New Content")
-	for _, item := range getNewContents(r.AdditiveChanges) {
-		md.WriteListItem(item)
+	additives := getNewContents(r.AdditiveChanges)
+	if len(additives) > 0 {
+		md.WriteHeader("Features Added")
+		for _, item := range additives {
+			md.WriteListItem(item)
+		}
 	}
-
-	md.EmptyLine()
-	summaries := getSummaries(r.BreakingChanges, r.AdditiveChanges)
-	md.WriteLine(summaries)
 
 	return md.String()
 }

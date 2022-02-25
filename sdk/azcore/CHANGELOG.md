@@ -1,16 +1,62 @@
 # Release History
 
-## 0.20.0 (Unreleased)
+## 0.21.2 (Unreleased)
+
+### Features Added
+* Added header `WWW-Authenticate` to the default allow-list of headers for logging.
+* Added a pipeline policy that enables the retrieval of HTTP responses from API calls.
+  * Added `runtime.IncludeResponse` to enable the policy at the API level (off by default).
+  * Added `runtime.ResponseFromContext` to retreive the HTTP response from the context when enabled.
+
+### Breaking Changes
+* Moved `WithHTTPHeader` and `WithRetryOptions` from the `policy` package to the `runtime` package.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.21.1 (2022-02-04)
+
+### Bugs Fixed
+* Restore response body after reading in `Poller.FinalResponse()`. (#16911)
+* Fixed bug in `NullValue` that could lead to incorrect comparisons for empty maps/slices (#16969)
+
+### Other Changes
+* `BearerTokenPolicy` is more resilient to transient authentication failures. (#16789)
+
+## 0.21.0 (2022-01-11)
+
+### Features Added
+* Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
+* Added `azcore.ResponseError` type which is returned from APIs when a non-success HTTP status code is received.
+
+### Breaking Changes
+* Moved `[]policy.Policy` parameters of `arm/runtime.NewPipeline` and `runtime.NewPipeline` into a new struct, `runtime.PipelineOptions`
+* Renamed `arm/ClientOptions.Host` to `.Endpoint`
+* Moved `Request.SkipBodyDownload` method to function `runtime.SkipBodyDownload`
+* Removed `azcore.HTTPResponse` interface type
+* `arm.NewPoller()` and `runtime.NewPoller()` no longer require an `eu` parameter
+* `runtime.NewResponseError()` no longer requires an `error` parameter
+
+## 0.20.0 (2021-10-22)
 
 ### Breaking Changes
 * Removed `arm.Connection`
 * Removed `azcore.Credential` and `.NewAnonymousCredential()`
   * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
+* `runtime.NewPipeline` has a new signature that simplifies implementing custom authentication
+* `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
+* Contents in the `log` package have been slightly renamed.
+* Removed `AuthenticationOptions` in favor of `policy.BearerTokenOptions`
+* Changed parameters for `NewBearerTokenPolicy()`
+* Moved policy config options out of `arm/runtime` and into `arm/policy`
 
 ### Features Added
 * Updating Documentation
 * Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
 * `azcore.ClientOptions` contains common pipeline configuration settings
+* Added support for multi-tenant authorization in `arm/runtime`
+* Require one second minimum when calling `PollUntilDone()`
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

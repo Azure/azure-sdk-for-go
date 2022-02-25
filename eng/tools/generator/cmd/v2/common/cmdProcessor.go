@@ -21,6 +21,18 @@ func ExecuteGoGenerate(path string) error {
 	return nil
 }
 
+// execute `pwsh Invoke-MgmtTestgen` command and fetch result
+func ExecuteExampleGenerate(path, packagePath string) error {
+	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestGen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `pwsh Invoke-MgmtTestgen` execution: \n%s", string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `pwsh Invoke-MgmtTestgen` '%s': %+v", string(output), err)
+	}
+	return nil
+}
+
 // execute `goimports` command and fetch result
 func ExecuteGoimports(path string) error {
 	cmd := exec.Command("go", "get", "golang.org/x/tools/cmd/goimports")

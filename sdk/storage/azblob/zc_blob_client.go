@@ -9,19 +9,36 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
-	client *blobClient
-	cred   azcore.Credential
+	client    *blobClient
+	sharedKey *SharedKeyCredential
 }
 
-// NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+// NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
+func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlobClient, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 
-	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil
+	return BlobClient{client: &blobClient{con, nil}}, nil
+}
+
+// NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
+func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (BlobClient, error) {
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
+
+	return BlobClient{client: &blobClient{con, nil}}, nil
+}
+
+// NewBlobClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
+func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlobClient, error) {
+	authPolicy := newSharedKeyCredPolicy(cred)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
+
+	return BlobClient{client: &blobClient{con, nil}, sharedKey: cred}, nil
 }
 
 // NewBlobClientFromConnectionString creates BlobClient from a Connection String
@@ -205,7 +222,7 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(b.URL())
 
@@ -215,8 +232,7 @@ func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time,
 		t = time.Time{}
 	}
 
-	cred, ok := b.cred.(*SharedKeyCredential)
-	if !ok {
+	if b.sharedKey == nil {
 		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
 	return BlobSASSignatureValues{
@@ -229,5 +245,5 @@ func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time,
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.NewSASQueryParameters(cred)
+	}.NewSASQueryParameters(b.sharedKey)
 }

@@ -9,7 +9,7 @@
 
 package apimanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2020-12-01/apimanagement/apimanagementapi"
+import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2021-08-01/apimanagement/apimanagementapi"
 
 type APIClientAPI = original.APIClientAPI
 type APIDiagnosticClientAPI = original.APIDiagnosticClientAPI
@@ -28,6 +28,7 @@ type APITagDescriptionClientAPI = original.APITagDescriptionClientAPI
 type APIVersionSetClientAPI = original.APIVersionSetClientAPI
 type AuthorizationServerClientAPI = original.AuthorizationServerClientAPI
 type BackendClientAPI = original.BackendClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type CacheClientAPI = original.CacheClientAPI
 type CertificateClientAPI = original.CertificateClientAPI
 type ContentItemClientAPI = original.ContentItemClientAPI
@@ -53,10 +54,12 @@ type NotificationRecipientUserClientAPI = original.NotificationRecipientUserClie
 type OpenIDConnectProviderClientAPI = original.OpenIDConnectProviderClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type OutboundNetworkDependenciesEndpointsClientAPI = original.OutboundNetworkDependenciesEndpointsClientAPI
 type PolicyClientAPI = original.PolicyClientAPI
 type PolicyDescriptionClientAPI = original.PolicyDescriptionClientAPI
 type PortalRevisionClientAPI = original.PortalRevisionClientAPI
 type PortalSettingsClientAPI = original.PortalSettingsClientAPI
+type PrivateEndpointConnectionClientAPI = original.PrivateEndpointConnectionClientAPI
 type ProductAPIClientAPI = original.ProductAPIClientAPI
 type ProductClientAPI = original.ProductClientAPI
 type ProductGroupClientAPI = original.ProductGroupClientAPI

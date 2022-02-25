@@ -11,49 +11,72 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GatewayHostnameConfigurationClient contains the methods for the GatewayHostnameConfiguration group.
 // Don't use this type directly, use NewGatewayHostnameConfigurationClient() instead.
 type GatewayHostnameConfigurationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGatewayHostnameConfigurationClient creates a new instance of GatewayHostnameConfigurationClient with the specified values.
-func NewGatewayHostnameConfigurationClient(con *arm.Connection, subscriptionID string) *GatewayHostnameConfigurationClient {
-	return &GatewayHostnameConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewayHostnameConfigurationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &GatewayHostnameConfigurationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates of updates hostname configuration for a Gateway.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GatewayHostnameConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters GatewayHostnameConfigurationContract, options *GatewayHostnameConfigurationCreateOrUpdateOptions) (GatewayHostnameConfigurationCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// gatewayID - Gateway entity identifier. Must be unique in the current API Management service instance. Must not have value
+// 'managed'
+// hcID - Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
+// options - GatewayHostnameConfigurationClientCreateOrUpdateOptions contains the optional parameters for the GatewayHostnameConfigurationClient.CreateOrUpdate
+// method.
+func (client *GatewayHostnameConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters GatewayHostnameConfigurationContract, options *GatewayHostnameConfigurationClientCreateOrUpdateOptions) (GatewayHostnameConfigurationClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, parameters, options)
 	if err != nil {
-		return GatewayHostnameConfigurationCreateOrUpdateResponse{}, err
+		return GatewayHostnameConfigurationClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GatewayHostnameConfigurationCreateOrUpdateResponse{}, err
+		return GatewayHostnameConfigurationClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return GatewayHostnameConfigurationCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return GatewayHostnameConfigurationClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters GatewayHostnameConfigurationContract, options *GatewayHostnameConfigurationCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters GatewayHostnameConfigurationContract, options *GatewayHostnameConfigurationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/hostnameConfigurations/{hcId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,12 +98,12 @@ func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -90,49 +113,45 @@ func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ct
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GatewayHostnameConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (GatewayHostnameConfigurationCreateOrUpdateResponse, error) {
-	result := GatewayHostnameConfigurationCreateOrUpdateResponse{RawResponse: resp}
+func (client *GatewayHostnameConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientCreateOrUpdateResponse, error) {
+	result := GatewayHostnameConfigurationClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayHostnameConfigurationContract); err != nil {
-		return GatewayHostnameConfigurationCreateOrUpdateResponse{}, err
+		return GatewayHostnameConfigurationClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *GatewayHostnameConfigurationClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified hostname configuration from the specified Gateway.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GatewayHostnameConfigurationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, ifMatch string, options *GatewayHostnameConfigurationDeleteOptions) (GatewayHostnameConfigurationDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// gatewayID - Gateway entity identifier. Must be unique in the current API Management service instance. Must not have value
+// 'managed'
+// hcID - Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - GatewayHostnameConfigurationClientDeleteOptions contains the optional parameters for the GatewayHostnameConfigurationClient.Delete
+// method.
+func (client *GatewayHostnameConfigurationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, ifMatch string, options *GatewayHostnameConfigurationClientDeleteOptions) (GatewayHostnameConfigurationClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, ifMatch, options)
 	if err != nil {
-		return GatewayHostnameConfigurationDeleteResponse{}, err
+		return GatewayHostnameConfigurationClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GatewayHostnameConfigurationDeleteResponse{}, err
+		return GatewayHostnameConfigurationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return GatewayHostnameConfigurationDeleteResponse{}, client.deleteHandleError(resp)
+		return GatewayHostnameConfigurationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GatewayHostnameConfigurationDeleteResponse{RawResponse: resp}, nil
+	return GatewayHostnameConfigurationClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GatewayHostnameConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, ifMatch string, options *GatewayHostnameConfigurationDeleteOptions) (*policy.Request, error) {
+func (client *GatewayHostnameConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, ifMatch string, options *GatewayHostnameConfigurationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/hostnameConfigurations/{hcId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,50 +173,44 @@ func (client *GatewayHostnameConfigurationClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *GatewayHostnameConfigurationClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get details of a hostname configuration
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GatewayHostnameConfigurationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationGetOptions) (GatewayHostnameConfigurationGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// gatewayID - Gateway entity identifier. Must be unique in the current API Management service instance. Must not have value
+// 'managed'
+// hcID - Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
+// options - GatewayHostnameConfigurationClientGetOptions contains the optional parameters for the GatewayHostnameConfigurationClient.Get
+// method.
+func (client *GatewayHostnameConfigurationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetOptions) (GatewayHostnameConfigurationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, options)
 	if err != nil {
-		return GatewayHostnameConfigurationGetResponse{}, err
+		return GatewayHostnameConfigurationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GatewayHostnameConfigurationGetResponse{}, err
+		return GatewayHostnameConfigurationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GatewayHostnameConfigurationGetResponse{}, client.getHandleError(resp)
+		return GatewayHostnameConfigurationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GatewayHostnameConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationGetOptions) (*policy.Request, error) {
+func (client *GatewayHostnameConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/hostnameConfigurations/{hcId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -219,58 +232,51 @@ func (client *GatewayHostnameConfigurationClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GatewayHostnameConfigurationClient) getHandleResponse(resp *http.Response) (GatewayHostnameConfigurationGetResponse, error) {
-	result := GatewayHostnameConfigurationGetResponse{RawResponse: resp}
+func (client *GatewayHostnameConfigurationClient) getHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientGetResponse, error) {
+	result := GatewayHostnameConfigurationClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayHostnameConfigurationContract); err != nil {
-		return GatewayHostnameConfigurationGetResponse{}, err
+		return GatewayHostnameConfigurationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *GatewayHostnameConfigurationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GatewayHostnameConfigurationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationGetEntityTagOptions) (GatewayHostnameConfigurationGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// gatewayID - Gateway entity identifier. Must be unique in the current API Management service instance. Must not have value
+// 'managed'
+// hcID - Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
+// options - GatewayHostnameConfigurationClientGetEntityTagOptions contains the optional parameters for the GatewayHostnameConfigurationClient.GetEntityTag
+// method.
+func (client *GatewayHostnameConfigurationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetEntityTagOptions) (GatewayHostnameConfigurationClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, options)
 	if err != nil {
-		return GatewayHostnameConfigurationGetEntityTagResponse{}, err
+		return GatewayHostnameConfigurationClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GatewayHostnameConfigurationGetEntityTagResponse{}, err
+		return GatewayHostnameConfigurationClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *GatewayHostnameConfigurationClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationGetEntityTagOptions) (*policy.Request, error) {
+func (client *GatewayHostnameConfigurationClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/hostnameConfigurations/{hcId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -292,20 +298,20 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(resp *http.Response) (GatewayHostnameConfigurationGetEntityTagResponse, error) {
-	result := GatewayHostnameConfigurationGetEntityTagResponse{RawResponse: resp}
+func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientGetEntityTagResponse, error) {
+	result := GatewayHostnameConfigurationClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -316,21 +322,27 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(res
 }
 
 // ListByService - Lists the collection of hostname configurations for the specified gateway.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GatewayHostnameConfigurationClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationListByServiceOptions) *GatewayHostnameConfigurationListByServicePager {
-	return &GatewayHostnameConfigurationListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// gatewayID - Gateway entity identifier. Must be unique in the current API Management service instance. Must not have value
+// 'managed'
+// options - GatewayHostnameConfigurationClientListByServiceOptions contains the optional parameters for the GatewayHostnameConfigurationClient.ListByService
+// method.
+func (client *GatewayHostnameConfigurationClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *GatewayHostnameConfigurationClientListByServicePager {
+	return &GatewayHostnameConfigurationClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
 		},
-		advancer: func(ctx context.Context, resp GatewayHostnameConfigurationListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GatewayHostnameConfigurationClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.GatewayHostnameConfigurationCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *GatewayHostnameConfigurationClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationListByServiceOptions) (*policy.Request, error) {
+func (client *GatewayHostnameConfigurationClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/hostnameConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -348,7 +360,7 @@ func (client *GatewayHostnameConfigurationClient) listByServiceCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,30 +374,17 @@ func (client *GatewayHostnameConfigurationClient) listByServiceCreateRequest(ctx
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *GatewayHostnameConfigurationClient) listByServiceHandleResponse(resp *http.Response) (GatewayHostnameConfigurationListByServiceResponse, error) {
-	result := GatewayHostnameConfigurationListByServiceResponse{RawResponse: resp}
+func (client *GatewayHostnameConfigurationClient) listByServiceHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientListByServiceResponse, error) {
+	result := GatewayHostnameConfigurationClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayHostnameConfigurationCollection); err != nil {
-		return GatewayHostnameConfigurationListByServiceResponse{}, err
+		return GatewayHostnameConfigurationClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *GatewayHostnameConfigurationClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

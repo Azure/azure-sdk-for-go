@@ -12,6 +12,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"strings"
 	"testing"
@@ -26,7 +27,7 @@ import (
 
 func testRetryOptions() *policy.RetryOptions {
 	return &policy.RetryOptions{
-		RetryDelay: 20 * time.Millisecond,
+		RetryDelay: time.Millisecond,
 	}
 }
 
@@ -34,7 +35,7 @@ func TestRetryPolicySuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -62,7 +63,7 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError))
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -96,7 +97,7 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
 	// add a per-request policy that reads and restores the request body.
 	// this is to simulate how something like httputil.DumpRequest works.
-	pl := NewPipeline(srv, pipeline.PolicyFunc(func(r *policy.Request) (*http.Response, error) {
+	pl := pipeline.NewPipeline(srv, pipeline.PolicyFunc(func(r *policy.Request) (*http.Response, error) {
 		b, err := ioutil.ReadAll(r.Raw().Body)
 		if err != nil {
 			t.Fatal(err)
@@ -144,7 +145,7 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse()
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -181,7 +182,7 @@ func TestRetryPolicySuccessRetryWithNilResponse(t *testing.T) {
 		t: srv,
 		r: []int{2}, // send a nil on the second request
 	}
-	pl := NewPipeline(nilInjector, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(nilInjector, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -214,7 +215,7 @@ func TestRetryPolicyNoRetries(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse()
-	pl := NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{MaxRetries: -1}))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{MaxRetries: -1}))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -239,7 +240,7 @@ func TestRetryPolicyUnlimitedRetryDelay(t *testing.T) {
 	srv.AppendResponse()
 	opt := testRetryOptions()
 	opt.MaxRetryDelay = -1
-	pl := NewPipeline(srv, NewRetryPolicy(opt))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(opt))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -261,7 +262,7 @@ func TestRetryPolicyFailOnError(t *testing.T) {
 	defer close()
 	fakeErr := errors.New("bogus error")
 	srv.SetError(fakeErr)
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodPost, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -295,8 +296,9 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	srv.AppendError(errors.New("bogus error"))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	pl := pipeline.NewPipeline(srv, pipeline.PolicyFunc(includeResponsePolicy), NewRetryPolicy(testRetryOptions()))
+	ctxWithResp := IncludeResponse(context.Background())
+	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -307,6 +309,10 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
+	}
+	respFromCtx := ResponseFromContext(ctxWithResp)
+	if respFromCtx != resp {
+		t.Fatal("response from context doesn't match returned response")
 	}
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
@@ -326,7 +332,7 @@ func TestRetryPolicyRequestTimedOut(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(nil))
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	req, err := NewRequest(ctx, http.MethodPost, srv.URL())
@@ -372,7 +378,7 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendError(theErr)
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -390,16 +396,33 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 }
 
 func TestWithRetryOptions(t *testing.T) {
+	ctx := WithRetryOptions(context.Background(), policy.RetryOptions{
+		MaxRetries: math.MaxInt32,
+	})
+	if ctx == nil {
+		t.Fatal("nil context")
+	}
+	raw := ctx.Value(shared.CtxWithRetryOptionsKey{})
+	opts, ok := raw.(policy.RetryOptions)
+	if !ok {
+		t.Fatalf("unexpected type %T", raw)
+	}
+	if opts.MaxRetries != math.MaxInt32 {
+		t.Fatalf("unexpected value %d", opts.MaxRetries)
+	}
+}
+
+func TestWithRetryOptionsE2E(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.RepeatResponse(9, mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	defaultOptions := testRetryOptions()
-	pl := NewPipeline(srv, NewRetryPolicy(defaultOptions))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(defaultOptions))
 	customOptions := *defaultOptions
 	customOptions.MaxRetries = 10
 	customOptions.MaxRetryDelay = 200 * time.Millisecond
-	retryCtx := policy.WithRetryOptions(context.Background(), customOptions)
+	retryCtx := WithRetryOptions(context.Background(), customOptions)
 	req, err := NewRequest(retryCtx, http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -428,12 +451,12 @@ func TestRetryPolicyFailOnErrorNoDownload(t *testing.T) {
 	defer close()
 	fakeErr := errors.New("bogus error")
 	srv.SetError(fakeErr)
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodPost, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if !errors.Is(err, fakeErr) {
 		t.Fatalf("unexpected error: %v", err)
@@ -450,12 +473,12 @@ func TestRetryPolicySuccessNoDownload(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("response body")))
-	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -470,12 +493,12 @@ func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -492,7 +515,7 @@ func TestRetryPolicySuccessWithRetryReadingResponse(t *testing.T) {
 	srv.AppendResponse(mock.WithBodyReadError())
 	srv.AppendResponse(mock.WithBodyReadError())
 	srv.AppendResponse()
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: *testRetryOptions()})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -523,7 +546,7 @@ func TestRetryPolicyRequestTimedOutTooSlow(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithSlowResponse(5 * time.Second))
-	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(nil))
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	req, err := NewRequest(ctx, http.MethodPost, srv.URL())
@@ -556,7 +579,7 @@ func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	opt := testRetryOptions()
 	opt.TryTimeout = 1 * time.Second
-	pl := NewPipeline(srv, NewRetryPolicy(opt))
+	pl := pipeline.NewPipeline(srv, NewRetryPolicy(opt))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

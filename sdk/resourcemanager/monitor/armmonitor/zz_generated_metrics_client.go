@@ -10,54 +10,65 @@ package armmonitor
 
 import (
 	"context"
-	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricsClient contains the methods for the Metrics group.
 // Don't use this type directly, use NewMetricsClient() instead.
 type MetricsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewMetricsClient creates a new instance of MetricsClient with the specified values.
-func NewMetricsClient(con *arm.Connection) *MetricsClient {
-	return &MetricsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MetricsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &MetricsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the metric values for a resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricsClient) List(ctx context.Context, resourceURI string, options *MetricsListOptions) (MetricsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
+func (client *MetricsClient) List(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (MetricsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return MetricsListResponse{}, err
+		return MetricsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricsListResponse{}, err
+		return MetricsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricsListResponse{}, client.listHandleError(resp)
+		return MetricsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricsListOptions) (*policy.Request, error) {
+func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -96,23 +107,10 @@ func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI 
 }
 
 // listHandleResponse handles the List response.
-func (client *MetricsClient) listHandleResponse(resp *http.Response) (MetricsListResponse, error) {
-	result := MetricsListResponse{RawResponse: resp}
+func (client *MetricsClient) listHandleResponse(resp *http.Response) (MetricsClientListResponse, error) {
+	result := MetricsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
-		return MetricsListResponse{}, err
+		return MetricsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MetricsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

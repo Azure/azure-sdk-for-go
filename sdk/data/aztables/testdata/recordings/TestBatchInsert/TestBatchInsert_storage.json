@@ -1,0 +1,148 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.table.core.windows.net/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":method": "POST",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "35",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:05 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "tableName2396278222"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 20:48:05 GMT",
+        "Location": "https://fakeaccount.table.core.windows.net/Tables(\u0027tableName2396278222\u0027)",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-request-id": "d8d1e24e-a002-0006-6ce3-16ac52000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#Tables/@Element",
+        "TableName": "tableName2396278222"
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.core.windows.net/$batch",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":method": "POST",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "801",
+        "Content-Type": "multipart/mixed; boundary=batch_00000000-0000-0000-0000-000000000000",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:05 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": "LS1iYXRjaF8wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDANCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfMDAxOGY4NWEtZDVhYS00NTJmLTU3NmItNjk2Nzk5NmI5NmJjDQoNCi0tY2hhbmdlc2V0XzAwMThmODVhLWQ1YWEtNDUyZi01NzZiLTY5Njc5OTZiOTZiYw0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUEFUQ0ggaHR0cHM6Ly9mYWtlYWNjb3VudC50YWJsZS5jb3JlLndpbmRvd3MubmV0L3RhYmxlTmFtZTIzOTYyNzgyMjIoUGFydGl0aW9uS2V5PSdwYXJ0aXRpb24nLFJvd0tleT0nMScpIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb24NCkNvbnRlbnQtTGVuZ3RoOiAxOTQNCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbg0KRGF0YXNlcnZpY2V2ZXJzaW9uOiAzLjANClgtTXMtVmVyc2lvbjogMjAxOS0wMi0wMg0KDQp7IkJvb2wiOnRydWUsIkJ5dGUiOiJjMjl0WldKNWRHVnoiLCJEYXRlVGltZSI6IjIwMjEtMDctMTNUMDA6MDA6MDBaIiwiRmxvYXQiOjMuMTQxNTksIkludGVnZXIiOjEsIlBhcnRpdGlvbktleSI6InBhcnRpdGlvbiIsIlJvd0tleSI6IjEiLCJTdHJpbmciOiJzb21lU3RyaW5nIiwiVGltZXN0YW1wIjoiMDAwMS0wMS0wMVQwMDowMDowMFoifQ0KLS1jaGFuZ2VzZXRfMDAxOGY4NWEtZDVhYS00NTJmLTU3NmItNjk2Nzk5NmI5NmJjLS0NCg0KLS1iYXRjaF8wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAtLQ0K",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Type": "multipart/mixed; boundary=batchresponse_093d0aca-640f-491f-bb55-7ea5c010a8c2",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-request-id": "d8d1e263-a002-0006-7de3-16ac52000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlXzA5M2QwYWNhLTY0MGYtNDkxZi1iYjU1LTdlYTVjMDEwYThjMg0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlXzM1N2ZlMDhmLWNlZTEtNDVlMi05YzkzLWI4MjIwMjA1NGU1Yg0KDQotLWNoYW5nZXNldHJlc3BvbnNlXzM1N2ZlMDhmLWNlZTEtNDVlMi05YzkzLWI4MjIwMjA1NGU1Yg0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9odHRwDQpDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiBiaW5hcnkNCg0KSFRUUC8xLjEgMjA0IE5vIENvbnRlbnQNClgtQ29udGVudC1UeXBlLU9wdGlvbnM6IG5vc25pZmYNCkNhY2hlLUNvbnRyb2w6IG5vLWNhY2hlDQpEYXRhU2VydmljZVZlcnNpb246IDEuMDsNCkVUYWc6IFcvImRhdGV0aW1lJzIwMjItMDEtMzFUMjAlM0E0OCUzQTA2LjQ4ODgxMTlaJyINCg0KDQotLWNoYW5nZXNldHJlc3BvbnNlXzM1N2ZlMDhmLWNlZTEtNDVlMi05YzkzLWI4MjIwMjA1NGU1Yi0tDQotLWJhdGNocmVzcG9uc2VfMDkzZDBhY2EtNjQwZi00OTFmLWJiNTUtN2VhNWMwMTBhOGMyLS0NCg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.core.windows.net/tableName2396278222()?%24format=application%2Fjson%3Bodata%3Dminimalmetadata",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:05 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-request-id": "d8d1e276-a002-0006-0be3-16ac52000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#tableName2396278222",
+        "value": [
+          {
+            "odata.etag": "W/\u0022datetime\u00272022-01-31T20%3A48%3A06.4888119Z\u0027\u0022",
+            "PartitionKey": "partition",
+            "RowKey": "1",
+            "Timestamp": "2022-01-31T20:48:06.4888119Z",
+            "Bool": true,
+            "Byte": "c29tZWJ5dGVz",
+            "DateTime": "2021-07-13T00:00:00Z",
+            "Float": 3.14159,
+            "Integer": 1,
+            "String": "someString"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.core.windows.net/Tables(\u0027tableName2396278222\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:05 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-request-id": "d8d1e285-a002-0006-1ae3-16ac52000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

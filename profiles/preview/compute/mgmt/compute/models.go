@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-11-01/compute"
 )
 
 const (
@@ -116,14 +116,16 @@ const (
 type DiskCreateOption = original.DiskCreateOption
 
 const (
-	DiskCreateOptionAttach    DiskCreateOption = original.DiskCreateOptionAttach
-	DiskCreateOptionCopy      DiskCreateOption = original.DiskCreateOptionCopy
-	DiskCreateOptionCopyStart DiskCreateOption = original.DiskCreateOptionCopyStart
-	DiskCreateOptionEmpty     DiskCreateOption = original.DiskCreateOptionEmpty
-	DiskCreateOptionFromImage DiskCreateOption = original.DiskCreateOptionFromImage
-	DiskCreateOptionImport    DiskCreateOption = original.DiskCreateOptionImport
-	DiskCreateOptionRestore   DiskCreateOption = original.DiskCreateOptionRestore
-	DiskCreateOptionUpload    DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionAttach               DiskCreateOption = original.DiskCreateOptionAttach
+	DiskCreateOptionCopy                 DiskCreateOption = original.DiskCreateOptionCopy
+	DiskCreateOptionCopyStart            DiskCreateOption = original.DiskCreateOptionCopyStart
+	DiskCreateOptionEmpty                DiskCreateOption = original.DiskCreateOptionEmpty
+	DiskCreateOptionFromImage            DiskCreateOption = original.DiskCreateOptionFromImage
+	DiskCreateOptionImport               DiskCreateOption = original.DiskCreateOptionImport
+	DiskCreateOptionImportSecure         DiskCreateOption = original.DiskCreateOptionImportSecure
+	DiskCreateOptionRestore              DiskCreateOption = original.DiskCreateOptionRestore
+	DiskCreateOptionUpload               DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionUploadPreparedSecure DiskCreateOption = original.DiskCreateOptionUploadPreparedSecure
 )
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
@@ -157,6 +159,7 @@ const (
 type DiskEncryptionSetType = original.DiskEncryptionSetType
 
 const (
+	DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey      DiskEncryptionSetType = original.DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys
 )
@@ -164,7 +167,10 @@ const (
 type DiskSecurityTypes = original.DiskSecurityTypes
 
 const (
-	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey
+	DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey
+	DiskSecurityTypesTrustedLaunch                                          DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
 )
 
 type DiskState = original.DiskState
@@ -525,6 +531,14 @@ const (
 	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
+type RepairAction = original.RepairAction
+
+const (
+	RepairActionReimage RepairAction = original.RepairActionReimage
+	RepairActionReplace RepairAction = original.RepairActionReplace
+	RepairActionRestart RepairAction = original.RepairActionRestart
+)
+
 type ReplicationMode = original.ReplicationMode
 
 const (
@@ -584,6 +598,12 @@ const (
 	RestorePointCollectionExpandOptionsRestorePoints RestorePointCollectionExpandOptions = original.RestorePointCollectionExpandOptionsRestorePoints
 )
 
+type RestorePointExpandOptions = original.RestorePointExpandOptions
+
+const (
+	RestorePointExpandOptionsInstanceView RestorePointExpandOptions = original.RestorePointExpandOptionsInstanceView
+)
+
 type RollingUpgradeActionType = original.RollingUpgradeActionType
 
 const (
@@ -600,10 +620,18 @@ const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = original.RollingUpgradeStatusCodeRollingForward
 )
 
+type SecurityEncryptionTypes = original.SecurityEncryptionTypes
+
+const (
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = original.SecurityEncryptionTypesDiskWithVMGuestState
+	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = original.SecurityEncryptionTypesVMGuestStateOnly
+)
+
 type SecurityTypes = original.SecurityTypes
 
 const (
-	SecurityTypesTrustedLaunch SecurityTypes = original.SecurityTypesTrustedLaunch
+	SecurityTypesConfidentialVM SecurityTypes = original.SecurityTypesConfidentialVM
+	SecurityTypesTrustedLaunch  SecurityTypes = original.SecurityTypesTrustedLaunch
 )
 
 type SelectPermissions = original.SelectPermissions
@@ -1092,6 +1120,7 @@ type DedicatedHostUpdate = original.DedicatedHostUpdate
 type DedicatedHostsClient = original.DedicatedHostsClient
 type DedicatedHostsCreateOrUpdateFuture = original.DedicatedHostsCreateOrUpdateFuture
 type DedicatedHostsDeleteFuture = original.DedicatedHostsDeleteFuture
+type DedicatedHostsRestartFuture = original.DedicatedHostsRestartFuture
 type DedicatedHostsUpdateFuture = original.DedicatedHostsUpdateFuture
 type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
@@ -1131,10 +1160,12 @@ type DiskProperties = original.DiskProperties
 type DiskRestorePoint = original.DiskRestorePoint
 type DiskRestorePointClient = original.DiskRestorePointClient
 type DiskRestorePointGrantAccessFuture = original.DiskRestorePointGrantAccessFuture
+type DiskRestorePointInstanceView = original.DiskRestorePointInstanceView
 type DiskRestorePointList = original.DiskRestorePointList
 type DiskRestorePointListIterator = original.DiskRestorePointListIterator
 type DiskRestorePointListPage = original.DiskRestorePointListPage
 type DiskRestorePointProperties = original.DiskRestorePointProperties
+type DiskRestorePointReplicationStatus = original.DiskRestorePointReplicationStatus
 type DiskRestorePointRevokeAccessFuture = original.DiskRestorePointRevokeAccessFuture
 type DiskSecurityProfile = original.DiskSecurityProfile
 type DiskSku = original.DiskSku
@@ -1354,8 +1385,8 @@ type RestorePointCollectionSourceProperties = original.RestorePointCollectionSou
 type RestorePointCollectionUpdate = original.RestorePointCollectionUpdate
 type RestorePointCollectionsClient = original.RestorePointCollectionsClient
 type RestorePointCollectionsDeleteFuture = original.RestorePointCollectionsDeleteFuture
+type RestorePointInstanceView = original.RestorePointInstanceView
 type RestorePointProperties = original.RestorePointProperties
-type RestorePointProvisioningDetails = original.RestorePointProvisioningDetails
 type RestorePointSourceMetadata = original.RestorePointSourceMetadata
 type RestorePointSourceVMDataDisk = original.RestorePointSourceVMDataDisk
 type RestorePointSourceVMOSDisk = original.RestorePointSourceVMOSDisk
@@ -1465,6 +1496,7 @@ type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactManage = original.UserArtifactManage
 type UserArtifactSource = original.UserArtifactSource
+type VMDiskSecurityProfile = original.VMDiskSecurityProfile
 type VMGalleryApplication = original.VMGalleryApplication
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VMSizeProperties = original.VMSizeProperties
@@ -1542,6 +1574,7 @@ type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExt
 type VirtualMachineScaleSetExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture
 type VirtualMachineScaleSetExtensionsDeleteFuture = original.VirtualMachineScaleSetExtensionsDeleteFuture
 type VirtualMachineScaleSetExtensionsUpdateFuture = original.VirtualMachineScaleSetExtensionsUpdateFuture
+type VirtualMachineScaleSetHardwareProfile = original.VirtualMachineScaleSetHardwareProfile
 type VirtualMachineScaleSetIPConfiguration = original.VirtualMachineScaleSetIPConfiguration
 type VirtualMachineScaleSetIPConfigurationProperties = original.VirtualMachineScaleSetIPConfigurationProperties
 type VirtualMachineScaleSetIPTag = original.VirtualMachineScaleSetIPTag
@@ -2413,6 +2446,9 @@ func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
 }
+func PossibleRepairActionValues() []RepairAction {
+	return original.PossibleRepairActionValues()
+}
 func PossibleReplicationModeValues() []ReplicationMode {
 	return original.PossibleReplicationModeValues()
 }
@@ -2437,11 +2473,17 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectionExpandOptions {
 	return original.PossibleRestorePointCollectionExpandOptionsValues()
 }
+func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
+	return original.PossibleRestorePointExpandOptionsValues()
+}
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 	return original.PossibleRollingUpgradeActionTypeValues()
 }
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return original.PossibleRollingUpgradeStatusCodeValues()
+}
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return original.PossibleSecurityEncryptionTypesValues()
 }
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return original.PossibleSecurityTypesValues()

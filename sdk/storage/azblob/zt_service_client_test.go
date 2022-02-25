@@ -5,10 +5,10 @@ package azblob
 
 import (
 	"context"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
-	"time"
 )
 
 func (s *azblobTestSuite) TestGetAccountInfo() {
@@ -38,7 +38,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_assert.Nil(err)
 	_assert.Equal(serviceURL, "https://"+accountName+".blob.core.windows.net/")
 
-	svcClient, err := NewServiceClient(serviceURL, cred, nil)
+	svcClient, err := NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	_assert.Nil(err)
 	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)

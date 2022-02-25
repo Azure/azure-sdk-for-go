@@ -9,4 +9,5 @@ require:
 - https://github.com/Azure/azure-rest-api-specs/blob/{{commitID}}/specification/{{rpName}}/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 0.1.0
+{{packageConfig}}
 ```

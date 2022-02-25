@@ -33,22 +33,3 @@ func unmarshalServerPropertiesForCreateClassification(rawMsg json.RawMessage) (S
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
-
-func unmarshalServerPropertiesForCreateClassificationArray(rawMsg json.RawMessage) ([]ServerPropertiesForCreateClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ServerPropertiesForCreateClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalServerPropertiesForCreateClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}

@@ -1,7 +1,6 @@
 # This step is designed to work against linux only
 parameters:
   ServiceDirectory: ''
-  GoWorkspace: ''
   LintVersion: ''
   NonShipping: false
   LicenseCheck: true
@@ -9,22 +8,33 @@ parameters:
 
 steps:
 
+  - task: Powershell@2
+    displayName: 'Dependency Check'
+    continueOnError: true
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/Invoke-DependencyCheck.ps1
+      arguments: 'sdk/${{ parameters.ServiceDirectory }}'
+      
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
         pushd $md
-        Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml in $md"
-        golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml
+        Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
       }
     displayName: 'Lint'
     failOnStderr: false
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
@@ -34,7 +44,7 @@ steps:
         }
       }
     displayName: 'Verify doc.go'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: $(System.DefaultWorkingDirectory)
 
   - script: |
       echo scanning copyright headers in $(pwd)
@@ -81,3 +91,11 @@ steps:
       parameters:
         PackageName: 'sdk/${{parameters.ServiceDirectory}}'
         ForRelease: false
+
+  - task: PowerShell@2
+    displayName: 'Run Nightly SmokeTests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+      pwsh: true
+      arguments: '${{ parameters.ServiceDirectory }}'

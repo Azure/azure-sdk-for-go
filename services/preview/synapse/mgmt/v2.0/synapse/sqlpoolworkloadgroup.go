@@ -35,7 +35,7 @@ func NewSQLPoolWorkloadGroupClientWithBaseURI(baseURI string, subscriptionID str
 // CreateOrUpdate create Or Update a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 // parameters - the requested workload group state.
@@ -136,7 +136,7 @@ func (client SQLPoolWorkloadGroupClient) CreateOrUpdateResponder(resp *http.Resp
 // Delete remove Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 func (client SQLPoolWorkloadGroupClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result SQLPoolWorkloadGroupDeleteFuture, err error) {
@@ -227,7 +227,7 @@ func (client SQLPoolWorkloadGroupClient) DeleteResponder(resp *http.Response) (r
 // Get get a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 func (client SQLPoolWorkloadGroupClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result WorkloadGroup, err error) {
@@ -316,7 +316,7 @@ func (client SQLPoolWorkloadGroupClient) GetResponder(resp *http.Response) (resu
 // List get list of  Sql pool's workload groups.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolWorkloadGroupClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result WorkloadGroupListResultPage, err error) {
 	if tracing.IsEnabled() {

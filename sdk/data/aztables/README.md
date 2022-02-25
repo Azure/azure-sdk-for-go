@@ -32,6 +32,8 @@ The Azure Tables library allows you to interact with two types of resources:
 Interaction with these resources starts with an instance of a [client](#clients). To create a client object, you will need the account's table service endpoint URL and a credential that allows you to access the account. The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
 ```bash
+# Log in to Azure CLI first, this opens a browser window
+az login
 # Get the table service URL for the account
 az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.table"
 ```
@@ -40,7 +42,7 @@ Once you have the account URL, it can be used to create the service client:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+serviceClient, err := aztables.NewServiceClientWithSharedKeyCredential("https://<myAccountName>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 
@@ -51,6 +53,15 @@ The clients support different forms of authentication. Cosmos accounts can use a
 
 The aztables package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a Connection String, or authorization with a Shared Access Signature Token.
 
+##### Creating the client with an AAD credential
+Use AAD authentication as the credential parameter to authenticate the client:
+```golang
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
+serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+handle(err)
+```
+
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
@@ -58,11 +69,10 @@ To use an account [shared key][azure_shared_key] (aka account key or access key)
 az storage account keys list -g MyResourceGroup -n MyStorageAccount
 ```
 
-Use AAD authentication as the credential parameter to authenticate the client:
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
+cred, err := aztables.NewSharedKeyCredential("<accountName>", "<accountKey>")
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 handle(err)
 ```
 
@@ -95,6 +105,17 @@ sasUrl, err := service.GetAccountSASToken(resources, permission, start, expiry)
 handle(err)
 
 sasService, err := aztables.NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
+handle(err)
+```
+
+##### Creating the client for Azurite
+If you are using the [Azurite](https://github.com/Azure/Azurite) emulator you can authenticate a client with the default connection string:
+```golang
+connStr := "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
+svc, err := NewServiceClientFromConnectionString(connStr, nil)
+handle(err)
+
+client, err := svc.CreateTable(context.TODO(), "AzuriteTable", nil)
 handle(err)
 ```
 
@@ -194,7 +215,7 @@ myEntity := aztables.EDMEntity{
 marshalled, err := json.Marshal(myEntity)
 handle(err)
 
-resp, err := client.AddEntity(context.Background(), marshalled, nil)
+resp, err := client.AddEntity(context.TODO(), marshalled, nil)
 handle(err)
 ```
 
@@ -215,7 +236,7 @@ options := &ListEntitiesOptions{
 }
 
 pager := client.List(options) // pass in "nil" if you want to list all entities
-for pager.NextPage(context.Background()) {
+for pager.NextPage(context.TODO()) {
     resp := pager.PageResponse()
     fmt.Printf("Received: %v entities\n", len(resp.Entities))
 
@@ -232,13 +253,39 @@ err := pager.Err()
 handle(err)
 ```
 
+The pager exposes continuation tokens that can be used by a new pager instance to begin listing entities from a specific point. For example:
+```golang
+pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+count := 0
+for pager.NextPage(context.TODO()) {
+    count += len(pager.PageResponse().Entities)
+
+    if count > 20 {
+        break
+    }
+}
+handle(pager.Err())
+
+newPager := client.List(&ListEntitiesOptions{
+    Top:          to.Int32Ptr(10),
+    PartitionKey: pager.NextPagePartitionKey(),
+    RowKey:       pager.NextPageRowKey(),
+})
+
+for newPager.NextPage(context.TODO()) {
+    // begin paging where 'pager' left off
+}
+
+handle(newPager.Err())
+```
+
 ## Troubleshooting
 
 ### Error Handling
 
 All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
 ```golang
-resp, err := client.CreateTable(context.Background(), nil)
+resp, err := client.CreateTable(context.TODO(), nil)
 if err != nil {
     err = errors.As(err, azcore.HTTPResponse)
     // handle err ...

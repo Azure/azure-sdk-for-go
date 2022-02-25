@@ -15,6 +15,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -29,12 +30,12 @@ func TestProgressReporting(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody(content))
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	var bytesSent int64
 	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
@@ -78,12 +79,12 @@ func TestProgressReportingSeek(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody(content))
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	var bytesSent int64
 	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred

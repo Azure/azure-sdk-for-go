@@ -838,6 +838,7 @@ const (
 	TypeBasicActivityTypeExecuteSSISPackage       TypeBasicActivity = original.TypeBasicActivityTypeExecuteSSISPackage
 	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = original.TypeBasicActivityTypeExecuteWranglingDataflow
 	TypeBasicActivityTypeExecution                TypeBasicActivity = original.TypeBasicActivityTypeExecution
+	TypeBasicActivityTypeFail                     TypeBasicActivity = original.TypeBasicActivityTypeFail
 	TypeBasicActivityTypeFilter                   TypeBasicActivity = original.TypeBasicActivityTypeFilter
 	TypeBasicActivityTypeForEach                  TypeBasicActivity = original.TypeBasicActivityTypeForEach
 	TypeBasicActivityTypeGetMetadata              TypeBasicActivity = original.TypeBasicActivityTypeGetMetadata
@@ -1042,6 +1043,7 @@ type TypeBasicDataFlow = original.TypeBasicDataFlow
 
 const (
 	TypeBasicDataFlowTypeDataFlow          TypeBasicDataFlow = original.TypeBasicDataFlowTypeDataFlow
+	TypeBasicDataFlowTypeFlowlet           TypeBasicDataFlow = original.TypeBasicDataFlowTypeFlowlet
 	TypeBasicDataFlowTypeMappingDataFlow   TypeBasicDataFlow = original.TypeBasicDataFlowTypeMappingDataFlow
 	TypeBasicDataFlowTypeWranglingDataFlow TypeBasicDataFlow = original.TypeBasicDataFlowTypeWranglingDataFlow
 )
@@ -1145,18 +1147,6 @@ const (
 	TypeBasicDatasetTypeXeroObject                      TypeBasicDataset = original.TypeBasicDatasetTypeXeroObject
 	TypeBasicDatasetTypeXML                             TypeBasicDataset = original.TypeBasicDatasetTypeXML
 	TypeBasicDatasetTypeZohoObject                      TypeBasicDataset = original.TypeBasicDatasetTypeZohoObject
-)
-
-type TypeBasicDatasetCompression = original.TypeBasicDatasetCompression
-
-const (
-	TypeBasicDatasetCompressionTypeBZip2              TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeBZip2
-	TypeBasicDatasetCompressionTypeDatasetCompression TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeDatasetCompression
-	TypeBasicDatasetCompressionTypeDeflate            TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeDeflate
-	TypeBasicDatasetCompressionTypeGZip               TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeGZip
-	TypeBasicDatasetCompressionTypeTar                TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeTar
-	TypeBasicDatasetCompressionTypeTarGZip            TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeTarGZip
-	TypeBasicDatasetCompressionTypeZipDeflate         TypeBasicDatasetCompression = original.TypeBasicDatasetCompressionTypeZipDeflate
 )
 
 type TypeBasicDatasetLocation = original.TypeBasicDatasetLocation
@@ -1619,7 +1609,6 @@ type BasicCredential = original.BasicCredential
 type BasicCustomSetupBase = original.BasicCustomSetupBase
 type BasicDataFlow = original.BasicDataFlow
 type BasicDataset = original.BasicDataset
-type BasicDatasetCompression = original.BasicDatasetCompression
 type BasicDatasetLocation = original.BasicDatasetLocation
 type BasicDatasetStorageFormat = original.BasicDatasetStorageFormat
 type BasicDependencyReference = original.BasicDependencyReference
@@ -1749,13 +1738,10 @@ type DatabricksSparkJarActivityTypeProperties = original.DatabricksSparkJarActiv
 type DatabricksSparkPythonActivity = original.DatabricksSparkPythonActivity
 type DatabricksSparkPythonActivityTypeProperties = original.DatabricksSparkPythonActivityTypeProperties
 type Dataset = original.Dataset
-type DatasetBZip2Compression = original.DatasetBZip2Compression
 type DatasetCompression = original.DatasetCompression
 type DatasetDataElement = original.DatasetDataElement
 type DatasetDebugResource = original.DatasetDebugResource
-type DatasetDeflateCompression = original.DatasetDeflateCompression
 type DatasetFolder = original.DatasetFolder
-type DatasetGZipCompression = original.DatasetGZipCompression
 type DatasetListResponse = original.DatasetListResponse
 type DatasetListResponseIterator = original.DatasetListResponseIterator
 type DatasetListResponsePage = original.DatasetListResponsePage
@@ -1764,9 +1750,6 @@ type DatasetReference = original.DatasetReference
 type DatasetResource = original.DatasetResource
 type DatasetSchemaDataElement = original.DatasetSchemaDataElement
 type DatasetStorageFormat = original.DatasetStorageFormat
-type DatasetTarCompression = original.DatasetTarCompression
-type DatasetTarGZipCompression = original.DatasetTarGZipCompression
-type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type DatasetsClient = original.DatasetsClient
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
@@ -1850,6 +1833,8 @@ type FactoryRepoConfiguration = original.FactoryRepoConfiguration
 type FactoryRepoUpdate = original.FactoryRepoUpdate
 type FactoryUpdateParameters = original.FactoryUpdateParameters
 type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
+type FailActivity = original.FailActivity
+type FailActivityTypeProperties = original.FailActivityTypeProperties
 type FileServerLinkedService = original.FileServerLinkedService
 type FileServerLinkedServiceTypeProperties = original.FileServerLinkedServiceTypeProperties
 type FileServerLocation = original.FileServerLocation
@@ -1861,6 +1846,8 @@ type FileSystemSink = original.FileSystemSink
 type FileSystemSource = original.FileSystemSource
 type FilterActivity = original.FilterActivity
 type FilterActivityTypeProperties = original.FilterActivityTypeProperties
+type Flowlet = original.Flowlet
+type FlowletTypeProperties = original.FlowletTypeProperties
 type ForEachActivity = original.ForEachActivity
 type ForEachActivityTypeProperties = original.ForEachActivityTypeProperties
 type FormatReadSettings = original.FormatReadSettings
@@ -2173,6 +2160,7 @@ type PostgreSQLSource = original.PostgreSQLSource
 type PostgreSQLTableDataset = original.PostgreSQLTableDataset
 type PostgreSQLTableDatasetTypeProperties = original.PostgreSQLTableDatasetTypeProperties
 type PowerQuerySink = original.PowerQuerySink
+type PowerQuerySinkMapping = original.PowerQuerySinkMapping
 type PowerQuerySource = original.PowerQuerySource
 type PowerQueryTypeProperties = original.PowerQueryTypeProperties
 type PrestoDatasetTypeProperties = original.PrestoDatasetTypeProperties
@@ -2952,9 +2940,6 @@ func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
 }
 func PossibleTypeBasicDataFlowValues() []TypeBasicDataFlow {
 	return original.PossibleTypeBasicDataFlowValues()
-}
-func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
-	return original.PossibleTypeBasicDatasetCompressionValues()
 }
 func PossibleTypeBasicDatasetLocationValues() []TypeBasicDatasetLocation {
 	return original.PossibleTypeBasicDatasetLocationValues()

@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Printf("Failed to load env file, no live tests will run: %s", err.Error())
+		log.Printf("Failed to load env file, NO LIVE TESTS WILL RUN: %s", err.Error())
 	}
 
 	// call flag.Parse() here if TestMain uses flags

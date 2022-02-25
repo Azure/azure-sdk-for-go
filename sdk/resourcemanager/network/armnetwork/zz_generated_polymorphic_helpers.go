@@ -25,7 +25,7 @@ func unmarshalFirewallPolicyRuleClassification(rawMsg json.RawMessage) (Firewall
 	case string(FirewallPolicyRuleTypeNatRule):
 		b = &NatRule{}
 	case string(FirewallPolicyRuleTypeNetworkRule):
-		b = &NetworkRule{}
+		b = &Rule{}
 	default:
 		b = &FirewallPolicyRule{}
 	}

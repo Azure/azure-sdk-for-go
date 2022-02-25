@@ -10,47 +10,61 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // TenantActivityLogsClient contains the methods for the TenantActivityLogs group.
 // Don't use this type directly, use NewTenantActivityLogsClient() instead.
 type TenantActivityLogsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient with the specified values.
-func NewTenantActivityLogsClient(con *arm.Connection) *TenantActivityLogsClient {
-	return &TenantActivityLogsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TenantActivityLogsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &TenantActivityLogsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs for the subscription is applicable to
-// this API (the parameters, $filter, etc.). One thing to
-// point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces the logs that were generated
-// at the tenant level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantActivityLogsClient) List(options *TenantActivityLogsListOptions) *TenantActivityLogsListPager {
-	return &TenantActivityLogsListPager{
+// List - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs for the
+// subscription is applicable to this API (the parameters, $filter, etc.). One thing to
+// point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
+// the logs that were generated at the tenant level.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
+func (client *TenantActivityLogsClient) List(options *TenantActivityLogsClientListOptions) *TenantActivityLogsClientListPager {
+	return &TenantActivityLogsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp TenantActivityLogsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TenantActivityLogsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsListOptions) (*policy.Request, error) {
+func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventtypes/management/values"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -68,23 +82,10 @@ func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, o
 }
 
 // listHandleResponse handles the List response.
-func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) (TenantActivityLogsListResponse, error) {
-	result := TenantActivityLogsListResponse{RawResponse: resp}
+func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) (TenantActivityLogsClientListResponse, error) {
+	result := TenantActivityLogsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
-		return TenantActivityLogsListResponse{}, err
+		return TenantActivityLogsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TenantActivityLogsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

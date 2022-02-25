@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice"
 )
 
 const (
@@ -73,6 +73,13 @@ const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
 )
 
+type Format = original.Format
+
+const (
+	FormatAzure Format = original.FormatAzure
+	FormatExec  Format = original.FormatExec
+)
+
 type GPUInstanceProfile = original.GPUInstanceProfile
 
 const (
@@ -81,6 +88,13 @@ const (
 	GPUInstanceProfileMIG3g GPUInstanceProfile = original.GPUInstanceProfileMIG3g
 	GPUInstanceProfileMIG4g GPUInstanceProfile = original.GPUInstanceProfileMIG4g
 	GPUInstanceProfileMIG7g GPUInstanceProfile = original.GPUInstanceProfileMIG7g
+)
+
+type IPFamily = original.IPFamily
+
+const (
+	IPFamilyIPv4 IPFamily = original.IPFamilyIPv4
+	IPFamilyIPv6 IPFamily = original.IPFamilyIPv6
 )
 
 type KubeletDiskType = original.KubeletDiskType
@@ -572,6 +586,7 @@ type TimeInWeek = original.TimeInWeek
 type TimeSpan = original.TimeSpan
 type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
+type WindowsGmsaProfile = original.WindowsGmsaProfile
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -678,8 +693,14 @@ func PossibleExpanderValues() []Expander {
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
 }
+func PossibleFormatValues() []Format {
+	return original.PossibleFormatValues()
+}
 func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 	return original.PossibleGPUInstanceProfileValues()
+}
+func PossibleIPFamilyValues() []IPFamily {
+	return original.PossibleIPFamilyValues()
 }
 func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return original.PossibleKubeletDiskTypeValues()

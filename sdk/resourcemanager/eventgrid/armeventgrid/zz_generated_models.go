@@ -10,10 +10,9 @@ package armeventgrid
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AdvancedFilterClassification provides polymorphic access to related types.
@@ -29,9 +28,10 @@ type AdvancedFilterClassification interface {
 	GetAdvancedFilter() *AdvancedFilter
 }
 
-// AdvancedFilter - This is the base type that represents an advanced filter. To configure an advanced filter, do not directly instantiate an object of
-// this class. Instead, instantiate an object of a derived class such
-// as BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter etc. depending on the type of the key based on which you want to filter.
+// AdvancedFilter - This is the base type that represents an advanced filter. To configure an advanced filter, do not directly
+// instantiate an object of this class. Instead, instantiate an object of a derived class such
+// as BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter etc. depending on the type of the key based
+// on which you want to filter.
 type AdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
 	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
@@ -43,50 +43,26 @@ type AdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
 func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AdvancedFilter.
-func (a *AdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AdvancedFilter) marshalInternal(objectMap map[string]interface{}, discValue AdvancedFilterOperatorType) {
-	populate(objectMap, "key", a.Key)
-	a.OperatorType = &discValue
-	objectMap["operatorType"] = a.OperatorType
-}
-
-func (a *AdvancedFilter) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "key":
-			err = unpopulate(val, &a.Key)
-			delete(rawMsg, key)
-		case "operatorType":
-			err = unpopulate(val, &a.OperatorType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureFunctionEventSubscriptionDestination - Information about the azure function destination for an event subscription.
 type AzureFunctionEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Azure Function Properties of the event subscription destination.
 	Properties *AzureFunctionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type AzureFunctionEventSubscriptionDestination.
+func (a *AzureFunctionEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: a.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFunctionEventSubscriptionDestination.
 func (a AzureFunctionEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeAzureFunction)
+	objectMap["endpointType"] = EndpointTypeAzureFunction
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -100,6 +76,9 @@ func (a *AzureFunctionEventSubscriptionDestination) UnmarshalJSON(data []byte) e
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &a.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &a.Properties)
 			delete(rawMsg, key)
@@ -108,13 +87,11 @@ func (a *AzureFunctionEventSubscriptionDestination) UnmarshalJSON(data []byte) e
 			return err
 		}
 	}
-	if err := a.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// AzureFunctionEventSubscriptionDestinationProperties - The properties that represent the Azure Function destination of an event subscription.
+// AzureFunctionEventSubscriptionDestinationProperties - The properties that represent the Azure Function destination of an
+// event subscription.
 type AzureFunctionEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
 	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
@@ -170,15 +147,29 @@ func (a *AzureFunctionEventSubscriptionDestinationProperties) UnmarshalJSON(data
 
 // BoolEqualsAdvancedFilter - BoolEquals Advanced Filter.
 type BoolEqualsAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The boolean filter value.
 	Value *bool `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type BoolEqualsAdvancedFilter.
+func (b *BoolEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: b.OperatorType,
+		Key:          b.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BoolEqualsAdvancedFilter.
 func (b BoolEqualsAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeBoolEquals)
+	populate(objectMap, "key", b.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeBoolEquals
 	populate(objectMap, "value", b.Value)
 	return json.Marshal(objectMap)
 }
@@ -192,6 +183,12 @@ func (b *BoolEqualsAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &b.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &b.OperatorType)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &b.Value)
 			delete(rawMsg, key)
@@ -199,9 +196,6 @@ func (b *BoolEqualsAdvancedFilter) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := b.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -227,8 +221,8 @@ type DeadLetterDestinationClassification interface {
 	GetDeadLetterDestination() *DeadLetterDestination
 }
 
-// DeadLetterDestination - Information about the dead letter destination for an event subscription. To configure a deadletter destination, do not directly
-// instantiate an object of this class. Instead, instantiate an object of a
+// DeadLetterDestination - Information about the dead letter destination for an event subscription. To configure a deadletter
+// destination, do not directly instantiate an object of this class. Instead, instantiate an object of a
 // derived class. Currently, StorageBlobDeadLetterDestination is the only class that derives from this class.
 type DeadLetterDestination struct {
 	// REQUIRED; Type of the endpoint for the dead letter destination
@@ -238,39 +232,10 @@ type DeadLetterDestination struct {
 // GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type DeadLetterDestination.
 func (d *DeadLetterDestination) GetDeadLetterDestination() *DeadLetterDestination { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeadLetterDestination.
-func (d *DeadLetterDestination) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DeadLetterDestination) marshalInternal(objectMap map[string]interface{}, discValue DeadLetterEndPointType) {
-	d.EndpointType = &discValue
-	objectMap["endpointType"] = d.EndpointType
-}
-
-func (d *DeadLetterDestination) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endpointType":
-			err = unpopulate(val, &d.EndpointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeadLetterWithResourceIdentity - Information about the deadletter destination with resource identity.
 type DeadLetterWithResourceIdentity struct {
-	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity setup on the parent resource
-	// (namely, topic or domain) to acquire the
+	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
+	// setup on the parent resource (namely, topic or domain) to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
 	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
 
@@ -363,43 +328,10 @@ type DeliveryAttributeMapping struct {
 // GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DeliveryAttributeMapping.
 func (d *DeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryAttributeMapping.
-func (d *DeliveryAttributeMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DeliveryAttributeMapping) marshalInternal(objectMap map[string]interface{}, discValue DeliveryAttributeMappingType) {
-	populate(objectMap, "name", d.Name)
-	d.Type = &discValue
-	objectMap["type"] = d.Type
-}
-
-func (d *DeliveryAttributeMapping) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeliveryWithResourceIdentity - Information about the delivery for an event subscription with resource identity.
 type DeliveryWithResourceIdentity struct {
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's identity to acquire the authentication
-	// tokens being used during delivery /
+	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
+	// identity to acquire the authentication tokens being used during delivery /
 	// dead-lettering.
 	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
 
@@ -440,75 +372,93 @@ func (d *DeliveryWithResourceIdentity) UnmarshalJSON(data []byte) error {
 
 // Domain - EventGrid Domain.
 type Domain struct {
-	TrackedResource
+	// REQUIRED; Location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// Identity information for the Event Grid Domain resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
 	// Properties of the Event Grid Domain resource.
 	Properties *DomainProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the Event Grid Domain resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	// Tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; The system metadata relating to the Event Grid Domain resource.
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to Domain resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Domain.
 func (d Domain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
 	populate(objectMap, "identity", d.Identity)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
 // DomainProperties - Properties of the Event Grid Domain Resource.
 type DomainProperties struct {
-	// This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this
-	// context, creation of domain topic can be
-	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property is null or set to true, Event
-	// Grid is responsible of automatically creating the
-	// domain topic when the first event subscription is created at the scope of the domain topic. If this property is set to false, then creating the first
-	// event subscription will require creating a domain
-	// topic by the user. The self-management mode can be used if the user wants full control of when the domain topic is created, while auto-managed mode provides
-	// the flexibility to perform less operations
-	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+	// This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event
+	// Grid Domain resource. In this context, creation of domain topic can be
+	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property
+	// is null or set to true, Event Grid is responsible of automatically creating the
+	// domain topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+	// false, then creating the first event subscription will require creating a domain
+	// topic by the user. The self-management mode can be used if the user wants full control of when the domain topic is created,
+	// while auto-managed mode provides the flexibility to perform less operations
+	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain
+	// topic on demand if needed.
 	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
 
-	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this
-	// context, deletion of domain topic can be
-	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property is set to true, Event Grid is
-	// responsible of automatically deleting the domain
-	// topic when the last event subscription at the scope of the domain topic is deleted. If this property is set to false, then the user needs to manually
-	// delete the domain topic when it is no longer
-	// needed (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the user wants
-	// full control of when the domain topic needs to be
-	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event
+	// Grid Domain resource. In this context, deletion of domain topic can be
+	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property
+	// is set to true, Event Grid is responsible of automatically deleting the domain
+	// topic when the last event subscription at the scope of the domain topic is deleted. If this property is set to false, then
+	// the user needs to manually delete the domain topic when it is no longer
+	// needed (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+	// can be used if the user wants full control of when the domain topic needs to be
+	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the
+	// user.
 	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the domain.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
+	// token will be used to authenticate if user is allowed to publish to the domain.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
 	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
 
-	// This determines the format that Event Grid should expect for incoming events published to the Event Grid Domain Resource.
+	// This determines the format that Event Grid should expect for incoming events published to the domain.
 	InputSchema *InputSchema `json:"inputSchema,omitempty"`
 
 	// Information about the InputSchemaMapping which specified the info about mapping event payload.
 	InputSchemaMapping InputSchemaMappingClassification `json:"inputSchemaMapping,omitempty"`
 
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
-	// READ-ONLY; Endpoint for the Event Grid Domain Resource which is used for publishing the events.
+	// READ-ONLY; Endpoint for the domain.
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metric resource id for the Event Grid Domain Resource.
+	// READ-ONLY; Metric resource id for the domain.
 	MetricResourceID *string `json:"metricResourceId,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of private endpoint connections.
@@ -602,21 +552,20 @@ type DomainSharedAccessKeys struct {
 
 // DomainTopic - Domain Topic.
 type DomainTopic struct {
-	Resource
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Properties of the Domain Topic.
 	Properties *DomainTopicProperties `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; The system metadata relating to Domain Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DomainTopic.
-func (d DomainTopic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DomainTopicProperties - Properties of the Domain Topic.
@@ -625,30 +574,33 @@ type DomainTopicProperties struct {
 	ProvisioningState *DomainTopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// DomainTopicsBeginCreateOrUpdateOptions contains the optional parameters for the DomainTopics.BeginCreateOrUpdate method.
-type DomainTopicsBeginCreateOrUpdateOptions struct {
+// DomainTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainTopicsClient.BeginCreateOrUpdate
+// method.
+type DomainTopicsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainTopicsBeginDeleteOptions contains the optional parameters for the DomainTopics.BeginDelete method.
-type DomainTopicsBeginDeleteOptions struct {
+// DomainTopicsClientBeginDeleteOptions contains the optional parameters for the DomainTopicsClient.BeginDelete method.
+type DomainTopicsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainTopicsGetOptions contains the optional parameters for the DomainTopics.Get method.
-type DomainTopicsGetOptions struct {
+// DomainTopicsClientGetOptions contains the optional parameters for the DomainTopicsClient.Get method.
+type DomainTopicsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainTopicsListByDomainOptions contains the optional parameters for the DomainTopics.ListByDomain method.
-type DomainTopicsListByDomainOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// DomainTopicsClientListByDomainOptions contains the optional parameters for the DomainTopicsClient.ListByDomain method.
+type DomainTopicsClientListByDomainOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -671,36 +623,40 @@ func (d DomainTopicsListResult) MarshalJSON() ([]byte, error) {
 
 // DomainUpdateParameterProperties - Information of domain update parameter properties.
 type DomainUpdateParameterProperties struct {
-	// This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this
-	// context, creation of domain topic can be
-	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property is null or set to true, Event
-	// Grid is responsible of automatically creating the
-	// domain topic when the first event subscription is created at the scope of the domain topic. If this property is set to false, then creating the first
-	// event subscription will require creating a domain
-	// topic by the user. The self-management mode can be used if the user wants full control of when the domain topic is created, while auto-managed mode provides
-	// the flexibility to perform less operations
-	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+	// This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event
+	// Grid Domain resource. In this context, creation of domain topic can be
+	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property
+	// is null or set to true, Event Grid is responsible of automatically creating the
+	// domain topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+	// false, then creating the first event subscription will require creating a domain
+	// topic by the user. The self-management mode can be used if the user wants full control of when the domain topic is created,
+	// while auto-managed mode provides the flexibility to perform less operations
+	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain
+	// topic on demand if needed.
 	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
 
-	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this
-	// context, deletion of domain topic can be
-	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property is set to true, Event Grid is
-	// responsible of automatically deleting the domain
-	// topic when the last event subscription at the scope of the domain topic is deleted. If this property is set to false, then the user needs to manually
-	// delete the domain topic when it is no longer
-	// needed (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the user wants
-	// full control of when the domain topic needs to be
-	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event
+	// Grid Domain resource. In this context, deletion of domain topic can be
+	// auto-managed (when true) or self-managed (when false). The default value for this property is true. When this property
+	// is set to true, Event Grid is responsible of automatically deleting the domain
+	// topic when the last event subscription at the scope of the domain topic is deleted. If this property is set to false, then
+	// the user needs to manually delete the domain topic when it is no longer
+	// needed (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+	// can be used if the user wants full control of when the domain topic needs to be
+	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the
+	// user.
 	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the domain.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
+	// token will be used to authenticate if user is allowed to publish to the domain.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
 	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
 
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
@@ -723,9 +679,6 @@ type DomainUpdateParameters struct {
 	// Properties of the resource.
 	Properties *DomainUpdateParameterProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the domain.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
 	// Tags of the domains resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -735,61 +688,74 @@ func (d DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "tags", d.Tags)
 	return json.Marshal(objectMap)
 }
 
-// DomainsBeginCreateOrUpdateOptions contains the optional parameters for the Domains.BeginCreateOrUpdate method.
-type DomainsBeginCreateOrUpdateOptions struct {
+// DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate method.
+type DomainsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsBeginDeleteOptions contains the optional parameters for the Domains.BeginDelete method.
-type DomainsBeginDeleteOptions struct {
+// DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
+type DomainsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsBeginUpdateOptions contains the optional parameters for the Domains.BeginUpdate method.
-type DomainsBeginUpdateOptions struct {
+// DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
+type DomainsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsGetOptions contains the optional parameters for the Domains.Get method.
-type DomainsGetOptions struct {
+// DomainsClientGetOptions contains the optional parameters for the DomainsClient.Get method.
+type DomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListByResourceGroupOptions contains the optional parameters for the Domains.ListByResourceGroup method.
-type DomainsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup method.
+type DomainsClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// DomainsListBySubscriptionOptions contains the optional parameters for the Domains.ListBySubscription method.
-type DomainsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// DomainsClientListBySubscriptionOptions contains the optional parameters for the DomainsClient.ListBySubscription method.
+type DomainsClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// DomainsListResult - Result of the List Domains operation
+// DomainsClientListSharedAccessKeysOptions contains the optional parameters for the DomainsClient.ListSharedAccessKeys method.
+type DomainsClientListSharedAccessKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DomainsClientRegenerateKeyOptions contains the optional parameters for the DomainsClient.RegenerateKey method.
+type DomainsClientRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DomainsListResult - Result of the List Domains operation.
 type DomainsListResult struct {
-	// A link for the next page of domains
+	// A link for the next page of domains.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// A collection of Domains
+	// A collection of Domains.
 	Value []*Domain `json:"value,omitempty"`
 }
 
@@ -801,28 +767,32 @@ func (d DomainsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DomainsListSharedAccessKeysOptions contains the optional parameters for the Domains.ListSharedAccessKeys method.
-type DomainsListSharedAccessKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainsRegenerateKeyOptions contains the optional parameters for the Domains.RegenerateKey method.
-type DomainsRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DynamicDeliveryAttributeMapping - Dynamic delivery attribute mapping details.
 type DynamicDeliveryAttributeMapping struct {
-	DeliveryAttributeMapping
+	// REQUIRED; Type of the delivery attribute or header name.
+	Type *DeliveryAttributeMappingType `json:"type,omitempty"`
+
+	// Name of the delivery attribute or header.
+	Name *string `json:"name,omitempty"`
+
 	// Properties of dynamic delivery attribute mapping.
 	Properties *DynamicDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+}
+
+// GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DynamicDeliveryAttributeMapping.
+func (d *DynamicDeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping {
+	return &DeliveryAttributeMapping{
+		Name: d.Name,
+		Type: d.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DynamicDeliveryAttributeMapping.
 func (d DynamicDeliveryAttributeMapping) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.DeliveryAttributeMapping.marshalInternal(objectMap, DeliveryAttributeMappingTypeDynamic)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	objectMap["type"] = DeliveryAttributeMappingTypeDynamic
 	return json.Marshal(objectMap)
 }
 
@@ -835,16 +805,19 @@ func (d *DynamicDeliveryAttributeMapping) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "name":
+			err = unpopulate(val, &d.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &d.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &d.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.DeliveryAttributeMapping.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -855,220 +828,26 @@ type DynamicDeliveryAttributeMappingProperties struct {
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// EventChannel - Event Channel.
-type EventChannel struct {
-	Resource
-	// Properties of the EventChannel.
-	Properties *EventChannelProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Event Channel resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannel.
-func (e EventChannel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// EventChannelDestination - Properties of the destination of an event channel.
-type EventChannelDestination struct {
-	// Azure subscription ID of the customer creating the event channel. The partner topic associated with the event channel will be created under this Azure
-	// subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// Name of the partner topic associated with the event channel.
-	PartnerTopicName *string `json:"partnerTopicName,omitempty"`
-
-	// Azure Resource Group of the customer creating the event channel. The partner topic associated with the event channel will be created under this resource
-	// group.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
-}
-
-// EventChannelFilter - Filter for the Event Channel.
-type EventChannelFilter struct {
-	// An array of advanced filters that are used for filtering event channels.
-	AdvancedFilters []AdvancedFilterClassification `json:"advancedFilters,omitempty"`
-
-	// Allows advanced filters to be evaluated against an array of values instead of expecting a singular value. The default value is either false or null.
-	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelFilter.
-func (e EventChannelFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "advancedFilters", e.AdvancedFilters)
-	populate(objectMap, "enableAdvancedFilteringOnArrays", e.EnableAdvancedFilteringOnArrays)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventChannelFilter.
-func (e *EventChannelFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "advancedFilters":
-			e.AdvancedFilters, err = unmarshalAdvancedFilterClassificationArray(val)
-			delete(rawMsg, key)
-		case "enableAdvancedFilteringOnArrays":
-			err = unpopulate(val, &e.EnableAdvancedFilteringOnArrays)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// EventChannelProperties - Properties of the Event Channel.
-type EventChannelProperties struct {
-	// Represents the destination of an event channel.
-	Destination *EventChannelDestination `json:"destination,omitempty"`
-
-	// Expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated, the event channel and corresponding
-	// partner topic are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Information about the filter for the event channel.
-	Filter *EventChannelFilter `json:"filter,omitempty"`
-
-	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic. This will be
-	// helpful to remove any ambiguity of the origin of
-	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
-
-	// Source of the event channel. This represents a unique resource in the partner's resource model.
-	Source *EventChannelSource `json:"source,omitempty"`
-
-	// READ-ONLY; The readiness state of the corresponding partner topic.
-	PartnerTopicReadinessState *PartnerTopicReadinessState `json:"partnerTopicReadinessState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the event channel.
-	ProvisioningState *EventChannelProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelProperties.
-func (e EventChannelProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "destination", e.Destination)
-	populate(objectMap, "expirationTimeIfNotActivatedUtc", (*timeRFC3339)(e.ExpirationTimeIfNotActivatedUTC))
-	populate(objectMap, "filter", e.Filter)
-	populate(objectMap, "partnerTopicFriendlyDescription", e.PartnerTopicFriendlyDescription)
-	populate(objectMap, "partnerTopicReadinessState", e.PartnerTopicReadinessState)
-	populate(objectMap, "provisioningState", e.ProvisioningState)
-	populate(objectMap, "source", e.Source)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventChannelProperties.
-func (e *EventChannelProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "destination":
-			err = unpopulate(val, &e.Destination)
-			delete(rawMsg, key)
-		case "expirationTimeIfNotActivatedUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeIfNotActivatedUTC = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "filter":
-			err = unpopulate(val, &e.Filter)
-			delete(rawMsg, key)
-		case "partnerTopicFriendlyDescription":
-			err = unpopulate(val, &e.PartnerTopicFriendlyDescription)
-			delete(rawMsg, key)
-		case "partnerTopicReadinessState":
-			err = unpopulate(val, &e.PartnerTopicReadinessState)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &e.ProvisioningState)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &e.Source)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// EventChannelSource - Properties of the source of an event channel.
-type EventChannelSource struct {
-	// The identifier of the resource that's the source of the events. This represents a unique resource in the partner's resource model.
-	Source *string `json:"source,omitempty"`
-}
-
-// EventChannelsBeginDeleteOptions contains the optional parameters for the EventChannels.BeginDelete method.
-type EventChannelsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsCreateOrUpdateOptions contains the optional parameters for the EventChannels.CreateOrUpdate method.
-type EventChannelsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsGetOptions contains the optional parameters for the EventChannels.Get method.
-type EventChannelsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsListByPartnerNamespaceOptions contains the optional parameters for the EventChannels.ListByPartnerNamespace method.
-type EventChannelsListByPartnerNamespaceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventChannelsListResult - Result of the List Event Channels operation
-type EventChannelsListResult struct {
-	// A link for the next page of event channels
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of Event Channels
-	Value []*EventChannel `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelsListResult.
-func (e EventChannelsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // EventHubEventSubscriptionDestination - Information about the event hub destination for an event subscription.
 type EventHubEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Event Hub Properties of the event subscription destination.
 	Properties *EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type EventHubEventSubscriptionDestination.
+func (e *EventHubEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: e.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EventHubEventSubscriptionDestination.
 func (e EventHubEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeEventHub)
+	objectMap["endpointType"] = EndpointTypeEventHub
 	populate(objectMap, "properties", e.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1082,6 +861,9 @@ func (e *EventHubEventSubscriptionDestination) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &e.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &e.Properties)
 			delete(rawMsg, key)
@@ -1089,9 +871,6 @@ func (e *EventHubEventSubscriptionDestination) UnmarshalJSON(data []byte) error 
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1138,21 +917,20 @@ func (e *EventHubEventSubscriptionDestinationProperties) UnmarshalJSON(data []by
 
 // EventSubscription - Event Subscription
 type EventSubscription struct {
-	Resource
 	// Properties of the event subscription.
 	Properties *EventSubscriptionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to Event Subscription resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EventSubscription.
-func (e EventSubscription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EventSubscriptionDestinationClassification provides polymorphic access to related types.
@@ -1177,35 +955,6 @@ func (e *EventSubscriptionDestination) GetEventSubscriptionDestination() *EventS
 	return e
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventSubscriptionDestination.
-func (e *EventSubscriptionDestination) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return e.unmarshalInternal(rawMsg)
-}
-
-func (e EventSubscriptionDestination) marshalInternal(objectMap map[string]interface{}, discValue EndpointType) {
-	e.EndpointType = &discValue
-	objectMap["endpointType"] = e.EndpointType
-}
-
-func (e *EventSubscriptionDestination) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endpointType":
-			err = unpopulate(val, &e.EndpointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventSubscriptionFilter - Filter for the Event Subscription.
 type EventSubscriptionFilter struct {
 	// An array of advanced filters that are used for filtering event subscriptions.
@@ -1214,19 +963,21 @@ type EventSubscriptionFilter struct {
 	// Allows advanced filters to be evaluated against an array of values instead of expecting a singular value.
 	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
 
-	// A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to all default event types, set the IncludedEventTypes
-	// to null.
+	// A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to all default
+	// event types, set the IncludedEventTypes to null.
 	IncludedEventTypes []*string `json:"includedEventTypes,omitempty"`
 
-	// Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter should be compared in a case sensitive manner.
+	// Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter should be compared in a case sensitive
+	// manner.
 	IsSubjectCaseSensitive *bool `json:"isSubjectCaseSensitive,omitempty"`
 
-	// An optional string to filter events for an event subscription based on a resource path prefix. The format of this depends on the publisher of the events.
-	// Wildcard characters are not supported in this
+	// An optional string to filter events for an event subscription based on a resource path prefix. The format of this depends
+	// on the publisher of the events. Wildcard characters are not supported in this
 	// path.
 	SubjectBeginsWith *string `json:"subjectBeginsWith,omitempty"`
 
-	// An optional string to filter events for an event subscription based on a resource path suffix. Wildcard characters are not supported in this path.
+	// An optional string to filter events for an event subscription based on a resource path suffix. Wildcard characters are
+	// not supported in this path.
 	SubjectEndsWith *string `json:"subjectEndsWith,omitempty"`
 }
 
@@ -1285,8 +1036,8 @@ type EventSubscriptionFullURL struct {
 
 // EventSubscriptionIdentity - The identity information with the event subscription.
 type EventSubscriptionIdentity struct {
-	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities.
-	// The type 'None' will remove any identity.
+	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+	// and a set of user-assigned identities. The type 'None' will remove any identity.
 	Type *EventSubscriptionIdentityType `json:"type,omitempty"`
 
 	// The user identity associated with the resource.
@@ -1295,24 +1046,20 @@ type EventSubscriptionIdentity struct {
 
 // EventSubscriptionProperties - Properties of the Event Subscription.
 type EventSubscriptionProperties struct {
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses Azure Event Grid's identity to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// The DeadLetter destination of the event subscription.
 	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
 
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses the managed identity setup on the parent
+	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
+	// the dead letter destination. Uses the managed identity setup on the parent
 	// resource (namely, topic or domain) to acquire the authentication tokens being used during delivery / dead-lettering.
 	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity `json:"deadLetterWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity setup on the parent resource
-	// (namely, topic or domain) to acquire the
+	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
+	// setup on the parent resource (namely, topic or domain) to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
 	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's identity to acquire the authentication
-	// tokens being used during delivery /
-	// dead-lettering.
+	// Information about the destination where events have to be delivered for the event subscription.
 	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
 
 	// The event delivery schema for the event subscription.
@@ -1345,7 +1092,7 @@ func (e EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryWithResourceIdentity", e.DeliveryWithResourceIdentity)
 	populate(objectMap, "destination", e.Destination)
 	populate(objectMap, "eventDeliverySchema", e.EventDeliverySchema)
-	populate(objectMap, "expirationTimeUtc", (*timeRFC3339)(e.ExpirationTimeUTC))
+	populateTimeRFC3339(objectMap, "expirationTimeUtc", e.ExpirationTimeUTC)
 	populate(objectMap, "filter", e.Filter)
 	populate(objectMap, "labels", e.Labels)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
@@ -1379,9 +1126,7 @@ func (e *EventSubscriptionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.EventDeliverySchema)
 			delete(rawMsg, key)
 		case "expirationTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.ExpirationTimeUTC)
 			delete(rawMsg, key)
 		case "filter":
 			err = unpopulate(val, &e.Filter)
@@ -1408,24 +1153,20 @@ func (e *EventSubscriptionProperties) UnmarshalJSON(data []byte) error {
 
 // EventSubscriptionUpdateParameters - Properties of the Event Subscription update.
 type EventSubscriptionUpdateParameters struct {
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses Azure Event Grid's identity to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// The DeadLetter destination of the event subscription.
 	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
 
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses the managed identity setup on the parent
+	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
+	// the dead letter destination. Uses the managed identity setup on the parent
 	// resource (topic / domain) to acquire the authentication tokens being used during delivery / dead-lettering.
 	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity `json:"deadLetterWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity setup on the parent resource
-	// (topic / domain) to acquire the authentication
+	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
+	// setup on the parent resource (topic / domain) to acquire the authentication
 	// tokens being used during delivery / dead-lettering.
 	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's identity to acquire the authentication
-	// tokens being used during delivery /
-	// dead-lettering.
+	// Information about the destination where events have to be delivered for the event subscription.
 	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
 
 	// The event delivery schema for the event subscription.
@@ -1452,7 +1193,7 @@ func (e EventSubscriptionUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryWithResourceIdentity", e.DeliveryWithResourceIdentity)
 	populate(objectMap, "destination", e.Destination)
 	populate(objectMap, "eventDeliverySchema", e.EventDeliverySchema)
-	populate(objectMap, "expirationTimeUtc", (*timeRFC3339)(e.ExpirationTimeUTC))
+	populateTimeRFC3339(objectMap, "expirationTimeUtc", e.ExpirationTimeUTC)
 	populate(objectMap, "filter", e.Filter)
 	populate(objectMap, "labels", e.Labels)
 	populate(objectMap, "retryPolicy", e.RetryPolicy)
@@ -1484,9 +1225,7 @@ func (e *EventSubscriptionUpdateParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.EventDeliverySchema)
 			delete(rawMsg, key)
 		case "expirationTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.ExpirationTimeUTC)
 			delete(rawMsg, key)
 		case "filter":
 			err = unpopulate(val, &e.Filter)
@@ -1505,157 +1244,188 @@ func (e *EventSubscriptionUpdateParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// EventSubscriptionsBeginCreateOrUpdateOptions contains the optional parameters for the EventSubscriptions.BeginCreateOrUpdate method.
-type EventSubscriptionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsBeginDeleteOptions contains the optional parameters for the EventSubscriptions.BeginDelete method.
-type EventSubscriptionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsBeginUpdateOptions contains the optional parameters for the EventSubscriptions.BeginUpdate method.
-type EventSubscriptionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsGetDeliveryAttributesOptions contains the optional parameters for the EventSubscriptions.GetDeliveryAttributes method.
-type EventSubscriptionsGetDeliveryAttributesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsGetFullURLOptions contains the optional parameters for the EventSubscriptions.GetFullURL method.
-type EventSubscriptionsGetFullURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsGetOptions contains the optional parameters for the EventSubscriptions.Get method.
-type EventSubscriptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventSubscriptionsListByDomainTopicOptions contains the optional parameters for the EventSubscriptions.ListByDomainTopic method.
-type EventSubscriptionsListByDomainTopicOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventSubscriptionsListByResourceOptions contains the optional parameters for the EventSubscriptions.ListByResource method.
-type EventSubscriptionsListByResourceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventSubscriptionsListGlobalByResourceGroupForTopicTypeOptions contains the optional parameters for the EventSubscriptions.ListGlobalByResourceGroupForTopicType
+// EventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginCreateOrUpdate
 // method.
-type EventSubscriptionsListGlobalByResourceGroupForTopicTypeOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
+type EventSubscriptionsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// EventSubscriptionsListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptions.ListGlobalByResourceGroup method.
-type EventSubscriptionsListGlobalByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventSubscriptionsListGlobalBySubscriptionForTopicTypeOptions contains the optional parameters for the EventSubscriptions.ListGlobalBySubscriptionForTopicType
+// EventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the EventSubscriptionsClient.BeginDelete
 // method.
-type EventSubscriptionsListGlobalBySubscriptionForTopicTypeOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
+type EventSubscriptionsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
-// EventSubscriptionsListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptions.ListGlobalBySubscription method.
-type EventSubscriptionsListGlobalBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventSubscriptionsListRegionalByResourceGroupForTopicTypeOptions contains the optional parameters for the EventSubscriptions.ListRegionalByResourceGroupForTopicType
+// EventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginUpdate
 // method.
-type EventSubscriptionsListRegionalByResourceGroupForTopicTypeOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
+type EventSubscriptionsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// EventSubscriptionsListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptions.ListRegionalByResourceGroup method.
-type EventSubscriptionsListRegionalByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventSubscriptionsListRegionalBySubscriptionForTopicTypeOptions contains the optional parameters for the EventSubscriptions.ListRegionalBySubscriptionForTopicType
+// EventSubscriptionsClientGetDeliveryAttributesOptions contains the optional parameters for the EventSubscriptionsClient.GetDeliveryAttributes
 // method.
-type EventSubscriptionsListRegionalBySubscriptionForTopicTypeOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+type EventSubscriptionsClientGetDeliveryAttributesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventSubscriptionsClientGetFullURLOptions contains the optional parameters for the EventSubscriptionsClient.GetFullURL
+// method.
+type EventSubscriptionsClientGetFullURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventSubscriptionsClientGetOptions contains the optional parameters for the EventSubscriptionsClient.Get method.
+type EventSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventSubscriptionsClientListByDomainTopicOptions contains the optional parameters for the EventSubscriptionsClient.ListByDomainTopic
+// method.
+type EventSubscriptionsClientListByDomainTopicOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// EventSubscriptionsListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptions.ListRegionalBySubscription method.
-type EventSubscriptionsListRegionalBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// EventSubscriptionsClientListByResourceOptions contains the optional parameters for the EventSubscriptionsClient.ListByResource
+// method.
+type EventSubscriptionsClientListByResourceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType
+// method.
+type EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalByResourceGroup
+// method.
+type EventSubscriptionsClientListGlobalByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType
+// method.
+type EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalBySubscription
+// method.
+type EventSubscriptionsClientListGlobalBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType
+// method.
+type EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalByResourceGroup
+// method.
+type EventSubscriptionsClientListRegionalByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType
+// method.
+type EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalBySubscription
+// method.
+type EventSubscriptionsClientListRegionalBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -1678,17 +1448,17 @@ func (e EventSubscriptionsListResult) MarshalJSON() ([]byte, error) {
 
 // EventType - Event Type for a subject under a topic
 type EventType struct {
-	Resource
 	// Properties of the event type.
 	Properties *EventTypeProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EventType.
-func (e EventType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EventTypeProperties - Properties of the event type
@@ -1719,28 +1489,22 @@ func (e EventTypesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtendedLocation - Definition of an Extended Location
-type ExtendedLocation struct {
-	// Fully qualified name of the extended location.
-	Name *string `json:"name,omitempty"`
-
-	// Type of the extended location.
-	Type *string `json:"type,omitempty"`
-}
-
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
-	Resource
 	// Properties of the extension topic
 	Properties *ExtensionTopicProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ExtensionTopic.
-func (e ExtensionTopic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to the Extension Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExtensionTopicProperties - Properties of the Extension Topic
@@ -1752,22 +1516,31 @@ type ExtensionTopicProperties struct {
 	SystemTopic *string `json:"systemTopic,omitempty"`
 }
 
-// ExtensionTopicsGetOptions contains the optional parameters for the ExtensionTopics.Get method.
-type ExtensionTopicsGetOptions struct {
+// ExtensionTopicsClientGetOptions contains the optional parameters for the ExtensionTopicsClient.Get method.
+type ExtensionTopicsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // HybridConnectionEventSubscriptionDestination - Information about the HybridConnection destination for an event subscription.
 type HybridConnectionEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Hybrid connection Properties of the event subscription destination.
 	Properties *HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type HybridConnectionEventSubscriptionDestination.
+func (h *HybridConnectionEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: h.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HybridConnectionEventSubscriptionDestination.
 func (h HybridConnectionEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeHybridConnection)
+	objectMap["endpointType"] = EndpointTypeHybridConnection
 	populate(objectMap, "properties", h.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1781,6 +1554,9 @@ func (h *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(data []byte
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &h.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &h.Properties)
 			delete(rawMsg, key)
@@ -1788,9 +1564,6 @@ func (h *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(data []byte
 		if err != nil {
 			return err
 		}
-	}
-	if err := h.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1843,13 +1616,14 @@ type IdentityInfo struct {
 	// The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
 
-	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities.
-	// The type 'None' will remove any identity.
+	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+	// and a set of user-assigned identities. The type 'None' will remove any identity.
 	Type *IdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'. This
-	// property is currently not used and reserved for
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	// This property is currently not used and reserved for
 	// future usage.
 	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
 }
@@ -1875,14 +1649,14 @@ type InboundIPRule struct {
 // InputSchemaMappingClassification provides polymorphic access to related types.
 // Call the interface's GetInputSchemaMapping() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *InputSchemaMapping, *JsonInputSchemaMapping
+// - *InputSchemaMapping, *JSONInputSchemaMapping
 type InputSchemaMappingClassification interface {
 	// GetInputSchemaMapping returns the InputSchemaMapping content of the underlying type.
 	GetInputSchemaMapping() *InputSchemaMapping
 }
 
-// InputSchemaMapping - By default, Event Grid expects events to be in the Event Grid event schema. Specifying an input schema mapping enables publishing
-// to Event Grid using a custom input schema. Currently, the only
+// InputSchemaMapping - By default, Event Grid expects events to be in the Event Grid event schema. Specifying an input schema
+// mapping enables publishing to Event Grid using a custom input schema. Currently, the only
 // supported type of InputSchemaMapping is 'JsonInputSchemaMapping'.
 type InputSchemaMapping struct {
 	// REQUIRED; Type of the custom mapping
@@ -1892,26 +1666,45 @@ type InputSchemaMapping struct {
 // GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type InputSchemaMapping.
 func (i *InputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping { return i }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type InputSchemaMapping.
-func (i *InputSchemaMapping) UnmarshalJSON(data []byte) error {
+// IsNotNullAdvancedFilter - IsNotNull Advanced Filter.
+type IsNotNullAdvancedFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNotNullAdvancedFilter.
+func (i *IsNotNullAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type IsNotNullAdvancedFilter.
+func (i IsNotNullAdvancedFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "key", i.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeIsNotNull
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type IsNotNullAdvancedFilter.
+func (i *IsNotNullAdvancedFilter) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i InputSchemaMapping) marshalInternal(objectMap map[string]interface{}, discValue InputSchemaMappingType) {
-	i.InputSchemaMappingType = &discValue
-	objectMap["inputSchemaMappingType"] = i.InputSchemaMappingType
-}
-
-func (i *InputSchemaMapping) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "inputSchemaMappingType":
-			err = unpopulate(val, &i.InputSchemaMappingType)
+		case "key":
+			err = unpopulate(val, &i.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &i.OperatorType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1921,63 +1714,96 @@ func (i *InputSchemaMapping) unmarshalInternal(rawMsg map[string]json.RawMessage
 	return nil
 }
 
-// IsNotNullAdvancedFilter - IsNotNull Advanced Filter.
-type IsNotNullAdvancedFilter struct {
-	AdvancedFilter
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IsNotNullAdvancedFilter.
-func (i IsNotNullAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeIsNotNull)
-	return json.Marshal(objectMap)
-}
-
 // IsNullOrUndefinedAdvancedFilter - IsNullOrUndefined Advanced Filter.
 type IsNullOrUndefinedAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNullOrUndefinedAdvancedFilter.
+func (i *IsNullOrUndefinedAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IsNullOrUndefinedAdvancedFilter.
 func (i IsNullOrUndefinedAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeIsNullOrUndefined)
+	populate(objectMap, "key", i.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeIsNullOrUndefined
 	return json.Marshal(objectMap)
 }
 
-// JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event schema. This is currently
-// used in the mappings for the 'id', 'topic' and 'eventtime'
+// UnmarshalJSON implements the json.Unmarshaller interface for type IsNullOrUndefinedAdvancedFilter.
+func (i *IsNullOrUndefinedAdvancedFilter) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "key":
+			err = unpopulate(val, &i.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &i.OperatorType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event
+// schema. This is currently used in the mappings for the 'id', 'topic' and 'eventtime'
 // properties. This represents a field in the input event schema.
 type JSONField struct {
 	// Name of a field in the input event schema that's to be used as the source of a mapping.
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// JSONFieldWithDefault - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event schema. This is
-// currently used in the mappings for the 'subject', 'eventtype' and
-// 'dataversion' properties. This represents a field in the input event schema along with a default value to be used, and at least one of these two properties
-// should be provided.
+// JSONFieldWithDefault - This is used to express the source of an input schema mapping for a single target field in the Event
+// Grid Event schema. This is currently used in the mappings for the 'subject', 'eventtype' and
+// 'dataversion' properties. This represents a field in the input event schema along with a default value to be used, and
+// at least one of these two properties should be provided.
 type JSONFieldWithDefault struct {
-	// The default value to be used for mapping when a SourceField is not provided or if there's no property with the specified name in the published JSON event
-	// payload.
+	// The default value to be used for mapping when a SourceField is not provided or if there's no property with the specified
+	// name in the published JSON event payload.
 	DefaultValue *string `json:"defaultValue,omitempty"`
 
 	// Name of a field in the input event schema that's to be used as the source of a mapping.
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// JSONInputSchemaMapping - This enables publishing to Event Grid using a custom input schema. This can be used to map properties from a custom input JSON
-// schema to the Event Grid event schema.
+// JSONInputSchemaMapping - This enables publishing to Event Grid using a custom input schema. This can be used to map properties
+// from a custom input JSON schema to the Event Grid event schema.
 type JSONInputSchemaMapping struct {
-	InputSchemaMapping
+	// REQUIRED; Type of the custom mapping
+	InputSchemaMappingType *InputSchemaMappingType `json:"inputSchemaMappingType,omitempty"`
+
 	// JSON Properties of the input schema mapping
 	Properties *JSONInputSchemaMappingProperties `json:"properties,omitempty"`
+}
+
+// GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type JSONInputSchemaMapping.
+func (j *JSONInputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping {
+	return &InputSchemaMapping{
+		InputSchemaMappingType: j.InputSchemaMappingType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JSONInputSchemaMapping.
 func (j JSONInputSchemaMapping) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.InputSchemaMapping.marshalInternal(objectMap, InputSchemaMappingTypeJSON)
+	objectMap["inputSchemaMappingType"] = InputSchemaMappingTypeJSON
 	populate(objectMap, "properties", j.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1991,6 +1817,9 @@ func (j *JSONInputSchemaMapping) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "inputSchemaMappingType":
+			err = unpopulate(val, &j.InputSchemaMappingType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &j.Properties)
 			delete(rawMsg, key)
@@ -1999,14 +1828,11 @@ func (j *JSONInputSchemaMapping) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := j.InputSchemaMapping.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// JSONInputSchemaMappingProperties - This can be used to map properties of a source schema (or default values, for certain supported properties) to properties
-// of the EventGridEvent schema.
+// JSONInputSchemaMappingProperties - This can be used to map properties of a source schema (or default values, for certain
+// supported properties) to properties of the EventGridEvent schema.
 type JSONInputSchemaMappingProperties struct {
 	// The mapping information for the DataVersion property of the Event Grid Event.
 	DataVersion *JSONFieldWithDefault `json:"dataVersion,omitempty"`
@@ -2029,15 +1855,29 @@ type JSONInputSchemaMappingProperties struct {
 
 // NumberGreaterThanAdvancedFilter - NumberGreaterThan Advanced Filter.
 type NumberGreaterThanAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanAdvancedFilter.
+func (n *NumberGreaterThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberGreaterThanAdvancedFilter.
 func (n NumberGreaterThanAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberGreaterThan)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberGreaterThan
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -2051,6 +1891,12 @@ func (n *NumberGreaterThanAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &n.Value)
 			delete(rawMsg, key)
@@ -2059,23 +1905,34 @@ func (n *NumberGreaterThanAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberGreaterThanOrEqualsAdvancedFilter - NumberGreaterThanOrEquals Advanced Filter.
 type NumberGreaterThanOrEqualsAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanOrEqualsAdvancedFilter.
+func (n *NumberGreaterThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberGreaterThanOrEqualsAdvancedFilter.
 func (n NumberGreaterThanOrEqualsAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberGreaterThanOrEquals)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberGreaterThanOrEquals
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -2089,6 +1946,12 @@ func (n *NumberGreaterThanOrEqualsAdvancedFilter) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &n.Value)
 			delete(rawMsg, key)
@@ -2097,23 +1960,34 @@ func (n *NumberGreaterThanOrEqualsAdvancedFilter) UnmarshalJSON(data []byte) err
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberInAdvancedFilter - NumberIn Advanced Filter.
 type NumberInAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInAdvancedFilter.
+func (n *NumberInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberInAdvancedFilter.
 func (n NumberInAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberIn)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberIn
 	populate(objectMap, "values", n.Values)
 	return json.Marshal(objectMap)
 }
@@ -2127,6 +2001,12 @@ func (n *NumberInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &n.Values)
 			delete(rawMsg, key)
@@ -2135,23 +2015,34 @@ func (n *NumberInAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberInRangeAdvancedFilter - NumberInRange Advanced Filter.
 type NumberInRangeAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values [][]*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInRangeAdvancedFilter.
+func (n *NumberInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberInRangeAdvancedFilter.
 func (n NumberInRangeAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberInRange)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberInRange
 	populate(objectMap, "values", n.Values)
 	return json.Marshal(objectMap)
 }
@@ -2165,6 +2056,12 @@ func (n *NumberInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &n.Values)
 			delete(rawMsg, key)
@@ -2173,23 +2070,34 @@ func (n *NumberInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberLessThanAdvancedFilter - NumberLessThan Advanced Filter.
 type NumberLessThanAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanAdvancedFilter.
+func (n *NumberLessThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberLessThanAdvancedFilter.
 func (n NumberLessThanAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberLessThan)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberLessThan
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -2203,6 +2111,12 @@ func (n *NumberLessThanAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &n.Value)
 			delete(rawMsg, key)
@@ -2211,23 +2125,34 @@ func (n *NumberLessThanAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberLessThanOrEqualsAdvancedFilter - NumberLessThanOrEquals Advanced Filter.
 type NumberLessThanOrEqualsAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanOrEqualsAdvancedFilter.
+func (n *NumberLessThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberLessThanOrEqualsAdvancedFilter.
 func (n NumberLessThanOrEqualsAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberLessThanOrEquals)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberLessThanOrEquals
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -2241,6 +2166,12 @@ func (n *NumberLessThanOrEqualsAdvancedFilter) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &n.Value)
 			delete(rawMsg, key)
@@ -2249,23 +2180,34 @@ func (n *NumberLessThanOrEqualsAdvancedFilter) UnmarshalJSON(data []byte) error 
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberNotInAdvancedFilter - NumberNotIn Advanced Filter.
 type NumberNotInAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInAdvancedFilter.
+func (n *NumberNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberNotInAdvancedFilter.
 func (n NumberNotInAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberNotIn)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberNotIn
 	populate(objectMap, "values", n.Values)
 	return json.Marshal(objectMap)
 }
@@ -2279,6 +2221,12 @@ func (n *NumberNotInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &n.Values)
 			delete(rawMsg, key)
@@ -2287,23 +2235,34 @@ func (n *NumberNotInAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NumberNotInRangeAdvancedFilter - NumberNotInRange Advanced Filter.
 type NumberNotInRangeAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values [][]*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInRangeAdvancedFilter.
+func (n *NumberNotInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NumberNotInRangeAdvancedFilter.
 func (n NumberNotInRangeAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberNotInRange)
+	populate(objectMap, "key", n.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeNumberNotInRange
 	populate(objectMap, "values", n.Values)
 	return json.Marshal(objectMap)
 }
@@ -2317,6 +2276,12 @@ func (n *NumberNotInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &n.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &n.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &n.Values)
 			delete(rawMsg, key)
@@ -2325,9 +2290,6 @@ func (n *NumberNotInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -2335,9 +2297,6 @@ func (n *NumberNotInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 type Operation struct {
 	// Display name of the operation
 	Display *OperationInfo `json:"display,omitempty"`
-
-	// This Boolean is used to determine if the operation is a data plane action or not.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
 
 	// Name of the operation
 	Name *string `json:"name,omitempty"`
@@ -2364,8 +2323,8 @@ type OperationInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2382,594 +2341,6 @@ func (o OperationsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PartnerNamespace - EventGrid Partner Namespace.
-type PartnerNamespace struct {
-	TrackedResource
-	// Properties of the partner namespace.
-	Properties *PartnerNamespaceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Namespace resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespace.
-func (p PartnerNamespace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceProperties - Properties of the partner namespace.
-type PartnerNamespaceProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the partner
-	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
-
-	// The fully qualified ARM Id of the partner registration that should be associated with this partner namespace. This takes the following format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-	PartnerRegistrationFullyQualifiedID *string `json:"partnerRegistrationFullyQualifiedId,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// READ-ONLY; Endpoint for the partner namespace.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the partner namespace.
-	ProvisioningState *PartnerNamespaceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceProperties.
-func (p PartnerNamespaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
-	populate(objectMap, "endpoint", p.Endpoint)
-	populate(objectMap, "inboundIpRules", p.InboundIPRules)
-	populate(objectMap, "partnerRegistrationFullyQualifiedId", p.PartnerRegistrationFullyQualifiedID)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceRegenerateKeyRequest - PartnerNamespace regenerate shared access key request.
-type PartnerNamespaceRegenerateKeyRequest struct {
-	// REQUIRED; Key name to regenerate (key1 or key2).
-	KeyName *string `json:"keyName,omitempty"`
-}
-
-// PartnerNamespaceSharedAccessKeys - Shared access keys of the partner namespace.
-type PartnerNamespaceSharedAccessKeys struct {
-	// Shared access key1 for the partner namespace.
-	Key1 *string `json:"key1,omitempty"`
-
-	// Shared access key2 for the partner namespace.
-	Key2 *string `json:"key2,omitempty"`
-}
-
-// PartnerNamespaceUpdateParameterProperties - Information of Partner Namespace update parameter properties.
-type PartnerNamespaceUpdateParameterProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the partner
-	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameterProperties.
-func (p PartnerNamespaceUpdateParameterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
-	populate(objectMap, "inboundIpRules", p.InboundIPRules)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceUpdateParameters - Properties of the PartnerNamespace update.
-type PartnerNamespaceUpdateParameters struct {
-	// Properties of the Partner Namespace.
-	Properties *PartnerNamespaceUpdateParameterProperties `json:"properties,omitempty"`
-
-	// Tags of the partner namespace.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameters.
-func (p PartnerNamespaceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespacesBeginCreateOrUpdateOptions contains the optional parameters for the PartnerNamespaces.BeginCreateOrUpdate method.
-type PartnerNamespacesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesBeginDeleteOptions contains the optional parameters for the PartnerNamespaces.BeginDelete method.
-type PartnerNamespacesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesBeginUpdateOptions contains the optional parameters for the PartnerNamespaces.BeginUpdate method.
-type PartnerNamespacesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesGetOptions contains the optional parameters for the PartnerNamespaces.Get method.
-type PartnerNamespacesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesListByResourceGroupOptions contains the optional parameters for the PartnerNamespaces.ListByResourceGroup method.
-type PartnerNamespacesListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerNamespacesListBySubscriptionOptions contains the optional parameters for the PartnerNamespaces.ListBySubscription method.
-type PartnerNamespacesListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerNamespacesListResult - Result of the List Partner Namespaces operation
-type PartnerNamespacesListResult struct {
-	// A link for the next page of partner namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner namespaces.
-	Value []*PartnerNamespace `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespacesListResult.
-func (p PartnerNamespacesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespacesListSharedAccessKeysOptions contains the optional parameters for the PartnerNamespaces.ListSharedAccessKeys method.
-type PartnerNamespacesListSharedAccessKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesRegenerateKeyOptions contains the optional parameters for the PartnerNamespaces.RegenerateKey method.
-type PartnerNamespacesRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistration - Information about a partner registration.
-type PartnerRegistration struct {
-	TrackedResource
-	// Properties of the partner registration.
-	Properties *PartnerRegistrationProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Registration resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistration.
-func (p PartnerRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationProperties - Properties of the partner registration.
-type PartnerRegistrationProperties struct {
-	// List of Azure subscription Ids that are authorized to create a partner namespace associated with this partner registration. This is an optional property.
-	// Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// The extension of the customer service URI of the publisher.
-	CustomerServiceURI *string `json:"customerServiceUri,omitempty"`
-
-	// URI of the logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Long description for the custom scenarios and integration to be displayed in the portal if needed. Length of this description should not exceed 2048
-	// characters.
-	LongDescription *string `json:"longDescription,omitempty"`
-
-	// The extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10.
-	PartnerCustomerServiceExtension *string `json:"partnerCustomerServiceExtension,omitempty"`
-
-	// The customer service number of the publisher. The expected phone format should start with a '+' sign followed by the country code. The remaining digits
-	// are then followed. Only digits and spaces are
-	// allowed and its length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and +966 7 5115 2471. Examples
-	// of invalid phone numbers are: +1 (515)
-	// 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43
-	PartnerCustomerServiceNumber *string `json:"partnerCustomerServiceNumber,omitempty"`
-
-	// Official name of the partner name. For example: "Contoso".
-	PartnerName *string `json:"partnerName,omitempty"`
-
-	// Short description of the partner resource type. The length of this description should not exceed 256 characters.
-	PartnerResourceTypeDescription *string `json:"partnerResourceTypeDescription,omitempty"`
-
-	// Display name of the partner resource type.
-	PartnerResourceTypeDisplayName *string `json:"partnerResourceTypeDisplayName,omitempty"`
-
-	// Name of the partner resource type.
-	PartnerResourceTypeName *string `json:"partnerResourceTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
-	// Visibility state of the partner registration.
-	VisibilityState *PartnerRegistrationVisibilityState `json:"visibilityState,omitempty"`
-
-	// READ-ONLY; Provisioning state of the partner registration.
-	ProvisioningState *PartnerRegistrationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationProperties.
-func (p PartnerRegistrationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizedAzureSubscriptionIds", p.AuthorizedAzureSubscriptionIDs)
-	populate(objectMap, "customerServiceUri", p.CustomerServiceURI)
-	populate(objectMap, "logoUri", p.LogoURI)
-	populate(objectMap, "longDescription", p.LongDescription)
-	populate(objectMap, "partnerCustomerServiceExtension", p.PartnerCustomerServiceExtension)
-	populate(objectMap, "partnerCustomerServiceNumber", p.PartnerCustomerServiceNumber)
-	populate(objectMap, "partnerName", p.PartnerName)
-	populate(objectMap, "partnerResourceTypeDescription", p.PartnerResourceTypeDescription)
-	populate(objectMap, "partnerResourceTypeDisplayName", p.PartnerResourceTypeDisplayName)
-	populate(objectMap, "partnerResourceTypeName", p.PartnerResourceTypeName)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "setupUri", p.SetupURI)
-	populate(objectMap, "visibilityState", p.VisibilityState)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationUpdateParameters - Properties of the Partner Registration update.
-type PartnerRegistrationUpdateParameters struct {
-	// List of IDs of Azure AD applications that are authorized to create a partner namespace associated with this partner registration. This is an optional
-	// property. Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// URI of the partner logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Description of the partner topic type.
-	PartnerTopicTypeDescription *string `json:"partnerTopicTypeDescription,omitempty"`
-
-	// Display name of the partner topic type.
-	PartnerTopicTypeDisplayName *string `json:"partnerTopicTypeDisplayName,omitempty"`
-
-	// Name of the partner topic type.
-	PartnerTopicTypeName *string `json:"partnerTopicTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
-	// Tags of the partner registration resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationUpdateParameters.
-func (p PartnerRegistrationUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizedAzureSubscriptionIds", p.AuthorizedAzureSubscriptionIDs)
-	populate(objectMap, "logoUri", p.LogoURI)
-	populate(objectMap, "partnerTopicTypeDescription", p.PartnerTopicTypeDescription)
-	populate(objectMap, "partnerTopicTypeDisplayName", p.PartnerTopicTypeDisplayName)
-	populate(objectMap, "partnerTopicTypeName", p.PartnerTopicTypeName)
-	populate(objectMap, "setupUri", p.SetupURI)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationsCreateOrUpdateOptions contains the optional parameters for the PartnerRegistrations.CreateOrUpdate method.
-type PartnerRegistrationsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsDeleteOptions contains the optional parameters for the PartnerRegistrations.Delete method.
-type PartnerRegistrationsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsGetOptions contains the optional parameters for the PartnerRegistrations.Get method.
-type PartnerRegistrationsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsListByResourceGroupOptions contains the optional parameters for the PartnerRegistrations.ListByResourceGroup method.
-type PartnerRegistrationsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerRegistrationsListBySubscriptionOptions contains the optional parameters for the PartnerRegistrations.ListBySubscription method.
-type PartnerRegistrationsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerRegistrationsListResult - Result of the List Partner Registrations operation.
-type PartnerRegistrationsListResult struct {
-	// A link for the next page of partner registrations.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner registrations.
-	Value []*PartnerRegistration `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationsListResult.
-func (p PartnerRegistrationsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationsUpdateOptions contains the optional parameters for the PartnerRegistrations.Update method.
-type PartnerRegistrationsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopic - EventGrid Partner Topic.
-type PartnerTopic struct {
-	TrackedResource
-	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
-
-	// Properties of the partner topic.
-	Properties *PartnerTopicProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopic.
-func (p PartnerTopic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicEventSubscriptionsBeginCreateOrUpdateOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginCreateOrUpdate
-// method.
-type PartnerTopicEventSubscriptionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsBeginDeleteOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginDelete method.
-type PartnerTopicEventSubscriptionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsBeginUpdateOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginUpdate method.
-type PartnerTopicEventSubscriptionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetDeliveryAttributesOptions contains the optional parameters for the PartnerTopicEventSubscriptions.GetDeliveryAttributes
-// method.
-type PartnerTopicEventSubscriptionsGetDeliveryAttributesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetFullURLOptions contains the optional parameters for the PartnerTopicEventSubscriptions.GetFullURL method.
-type PartnerTopicEventSubscriptionsGetFullURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetOptions contains the optional parameters for the PartnerTopicEventSubscriptions.Get method.
-type PartnerTopicEventSubscriptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsListByPartnerTopicOptions contains the optional parameters for the PartnerTopicEventSubscriptions.ListByPartnerTopic method.
-type PartnerTopicEventSubscriptionsListByPartnerTopicOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicProperties - Properties of the Partner Topic.
-type PartnerTopicProperties struct {
-	// Activation state of the partner topic.
-	ActivationState *PartnerTopicActivationState `json:"activationState,omitempty"`
-
-	// Expiration time of the partner topic. If this timer expires while the partner topic is still never activated, the partner topic and corresponding event
-	// channel are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic. This will be
-	// helpful to remove any ambiguity of the origin of
-	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
-
-	// Source associated with this partner topic. This represents a unique partner resource.
-	Source *string `json:"source,omitempty"`
-
-	// READ-ONLY; Provisioning state of the partner topic.
-	ProvisioningState *PartnerTopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicProperties.
-func (p PartnerTopicProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activationState", p.ActivationState)
-	populate(objectMap, "expirationTimeIfNotActivatedUtc", (*timeRFC3339)(p.ExpirationTimeIfNotActivatedUTC))
-	populate(objectMap, "partnerTopicFriendlyDescription", p.PartnerTopicFriendlyDescription)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "source", p.Source)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerTopicProperties.
-func (p *PartnerTopicProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activationState":
-			err = unpopulate(val, &p.ActivationState)
-			delete(rawMsg, key)
-		case "expirationTimeIfNotActivatedUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			p.ExpirationTimeIfNotActivatedUTC = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "partnerTopicFriendlyDescription":
-			err = unpopulate(val, &p.PartnerTopicFriendlyDescription)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &p.ProvisioningState)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &p.Source)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// PartnerTopicUpdateParameters - Properties of the Partner Topic update.
-type PartnerTopicUpdateParameters struct {
-	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
-
-	// Tags of the Partner Topic resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicUpdateParameters.
-func (p PartnerTopicUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicsActivateOptions contains the optional parameters for the PartnerTopics.Activate method.
-type PartnerTopicsActivateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsBeginDeleteOptions contains the optional parameters for the PartnerTopics.BeginDelete method.
-type PartnerTopicsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsDeactivateOptions contains the optional parameters for the PartnerTopics.Deactivate method.
-type PartnerTopicsDeactivateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsGetOptions contains the optional parameters for the PartnerTopics.Get method.
-type PartnerTopicsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsListByResourceGroupOptions contains the optional parameters for the PartnerTopics.ListByResourceGroup method.
-type PartnerTopicsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicsListBySubscriptionOptions contains the optional parameters for the PartnerTopics.ListBySubscription method.
-type PartnerTopicsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicsListResult - Result of the List Partner Topics operation.
-type PartnerTopicsListResult struct {
-	// A link for the next page of partner topics.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner topics.
-	Value []*PartnerTopic `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicsListResult.
-func (p PartnerTopicsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicsUpdateOptions contains the optional parameters for the PartnerTopics.Update method.
-type PartnerTopicsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateEndpoint information.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint.
@@ -2977,17 +2348,17 @@ type PrivateEndpoint struct {
 }
 
 type PrivateEndpointConnection struct {
-	Resource
 	// Properties of the PrivateEndpointConnection.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
@@ -3032,30 +2403,36 @@ func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginUpdate method.
-type PrivateEndpointConnectionsBeginUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListByResourceOptions contains the optional parameters for the PrivateEndpointConnections.ListByResource method.
-type PrivateEndpointConnectionsListByResourceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
+// method.
+type PrivateEndpointConnectionsClientListByResourceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -3091,20 +2468,23 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByResourceOptions contains the optional parameters for the PrivateLinkResources.ListByResource method.
-type PrivateLinkResourcesListByResourceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
+// method.
+type PrivateLinkResourcesClientListByResourceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -3125,7 +2505,7 @@ func (p PrivateLinkResourcesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Resource - Definition of a Resource
+// Resource - Definition of a Resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -3135,25 +2515,6 @@ type Resource struct {
 
 	// READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// ResourceSKU - Describes an EventGrid Resource Sku.
-type ResourceSKU struct {
-	// The Sku name of the resource. The possible values are: Basic or Premium.
-	Name *SKU `json:"name,omitempty"`
 }
 
 // RetryPolicy - Information about the retry policy for an event subscription.
@@ -3167,15 +2528,24 @@ type RetryPolicy struct {
 
 // ServiceBusQueueEventSubscriptionDestination - Information about the service bus destination for an event subscription.
 type ServiceBusQueueEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Service Bus Properties of the event subscription destination.
 	Properties *ServiceBusQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusQueueEventSubscriptionDestination.
+func (s *ServiceBusQueueEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceBusQueueEventSubscriptionDestination.
 func (s ServiceBusQueueEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeServiceBusQueue)
+	objectMap["endpointType"] = EndpointTypeServiceBusQueue
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3189,6 +2559,9 @@ func (s *ServiceBusQueueEventSubscriptionDestination) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &s.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
 			delete(rawMsg, key)
@@ -3197,13 +2570,11 @@ func (s *ServiceBusQueueEventSubscriptionDestination) UnmarshalJSON(data []byte)
 			return err
 		}
 	}
-	if err := s.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// ServiceBusQueueEventSubscriptionDestinationProperties - The properties that represent the Service Bus destination of an event subscription.
+// ServiceBusQueueEventSubscriptionDestinationProperties - The properties that represent the Service Bus destination of an
+// event subscription.
 type ServiceBusQueueEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
 	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
@@ -3245,15 +2616,24 @@ func (s *ServiceBusQueueEventSubscriptionDestinationProperties) UnmarshalJSON(da
 
 // ServiceBusTopicEventSubscriptionDestination - Information about the service bus topic destination for an event subscription.
 type ServiceBusTopicEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Service Bus Topic Properties of the event subscription destination.
 	Properties *ServiceBusTopicEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusTopicEventSubscriptionDestination.
+func (s *ServiceBusTopicEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceBusTopicEventSubscriptionDestination.
 func (s ServiceBusTopicEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeServiceBusTopic)
+	objectMap["endpointType"] = EndpointTypeServiceBusTopic
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3267,6 +2647,9 @@ func (s *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &s.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
 			delete(rawMsg, key)
@@ -3275,13 +2658,11 @@ func (s *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(data []byte)
 			return err
 		}
 	}
-	if err := s.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// ServiceBusTopicEventSubscriptionDestinationProperties - The properties that represent the Service Bus Topic destination of an event subscription.
+// ServiceBusTopicEventSubscriptionDestinationProperties - The properties that represent the Service Bus Topic destination
+// of an event subscription.
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
 	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
@@ -3323,16 +2704,30 @@ func (s *ServiceBusTopicEventSubscriptionDestinationProperties) UnmarshalJSON(da
 
 // StaticDeliveryAttributeMapping - Static delivery attribute mapping details.
 type StaticDeliveryAttributeMapping struct {
-	DeliveryAttributeMapping
+	// REQUIRED; Type of the delivery attribute or header name.
+	Type *DeliveryAttributeMappingType `json:"type,omitempty"`
+
+	// Name of the delivery attribute or header.
+	Name *string `json:"name,omitempty"`
+
 	// Properties of static delivery attribute mapping.
 	Properties *StaticDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+}
+
+// GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type StaticDeliveryAttributeMapping.
+func (s *StaticDeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping {
+	return &DeliveryAttributeMapping{
+		Name: s.Name,
+		Type: s.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StaticDeliveryAttributeMapping.
 func (s StaticDeliveryAttributeMapping) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.DeliveryAttributeMapping.marshalInternal(objectMap, DeliveryAttributeMappingTypeStatic)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	objectMap["type"] = DeliveryAttributeMappingTypeStatic
 	return json.Marshal(objectMap)
 }
 
@@ -3345,16 +2740,19 @@ func (s *StaticDeliveryAttributeMapping) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "name":
+			err = unpopulate(val, &s.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &s.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.DeliveryAttributeMapping.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3370,15 +2768,24 @@ type StaticDeliveryAttributeMappingProperties struct {
 
 // StorageBlobDeadLetterDestination - Information about the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestination struct {
-	DeadLetterDestination
+	// REQUIRED; Type of the endpoint for the dead letter destination
+	EndpointType *DeadLetterEndPointType `json:"endpointType,omitempty"`
+
 	// The properties of the Storage Blob based deadletter destination
 	Properties *StorageBlobDeadLetterDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type StorageBlobDeadLetterDestination.
+func (s *StorageBlobDeadLetterDestination) GetDeadLetterDestination() *DeadLetterDestination {
+	return &DeadLetterDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageBlobDeadLetterDestination.
 func (s StorageBlobDeadLetterDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.DeadLetterDestination.marshalInternal(objectMap, DeadLetterEndPointTypeStorageBlob)
+	objectMap["endpointType"] = DeadLetterEndPointTypeStorageBlob
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3392,6 +2799,9 @@ func (s *StorageBlobDeadLetterDestination) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &s.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
 			delete(rawMsg, key)
@@ -3399,9 +2809,6 @@ func (s *StorageBlobDeadLetterDestination) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.DeadLetterDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3417,15 +2824,24 @@ type StorageBlobDeadLetterDestinationProperties struct {
 
 // StorageQueueEventSubscriptionDestination - Information about the storage queue destination for an event subscription.
 type StorageQueueEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// Storage Queue Properties of the event subscription destination.
 	Properties *StorageQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type StorageQueueEventSubscriptionDestination.
+func (s *StorageQueueEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageQueueEventSubscriptionDestination.
 func (s StorageQueueEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeStorageQueue)
+	objectMap["endpointType"] = EndpointTypeStorageQueue
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3439,6 +2855,9 @@ func (s *StorageQueueEventSubscriptionDestination) UnmarshalJSON(data []byte) er
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &s.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
 			delete(rawMsg, key)
@@ -3446,9 +2865,6 @@ func (s *StorageQueueEventSubscriptionDestination) UnmarshalJSON(data []byte) er
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3467,15 +2883,29 @@ type StorageQueueEventSubscriptionDestinationProperties struct {
 
 // StringBeginsWithAdvancedFilter - StringBeginsWith Advanced Filter.
 type StringBeginsWithAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringBeginsWithAdvancedFilter.
+func (s *StringBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringBeginsWithAdvancedFilter.
 func (s StringBeginsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringBeginsWith)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringBeginsWith
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3489,6 +2919,12 @@ func (s *StringBeginsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3497,23 +2933,34 @@ func (s *StringBeginsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringContainsAdvancedFilter - StringContains Advanced Filter.
 type StringContainsAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringContainsAdvancedFilter.
+func (s *StringContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringContainsAdvancedFilter.
 func (s StringContainsAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringContains)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringContains
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3527,6 +2974,12 @@ func (s *StringContainsAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3535,23 +2988,34 @@ func (s *StringContainsAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringEndsWithAdvancedFilter - StringEndsWith Advanced Filter.
 type StringEndsWithAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringEndsWithAdvancedFilter.
+func (s *StringEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringEndsWithAdvancedFilter.
 func (s StringEndsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringEndsWith)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringEndsWith
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3565,6 +3029,12 @@ func (s *StringEndsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3573,23 +3043,34 @@ func (s *StringEndsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringInAdvancedFilter - StringIn Advanced Filter.
 type StringInAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringInAdvancedFilter.
+func (s *StringInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringInAdvancedFilter.
 func (s StringInAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringIn)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringIn
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3603,6 +3084,12 @@ func (s *StringInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3611,23 +3098,34 @@ func (s *StringInAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringNotBeginsWithAdvancedFilter - StringNotBeginsWith Advanced Filter.
 type StringNotBeginsWithAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotBeginsWithAdvancedFilter.
+func (s *StringNotBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringNotBeginsWithAdvancedFilter.
 func (s StringNotBeginsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotBeginsWith)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringNotBeginsWith
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3641,6 +3139,12 @@ func (s *StringNotBeginsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3649,23 +3153,34 @@ func (s *StringNotBeginsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringNotContainsAdvancedFilter - StringNotContains Advanced Filter.
 type StringNotContainsAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotContainsAdvancedFilter.
+func (s *StringNotContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringNotContainsAdvancedFilter.
 func (s StringNotContainsAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotContains)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringNotContains
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3679,6 +3194,12 @@ func (s *StringNotContainsAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3687,23 +3208,34 @@ func (s *StringNotContainsAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringNotEndsWithAdvancedFilter - StringNotEndsWith Advanced Filter.
 type StringNotEndsWithAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotEndsWithAdvancedFilter.
+func (s *StringNotEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringNotEndsWithAdvancedFilter.
 func (s StringNotEndsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotEndsWith)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringNotEndsWith
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3717,6 +3249,12 @@ func (s *StringNotEndsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3725,23 +3263,34 @@ func (s *StringNotEndsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // StringNotInAdvancedFilter - StringNotIn Advanced Filter.
 type StringNotInAdvancedFilter struct {
-	AdvancedFilter
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+
+	// The field/property in the event based on which you want to filter.
+	Key *string `json:"key,omitempty"`
+
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotInAdvancedFilter.
+func (s *StringNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringNotInAdvancedFilter.
 func (s StringNotInAdvancedFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotIn)
+	populate(objectMap, "key", s.Key)
+	objectMap["operatorType"] = AdvancedFilterOperatorTypeStringNotIn
 	populate(objectMap, "values", s.Values)
 	return json.Marshal(objectMap)
 }
@@ -3755,6 +3304,12 @@ func (s *StringNotInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "key":
+			err = unpopulate(val, &s.Key)
+			delete(rawMsg, key)
+		case "operatorType":
+			err = unpopulate(val, &s.OperatorType)
+			delete(rawMsg, key)
 		case "values":
 			err = unpopulate(val, &s.Values)
 			delete(rawMsg, key)
@@ -3762,9 +3317,6 @@ func (s *StringNotInAdvancedFilter) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3793,10 +3345,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3812,9 +3364,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -3823,9 +3373,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -3843,67 +3391,93 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // SystemTopic - EventGrid System Topic.
 type SystemTopic struct {
-	TrackedResource
+	// REQUIRED; Location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
 	// Properties of the system topic.
 	Properties *SystemTopicProperties `json:"properties,omitempty"`
 
+	// Tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to System Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SystemTopic.
 func (s SystemTopic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
-// SystemTopicEventSubscriptionsBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptions.BeginCreateOrUpdate method.
-type SystemTopicEventSubscriptionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SystemTopicEventSubscriptionsBeginDeleteOptions contains the optional parameters for the SystemTopicEventSubscriptions.BeginDelete method.
-type SystemTopicEventSubscriptionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SystemTopicEventSubscriptionsBeginUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptions.BeginUpdate method.
-type SystemTopicEventSubscriptionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SystemTopicEventSubscriptionsGetDeliveryAttributesOptions contains the optional parameters for the SystemTopicEventSubscriptions.GetDeliveryAttributes
+// SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate
 // method.
-type SystemTopicEventSubscriptionsGetDeliveryAttributesOptions struct {
+type SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicEventSubscriptionsGetFullURLOptions contains the optional parameters for the SystemTopicEventSubscriptions.GetFullURL method.
-type SystemTopicEventSubscriptionsGetFullURLOptions struct {
+// SystemTopicEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginDelete
+// method.
+type SystemTopicEventSubscriptionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicEventSubscriptionsGetOptions contains the optional parameters for the SystemTopicEventSubscriptions.Get method.
-type SystemTopicEventSubscriptionsGetOptions struct {
+// SystemTopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginUpdate
+// method.
+type SystemTopicEventSubscriptionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicEventSubscriptionsListBySystemTopicOptions contains the optional parameters for the SystemTopicEventSubscriptions.ListBySystemTopic method.
-type SystemTopicEventSubscriptionsListBySystemTopicOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// SystemTopicEventSubscriptionsClientGetDeliveryAttributesOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.GetDeliveryAttributes
+// method.
+type SystemTopicEventSubscriptionsClientGetDeliveryAttributesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SystemTopicEventSubscriptionsClientGetFullURLOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.GetFullURL
+// method.
+type SystemTopicEventSubscriptionsClientGetFullURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SystemTopicEventSubscriptionsClientGetOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.Get
+// method.
+type SystemTopicEventSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SystemTopicEventSubscriptionsClientListBySystemTopicOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.ListBySystemTopic
+// method.
+type SystemTopicEventSubscriptionsClientListBySystemTopicOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -3939,47 +3513,54 @@ func (s SystemTopicUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SystemTopicsBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopics.BeginCreateOrUpdate method.
-type SystemTopicsBeginCreateOrUpdateOptions struct {
+// SystemTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicsClient.BeginCreateOrUpdate
+// method.
+type SystemTopicsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicsBeginDeleteOptions contains the optional parameters for the SystemTopics.BeginDelete method.
-type SystemTopicsBeginDeleteOptions struct {
+// SystemTopicsClientBeginDeleteOptions contains the optional parameters for the SystemTopicsClient.BeginDelete method.
+type SystemTopicsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicsBeginUpdateOptions contains the optional parameters for the SystemTopics.BeginUpdate method.
-type SystemTopicsBeginUpdateOptions struct {
+// SystemTopicsClientBeginUpdateOptions contains the optional parameters for the SystemTopicsClient.BeginUpdate method.
+type SystemTopicsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicsGetOptions contains the optional parameters for the SystemTopics.Get method.
-type SystemTopicsGetOptions struct {
+// SystemTopicsClientGetOptions contains the optional parameters for the SystemTopicsClient.Get method.
+type SystemTopicsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SystemTopicsListByResourceGroupOptions contains the optional parameters for the SystemTopics.ListByResourceGroup method.
-type SystemTopicsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// SystemTopicsClientListByResourceGroupOptions contains the optional parameters for the SystemTopicsClient.ListByResourceGroup
+// method.
+type SystemTopicsClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// SystemTopicsListBySubscriptionOptions contains the optional parameters for the SystemTopics.ListBySubscription method.
-type SystemTopicsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// SystemTopicsClientListBySubscriptionOptions contains the optional parameters for the SystemTopicsClient.ListBySubscription
+// method.
+type SystemTopicsClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
@@ -4002,56 +3583,64 @@ func (s SystemTopicsListResult) MarshalJSON() ([]byte, error) {
 
 // Topic - EventGrid Topic
 type Topic struct {
-	TrackedResource
-	// Extended location of the resource.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	// REQUIRED; Location of the resource.
+	Location *string `json:"location,omitempty"`
 
 	// Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
-	// Kind of the resource.
-	Kind *ResourceKind `json:"kind,omitempty"`
-
 	// Properties of the topic.
 	Properties *TopicProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	// Tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The system metadata relating to Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Topic.
 func (t Topic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "extendedLocation", t.ExtendedLocation)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "identity", t.Identity)
-	populate(objectMap, "kind", t.Kind)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "sku", t.SKU)
 	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-// TopicProperties - Properties of the Topic.
+// TopicProperties - Properties of the Topic
 type TopicProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the topic.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
+	// token will be used to authenticate if user is allowed to publish to the topic.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
 	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
 
 	// This determines the format that Event Grid should expect for incoming events published to the topic.
 	InputSchema *InputSchema `json:"inputSchema,omitempty"`
 
-	// This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required
-	// properties of the EventGridEvent schema.
+	// This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of
+	// a source schema to various required properties of the EventGridEvent schema.
 	InputSchemaMapping InputSchemaMappingClassification `json:"inputSchemaMapping,omitempty"`
 
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// READ-ONLY; Endpoint for the topic.
@@ -4143,17 +3732,17 @@ type TopicSharedAccessKeys struct {
 
 // TopicTypeInfo - Properties of a topic type info.
 type TopicTypeInfo struct {
-	Resource
 	// Properties of the topic type info
 	Properties *TopicTypeProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TopicTypeInfo.
-func (t TopicTypeInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TopicTypeProperties - Properties of a topic type.
@@ -4197,18 +3786,18 @@ func (t TopicTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TopicTypesGetOptions contains the optional parameters for the TopicTypes.Get method.
-type TopicTypesGetOptions struct {
+// TopicTypesClientGetOptions contains the optional parameters for the TopicTypesClient.Get method.
+type TopicTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicTypesListEventTypesOptions contains the optional parameters for the TopicTypes.ListEventTypes method.
-type TopicTypesListEventTypesOptions struct {
+// TopicTypesClientListEventTypesOptions contains the optional parameters for the TopicTypesClient.ListEventTypes method.
+type TopicTypesClientListEventTypesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicTypesListOptions contains the optional parameters for the TopicTypes.List method.
-type TopicTypesListOptions struct {
+// TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.List method.
+type TopicTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4227,14 +3816,16 @@ func (t TopicTypesListResult) MarshalJSON() ([]byte, error) {
 
 // TopicUpdateParameterProperties - Information of topic update parameter properties.
 type TopicUpdateParameterProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the topic.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
+	// token will be used to authenticate if user is allowed to publish to the topic.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
 	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
 
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
@@ -4252,13 +3843,10 @@ type TopicUpdateParameters struct {
 	// Topic resource identity information.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
-	// Properties of the Topic resource.
+	// Properties of the resource.
 	Properties *TopicUpdateParameterProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
-	// Tags of the Topic resource.
+	// Tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -4267,62 +3855,70 @@ func (t TopicUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "identity", t.Identity)
 	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "sku", t.SKU)
 	populate(objectMap, "tags", t.Tags)
 	return json.Marshal(objectMap)
 }
 
-// TopicsBeginCreateOrUpdateOptions contains the optional parameters for the Topics.BeginCreateOrUpdate method.
-type TopicsBeginCreateOrUpdateOptions struct {
+// TopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicsClient.BeginCreateOrUpdate method.
+type TopicsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicsBeginDeleteOptions contains the optional parameters for the Topics.BeginDelete method.
-type TopicsBeginDeleteOptions struct {
+// TopicsClientBeginDeleteOptions contains the optional parameters for the TopicsClient.BeginDelete method.
+type TopicsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicsBeginRegenerateKeyOptions contains the optional parameters for the Topics.BeginRegenerateKey method.
-type TopicsBeginRegenerateKeyOptions struct {
+// TopicsClientBeginRegenerateKeyOptions contains the optional parameters for the TopicsClient.BeginRegenerateKey method.
+type TopicsClientBeginRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicsBeginUpdateOptions contains the optional parameters for the Topics.BeginUpdate method.
-type TopicsBeginUpdateOptions struct {
+// TopicsClientBeginUpdateOptions contains the optional parameters for the TopicsClient.BeginUpdate method.
+type TopicsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicsGetOptions contains the optional parameters for the Topics.Get method.
-type TopicsGetOptions struct {
+// TopicsClientGetOptions contains the optional parameters for the TopicsClient.Get method.
+type TopicsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopicsListByResourceGroupOptions contains the optional parameters for the Topics.ListByResourceGroup method.
-type TopicsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// TopicsClientListByResourceGroupOptions contains the optional parameters for the TopicsClient.ListByResourceGroup method.
+type TopicsClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// TopicsListBySubscriptionOptions contains the optional parameters for the Topics.ListBySubscription method.
-type TopicsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
+// TopicsClientListBySubscriptionOptions contains the optional parameters for the TopicsClient.ListBySubscription method.
+type TopicsClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
 	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
 	Top *int32
 }
 
-// TopicsListEventTypesOptions contains the optional parameters for the Topics.ListEventTypes method.
-type TopicsListEventTypesOptions struct {
+// TopicsClientListEventTypesOptions contains the optional parameters for the TopicsClient.ListEventTypes method.
+type TopicsClientListEventTypesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TopicsClientListSharedAccessKeysOptions contains the optional parameters for the TopicsClient.ListSharedAccessKeys method.
+type TopicsClientListSharedAccessKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4343,32 +3939,33 @@ func (t TopicsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TopicsListSharedAccessKeysOptions contains the optional parameters for the Topics.ListSharedAccessKeys method.
-type TopicsListSharedAccessKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
 // TrackedResource - Definition of a Tracked Resource.
 type TrackedResource struct {
-	Resource
 	// REQUIRED; Location of the resource.
 	Location *string `json:"location,omitempty"`
 
 	// Tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UserIdentityProperties - The information about the user identity.
@@ -4382,15 +3979,24 @@ type UserIdentityProperties struct {
 
 // WebHookEventSubscriptionDestination - Information about the webhook destination for an event subscription.
 type WebHookEventSubscriptionDestination struct {
-	EventSubscriptionDestination
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
 	// WebHook Properties of the event subscription destination.
 	Properties *WebHookEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type WebHookEventSubscriptionDestination.
+func (w *WebHookEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: w.EndpointType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WebHookEventSubscriptionDestination.
 func (w WebHookEventSubscriptionDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.EventSubscriptionDestination.marshalInternal(objectMap, EndpointTypeWebHook)
+	objectMap["endpointType"] = EndpointTypeWebHook
 	populate(objectMap, "properties", w.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4404,6 +4010,9 @@ func (w *WebHookEventSubscriptionDestination) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "endpointType":
+			err = unpopulate(val, &w.EndpointType)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &w.Properties)
 			delete(rawMsg, key)
@@ -4412,15 +4021,13 @@ func (w *WebHookEventSubscriptionDestination) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := w.EventSubscriptionDestination.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // WebHookEventSubscriptionDestinationProperties - Information about the webhook destination properties for an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
-	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
+	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
+	// requests.
 	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
 
 	// The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.

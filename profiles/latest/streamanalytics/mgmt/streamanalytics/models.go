@@ -12,11 +12,19 @@ package streamanalytics
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
+	original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AuthenticationMode = original.AuthenticationMode
+
+const (
+	AuthenticationModeConnectionString AuthenticationMode = original.AuthenticationModeConnectionString
+	AuthenticationModeMsi              AuthenticationMode = original.AuthenticationModeMsi
+	AuthenticationModeUserToken        AuthenticationMode = original.AuthenticationModeUserToken
 )
 
 type BindingType = original.BindingType
@@ -27,30 +35,92 @@ const (
 	BindingTypeMicrosoftStreamAnalyticsJavascriptUdf       BindingType = original.BindingTypeMicrosoftStreamAnalyticsJavascriptUdf
 )
 
+type ClusterProvisioningState = original.ClusterProvisioningState
+
+const (
+	ClusterProvisioningStateCanceled   ClusterProvisioningState = original.ClusterProvisioningStateCanceled
+	ClusterProvisioningStateFailed     ClusterProvisioningState = original.ClusterProvisioningStateFailed
+	ClusterProvisioningStateInProgress ClusterProvisioningState = original.ClusterProvisioningStateInProgress
+	ClusterProvisioningStateSucceeded  ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
+)
+
+type ClusterSkuName = original.ClusterSkuName
+
+const (
+	ClusterSkuNameDefault ClusterSkuName = original.ClusterSkuNameDefault
+)
+
 type CompatibilityLevel = original.CompatibilityLevel
 
 const (
-	OneFullStopZero CompatibilityLevel = original.OneFullStopZero
+	CompatibilityLevelOneFullStopTwo  CompatibilityLevel = original.CompatibilityLevelOneFullStopTwo
+	CompatibilityLevelOneFullStopZero CompatibilityLevel = original.CompatibilityLevelOneFullStopZero
+)
+
+type CompressionType = original.CompressionType
+
+const (
+	CompressionTypeDeflate CompressionType = original.CompressionTypeDeflate
+	CompressionTypeGZip    CompressionType = original.CompressionTypeGZip
+	CompressionTypeNone    CompressionType = original.CompressionTypeNone
+)
+
+type ContentStoragePolicy = original.ContentStoragePolicy
+
+const (
+	ContentStoragePolicyJobStorageAccount ContentStoragePolicy = original.ContentStoragePolicyJobStorageAccount
+	ContentStoragePolicySystemAccount     ContentStoragePolicy = original.ContentStoragePolicySystemAccount
 )
 
 type Encoding = original.Encoding
 
 const (
-	UTF8 Encoding = original.UTF8
+	EncodingUTF8 Encoding = original.EncodingUTF8
+)
+
+type EventSerializationType = original.EventSerializationType
+
+const (
+	EventSerializationTypeAvro    EventSerializationType = original.EventSerializationTypeAvro
+	EventSerializationTypeCsv     EventSerializationType = original.EventSerializationTypeCsv
+	EventSerializationTypeJSON    EventSerializationType = original.EventSerializationTypeJSON
+	EventSerializationTypeParquet EventSerializationType = original.EventSerializationTypeParquet
 )
 
 type EventsOutOfOrderPolicy = original.EventsOutOfOrderPolicy
 
 const (
-	Adjust EventsOutOfOrderPolicy = original.Adjust
-	Drop   EventsOutOfOrderPolicy = original.Drop
+	EventsOutOfOrderPolicyAdjust EventsOutOfOrderPolicy = original.EventsOutOfOrderPolicyAdjust
+	EventsOutOfOrderPolicyDrop   EventsOutOfOrderPolicy = original.EventsOutOfOrderPolicyDrop
 )
 
 type JSONOutputSerializationFormat = original.JSONOutputSerializationFormat
 
 const (
-	Array         JSONOutputSerializationFormat = original.Array
-	LineSeparated JSONOutputSerializationFormat = original.LineSeparated
+	JSONOutputSerializationFormatArray         JSONOutputSerializationFormat = original.JSONOutputSerializationFormatArray
+	JSONOutputSerializationFormatLineSeparated JSONOutputSerializationFormat = original.JSONOutputSerializationFormatLineSeparated
+)
+
+type JobState = original.JobState
+
+const (
+	JobStateCreated    JobState = original.JobStateCreated
+	JobStateDegraded   JobState = original.JobStateDegraded
+	JobStateDeleting   JobState = original.JobStateDeleting
+	JobStateFailed     JobState = original.JobStateFailed
+	JobStateRestarting JobState = original.JobStateRestarting
+	JobStateRunning    JobState = original.JobStateRunning
+	JobStateScaling    JobState = original.JobStateScaling
+	JobStateStarting   JobState = original.JobStateStarting
+	JobStateStopped    JobState = original.JobStateStopped
+	JobStateStopping   JobState = original.JobStateStopping
+)
+
+type JobType = original.JobType
+
+const (
+	JobTypeCloud JobType = original.JobTypeCloud
+	JobTypeEdge  JobType = original.JobTypeEdge
 )
 
 type OutputErrorPolicy = original.OutputErrorPolicy
@@ -63,15 +133,23 @@ const (
 type OutputStartMode = original.OutputStartMode
 
 const (
-	CustomTime          OutputStartMode = original.CustomTime
-	JobStartTime        OutputStartMode = original.JobStartTime
-	LastOutputEventTime OutputStartMode = original.LastOutputEventTime
+	OutputStartModeCustomTime          OutputStartMode = original.OutputStartModeCustomTime
+	OutputStartModeJobStartTime        OutputStartMode = original.OutputStartModeJobStartTime
+	OutputStartModeLastOutputEventTime OutputStartMode = original.OutputStartModeLastOutputEventTime
+)
+
+type RefreshType = original.RefreshType
+
+const (
+	RefreshTypeRefreshPeriodicallyWithDelta RefreshType = original.RefreshTypeRefreshPeriodicallyWithDelta
+	RefreshTypeRefreshPeriodicallyWithFull  RefreshType = original.RefreshTypeRefreshPeriodicallyWithFull
+	RefreshTypeStatic                       RefreshType = original.RefreshTypeStatic
 )
 
 type SkuName = original.SkuName
 
 const (
-	Standard SkuName = original.Standard
+	SkuNameStandard SkuName = original.SkuNameStandard
 )
 
 type Type = original.Type
@@ -80,58 +158,63 @@ const (
 	TypeAvro          Type = original.TypeAvro
 	TypeCsv           Type = original.TypeCsv
 	TypeJSON          Type = original.TypeJSON
+	TypeParquet       Type = original.TypeParquet
 	TypeSerialization Type = original.TypeSerialization
 )
 
 type TypeBasicFunctionBinding = original.TypeBasicFunctionBinding
 
 const (
-	TypeFunctionBinding                       TypeBasicFunctionBinding = original.TypeFunctionBinding
-	TypeMicrosoftMachineLearningWebService    TypeBasicFunctionBinding = original.TypeMicrosoftMachineLearningWebService
-	TypeMicrosoftStreamAnalyticsJavascriptUdf TypeBasicFunctionBinding = original.TypeMicrosoftStreamAnalyticsJavascriptUdf
+	TypeBasicFunctionBindingTypeFunctionBinding                       TypeBasicFunctionBinding = original.TypeBasicFunctionBindingTypeFunctionBinding
+	TypeBasicFunctionBindingTypeMicrosoftMachineLearningWebService    TypeBasicFunctionBinding = original.TypeBasicFunctionBindingTypeMicrosoftMachineLearningWebService
+	TypeBasicFunctionBindingTypeMicrosoftStreamAnalyticsJavascriptUdf TypeBasicFunctionBinding = original.TypeBasicFunctionBindingTypeMicrosoftStreamAnalyticsJavascriptUdf
 )
 
 type TypeBasicFunctionProperties = original.TypeBasicFunctionProperties
 
 const (
-	TypeFunctionProperties TypeBasicFunctionProperties = original.TypeFunctionProperties
-	TypeScalar             TypeBasicFunctionProperties = original.TypeScalar
+	TypeBasicFunctionPropertiesTypeFunctionProperties TypeBasicFunctionProperties = original.TypeBasicFunctionPropertiesTypeFunctionProperties
+	TypeBasicFunctionPropertiesTypeScalar             TypeBasicFunctionProperties = original.TypeBasicFunctionPropertiesTypeScalar
 )
 
 type TypeBasicInputProperties = original.TypeBasicInputProperties
 
 const (
-	TypeInputProperties TypeBasicInputProperties = original.TypeInputProperties
-	TypeReference       TypeBasicInputProperties = original.TypeReference
-	TypeStream          TypeBasicInputProperties = original.TypeStream
+	TypeBasicInputPropertiesTypeInputProperties TypeBasicInputProperties = original.TypeBasicInputPropertiesTypeInputProperties
+	TypeBasicInputPropertiesTypeReference       TypeBasicInputProperties = original.TypeBasicInputPropertiesTypeReference
+	TypeBasicInputPropertiesTypeStream          TypeBasicInputProperties = original.TypeBasicInputPropertiesTypeStream
 )
 
 type TypeBasicOutputDataSource = original.TypeBasicOutputDataSource
 
 const (
-	TypeMicrosoftDataLakeAccounts   TypeBasicOutputDataSource = original.TypeMicrosoftDataLakeAccounts
-	TypeMicrosoftServiceBusEventHub TypeBasicOutputDataSource = original.TypeMicrosoftServiceBusEventHub
-	TypeMicrosoftServiceBusQueue    TypeBasicOutputDataSource = original.TypeMicrosoftServiceBusQueue
-	TypeMicrosoftServiceBusTopic    TypeBasicOutputDataSource = original.TypeMicrosoftServiceBusTopic
-	TypeMicrosoftSQLServerDatabase  TypeBasicOutputDataSource = original.TypeMicrosoftSQLServerDatabase
-	TypeMicrosoftStorageBlob        TypeBasicOutputDataSource = original.TypeMicrosoftStorageBlob
-	TypeMicrosoftStorageDocumentDB  TypeBasicOutputDataSource = original.TypeMicrosoftStorageDocumentDB
-	TypeMicrosoftStorageTable       TypeBasicOutputDataSource = original.TypeMicrosoftStorageTable
-	TypeOutputDataSource            TypeBasicOutputDataSource = original.TypeOutputDataSource
-	TypePowerBI                     TypeBasicOutputDataSource = original.TypePowerBI
+	TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts       TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts
+	TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub       TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub
+	TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub     TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub
+	TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue        TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue
+	TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic        TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic
+	TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase      TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase
+	TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse
+	TypeBasicOutputDataSourceTypeMicrosoftStorageBlob            TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftStorageBlob
+	TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB      TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB
+	TypeBasicOutputDataSourceTypeMicrosoftStorageTable           TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftStorageTable
+	TypeBasicOutputDataSourceTypeOutputDataSource                TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeOutputDataSource
+	TypeBasicOutputDataSourceTypePowerBI                         TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypePowerBI
 )
 
 type TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSource
 
 const (
-	TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob     TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob
-	TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource
+	TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase
+	TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob       TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob
+	TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource   TypeBasicReferenceInputDataSource = original.TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource
 )
 
 type TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSource
 
 const (
 	TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs     TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs
+	TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub   TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub
 	TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub
 	TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob        TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob
 	TypeBasicStreamInputDataSourceTypeStreamInputDataSource       TypeBasicStreamInputDataSource = original.TypeBasicStreamInputDataSourceTypeStreamInputDataSource
@@ -140,7 +223,7 @@ const (
 type UdfType = original.UdfType
 
 const (
-	Scalar UdfType = original.Scalar
+	UdfTypeScalar UdfType = original.UdfTypeScalar
 )
 
 type AvroSerialization = original.AvroSerialization
@@ -156,6 +239,11 @@ type AzureMachineLearningWebServiceOutputColumn = original.AzureMachineLearningW
 type AzureSQLDatabaseDataSourceProperties = original.AzureSQLDatabaseDataSourceProperties
 type AzureSQLDatabaseOutputDataSource = original.AzureSQLDatabaseOutputDataSource
 type AzureSQLDatabaseOutputDataSourceProperties = original.AzureSQLDatabaseOutputDataSourceProperties
+type AzureSQLReferenceInputDataSource = original.AzureSQLReferenceInputDataSource
+type AzureSQLReferenceInputDataSourceProperties = original.AzureSQLReferenceInputDataSourceProperties
+type AzureSynapseDataSourceProperties = original.AzureSynapseDataSourceProperties
+type AzureSynapseOutputDataSource = original.AzureSynapseOutputDataSource
+type AzureSynapseOutputDataSourceProperties = original.AzureSynapseOutputDataSourceProperties
 type AzureTableOutputDataSource = original.AzureTableOutputDataSource
 type AzureTableOutputDataSourceProperties = original.AzureTableOutputDataSourceProperties
 type BaseClient = original.BaseClient
@@ -174,18 +262,39 @@ type BlobReferenceInputDataSource = original.BlobReferenceInputDataSource
 type BlobReferenceInputDataSourceProperties = original.BlobReferenceInputDataSourceProperties
 type BlobStreamInputDataSource = original.BlobStreamInputDataSource
 type BlobStreamInputDataSourceProperties = original.BlobStreamInputDataSourceProperties
+type Cluster = original.Cluster
+type ClusterInfo = original.ClusterInfo
+type ClusterJob = original.ClusterJob
+type ClusterJobListResult = original.ClusterJobListResult
+type ClusterJobListResultIterator = original.ClusterJobListResultIterator
+type ClusterJobListResultPage = original.ClusterJobListResultPage
+type ClusterListResult = original.ClusterListResult
+type ClusterListResultIterator = original.ClusterListResultIterator
+type ClusterListResultPage = original.ClusterListResultPage
+type ClusterProperties = original.ClusterProperties
+type ClusterSku = original.ClusterSku
+type ClustersClient = original.ClustersClient
+type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
+type ClustersDeleteFuture = original.ClustersDeleteFuture
+type ClustersUpdateFuture = original.ClustersUpdateFuture
+type Compression = original.Compression
 type CsvSerialization = original.CsvSerialization
 type CsvSerializationProperties = original.CsvSerializationProperties
 type DiagnosticCondition = original.DiagnosticCondition
 type Diagnostics = original.Diagnostics
 type DocumentDbOutputDataSource = original.DocumentDbOutputDataSource
 type DocumentDbOutputDataSourceProperties = original.DocumentDbOutputDataSourceProperties
+type Error = original.Error
+type ErrorDetails = original.ErrorDetails
+type ErrorError = original.ErrorError
 type ErrorResponse = original.ErrorResponse
 type EventHubDataSourceProperties = original.EventHubDataSourceProperties
 type EventHubOutputDataSource = original.EventHubOutputDataSource
 type EventHubOutputDataSourceProperties = original.EventHubOutputDataSourceProperties
 type EventHubStreamInputDataSource = original.EventHubStreamInputDataSource
 type EventHubStreamInputDataSourceProperties = original.EventHubStreamInputDataSourceProperties
+type EventHubV2OutputDataSource = original.EventHubV2OutputDataSource
+type EventHubV2StreamInputDataSource = original.EventHubV2StreamInputDataSource
 type Function = original.Function
 type FunctionBinding = original.FunctionBinding
 type FunctionInput = original.FunctionInput
@@ -197,6 +306,7 @@ type FunctionProperties = original.FunctionProperties
 type FunctionRetrieveDefaultDefinitionParameters = original.FunctionRetrieveDefaultDefinitionParameters
 type FunctionsClient = original.FunctionsClient
 type FunctionsTestFuture = original.FunctionsTestFuture
+type Identity = original.Identity
 type Input = original.Input
 type InputListResult = original.InputListResult
 type InputListResultIterator = original.InputListResultIterator
@@ -212,6 +322,7 @@ type JavaScriptFunctionBinding = original.JavaScriptFunctionBinding
 type JavaScriptFunctionBindingProperties = original.JavaScriptFunctionBindingProperties
 type JavaScriptFunctionBindingRetrievalProperties = original.JavaScriptFunctionBindingRetrievalProperties
 type JavaScriptFunctionRetrieveDefaultDefinitionParameters = original.JavaScriptFunctionRetrieveDefaultDefinitionParameters
+type JobStorageAccount = original.JobStorageAccount
 type OAuthBasedDataSourceProperties = original.OAuthBasedDataSourceProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -227,14 +338,27 @@ type OutputListResultPage = original.OutputListResultPage
 type OutputProperties = original.OutputProperties
 type OutputsClient = original.OutputsClient
 type OutputsTestFuture = original.OutputsTestFuture
+type ParquetSerialization = original.ParquetSerialization
 type PowerBIOutputDataSource = original.PowerBIOutputDataSource
 type PowerBIOutputDataSourceProperties = original.PowerBIOutputDataSourceProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointListResult = original.PrivateEndpointListResult
+type PrivateEndpointListResultIterator = original.PrivateEndpointListResultIterator
+type PrivateEndpointListResultPage = original.PrivateEndpointListResultPage
+type PrivateEndpointProperties = original.PrivateEndpointProperties
+type PrivateEndpointsClient = original.PrivateEndpointsClient
+type PrivateEndpointsDeleteFuture = original.PrivateEndpointsDeleteFuture
+type PrivateLinkConnectionState = original.PrivateLinkConnectionState
+type PrivateLinkServiceConnection = original.PrivateLinkServiceConnection
+type PrivateLinkServiceConnectionProperties = original.PrivateLinkServiceConnectionProperties
+type ProxyResource = original.ProxyResource
 type ReferenceInputDataSource = original.ReferenceInputDataSource
 type ReferenceInputProperties = original.ReferenceInputProperties
 type Resource = original.Resource
 type ResourceTestStatus = original.ResourceTestStatus
 type ScalarFunctionConfiguration = original.ScalarFunctionConfiguration
 type ScalarFunctionProperties = original.ScalarFunctionProperties
+type ScaleStreamingJobParameters = original.ScaleStreamingJobParameters
 type Serialization = original.Serialization
 type ServiceBusDataSourceProperties = original.ServiceBusDataSourceProperties
 type ServiceBusQueueOutputDataSource = original.ServiceBusQueueOutputDataSource
@@ -254,6 +378,7 @@ type StreamingJobProperties = original.StreamingJobProperties
 type StreamingJobsClient = original.StreamingJobsClient
 type StreamingJobsCreateOrReplaceFuture = original.StreamingJobsCreateOrReplaceFuture
 type StreamingJobsDeleteFuture = original.StreamingJobsDeleteFuture
+type StreamingJobsScaleFuture = original.StreamingJobsScaleFuture
 type StreamingJobsStartFuture = original.StreamingJobsStartFuture
 type StreamingJobsStopFuture = original.StreamingJobsStopFuture
 type SubResource = original.SubResource
@@ -261,12 +386,31 @@ type SubscriptionQuota = original.SubscriptionQuota
 type SubscriptionQuotaProperties = original.SubscriptionQuotaProperties
 type SubscriptionQuotasListResult = original.SubscriptionQuotasListResult
 type SubscriptionsClient = original.SubscriptionsClient
+type TrackedResource = original.TrackedResource
 type Transformation = original.Transformation
 type TransformationProperties = original.TransformationProperties
 type TransformationsClient = original.TransformationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewClusterJobListResultIterator(page ClusterJobListResultPage) ClusterJobListResultIterator {
+	return original.NewClusterJobListResultIterator(page)
+}
+func NewClusterJobListResultPage(cur ClusterJobListResult, getNextPage func(context.Context, ClusterJobListResult) (ClusterJobListResult, error)) ClusterJobListResultPage {
+	return original.NewClusterJobListResultPage(cur, getNextPage)
+}
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(cur, getNextPage)
+}
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
+}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFunctionListResultIterator(page FunctionListResultPage) FunctionListResultIterator {
 	return original.NewFunctionListResultIterator(page)
@@ -316,6 +460,18 @@ func NewOutputsClient(subscriptionID string) OutputsClient {
 func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsClient {
 	return original.NewOutputsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointListResultIterator(page PrivateEndpointListResultPage) PrivateEndpointListResultIterator {
+	return original.NewPrivateEndpointListResultIterator(page)
+}
+func NewPrivateEndpointListResultPage(cur PrivateEndpointListResult, getNextPage func(context.Context, PrivateEndpointListResult) (PrivateEndpointListResult, error)) PrivateEndpointListResultPage {
+	return original.NewPrivateEndpointListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointsClient(subscriptionID string) PrivateEndpointsClient {
+	return original.NewPrivateEndpointsClient(subscriptionID)
+}
+func NewPrivateEndpointsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointsClient {
+	return original.NewPrivateEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewStreamingJobListResultIterator(page StreamingJobListResultPage) StreamingJobListResultIterator {
 	return original.NewStreamingJobListResultIterator(page)
 }
@@ -343,14 +499,32 @@ func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAuthenticationModeValues() []AuthenticationMode {
+	return original.PossibleAuthenticationModeValues()
+}
 func PossibleBindingTypeValues() []BindingType {
 	return original.PossibleBindingTypeValues()
+}
+func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
+	return original.PossibleClusterProvisioningStateValues()
+}
+func PossibleClusterSkuNameValues() []ClusterSkuName {
+	return original.PossibleClusterSkuNameValues()
 }
 func PossibleCompatibilityLevelValues() []CompatibilityLevel {
 	return original.PossibleCompatibilityLevelValues()
 }
+func PossibleCompressionTypeValues() []CompressionType {
+	return original.PossibleCompressionTypeValues()
+}
+func PossibleContentStoragePolicyValues() []ContentStoragePolicy {
+	return original.PossibleContentStoragePolicyValues()
+}
 func PossibleEncodingValues() []Encoding {
 	return original.PossibleEncodingValues()
+}
+func PossibleEventSerializationTypeValues() []EventSerializationType {
+	return original.PossibleEventSerializationTypeValues()
 }
 func PossibleEventsOutOfOrderPolicyValues() []EventsOutOfOrderPolicy {
 	return original.PossibleEventsOutOfOrderPolicyValues()
@@ -358,11 +532,20 @@ func PossibleEventsOutOfOrderPolicyValues() []EventsOutOfOrderPolicy {
 func PossibleJSONOutputSerializationFormatValues() []JSONOutputSerializationFormat {
 	return original.PossibleJSONOutputSerializationFormatValues()
 }
+func PossibleJobStateValues() []JobState {
+	return original.PossibleJobStateValues()
+}
+func PossibleJobTypeValues() []JobType {
+	return original.PossibleJobTypeValues()
+}
 func PossibleOutputErrorPolicyValues() []OutputErrorPolicy {
 	return original.PossibleOutputErrorPolicyValues()
 }
 func PossibleOutputStartModeValues() []OutputStartMode {
 	return original.PossibleOutputStartModeValues()
+}
+func PossibleRefreshTypeValues() []RefreshType {
+	return original.PossibleRefreshTypeValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

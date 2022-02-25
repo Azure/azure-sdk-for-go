@@ -7,15 +7,16 @@ import (
 	"bytes"
 	"crypto/md5"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 //nolint
@@ -182,7 +183,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	_ = resp.Body(RetryReaderOptions{}).Close()
+	_ = resp.Body(nil).Close()
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
@@ -453,7 +454,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert.Nil(err)
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	_ = resp2.Body(RetryReaderOptions{}).Close()
+	_ = resp2.Body(nil).Close()
 }
 
 //nolint
@@ -2099,7 +2100,7 @@ func validateBlobDeleted(_assert *assert.Assertions, bbClient BlobClient) {
 	_assert.NotNil(err)
 
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
+	_assert.Equal(true, errors.As(err, &storageError))
 	_assert.Equal(storageError.ErrorCode, StorageErrorCodeBlobNotFound)
 }
 
@@ -3472,8 +3473,8 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 }
 
 //nolint
-func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {
-	return RetryReaderOptions{
+func InjectErrorInRetryReaderOptions(err error) *RetryReaderOptions {
+	return &RetryReaderOptions{
 		MaxRetryRequests:       1,
 		doInjectError:          true,
 		doInjectErrorRound:     0,

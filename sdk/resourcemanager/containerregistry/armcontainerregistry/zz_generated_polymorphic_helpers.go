@@ -34,25 +34,6 @@ func unmarshalRunRequestClassification(rawMsg json.RawMessage) (RunRequestClassi
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRunRequestClassificationArray(rawMsg json.RawMessage) ([]RunRequestClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RunRequestClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRunRequestClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStepPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -75,25 +56,6 @@ func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStep
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalTaskStepPropertiesClassificationArray(rawMsg json.RawMessage) ([]TaskStepPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]TaskStepPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (TaskStepUpdateParametersClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -114,23 +76,4 @@ func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (Ta
 		b = &TaskStepUpdateParameters{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalTaskStepUpdateParametersClassificationArray(rawMsg json.RawMessage) ([]TaskStepUpdateParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]TaskStepUpdateParametersClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepUpdateParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
 }

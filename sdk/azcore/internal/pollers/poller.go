@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"time"
@@ -55,15 +54,14 @@ func PollerType(p *Poller) reflect.Type {
 }
 
 // NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) *Poller {
-	return &Poller{lro: lro, pl: pl, eu: eu, resp: resp}
+func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline) *Poller {
+	return &Poller{lro: lro, pl: pl, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller struct {
 	lro  Operation
 	pl   pipeline.Pipeline
-	eu   func(*http.Response) error
 	resp *http.Response
 	err  error
 }
@@ -97,7 +95,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	defer resp.Body.Close()
 	if !StatusCodeValid(resp) {
 		// the LRO failed.  unmarshall the error and update state
-		l.err = l.eu(resp)
+		l.err = shared.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -105,9 +103,9 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		return nil, err
 	}
 	l.resp = resp
-	log.Writef(log.LongRunningOperation, "Status %s", l.lro.Status())
+	log.Writef(log.EventLRO, "Status %s", l.lro.Status())
 	if Failed(l.lro.Status()) {
-		l.err = l.eu(resp)
+		l.err = shared.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -134,7 +132,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	}
 	// update l.resp with the content from final GET if applicable
 	if u := l.lro.FinalGetURL(); u != "" {
-		log.Write(log.LongRunningOperation, "Performing final GET.")
+		log.Write(log.EventLRO, "Performing final GET.")
 		req, err := pipeline.NewRequest(ctx, http.MethodGet, u)
 		if err != nil {
 			return nil, err
@@ -144,7 +142,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 			return nil, err
 		}
 		if !StatusCodeValid(resp) {
-			return nil, l.eu(resp)
+			return nil, shared.NewResponseError(resp)
 		}
 		l.resp = resp
 	}
@@ -152,11 +150,10 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	if respType == nil {
 		return l.resp, nil
 	} else if l.resp.StatusCode == http.StatusNoContent || l.resp.ContentLength == 0 {
-		log.Write(log.LongRunningOperation, "final response specifies a response type but no payload was received")
+		log.Write(log.EventLRO, "final response specifies a response type but no payload was received")
 		return l.resp, nil
 	}
-	body, err := ioutil.ReadAll(l.resp.Body)
-	l.resp.Body.Close()
+	body, err := shared.Payload(l.resp)
 	if err != nil {
 		return nil, err
 	}
@@ -169,18 +166,20 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached,
 // then return the final HTTP response for the polling operation and unmarshal the content of the payload
 // into the respType interface that is provided.
-// freq - the time to wait between polling intervals if the endpoint doesn't send a Retry-After header.
-//        A good starting value is 30 seconds.  Note that some resources might benefit from a different value.
+// freq - the time to wait between intervals in absence of a Retry-After header.  Minimum is one second.
 func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType interface{}) (*http.Response, error) {
+	if freq < time.Second {
+		return nil, errors.New("polling frequency minimum is one second")
+	}
 	start := time.Now()
 	logPollUntilDoneExit := func(v interface{}) {
-		log.Writef(log.LongRunningOperation, "END PollUntilDone() for %T: %v, total time: %s", l.lro, v, time.Since(start))
+		log.Writef(log.EventLRO, "END PollUntilDone() for %T: %v, total time: %s", l.lro, v, time.Since(start))
 	}
-	log.Writef(log.LongRunningOperation, "BEGIN PollUntilDone() for %T", l.lro)
+	log.Writef(log.EventLRO, "BEGIN PollUntilDone() for %T", l.lro)
 	if l.resp != nil {
 		// initial check for a retry-after header existing on the initial response
 		if retryAfter := shared.RetryAfter(l.resp); retryAfter > 0 {
-			log.Writef(log.LongRunningOperation, "initial Retry-After delay for %s", retryAfter.String())
+			log.Writef(log.EventLRO, "initial Retry-After delay for %s", retryAfter.String())
 			if err := shared.Delay(ctx, retryAfter); err != nil {
 				logPollUntilDoneExit(err)
 				return nil, err
@@ -200,10 +199,10 @@ func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType
 		}
 		d := freq
 		if retryAfter := shared.RetryAfter(resp); retryAfter > 0 {
-			log.Writef(log.LongRunningOperation, "Retry-After delay for %s", retryAfter.String())
+			log.Writef(log.EventLRO, "Retry-After delay for %s", retryAfter.String())
 			d = retryAfter
 		} else {
-			log.Writef(log.LongRunningOperation, "delay for %s", d.String())
+			log.Writef(log.EventLRO, "delay for %s", d.String())
 		}
 		if err = shared.Delay(ctx, d); err != nil {
 			logPollUntilDoneExit(err)

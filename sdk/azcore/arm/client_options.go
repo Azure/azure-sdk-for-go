@@ -14,8 +14,6 @@ type Endpoint string
 const (
 	// AzureChina is the Azure Resource Manager China cloud endpoint.
 	AzureChina Endpoint = "https://management.chinacloudapi.cn/"
-	// AzureGermany is the Azure Resource Manager Germany cloud endpoint.
-	AzureGermany Endpoint = "https://management.microsoftazure.de/"
 	// AzureGovernment is the Azure Resource Manager US government cloud endpoint.
 	AzureGovernment Endpoint = "https://management.usgovcloudapi.net/"
 	// AzurePublicCloud is the Azure Resource Manager public cloud endpoint.
@@ -32,6 +30,6 @@ type ClientOptions struct {
 	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
 
-	// Host is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
-	Host Endpoint
+	// Endpoint is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
+	Endpoint Endpoint
 }

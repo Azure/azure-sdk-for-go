@@ -11,57 +11,71 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentScheduleInstancesClient contains the methods for the RoleAssignmentScheduleInstances group.
 // Don't use this type directly, use NewRoleAssignmentScheduleInstancesClient() instead.
 type RoleAssignmentScheduleInstancesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRoleAssignmentScheduleInstancesClient creates a new instance of RoleAssignmentScheduleInstancesClient with the specified values.
-func NewRoleAssignmentScheduleInstancesClient(con *arm.Connection) *RoleAssignmentScheduleInstancesClient {
-	return &RoleAssignmentScheduleInstancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewRoleAssignmentScheduleInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentScheduleInstancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &RoleAssignmentScheduleInstancesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the specified role assignment schedule instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentScheduleInstancesClient) Get(ctx context.Context, scope string, roleAssignmentScheduleInstanceName string, options *RoleAssignmentScheduleInstancesGetOptions) (RoleAssignmentScheduleInstancesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role assignments schedules.
+// roleAssignmentScheduleInstanceName - The name (hash of schedule name + time) of the role assignment schedule to get.
+// options - RoleAssignmentScheduleInstancesClientGetOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.Get
+// method.
+func (client *RoleAssignmentScheduleInstancesClient) Get(ctx context.Context, scope string, roleAssignmentScheduleInstanceName string, options *RoleAssignmentScheduleInstancesClientGetOptions) (RoleAssignmentScheduleInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentScheduleInstanceName, options)
 	if err != nil {
-		return RoleAssignmentScheduleInstancesGetResponse{}, err
+		return RoleAssignmentScheduleInstancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentScheduleInstancesGetResponse{}, err
+		return RoleAssignmentScheduleInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentScheduleInstancesGetResponse{}, client.getHandleError(resp)
+		return RoleAssignmentScheduleInstancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleAssignmentScheduleInstancesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleInstanceName string, options *RoleAssignmentScheduleInstancesGetOptions) (*policy.Request, error) {
+func (client *RoleAssignmentScheduleInstancesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleInstanceName string, options *RoleAssignmentScheduleInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances/{roleAssignmentScheduleInstanceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleInstanceName == "" {
 		return nil, errors.New("parameter roleAssignmentScheduleInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleInstanceName}", url.PathEscape(roleAssignmentScheduleInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -73,49 +87,36 @@ func (client *RoleAssignmentScheduleInstancesClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleAssignmentScheduleInstancesClient) getHandleResponse(resp *http.Response) (RoleAssignmentScheduleInstancesGetResponse, error) {
-	result := RoleAssignmentScheduleInstancesGetResponse{RawResponse: resp}
+func (client *RoleAssignmentScheduleInstancesClient) getHandleResponse(resp *http.Response) (RoleAssignmentScheduleInstancesClientGetResponse, error) {
+	result := RoleAssignmentScheduleInstancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleInstance); err != nil {
-		return RoleAssignmentScheduleInstancesGetResponse{}, err
+		return RoleAssignmentScheduleInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RoleAssignmentScheduleInstancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForScope - Gets role assignment schedule instances of a role assignment schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentScheduleInstancesClient) ListForScope(scope string, options *RoleAssignmentScheduleInstancesListForScopeOptions) *RoleAssignmentScheduleInstancesListForScopePager {
-	return &RoleAssignmentScheduleInstancesListForScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role assignment schedule.
+// options - RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.ListForScope
+// method.
+func (client *RoleAssignmentScheduleInstancesClient) ListForScope(scope string, options *RoleAssignmentScheduleInstancesClientListForScopeOptions) *RoleAssignmentScheduleInstancesClientListForScopePager {
+	return &RoleAssignmentScheduleInstancesClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp RoleAssignmentScheduleInstancesListForScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleAssignmentScheduleInstancesClientListForScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentScheduleInstanceListResult.NextLink)
 		},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *RoleAssignmentScheduleInstancesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentScheduleInstancesListForScopeOptions) (*policy.Request, error) {
+func (client *RoleAssignmentScheduleInstancesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentScheduleInstancesClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,23 +131,10 @@ func (client *RoleAssignmentScheduleInstancesClient) listForScopeCreateRequest(c
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *RoleAssignmentScheduleInstancesClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentScheduleInstancesListForScopeResponse, error) {
-	result := RoleAssignmentScheduleInstancesListForScopeResponse{RawResponse: resp}
+func (client *RoleAssignmentScheduleInstancesClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentScheduleInstancesClientListForScopeResponse, error) {
+	result := RoleAssignmentScheduleInstancesClientListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleInstanceListResult); err != nil {
-		return RoleAssignmentScheduleInstancesListForScopeResponse{}, err
+		return RoleAssignmentScheduleInstancesClientListForScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// listForScopeHandleError handles the ListForScope error response.
-func (client *RoleAssignmentScheduleInstancesClient) listForScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

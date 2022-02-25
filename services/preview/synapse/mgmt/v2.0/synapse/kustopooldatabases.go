@@ -35,7 +35,7 @@ func NewKustoPoolDatabasesClientWithBaseURI(baseURI string, subscriptionID strin
 // CreateOrUpdate creates or updates a database.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // parameters - the database parameters supplied to the CreateOrUpdate operation.
@@ -130,7 +130,7 @@ func (client KustoPoolDatabasesClient) CreateOrUpdateResponder(resp *http.Respon
 // Delete deletes the database with the given name.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 func (client KustoPoolDatabasesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string) (result KustoPoolDatabasesDeleteFuture, err error) {
@@ -221,7 +221,7 @@ func (client KustoPoolDatabasesClient) DeleteResponder(resp *http.Response) (res
 // Get returns a database.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 func (client KustoPoolDatabasesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string) (result DatabaseModel, err error) {
@@ -310,7 +310,7 @@ func (client KustoPoolDatabasesClient) GetResponder(resp *http.Response) (result
 // ListByKustoPool returns the list of databases of the given Kusto pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 func (client KustoPoolDatabasesClient) ListByKustoPool(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string) (result DatabaseListResult, err error) {
 	if tracing.IsEnabled() {
@@ -397,7 +397,7 @@ func (client KustoPoolDatabasesClient) ListByKustoPoolResponder(resp *http.Respo
 // Update updates a database.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // parameters - the database parameters supplied to the Update operation.

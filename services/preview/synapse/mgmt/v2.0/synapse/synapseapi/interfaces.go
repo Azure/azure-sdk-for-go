@@ -622,13 +622,6 @@ type KustoOperationsClientAPI interface {
 
 var _ KustoOperationsClientAPI = (*synapse.KustoOperationsClient)(nil)
 
-// KustoPoolClientAPI contains the set of methods on the KustoPoolClient type.
-type KustoPoolClientAPI interface {
-	ListSkus(ctx context.Context) (result synapse.SkuDescriptionList, err error)
-}
-
-var _ KustoPoolClientAPI = (*synapse.KustoPoolClient)(nil)
-
 // KustoPoolsClientAPI contains the set of methods on the KustoPoolsClient type.
 type KustoPoolsClientAPI interface {
 	AddLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToAdd synapse.LanguageExtensionsList) (result synapse.KustoPoolsAddLanguageExtensionsFuture, err error)
@@ -640,6 +633,7 @@ type KustoPoolsClientAPI interface {
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.KustoPoolListResult, err error)
 	ListFollowerDatabases(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result synapse.FollowerDatabaseListResult, err error)
 	ListLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result synapse.LanguageExtensionsList, err error)
+	ListSkus(ctx context.Context) (result synapse.SkuDescriptionList, err error)
 	ListSkusByResource(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result synapse.ListResourceSkusResult, err error)
 	RemoveLanguageExtensions(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, languageExtensionsToRemove synapse.LanguageExtensionsList) (result synapse.KustoPoolsRemoveLanguageExtensionsFuture, err error)
 	Start(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result synapse.KustoPoolsStartFuture, err error)

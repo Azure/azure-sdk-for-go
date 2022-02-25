@@ -18,15 +18,15 @@ type ClientOptions struct {
 	PerCallOptions []policy.Policy
 }
 
-func (o *ClientOptions) getConnectionOptions() *connectionOptions {
+func (o *ClientOptions) getConnectionOptions() *policy.ClientOptions {
 	if o == nil {
 		return nil
 	}
 
-	return &connectionOptions{
-		HTTPClient:      o.Transporter,
+	return &policy.ClientOptions{
+		Transport:       o.Transporter,
 		Retry:           o.Retry,
 		Telemetry:       o.Telemetry,
-		PerCallPolicies: []policy.Policy{},
+		PerCallPolicies: o.PerCallOptions,
 	}
 }

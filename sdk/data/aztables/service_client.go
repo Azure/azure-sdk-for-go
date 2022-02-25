@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -18,35 +20,70 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    azcore.Credential
+	cred    *SharedKeyCredential
+	con     *generated.Connection
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
+// Pass in nil for options to construct the client with the default ClientOptions.
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		con:     con,
+	}, nil
+}
+
+// NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
+// Call this method when serviceURL contains a SAS token.
+// Pass in nil for options to construct the client with the default ClientOptions.
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		con:     con,
+	}, nil
+}
+
+// NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
+// Pass in nil for options to construct the client with the default ClientOptions.
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
+
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		cred:    cred,
+		con:     con,
+	}, nil
+}
+
+func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.ClientOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	conOptions := options.getConnectionOptions()
+	conOptions := options.toPolicyOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallPolicies...)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, options.PerTryPolicies...)
-	con := generated.NewConnection(serviceURL, cred, conOptions)
-	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
-		cred:    cred,
-	}, nil
+	return conOptions
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
 func (t *ServiceClient) NewClient(tableName string) *Client {
 	return &Client{
 		client:  t.client,
-		cred:    t.cred,
 		name:    tableName,
 		service: t,
+		con:     t.con,
+		cred:    t.cred,
 	}
 }
 
@@ -54,16 +91,17 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 type CreateTableOptions struct {
 }
 
-func (c *CreateTableOptions) toGenerated() *generated.TableCreateOptions {
-	return &generated.TableCreateOptions{}
+func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
+	return &generated.TableClientCreateOptions{}
 }
 
-// Create creates a table with the specified name.
+// Create creates a table with the specified name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	_, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	_, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	return t.NewClient(name), err
 }
 
@@ -71,8 +109,8 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 type DeleteTableOptions struct {
 }
 
-func (c *DeleteTableOptions) toGenerated() *generated.TableDeleteOptions {
-	return &generated.TableDeleteOptions{}
+func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
+	return &generated.TableClientDeleteOptions{}
 }
 
 // Response object from a ServiceClient.DeleteTable or Client.Delete operation
@@ -80,7 +118,7 @@ type DeleteTableResponse struct {
 	RawResponse *http.Response
 }
 
-func deleteTableResponseFromGen(g *generated.TableDeleteResponse) DeleteTableResponse {
+func deleteTableResponseFromGen(g *generated.TableClientDeleteResponse) DeleteTableResponse {
 	if g == nil {
 		return DeleteTableResponse{}
 	}
@@ -89,7 +127,8 @@ func deleteTableResponseFromGen(g *generated.TableDeleteResponse) DeleteTableRes
 	}
 }
 
-// Delete deletes a table by name.
+// Delete deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	if options == nil {
 		options = &DeleteTableOptions{}
@@ -153,7 +192,7 @@ type ListTablesPage struct {
 	Tables []*ResponseProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesPage {
+func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
 	if g == nil {
 		return nil
 	}
@@ -203,8 +242,8 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 
 type tableQueryResponsePager struct {
 	client            *generated.TableClient
-	current           *generated.TableQueryResponseEnvelope
-	tableQueryOptions *generated.TableQueryOptions
+	current           *generated.TableClientQueryResponse
+	tableQueryOptions *generated.TableClientQueryOptions
 	listOptions       *ListTablesOptions
 	err               error
 }
@@ -216,8 +255,8 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
 		return false
 	}
-	var resp generated.TableQueryResponseEnvelope
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.listOptions.toQueryOptions())
+	var resp generated.TableClientQueryResponse
+	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
@@ -242,12 +281,12 @@ func (p *tableQueryResponsePager) Err() error {
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results.
+// List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		listOptions:       listOptions,
-		tableQueryOptions: new(generated.TableQueryOptions),
+		tableQueryOptions: new(generated.TableClientQueryOptions),
 	}
 }
 
@@ -260,31 +299,32 @@ type GetStatisticsResponse struct {
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
-func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) GetStatisticsResponse {
+func getStatisticsResponseFromGenerated(g *generated.ServiceClientGetStatisticsResponse) GetStatisticsResponse {
 	return GetStatisticsResponse{
 		RawResponse:    g.RawResponse,
 		GeoReplication: fromGeneratedGeoReplication(g.GeoReplication),
 	}
 }
 
-func (g *GetStatisticsOptions) toGenerated() *generated.ServiceGetStatisticsOptions {
-	return &generated.ServiceGetStatisticsOptions{}
+func (g *GetStatisticsOptions) toGenerated() *generated.ServiceClientGetStatisticsOptions {
+	return &generated.ServiceClientGetStatisticsOptions{}
 }
 
-// GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
+// GetStatistics retrieves all the statistics for an account with Geo-redundancy established. If the service returns a non-successful
+// HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
-	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
+	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
 type GetPropertiesOptions struct {
 }
 
-func (g *GetPropertiesOptions) toGenerated() *generated.ServiceGetPropertiesOptions {
-	return &generated.ServiceGetPropertiesOptions{}
+func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
+	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
 type GetPropertiesResponse struct {
@@ -302,7 +342,7 @@ type GetPropertiesResponse struct {
 	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
-func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) GetPropertiesResponse {
+func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesResponse) GetPropertiesResponse {
 	var cors []*CorsRule
 	for _, c := range g.Cors {
 		cors = append(cors, fromGeneratedCors(c))
@@ -317,31 +357,33 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesRespons
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
+// If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
-	resp, err := t.service.GetProperties(ctx, options.toGenerated())
+	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
 type SetPropertiesOptions struct{}
 
-func (s *SetPropertiesOptions) toGenerated() *generated.ServiceSetPropertiesOptions {
-	return &generated.ServiceSetPropertiesOptions{}
+func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetPropertiesOptions {
+	return &generated.ServiceClientSetPropertiesOptions{}
 }
 
 type SetPropertiesResponse struct {
 	RawResponse *http.Response
 }
 
-func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesResponse) SetPropertiesResponse {
+func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesResponse) SetPropertiesResponse {
 	return SetPropertiesResponse{
 		RawResponse: g.RawResponse,
 	}
 }
 
-// SetProperties allows the user to set cors , metrics, and logging rules for the account.
+// SetProperties allows the user to set cors, metrics, and logging rules for the account.
 //
 // Cors: A slice of CorsRules.
 //
@@ -349,21 +391,22 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesRespons
 //
 // HoursMetrics: A summary of request statistics grouped in minute aggregates for tables
 //
-// Logging: Azure Analytics logging settings
+// Logging: Azure Analytics logging settings. If the service returns a non-successful HTTP
+// status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
-// if there was an error during creation. This method can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
 func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
-	cred, ok := t.cred.(*SharedKeyCredential)
-	if !ok {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	if t.cred == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
@@ -373,11 +416,11 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(cred)
+	}.Sign(t.cred)
 	if err != nil {
 		return "", err
 	}
-	endpoint := t.client.Con.Endpoint()
+	endpoint := t.con.Endpoint()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

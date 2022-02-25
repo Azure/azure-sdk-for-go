@@ -57,7 +57,7 @@ type Poller struct {
 
 // New creates a new Poller from the provided initial response and final-state type.
 func New(resp *http.Response, finalState string, pollerID string) (*Poller, error) {
-	log.Write(log.LongRunningOperation, "Using Azure-AsyncOperation poller.")
+	log.Write(log.EventLRO, "Using Azure-AsyncOperation poller.")
 	asyncURL := resp.Header.Get(shared.HeaderAzureAsync)
 	if asyncURL == "" {
 		return nil, errors.New("response is missing Azure-AsyncOperation header")

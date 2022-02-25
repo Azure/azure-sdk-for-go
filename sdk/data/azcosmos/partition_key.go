@@ -3,41 +3,41 @@
 
 package azcosmos
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // PartitionKey represents a logical partition key value.
 type PartitionKey struct {
-	isNone               bool
-	partitionKeyInternal *partitionKeyInternal
+	values []interface{}
 }
 
-// NewPartitionKeyNone creates a partition key value for non-partitioned containers.
-func NewPartitionKeyNone() *PartitionKey {
-	return &PartitionKey{
-		isNone:               true,
-		partitionKeyInternal: nonePartitionKey,
+// NewPartitionKeyString creates a partition key with a string value.
+func NewPartitionKeyString(value string) PartitionKey {
+	components := []interface{}{value}
+	return PartitionKey{
+		values: components,
 	}
 }
 
-// NewPartitionKey creates a new partition key.
-// value - the partition key value.
-func NewPartitionKey(value interface{}) (*PartitionKey, error) {
-	pkInternal, err := newPartitionKeyInternal([]interface{}{value})
-	if err != nil {
-		return nil, err
+// NewPartitionKeyBool creates a partition key with a boolean value.
+func NewPartitionKeyBool(value bool) PartitionKey {
+	components := []interface{}{value}
+	return PartitionKey{
+		values: components,
 	}
-	return &PartitionKey{
-		partitionKeyInternal: pkInternal,
-		isNone:               false,
-	}, nil
+}
+
+// NewPartitionKeyNumber creates a partition key with a numeric value.
+func NewPartitionKeyNumber(value float64) PartitionKey {
+	components := []interface{}{value}
+	return PartitionKey{
+		values: components,
+	}
 }
 
 func (pk *PartitionKey) toJsonString() (string, error) {
-	if pk.isNone {
-		return "", nil
-	}
-
-	res, err := json.Marshal(pk.partitionKeyInternal)
+	res, err := json.Marshal(pk.values)
 	if err != nil {
 		return "", err
 	}

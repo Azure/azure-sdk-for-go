@@ -5,22 +5,24 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
 )
 
-func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func(), string) {
-	cs := getConnectionString(t)
+func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(), string) {
+	cs := test.GetConnectionString(t)
 
-	serviceBusClient, err := NewClientWithConnectionString(cs, nil)
+	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
-	queueName, cleanupQueue := createQueue(t, cs, qd)
+	queueName, cleanupQueue := createQueue(t, cs, props)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
@@ -31,48 +33,63 @@ func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func()
 	return serviceBusClient, testCleanup, queueName
 }
 
-func getConnectionString(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
-}
-
 // createQueue creates a queue using a subset of entries in 'queueDescription':
 // - EnablePartitioning
 // - RequiresSession
-func createQueue(t *testing.T, connectionString string, queueDescription *internal.QueueDescription) (string, func()) {
+func createQueue(t *testing.T, connectionString string, queueProperties *admin.QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
 
-	qm, err := internal.NewQueueManagerWithConnectionString(connectionString)
+	adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 
-	var opts []internal.QueueManagementOption
-
-	if queueDescription != nil {
-		if queueDescription.EnablePartitioning != nil && *queueDescription.EnablePartitioning {
-			opts = append(opts, internal.QueueEntityWithPartitioning())
-		}
-
-		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
-			opts = append(opts, internal.QueueEntityWithRequiredSessions())
-		}
-
-		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
-			opts = append(opts, internal.QueueEntityWithRequiredSessions())
-		}
+	if queueProperties == nil {
+		queueProperties = &admin.QueueProperties{}
 	}
 
-	_, err = qm.Put(context.TODO(), queueName, opts...)
+	autoDeleteOnIdle := 5 * time.Minute
+	queueProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, queueProperties, nil)
 	require.NoError(t, err)
 
 	return queueName, func() {
-		if err := qm.Delete(context.TODO(), queueName); err != nil {
-			require.NoError(t, err)
-		}
+		deleteQueue(t, adminClient, queueName)
 	}
+}
+
+func deleteQueue(t *testing.T, ac *admin.Client, queueName string) {
+	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+}
+
+func deleteSubscription(t *testing.T, ac *admin.Client, topicName string, subscriptionName string) {
+	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
+}
+
+// peekSingleMessageForTest wraps a standard Receiver.Peek() call so it returns at least one message
+// and fails tests otherwise.
+func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage {
+	var msg *ReceivedMessage
+
+	// Peek, unlike Receive, doesn't block until at least one message has arrived, so we have to poll
+	// to get a similar effect.
+	err := utils.Retry(context.Background(), "peek", func(ctx context.Context, args *utils.RetryFnArgs) error {
+		peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		if len(peekedMessages) == 1 {
+			msg = peekedMessages[0]
+			return nil
+		} else {
+			return errors.New("No peekable messages available")
+		}
+	}, func(err error) bool {
+		return false
+	}, utils.RetryOptions{})
+
+	require.NoError(t, err)
+
+	return msg
 }

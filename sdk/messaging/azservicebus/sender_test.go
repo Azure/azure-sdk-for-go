@@ -5,14 +5,52 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"sort"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
+
+func Test_Sender_MessageID(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		EnablePartitioning: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		MessageID: to.StringPtr("message with a message ID"),
+	})
+	require.NoError(t, err)
+
+	peekedMsg := peekSingleMessageForTest(t, receiver)
+	require.EqualValues(t, MessageStateActive, peekedMsg.State)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, "message with a message ID", messages[0].MessageID)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		// note if you don't explicitly send a message ID one will be auto-generated for you.
+	})
+	require.NoError(t, err)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages[0].MessageID) // this is filled in by automatically.
+}
 
 func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
@@ -20,7 +58,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	defer sender.Close(ctx)
@@ -28,77 +66,95 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
 
-	added, err := batch.Add(&Message{
+	err = batch.AddMessage(&Message{
 		Body: []byte("[0] message in batch"),
 	})
 	require.NoError(t, err)
-	require.True(t, added)
 
-	added, err = batch.Add(&Message{
+	err = batch.AddMessage(&Message{
 		Body: []byte("[1] message in batch"),
 	})
 	require.NoError(t, err)
-	require.True(t, added)
 
 	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(ctx)
 
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
+	messages := receiveAll(t, receiver, 2)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"[0] message in batch", "[1] message in batch"}, getSortedBodies(messages))
 }
 
+func receiveAll(t *testing.T, receiver *Receiver, expected int) []*ReceivedMessage {
+	var all []*ReceivedMessage
+
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Minute))
+	defer cancel()
+
+	for {
+		messages, err := receiver.ReceiveMessages(ctx, 1+2, nil)
+		require.NoError(t, err)
+
+		if len(messages) == 0 {
+			break
+		}
+
+		all = append(all, messages...)
+
+		if len(all) == expected {
+			break
+		}
+	}
+
+	return all
+}
+
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		EnablePartitioning: to.BoolPtr(true),
 	})
 	defer cleanup()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
+	batch, err := sender.NewMessageBatch(context.Background(), nil)
+	require.NoError(t, err)
+
+	err = batch.AddMessage(&Message{
+		Body:         []byte("2. Message in batch"),
+		PartitionKey: to.StringPtr("partitionKey1"),
+	})
+	require.NoError(t, err)
+
+	err = batch.AddMessage(&Message{
+		Body:         []byte("3. Message in batch"),
+		PartitionKey: to.StringPtr("partitionKey1"),
+	})
+	require.NoError(t, err)
+
+	err = sender.SendMessageBatch(context.Background(), batch)
+	require.NoError(t, err)
+
 	err = sender.SendMessage(context.Background(), &Message{
-		ID:           "message ID",
+		MessageID:    to.StringPtr("message ID"),
 		Body:         []byte("1. single partitioned message"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})
 	require.NoError(t, err)
 
-	batch, err := sender.NewMessageBatch(context.Background(), nil)
-	require.NoError(t, err)
-
-	added, err := batch.Add(&Message{
-		Body:         []byte("2. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
-	})
-	require.NoError(t, err)
-	require.True(t, added)
-
-	added, err = batch.Add(&Message{
-		Body:         []byte("3. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
-	})
-	require.NoError(t, err)
-	require.True(t, added)
-
-	err = sender.SendMessageBatch(context.Background(), batch)
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+2, nil)
-	require.NoError(t, err)
-
+	messages := receiveAll(t, receiver, 3)
 	sort.Sort(receivedMessages(messages))
 
 	require.EqualValues(t, 3, len(messages))
@@ -108,56 +164,22 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.EqualValues(t, "partitionKey1", *messages[2].PartitionKey)
 }
 
-func Test_Sender_SendMessages(t *testing.T) {
-	ctx := context.Background()
-
-	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
-		EnablePartitioning: to.BoolPtr(true),
-	})
-	defer cleanup()
-
-	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
-	require.NoError(t, err)
-	defer receiver.Close(context.Background())
-
-	sender, err := client.NewSender(queueName)
-	require.NoError(t, err)
-	defer sender.Close(context.Background())
-
-	err = sender.SendMessages(ctx, []*Message{
-		{
-			Body: []byte("hello"),
-		},
-		{
-			Body: []byte("world"),
-		},
-	})
-
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
-	require.NoError(t, err)
-
-	require.EqualValues(t, []string{"hello", "world"}, getSortedBodies(messages))
-}
-
 func Test_Sender_SendMessages_resend(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	peekLockReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
-		ReceiveMode: PeekLock,
+		ReceiveMode: ReceiveModePeekLock,
 	})
 	require.NoError(t, err)
 
 	deletingReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	})
 	require.NoError(t, err)
 
@@ -172,7 +194,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		err = sender.SendMessage(ctx, msg)
 		require.NoError(t, err)
 
-		message, err := receiver.ReceiveMessage(ctx, nil)
+		message, err := receiver.receiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, "first send", msg.ApplicationProperties["Status"])
 		require.EqualValues(t, "ResendableMessage", string(msg.Body))
@@ -185,7 +207,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		err = sender.SendMessage(ctx, msg)
 		require.NoError(t, err)
 
-		message, err = receiver.ReceiveMessage(ctx, nil)
+		message, err = receiver.receiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, "resend", msg.ApplicationProperties["Status"])
 		require.EqualValues(t, "ResendableMessage", string(msg.Body))
@@ -206,11 +228,11 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	defer cleanup()
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -223,14 +245,17 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	// `Scheduled`
 
 	sequenceNumbers, err := sender.ScheduleMessages(ctx,
-		[]SendableMessage{
-			&Message{Body: []byte("To the future (that will be cancelled!)")},
-			&Message{Body: []byte("To the future (not cancelled)")},
+		[]*Message{
+			{Body: []byte("To the future (that will be cancelled!)")},
+			{Body: []byte("To the future (not cancelled)")},
 		},
 		nearFuture)
 
 	require.NoError(t, err)
 	require.EqualValues(t, 2, len(sequenceNumbers))
+
+	peekedMsg := peekSingleMessageForTest(t, receiver)
+	require.EqualValues(t, MessageStateScheduled, peekedMsg.State)
 
 	// cancel one of the ones scheduled using `ScheduleMessages`
 	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]})
@@ -259,13 +284,131 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	}
 }
 
+func TestSender_SendMessagesDetach(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	sbc, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	sender, err := sbc.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the sender link is open and active.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("0"),
+	})
+	require.NoError(t, err)
+
+	// now force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	for i := 1; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte(fmt.Sprintf("%d", i)),
+		})
+		require.NoError(t, err)
+	}
+
+	receiver, err := sbc.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	// get all the messages
+	var all []*ReceivedMessage
+
+	for {
+		messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+		require.NoError(t, err)
+
+		all = append(messages, all...)
+
+		if len(all) == 5 {
+			break
+		}
+	}
+
+	require.EqualValues(t, []string{"0", "1", "2", "3", "4"}, getSortedBodies(all))
+}
+
+func TestSender_SendMessageBatchDetach(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	sbc, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	sender, err := sbc.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the sender link is open and active.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("0"),
+	})
+	require.NoError(t, err)
+
+	// now force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	for i := 1; i < 5; i++ {
+		batch, err := sender.NewMessageBatch(context.Background(), nil)
+		require.NoError(t, err)
+		require.NoError(t, batch.AddMessage(&Message{
+			Body: []byte(fmt.Sprintf("%d", i)),
+		}))
+
+		err = sender.SendMessageBatch(context.Background(), batch)
+		require.NoError(t, err)
+	}
+
+	receiver, err := sbc.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	// get all the messages
+	var all []*ReceivedMessage
+
+	for {
+		messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+		require.NoError(t, err)
+
+		all = append(messages, all...)
+
+		if len(all) == 5 {
+			break
+		}
+	}
+
+	require.EqualValues(t, []string{"0", "1", "2", "3", "4"}, getSortedBodies(all))
+}
+
 func getSortedBodies(messages []*ReceivedMessage) []string {
 	sort.Sort(receivedMessages(messages))
 
 	var bodies []string
 
 	for _, msg := range messages {
-		bodies = append(bodies, string(msg.Body))
+		body, err := msg.Body()
+
+		if err != nil {
+			panic(err)
+		}
+
+		bodies = append(bodies, string(body))
 	}
 
 	return bodies
@@ -279,7 +422,19 @@ func (rm receivedMessages) Len() int {
 
 // Less compares the messages assuming the .Body field is a valid string.
 func (rm receivedMessages) Less(i, j int) bool {
-	return string(rm[i].Body) < string(rm[j].Body)
+	bodyI, err := rm[i].Body()
+
+	if err != nil {
+		panic(err)
+	}
+
+	bodyJ, err := rm[j].Body()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return string(bodyI) < string(bodyJ)
 }
 
 func (rm receivedMessages) Swap(i, j int) {

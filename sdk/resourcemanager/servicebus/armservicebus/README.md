@@ -11,7 +11,7 @@ The `armservicebus` module provides operations for working with Azure Service Bu
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -33,23 +33,31 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Service Bus
-
-Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
-
-```go
-con := arm.NewDefaultConnection(cred, nil)
-```
-
-For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
-
 ## Clients
 
-Azure Service Bus modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
+Azure Service Bus modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armservicebus.NewSubscriptionsClient(con, "<subscription ID>")
+client := armservicebus.NewSubscriptionsClient(<subscription ID>, cred, nil)
 ```
+
+You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
+
+```go
+options = arm.ClientOptions{
+    Host: arm.AzureChina,
+}
+client := armservicebus.NewSubscriptionsClient(<subscription ID>, cred, &options)
+```
+
+## More sample code
+
+- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/disaster_recovery_config)
+- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/namespace)
+- [Queue](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/queue)
+- [Rules](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/rules)
+- [Subscription](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/subscriptions)
+- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/topic)
 
 ## Provide Feedback
 

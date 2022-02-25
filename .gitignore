@@ -35,6 +35,14 @@ _testmain.go
 *~
 .DS_Store
 .vscode
+.vs
 
 # ignore vendor/
 vendor/
+
+# environment variables
+.env
+
+# vscode
+**/.vscode/*
+!.vscode/cspell.json

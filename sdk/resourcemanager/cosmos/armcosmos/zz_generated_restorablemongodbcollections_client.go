@@ -11,50 +11,69 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RestorableMongodbCollectionsClient contains the methods for the RestorableMongodbCollections group.
 // Don't use this type directly, use NewRestorableMongodbCollectionsClient() instead.
 type RestorableMongodbCollectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorableMongodbCollectionsClient creates a new instance of RestorableMongodbCollectionsClient with the specified values.
-func NewRestorableMongodbCollectionsClient(con *arm.Connection, subscriptionID string) *RestorableMongodbCollectionsClient {
-	return &RestorableMongodbCollectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableMongodbCollectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &RestorableMongodbCollectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific database. This helps in scenario where
-// container was accidentally deleted. This API requires
+// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific database.
+// This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableMongodbCollectionsClient) List(ctx context.Context, location string, instanceID string, options *RestorableMongodbCollectionsListOptions) (RestorableMongodbCollectionsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Cosmos DB region, with spaces between words and each word capitalized.
+// instanceID - The instanceId GUID of a restorable database account.
+// options - RestorableMongodbCollectionsClientListOptions contains the optional parameters for the RestorableMongodbCollectionsClient.List
+// method.
+func (client *RestorableMongodbCollectionsClient) List(ctx context.Context, location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) (RestorableMongodbCollectionsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, instanceID, options)
 	if err != nil {
-		return RestorableMongodbCollectionsListResponse{}, err
+		return RestorableMongodbCollectionsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableMongodbCollectionsListResponse{}, err
+		return RestorableMongodbCollectionsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableMongodbCollectionsListResponse{}, client.listHandleError(resp)
+		return RestorableMongodbCollectionsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbCollectionsListOptions) (*policy.Request, error) {
+func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,12 +87,12 @@ func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter instanceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.RestorableMongodbDatabaseRid != nil {
 		reqQP.Set("restorableMongodbDatabaseRid", *options.RestorableMongodbDatabaseRid)
 	}
@@ -83,23 +102,10 @@ func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbCollectionsClient) listHandleResponse(resp *http.Response) (RestorableMongodbCollectionsListResponse, error) {
-	result := RestorableMongodbCollectionsListResponse{RawResponse: resp}
+func (client *RestorableMongodbCollectionsClient) listHandleResponse(resp *http.Response) (RestorableMongodbCollectionsClientListResponse, error) {
+	result := RestorableMongodbCollectionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbCollectionsListResult); err != nil {
-		return RestorableMongodbCollectionsListResponse{}, err
+		return RestorableMongodbCollectionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RestorableMongodbCollectionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

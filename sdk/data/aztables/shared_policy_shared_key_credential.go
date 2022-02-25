@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -108,7 +107,7 @@ type sharedKeyCredPolicy struct {
 	cred *SharedKeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred *SharedKeyCredential) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
@@ -134,12 +133,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.Response, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
+		log.Write(log.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
-}
-
-// NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newSharedKeyCredPolicy(c, options)
 }

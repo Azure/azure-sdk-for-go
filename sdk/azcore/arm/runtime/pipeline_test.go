@@ -13,7 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -31,7 +30,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -58,7 +57,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -75,22 +74,22 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	opts := &arm.ClientOptions{DisableRPRegistration: true}
+	opts := &arm.ClientOptions{DisableRPRegistration: true, ClientOptions: policy.ClientOptions{Transport: srv}}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,17 +122,18 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	perRetryPolicy := countingPolicy{}
 	opts := &arm.ClientOptions{
 		DisableRPRegistration: true,
-		ClientOptions: azcore.ClientOptions{
+		ClientOptions: policy.ClientOptions{
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
 			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
 			Retry:            policy.RetryOptions{RetryDelay: time.Microsecond},
+			Transport:        srv,
 		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

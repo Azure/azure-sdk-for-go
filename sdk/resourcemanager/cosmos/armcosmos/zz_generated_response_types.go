@@ -10,24 +10,25 @@ package armcosmos
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
-// CassandraClustersCreateUpdatePollerResponse contains the response from method CassandraClusters.CreateUpdate.
-type CassandraClustersCreateUpdatePollerResponse struct {
+// CassandraClustersClientCreateUpdatePollerResponse contains the response from method CassandraClustersClient.CreateUpdate.
+type CassandraClustersClientCreateUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraClustersCreateUpdatePoller
+	Poller *CassandraClustersClientCreateUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraClustersCreateUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersCreateUpdateResponse, error) {
-	respType := CassandraClustersCreateUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientCreateUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientCreateUpdateResponse, error) {
+	respType := CassandraClustersClientCreateUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ClusterResource)
 	if err != nil {
 		return respType, err
@@ -36,13 +37,13 @@ func (l CassandraClustersCreateUpdatePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraClustersCreateUpdatePollerResponse from the provided client and resume token.
-func (l *CassandraClustersCreateUpdatePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.CreateUpdate", token, client.pl, client.createUpdateHandleError)
+// Resume rehydrates a CassandraClustersClientCreateUpdatePollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientCreateUpdatePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.CreateUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraClustersCreateUpdatePoller{
+	poller := &CassandraClustersClientCreateUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -54,30 +55,32 @@ func (l *CassandraClustersCreateUpdatePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// CassandraClustersCreateUpdateResponse contains the response from method CassandraClusters.CreateUpdate.
-type CassandraClustersCreateUpdateResponse struct {
-	CassandraClustersCreateUpdateResult
+// CassandraClustersClientCreateUpdateResponse contains the response from method CassandraClustersClient.CreateUpdate.
+type CassandraClustersClientCreateUpdateResponse struct {
+	CassandraClustersClientCreateUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraClustersCreateUpdateResult contains the result from method CassandraClusters.CreateUpdate.
-type CassandraClustersCreateUpdateResult struct {
+// CassandraClustersClientCreateUpdateResult contains the result from method CassandraClustersClient.CreateUpdate.
+type CassandraClustersClientCreateUpdateResult struct {
 	ClusterResource
 }
 
-// CassandraClustersDeletePollerResponse contains the response from method CassandraClusters.Delete.
-type CassandraClustersDeletePollerResponse struct {
+// CassandraClustersClientDeallocatePollerResponse contains the response from method CassandraClustersClient.Deallocate.
+type CassandraClustersClientDeallocatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraClustersDeletePoller
+	Poller *CassandraClustersClientDeallocatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersDeleteResponse, error) {
-	respType := CassandraClustersDeleteResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientDeallocatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientDeallocateResponse, error) {
+	respType := CassandraClustersClientDeallocateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -86,13 +89,13 @@ func (l CassandraClustersDeletePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraClustersDeletePollerResponse from the provided client and resume token.
-func (l *CassandraClustersDeletePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a CassandraClustersClientDeallocatePollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientDeallocatePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Deallocate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraClustersDeletePoller{
+	poller := &CassandraClustersClientDeallocatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -104,134 +107,26 @@ func (l *CassandraClustersDeletePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// CassandraClustersDeleteResponse contains the response from method CassandraClusters.Delete.
-type CassandraClustersDeleteResponse struct {
+// CassandraClustersClientDeallocateResponse contains the response from method CassandraClustersClient.Deallocate.
+type CassandraClustersClientDeallocateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraClustersFetchNodeStatusPollerResponse contains the response from method CassandraClusters.FetchNodeStatus.
-type CassandraClustersFetchNodeStatusPollerResponse struct {
+// CassandraClustersClientDeletePollerResponse contains the response from method CassandraClustersClient.Delete.
+type CassandraClustersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraClustersFetchNodeStatusPoller
+	Poller *CassandraClustersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraClustersFetchNodeStatusPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersFetchNodeStatusResponse, error) {
-	respType := CassandraClustersFetchNodeStatusResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ClusterNodeStatus)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraClustersFetchNodeStatusPollerResponse from the provided client and resume token.
-func (l *CassandraClustersFetchNodeStatusPollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.FetchNodeStatus", token, client.pl, client.fetchNodeStatusHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraClustersFetchNodeStatusPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraClustersFetchNodeStatusResponse contains the response from method CassandraClusters.FetchNodeStatus.
-type CassandraClustersFetchNodeStatusResponse struct {
-	CassandraClustersFetchNodeStatusResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersFetchNodeStatusResult contains the result from method CassandraClusters.FetchNodeStatus.
-type CassandraClustersFetchNodeStatusResult struct {
-	ClusterNodeStatus
-}
-
-// CassandraClustersGetBackupResponse contains the response from method CassandraClusters.GetBackup.
-type CassandraClustersGetBackupResponse struct {
-	CassandraClustersGetBackupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersGetBackupResult contains the result from method CassandraClusters.GetBackup.
-type CassandraClustersGetBackupResult struct {
-	BackupResource
-}
-
-// CassandraClustersGetResponse contains the response from method CassandraClusters.Get.
-type CassandraClustersGetResponse struct {
-	CassandraClustersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersGetResult contains the result from method CassandraClusters.Get.
-type CassandraClustersGetResult struct {
-	ClusterResource
-}
-
-// CassandraClustersListBackupsResponse contains the response from method CassandraClusters.ListBackups.
-type CassandraClustersListBackupsResponse struct {
-	CassandraClustersListBackupsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersListBackupsResult contains the result from method CassandraClusters.ListBackups.
-type CassandraClustersListBackupsResult struct {
-	ListBackups
-}
-
-// CassandraClustersListByResourceGroupResponse contains the response from method CassandraClusters.ListByResourceGroup.
-type CassandraClustersListByResourceGroupResponse struct {
-	CassandraClustersListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersListByResourceGroupResult contains the result from method CassandraClusters.ListByResourceGroup.
-type CassandraClustersListByResourceGroupResult struct {
-	ListClusters
-}
-
-// CassandraClustersListBySubscriptionResponse contains the response from method CassandraClusters.ListBySubscription.
-type CassandraClustersListBySubscriptionResponse struct {
-	CassandraClustersListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraClustersListBySubscriptionResult contains the result from method CassandraClusters.ListBySubscription.
-type CassandraClustersListBySubscriptionResult struct {
-	ListClusters
-}
-
-// CassandraClustersRequestRepairPollerResponse contains the response from method CassandraClusters.RequestRepair.
-type CassandraClustersRequestRepairPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraClustersRequestRepairPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraClustersRequestRepairPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersRequestRepairResponse, error) {
-	respType := CassandraClustersRequestRepairResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientDeleteResponse, error) {
+	respType := CassandraClustersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -240,13 +135,13 @@ func (l CassandraClustersRequestRepairPollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraClustersRequestRepairPollerResponse from the provided client and resume token.
-func (l *CassandraClustersRequestRepairPollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.RequestRepair", token, client.pl, client.requestRepairHandleError)
+// Resume rehydrates a CassandraClustersClientDeletePollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientDeletePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraClustersRequestRepairPoller{
+	poller := &CassandraClustersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -258,24 +153,172 @@ func (l *CassandraClustersRequestRepairPollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// CassandraClustersRequestRepairResponse contains the response from method CassandraClusters.RequestRepair.
-type CassandraClustersRequestRepairResponse struct {
+// CassandraClustersClientDeleteResponse contains the response from method CassandraClustersClient.Delete.
+type CassandraClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraClustersUpdatePollerResponse contains the response from method CassandraClusters.Update.
-type CassandraClustersUpdatePollerResponse struct {
+// CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
+type CassandraClustersClientGetResponse struct {
+	CassandraClustersClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientGetResult contains the result from method CassandraClustersClient.Get.
+type CassandraClustersClientGetResult struct {
+	ClusterResource
+}
+
+// CassandraClustersClientInvokeCommandPollerResponse contains the response from method CassandraClustersClient.InvokeCommand.
+type CassandraClustersClientInvokeCommandPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraClustersUpdatePoller
+	Poller *CassandraClustersClientInvokeCommandPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraClustersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersUpdateResponse, error) {
-	respType := CassandraClustersUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientInvokeCommandPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientInvokeCommandResponse, error) {
+	respType := CassandraClustersClientInvokeCommandResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CommandOutput)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CassandraClustersClientInvokeCommandPollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientInvokeCommandPollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.InvokeCommand", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &CassandraClustersClientInvokeCommandPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// CassandraClustersClientInvokeCommandResponse contains the response from method CassandraClustersClient.InvokeCommand.
+type CassandraClustersClientInvokeCommandResponse struct {
+	CassandraClustersClientInvokeCommandResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientInvokeCommandResult contains the result from method CassandraClustersClient.InvokeCommand.
+type CassandraClustersClientInvokeCommandResult struct {
+	CommandOutput
+}
+
+// CassandraClustersClientListByResourceGroupResponse contains the response from method CassandraClustersClient.ListByResourceGroup.
+type CassandraClustersClientListByResourceGroupResponse struct {
+	CassandraClustersClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientListByResourceGroupResult contains the result from method CassandraClustersClient.ListByResourceGroup.
+type CassandraClustersClientListByResourceGroupResult struct {
+	ListClusters
+}
+
+// CassandraClustersClientListBySubscriptionResponse contains the response from method CassandraClustersClient.ListBySubscription.
+type CassandraClustersClientListBySubscriptionResponse struct {
+	CassandraClustersClientListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientListBySubscriptionResult contains the result from method CassandraClustersClient.ListBySubscription.
+type CassandraClustersClientListBySubscriptionResult struct {
+	ListClusters
+}
+
+// CassandraClustersClientStartPollerResponse contains the response from method CassandraClustersClient.Start.
+type CassandraClustersClientStartPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *CassandraClustersClientStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientStartResponse, error) {
+	respType := CassandraClustersClientStartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CassandraClustersClientStartPollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientStartPollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Start", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &CassandraClustersClientStartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// CassandraClustersClientStartResponse contains the response from method CassandraClustersClient.Start.
+type CassandraClustersClientStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientStatusResponse contains the response from method CassandraClustersClient.Status.
+type CassandraClustersClientStatusResponse struct {
+	CassandraClustersClientStatusResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CassandraClustersClientStatusResult contains the result from method CassandraClustersClient.Status.
+type CassandraClustersClientStatusResult struct {
+	CassandraClusterPublicStatus
+}
+
+// CassandraClustersClientUpdatePollerResponse contains the response from method CassandraClustersClient.Update.
+type CassandraClustersClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *CassandraClustersClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraClustersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraClustersClientUpdateResponse, error) {
+	respType := CassandraClustersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ClusterResource)
 	if err != nil {
 		return respType, err
@@ -284,13 +327,13 @@ func (l CassandraClustersUpdatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraClustersUpdatePollerResponse from the provided client and resume token.
-func (l *CassandraClustersUpdatePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a CassandraClustersClientUpdatePollerResponse from the provided client and resume token.
+func (l *CassandraClustersClientUpdatePollerResponse) Resume(ctx context.Context, client *CassandraClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraClustersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraClustersUpdatePoller{
+	poller := &CassandraClustersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -302,30 +345,32 @@ func (l *CassandraClustersUpdatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// CassandraClustersUpdateResponse contains the response from method CassandraClusters.Update.
-type CassandraClustersUpdateResponse struct {
-	CassandraClustersUpdateResult
+// CassandraClustersClientUpdateResponse contains the response from method CassandraClustersClient.Update.
+type CassandraClustersClientUpdateResponse struct {
+	CassandraClustersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraClustersUpdateResult contains the result from method CassandraClusters.Update.
-type CassandraClustersUpdateResult struct {
+// CassandraClustersClientUpdateResult contains the result from method CassandraClustersClient.Update.
+type CassandraClustersClientUpdateResult struct {
 	ClusterResource
 }
 
-// CassandraDataCentersCreateUpdatePollerResponse contains the response from method CassandraDataCenters.CreateUpdate.
-type CassandraDataCentersCreateUpdatePollerResponse struct {
+// CassandraDataCentersClientCreateUpdatePollerResponse contains the response from method CassandraDataCentersClient.CreateUpdate.
+type CassandraDataCentersClientCreateUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraDataCentersCreateUpdatePoller
+	Poller *CassandraDataCentersClientCreateUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraDataCentersCreateUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersCreateUpdateResponse, error) {
-	respType := CassandraDataCentersCreateUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraDataCentersClientCreateUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersClientCreateUpdateResponse, error) {
+	respType := CassandraDataCentersClientCreateUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataCenterResource)
 	if err != nil {
 		return respType, err
@@ -334,13 +379,13 @@ func (l CassandraDataCentersCreateUpdatePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraDataCentersCreateUpdatePollerResponse from the provided client and resume token.
-func (l *CassandraDataCentersCreateUpdatePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.CreateUpdate", token, client.pl, client.createUpdateHandleError)
+// Resume rehydrates a CassandraDataCentersClientCreateUpdatePollerResponse from the provided client and resume token.
+func (l *CassandraDataCentersClientCreateUpdatePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.CreateUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraDataCentersCreateUpdatePoller{
+	poller := &CassandraDataCentersClientCreateUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -352,30 +397,32 @@ func (l *CassandraDataCentersCreateUpdatePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// CassandraDataCentersCreateUpdateResponse contains the response from method CassandraDataCenters.CreateUpdate.
-type CassandraDataCentersCreateUpdateResponse struct {
-	CassandraDataCentersCreateUpdateResult
+// CassandraDataCentersClientCreateUpdateResponse contains the response from method CassandraDataCentersClient.CreateUpdate.
+type CassandraDataCentersClientCreateUpdateResponse struct {
+	CassandraDataCentersClientCreateUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraDataCentersCreateUpdateResult contains the result from method CassandraDataCenters.CreateUpdate.
-type CassandraDataCentersCreateUpdateResult struct {
+// CassandraDataCentersClientCreateUpdateResult contains the result from method CassandraDataCentersClient.CreateUpdate.
+type CassandraDataCentersClientCreateUpdateResult struct {
 	DataCenterResource
 }
 
-// CassandraDataCentersDeletePollerResponse contains the response from method CassandraDataCenters.Delete.
-type CassandraDataCentersDeletePollerResponse struct {
+// CassandraDataCentersClientDeletePollerResponse contains the response from method CassandraDataCentersClient.Delete.
+type CassandraDataCentersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraDataCentersDeletePoller
+	Poller *CassandraDataCentersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraDataCentersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersDeleteResponse, error) {
-	respType := CassandraDataCentersDeleteResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraDataCentersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersClientDeleteResponse, error) {
+	respType := CassandraDataCentersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -384,13 +431,13 @@ func (l CassandraDataCentersDeletePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraDataCentersDeletePollerResponse from the provided client and resume token.
-func (l *CassandraDataCentersDeletePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a CassandraDataCentersClientDeletePollerResponse from the provided client and resume token.
+func (l *CassandraDataCentersClientDeletePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraDataCentersDeletePoller{
+	poller := &CassandraDataCentersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -402,48 +449,50 @@ func (l *CassandraDataCentersDeletePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// CassandraDataCentersDeleteResponse contains the response from method CassandraDataCenters.Delete.
-type CassandraDataCentersDeleteResponse struct {
+// CassandraDataCentersClientDeleteResponse contains the response from method CassandraDataCentersClient.Delete.
+type CassandraDataCentersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraDataCentersGetResponse contains the response from method CassandraDataCenters.Get.
-type CassandraDataCentersGetResponse struct {
-	CassandraDataCentersGetResult
+// CassandraDataCentersClientGetResponse contains the response from method CassandraDataCentersClient.Get.
+type CassandraDataCentersClientGetResponse struct {
+	CassandraDataCentersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraDataCentersGetResult contains the result from method CassandraDataCenters.Get.
-type CassandraDataCentersGetResult struct {
+// CassandraDataCentersClientGetResult contains the result from method CassandraDataCentersClient.Get.
+type CassandraDataCentersClientGetResult struct {
 	DataCenterResource
 }
 
-// CassandraDataCentersListResponse contains the response from method CassandraDataCenters.List.
-type CassandraDataCentersListResponse struct {
-	CassandraDataCentersListResult
+// CassandraDataCentersClientListResponse contains the response from method CassandraDataCentersClient.List.
+type CassandraDataCentersClientListResponse struct {
+	CassandraDataCentersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraDataCentersListResult contains the result from method CassandraDataCenters.List.
-type CassandraDataCentersListResult struct {
+// CassandraDataCentersClientListResult contains the result from method CassandraDataCentersClient.List.
+type CassandraDataCentersClientListResult struct {
 	ListDataCenters
 }
 
-// CassandraDataCentersUpdatePollerResponse contains the response from method CassandraDataCenters.Update.
-type CassandraDataCentersUpdatePollerResponse struct {
+// CassandraDataCentersClientUpdatePollerResponse contains the response from method CassandraDataCentersClient.Update.
+type CassandraDataCentersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraDataCentersUpdatePoller
+	Poller *CassandraDataCentersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraDataCentersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersUpdateResponse, error) {
-	respType := CassandraDataCentersUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraDataCentersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraDataCentersClientUpdateResponse, error) {
+	respType := CassandraDataCentersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataCenterResource)
 	if err != nil {
 		return respType, err
@@ -452,13 +501,13 @@ func (l CassandraDataCentersUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraDataCentersUpdatePollerResponse from the provided client and resume token.
-func (l *CassandraDataCentersUpdatePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a CassandraDataCentersClientUpdatePollerResponse from the provided client and resume token.
+func (l *CassandraDataCentersClientUpdatePollerResponse) Resume(ctx context.Context, client *CassandraDataCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraDataCentersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraDataCentersUpdatePoller{
+	poller := &CassandraDataCentersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -470,30 +519,32 @@ func (l *CassandraDataCentersUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// CassandraDataCentersUpdateResponse contains the response from method CassandraDataCenters.Update.
-type CassandraDataCentersUpdateResponse struct {
-	CassandraDataCentersUpdateResult
+// CassandraDataCentersClientUpdateResponse contains the response from method CassandraDataCentersClient.Update.
+type CassandraDataCentersClientUpdateResponse struct {
+	CassandraDataCentersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraDataCentersUpdateResult contains the result from method CassandraDataCenters.Update.
-type CassandraDataCentersUpdateResult struct {
+// CassandraDataCentersClientUpdateResult contains the result from method CassandraDataCentersClient.Update.
+type CassandraDataCentersClientUpdateResult struct {
 	DataCenterResource
 }
 
-// CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse contains the response from method CassandraResources.CreateUpdateCassandraKeyspace.
-type CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse struct {
+// CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse contains the response from method CassandraResourcesClient.CreateUpdateCassandraKeyspace.
+type CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesCreateUpdateCassandraKeyspacePoller
+	Poller *CassandraResourcesClientCreateUpdateCassandraKeyspacePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesCreateUpdateCassandraKeyspaceResponse, error) {
-	respType := CassandraResourcesCreateUpdateCassandraKeyspaceResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse, error) {
+	respType := CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CassandraKeyspaceGetResults)
 	if err != nil {
 		return respType, err
@@ -502,13 +553,14 @@ func (l CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.CreateUpdateCassandraKeyspace", token, client.pl, client.createUpdateCassandraKeyspaceHandleError)
+// Resume rehydrates a CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse from the provided client and resume
+// token.
+func (l *CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.CreateUpdateCassandraKeyspace", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesCreateUpdateCassandraKeyspacePoller{
+	poller := &CassandraResourcesClientCreateUpdateCassandraKeyspacePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -520,30 +572,32 @@ func (l *CassandraResourcesCreateUpdateCassandraKeyspacePollerResponse) Resume(c
 	return nil
 }
 
-// CassandraResourcesCreateUpdateCassandraKeyspaceResponse contains the response from method CassandraResources.CreateUpdateCassandraKeyspace.
-type CassandraResourcesCreateUpdateCassandraKeyspaceResponse struct {
-	CassandraResourcesCreateUpdateCassandraKeyspaceResult
+// CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.CreateUpdateCassandraKeyspace.
+type CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse struct {
+	CassandraResourcesClientCreateUpdateCassandraKeyspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesCreateUpdateCassandraKeyspaceResult contains the result from method CassandraResources.CreateUpdateCassandraKeyspace.
-type CassandraResourcesCreateUpdateCassandraKeyspaceResult struct {
+// CassandraResourcesClientCreateUpdateCassandraKeyspaceResult contains the result from method CassandraResourcesClient.CreateUpdateCassandraKeyspace.
+type CassandraResourcesClientCreateUpdateCassandraKeyspaceResult struct {
 	CassandraKeyspaceGetResults
 }
 
-// CassandraResourcesCreateUpdateCassandraTablePollerResponse contains the response from method CassandraResources.CreateUpdateCassandraTable.
-type CassandraResourcesCreateUpdateCassandraTablePollerResponse struct {
+// CassandraResourcesClientCreateUpdateCassandraTablePollerResponse contains the response from method CassandraResourcesClient.CreateUpdateCassandraTable.
+type CassandraResourcesClientCreateUpdateCassandraTablePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesCreateUpdateCassandraTablePoller
+	Poller *CassandraResourcesClientCreateUpdateCassandraTablePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesCreateUpdateCassandraTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesCreateUpdateCassandraTableResponse, error) {
-	respType := CassandraResourcesCreateUpdateCassandraTableResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientCreateUpdateCassandraTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientCreateUpdateCassandraTableResponse, error) {
+	respType := CassandraResourcesClientCreateUpdateCassandraTableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CassandraTableGetResults)
 	if err != nil {
 		return respType, err
@@ -552,13 +606,14 @@ func (l CassandraResourcesCreateUpdateCassandraTablePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesCreateUpdateCassandraTablePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesCreateUpdateCassandraTablePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.CreateUpdateCassandraTable", token, client.pl, client.createUpdateCassandraTableHandleError)
+// Resume rehydrates a CassandraResourcesClientCreateUpdateCassandraTablePollerResponse from the provided client and resume
+// token.
+func (l *CassandraResourcesClientCreateUpdateCassandraTablePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.CreateUpdateCassandraTable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesCreateUpdateCassandraTablePoller{
+	poller := &CassandraResourcesClientCreateUpdateCassandraTablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -570,80 +625,32 @@ func (l *CassandraResourcesCreateUpdateCassandraTablePollerResponse) Resume(ctx 
 	return nil
 }
 
-// CassandraResourcesCreateUpdateCassandraTableResponse contains the response from method CassandraResources.CreateUpdateCassandraTable.
-type CassandraResourcesCreateUpdateCassandraTableResponse struct {
-	CassandraResourcesCreateUpdateCassandraTableResult
+// CassandraResourcesClientCreateUpdateCassandraTableResponse contains the response from method CassandraResourcesClient.CreateUpdateCassandraTable.
+type CassandraResourcesClientCreateUpdateCassandraTableResponse struct {
+	CassandraResourcesClientCreateUpdateCassandraTableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesCreateUpdateCassandraTableResult contains the result from method CassandraResources.CreateUpdateCassandraTable.
-type CassandraResourcesCreateUpdateCassandraTableResult struct {
+// CassandraResourcesClientCreateUpdateCassandraTableResult contains the result from method CassandraResourcesClient.CreateUpdateCassandraTable.
+type CassandraResourcesClientCreateUpdateCassandraTableResult struct {
 	CassandraTableGetResults
 }
 
-// CassandraResourcesCreateUpdateCassandraViewPollerResponse contains the response from method CassandraResources.CreateUpdateCassandraView.
-type CassandraResourcesCreateUpdateCassandraViewPollerResponse struct {
+// CassandraResourcesClientDeleteCassandraKeyspacePollerResponse contains the response from method CassandraResourcesClient.DeleteCassandraKeyspace.
+type CassandraResourcesClientDeleteCassandraKeyspacePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesCreateUpdateCassandraViewPoller
+	Poller *CassandraResourcesClientDeleteCassandraKeyspacePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesCreateUpdateCassandraViewPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesCreateUpdateCassandraViewResponse, error) {
-	respType := CassandraResourcesCreateUpdateCassandraViewResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CassandraViewGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraResourcesCreateUpdateCassandraViewPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesCreateUpdateCassandraViewPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.CreateUpdateCassandraView", token, client.pl, client.createUpdateCassandraViewHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraResourcesCreateUpdateCassandraViewPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraResourcesCreateUpdateCassandraViewResponse contains the response from method CassandraResources.CreateUpdateCassandraView.
-type CassandraResourcesCreateUpdateCassandraViewResponse struct {
-	CassandraResourcesCreateUpdateCassandraViewResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesCreateUpdateCassandraViewResult contains the result from method CassandraResources.CreateUpdateCassandraView.
-type CassandraResourcesCreateUpdateCassandraViewResult struct {
-	CassandraViewGetResults
-}
-
-// CassandraResourcesDeleteCassandraKeyspacePollerResponse contains the response from method CassandraResources.DeleteCassandraKeyspace.
-type CassandraResourcesDeleteCassandraKeyspacePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraResourcesDeleteCassandraKeyspacePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesDeleteCassandraKeyspacePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesDeleteCassandraKeyspaceResponse, error) {
-	respType := CassandraResourcesDeleteCassandraKeyspaceResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientDeleteCassandraKeyspacePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientDeleteCassandraKeyspaceResponse, error) {
+	respType := CassandraResourcesClientDeleteCassandraKeyspaceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -652,13 +659,13 @@ func (l CassandraResourcesDeleteCassandraKeyspacePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesDeleteCassandraKeyspacePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesDeleteCassandraKeyspacePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.DeleteCassandraKeyspace", token, client.pl, client.deleteCassandraKeyspaceHandleError)
+// Resume rehydrates a CassandraResourcesClientDeleteCassandraKeyspacePollerResponse from the provided client and resume token.
+func (l *CassandraResourcesClientDeleteCassandraKeyspacePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.DeleteCassandraKeyspace", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesDeleteCassandraKeyspacePoller{
+	poller := &CassandraResourcesClientDeleteCassandraKeyspacePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -670,24 +677,26 @@ func (l *CassandraResourcesDeleteCassandraKeyspacePollerResponse) Resume(ctx con
 	return nil
 }
 
-// CassandraResourcesDeleteCassandraKeyspaceResponse contains the response from method CassandraResources.DeleteCassandraKeyspace.
-type CassandraResourcesDeleteCassandraKeyspaceResponse struct {
+// CassandraResourcesClientDeleteCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.DeleteCassandraKeyspace.
+type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesDeleteCassandraTablePollerResponse contains the response from method CassandraResources.DeleteCassandraTable.
-type CassandraResourcesDeleteCassandraTablePollerResponse struct {
+// CassandraResourcesClientDeleteCassandraTablePollerResponse contains the response from method CassandraResourcesClient.DeleteCassandraTable.
+type CassandraResourcesClientDeleteCassandraTablePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesDeleteCassandraTablePoller
+	Poller *CassandraResourcesClientDeleteCassandraTablePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesDeleteCassandraTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesDeleteCassandraTableResponse, error) {
-	respType := CassandraResourcesDeleteCassandraTableResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientDeleteCassandraTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientDeleteCassandraTableResponse, error) {
+	respType := CassandraResourcesClientDeleteCassandraTableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -696,13 +705,13 @@ func (l CassandraResourcesDeleteCassandraTablePollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesDeleteCassandraTablePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesDeleteCassandraTablePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.DeleteCassandraTable", token, client.pl, client.deleteCassandraTableHandleError)
+// Resume rehydrates a CassandraResourcesClientDeleteCassandraTablePollerResponse from the provided client and resume token.
+func (l *CassandraResourcesClientDeleteCassandraTablePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.DeleteCassandraTable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesDeleteCassandraTablePoller{
+	poller := &CassandraResourcesClientDeleteCassandraTablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -714,176 +723,98 @@ func (l *CassandraResourcesDeleteCassandraTablePollerResponse) Resume(ctx contex
 	return nil
 }
 
-// CassandraResourcesDeleteCassandraTableResponse contains the response from method CassandraResources.DeleteCassandraTable.
-type CassandraResourcesDeleteCassandraTableResponse struct {
+// CassandraResourcesClientDeleteCassandraTableResponse contains the response from method CassandraResourcesClient.DeleteCassandraTable.
+type CassandraResourcesClientDeleteCassandraTableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesDeleteCassandraViewPollerResponse contains the response from method CassandraResources.DeleteCassandraView.
-type CassandraResourcesDeleteCassandraViewPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraResourcesDeleteCassandraViewPoller
-
+// CassandraResourcesClientGetCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.GetCassandraKeyspace.
+type CassandraResourcesClientGetCassandraKeyspaceResponse struct {
+	CassandraResourcesClientGetCassandraKeyspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesDeleteCassandraViewPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesDeleteCassandraViewResponse, error) {
-	respType := CassandraResourcesDeleteCassandraViewResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraResourcesDeleteCassandraViewPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesDeleteCassandraViewPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.DeleteCassandraView", token, client.pl, client.deleteCassandraViewHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraResourcesDeleteCassandraViewPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraResourcesDeleteCassandraViewResponse contains the response from method CassandraResources.DeleteCassandraView.
-type CassandraResourcesDeleteCassandraViewResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesGetCassandraKeyspaceResponse contains the response from method CassandraResources.GetCassandraKeyspace.
-type CassandraResourcesGetCassandraKeyspaceResponse struct {
-	CassandraResourcesGetCassandraKeyspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesGetCassandraKeyspaceResult contains the result from method CassandraResources.GetCassandraKeyspace.
-type CassandraResourcesGetCassandraKeyspaceResult struct {
+// CassandraResourcesClientGetCassandraKeyspaceResult contains the result from method CassandraResourcesClient.GetCassandraKeyspace.
+type CassandraResourcesClientGetCassandraKeyspaceResult struct {
 	CassandraKeyspaceGetResults
 }
 
-// CassandraResourcesGetCassandraKeyspaceThroughputResponse contains the response from method CassandraResources.GetCassandraKeyspaceThroughput.
-type CassandraResourcesGetCassandraKeyspaceThroughputResponse struct {
-	CassandraResourcesGetCassandraKeyspaceThroughputResult
+// CassandraResourcesClientGetCassandraKeyspaceThroughputResponse contains the response from method CassandraResourcesClient.GetCassandraKeyspaceThroughput.
+type CassandraResourcesClientGetCassandraKeyspaceThroughputResponse struct {
+	CassandraResourcesClientGetCassandraKeyspaceThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesGetCassandraKeyspaceThroughputResult contains the result from method CassandraResources.GetCassandraKeyspaceThroughput.
-type CassandraResourcesGetCassandraKeyspaceThroughputResult struct {
+// CassandraResourcesClientGetCassandraKeyspaceThroughputResult contains the result from method CassandraResourcesClient.GetCassandraKeyspaceThroughput.
+type CassandraResourcesClientGetCassandraKeyspaceThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesGetCassandraTableResponse contains the response from method CassandraResources.GetCassandraTable.
-type CassandraResourcesGetCassandraTableResponse struct {
-	CassandraResourcesGetCassandraTableResult
+// CassandraResourcesClientGetCassandraTableResponse contains the response from method CassandraResourcesClient.GetCassandraTable.
+type CassandraResourcesClientGetCassandraTableResponse struct {
+	CassandraResourcesClientGetCassandraTableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesGetCassandraTableResult contains the result from method CassandraResources.GetCassandraTable.
-type CassandraResourcesGetCassandraTableResult struct {
+// CassandraResourcesClientGetCassandraTableResult contains the result from method CassandraResourcesClient.GetCassandraTable.
+type CassandraResourcesClientGetCassandraTableResult struct {
 	CassandraTableGetResults
 }
 
-// CassandraResourcesGetCassandraTableThroughputResponse contains the response from method CassandraResources.GetCassandraTableThroughput.
-type CassandraResourcesGetCassandraTableThroughputResponse struct {
-	CassandraResourcesGetCassandraTableThroughputResult
+// CassandraResourcesClientGetCassandraTableThroughputResponse contains the response from method CassandraResourcesClient.GetCassandraTableThroughput.
+type CassandraResourcesClientGetCassandraTableThroughputResponse struct {
+	CassandraResourcesClientGetCassandraTableThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesGetCassandraTableThroughputResult contains the result from method CassandraResources.GetCassandraTableThroughput.
-type CassandraResourcesGetCassandraTableThroughputResult struct {
+// CassandraResourcesClientGetCassandraTableThroughputResult contains the result from method CassandraResourcesClient.GetCassandraTableThroughput.
+type CassandraResourcesClientGetCassandraTableThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesGetCassandraViewResponse contains the response from method CassandraResources.GetCassandraView.
-type CassandraResourcesGetCassandraViewResponse struct {
-	CassandraResourcesGetCassandraViewResult
+// CassandraResourcesClientListCassandraKeyspacesResponse contains the response from method CassandraResourcesClient.ListCassandraKeyspaces.
+type CassandraResourcesClientListCassandraKeyspacesResponse struct {
+	CassandraResourcesClientListCassandraKeyspacesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesGetCassandraViewResult contains the result from method CassandraResources.GetCassandraView.
-type CassandraResourcesGetCassandraViewResult struct {
-	CassandraViewGetResults
-}
-
-// CassandraResourcesGetCassandraViewThroughputResponse contains the response from method CassandraResources.GetCassandraViewThroughput.
-type CassandraResourcesGetCassandraViewThroughputResponse struct {
-	CassandraResourcesGetCassandraViewThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesGetCassandraViewThroughputResult contains the result from method CassandraResources.GetCassandraViewThroughput.
-type CassandraResourcesGetCassandraViewThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// CassandraResourcesListCassandraKeyspacesResponse contains the response from method CassandraResources.ListCassandraKeyspaces.
-type CassandraResourcesListCassandraKeyspacesResponse struct {
-	CassandraResourcesListCassandraKeyspacesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesListCassandraKeyspacesResult contains the result from method CassandraResources.ListCassandraKeyspaces.
-type CassandraResourcesListCassandraKeyspacesResult struct {
+// CassandraResourcesClientListCassandraKeyspacesResult contains the result from method CassandraResourcesClient.ListCassandraKeyspaces.
+type CassandraResourcesClientListCassandraKeyspacesResult struct {
 	CassandraKeyspaceListResult
 }
 
-// CassandraResourcesListCassandraTablesResponse contains the response from method CassandraResources.ListCassandraTables.
-type CassandraResourcesListCassandraTablesResponse struct {
-	CassandraResourcesListCassandraTablesResult
+// CassandraResourcesClientListCassandraTablesResponse contains the response from method CassandraResourcesClient.ListCassandraTables.
+type CassandraResourcesClientListCassandraTablesResponse struct {
+	CassandraResourcesClientListCassandraTablesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesListCassandraTablesResult contains the result from method CassandraResources.ListCassandraTables.
-type CassandraResourcesListCassandraTablesResult struct {
+// CassandraResourcesClientListCassandraTablesResult contains the result from method CassandraResourcesClient.ListCassandraTables.
+type CassandraResourcesClientListCassandraTablesResult struct {
 	CassandraTableListResult
 }
 
-// CassandraResourcesListCassandraViewsResponse contains the response from method CassandraResources.ListCassandraViews.
-type CassandraResourcesListCassandraViewsResponse struct {
-	CassandraResourcesListCassandraViewsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesListCassandraViewsResult contains the result from method CassandraResources.ListCassandraViews.
-type CassandraResourcesListCassandraViewsResult struct {
-	CassandraViewListResult
-}
-
-// CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse contains the response from method CassandraResources.MigrateCassandraKeyspaceToAutoscale.
-type CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse struct {
+// CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse contains the response from method CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale.
+type CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraKeyspaceToAutoscalePoller
+	Poller *CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResponse, error) {
-	respType := CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse, error) {
+	respType := CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -892,13 +823,14 @@ func (l CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale", token, client.pl, client.migrateCassandraKeyspaceToAutoscaleHandleError)
+// Resume rehydrates a CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse from the provided client
+// and resume token.
+func (l *CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraKeyspaceToAutoscalePoller{
+	poller := &CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -910,30 +842,32 @@ func (l *CassandraResourcesMigrateCassandraKeyspaceToAutoscalePollerResponse) Re
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResponse contains the response from method CassandraResources.MigrateCassandraKeyspaceToAutoscale.
-type CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResponse struct {
-	CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResult
+// CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse contains the response from method CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale.
+type CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse struct {
+	CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResult contains the result from method CassandraResources.MigrateCassandraKeyspaceToAutoscale.
-type CassandraResourcesMigrateCassandraKeyspaceToAutoscaleResult struct {
+// CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResult contains the result from method CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale.
+type CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerResponse contains the response from method CassandraResources.MigrateCassandraKeyspaceToManualThroughput.
-type CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerResponse struct {
+// CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse contains the response from method CassandraResourcesClient.MigrateCassandraKeyspaceToManualThroughput.
+type CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPoller
+	Poller *CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResponse, error) {
-	respType := CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse, error) {
+	respType := CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -942,13 +876,14 @@ func (l CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerRespon
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraKeyspaceToManualThroughput", token, client.pl, client.migrateCassandraKeyspaceToManualThroughputHandleError)
+// Resume rehydrates a CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse from the provided
+// client and resume token.
+func (l *CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraKeyspaceToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPoller{
+	poller := &CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -960,30 +895,32 @@ func (l *CassandraResourcesMigrateCassandraKeyspaceToManualThroughputPollerRespo
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResponse contains the response from method CassandraResources.MigrateCassandraKeyspaceToManualThroughput.
-type CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResponse struct {
-	CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResult
+// CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse contains the response from method CassandraResourcesClient.MigrateCassandraKeyspaceToManualThroughput.
+type CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse struct {
+	CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResult contains the result from method CassandraResources.MigrateCassandraKeyspaceToManualThroughput.
-type CassandraResourcesMigrateCassandraKeyspaceToManualThroughputResult struct {
+// CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResult contains the result from method CassandraResourcesClient.MigrateCassandraKeyspaceToManualThroughput.
+type CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse contains the response from method CassandraResources.MigrateCassandraTableToAutoscale.
-type CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse struct {
+// CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse contains the response from method CassandraResourcesClient.MigrateCassandraTableToAutoscale.
+type CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraTableToAutoscalePoller
+	Poller *CassandraResourcesClientMigrateCassandraTableToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraTableToAutoscaleResponse, error) {
-	respType := CassandraResourcesMigrateCassandraTableToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse, error) {
+	respType := CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -992,13 +929,14 @@ func (l CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse) PollUn
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraTableToAutoscale", token, client.pl, client.migrateCassandraTableToAutoscaleHandleError)
+// Resume rehydrates a CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse from the provided client and
+// resume token.
+func (l *CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraTableToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraTableToAutoscalePoller{
+	poller := &CassandraResourcesClientMigrateCassandraTableToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1010,30 +948,32 @@ func (l *CassandraResourcesMigrateCassandraTableToAutoscalePollerResponse) Resum
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraTableToAutoscaleResponse contains the response from method CassandraResources.MigrateCassandraTableToAutoscale.
-type CassandraResourcesMigrateCassandraTableToAutoscaleResponse struct {
-	CassandraResourcesMigrateCassandraTableToAutoscaleResult
+// CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse contains the response from method CassandraResourcesClient.MigrateCassandraTableToAutoscale.
+type CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse struct {
+	CassandraResourcesClientMigrateCassandraTableToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraTableToAutoscaleResult contains the result from method CassandraResources.MigrateCassandraTableToAutoscale.
-type CassandraResourcesMigrateCassandraTableToAutoscaleResult struct {
+// CassandraResourcesClientMigrateCassandraTableToAutoscaleResult contains the result from method CassandraResourcesClient.MigrateCassandraTableToAutoscale.
+type CassandraResourcesClientMigrateCassandraTableToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse contains the response from method CassandraResources.MigrateCassandraTableToManualThroughput.
-type CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse struct {
+// CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse contains the response from method CassandraResourcesClient.MigrateCassandraTableToManualThroughput.
+type CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraTableToManualThroughputPoller
+	Poller *CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraTableToManualThroughputResponse, error) {
-	respType := CassandraResourcesMigrateCassandraTableToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse, error) {
+	respType := CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -1042,13 +982,14 @@ func (l CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse)
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraTableToManualThroughput", token, client.pl, client.migrateCassandraTableToManualThroughputHandleError)
+// Resume rehydrates a CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse from the provided client
+// and resume token.
+func (l *CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraTableToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraTableToManualThroughputPoller{
+	poller := &CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1060,30 +1001,32 @@ func (l *CassandraResourcesMigrateCassandraTableToManualThroughputPollerResponse
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraTableToManualThroughputResponse contains the response from method CassandraResources.MigrateCassandraTableToManualThroughput.
-type CassandraResourcesMigrateCassandraTableToManualThroughputResponse struct {
-	CassandraResourcesMigrateCassandraTableToManualThroughputResult
+// CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse contains the response from method CassandraResourcesClient.MigrateCassandraTableToManualThroughput.
+type CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse struct {
+	CassandraResourcesClientMigrateCassandraTableToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraTableToManualThroughputResult contains the result from method CassandraResources.MigrateCassandraTableToManualThroughput.
-type CassandraResourcesMigrateCassandraTableToManualThroughputResult struct {
+// CassandraResourcesClientMigrateCassandraTableToManualThroughputResult contains the result from method CassandraResourcesClient.MigrateCassandraTableToManualThroughput.
+type CassandraResourcesClientMigrateCassandraTableToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse contains the response from method CassandraResources.MigrateCassandraViewToAutoscale.
-type CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse struct {
+// CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse contains the response from method CassandraResourcesClient.UpdateCassandraKeyspaceThroughput.
+type CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraViewToAutoscalePoller
+	Poller *CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraViewToAutoscaleResponse, error) {
-	respType := CassandraResourcesMigrateCassandraViewToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse, error) {
+	respType := CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -1092,13 +1035,14 @@ func (l CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraViewToAutoscale", token, client.pl, client.migrateCassandraViewToAutoscaleHandleError)
+// Resume rehydrates a CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse from the provided client and
+// resume token.
+func (l *CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.UpdateCassandraKeyspaceThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraViewToAutoscalePoller{
+	poller := &CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1110,30 +1054,32 @@ func (l *CassandraResourcesMigrateCassandraViewToAutoscalePollerResponse) Resume
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraViewToAutoscaleResponse contains the response from method CassandraResources.MigrateCassandraViewToAutoscale.
-type CassandraResourcesMigrateCassandraViewToAutoscaleResponse struct {
-	CassandraResourcesMigrateCassandraViewToAutoscaleResult
+// CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse contains the response from method CassandraResourcesClient.UpdateCassandraKeyspaceThroughput.
+type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
+	CassandraResourcesClientUpdateCassandraKeyspaceThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraViewToAutoscaleResult contains the result from method CassandraResources.MigrateCassandraViewToAutoscale.
-type CassandraResourcesMigrateCassandraViewToAutoscaleResult struct {
+// CassandraResourcesClientUpdateCassandraKeyspaceThroughputResult contains the result from method CassandraResourcesClient.UpdateCassandraKeyspaceThroughput.
+type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse contains the response from method CassandraResources.MigrateCassandraViewToManualThroughput.
-type CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse struct {
+// CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse contains the response from method CassandraResourcesClient.UpdateCassandraTableThroughput.
+type CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CassandraResourcesMigrateCassandraViewToManualThroughputPoller
+	Poller *CassandraResourcesClientUpdateCassandraTableThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesMigrateCassandraViewToManualThroughputResponse, error) {
-	respType := CassandraResourcesMigrateCassandraViewToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesClientUpdateCassandraTableThroughputResponse, error) {
+	respType := CassandraResourcesClientUpdateCassandraTableThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -1142,13 +1088,14 @@ func (l CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.MigrateCassandraViewToManualThroughput", token, client.pl, client.migrateCassandraViewToManualThroughputHandleError)
+// Resume rehydrates a CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse from the provided client and resume
+// token.
+func (l *CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.UpdateCassandraTableThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CassandraResourcesMigrateCassandraViewToManualThroughputPoller{
+	poller := &CassandraResourcesClientUpdateCassandraTableThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1160,313 +1107,141 @@ func (l *CassandraResourcesMigrateCassandraViewToManualThroughputPollerResponse)
 	return nil
 }
 
-// CassandraResourcesMigrateCassandraViewToManualThroughputResponse contains the response from method CassandraResources.MigrateCassandraViewToManualThroughput.
-type CassandraResourcesMigrateCassandraViewToManualThroughputResponse struct {
-	CassandraResourcesMigrateCassandraViewToManualThroughputResult
+// CassandraResourcesClientUpdateCassandraTableThroughputResponse contains the response from method CassandraResourcesClient.UpdateCassandraTableThroughput.
+type CassandraResourcesClientUpdateCassandraTableThroughputResponse struct {
+	CassandraResourcesClientUpdateCassandraTableThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CassandraResourcesMigrateCassandraViewToManualThroughputResult contains the result from method CassandraResources.MigrateCassandraViewToManualThroughput.
-type CassandraResourcesMigrateCassandraViewToManualThroughputResult struct {
+// CassandraResourcesClientUpdateCassandraTableThroughputResult contains the result from method CassandraResourcesClient.UpdateCassandraTableThroughput.
+type CassandraResourcesClientUpdateCassandraTableThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesUpdateCassandraKeyspaceThroughputPollerResponse contains the response from method CassandraResources.UpdateCassandraKeyspaceThroughput.
-type CassandraResourcesUpdateCassandraKeyspaceThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraResourcesUpdateCassandraKeyspaceThroughputPoller
-
+// CollectionClientListMetricDefinitionsResponse contains the response from method CollectionClient.ListMetricDefinitions.
+type CollectionClientListMetricDefinitionsResponse struct {
+	CollectionClientListMetricDefinitionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesUpdateCassandraKeyspaceThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesUpdateCassandraKeyspaceThroughputResponse, error) {
-	respType := CassandraResourcesUpdateCassandraKeyspaceThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraResourcesUpdateCassandraKeyspaceThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesUpdateCassandraKeyspaceThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.UpdateCassandraKeyspaceThroughput", token, client.pl, client.updateCassandraKeyspaceThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraResourcesUpdateCassandraKeyspaceThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraResourcesUpdateCassandraKeyspaceThroughputResponse contains the response from method CassandraResources.UpdateCassandraKeyspaceThroughput.
-type CassandraResourcesUpdateCassandraKeyspaceThroughputResponse struct {
-	CassandraResourcesUpdateCassandraKeyspaceThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesUpdateCassandraKeyspaceThroughputResult contains the result from method CassandraResources.UpdateCassandraKeyspaceThroughput.
-type CassandraResourcesUpdateCassandraKeyspaceThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// CassandraResourcesUpdateCassandraTableThroughputPollerResponse contains the response from method CassandraResources.UpdateCassandraTableThroughput.
-type CassandraResourcesUpdateCassandraTableThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraResourcesUpdateCassandraTableThroughputPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesUpdateCassandraTableThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesUpdateCassandraTableThroughputResponse, error) {
-	respType := CassandraResourcesUpdateCassandraTableThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraResourcesUpdateCassandraTableThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesUpdateCassandraTableThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.UpdateCassandraTableThroughput", token, client.pl, client.updateCassandraTableThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraResourcesUpdateCassandraTableThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraResourcesUpdateCassandraTableThroughputResponse contains the response from method CassandraResources.UpdateCassandraTableThroughput.
-type CassandraResourcesUpdateCassandraTableThroughputResponse struct {
-	CassandraResourcesUpdateCassandraTableThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesUpdateCassandraTableThroughputResult contains the result from method CassandraResources.UpdateCassandraTableThroughput.
-type CassandraResourcesUpdateCassandraTableThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// CassandraResourcesUpdateCassandraViewThroughputPollerResponse contains the response from method CassandraResources.UpdateCassandraViewThroughput.
-type CassandraResourcesUpdateCassandraViewThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CassandraResourcesUpdateCassandraViewThroughputPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l CassandraResourcesUpdateCassandraViewThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CassandraResourcesUpdateCassandraViewThroughputResponse, error) {
-	respType := CassandraResourcesUpdateCassandraViewThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CassandraResourcesUpdateCassandraViewThroughputPollerResponse from the provided client and resume token.
-func (l *CassandraResourcesUpdateCassandraViewThroughputPollerResponse) Resume(ctx context.Context, client *CassandraResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CassandraResourcesClient.UpdateCassandraViewThroughput", token, client.pl, client.updateCassandraViewThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CassandraResourcesUpdateCassandraViewThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CassandraResourcesUpdateCassandraViewThroughputResponse contains the response from method CassandraResources.UpdateCassandraViewThroughput.
-type CassandraResourcesUpdateCassandraViewThroughputResponse struct {
-	CassandraResourcesUpdateCassandraViewThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CassandraResourcesUpdateCassandraViewThroughputResult contains the result from method CassandraResources.UpdateCassandraViewThroughput.
-type CassandraResourcesUpdateCassandraViewThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// CollectionListMetricDefinitionsResponse contains the response from method Collection.ListMetricDefinitions.
-type CollectionListMetricDefinitionsResponse struct {
-	CollectionListMetricDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CollectionListMetricDefinitionsResult contains the result from method Collection.ListMetricDefinitions.
-type CollectionListMetricDefinitionsResult struct {
+// CollectionClientListMetricDefinitionsResult contains the result from method CollectionClient.ListMetricDefinitions.
+type CollectionClientListMetricDefinitionsResult struct {
 	MetricDefinitionsListResult
 }
 
-// CollectionListMetricsResponse contains the response from method Collection.ListMetrics.
-type CollectionListMetricsResponse struct {
-	CollectionListMetricsResult
+// CollectionClientListMetricsResponse contains the response from method CollectionClient.ListMetrics.
+type CollectionClientListMetricsResponse struct {
+	CollectionClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionListMetricsResult contains the result from method Collection.ListMetrics.
-type CollectionListMetricsResult struct {
+// CollectionClientListMetricsResult contains the result from method CollectionClient.ListMetrics.
+type CollectionClientListMetricsResult struct {
 	MetricListResult
 }
 
-// CollectionListUsagesResponse contains the response from method Collection.ListUsages.
-type CollectionListUsagesResponse struct {
-	CollectionListUsagesResult
+// CollectionClientListUsagesResponse contains the response from method CollectionClient.ListUsages.
+type CollectionClientListUsagesResponse struct {
+	CollectionClientListUsagesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionListUsagesResult contains the result from method Collection.ListUsages.
-type CollectionListUsagesResult struct {
+// CollectionClientListUsagesResult contains the result from method CollectionClient.ListUsages.
+type CollectionClientListUsagesResult struct {
 	UsagesResult
 }
 
-// CollectionPartitionListMetricsResponse contains the response from method CollectionPartition.ListMetrics.
-type CollectionPartitionListMetricsResponse struct {
-	CollectionPartitionListMetricsResult
+// CollectionPartitionClientListMetricsResponse contains the response from method CollectionPartitionClient.ListMetrics.
+type CollectionPartitionClientListMetricsResponse struct {
+	CollectionPartitionClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionPartitionListMetricsResult contains the result from method CollectionPartition.ListMetrics.
-type CollectionPartitionListMetricsResult struct {
+// CollectionPartitionClientListMetricsResult contains the result from method CollectionPartitionClient.ListMetrics.
+type CollectionPartitionClientListMetricsResult struct {
 	PartitionMetricListResult
 }
 
-// CollectionPartitionListUsagesResponse contains the response from method CollectionPartition.ListUsages.
-type CollectionPartitionListUsagesResponse struct {
-	CollectionPartitionListUsagesResult
+// CollectionPartitionClientListUsagesResponse contains the response from method CollectionPartitionClient.ListUsages.
+type CollectionPartitionClientListUsagesResponse struct {
+	CollectionPartitionClientListUsagesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionPartitionListUsagesResult contains the result from method CollectionPartition.ListUsages.
-type CollectionPartitionListUsagesResult struct {
+// CollectionPartitionClientListUsagesResult contains the result from method CollectionPartitionClient.ListUsages.
+type CollectionPartitionClientListUsagesResult struct {
 	PartitionUsagesResult
 }
 
-// CollectionPartitionRegionListMetricsResponse contains the response from method CollectionPartitionRegion.ListMetrics.
-type CollectionPartitionRegionListMetricsResponse struct {
-	CollectionPartitionRegionListMetricsResult
+// CollectionPartitionRegionClientListMetricsResponse contains the response from method CollectionPartitionRegionClient.ListMetrics.
+type CollectionPartitionRegionClientListMetricsResponse struct {
+	CollectionPartitionRegionClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionPartitionRegionListMetricsResult contains the result from method CollectionPartitionRegion.ListMetrics.
-type CollectionPartitionRegionListMetricsResult struct {
+// CollectionPartitionRegionClientListMetricsResult contains the result from method CollectionPartitionRegionClient.ListMetrics.
+type CollectionPartitionRegionClientListMetricsResult struct {
 	PartitionMetricListResult
 }
 
-// CollectionRegionListMetricsResponse contains the response from method CollectionRegion.ListMetrics.
-type CollectionRegionListMetricsResponse struct {
-	CollectionRegionListMetricsResult
+// CollectionRegionClientListMetricsResponse contains the response from method CollectionRegionClient.ListMetrics.
+type CollectionRegionClientListMetricsResponse struct {
+	CollectionRegionClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CollectionRegionListMetricsResult contains the result from method CollectionRegion.ListMetrics.
-type CollectionRegionListMetricsResult struct {
+// CollectionRegionClientListMetricsResult contains the result from method CollectionRegionClient.ListMetrics.
+type CollectionRegionClientListMetricsResult struct {
 	MetricListResult
 }
 
-// CosmosDBManagementClientLocationGetResponse contains the response from method CosmosDBManagementClient.LocationGet.
-type CosmosDBManagementClientLocationGetResponse struct {
-	CosmosDBManagementClientLocationGetResult
+// DatabaseAccountRegionClientListMetricsResponse contains the response from method DatabaseAccountRegionClient.ListMetrics.
+type DatabaseAccountRegionClientListMetricsResponse struct {
+	DatabaseAccountRegionClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CosmosDBManagementClientLocationGetResult contains the result from method CosmosDBManagementClient.LocationGet.
-type CosmosDBManagementClientLocationGetResult struct {
-	LocationGetResult
-}
-
-// CosmosDBManagementClientLocationListResponse contains the response from method CosmosDBManagementClient.LocationList.
-type CosmosDBManagementClientLocationListResponse struct {
-	CosmosDBManagementClientLocationListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CosmosDBManagementClientLocationListResult contains the result from method CosmosDBManagementClient.LocationList.
-type CosmosDBManagementClientLocationListResult struct {
-	LocationListResult
-}
-
-// DatabaseAccountRegionListMetricsResponse contains the response from method DatabaseAccountRegion.ListMetrics.
-type DatabaseAccountRegionListMetricsResponse struct {
-	DatabaseAccountRegionListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DatabaseAccountRegionListMetricsResult contains the result from method DatabaseAccountRegion.ListMetrics.
-type DatabaseAccountRegionListMetricsResult struct {
+// DatabaseAccountRegionClientListMetricsResult contains the result from method DatabaseAccountRegionClient.ListMetrics.
+type DatabaseAccountRegionClientListMetricsResult struct {
 	MetricListResult
 }
 
-// DatabaseAccountsCheckNameExistsResponse contains the response from method DatabaseAccounts.CheckNameExists.
-type DatabaseAccountsCheckNameExistsResponse struct {
-	DatabaseAccountsCheckNameExistsResult
+// DatabaseAccountsClientCheckNameExistsResponse contains the response from method DatabaseAccountsClient.CheckNameExists.
+type DatabaseAccountsClientCheckNameExistsResponse struct {
+	DatabaseAccountsClientCheckNameExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsCheckNameExistsResult contains the result from method DatabaseAccounts.CheckNameExists.
-type DatabaseAccountsCheckNameExistsResult struct {
+// DatabaseAccountsClientCheckNameExistsResult contains the result from method DatabaseAccountsClient.CheckNameExists.
+type DatabaseAccountsClientCheckNameExistsResult struct {
 	// Success indicates if the operation succeeded or failed.
 	Success bool
 }
 
-// DatabaseAccountsCreateOrUpdatePollerResponse contains the response from method DatabaseAccounts.CreateOrUpdate.
-type DatabaseAccountsCreateOrUpdatePollerResponse struct {
+// DatabaseAccountsClientCreateOrUpdatePollerResponse contains the response from method DatabaseAccountsClient.CreateOrUpdate.
+type DatabaseAccountsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsCreateOrUpdatePoller
+	Poller *DatabaseAccountsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsCreateOrUpdateResponse, error) {
-	respType := DatabaseAccountsCreateOrUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientCreateOrUpdateResponse, error) {
+	respType := DatabaseAccountsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DatabaseAccountGetResults)
 	if err != nil {
 		return respType, err
@@ -1475,13 +1250,13 @@ func (l DatabaseAccountsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a DatabaseAccountsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsCreateOrUpdatePoller{
+	poller := &DatabaseAccountsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1493,30 +1268,32 @@ func (l *DatabaseAccountsCreateOrUpdatePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// DatabaseAccountsCreateOrUpdateResponse contains the response from method DatabaseAccounts.CreateOrUpdate.
-type DatabaseAccountsCreateOrUpdateResponse struct {
-	DatabaseAccountsCreateOrUpdateResult
+// DatabaseAccountsClientCreateOrUpdateResponse contains the response from method DatabaseAccountsClient.CreateOrUpdate.
+type DatabaseAccountsClientCreateOrUpdateResponse struct {
+	DatabaseAccountsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsCreateOrUpdateResult contains the result from method DatabaseAccounts.CreateOrUpdate.
-type DatabaseAccountsCreateOrUpdateResult struct {
+// DatabaseAccountsClientCreateOrUpdateResult contains the result from method DatabaseAccountsClient.CreateOrUpdate.
+type DatabaseAccountsClientCreateOrUpdateResult struct {
 	DatabaseAccountGetResults
 }
 
-// DatabaseAccountsDeletePollerResponse contains the response from method DatabaseAccounts.Delete.
-type DatabaseAccountsDeletePollerResponse struct {
+// DatabaseAccountsClientDeletePollerResponse contains the response from method DatabaseAccountsClient.Delete.
+type DatabaseAccountsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsDeletePoller
+	Poller *DatabaseAccountsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsDeleteResponse, error) {
-	respType := DatabaseAccountsDeleteResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientDeleteResponse, error) {
+	respType := DatabaseAccountsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1525,13 +1302,13 @@ func (l DatabaseAccountsDeletePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsDeletePollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsDeletePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a DatabaseAccountsClientDeletePollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientDeletePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsDeletePoller{
+	poller := &DatabaseAccountsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1543,24 +1320,26 @@ func (l *DatabaseAccountsDeletePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// DatabaseAccountsDeleteResponse contains the response from method DatabaseAccounts.Delete.
-type DatabaseAccountsDeleteResponse struct {
+// DatabaseAccountsClientDeleteResponse contains the response from method DatabaseAccountsClient.Delete.
+type DatabaseAccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsFailoverPriorityChangePollerResponse contains the response from method DatabaseAccounts.FailoverPriorityChange.
-type DatabaseAccountsFailoverPriorityChangePollerResponse struct {
+// DatabaseAccountsClientFailoverPriorityChangePollerResponse contains the response from method DatabaseAccountsClient.FailoverPriorityChange.
+type DatabaseAccountsClientFailoverPriorityChangePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsFailoverPriorityChangePoller
+	Poller *DatabaseAccountsClientFailoverPriorityChangePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsFailoverPriorityChangePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsFailoverPriorityChangeResponse, error) {
-	respType := DatabaseAccountsFailoverPriorityChangeResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientFailoverPriorityChangePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientFailoverPriorityChangeResponse, error) {
+	respType := DatabaseAccountsClientFailoverPriorityChangeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1569,13 +1348,13 @@ func (l DatabaseAccountsFailoverPriorityChangePollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsFailoverPriorityChangePollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsFailoverPriorityChangePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.FailoverPriorityChange", token, client.pl, client.failoverPriorityChangeHandleError)
+// Resume rehydrates a DatabaseAccountsClientFailoverPriorityChangePollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientFailoverPriorityChangePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.FailoverPriorityChange", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsFailoverPriorityChangePoller{
+	poller := &DatabaseAccountsClientFailoverPriorityChangePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1587,144 +1366,146 @@ func (l *DatabaseAccountsFailoverPriorityChangePollerResponse) Resume(ctx contex
 	return nil
 }
 
-// DatabaseAccountsFailoverPriorityChangeResponse contains the response from method DatabaseAccounts.FailoverPriorityChange.
-type DatabaseAccountsFailoverPriorityChangeResponse struct {
+// DatabaseAccountsClientFailoverPriorityChangeResponse contains the response from method DatabaseAccountsClient.FailoverPriorityChange.
+type DatabaseAccountsClientFailoverPriorityChangeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsGetReadOnlyKeysResponse contains the response from method DatabaseAccounts.GetReadOnlyKeys.
-type DatabaseAccountsGetReadOnlyKeysResponse struct {
-	DatabaseAccountsGetReadOnlyKeysResult
+// DatabaseAccountsClientGetReadOnlyKeysResponse contains the response from method DatabaseAccountsClient.GetReadOnlyKeys.
+type DatabaseAccountsClientGetReadOnlyKeysResponse struct {
+	DatabaseAccountsClientGetReadOnlyKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsGetReadOnlyKeysResult contains the result from method DatabaseAccounts.GetReadOnlyKeys.
-type DatabaseAccountsGetReadOnlyKeysResult struct {
+// DatabaseAccountsClientGetReadOnlyKeysResult contains the result from method DatabaseAccountsClient.GetReadOnlyKeys.
+type DatabaseAccountsClientGetReadOnlyKeysResult struct {
 	DatabaseAccountListReadOnlyKeysResult
 }
 
-// DatabaseAccountsGetResponse contains the response from method DatabaseAccounts.Get.
-type DatabaseAccountsGetResponse struct {
-	DatabaseAccountsGetResult
+// DatabaseAccountsClientGetResponse contains the response from method DatabaseAccountsClient.Get.
+type DatabaseAccountsClientGetResponse struct {
+	DatabaseAccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsGetResult contains the result from method DatabaseAccounts.Get.
-type DatabaseAccountsGetResult struct {
+// DatabaseAccountsClientGetResult contains the result from method DatabaseAccountsClient.Get.
+type DatabaseAccountsClientGetResult struct {
 	DatabaseAccountGetResults
 }
 
-// DatabaseAccountsListByResourceGroupResponse contains the response from method DatabaseAccounts.ListByResourceGroup.
-type DatabaseAccountsListByResourceGroupResponse struct {
-	DatabaseAccountsListByResourceGroupResult
+// DatabaseAccountsClientListByResourceGroupResponse contains the response from method DatabaseAccountsClient.ListByResourceGroup.
+type DatabaseAccountsClientListByResourceGroupResponse struct {
+	DatabaseAccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListByResourceGroupResult contains the result from method DatabaseAccounts.ListByResourceGroup.
-type DatabaseAccountsListByResourceGroupResult struct {
+// DatabaseAccountsClientListByResourceGroupResult contains the result from method DatabaseAccountsClient.ListByResourceGroup.
+type DatabaseAccountsClientListByResourceGroupResult struct {
 	DatabaseAccountsListResult
 }
 
-// DatabaseAccountsListConnectionStringsResponse contains the response from method DatabaseAccounts.ListConnectionStrings.
-type DatabaseAccountsListConnectionStringsResponse struct {
-	DatabaseAccountsListConnectionStringsResult
+// DatabaseAccountsClientListConnectionStringsResponse contains the response from method DatabaseAccountsClient.ListConnectionStrings.
+type DatabaseAccountsClientListConnectionStringsResponse struct {
+	DatabaseAccountsClientListConnectionStringsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListConnectionStringsResult contains the result from method DatabaseAccounts.ListConnectionStrings.
-type DatabaseAccountsListConnectionStringsResult struct {
+// DatabaseAccountsClientListConnectionStringsResult contains the result from method DatabaseAccountsClient.ListConnectionStrings.
+type DatabaseAccountsClientListConnectionStringsResult struct {
 	DatabaseAccountListConnectionStringsResult
 }
 
-// DatabaseAccountsListKeysResponse contains the response from method DatabaseAccounts.ListKeys.
-type DatabaseAccountsListKeysResponse struct {
-	DatabaseAccountsListKeysResult
+// DatabaseAccountsClientListKeysResponse contains the response from method DatabaseAccountsClient.ListKeys.
+type DatabaseAccountsClientListKeysResponse struct {
+	DatabaseAccountsClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListKeysResult contains the result from method DatabaseAccounts.ListKeys.
-type DatabaseAccountsListKeysResult struct {
+// DatabaseAccountsClientListKeysResult contains the result from method DatabaseAccountsClient.ListKeys.
+type DatabaseAccountsClientListKeysResult struct {
 	DatabaseAccountListKeysResult
 }
 
-// DatabaseAccountsListMetricDefinitionsResponse contains the response from method DatabaseAccounts.ListMetricDefinitions.
-type DatabaseAccountsListMetricDefinitionsResponse struct {
-	DatabaseAccountsListMetricDefinitionsResult
+// DatabaseAccountsClientListMetricDefinitionsResponse contains the response from method DatabaseAccountsClient.ListMetricDefinitions.
+type DatabaseAccountsClientListMetricDefinitionsResponse struct {
+	DatabaseAccountsClientListMetricDefinitionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListMetricDefinitionsResult contains the result from method DatabaseAccounts.ListMetricDefinitions.
-type DatabaseAccountsListMetricDefinitionsResult struct {
+// DatabaseAccountsClientListMetricDefinitionsResult contains the result from method DatabaseAccountsClient.ListMetricDefinitions.
+type DatabaseAccountsClientListMetricDefinitionsResult struct {
 	MetricDefinitionsListResult
 }
 
-// DatabaseAccountsListMetricsResponse contains the response from method DatabaseAccounts.ListMetrics.
-type DatabaseAccountsListMetricsResponse struct {
-	DatabaseAccountsListMetricsResult
+// DatabaseAccountsClientListMetricsResponse contains the response from method DatabaseAccountsClient.ListMetrics.
+type DatabaseAccountsClientListMetricsResponse struct {
+	DatabaseAccountsClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListMetricsResult contains the result from method DatabaseAccounts.ListMetrics.
-type DatabaseAccountsListMetricsResult struct {
+// DatabaseAccountsClientListMetricsResult contains the result from method DatabaseAccountsClient.ListMetrics.
+type DatabaseAccountsClientListMetricsResult struct {
 	MetricListResult
 }
 
-// DatabaseAccountsListReadOnlyKeysResponse contains the response from method DatabaseAccounts.ListReadOnlyKeys.
-type DatabaseAccountsListReadOnlyKeysResponse struct {
-	DatabaseAccountsListReadOnlyKeysResult
+// DatabaseAccountsClientListReadOnlyKeysResponse contains the response from method DatabaseAccountsClient.ListReadOnlyKeys.
+type DatabaseAccountsClientListReadOnlyKeysResponse struct {
+	DatabaseAccountsClientListReadOnlyKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListReadOnlyKeysResult contains the result from method DatabaseAccounts.ListReadOnlyKeys.
-type DatabaseAccountsListReadOnlyKeysResult struct {
+// DatabaseAccountsClientListReadOnlyKeysResult contains the result from method DatabaseAccountsClient.ListReadOnlyKeys.
+type DatabaseAccountsClientListReadOnlyKeysResult struct {
 	DatabaseAccountListReadOnlyKeysResult
 }
 
-// DatabaseAccountsListResponse contains the response from method DatabaseAccounts.List.
-type DatabaseAccountsListResponse struct {
-	DatabaseAccountsListResultEnvelope
+// DatabaseAccountsClientListResponse contains the response from method DatabaseAccountsClient.List.
+type DatabaseAccountsClientListResponse struct {
+	DatabaseAccountsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListResultEnvelope contains the result from method DatabaseAccounts.List.
-type DatabaseAccountsListResultEnvelope struct {
+// DatabaseAccountsClientListResult contains the result from method DatabaseAccountsClient.List.
+type DatabaseAccountsClientListResult struct {
 	DatabaseAccountsListResult
 }
 
-// DatabaseAccountsListUsagesResponse contains the response from method DatabaseAccounts.ListUsages.
-type DatabaseAccountsListUsagesResponse struct {
-	DatabaseAccountsListUsagesResult
+// DatabaseAccountsClientListUsagesResponse contains the response from method DatabaseAccountsClient.ListUsages.
+type DatabaseAccountsClientListUsagesResponse struct {
+	DatabaseAccountsClientListUsagesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsListUsagesResult contains the result from method DatabaseAccounts.ListUsages.
-type DatabaseAccountsListUsagesResult struct {
+// DatabaseAccountsClientListUsagesResult contains the result from method DatabaseAccountsClient.ListUsages.
+type DatabaseAccountsClientListUsagesResult struct {
 	UsagesResult
 }
 
-// DatabaseAccountsOfflineRegionPollerResponse contains the response from method DatabaseAccounts.OfflineRegion.
-type DatabaseAccountsOfflineRegionPollerResponse struct {
+// DatabaseAccountsClientOfflineRegionPollerResponse contains the response from method DatabaseAccountsClient.OfflineRegion.
+type DatabaseAccountsClientOfflineRegionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsOfflineRegionPoller
+	Poller *DatabaseAccountsClientOfflineRegionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsOfflineRegionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsOfflineRegionResponse, error) {
-	respType := DatabaseAccountsOfflineRegionResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientOfflineRegionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientOfflineRegionResponse, error) {
+	respType := DatabaseAccountsClientOfflineRegionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1733,13 +1514,13 @@ func (l DatabaseAccountsOfflineRegionPollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsOfflineRegionPollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsOfflineRegionPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.OfflineRegion", token, client.pl, client.offlineRegionHandleError)
+// Resume rehydrates a DatabaseAccountsClientOfflineRegionPollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientOfflineRegionPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.OfflineRegion", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsOfflineRegionPoller{
+	poller := &DatabaseAccountsClientOfflineRegionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1751,24 +1532,26 @@ func (l *DatabaseAccountsOfflineRegionPollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// DatabaseAccountsOfflineRegionResponse contains the response from method DatabaseAccounts.OfflineRegion.
-type DatabaseAccountsOfflineRegionResponse struct {
+// DatabaseAccountsClientOfflineRegionResponse contains the response from method DatabaseAccountsClient.OfflineRegion.
+type DatabaseAccountsClientOfflineRegionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsOnlineRegionPollerResponse contains the response from method DatabaseAccounts.OnlineRegion.
-type DatabaseAccountsOnlineRegionPollerResponse struct {
+// DatabaseAccountsClientOnlineRegionPollerResponse contains the response from method DatabaseAccountsClient.OnlineRegion.
+type DatabaseAccountsClientOnlineRegionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsOnlineRegionPoller
+	Poller *DatabaseAccountsClientOnlineRegionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsOnlineRegionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsOnlineRegionResponse, error) {
-	respType := DatabaseAccountsOnlineRegionResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientOnlineRegionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientOnlineRegionResponse, error) {
+	respType := DatabaseAccountsClientOnlineRegionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1777,13 +1560,13 @@ func (l DatabaseAccountsOnlineRegionPollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsOnlineRegionPollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsOnlineRegionPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.OnlineRegion", token, client.pl, client.onlineRegionHandleError)
+// Resume rehydrates a DatabaseAccountsClientOnlineRegionPollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientOnlineRegionPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.OnlineRegion", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsOnlineRegionPoller{
+	poller := &DatabaseAccountsClientOnlineRegionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1795,24 +1578,26 @@ func (l *DatabaseAccountsOnlineRegionPollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// DatabaseAccountsOnlineRegionResponse contains the response from method DatabaseAccounts.OnlineRegion.
-type DatabaseAccountsOnlineRegionResponse struct {
+// DatabaseAccountsClientOnlineRegionResponse contains the response from method DatabaseAccountsClient.OnlineRegion.
+type DatabaseAccountsClientOnlineRegionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsRegenerateKeyPollerResponse contains the response from method DatabaseAccounts.RegenerateKey.
-type DatabaseAccountsRegenerateKeyPollerResponse struct {
+// DatabaseAccountsClientRegenerateKeyPollerResponse contains the response from method DatabaseAccountsClient.RegenerateKey.
+type DatabaseAccountsClientRegenerateKeyPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsRegenerateKeyPoller
+	Poller *DatabaseAccountsClientRegenerateKeyPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsRegenerateKeyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsRegenerateKeyResponse, error) {
-	respType := DatabaseAccountsRegenerateKeyResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientRegenerateKeyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientRegenerateKeyResponse, error) {
+	respType := DatabaseAccountsClientRegenerateKeyResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1821,13 +1606,13 @@ func (l DatabaseAccountsRegenerateKeyPollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsRegenerateKeyPollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsRegenerateKeyPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.RegenerateKey", token, client.pl, client.regenerateKeyHandleError)
+// Resume rehydrates a DatabaseAccountsClientRegenerateKeyPollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientRegenerateKeyPollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.RegenerateKey", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsRegenerateKeyPoller{
+	poller := &DatabaseAccountsClientRegenerateKeyPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1839,24 +1624,26 @@ func (l *DatabaseAccountsRegenerateKeyPollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// DatabaseAccountsRegenerateKeyResponse contains the response from method DatabaseAccounts.RegenerateKey.
-type DatabaseAccountsRegenerateKeyResponse struct {
+// DatabaseAccountsClientRegenerateKeyResponse contains the response from method DatabaseAccountsClient.RegenerateKey.
+type DatabaseAccountsClientRegenerateKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsUpdatePollerResponse contains the response from method DatabaseAccounts.Update.
-type DatabaseAccountsUpdatePollerResponse struct {
+// DatabaseAccountsClientUpdatePollerResponse contains the response from method DatabaseAccountsClient.Update.
+type DatabaseAccountsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DatabaseAccountsUpdatePoller
+	Poller *DatabaseAccountsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l DatabaseAccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsUpdateResponse, error) {
-	respType := DatabaseAccountsUpdateResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DatabaseAccountsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DatabaseAccountsClientUpdateResponse, error) {
+	respType := DatabaseAccountsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DatabaseAccountGetResults)
 	if err != nil {
 		return respType, err
@@ -1865,13 +1652,13 @@ func (l DatabaseAccountsUpdatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a DatabaseAccountsUpdatePollerResponse from the provided client and resume token.
-func (l *DatabaseAccountsUpdatePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a DatabaseAccountsClientUpdatePollerResponse from the provided client and resume token.
+func (l *DatabaseAccountsClientUpdatePollerResponse) Resume(ctx context.Context, client *DatabaseAccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DatabaseAccountsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DatabaseAccountsUpdatePoller{
+	poller := &DatabaseAccountsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1883,184 +1670,68 @@ func (l *DatabaseAccountsUpdatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// DatabaseAccountsUpdateResponse contains the response from method DatabaseAccounts.Update.
-type DatabaseAccountsUpdateResponse struct {
-	DatabaseAccountsUpdateResult
+// DatabaseAccountsClientUpdateResponse contains the response from method DatabaseAccountsClient.Update.
+type DatabaseAccountsClientUpdateResponse struct {
+	DatabaseAccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseAccountsUpdateResult contains the result from method DatabaseAccounts.Update.
-type DatabaseAccountsUpdateResult struct {
+// DatabaseAccountsClientUpdateResult contains the result from method DatabaseAccountsClient.Update.
+type DatabaseAccountsClientUpdateResult struct {
 	DatabaseAccountGetResults
 }
 
-// DatabaseListMetricDefinitionsResponse contains the response from method Database.ListMetricDefinitions.
-type DatabaseListMetricDefinitionsResponse struct {
-	DatabaseListMetricDefinitionsResult
+// DatabaseClientListMetricDefinitionsResponse contains the response from method DatabaseClient.ListMetricDefinitions.
+type DatabaseClientListMetricDefinitionsResponse struct {
+	DatabaseClientListMetricDefinitionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseListMetricDefinitionsResult contains the result from method Database.ListMetricDefinitions.
-type DatabaseListMetricDefinitionsResult struct {
+// DatabaseClientListMetricDefinitionsResult contains the result from method DatabaseClient.ListMetricDefinitions.
+type DatabaseClientListMetricDefinitionsResult struct {
 	MetricDefinitionsListResult
 }
 
-// DatabaseListMetricsResponse contains the response from method Database.ListMetrics.
-type DatabaseListMetricsResponse struct {
-	DatabaseListMetricsResult
+// DatabaseClientListMetricsResponse contains the response from method DatabaseClient.ListMetrics.
+type DatabaseClientListMetricsResponse struct {
+	DatabaseClientListMetricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseListMetricsResult contains the result from method Database.ListMetrics.
-type DatabaseListMetricsResult struct {
+// DatabaseClientListMetricsResult contains the result from method DatabaseClient.ListMetrics.
+type DatabaseClientListMetricsResult struct {
 	MetricListResult
 }
 
-// DatabaseListUsagesResponse contains the response from method Database.ListUsages.
-type DatabaseListUsagesResponse struct {
-	DatabaseListUsagesResult
+// DatabaseClientListUsagesResponse contains the response from method DatabaseClient.ListUsages.
+type DatabaseClientListUsagesResponse struct {
+	DatabaseClientListUsagesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DatabaseListUsagesResult contains the result from method Database.ListUsages.
-type DatabaseListUsagesResult struct {
+// DatabaseClientListUsagesResult contains the result from method DatabaseClient.ListUsages.
+type DatabaseClientListUsagesResult struct {
 	UsagesResult
 }
 
-// GraphResourcesCreateUpdateGraphPollerResponse contains the response from method GraphResources.CreateUpdateGraph.
-type GraphResourcesCreateUpdateGraphPollerResponse struct {
+// GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse contains the response from method GremlinResourcesClient.CreateUpdateGremlinDatabase.
+type GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GraphResourcesCreateUpdateGraphPoller
+	Poller *GremlinResourcesClientCreateUpdateGremlinDatabasePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GraphResourcesCreateUpdateGraphPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GraphResourcesCreateUpdateGraphResponse, error) {
-	respType := GraphResourcesCreateUpdateGraphResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.GraphResourceGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a GraphResourcesCreateUpdateGraphPollerResponse from the provided client and resume token.
-func (l *GraphResourcesCreateUpdateGraphPollerResponse) Resume(ctx context.Context, client *GraphResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GraphResourcesClient.CreateUpdateGraph", token, client.pl, client.createUpdateGraphHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &GraphResourcesCreateUpdateGraphPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// GraphResourcesCreateUpdateGraphResponse contains the response from method GraphResources.CreateUpdateGraph.
-type GraphResourcesCreateUpdateGraphResponse struct {
-	GraphResourcesCreateUpdateGraphResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GraphResourcesCreateUpdateGraphResult contains the result from method GraphResources.CreateUpdateGraph.
-type GraphResourcesCreateUpdateGraphResult struct {
-	GraphResourceGetResults
-}
-
-// GraphResourcesDeleteGraphResourcePollerResponse contains the response from method GraphResources.DeleteGraphResource.
-type GraphResourcesDeleteGraphResourcePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *GraphResourcesDeleteGraphResourcePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GraphResourcesDeleteGraphResourcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GraphResourcesDeleteGraphResourceResponse, error) {
-	respType := GraphResourcesDeleteGraphResourceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a GraphResourcesDeleteGraphResourcePollerResponse from the provided client and resume token.
-func (l *GraphResourcesDeleteGraphResourcePollerResponse) Resume(ctx context.Context, client *GraphResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GraphResourcesClient.DeleteGraphResource", token, client.pl, client.deleteGraphResourceHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &GraphResourcesDeleteGraphResourcePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// GraphResourcesDeleteGraphResourceResponse contains the response from method GraphResources.DeleteGraphResource.
-type GraphResourcesDeleteGraphResourceResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GraphResourcesGetGraphResponse contains the response from method GraphResources.GetGraph.
-type GraphResourcesGetGraphResponse struct {
-	GraphResourcesGetGraphResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GraphResourcesGetGraphResult contains the result from method GraphResources.GetGraph.
-type GraphResourcesGetGraphResult struct {
-	GraphResourceGetResults
-}
-
-// GraphResourcesListGraphsResponse contains the response from method GraphResources.ListGraphs.
-type GraphResourcesListGraphsResponse struct {
-	GraphResourcesListGraphsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GraphResourcesListGraphsResult contains the result from method GraphResources.ListGraphs.
-type GraphResourcesListGraphsResult struct {
-	GraphResourcesListResult
-}
-
-// GremlinResourcesCreateUpdateGremlinDatabasePollerResponse contains the response from method GremlinResources.CreateUpdateGremlinDatabase.
-type GremlinResourcesCreateUpdateGremlinDatabasePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *GremlinResourcesCreateUpdateGremlinDatabasePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesCreateUpdateGremlinDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesCreateUpdateGremlinDatabaseResponse, error) {
-	respType := GremlinResourcesCreateUpdateGremlinDatabaseResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientCreateUpdateGremlinDatabaseResponse, error) {
+	respType := GremlinResourcesClientCreateUpdateGremlinDatabaseResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.GremlinDatabaseGetResults)
 	if err != nil {
 		return respType, err
@@ -2069,13 +1740,14 @@ func (l GremlinResourcesCreateUpdateGremlinDatabasePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesCreateUpdateGremlinDatabasePollerResponse from the provided client and resume token.
-func (l *GremlinResourcesCreateUpdateGremlinDatabasePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.CreateUpdateGremlinDatabase", token, client.pl, client.createUpdateGremlinDatabaseHandleError)
+// Resume rehydrates a GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse from the provided client and resume
+// token.
+func (l *GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.CreateUpdateGremlinDatabase", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesCreateUpdateGremlinDatabasePoller{
+	poller := &GremlinResourcesClientCreateUpdateGremlinDatabasePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2087,30 +1759,32 @@ func (l *GremlinResourcesCreateUpdateGremlinDatabasePollerResponse) Resume(ctx c
 	return nil
 }
 
-// GremlinResourcesCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResources.CreateUpdateGremlinDatabase.
-type GremlinResourcesCreateUpdateGremlinDatabaseResponse struct {
-	GremlinResourcesCreateUpdateGremlinDatabaseResult
+// GremlinResourcesClientCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResourcesClient.CreateUpdateGremlinDatabase.
+type GremlinResourcesClientCreateUpdateGremlinDatabaseResponse struct {
+	GremlinResourcesClientCreateUpdateGremlinDatabaseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesCreateUpdateGremlinDatabaseResult contains the result from method GremlinResources.CreateUpdateGremlinDatabase.
-type GremlinResourcesCreateUpdateGremlinDatabaseResult struct {
+// GremlinResourcesClientCreateUpdateGremlinDatabaseResult contains the result from method GremlinResourcesClient.CreateUpdateGremlinDatabase.
+type GremlinResourcesClientCreateUpdateGremlinDatabaseResult struct {
 	GremlinDatabaseGetResults
 }
 
-// GremlinResourcesCreateUpdateGremlinGraphPollerResponse contains the response from method GremlinResources.CreateUpdateGremlinGraph.
-type GremlinResourcesCreateUpdateGremlinGraphPollerResponse struct {
+// GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse contains the response from method GremlinResourcesClient.CreateUpdateGremlinGraph.
+type GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesCreateUpdateGremlinGraphPoller
+	Poller *GremlinResourcesClientCreateUpdateGremlinGraphPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesCreateUpdateGremlinGraphPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesCreateUpdateGremlinGraphResponse, error) {
-	respType := GremlinResourcesCreateUpdateGremlinGraphResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientCreateUpdateGremlinGraphResponse, error) {
+	respType := GremlinResourcesClientCreateUpdateGremlinGraphResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.GremlinGraphGetResults)
 	if err != nil {
 		return respType, err
@@ -2119,13 +1793,13 @@ func (l GremlinResourcesCreateUpdateGremlinGraphPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesCreateUpdateGremlinGraphPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesCreateUpdateGremlinGraphPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.CreateUpdateGremlinGraph", token, client.pl, client.createUpdateGremlinGraphHandleError)
+// Resume rehydrates a GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse from the provided client and resume token.
+func (l *GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.CreateUpdateGremlinGraph", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesCreateUpdateGremlinGraphPoller{
+	poller := &GremlinResourcesClientCreateUpdateGremlinGraphPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2137,30 +1811,32 @@ func (l *GremlinResourcesCreateUpdateGremlinGraphPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// GremlinResourcesCreateUpdateGremlinGraphResponse contains the response from method GremlinResources.CreateUpdateGremlinGraph.
-type GremlinResourcesCreateUpdateGremlinGraphResponse struct {
-	GremlinResourcesCreateUpdateGremlinGraphResult
+// GremlinResourcesClientCreateUpdateGremlinGraphResponse contains the response from method GremlinResourcesClient.CreateUpdateGremlinGraph.
+type GremlinResourcesClientCreateUpdateGremlinGraphResponse struct {
+	GremlinResourcesClientCreateUpdateGremlinGraphResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesCreateUpdateGremlinGraphResult contains the result from method GremlinResources.CreateUpdateGremlinGraph.
-type GremlinResourcesCreateUpdateGremlinGraphResult struct {
+// GremlinResourcesClientCreateUpdateGremlinGraphResult contains the result from method GremlinResourcesClient.CreateUpdateGremlinGraph.
+type GremlinResourcesClientCreateUpdateGremlinGraphResult struct {
 	GremlinGraphGetResults
 }
 
-// GremlinResourcesDeleteGremlinDatabasePollerResponse contains the response from method GremlinResources.DeleteGremlinDatabase.
-type GremlinResourcesDeleteGremlinDatabasePollerResponse struct {
+// GremlinResourcesClientDeleteGremlinDatabasePollerResponse contains the response from method GremlinResourcesClient.DeleteGremlinDatabase.
+type GremlinResourcesClientDeleteGremlinDatabasePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesDeleteGremlinDatabasePoller
+	Poller *GremlinResourcesClientDeleteGremlinDatabasePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesDeleteGremlinDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesDeleteGremlinDatabaseResponse, error) {
-	respType := GremlinResourcesDeleteGremlinDatabaseResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientDeleteGremlinDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientDeleteGremlinDatabaseResponse, error) {
+	respType := GremlinResourcesClientDeleteGremlinDatabaseResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2169,13 +1845,13 @@ func (l GremlinResourcesDeleteGremlinDatabasePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesDeleteGremlinDatabasePollerResponse from the provided client and resume token.
-func (l *GremlinResourcesDeleteGremlinDatabasePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.DeleteGremlinDatabase", token, client.pl, client.deleteGremlinDatabaseHandleError)
+// Resume rehydrates a GremlinResourcesClientDeleteGremlinDatabasePollerResponse from the provided client and resume token.
+func (l *GremlinResourcesClientDeleteGremlinDatabasePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.DeleteGremlinDatabase", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesDeleteGremlinDatabasePoller{
+	poller := &GremlinResourcesClientDeleteGremlinDatabasePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2187,24 +1863,26 @@ func (l *GremlinResourcesDeleteGremlinDatabasePollerResponse) Resume(ctx context
 	return nil
 }
 
-// GremlinResourcesDeleteGremlinDatabaseResponse contains the response from method GremlinResources.DeleteGremlinDatabase.
-type GremlinResourcesDeleteGremlinDatabaseResponse struct {
+// GremlinResourcesClientDeleteGremlinDatabaseResponse contains the response from method GremlinResourcesClient.DeleteGremlinDatabase.
+type GremlinResourcesClientDeleteGremlinDatabaseResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesDeleteGremlinGraphPollerResponse contains the response from method GremlinResources.DeleteGremlinGraph.
-type GremlinResourcesDeleteGremlinGraphPollerResponse struct {
+// GremlinResourcesClientDeleteGremlinGraphPollerResponse contains the response from method GremlinResourcesClient.DeleteGremlinGraph.
+type GremlinResourcesClientDeleteGremlinGraphPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesDeleteGremlinGraphPoller
+	Poller *GremlinResourcesClientDeleteGremlinGraphPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesDeleteGremlinGraphPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesDeleteGremlinGraphResponse, error) {
-	respType := GremlinResourcesDeleteGremlinGraphResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientDeleteGremlinGraphPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientDeleteGremlinGraphResponse, error) {
+	respType := GremlinResourcesClientDeleteGremlinGraphResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2213,13 +1891,13 @@ func (l GremlinResourcesDeleteGremlinGraphPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesDeleteGremlinGraphPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesDeleteGremlinGraphPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.DeleteGremlinGraph", token, client.pl, client.deleteGremlinGraphHandleError)
+// Resume rehydrates a GremlinResourcesClientDeleteGremlinGraphPollerResponse from the provided client and resume token.
+func (l *GremlinResourcesClientDeleteGremlinGraphPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.DeleteGremlinGraph", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesDeleteGremlinGraphPoller{
+	poller := &GremlinResourcesClientDeleteGremlinGraphPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2231,96 +1909,98 @@ func (l *GremlinResourcesDeleteGremlinGraphPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// GremlinResourcesDeleteGremlinGraphResponse contains the response from method GremlinResources.DeleteGremlinGraph.
-type GremlinResourcesDeleteGremlinGraphResponse struct {
+// GremlinResourcesClientDeleteGremlinGraphResponse contains the response from method GremlinResourcesClient.DeleteGremlinGraph.
+type GremlinResourcesClientDeleteGremlinGraphResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesGetGremlinDatabaseResponse contains the response from method GremlinResources.GetGremlinDatabase.
-type GremlinResourcesGetGremlinDatabaseResponse struct {
-	GremlinResourcesGetGremlinDatabaseResult
+// GremlinResourcesClientGetGremlinDatabaseResponse contains the response from method GremlinResourcesClient.GetGremlinDatabase.
+type GremlinResourcesClientGetGremlinDatabaseResponse struct {
+	GremlinResourcesClientGetGremlinDatabaseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesGetGremlinDatabaseResult contains the result from method GremlinResources.GetGremlinDatabase.
-type GremlinResourcesGetGremlinDatabaseResult struct {
+// GremlinResourcesClientGetGremlinDatabaseResult contains the result from method GremlinResourcesClient.GetGremlinDatabase.
+type GremlinResourcesClientGetGremlinDatabaseResult struct {
 	GremlinDatabaseGetResults
 }
 
-// GremlinResourcesGetGremlinDatabaseThroughputResponse contains the response from method GremlinResources.GetGremlinDatabaseThroughput.
-type GremlinResourcesGetGremlinDatabaseThroughputResponse struct {
-	GremlinResourcesGetGremlinDatabaseThroughputResult
+// GremlinResourcesClientGetGremlinDatabaseThroughputResponse contains the response from method GremlinResourcesClient.GetGremlinDatabaseThroughput.
+type GremlinResourcesClientGetGremlinDatabaseThroughputResponse struct {
+	GremlinResourcesClientGetGremlinDatabaseThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesGetGremlinDatabaseThroughputResult contains the result from method GremlinResources.GetGremlinDatabaseThroughput.
-type GremlinResourcesGetGremlinDatabaseThroughputResult struct {
+// GremlinResourcesClientGetGremlinDatabaseThroughputResult contains the result from method GremlinResourcesClient.GetGremlinDatabaseThroughput.
+type GremlinResourcesClientGetGremlinDatabaseThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesGetGremlinGraphResponse contains the response from method GremlinResources.GetGremlinGraph.
-type GremlinResourcesGetGremlinGraphResponse struct {
-	GremlinResourcesGetGremlinGraphResult
+// GremlinResourcesClientGetGremlinGraphResponse contains the response from method GremlinResourcesClient.GetGremlinGraph.
+type GremlinResourcesClientGetGremlinGraphResponse struct {
+	GremlinResourcesClientGetGremlinGraphResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesGetGremlinGraphResult contains the result from method GremlinResources.GetGremlinGraph.
-type GremlinResourcesGetGremlinGraphResult struct {
+// GremlinResourcesClientGetGremlinGraphResult contains the result from method GremlinResourcesClient.GetGremlinGraph.
+type GremlinResourcesClientGetGremlinGraphResult struct {
 	GremlinGraphGetResults
 }
 
-// GremlinResourcesGetGremlinGraphThroughputResponse contains the response from method GremlinResources.GetGremlinGraphThroughput.
-type GremlinResourcesGetGremlinGraphThroughputResponse struct {
-	GremlinResourcesGetGremlinGraphThroughputResult
+// GremlinResourcesClientGetGremlinGraphThroughputResponse contains the response from method GremlinResourcesClient.GetGremlinGraphThroughput.
+type GremlinResourcesClientGetGremlinGraphThroughputResponse struct {
+	GremlinResourcesClientGetGremlinGraphThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesGetGremlinGraphThroughputResult contains the result from method GremlinResources.GetGremlinGraphThroughput.
-type GremlinResourcesGetGremlinGraphThroughputResult struct {
+// GremlinResourcesClientGetGremlinGraphThroughputResult contains the result from method GremlinResourcesClient.GetGremlinGraphThroughput.
+type GremlinResourcesClientGetGremlinGraphThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesListGremlinDatabasesResponse contains the response from method GremlinResources.ListGremlinDatabases.
-type GremlinResourcesListGremlinDatabasesResponse struct {
-	GremlinResourcesListGremlinDatabasesResult
+// GremlinResourcesClientListGremlinDatabasesResponse contains the response from method GremlinResourcesClient.ListGremlinDatabases.
+type GremlinResourcesClientListGremlinDatabasesResponse struct {
+	GremlinResourcesClientListGremlinDatabasesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesListGremlinDatabasesResult contains the result from method GremlinResources.ListGremlinDatabases.
-type GremlinResourcesListGremlinDatabasesResult struct {
+// GremlinResourcesClientListGremlinDatabasesResult contains the result from method GremlinResourcesClient.ListGremlinDatabases.
+type GremlinResourcesClientListGremlinDatabasesResult struct {
 	GremlinDatabaseListResult
 }
 
-// GremlinResourcesListGremlinGraphsResponse contains the response from method GremlinResources.ListGremlinGraphs.
-type GremlinResourcesListGremlinGraphsResponse struct {
-	GremlinResourcesListGremlinGraphsResult
+// GremlinResourcesClientListGremlinGraphsResponse contains the response from method GremlinResourcesClient.ListGremlinGraphs.
+type GremlinResourcesClientListGremlinGraphsResponse struct {
+	GremlinResourcesClientListGremlinGraphsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesListGremlinGraphsResult contains the result from method GremlinResources.ListGremlinGraphs.
-type GremlinResourcesListGremlinGraphsResult struct {
+// GremlinResourcesClientListGremlinGraphsResult contains the result from method GremlinResourcesClient.ListGremlinGraphs.
+type GremlinResourcesClientListGremlinGraphsResult struct {
 	GremlinGraphListResult
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse contains the response from method GremlinResources.MigrateGremlinDatabaseToAutoscale.
-type GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse struct {
+// GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse contains the response from method GremlinResourcesClient.MigrateGremlinDatabaseToAutoscale.
+type GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesMigrateGremlinDatabaseToAutoscalePoller
+	Poller *GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesMigrateGremlinDatabaseToAutoscaleResponse, error) {
-	respType := GremlinResourcesMigrateGremlinDatabaseToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse, error) {
+	respType := GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2329,13 +2009,14 @@ func (l GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse from the provided client and resume token.
-func (l *GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinDatabaseToAutoscale", token, client.pl, client.migrateGremlinDatabaseToAutoscaleHandleError)
+// Resume rehydrates a GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse from the provided client and
+// resume token.
+func (l *GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinDatabaseToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesMigrateGremlinDatabaseToAutoscalePoller{
+	poller := &GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2347,30 +2028,32 @@ func (l *GremlinResourcesMigrateGremlinDatabaseToAutoscalePollerResponse) Resume
 	return nil
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToAutoscaleResponse contains the response from method GremlinResources.MigrateGremlinDatabaseToAutoscale.
-type GremlinResourcesMigrateGremlinDatabaseToAutoscaleResponse struct {
-	GremlinResourcesMigrateGremlinDatabaseToAutoscaleResult
+// GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse contains the response from method GremlinResourcesClient.MigrateGremlinDatabaseToAutoscale.
+type GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse struct {
+	GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToAutoscaleResult contains the result from method GremlinResources.MigrateGremlinDatabaseToAutoscale.
-type GremlinResourcesMigrateGremlinDatabaseToAutoscaleResult struct {
+// GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResult contains the result from method GremlinResourcesClient.MigrateGremlinDatabaseToAutoscale.
+type GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse contains the response from method GremlinResources.MigrateGremlinDatabaseToManualThroughput.
-type GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse struct {
+// GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse contains the response from method GremlinResourcesClient.MigrateGremlinDatabaseToManualThroughput.
+type GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesMigrateGremlinDatabaseToManualThroughputPoller
+	Poller *GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesMigrateGremlinDatabaseToManualThroughputResponse, error) {
-	respType := GremlinResourcesMigrateGremlinDatabaseToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse, error) {
+	respType := GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2379,13 +2062,14 @@ func (l GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinDatabaseToManualThroughput", token, client.pl, client.migrateGremlinDatabaseToManualThroughputHandleError)
+// Resume rehydrates a GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse from the provided client
+// and resume token.
+func (l *GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinDatabaseToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesMigrateGremlinDatabaseToManualThroughputPoller{
+	poller := &GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2397,30 +2081,32 @@ func (l *GremlinResourcesMigrateGremlinDatabaseToManualThroughputPollerResponse)
 	return nil
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToManualThroughputResponse contains the response from method GremlinResources.MigrateGremlinDatabaseToManualThroughput.
-type GremlinResourcesMigrateGremlinDatabaseToManualThroughputResponse struct {
-	GremlinResourcesMigrateGremlinDatabaseToManualThroughputResult
+// GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse contains the response from method GremlinResourcesClient.MigrateGremlinDatabaseToManualThroughput.
+type GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse struct {
+	GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesMigrateGremlinDatabaseToManualThroughputResult contains the result from method GremlinResources.MigrateGremlinDatabaseToManualThroughput.
-type GremlinResourcesMigrateGremlinDatabaseToManualThroughputResult struct {
+// GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResult contains the result from method GremlinResourcesClient.MigrateGremlinDatabaseToManualThroughput.
+type GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse contains the response from method GremlinResources.MigrateGremlinGraphToAutoscale.
-type GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse struct {
+// GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse contains the response from method GremlinResourcesClient.MigrateGremlinGraphToAutoscale.
+type GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesMigrateGremlinGraphToAutoscalePoller
+	Poller *GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesMigrateGremlinGraphToAutoscaleResponse, error) {
-	respType := GremlinResourcesMigrateGremlinGraphToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse, error) {
+	respType := GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2429,13 +2115,14 @@ func (l GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse from the provided client and resume token.
-func (l *GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinGraphToAutoscale", token, client.pl, client.migrateGremlinGraphToAutoscaleHandleError)
+// Resume rehydrates a GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse from the provided client and resume
+// token.
+func (l *GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinGraphToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesMigrateGremlinGraphToAutoscalePoller{
+	poller := &GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2447,30 +2134,32 @@ func (l *GremlinResourcesMigrateGremlinGraphToAutoscalePollerResponse) Resume(ct
 	return nil
 }
 
-// GremlinResourcesMigrateGremlinGraphToAutoscaleResponse contains the response from method GremlinResources.MigrateGremlinGraphToAutoscale.
-type GremlinResourcesMigrateGremlinGraphToAutoscaleResponse struct {
-	GremlinResourcesMigrateGremlinGraphToAutoscaleResult
+// GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse contains the response from method GremlinResourcesClient.MigrateGremlinGraphToAutoscale.
+type GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse struct {
+	GremlinResourcesClientMigrateGremlinGraphToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesMigrateGremlinGraphToAutoscaleResult contains the result from method GremlinResources.MigrateGremlinGraphToAutoscale.
-type GremlinResourcesMigrateGremlinGraphToAutoscaleResult struct {
+// GremlinResourcesClientMigrateGremlinGraphToAutoscaleResult contains the result from method GremlinResourcesClient.MigrateGremlinGraphToAutoscale.
+type GremlinResourcesClientMigrateGremlinGraphToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse contains the response from method GremlinResources.MigrateGremlinGraphToManualThroughput.
-type GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse struct {
+// GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse contains the response from method GremlinResourcesClient.MigrateGremlinGraphToManualThroughput.
+type GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesMigrateGremlinGraphToManualThroughputPoller
+	Poller *GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesMigrateGremlinGraphToManualThroughputResponse, error) {
-	respType := GremlinResourcesMigrateGremlinGraphToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse, error) {
+	respType := GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2479,13 +2168,14 @@ func (l GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinGraphToManualThroughput", token, client.pl, client.migrateGremlinGraphToManualThroughputHandleError)
+// Resume rehydrates a GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse from the provided client
+// and resume token.
+func (l *GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.MigrateGremlinGraphToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesMigrateGremlinGraphToManualThroughputPoller{
+	poller := &GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2497,30 +2187,32 @@ func (l *GremlinResourcesMigrateGremlinGraphToManualThroughputPollerResponse) Re
 	return nil
 }
 
-// GremlinResourcesMigrateGremlinGraphToManualThroughputResponse contains the response from method GremlinResources.MigrateGremlinGraphToManualThroughput.
-type GremlinResourcesMigrateGremlinGraphToManualThroughputResponse struct {
-	GremlinResourcesMigrateGremlinGraphToManualThroughputResult
+// GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse contains the response from method GremlinResourcesClient.MigrateGremlinGraphToManualThroughput.
+type GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse struct {
+	GremlinResourcesClientMigrateGremlinGraphToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesMigrateGremlinGraphToManualThroughputResult contains the result from method GremlinResources.MigrateGremlinGraphToManualThroughput.
-type GremlinResourcesMigrateGremlinGraphToManualThroughputResult struct {
+// GremlinResourcesClientMigrateGremlinGraphToManualThroughputResult contains the result from method GremlinResourcesClient.MigrateGremlinGraphToManualThroughput.
+type GremlinResourcesClientMigrateGremlinGraphToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse contains the response from method GremlinResources.UpdateGremlinDatabaseThroughput.
-type GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse struct {
+// GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse contains the response from method GremlinResourcesClient.UpdateGremlinDatabaseThroughput.
+type GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesUpdateGremlinDatabaseThroughputPoller
+	Poller *GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesUpdateGremlinDatabaseThroughputResponse, error) {
-	respType := GremlinResourcesUpdateGremlinDatabaseThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse, error) {
+	respType := GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2529,13 +2221,14 @@ func (l GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.UpdateGremlinDatabaseThroughput", token, client.pl, client.updateGremlinDatabaseThroughputHandleError)
+// Resume rehydrates a GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse from the provided client and resume
+// token.
+func (l *GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.UpdateGremlinDatabaseThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesUpdateGremlinDatabaseThroughputPoller{
+	poller := &GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2547,30 +2240,32 @@ func (l *GremlinResourcesUpdateGremlinDatabaseThroughputPollerResponse) Resume(c
 	return nil
 }
 
-// GremlinResourcesUpdateGremlinDatabaseThroughputResponse contains the response from method GremlinResources.UpdateGremlinDatabaseThroughput.
-type GremlinResourcesUpdateGremlinDatabaseThroughputResponse struct {
-	GremlinResourcesUpdateGremlinDatabaseThroughputResult
+// GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse contains the response from method GremlinResourcesClient.UpdateGremlinDatabaseThroughput.
+type GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse struct {
+	GremlinResourcesClientUpdateGremlinDatabaseThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesUpdateGremlinDatabaseThroughputResult contains the result from method GremlinResources.UpdateGremlinDatabaseThroughput.
-type GremlinResourcesUpdateGremlinDatabaseThroughputResult struct {
+// GremlinResourcesClientUpdateGremlinDatabaseThroughputResult contains the result from method GremlinResourcesClient.UpdateGremlinDatabaseThroughput.
+type GremlinResourcesClientUpdateGremlinDatabaseThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// GremlinResourcesUpdateGremlinGraphThroughputPollerResponse contains the response from method GremlinResources.UpdateGremlinGraphThroughput.
-type GremlinResourcesUpdateGremlinGraphThroughputPollerResponse struct {
+// GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse contains the response from method GremlinResourcesClient.UpdateGremlinGraphThroughput.
+type GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GremlinResourcesUpdateGremlinGraphThroughputPoller
+	Poller *GremlinResourcesClientUpdateGremlinGraphThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l GremlinResourcesUpdateGremlinGraphThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesUpdateGremlinGraphThroughputResponse, error) {
-	respType := GremlinResourcesUpdateGremlinGraphThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GremlinResourcesClientUpdateGremlinGraphThroughputResponse, error) {
+	respType := GremlinResourcesClientUpdateGremlinGraphThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2579,13 +2274,14 @@ func (l GremlinResourcesUpdateGremlinGraphThroughputPollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a GremlinResourcesUpdateGremlinGraphThroughputPollerResponse from the provided client and resume token.
-func (l *GremlinResourcesUpdateGremlinGraphThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.UpdateGremlinGraphThroughput", token, client.pl, client.updateGremlinGraphThroughputHandleError)
+// Resume rehydrates a GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse from the provided client and resume
+// token.
+func (l *GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse) Resume(ctx context.Context, client *GremlinResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GremlinResourcesClient.UpdateGremlinGraphThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GremlinResourcesUpdateGremlinGraphThroughputPoller{
+	poller := &GremlinResourcesClientUpdateGremlinGraphThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2597,30 +2293,56 @@ func (l *GremlinResourcesUpdateGremlinGraphThroughputPollerResponse) Resume(ctx 
 	return nil
 }
 
-// GremlinResourcesUpdateGremlinGraphThroughputResponse contains the response from method GremlinResources.UpdateGremlinGraphThroughput.
-type GremlinResourcesUpdateGremlinGraphThroughputResponse struct {
-	GremlinResourcesUpdateGremlinGraphThroughputResult
+// GremlinResourcesClientUpdateGremlinGraphThroughputResponse contains the response from method GremlinResourcesClient.UpdateGremlinGraphThroughput.
+type GremlinResourcesClientUpdateGremlinGraphThroughputResponse struct {
+	GremlinResourcesClientUpdateGremlinGraphThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GremlinResourcesUpdateGremlinGraphThroughputResult contains the result from method GremlinResources.UpdateGremlinGraphThroughput.
-type GremlinResourcesUpdateGremlinGraphThroughputResult struct {
+// GremlinResourcesClientUpdateGremlinGraphThroughputResult contains the result from method GremlinResourcesClient.UpdateGremlinGraphThroughput.
+type GremlinResourcesClientUpdateGremlinGraphThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse contains the response from method MongoDBResources.CreateUpdateMongoDBCollection.
-type MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse struct {
+// LocationsClientGetResponse contains the response from method LocationsClient.Get.
+type LocationsClientGetResponse struct {
+	LocationsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocationsClientGetResult contains the result from method LocationsClient.Get.
+type LocationsClientGetResult struct {
+	LocationGetResult
+}
+
+// LocationsClientListResponse contains the response from method LocationsClient.List.
+type LocationsClientListResponse struct {
+	LocationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocationsClientListResult contains the result from method LocationsClient.List.
+type LocationsClientListResult struct {
+	LocationListResult
+}
+
+// MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoDBCollection.
+type MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesCreateUpdateMongoDBCollectionPoller
+	Poller *MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesCreateUpdateMongoDBCollectionResponse, error) {
-	respType := MongoDBResourcesCreateUpdateMongoDBCollectionResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse, error) {
+	respType := MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MongoDBCollectionGetResults)
 	if err != nil {
 		return respType, err
@@ -2629,13 +2351,14 @@ func (l MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse) PollUntilDo
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBCollection", token, client.pl, client.createUpdateMongoDBCollectionHandleError)
+// Resume rehydrates a MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse from the provided client and resume
+// token.
+func (l *MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBCollection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesCreateUpdateMongoDBCollectionPoller{
+	poller := &MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2647,30 +2370,32 @@ func (l *MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse) Resume(ctx
 	return nil
 }
 
-// MongoDBResourcesCreateUpdateMongoDBCollectionResponse contains the response from method MongoDBResources.CreateUpdateMongoDBCollection.
-type MongoDBResourcesCreateUpdateMongoDBCollectionResponse struct {
-	MongoDBResourcesCreateUpdateMongoDBCollectionResult
+// MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoDBCollection.
+type MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse struct {
+	MongoDBResourcesClientCreateUpdateMongoDBCollectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesCreateUpdateMongoDBCollectionResult contains the result from method MongoDBResources.CreateUpdateMongoDBCollection.
-type MongoDBResourcesCreateUpdateMongoDBCollectionResult struct {
+// MongoDBResourcesClientCreateUpdateMongoDBCollectionResult contains the result from method MongoDBResourcesClient.CreateUpdateMongoDBCollection.
+type MongoDBResourcesClientCreateUpdateMongoDBCollectionResult struct {
 	MongoDBCollectionGetResults
 }
 
-// MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse contains the response from method MongoDBResources.CreateUpdateMongoDBDatabase.
-type MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse struct {
+// MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoDBDatabase.
+type MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesCreateUpdateMongoDBDatabasePoller
+	Poller *MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesCreateUpdateMongoDBDatabaseResponse, error) {
-	respType := MongoDBResourcesCreateUpdateMongoDBDatabaseResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse, error) {
+	respType := MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MongoDBDatabaseGetResults)
 	if err != nil {
 		return respType, err
@@ -2679,13 +2404,14 @@ func (l MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBDatabase", token, client.pl, client.createUpdateMongoDBDatabaseHandleError)
+// Resume rehydrates a MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse from the provided client and resume
+// token.
+func (l *MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBDatabase", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesCreateUpdateMongoDBDatabasePoller{
+	poller := &MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2697,30 +2423,32 @@ func (l *MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse) Resume(ctx c
 	return nil
 }
 
-// MongoDBResourcesCreateUpdateMongoDBDatabaseResponse contains the response from method MongoDBResources.CreateUpdateMongoDBDatabase.
-type MongoDBResourcesCreateUpdateMongoDBDatabaseResponse struct {
-	MongoDBResourcesCreateUpdateMongoDBDatabaseResult
+// MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoDBDatabase.
+type MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse struct {
+	MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesCreateUpdateMongoDBDatabaseResult contains the result from method MongoDBResources.CreateUpdateMongoDBDatabase.
-type MongoDBResourcesCreateUpdateMongoDBDatabaseResult struct {
+// MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult contains the result from method MongoDBResourcesClient.CreateUpdateMongoDBDatabase.
+type MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult struct {
 	MongoDBDatabaseGetResults
 }
 
-// MongoDBResourcesDeleteMongoDBCollectionPollerResponse contains the response from method MongoDBResources.DeleteMongoDBCollection.
-type MongoDBResourcesDeleteMongoDBCollectionPollerResponse struct {
+// MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBCollection.
+type MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesDeleteMongoDBCollectionPoller
+	Poller *MongoDBResourcesClientDeleteMongoDBCollectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesDeleteMongoDBCollectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesDeleteMongoDBCollectionResponse, error) {
-	respType := MongoDBResourcesDeleteMongoDBCollectionResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientDeleteMongoDBCollectionResponse, error) {
+	respType := MongoDBResourcesClientDeleteMongoDBCollectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2729,13 +2457,13 @@ func (l MongoDBResourcesDeleteMongoDBCollectionPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesDeleteMongoDBCollectionPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesDeleteMongoDBCollectionPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBCollection", token, client.pl, client.deleteMongoDBCollectionHandleError)
+// Resume rehydrates a MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse from the provided client and resume token.
+func (l *MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBCollection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesDeleteMongoDBCollectionPoller{
+	poller := &MongoDBResourcesClientDeleteMongoDBCollectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2747,24 +2475,26 @@ func (l *MongoDBResourcesDeleteMongoDBCollectionPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// MongoDBResourcesDeleteMongoDBCollectionResponse contains the response from method MongoDBResources.DeleteMongoDBCollection.
-type MongoDBResourcesDeleteMongoDBCollectionResponse struct {
+// MongoDBResourcesClientDeleteMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBCollection.
+type MongoDBResourcesClientDeleteMongoDBCollectionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesDeleteMongoDBDatabasePollerResponse contains the response from method MongoDBResources.DeleteMongoDBDatabase.
-type MongoDBResourcesDeleteMongoDBDatabasePollerResponse struct {
+// MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBDatabase.
+type MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesDeleteMongoDBDatabasePoller
+	Poller *MongoDBResourcesClientDeleteMongoDBDatabasePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesDeleteMongoDBDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesDeleteMongoDBDatabaseResponse, error) {
-	respType := MongoDBResourcesDeleteMongoDBDatabaseResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientDeleteMongoDBDatabaseResponse, error) {
+	respType := MongoDBResourcesClientDeleteMongoDBDatabaseResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2773,13 +2503,13 @@ func (l MongoDBResourcesDeleteMongoDBDatabasePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesDeleteMongoDBDatabasePollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesDeleteMongoDBDatabasePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBDatabase", token, client.pl, client.deleteMongoDBDatabaseHandleError)
+// Resume rehydrates a MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse from the provided client and resume token.
+func (l *MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBDatabase", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesDeleteMongoDBDatabasePoller{
+	poller := &MongoDBResourcesClientDeleteMongoDBDatabasePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2791,96 +2521,98 @@ func (l *MongoDBResourcesDeleteMongoDBDatabasePollerResponse) Resume(ctx context
 	return nil
 }
 
-// MongoDBResourcesDeleteMongoDBDatabaseResponse contains the response from method MongoDBResources.DeleteMongoDBDatabase.
-type MongoDBResourcesDeleteMongoDBDatabaseResponse struct {
+// MongoDBResourcesClientDeleteMongoDBDatabaseResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBDatabase.
+type MongoDBResourcesClientDeleteMongoDBDatabaseResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesGetMongoDBCollectionResponse contains the response from method MongoDBResources.GetMongoDBCollection.
-type MongoDBResourcesGetMongoDBCollectionResponse struct {
-	MongoDBResourcesGetMongoDBCollectionResult
+// MongoDBResourcesClientGetMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.GetMongoDBCollection.
+type MongoDBResourcesClientGetMongoDBCollectionResponse struct {
+	MongoDBResourcesClientGetMongoDBCollectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesGetMongoDBCollectionResult contains the result from method MongoDBResources.GetMongoDBCollection.
-type MongoDBResourcesGetMongoDBCollectionResult struct {
+// MongoDBResourcesClientGetMongoDBCollectionResult contains the result from method MongoDBResourcesClient.GetMongoDBCollection.
+type MongoDBResourcesClientGetMongoDBCollectionResult struct {
 	MongoDBCollectionGetResults
 }
 
-// MongoDBResourcesGetMongoDBCollectionThroughputResponse contains the response from method MongoDBResources.GetMongoDBCollectionThroughput.
-type MongoDBResourcesGetMongoDBCollectionThroughputResponse struct {
-	MongoDBResourcesGetMongoDBCollectionThroughputResult
+// MongoDBResourcesClientGetMongoDBCollectionThroughputResponse contains the response from method MongoDBResourcesClient.GetMongoDBCollectionThroughput.
+type MongoDBResourcesClientGetMongoDBCollectionThroughputResponse struct {
+	MongoDBResourcesClientGetMongoDBCollectionThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesGetMongoDBCollectionThroughputResult contains the result from method MongoDBResources.GetMongoDBCollectionThroughput.
-type MongoDBResourcesGetMongoDBCollectionThroughputResult struct {
+// MongoDBResourcesClientGetMongoDBCollectionThroughputResult contains the result from method MongoDBResourcesClient.GetMongoDBCollectionThroughput.
+type MongoDBResourcesClientGetMongoDBCollectionThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesGetMongoDBDatabaseResponse contains the response from method MongoDBResources.GetMongoDBDatabase.
-type MongoDBResourcesGetMongoDBDatabaseResponse struct {
-	MongoDBResourcesGetMongoDBDatabaseResult
+// MongoDBResourcesClientGetMongoDBDatabaseResponse contains the response from method MongoDBResourcesClient.GetMongoDBDatabase.
+type MongoDBResourcesClientGetMongoDBDatabaseResponse struct {
+	MongoDBResourcesClientGetMongoDBDatabaseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesGetMongoDBDatabaseResult contains the result from method MongoDBResources.GetMongoDBDatabase.
-type MongoDBResourcesGetMongoDBDatabaseResult struct {
+// MongoDBResourcesClientGetMongoDBDatabaseResult contains the result from method MongoDBResourcesClient.GetMongoDBDatabase.
+type MongoDBResourcesClientGetMongoDBDatabaseResult struct {
 	MongoDBDatabaseGetResults
 }
 
-// MongoDBResourcesGetMongoDBDatabaseThroughputResponse contains the response from method MongoDBResources.GetMongoDBDatabaseThroughput.
-type MongoDBResourcesGetMongoDBDatabaseThroughputResponse struct {
-	MongoDBResourcesGetMongoDBDatabaseThroughputResult
+// MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse contains the response from method MongoDBResourcesClient.GetMongoDBDatabaseThroughput.
+type MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse struct {
+	MongoDBResourcesClientGetMongoDBDatabaseThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesGetMongoDBDatabaseThroughputResult contains the result from method MongoDBResources.GetMongoDBDatabaseThroughput.
-type MongoDBResourcesGetMongoDBDatabaseThroughputResult struct {
+// MongoDBResourcesClientGetMongoDBDatabaseThroughputResult contains the result from method MongoDBResourcesClient.GetMongoDBDatabaseThroughput.
+type MongoDBResourcesClientGetMongoDBDatabaseThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesListMongoDBCollectionsResponse contains the response from method MongoDBResources.ListMongoDBCollections.
-type MongoDBResourcesListMongoDBCollectionsResponse struct {
-	MongoDBResourcesListMongoDBCollectionsResult
+// MongoDBResourcesClientListMongoDBCollectionsResponse contains the response from method MongoDBResourcesClient.ListMongoDBCollections.
+type MongoDBResourcesClientListMongoDBCollectionsResponse struct {
+	MongoDBResourcesClientListMongoDBCollectionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesListMongoDBCollectionsResult contains the result from method MongoDBResources.ListMongoDBCollections.
-type MongoDBResourcesListMongoDBCollectionsResult struct {
+// MongoDBResourcesClientListMongoDBCollectionsResult contains the result from method MongoDBResourcesClient.ListMongoDBCollections.
+type MongoDBResourcesClientListMongoDBCollectionsResult struct {
 	MongoDBCollectionListResult
 }
 
-// MongoDBResourcesListMongoDBDatabasesResponse contains the response from method MongoDBResources.ListMongoDBDatabases.
-type MongoDBResourcesListMongoDBDatabasesResponse struct {
-	MongoDBResourcesListMongoDBDatabasesResult
+// MongoDBResourcesClientListMongoDBDatabasesResponse contains the response from method MongoDBResourcesClient.ListMongoDBDatabases.
+type MongoDBResourcesClientListMongoDBDatabasesResponse struct {
+	MongoDBResourcesClientListMongoDBDatabasesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesListMongoDBDatabasesResult contains the result from method MongoDBResources.ListMongoDBDatabases.
-type MongoDBResourcesListMongoDBDatabasesResult struct {
+// MongoDBResourcesClientListMongoDBDatabasesResult contains the result from method MongoDBResourcesClient.ListMongoDBDatabases.
+type MongoDBResourcesClientListMongoDBDatabasesResult struct {
 	MongoDBDatabaseListResult
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse contains the response from method MongoDBResources.MigrateMongoDBCollectionToAutoscale.
-type MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse struct {
+// MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller
+	Poller *MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse, error) {
-	respType := MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse, error) {
+	respType := MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2889,13 +2621,14 @@ func (l MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale", token, client.pl, client.migrateMongoDBCollectionToAutoscaleHandleError)
+// Resume rehydrates a MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse from the provided client and
+// resume token.
+func (l *MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller{
+	poller := &MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2907,30 +2640,32 @@ func (l *MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse) Resu
 	return nil
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse contains the response from method MongoDBResources.MigrateMongoDBCollectionToAutoscale.
-type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse struct {
-	MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResult
+// MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse struct {
+	MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResult contains the result from method MongoDBResources.MigrateMongoDBCollectionToAutoscale.
-type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResult struct {
+// MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult contains the result from method MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse contains the response from method MongoDBResources.MigrateMongoDBCollectionToManualThroughput.
-type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse struct {
+// MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller
+	Poller *MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse, error) {
-	respType := MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse, error) {
+	respType := MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2939,13 +2674,14 @@ func (l MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput", token, client.pl, client.migrateMongoDBCollectionToManualThroughputHandleError)
+// Resume rehydrates a MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse from the provided client
+// and resume token.
+func (l *MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller{
+	poller := &MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2957,30 +2693,32 @@ func (l *MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerRespons
 	return nil
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse contains the response from method MongoDBResources.MigrateMongoDBCollectionToManualThroughput.
-type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse struct {
-	MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResult
+// MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse struct {
+	MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResult contains the result from method MongoDBResources.MigrateMongoDBCollectionToManualThroughput.
-type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResult struct {
+// MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult contains the result from method MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse contains the response from method MongoDBResources.MigrateMongoDBDatabaseToAutoscale.
-type MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse struct {
+// MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller
+	Poller *MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse, error) {
-	respType := MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse, error) {
+	respType := MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -2989,13 +2727,14 @@ func (l MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale", token, client.pl, client.migrateMongoDBDatabaseToAutoscaleHandleError)
+// Resume rehydrates a MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse from the provided client and
+// resume token.
+func (l *MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller{
+	poller := &MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3007,30 +2746,32 @@ func (l *MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse) Resume
 	return nil
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse contains the response from method MongoDBResources.MigrateMongoDBDatabaseToAutoscale.
-type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse struct {
-	MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResult
+// MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse struct {
+	MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResult contains the result from method MongoDBResources.MigrateMongoDBDatabaseToAutoscale.
-type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResult struct {
+// MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult contains the result from method MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse contains the response from method MongoDBResources.MigrateMongoDBDatabaseToManualThroughput.
-type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse struct {
+// MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller
+	Poller *MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse, error) {
-	respType := MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse, error) {
+	respType := MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -3039,13 +2780,14 @@ func (l MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput", token, client.pl, client.migrateMongoDBDatabaseToManualThroughputHandleError)
+// Resume rehydrates a MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse from the provided client
+// and resume token.
+func (l *MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller{
+	poller := &MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3057,1720 +2799,32 @@ func (l *MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse)
 	return nil
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse contains the response from method MongoDBResources.MigrateMongoDBDatabaseToManualThroughput.
-type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse struct {
-	MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResult
+// MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse struct {
+	MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResult contains the result from method MongoDBResources.MigrateMongoDBDatabaseToManualThroughput.
-type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResult struct {
+// MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult contains the result from method MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput.
+type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse contains the response from method MongoDBResources.UpdateMongoDBCollectionThroughput.
-type MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse struct {
+// MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse contains the response from method MongoDBResourcesClient.RetrieveContinuousBackupInformation.
+type MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesUpdateMongoDBCollectionThroughputPoller
+	Poller *MongoDBResourcesClientRetrieveContinuousBackupInformationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesUpdateMongoDBCollectionThroughputResponse, error) {
-	respType := MongoDBResourcesUpdateMongoDBCollectionThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBCollectionThroughput", token, client.pl, client.updateMongoDBCollectionThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &MongoDBResourcesUpdateMongoDBCollectionThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// MongoDBResourcesUpdateMongoDBCollectionThroughputResponse contains the response from method MongoDBResources.UpdateMongoDBCollectionThroughput.
-type MongoDBResourcesUpdateMongoDBCollectionThroughputResponse struct {
-	MongoDBResourcesUpdateMongoDBCollectionThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MongoDBResourcesUpdateMongoDBCollectionThroughputResult contains the result from method MongoDBResources.UpdateMongoDBCollectionThroughput.
-type MongoDBResourcesUpdateMongoDBCollectionThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse contains the response from method MongoDBResources.UpdateMongoDBDatabaseThroughput.
-type MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *MongoDBResourcesUpdateMongoDBDatabaseThroughputPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse, error) {
-	respType := MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse from the provided client and resume token.
-func (l *MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput", token, client.pl, client.updateMongoDBDatabaseThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &MongoDBResourcesUpdateMongoDBDatabaseThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse contains the response from method MongoDBResources.UpdateMongoDBDatabaseThroughput.
-type MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse struct {
-	MongoDBResourcesUpdateMongoDBDatabaseThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MongoDBResourcesUpdateMongoDBDatabaseThroughputResult contains the result from method MongoDBResources.UpdateMongoDBDatabaseThroughput.
-type MongoDBResourcesUpdateMongoDBDatabaseThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// NotebookWorkspacesCreateOrUpdatePollerResponse contains the response from method NotebookWorkspaces.CreateOrUpdate.
-type NotebookWorkspacesCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *NotebookWorkspacesCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l NotebookWorkspacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesCreateOrUpdateResponse, error) {
-	respType := NotebookWorkspacesCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NotebookWorkspace)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a NotebookWorkspacesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *NotebookWorkspacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &NotebookWorkspacesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// NotebookWorkspacesCreateOrUpdateResponse contains the response from method NotebookWorkspaces.CreateOrUpdate.
-type NotebookWorkspacesCreateOrUpdateResponse struct {
-	NotebookWorkspacesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesCreateOrUpdateResult contains the result from method NotebookWorkspaces.CreateOrUpdate.
-type NotebookWorkspacesCreateOrUpdateResult struct {
-	NotebookWorkspace
-}
-
-// NotebookWorkspacesDeletePollerResponse contains the response from method NotebookWorkspaces.Delete.
-type NotebookWorkspacesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *NotebookWorkspacesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l NotebookWorkspacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesDeleteResponse, error) {
-	respType := NotebookWorkspacesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a NotebookWorkspacesDeletePollerResponse from the provided client and resume token.
-func (l *NotebookWorkspacesDeletePollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &NotebookWorkspacesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// NotebookWorkspacesDeleteResponse contains the response from method NotebookWorkspaces.Delete.
-type NotebookWorkspacesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesGetResponse contains the response from method NotebookWorkspaces.Get.
-type NotebookWorkspacesGetResponse struct {
-	NotebookWorkspacesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesGetResult contains the result from method NotebookWorkspaces.Get.
-type NotebookWorkspacesGetResult struct {
-	NotebookWorkspace
-}
-
-// NotebookWorkspacesListByDatabaseAccountResponse contains the response from method NotebookWorkspaces.ListByDatabaseAccount.
-type NotebookWorkspacesListByDatabaseAccountResponse struct {
-	NotebookWorkspacesListByDatabaseAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesListByDatabaseAccountResult contains the result from method NotebookWorkspaces.ListByDatabaseAccount.
-type NotebookWorkspacesListByDatabaseAccountResult struct {
-	NotebookWorkspaceListResult
-}
-
-// NotebookWorkspacesListConnectionInfoResponse contains the response from method NotebookWorkspaces.ListConnectionInfo.
-type NotebookWorkspacesListConnectionInfoResponse struct {
-	NotebookWorkspacesListConnectionInfoResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesListConnectionInfoResult contains the result from method NotebookWorkspaces.ListConnectionInfo.
-type NotebookWorkspacesListConnectionInfoResult struct {
-	NotebookWorkspaceConnectionInfoResult
-}
-
-// NotebookWorkspacesRegenerateAuthTokenPollerResponse contains the response from method NotebookWorkspaces.RegenerateAuthToken.
-type NotebookWorkspacesRegenerateAuthTokenPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *NotebookWorkspacesRegenerateAuthTokenPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l NotebookWorkspacesRegenerateAuthTokenPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesRegenerateAuthTokenResponse, error) {
-	respType := NotebookWorkspacesRegenerateAuthTokenResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a NotebookWorkspacesRegenerateAuthTokenPollerResponse from the provided client and resume token.
-func (l *NotebookWorkspacesRegenerateAuthTokenPollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.RegenerateAuthToken", token, client.pl, client.regenerateAuthTokenHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &NotebookWorkspacesRegenerateAuthTokenPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// NotebookWorkspacesRegenerateAuthTokenResponse contains the response from method NotebookWorkspaces.RegenerateAuthToken.
-type NotebookWorkspacesRegenerateAuthTokenResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// NotebookWorkspacesStartPollerResponse contains the response from method NotebookWorkspaces.Start.
-type NotebookWorkspacesStartPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *NotebookWorkspacesStartPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l NotebookWorkspacesStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesStartResponse, error) {
-	respType := NotebookWorkspacesStartResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a NotebookWorkspacesStartPollerResponse from the provided client and resume token.
-func (l *NotebookWorkspacesStartPollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.Start", token, client.pl, client.startHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &NotebookWorkspacesStartPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// NotebookWorkspacesStartResponse contains the response from method NotebookWorkspaces.Start.
-type NotebookWorkspacesStartResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
-}
-
-// PartitionKeyRangeIDListMetricsResponse contains the response from method PartitionKeyRangeID.ListMetrics.
-type PartitionKeyRangeIDListMetricsResponse struct {
-	PartitionKeyRangeIDListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartitionKeyRangeIDListMetricsResult contains the result from method PartitionKeyRangeID.ListMetrics.
-type PartitionKeyRangeIDListMetricsResult struct {
-	PartitionMetricListResult
-}
-
-// PartitionKeyRangeIDRegionListMetricsResponse contains the response from method PartitionKeyRangeIDRegion.ListMetrics.
-type PartitionKeyRangeIDRegionListMetricsResponse struct {
-	PartitionKeyRangeIDRegionListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartitionKeyRangeIDRegionListMetricsResult contains the result from method PartitionKeyRangeIDRegion.ListMetrics.
-type PartitionKeyRangeIDRegionListMetricsResult struct {
-	PartitionMetricListResult
-}
-
-// PercentileListMetricsResponse contains the response from method Percentile.ListMetrics.
-type PercentileListMetricsResponse struct {
-	PercentileListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PercentileListMetricsResult contains the result from method Percentile.ListMetrics.
-type PercentileListMetricsResult struct {
-	PercentileMetricListResult
-}
-
-// PercentileSourceTargetListMetricsResponse contains the response from method PercentileSourceTarget.ListMetrics.
-type PercentileSourceTargetListMetricsResponse struct {
-	PercentileSourceTargetListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PercentileSourceTargetListMetricsResult contains the result from method PercentileSourceTarget.ListMetrics.
-type PercentileSourceTargetListMetricsResult struct {
-	PercentileMetricListResult
-}
-
-// PercentileTargetListMetricsResponse contains the response from method PercentileTarget.ListMetrics.
-type PercentileTargetListMetricsResponse struct {
-	PercentileTargetListMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PercentileTargetListMetricsResult contains the result from method PercentileTarget.ListMetrics.
-type PercentileTargetListMetricsResult struct {
-	PercentileMetricListResult
-}
-
-// PrivateEndpointConnectionsCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
-	PrivateEndpointConnection
-}
-
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
-	PrivateEndpointConnection
-}
-
-// PrivateEndpointConnectionsListByDatabaseAccountResponse contains the response from method PrivateEndpointConnections.ListByDatabaseAccount.
-type PrivateEndpointConnectionsListByDatabaseAccountResponse struct {
-	PrivateEndpointConnectionsListByDatabaseAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByDatabaseAccountResult contains the result from method PrivateEndpointConnections.ListByDatabaseAccount.
-type PrivateEndpointConnectionsListByDatabaseAccountResult struct {
-	PrivateEndpointConnectionListResult
-}
-
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
-	PrivateLinkResource
-}
-
-// PrivateLinkResourcesListByDatabaseAccountResponse contains the response from method PrivateLinkResources.ListByDatabaseAccount.
-type PrivateLinkResourcesListByDatabaseAccountResponse struct {
-	PrivateLinkResourcesListByDatabaseAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByDatabaseAccountResult contains the result from method PrivateLinkResources.ListByDatabaseAccount.
-type PrivateLinkResourcesListByDatabaseAccountResult struct {
-	PrivateLinkResourceListResult
-}
-
-// RestorableDatabaseAccountsGetByLocationResponse contains the response from method RestorableDatabaseAccounts.GetByLocation.
-type RestorableDatabaseAccountsGetByLocationResponse struct {
-	RestorableDatabaseAccountsGetByLocationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableDatabaseAccountsGetByLocationResult contains the result from method RestorableDatabaseAccounts.GetByLocation.
-type RestorableDatabaseAccountsGetByLocationResult struct {
-	RestorableDatabaseAccountGetResult
-}
-
-// RestorableDatabaseAccountsListByLocationResponse contains the response from method RestorableDatabaseAccounts.ListByLocation.
-type RestorableDatabaseAccountsListByLocationResponse struct {
-	RestorableDatabaseAccountsListByLocationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableDatabaseAccountsListByLocationResult contains the result from method RestorableDatabaseAccounts.ListByLocation.
-type RestorableDatabaseAccountsListByLocationResult struct {
-	RestorableDatabaseAccountsListResult
-}
-
-// RestorableDatabaseAccountsListResponse contains the response from method RestorableDatabaseAccounts.List.
-type RestorableDatabaseAccountsListResponse struct {
-	RestorableDatabaseAccountsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableDatabaseAccountsListResultEnvelope contains the result from method RestorableDatabaseAccounts.List.
-type RestorableDatabaseAccountsListResultEnvelope struct {
-	RestorableDatabaseAccountsListResult
-}
-
-// RestorableMongodbCollectionsListResponse contains the response from method RestorableMongodbCollections.List.
-type RestorableMongodbCollectionsListResponse struct {
-	RestorableMongodbCollectionsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableMongodbCollectionsListResultEnvelope contains the result from method RestorableMongodbCollections.List.
-type RestorableMongodbCollectionsListResultEnvelope struct {
-	RestorableMongodbCollectionsListResult
-}
-
-// RestorableMongodbDatabasesListResponse contains the response from method RestorableMongodbDatabases.List.
-type RestorableMongodbDatabasesListResponse struct {
-	RestorableMongodbDatabasesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableMongodbDatabasesListResultEnvelope contains the result from method RestorableMongodbDatabases.List.
-type RestorableMongodbDatabasesListResultEnvelope struct {
-	RestorableMongodbDatabasesListResult
-}
-
-// RestorableMongodbResourcesListResponse contains the response from method RestorableMongodbResources.List.
-type RestorableMongodbResourcesListResponse struct {
-	RestorableMongodbResourcesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableMongodbResourcesListResultEnvelope contains the result from method RestorableMongodbResources.List.
-type RestorableMongodbResourcesListResultEnvelope struct {
-	RestorableMongodbResourcesListResult
-}
-
-// RestorableSQLContainersListResponse contains the response from method RestorableSQLContainers.List.
-type RestorableSQLContainersListResponse struct {
-	RestorableSQLContainersListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableSQLContainersListResultEnvelope contains the result from method RestorableSQLContainers.List.
-type RestorableSQLContainersListResultEnvelope struct {
-	RestorableSQLContainersListResult
-}
-
-// RestorableSQLDatabasesListResponse contains the response from method RestorableSQLDatabases.List.
-type RestorableSQLDatabasesListResponse struct {
-	RestorableSQLDatabasesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableSQLDatabasesListResultEnvelope contains the result from method RestorableSQLDatabases.List.
-type RestorableSQLDatabasesListResultEnvelope struct {
-	RestorableSQLDatabasesListResult
-}
-
-// RestorableSQLResourcesListResponse contains the response from method RestorableSQLResources.List.
-type RestorableSQLResourcesListResponse struct {
-	RestorableSQLResourcesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RestorableSQLResourcesListResultEnvelope contains the result from method RestorableSQLResources.List.
-type RestorableSQLResourcesListResultEnvelope struct {
-	RestorableSQLResourcesListResult
-}
-
-// SQLResourcesCreateUpdateSQLContainerPollerResponse contains the response from method SQLResources.CreateUpdateSQLContainer.
-type SQLResourcesCreateUpdateSQLContainerPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLContainerPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLContainerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLContainerResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLContainerResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLContainerGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLContainerPollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLContainerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLContainer", token, client.pl, client.createUpdateSQLContainerHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLContainerPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLContainerResponse contains the response from method SQLResources.CreateUpdateSQLContainer.
-type SQLResourcesCreateUpdateSQLContainerResponse struct {
-	SQLResourcesCreateUpdateSQLContainerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLContainerResult contains the result from method SQLResources.CreateUpdateSQLContainer.
-type SQLResourcesCreateUpdateSQLContainerResult struct {
-	SQLContainerGetResults
-}
-
-// SQLResourcesCreateUpdateSQLDatabasePollerResponse contains the response from method SQLResources.CreateUpdateSQLDatabase.
-type SQLResourcesCreateUpdateSQLDatabasePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLDatabasePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLDatabaseResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLDatabaseResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLDatabaseGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLDatabasePollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLDatabasePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLDatabase", token, client.pl, client.createUpdateSQLDatabaseHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLDatabasePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLDatabaseResponse contains the response from method SQLResources.CreateUpdateSQLDatabase.
-type SQLResourcesCreateUpdateSQLDatabaseResponse struct {
-	SQLResourcesCreateUpdateSQLDatabaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLDatabaseResult contains the result from method SQLResources.CreateUpdateSQLDatabase.
-type SQLResourcesCreateUpdateSQLDatabaseResult struct {
-	SQLDatabaseGetResults
-}
-
-// SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse contains the response from method SQLResources.CreateUpdateSQLRoleAssignment.
-type SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLRoleAssignmentPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLRoleAssignmentResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLRoleAssignmentResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLRoleAssignmentGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLRoleAssignment", token, client.pl, client.createUpdateSQLRoleAssignmentHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLRoleAssignmentPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLRoleAssignmentResponse contains the response from method SQLResources.CreateUpdateSQLRoleAssignment.
-type SQLResourcesCreateUpdateSQLRoleAssignmentResponse struct {
-	SQLResourcesCreateUpdateSQLRoleAssignmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLRoleAssignmentResult contains the result from method SQLResources.CreateUpdateSQLRoleAssignment.
-type SQLResourcesCreateUpdateSQLRoleAssignmentResult struct {
-	SQLRoleAssignmentGetResults
-}
-
-// SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse contains the response from method SQLResources.CreateUpdateSQLRoleDefinition.
-type SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLRoleDefinitionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLRoleDefinitionResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLRoleDefinitionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLRoleDefinitionGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLRoleDefinition", token, client.pl, client.createUpdateSQLRoleDefinitionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLRoleDefinitionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLRoleDefinitionResponse contains the response from method SQLResources.CreateUpdateSQLRoleDefinition.
-type SQLResourcesCreateUpdateSQLRoleDefinitionResponse struct {
-	SQLResourcesCreateUpdateSQLRoleDefinitionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLRoleDefinitionResult contains the result from method SQLResources.CreateUpdateSQLRoleDefinition.
-type SQLResourcesCreateUpdateSQLRoleDefinitionResult struct {
-	SQLRoleDefinitionGetResults
-}
-
-// SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse contains the response from method SQLResources.CreateUpdateSQLStoredProcedure.
-type SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLStoredProcedurePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLStoredProcedureResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLStoredProcedureResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLStoredProcedureGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLStoredProcedure", token, client.pl, client.createUpdateSQLStoredProcedureHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLStoredProcedurePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLStoredProcedureResponse contains the response from method SQLResources.CreateUpdateSQLStoredProcedure.
-type SQLResourcesCreateUpdateSQLStoredProcedureResponse struct {
-	SQLResourcesCreateUpdateSQLStoredProcedureResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLStoredProcedureResult contains the result from method SQLResources.CreateUpdateSQLStoredProcedure.
-type SQLResourcesCreateUpdateSQLStoredProcedureResult struct {
-	SQLStoredProcedureGetResults
-}
-
-// SQLResourcesCreateUpdateSQLTriggerPollerResponse contains the response from method SQLResources.CreateUpdateSQLTrigger.
-type SQLResourcesCreateUpdateSQLTriggerPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLTriggerPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLTriggerResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLTriggerResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLTriggerGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLTriggerPollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLTriggerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLTrigger", token, client.pl, client.createUpdateSQLTriggerHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLTriggerPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLTriggerResponse contains the response from method SQLResources.CreateUpdateSQLTrigger.
-type SQLResourcesCreateUpdateSQLTriggerResponse struct {
-	SQLResourcesCreateUpdateSQLTriggerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLTriggerResult contains the result from method SQLResources.CreateUpdateSQLTrigger.
-type SQLResourcesCreateUpdateSQLTriggerResult struct {
-	SQLTriggerGetResults
-}
-
-// SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse contains the response from method SQLResources.CreateUpdateSQLUserDefinedFunction.
-type SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesCreateUpdateSQLUserDefinedFunctionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesCreateUpdateSQLUserDefinedFunctionResponse, error) {
-	respType := SQLResourcesCreateUpdateSQLUserDefinedFunctionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLUserDefinedFunctionGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse from the provided client and resume token.
-func (l *SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLUserDefinedFunction", token, client.pl, client.createUpdateSQLUserDefinedFunctionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesCreateUpdateSQLUserDefinedFunctionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesCreateUpdateSQLUserDefinedFunctionResponse contains the response from method SQLResources.CreateUpdateSQLUserDefinedFunction.
-type SQLResourcesCreateUpdateSQLUserDefinedFunctionResponse struct {
-	SQLResourcesCreateUpdateSQLUserDefinedFunctionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesCreateUpdateSQLUserDefinedFunctionResult contains the result from method SQLResources.CreateUpdateSQLUserDefinedFunction.
-type SQLResourcesCreateUpdateSQLUserDefinedFunctionResult struct {
-	SQLUserDefinedFunctionGetResults
-}
-
-// SQLResourcesDeleteSQLContainerPollerResponse contains the response from method SQLResources.DeleteSQLContainer.
-type SQLResourcesDeleteSQLContainerPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLContainerPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLContainerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLContainerResponse, error) {
-	respType := SQLResourcesDeleteSQLContainerResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLContainerPollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLContainerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLContainer", token, client.pl, client.deleteSQLContainerHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLContainerPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLContainerResponse contains the response from method SQLResources.DeleteSQLContainer.
-type SQLResourcesDeleteSQLContainerResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLDatabasePollerResponse contains the response from method SQLResources.DeleteSQLDatabase.
-type SQLResourcesDeleteSQLDatabasePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLDatabasePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLDatabaseResponse, error) {
-	respType := SQLResourcesDeleteSQLDatabaseResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLDatabasePollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLDatabasePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLDatabase", token, client.pl, client.deleteSQLDatabaseHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLDatabasePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLDatabaseResponse contains the response from method SQLResources.DeleteSQLDatabase.
-type SQLResourcesDeleteSQLDatabaseResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLRoleAssignmentPollerResponse contains the response from method SQLResources.DeleteSQLRoleAssignment.
-type SQLResourcesDeleteSQLRoleAssignmentPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLRoleAssignmentPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLRoleAssignmentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLRoleAssignmentResponse, error) {
-	respType := SQLResourcesDeleteSQLRoleAssignmentResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLRoleAssignmentPollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLRoleAssignmentPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLRoleAssignment", token, client.pl, client.deleteSQLRoleAssignmentHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLRoleAssignmentPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLRoleAssignmentResponse contains the response from method SQLResources.DeleteSQLRoleAssignment.
-type SQLResourcesDeleteSQLRoleAssignmentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLRoleDefinitionPollerResponse contains the response from method SQLResources.DeleteSQLRoleDefinition.
-type SQLResourcesDeleteSQLRoleDefinitionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLRoleDefinitionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLRoleDefinitionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLRoleDefinitionResponse, error) {
-	respType := SQLResourcesDeleteSQLRoleDefinitionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLRoleDefinitionPollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLRoleDefinitionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLRoleDefinition", token, client.pl, client.deleteSQLRoleDefinitionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLRoleDefinitionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLRoleDefinitionResponse contains the response from method SQLResources.DeleteSQLRoleDefinition.
-type SQLResourcesDeleteSQLRoleDefinitionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLStoredProcedurePollerResponse contains the response from method SQLResources.DeleteSQLStoredProcedure.
-type SQLResourcesDeleteSQLStoredProcedurePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLStoredProcedurePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLStoredProcedurePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLStoredProcedureResponse, error) {
-	respType := SQLResourcesDeleteSQLStoredProcedureResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLStoredProcedurePollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLStoredProcedurePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLStoredProcedure", token, client.pl, client.deleteSQLStoredProcedureHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLStoredProcedurePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLStoredProcedureResponse contains the response from method SQLResources.DeleteSQLStoredProcedure.
-type SQLResourcesDeleteSQLStoredProcedureResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLTriggerPollerResponse contains the response from method SQLResources.DeleteSQLTrigger.
-type SQLResourcesDeleteSQLTriggerPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLTriggerPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLTriggerResponse, error) {
-	respType := SQLResourcesDeleteSQLTriggerResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLTriggerPollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLTriggerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLTrigger", token, client.pl, client.deleteSQLTriggerHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLTriggerPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLTriggerResponse contains the response from method SQLResources.DeleteSQLTrigger.
-type SQLResourcesDeleteSQLTriggerResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse contains the response from method SQLResources.DeleteSQLUserDefinedFunction.
-type SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesDeleteSQLUserDefinedFunctionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesDeleteSQLUserDefinedFunctionResponse, error) {
-	respType := SQLResourcesDeleteSQLUserDefinedFunctionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse from the provided client and resume token.
-func (l *SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLUserDefinedFunction", token, client.pl, client.deleteSQLUserDefinedFunctionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesDeleteSQLUserDefinedFunctionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesDeleteSQLUserDefinedFunctionResponse contains the response from method SQLResources.DeleteSQLUserDefinedFunction.
-type SQLResourcesDeleteSQLUserDefinedFunctionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLContainerResponse contains the response from method SQLResources.GetSQLContainer.
-type SQLResourcesGetSQLContainerResponse struct {
-	SQLResourcesGetSQLContainerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLContainerResult contains the result from method SQLResources.GetSQLContainer.
-type SQLResourcesGetSQLContainerResult struct {
-	SQLContainerGetResults
-}
-
-// SQLResourcesGetSQLContainerThroughputResponse contains the response from method SQLResources.GetSQLContainerThroughput.
-type SQLResourcesGetSQLContainerThroughputResponse struct {
-	SQLResourcesGetSQLContainerThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLContainerThroughputResult contains the result from method SQLResources.GetSQLContainerThroughput.
-type SQLResourcesGetSQLContainerThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesGetSQLDatabaseResponse contains the response from method SQLResources.GetSQLDatabase.
-type SQLResourcesGetSQLDatabaseResponse struct {
-	SQLResourcesGetSQLDatabaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLDatabaseResult contains the result from method SQLResources.GetSQLDatabase.
-type SQLResourcesGetSQLDatabaseResult struct {
-	SQLDatabaseGetResults
-}
-
-// SQLResourcesGetSQLDatabaseThroughputResponse contains the response from method SQLResources.GetSQLDatabaseThroughput.
-type SQLResourcesGetSQLDatabaseThroughputResponse struct {
-	SQLResourcesGetSQLDatabaseThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLDatabaseThroughputResult contains the result from method SQLResources.GetSQLDatabaseThroughput.
-type SQLResourcesGetSQLDatabaseThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesGetSQLRoleAssignmentResponse contains the response from method SQLResources.GetSQLRoleAssignment.
-type SQLResourcesGetSQLRoleAssignmentResponse struct {
-	SQLResourcesGetSQLRoleAssignmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLRoleAssignmentResult contains the result from method SQLResources.GetSQLRoleAssignment.
-type SQLResourcesGetSQLRoleAssignmentResult struct {
-	SQLRoleAssignmentGetResults
-}
-
-// SQLResourcesGetSQLRoleDefinitionResponse contains the response from method SQLResources.GetSQLRoleDefinition.
-type SQLResourcesGetSQLRoleDefinitionResponse struct {
-	SQLResourcesGetSQLRoleDefinitionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLRoleDefinitionResult contains the result from method SQLResources.GetSQLRoleDefinition.
-type SQLResourcesGetSQLRoleDefinitionResult struct {
-	SQLRoleDefinitionGetResults
-}
-
-// SQLResourcesGetSQLStoredProcedureResponse contains the response from method SQLResources.GetSQLStoredProcedure.
-type SQLResourcesGetSQLStoredProcedureResponse struct {
-	SQLResourcesGetSQLStoredProcedureResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLStoredProcedureResult contains the result from method SQLResources.GetSQLStoredProcedure.
-type SQLResourcesGetSQLStoredProcedureResult struct {
-	SQLStoredProcedureGetResults
-}
-
-// SQLResourcesGetSQLTriggerResponse contains the response from method SQLResources.GetSQLTrigger.
-type SQLResourcesGetSQLTriggerResponse struct {
-	SQLResourcesGetSQLTriggerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLTriggerResult contains the result from method SQLResources.GetSQLTrigger.
-type SQLResourcesGetSQLTriggerResult struct {
-	SQLTriggerGetResults
-}
-
-// SQLResourcesGetSQLUserDefinedFunctionResponse contains the response from method SQLResources.GetSQLUserDefinedFunction.
-type SQLResourcesGetSQLUserDefinedFunctionResponse struct {
-	SQLResourcesGetSQLUserDefinedFunctionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesGetSQLUserDefinedFunctionResult contains the result from method SQLResources.GetSQLUserDefinedFunction.
-type SQLResourcesGetSQLUserDefinedFunctionResult struct {
-	SQLUserDefinedFunctionGetResults
-}
-
-// SQLResourcesListSQLContainersResponse contains the response from method SQLResources.ListSQLContainers.
-type SQLResourcesListSQLContainersResponse struct {
-	SQLResourcesListSQLContainersResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLContainersResult contains the result from method SQLResources.ListSQLContainers.
-type SQLResourcesListSQLContainersResult struct {
-	SQLContainerListResult
-}
-
-// SQLResourcesListSQLDatabasesResponse contains the response from method SQLResources.ListSQLDatabases.
-type SQLResourcesListSQLDatabasesResponse struct {
-	SQLResourcesListSQLDatabasesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLDatabasesResult contains the result from method SQLResources.ListSQLDatabases.
-type SQLResourcesListSQLDatabasesResult struct {
-	SQLDatabaseListResult
-}
-
-// SQLResourcesListSQLRoleAssignmentsResponse contains the response from method SQLResources.ListSQLRoleAssignments.
-type SQLResourcesListSQLRoleAssignmentsResponse struct {
-	SQLResourcesListSQLRoleAssignmentsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLRoleAssignmentsResult contains the result from method SQLResources.ListSQLRoleAssignments.
-type SQLResourcesListSQLRoleAssignmentsResult struct {
-	SQLRoleAssignmentListResult
-}
-
-// SQLResourcesListSQLRoleDefinitionsResponse contains the response from method SQLResources.ListSQLRoleDefinitions.
-type SQLResourcesListSQLRoleDefinitionsResponse struct {
-	SQLResourcesListSQLRoleDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLRoleDefinitionsResult contains the result from method SQLResources.ListSQLRoleDefinitions.
-type SQLResourcesListSQLRoleDefinitionsResult struct {
-	SQLRoleDefinitionListResult
-}
-
-// SQLResourcesListSQLStoredProceduresResponse contains the response from method SQLResources.ListSQLStoredProcedures.
-type SQLResourcesListSQLStoredProceduresResponse struct {
-	SQLResourcesListSQLStoredProceduresResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLStoredProceduresResult contains the result from method SQLResources.ListSQLStoredProcedures.
-type SQLResourcesListSQLStoredProceduresResult struct {
-	SQLStoredProcedureListResult
-}
-
-// SQLResourcesListSQLTriggersResponse contains the response from method SQLResources.ListSQLTriggers.
-type SQLResourcesListSQLTriggersResponse struct {
-	SQLResourcesListSQLTriggersResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLTriggersResult contains the result from method SQLResources.ListSQLTriggers.
-type SQLResourcesListSQLTriggersResult struct {
-	SQLTriggerListResult
-}
-
-// SQLResourcesListSQLUserDefinedFunctionsResponse contains the response from method SQLResources.ListSQLUserDefinedFunctions.
-type SQLResourcesListSQLUserDefinedFunctionsResponse struct {
-	SQLResourcesListSQLUserDefinedFunctionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesListSQLUserDefinedFunctionsResult contains the result from method SQLResources.ListSQLUserDefinedFunctions.
-type SQLResourcesListSQLUserDefinedFunctionsResult struct {
-	SQLUserDefinedFunctionListResult
-}
-
-// SQLResourcesMigrateSQLContainerToAutoscalePollerResponse contains the response from method SQLResources.MigrateSQLContainerToAutoscale.
-type SQLResourcesMigrateSQLContainerToAutoscalePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesMigrateSQLContainerToAutoscalePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesMigrateSQLContainerToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesMigrateSQLContainerToAutoscaleResponse, error) {
-	respType := SQLResourcesMigrateSQLContainerToAutoscaleResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesMigrateSQLContainerToAutoscalePollerResponse from the provided client and resume token.
-func (l *SQLResourcesMigrateSQLContainerToAutoscalePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLContainerToAutoscale", token, client.pl, client.migrateSQLContainerToAutoscaleHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesMigrateSQLContainerToAutoscalePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesMigrateSQLContainerToAutoscaleResponse contains the response from method SQLResources.MigrateSQLContainerToAutoscale.
-type SQLResourcesMigrateSQLContainerToAutoscaleResponse struct {
-	SQLResourcesMigrateSQLContainerToAutoscaleResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesMigrateSQLContainerToAutoscaleResult contains the result from method SQLResources.MigrateSQLContainerToAutoscale.
-type SQLResourcesMigrateSQLContainerToAutoscaleResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse contains the response from method SQLResources.MigrateSQLContainerToManualThroughput.
-type SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesMigrateSQLContainerToManualThroughputPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesMigrateSQLContainerToManualThroughputResponse, error) {
-	respType := SQLResourcesMigrateSQLContainerToManualThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse from the provided client and resume token.
-func (l *SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLContainerToManualThroughput", token, client.pl, client.migrateSQLContainerToManualThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesMigrateSQLContainerToManualThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesMigrateSQLContainerToManualThroughputResponse contains the response from method SQLResources.MigrateSQLContainerToManualThroughput.
-type SQLResourcesMigrateSQLContainerToManualThroughputResponse struct {
-	SQLResourcesMigrateSQLContainerToManualThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesMigrateSQLContainerToManualThroughputResult contains the result from method SQLResources.MigrateSQLContainerToManualThroughput.
-type SQLResourcesMigrateSQLContainerToManualThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse contains the response from method SQLResources.MigrateSQLDatabaseToAutoscale.
-type SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesMigrateSQLDatabaseToAutoscalePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesMigrateSQLDatabaseToAutoscaleResponse, error) {
-	respType := SQLResourcesMigrateSQLDatabaseToAutoscaleResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse from the provided client and resume token.
-func (l *SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLDatabaseToAutoscale", token, client.pl, client.migrateSQLDatabaseToAutoscaleHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesMigrateSQLDatabaseToAutoscalePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesMigrateSQLDatabaseToAutoscaleResponse contains the response from method SQLResources.MigrateSQLDatabaseToAutoscale.
-type SQLResourcesMigrateSQLDatabaseToAutoscaleResponse struct {
-	SQLResourcesMigrateSQLDatabaseToAutoscaleResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesMigrateSQLDatabaseToAutoscaleResult contains the result from method SQLResources.MigrateSQLDatabaseToAutoscale.
-type SQLResourcesMigrateSQLDatabaseToAutoscaleResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse contains the response from method SQLResources.MigrateSQLDatabaseToManualThroughput.
-type SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesMigrateSQLDatabaseToManualThroughputPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesMigrateSQLDatabaseToManualThroughputResponse, error) {
-	respType := SQLResourcesMigrateSQLDatabaseToManualThroughputResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse from the provided client and resume token.
-func (l *SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLDatabaseToManualThroughput", token, client.pl, client.migrateSQLDatabaseToManualThroughputHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SQLResourcesMigrateSQLDatabaseToManualThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SQLResourcesMigrateSQLDatabaseToManualThroughputResponse contains the response from method SQLResources.MigrateSQLDatabaseToManualThroughput.
-type SQLResourcesMigrateSQLDatabaseToManualThroughputResponse struct {
-	SQLResourcesMigrateSQLDatabaseToManualThroughputResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLResourcesMigrateSQLDatabaseToManualThroughputResult contains the result from method SQLResources.MigrateSQLDatabaseToManualThroughput.
-type SQLResourcesMigrateSQLDatabaseToManualThroughputResult struct {
-	ThroughputSettingsGetResults
-}
-
-// SQLResourcesRetrieveContinuousBackupInformationPollerResponse contains the response from method SQLResources.RetrieveContinuousBackupInformation.
-type SQLResourcesRetrieveContinuousBackupInformationPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SQLResourcesRetrieveContinuousBackupInformationPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesRetrieveContinuousBackupInformationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesRetrieveContinuousBackupInformationResponse, error) {
-	respType := SQLResourcesRetrieveContinuousBackupInformationResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientRetrieveContinuousBackupInformationResponse, error) {
+	respType := MongoDBResourcesClientRetrieveContinuousBackupInformationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BackupInformation)
 	if err != nil {
 		return respType, err
@@ -4779,13 +2833,14 @@ func (l SQLResourcesRetrieveContinuousBackupInformationPollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a SQLResourcesRetrieveContinuousBackupInformationPollerResponse from the provided client and resume token.
-func (l *SQLResourcesRetrieveContinuousBackupInformationPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.RetrieveContinuousBackupInformation", token, client.pl, client.retrieveContinuousBackupInformationHandleError)
+// Resume rehydrates a MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse from the provided client and
+// resume token.
+func (l *MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.RetrieveContinuousBackupInformation", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLResourcesRetrieveContinuousBackupInformationPoller{
+	poller := &MongoDBResourcesClientRetrieveContinuousBackupInformationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4797,30 +2852,32 @@ func (l *SQLResourcesRetrieveContinuousBackupInformationPollerResponse) Resume(c
 	return nil
 }
 
-// SQLResourcesRetrieveContinuousBackupInformationResponse contains the response from method SQLResources.RetrieveContinuousBackupInformation.
-type SQLResourcesRetrieveContinuousBackupInformationResponse struct {
-	SQLResourcesRetrieveContinuousBackupInformationResult
+// MongoDBResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method MongoDBResourcesClient.RetrieveContinuousBackupInformation.
+type MongoDBResourcesClientRetrieveContinuousBackupInformationResponse struct {
+	MongoDBResourcesClientRetrieveContinuousBackupInformationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLResourcesRetrieveContinuousBackupInformationResult contains the result from method SQLResources.RetrieveContinuousBackupInformation.
-type SQLResourcesRetrieveContinuousBackupInformationResult struct {
+// MongoDBResourcesClientRetrieveContinuousBackupInformationResult contains the result from method MongoDBResourcesClient.RetrieveContinuousBackupInformation.
+type MongoDBResourcesClientRetrieveContinuousBackupInformationResult struct {
 	BackupInformation
 }
 
-// SQLResourcesUpdateSQLContainerThroughputPollerResponse contains the response from method SQLResources.UpdateSQLContainerThroughput.
-type SQLResourcesUpdateSQLContainerThroughputPollerResponse struct {
+// MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse contains the response from method MongoDBResourcesClient.UpdateMongoDBCollectionThroughput.
+type MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLResourcesUpdateSQLContainerThroughputPoller
+	Poller *MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesUpdateSQLContainerThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesUpdateSQLContainerThroughputResponse, error) {
-	respType := SQLResourcesUpdateSQLContainerThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse, error) {
+	respType := MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -4829,13 +2886,14 @@ func (l SQLResourcesUpdateSQLContainerThroughputPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a SQLResourcesUpdateSQLContainerThroughputPollerResponse from the provided client and resume token.
-func (l *SQLResourcesUpdateSQLContainerThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.UpdateSQLContainerThroughput", token, client.pl, client.updateSQLContainerThroughputHandleError)
+// Resume rehydrates a MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse from the provided client and
+// resume token.
+func (l *MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBCollectionThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLResourcesUpdateSQLContainerThroughputPoller{
+	poller := &MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4847,30 +2905,32 @@ func (l *SQLResourcesUpdateSQLContainerThroughputPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// SQLResourcesUpdateSQLContainerThroughputResponse contains the response from method SQLResources.UpdateSQLContainerThroughput.
-type SQLResourcesUpdateSQLContainerThroughputResponse struct {
-	SQLResourcesUpdateSQLContainerThroughputResult
+// MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse contains the response from method MongoDBResourcesClient.UpdateMongoDBCollectionThroughput.
+type MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse struct {
+	MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLResourcesUpdateSQLContainerThroughputResult contains the result from method SQLResources.UpdateSQLContainerThroughput.
-type SQLResourcesUpdateSQLContainerThroughputResult struct {
+// MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult contains the result from method MongoDBResourcesClient.UpdateMongoDBCollectionThroughput.
+type MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// SQLResourcesUpdateSQLDatabaseThroughputPollerResponse contains the response from method SQLResources.UpdateSQLDatabaseThroughput.
-type SQLResourcesUpdateSQLDatabaseThroughputPollerResponse struct {
+// MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse contains the response from method MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput.
+type MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLResourcesUpdateSQLDatabaseThroughputPoller
+	Poller *MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l SQLResourcesUpdateSQLDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesUpdateSQLDatabaseThroughputResponse, error) {
-	respType := SQLResourcesUpdateSQLDatabaseThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse, error) {
+	respType := MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -4879,13 +2939,14 @@ func (l SQLResourcesUpdateSQLDatabaseThroughputPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a SQLResourcesUpdateSQLDatabaseThroughputPollerResponse from the provided client and resume token.
-func (l *SQLResourcesUpdateSQLDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.UpdateSQLDatabaseThroughput", token, client.pl, client.updateSQLDatabaseThroughputHandleError)
+// Resume rehydrates a MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse from the provided client and resume
+// token.
+func (l *MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *MongoDBResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLResourcesUpdateSQLDatabaseThroughputPoller{
+	poller := &MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4897,31 +2958,33 @@ func (l *SQLResourcesUpdateSQLDatabaseThroughputPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// SQLResourcesUpdateSQLDatabaseThroughputResponse contains the response from method SQLResources.UpdateSQLDatabaseThroughput.
-type SQLResourcesUpdateSQLDatabaseThroughputResponse struct {
-	SQLResourcesUpdateSQLDatabaseThroughputResult
+// MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse contains the response from method MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput.
+type MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse struct {
+	MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLResourcesUpdateSQLDatabaseThroughputResult contains the result from method SQLResources.UpdateSQLDatabaseThroughput.
-type SQLResourcesUpdateSQLDatabaseThroughputResult struct {
+// MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult contains the result from method MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput.
+type MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// ServiceCreatePollerResponse contains the response from method Service.Create.
-type ServiceCreatePollerResponse struct {
+// NotebookWorkspacesClientCreateOrUpdatePollerResponse contains the response from method NotebookWorkspacesClient.CreateOrUpdate.
+type NotebookWorkspacesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServiceCreatePoller
+	Poller *NotebookWorkspacesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l ServiceCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceCreateResponse, error) {
-	respType := ServiceCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l NotebookWorkspacesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesClientCreateOrUpdateResponse, error) {
+	respType := NotebookWorkspacesClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NotebookWorkspace)
 	if err != nil {
 		return respType, err
 	}
@@ -4929,13 +2992,13 @@ func (l ServiceCreatePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServiceCreatePollerResponse from the provided client and resume token.
-func (l *ServiceCreatePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a NotebookWorkspacesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *NotebookWorkspacesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServiceCreatePoller{
+	poller := &NotebookWorkspacesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4947,30 +3010,32 @@ func (l *ServiceCreatePollerResponse) Resume(ctx context.Context, client *Servic
 	return nil
 }
 
-// ServiceCreateResponse contains the response from method Service.Create.
-type ServiceCreateResponse struct {
-	ServiceCreateResult
+// NotebookWorkspacesClientCreateOrUpdateResponse contains the response from method NotebookWorkspacesClient.CreateOrUpdate.
+type NotebookWorkspacesClientCreateOrUpdateResponse struct {
+	NotebookWorkspacesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceCreateResult contains the result from method Service.Create.
-type ServiceCreateResult struct {
-	ServiceResource
+// NotebookWorkspacesClientCreateOrUpdateResult contains the result from method NotebookWorkspacesClient.CreateOrUpdate.
+type NotebookWorkspacesClientCreateOrUpdateResult struct {
+	NotebookWorkspace
 }
 
-// ServiceDeletePollerResponse contains the response from method Service.Delete.
-type ServiceDeletePollerResponse struct {
+// NotebookWorkspacesClientDeletePollerResponse contains the response from method NotebookWorkspacesClient.Delete.
+type NotebookWorkspacesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServiceDeletePoller
+	Poller *NotebookWorkspacesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l ServiceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceDeleteResponse, error) {
-	respType := ServiceDeleteResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l NotebookWorkspacesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesClientDeleteResponse, error) {
+	respType := NotebookWorkspacesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -4979,13 +3044,13 @@ func (l ServiceDeletePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServiceDeletePollerResponse from the provided client and resume token.
-func (l *ServiceDeletePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a NotebookWorkspacesClientDeletePollerResponse from the provided client and resume token.
+func (l *NotebookWorkspacesClientDeletePollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServiceDeletePoller{
+	poller := &NotebookWorkspacesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4997,48 +3062,1728 @@ func (l *ServiceDeletePollerResponse) Resume(ctx context.Context, client *Servic
 	return nil
 }
 
-// ServiceDeleteResponse contains the response from method Service.Delete.
-type ServiceDeleteResponse struct {
+// NotebookWorkspacesClientDeleteResponse contains the response from method NotebookWorkspacesClient.Delete.
+type NotebookWorkspacesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceGetResponse contains the response from method Service.Get.
-type ServiceGetResponse struct {
-	ServiceGetResult
+// NotebookWorkspacesClientGetResponse contains the response from method NotebookWorkspacesClient.Get.
+type NotebookWorkspacesClientGetResponse struct {
+	NotebookWorkspacesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceGetResult contains the result from method Service.Get.
-type ServiceGetResult struct {
-	ServiceResource
+// NotebookWorkspacesClientGetResult contains the result from method NotebookWorkspacesClient.Get.
+type NotebookWorkspacesClientGetResult struct {
+	NotebookWorkspace
 }
 
-// ServiceListResponse contains the response from method Service.List.
-type ServiceListResponse struct {
-	ServiceListResult
+// NotebookWorkspacesClientListByDatabaseAccountResponse contains the response from method NotebookWorkspacesClient.ListByDatabaseAccount.
+type NotebookWorkspacesClientListByDatabaseAccountResponse struct {
+	NotebookWorkspacesClientListByDatabaseAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceListResult contains the result from method Service.List.
-type ServiceListResult struct {
-	ServiceResourceListResult
+// NotebookWorkspacesClientListByDatabaseAccountResult contains the result from method NotebookWorkspacesClient.ListByDatabaseAccount.
+type NotebookWorkspacesClientListByDatabaseAccountResult struct {
+	NotebookWorkspaceListResult
 }
 
-// TableResourcesCreateUpdateTablePollerResponse contains the response from method TableResources.CreateUpdateTable.
-type TableResourcesCreateUpdateTablePollerResponse struct {
+// NotebookWorkspacesClientListConnectionInfoResponse contains the response from method NotebookWorkspacesClient.ListConnectionInfo.
+type NotebookWorkspacesClientListConnectionInfoResponse struct {
+	NotebookWorkspacesClientListConnectionInfoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// NotebookWorkspacesClientListConnectionInfoResult contains the result from method NotebookWorkspacesClient.ListConnectionInfo.
+type NotebookWorkspacesClientListConnectionInfoResult struct {
+	NotebookWorkspaceConnectionInfoResult
+}
+
+// NotebookWorkspacesClientRegenerateAuthTokenPollerResponse contains the response from method NotebookWorkspacesClient.RegenerateAuthToken.
+type NotebookWorkspacesClientRegenerateAuthTokenPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TableResourcesCreateUpdateTablePoller
+	Poller *NotebookWorkspacesClientRegenerateAuthTokenPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l TableResourcesCreateUpdateTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesCreateUpdateTableResponse, error) {
-	respType := TableResourcesCreateUpdateTableResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l NotebookWorkspacesClientRegenerateAuthTokenPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesClientRegenerateAuthTokenResponse, error) {
+	respType := NotebookWorkspacesClientRegenerateAuthTokenResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a NotebookWorkspacesClientRegenerateAuthTokenPollerResponse from the provided client and resume token.
+func (l *NotebookWorkspacesClientRegenerateAuthTokenPollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.RegenerateAuthToken", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &NotebookWorkspacesClientRegenerateAuthTokenPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// NotebookWorkspacesClientRegenerateAuthTokenResponse contains the response from method NotebookWorkspacesClient.RegenerateAuthToken.
+type NotebookWorkspacesClientRegenerateAuthTokenResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// NotebookWorkspacesClientStartPollerResponse contains the response from method NotebookWorkspacesClient.Start.
+type NotebookWorkspacesClientStartPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *NotebookWorkspacesClientStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l NotebookWorkspacesClientStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NotebookWorkspacesClientStartResponse, error) {
+	respType := NotebookWorkspacesClientStartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a NotebookWorkspacesClientStartPollerResponse from the provided client and resume token.
+func (l *NotebookWorkspacesClientStartPollerResponse) Resume(ctx context.Context, client *NotebookWorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NotebookWorkspacesClient.Start", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &NotebookWorkspacesClientStartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// NotebookWorkspacesClientStartResponse contains the response from method NotebookWorkspacesClient.Start.
+type NotebookWorkspacesClientStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// PartitionKeyRangeIDClientListMetricsResponse contains the response from method PartitionKeyRangeIDClient.ListMetrics.
+type PartitionKeyRangeIDClientListMetricsResponse struct {
+	PartitionKeyRangeIDClientListMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PartitionKeyRangeIDClientListMetricsResult contains the result from method PartitionKeyRangeIDClient.ListMetrics.
+type PartitionKeyRangeIDClientListMetricsResult struct {
+	PartitionMetricListResult
+}
+
+// PartitionKeyRangeIDRegionClientListMetricsResponse contains the response from method PartitionKeyRangeIDRegionClient.ListMetrics.
+type PartitionKeyRangeIDRegionClientListMetricsResponse struct {
+	PartitionKeyRangeIDRegionClientListMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PartitionKeyRangeIDRegionClientListMetricsResult contains the result from method PartitionKeyRangeIDRegionClient.ListMetrics.
+type PartitionKeyRangeIDRegionClientListMetricsResult struct {
+	PartitionMetricListResult
+}
+
+// PercentileClientListMetricsResponse contains the response from method PercentileClient.ListMetrics.
+type PercentileClientListMetricsResponse struct {
+	PercentileClientListMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PercentileClientListMetricsResult contains the result from method PercentileClient.ListMetrics.
+type PercentileClientListMetricsResult struct {
+	PercentileMetricListResult
+}
+
+// PercentileSourceTargetClientListMetricsResponse contains the response from method PercentileSourceTargetClient.ListMetrics.
+type PercentileSourceTargetClientListMetricsResponse struct {
+	PercentileSourceTargetClientListMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PercentileSourceTargetClientListMetricsResult contains the result from method PercentileSourceTargetClient.ListMetrics.
+type PercentileSourceTargetClientListMetricsResult struct {
+	PercentileMetricListResult
+}
+
+// PercentileTargetClientListMetricsResponse contains the response from method PercentileTargetClient.ListMetrics.
+type PercentileTargetClientListMetricsResponse struct {
+	PercentileTargetClientListMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PercentileTargetClientListMetricsResult contains the result from method PercentileTargetClient.ListMetrics.
+type PercentileTargetClientListMetricsResult struct {
+	PercentileMetricListResult
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *PrivateEndpointConnectionsClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &PrivateEndpointConnectionsClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *PrivateEndpointConnectionsClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListByDatabaseAccountResponse contains the response from method PrivateEndpointConnectionsClient.ListByDatabaseAccount.
+type PrivateEndpointConnectionsClientListByDatabaseAccountResponse struct {
+	PrivateEndpointConnectionsClientListByDatabaseAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientListByDatabaseAccountResult contains the result from method PrivateEndpointConnectionsClient.ListByDatabaseAccount.
+type PrivateEndpointConnectionsClientListByDatabaseAccountResult struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListByDatabaseAccountResponse contains the response from method PrivateLinkResourcesClient.ListByDatabaseAccount.
+type PrivateLinkResourcesClientListByDatabaseAccountResponse struct {
+	PrivateLinkResourcesClientListByDatabaseAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientListByDatabaseAccountResult contains the result from method PrivateLinkResourcesClient.ListByDatabaseAccount.
+type PrivateLinkResourcesClientListByDatabaseAccountResult struct {
+	PrivateLinkResourceListResult
+}
+
+// RestorableDatabaseAccountsClientGetByLocationResponse contains the response from method RestorableDatabaseAccountsClient.GetByLocation.
+type RestorableDatabaseAccountsClientGetByLocationResponse struct {
+	RestorableDatabaseAccountsClientGetByLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableDatabaseAccountsClientGetByLocationResult contains the result from method RestorableDatabaseAccountsClient.GetByLocation.
+type RestorableDatabaseAccountsClientGetByLocationResult struct {
+	RestorableDatabaseAccountGetResult
+}
+
+// RestorableDatabaseAccountsClientListByLocationResponse contains the response from method RestorableDatabaseAccountsClient.ListByLocation.
+type RestorableDatabaseAccountsClientListByLocationResponse struct {
+	RestorableDatabaseAccountsClientListByLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableDatabaseAccountsClientListByLocationResult contains the result from method RestorableDatabaseAccountsClient.ListByLocation.
+type RestorableDatabaseAccountsClientListByLocationResult struct {
+	RestorableDatabaseAccountsListResult
+}
+
+// RestorableDatabaseAccountsClientListResponse contains the response from method RestorableDatabaseAccountsClient.List.
+type RestorableDatabaseAccountsClientListResponse struct {
+	RestorableDatabaseAccountsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableDatabaseAccountsClientListResult contains the result from method RestorableDatabaseAccountsClient.List.
+type RestorableDatabaseAccountsClientListResult struct {
+	RestorableDatabaseAccountsListResult
+}
+
+// RestorableMongodbCollectionsClientListResponse contains the response from method RestorableMongodbCollectionsClient.List.
+type RestorableMongodbCollectionsClientListResponse struct {
+	RestorableMongodbCollectionsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableMongodbCollectionsClientListResult contains the result from method RestorableMongodbCollectionsClient.List.
+type RestorableMongodbCollectionsClientListResult struct {
+	RestorableMongodbCollectionsListResult
+}
+
+// RestorableMongodbDatabasesClientListResponse contains the response from method RestorableMongodbDatabasesClient.List.
+type RestorableMongodbDatabasesClientListResponse struct {
+	RestorableMongodbDatabasesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableMongodbDatabasesClientListResult contains the result from method RestorableMongodbDatabasesClient.List.
+type RestorableMongodbDatabasesClientListResult struct {
+	RestorableMongodbDatabasesListResult
+}
+
+// RestorableMongodbResourcesClientListResponse contains the response from method RestorableMongodbResourcesClient.List.
+type RestorableMongodbResourcesClientListResponse struct {
+	RestorableMongodbResourcesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableMongodbResourcesClientListResult contains the result from method RestorableMongodbResourcesClient.List.
+type RestorableMongodbResourcesClientListResult struct {
+	RestorableMongodbResourcesListResult
+}
+
+// RestorableSQLContainersClientListResponse contains the response from method RestorableSQLContainersClient.List.
+type RestorableSQLContainersClientListResponse struct {
+	RestorableSQLContainersClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableSQLContainersClientListResult contains the result from method RestorableSQLContainersClient.List.
+type RestorableSQLContainersClientListResult struct {
+	RestorableSQLContainersListResult
+}
+
+// RestorableSQLDatabasesClientListResponse contains the response from method RestorableSQLDatabasesClient.List.
+type RestorableSQLDatabasesClientListResponse struct {
+	RestorableSQLDatabasesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableSQLDatabasesClientListResult contains the result from method RestorableSQLDatabasesClient.List.
+type RestorableSQLDatabasesClientListResult struct {
+	RestorableSQLDatabasesListResult
+}
+
+// RestorableSQLResourcesClientListResponse contains the response from method RestorableSQLResourcesClient.List.
+type RestorableSQLResourcesClientListResponse struct {
+	RestorableSQLResourcesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorableSQLResourcesClientListResult contains the result from method RestorableSQLResourcesClient.List.
+type RestorableSQLResourcesClientListResult struct {
+	RestorableSQLResourcesListResult
+}
+
+// SQLResourcesClientCreateUpdateSQLContainerPollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLContainer.
+type SQLResourcesClientCreateUpdateSQLContainerPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLContainerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLContainerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLContainerResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLContainerResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLContainerGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLContainerPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientCreateUpdateSQLContainerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLContainer", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLContainerPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLContainerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLContainer.
+type SQLResourcesClientCreateUpdateSQLContainerResponse struct {
+	SQLResourcesClientCreateUpdateSQLContainerResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLContainerResult contains the result from method SQLResourcesClient.CreateUpdateSQLContainer.
+type SQLResourcesClientCreateUpdateSQLContainerResult struct {
+	SQLContainerGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLDatabasePollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLDatabase.
+type SQLResourcesClientCreateUpdateSQLDatabasePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLDatabasePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLDatabaseResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLDatabaseResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLDatabaseGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLDatabasePollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientCreateUpdateSQLDatabasePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLDatabase", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLDatabasePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLDatabaseResponse contains the response from method SQLResourcesClient.CreateUpdateSQLDatabase.
+type SQLResourcesClientCreateUpdateSQLDatabaseResponse struct {
+	SQLResourcesClientCreateUpdateSQLDatabaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLDatabaseResult contains the result from method SQLResourcesClient.CreateUpdateSQLDatabase.
+type SQLResourcesClientCreateUpdateSQLDatabaseResult struct {
+	SQLDatabaseGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLRoleAssignment.
+type SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLRoleAssignmentGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLRoleAssignment", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse contains the response from method SQLResourcesClient.CreateUpdateSQLRoleAssignment.
+type SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse struct {
+	SQLResourcesClientCreateUpdateSQLRoleAssignmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleAssignmentResult contains the result from method SQLResourcesClient.CreateUpdateSQLRoleAssignment.
+type SQLResourcesClientCreateUpdateSQLRoleAssignmentResult struct {
+	SQLRoleAssignmentGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLRoleDefinition.
+type SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLRoleDefinitionGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLRoleDefinition", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse contains the response from method SQLResourcesClient.CreateUpdateSQLRoleDefinition.
+type SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse struct {
+	SQLResourcesClientCreateUpdateSQLRoleDefinitionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLRoleDefinitionResult contains the result from method SQLResourcesClient.CreateUpdateSQLRoleDefinition.
+type SQLResourcesClientCreateUpdateSQLRoleDefinitionResult struct {
+	SQLRoleDefinitionGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLStoredProcedure.
+type SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLStoredProcedurePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLStoredProcedureResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLStoredProcedureResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLStoredProcedureGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse from the provided client and resume
+// token.
+func (l *SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLStoredProcedure", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLStoredProcedurePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLStoredProcedureResponse contains the response from method SQLResourcesClient.CreateUpdateSQLStoredProcedure.
+type SQLResourcesClientCreateUpdateSQLStoredProcedureResponse struct {
+	SQLResourcesClientCreateUpdateSQLStoredProcedureResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLStoredProcedureResult contains the result from method SQLResourcesClient.CreateUpdateSQLStoredProcedure.
+type SQLResourcesClientCreateUpdateSQLStoredProcedureResult struct {
+	SQLStoredProcedureGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLTriggerPollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLTrigger.
+type SQLResourcesClientCreateUpdateSQLTriggerPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLTriggerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLTriggerResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLTriggerResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLTriggerGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLTriggerPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientCreateUpdateSQLTriggerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLTrigger", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLTriggerPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLTriggerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLTrigger.
+type SQLResourcesClientCreateUpdateSQLTriggerResponse struct {
+	SQLResourcesClientCreateUpdateSQLTriggerResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLTriggerResult contains the result from method SQLResourcesClient.CreateUpdateSQLTrigger.
+type SQLResourcesClientCreateUpdateSQLTriggerResult struct {
+	SQLTriggerGetResults
+}
+
+// SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLUserDefinedFunction.
+type SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse, error) {
+	respType := SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLUserDefinedFunctionGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse from the provided client and resume
+// token.
+func (l *SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.CreateUpdateSQLUserDefinedFunction", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse contains the response from method SQLResourcesClient.CreateUpdateSQLUserDefinedFunction.
+type SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse struct {
+	SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResult contains the result from method SQLResourcesClient.CreateUpdateSQLUserDefinedFunction.
+type SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResult struct {
+	SQLUserDefinedFunctionGetResults
+}
+
+// SQLResourcesClientDeleteSQLContainerPollerResponse contains the response from method SQLResourcesClient.DeleteSQLContainer.
+type SQLResourcesClientDeleteSQLContainerPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLContainerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLContainerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLContainerResponse, error) {
+	respType := SQLResourcesClientDeleteSQLContainerResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLContainerPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLContainerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLContainer", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLContainerPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLContainerResponse contains the response from method SQLResourcesClient.DeleteSQLContainer.
+type SQLResourcesClientDeleteSQLContainerResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLDatabasePollerResponse contains the response from method SQLResourcesClient.DeleteSQLDatabase.
+type SQLResourcesClientDeleteSQLDatabasePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLDatabasePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLDatabasePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLDatabaseResponse, error) {
+	respType := SQLResourcesClientDeleteSQLDatabaseResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLDatabasePollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLDatabasePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLDatabase", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLDatabasePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLDatabaseResponse contains the response from method SQLResourcesClient.DeleteSQLDatabase.
+type SQLResourcesClientDeleteSQLDatabaseResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse contains the response from method SQLResourcesClient.DeleteSQLRoleAssignment.
+type SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLRoleAssignmentPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLRoleAssignmentResponse, error) {
+	respType := SQLResourcesClientDeleteSQLRoleAssignmentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLRoleAssignment", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLRoleAssignmentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLRoleAssignmentResponse contains the response from method SQLResourcesClient.DeleteSQLRoleAssignment.
+type SQLResourcesClientDeleteSQLRoleAssignmentResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse contains the response from method SQLResourcesClient.DeleteSQLRoleDefinition.
+type SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLRoleDefinitionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLRoleDefinitionResponse, error) {
+	respType := SQLResourcesClientDeleteSQLRoleDefinitionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLRoleDefinition", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLRoleDefinitionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLRoleDefinitionResponse contains the response from method SQLResourcesClient.DeleteSQLRoleDefinition.
+type SQLResourcesClientDeleteSQLRoleDefinitionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLStoredProcedurePollerResponse contains the response from method SQLResourcesClient.DeleteSQLStoredProcedure.
+type SQLResourcesClientDeleteSQLStoredProcedurePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLStoredProcedurePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLStoredProcedurePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLStoredProcedureResponse, error) {
+	respType := SQLResourcesClientDeleteSQLStoredProcedureResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLStoredProcedurePollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLStoredProcedurePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLStoredProcedure", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLStoredProcedurePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLStoredProcedureResponse contains the response from method SQLResourcesClient.DeleteSQLStoredProcedure.
+type SQLResourcesClientDeleteSQLStoredProcedureResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLTriggerPollerResponse contains the response from method SQLResourcesClient.DeleteSQLTrigger.
+type SQLResourcesClientDeleteSQLTriggerPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLTriggerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLTriggerResponse, error) {
+	respType := SQLResourcesClientDeleteSQLTriggerResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLTriggerPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLTriggerPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLTrigger", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLTriggerPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLTriggerResponse contains the response from method SQLResourcesClient.DeleteSQLTrigger.
+type SQLResourcesClientDeleteSQLTriggerResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse contains the response from method SQLResourcesClient.DeleteSQLUserDefinedFunction.
+type SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientDeleteSQLUserDefinedFunctionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientDeleteSQLUserDefinedFunctionResponse, error) {
+	respType := SQLResourcesClientDeleteSQLUserDefinedFunctionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.DeleteSQLUserDefinedFunction", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientDeleteSQLUserDefinedFunctionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientDeleteSQLUserDefinedFunctionResponse contains the response from method SQLResourcesClient.DeleteSQLUserDefinedFunction.
+type SQLResourcesClientDeleteSQLUserDefinedFunctionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLContainerResponse contains the response from method SQLResourcesClient.GetSQLContainer.
+type SQLResourcesClientGetSQLContainerResponse struct {
+	SQLResourcesClientGetSQLContainerResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLContainerResult contains the result from method SQLResourcesClient.GetSQLContainer.
+type SQLResourcesClientGetSQLContainerResult struct {
+	SQLContainerGetResults
+}
+
+// SQLResourcesClientGetSQLContainerThroughputResponse contains the response from method SQLResourcesClient.GetSQLContainerThroughput.
+type SQLResourcesClientGetSQLContainerThroughputResponse struct {
+	SQLResourcesClientGetSQLContainerThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLContainerThroughputResult contains the result from method SQLResourcesClient.GetSQLContainerThroughput.
+type SQLResourcesClientGetSQLContainerThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientGetSQLDatabaseResponse contains the response from method SQLResourcesClient.GetSQLDatabase.
+type SQLResourcesClientGetSQLDatabaseResponse struct {
+	SQLResourcesClientGetSQLDatabaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLDatabaseResult contains the result from method SQLResourcesClient.GetSQLDatabase.
+type SQLResourcesClientGetSQLDatabaseResult struct {
+	SQLDatabaseGetResults
+}
+
+// SQLResourcesClientGetSQLDatabaseThroughputResponse contains the response from method SQLResourcesClient.GetSQLDatabaseThroughput.
+type SQLResourcesClientGetSQLDatabaseThroughputResponse struct {
+	SQLResourcesClientGetSQLDatabaseThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLDatabaseThroughputResult contains the result from method SQLResourcesClient.GetSQLDatabaseThroughput.
+type SQLResourcesClientGetSQLDatabaseThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientGetSQLRoleAssignmentResponse contains the response from method SQLResourcesClient.GetSQLRoleAssignment.
+type SQLResourcesClientGetSQLRoleAssignmentResponse struct {
+	SQLResourcesClientGetSQLRoleAssignmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLRoleAssignmentResult contains the result from method SQLResourcesClient.GetSQLRoleAssignment.
+type SQLResourcesClientGetSQLRoleAssignmentResult struct {
+	SQLRoleAssignmentGetResults
+}
+
+// SQLResourcesClientGetSQLRoleDefinitionResponse contains the response from method SQLResourcesClient.GetSQLRoleDefinition.
+type SQLResourcesClientGetSQLRoleDefinitionResponse struct {
+	SQLResourcesClientGetSQLRoleDefinitionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLRoleDefinitionResult contains the result from method SQLResourcesClient.GetSQLRoleDefinition.
+type SQLResourcesClientGetSQLRoleDefinitionResult struct {
+	SQLRoleDefinitionGetResults
+}
+
+// SQLResourcesClientGetSQLStoredProcedureResponse contains the response from method SQLResourcesClient.GetSQLStoredProcedure.
+type SQLResourcesClientGetSQLStoredProcedureResponse struct {
+	SQLResourcesClientGetSQLStoredProcedureResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLStoredProcedureResult contains the result from method SQLResourcesClient.GetSQLStoredProcedure.
+type SQLResourcesClientGetSQLStoredProcedureResult struct {
+	SQLStoredProcedureGetResults
+}
+
+// SQLResourcesClientGetSQLTriggerResponse contains the response from method SQLResourcesClient.GetSQLTrigger.
+type SQLResourcesClientGetSQLTriggerResponse struct {
+	SQLResourcesClientGetSQLTriggerResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLTriggerResult contains the result from method SQLResourcesClient.GetSQLTrigger.
+type SQLResourcesClientGetSQLTriggerResult struct {
+	SQLTriggerGetResults
+}
+
+// SQLResourcesClientGetSQLUserDefinedFunctionResponse contains the response from method SQLResourcesClient.GetSQLUserDefinedFunction.
+type SQLResourcesClientGetSQLUserDefinedFunctionResponse struct {
+	SQLResourcesClientGetSQLUserDefinedFunctionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientGetSQLUserDefinedFunctionResult contains the result from method SQLResourcesClient.GetSQLUserDefinedFunction.
+type SQLResourcesClientGetSQLUserDefinedFunctionResult struct {
+	SQLUserDefinedFunctionGetResults
+}
+
+// SQLResourcesClientListSQLContainersResponse contains the response from method SQLResourcesClient.ListSQLContainers.
+type SQLResourcesClientListSQLContainersResponse struct {
+	SQLResourcesClientListSQLContainersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLContainersResult contains the result from method SQLResourcesClient.ListSQLContainers.
+type SQLResourcesClientListSQLContainersResult struct {
+	SQLContainerListResult
+}
+
+// SQLResourcesClientListSQLDatabasesResponse contains the response from method SQLResourcesClient.ListSQLDatabases.
+type SQLResourcesClientListSQLDatabasesResponse struct {
+	SQLResourcesClientListSQLDatabasesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLDatabasesResult contains the result from method SQLResourcesClient.ListSQLDatabases.
+type SQLResourcesClientListSQLDatabasesResult struct {
+	SQLDatabaseListResult
+}
+
+// SQLResourcesClientListSQLRoleAssignmentsResponse contains the response from method SQLResourcesClient.ListSQLRoleAssignments.
+type SQLResourcesClientListSQLRoleAssignmentsResponse struct {
+	SQLResourcesClientListSQLRoleAssignmentsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLRoleAssignmentsResult contains the result from method SQLResourcesClient.ListSQLRoleAssignments.
+type SQLResourcesClientListSQLRoleAssignmentsResult struct {
+	SQLRoleAssignmentListResult
+}
+
+// SQLResourcesClientListSQLRoleDefinitionsResponse contains the response from method SQLResourcesClient.ListSQLRoleDefinitions.
+type SQLResourcesClientListSQLRoleDefinitionsResponse struct {
+	SQLResourcesClientListSQLRoleDefinitionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLRoleDefinitionsResult contains the result from method SQLResourcesClient.ListSQLRoleDefinitions.
+type SQLResourcesClientListSQLRoleDefinitionsResult struct {
+	SQLRoleDefinitionListResult
+}
+
+// SQLResourcesClientListSQLStoredProceduresResponse contains the response from method SQLResourcesClient.ListSQLStoredProcedures.
+type SQLResourcesClientListSQLStoredProceduresResponse struct {
+	SQLResourcesClientListSQLStoredProceduresResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLStoredProceduresResult contains the result from method SQLResourcesClient.ListSQLStoredProcedures.
+type SQLResourcesClientListSQLStoredProceduresResult struct {
+	SQLStoredProcedureListResult
+}
+
+// SQLResourcesClientListSQLTriggersResponse contains the response from method SQLResourcesClient.ListSQLTriggers.
+type SQLResourcesClientListSQLTriggersResponse struct {
+	SQLResourcesClientListSQLTriggersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLTriggersResult contains the result from method SQLResourcesClient.ListSQLTriggers.
+type SQLResourcesClientListSQLTriggersResult struct {
+	SQLTriggerListResult
+}
+
+// SQLResourcesClientListSQLUserDefinedFunctionsResponse contains the response from method SQLResourcesClient.ListSQLUserDefinedFunctions.
+type SQLResourcesClientListSQLUserDefinedFunctionsResponse struct {
+	SQLResourcesClientListSQLUserDefinedFunctionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientListSQLUserDefinedFunctionsResult contains the result from method SQLResourcesClient.ListSQLUserDefinedFunctions.
+type SQLResourcesClientListSQLUserDefinedFunctionsResult struct {
+	SQLUserDefinedFunctionListResult
+}
+
+// SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse contains the response from method SQLResourcesClient.MigrateSQLContainerToAutoscale.
+type SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientMigrateSQLContainerToAutoscalePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientMigrateSQLContainerToAutoscaleResponse, error) {
+	respType := SQLResourcesClientMigrateSQLContainerToAutoscaleResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse from the provided client and resume
+// token.
+func (l *SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLContainerToAutoscale", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientMigrateSQLContainerToAutoscalePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientMigrateSQLContainerToAutoscaleResponse contains the response from method SQLResourcesClient.MigrateSQLContainerToAutoscale.
+type SQLResourcesClientMigrateSQLContainerToAutoscaleResponse struct {
+	SQLResourcesClientMigrateSQLContainerToAutoscaleResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientMigrateSQLContainerToAutoscaleResult contains the result from method SQLResourcesClient.MigrateSQLContainerToAutoscale.
+type SQLResourcesClientMigrateSQLContainerToAutoscaleResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse contains the response from method SQLResourcesClient.MigrateSQLContainerToManualThroughput.
+type SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientMigrateSQLContainerToManualThroughputPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientMigrateSQLContainerToManualThroughputResponse, error) {
+	respType := SQLResourcesClientMigrateSQLContainerToManualThroughputResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse from the provided client and
+// resume token.
+func (l *SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLContainerToManualThroughput", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientMigrateSQLContainerToManualThroughputPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientMigrateSQLContainerToManualThroughputResponse contains the response from method SQLResourcesClient.MigrateSQLContainerToManualThroughput.
+type SQLResourcesClientMigrateSQLContainerToManualThroughputResponse struct {
+	SQLResourcesClientMigrateSQLContainerToManualThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientMigrateSQLContainerToManualThroughputResult contains the result from method SQLResourcesClient.MigrateSQLContainerToManualThroughput.
+type SQLResourcesClientMigrateSQLContainerToManualThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse contains the response from method SQLResourcesClient.MigrateSQLDatabaseToAutoscale.
+type SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse, error) {
+	respType := SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLDatabaseToAutoscale", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse contains the response from method SQLResourcesClient.MigrateSQLDatabaseToAutoscale.
+type SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse struct {
+	SQLResourcesClientMigrateSQLDatabaseToAutoscaleResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToAutoscaleResult contains the result from method SQLResourcesClient.MigrateSQLDatabaseToAutoscale.
+type SQLResourcesClientMigrateSQLDatabaseToAutoscaleResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse contains the response from method SQLResourcesClient.MigrateSQLDatabaseToManualThroughput.
+type SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse, error) {
+	respType := SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse from the provided client and resume
+// token.
+func (l *SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.MigrateSQLDatabaseToManualThroughput", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse contains the response from method SQLResourcesClient.MigrateSQLDatabaseToManualThroughput.
+type SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse struct {
+	SQLResourcesClientMigrateSQLDatabaseToManualThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientMigrateSQLDatabaseToManualThroughputResult contains the result from method SQLResourcesClient.MigrateSQLDatabaseToManualThroughput.
+type SQLResourcesClientMigrateSQLDatabaseToManualThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse contains the response from method SQLResourcesClient.RetrieveContinuousBackupInformation.
+type SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientRetrieveContinuousBackupInformationPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientRetrieveContinuousBackupInformationResponse, error) {
+	respType := SQLResourcesClientRetrieveContinuousBackupInformationResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BackupInformation)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse from the provided client and resume
+// token.
+func (l *SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.RetrieveContinuousBackupInformation", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientRetrieveContinuousBackupInformationPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method SQLResourcesClient.RetrieveContinuousBackupInformation.
+type SQLResourcesClientRetrieveContinuousBackupInformationResponse struct {
+	SQLResourcesClientRetrieveContinuousBackupInformationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientRetrieveContinuousBackupInformationResult contains the result from method SQLResourcesClient.RetrieveContinuousBackupInformation.
+type SQLResourcesClientRetrieveContinuousBackupInformationResult struct {
+	BackupInformation
+}
+
+// SQLResourcesClientUpdateSQLContainerThroughputPollerResponse contains the response from method SQLResourcesClient.UpdateSQLContainerThroughput.
+type SQLResourcesClientUpdateSQLContainerThroughputPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientUpdateSQLContainerThroughputPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientUpdateSQLContainerThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientUpdateSQLContainerThroughputResponse, error) {
+	respType := SQLResourcesClientUpdateSQLContainerThroughputResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientUpdateSQLContainerThroughputPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientUpdateSQLContainerThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.UpdateSQLContainerThroughput", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientUpdateSQLContainerThroughputPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientUpdateSQLContainerThroughputResponse contains the response from method SQLResourcesClient.UpdateSQLContainerThroughput.
+type SQLResourcesClientUpdateSQLContainerThroughputResponse struct {
+	SQLResourcesClientUpdateSQLContainerThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientUpdateSQLContainerThroughputResult contains the result from method SQLResourcesClient.UpdateSQLContainerThroughput.
+type SQLResourcesClientUpdateSQLContainerThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse contains the response from method SQLResourcesClient.UpdateSQLDatabaseThroughput.
+type SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *SQLResourcesClientUpdateSQLDatabaseThroughputPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLResourcesClientUpdateSQLDatabaseThroughputResponse, error) {
+	respType := SQLResourcesClientUpdateSQLDatabaseThroughputResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse from the provided client and resume token.
+func (l *SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse) Resume(ctx context.Context, client *SQLResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLResourcesClient.UpdateSQLDatabaseThroughput", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &SQLResourcesClientUpdateSQLDatabaseThroughputPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// SQLResourcesClientUpdateSQLDatabaseThroughputResponse contains the response from method SQLResourcesClient.UpdateSQLDatabaseThroughput.
+type SQLResourcesClientUpdateSQLDatabaseThroughputResponse struct {
+	SQLResourcesClientUpdateSQLDatabaseThroughputResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SQLResourcesClientUpdateSQLDatabaseThroughputResult contains the result from method SQLResourcesClient.UpdateSQLDatabaseThroughput.
+type SQLResourcesClientUpdateSQLDatabaseThroughputResult struct {
+	ThroughputSettingsGetResults
+}
+
+// TableResourcesClientCreateUpdateTablePollerResponse contains the response from method TableResourcesClient.CreateUpdateTable.
+type TableResourcesClientCreateUpdateTablePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TableResourcesClientCreateUpdateTablePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TableResourcesClientCreateUpdateTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesClientCreateUpdateTableResponse, error) {
+	respType := TableResourcesClientCreateUpdateTableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TableGetResults)
 	if err != nil {
 		return respType, err
@@ -5047,13 +4792,13 @@ func (l TableResourcesCreateUpdateTablePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a TableResourcesCreateUpdateTablePollerResponse from the provided client and resume token.
-func (l *TableResourcesCreateUpdateTablePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.CreateUpdateTable", token, client.pl, client.createUpdateTableHandleError)
+// Resume rehydrates a TableResourcesClientCreateUpdateTablePollerResponse from the provided client and resume token.
+func (l *TableResourcesClientCreateUpdateTablePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.CreateUpdateTable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TableResourcesCreateUpdateTablePoller{
+	poller := &TableResourcesClientCreateUpdateTablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -5065,30 +4810,32 @@ func (l *TableResourcesCreateUpdateTablePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// TableResourcesCreateUpdateTableResponse contains the response from method TableResources.CreateUpdateTable.
-type TableResourcesCreateUpdateTableResponse struct {
-	TableResourcesCreateUpdateTableResult
+// TableResourcesClientCreateUpdateTableResponse contains the response from method TableResourcesClient.CreateUpdateTable.
+type TableResourcesClientCreateUpdateTableResponse struct {
+	TableResourcesClientCreateUpdateTableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesCreateUpdateTableResult contains the result from method TableResources.CreateUpdateTable.
-type TableResourcesCreateUpdateTableResult struct {
+// TableResourcesClientCreateUpdateTableResult contains the result from method TableResourcesClient.CreateUpdateTable.
+type TableResourcesClientCreateUpdateTableResult struct {
 	TableGetResults
 }
 
-// TableResourcesDeleteTablePollerResponse contains the response from method TableResources.DeleteTable.
-type TableResourcesDeleteTablePollerResponse struct {
+// TableResourcesClientDeleteTablePollerResponse contains the response from method TableResourcesClient.DeleteTable.
+type TableResourcesClientDeleteTablePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TableResourcesDeleteTablePoller
+	Poller *TableResourcesClientDeleteTablePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l TableResourcesDeleteTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesDeleteTableResponse, error) {
-	respType := TableResourcesDeleteTableResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TableResourcesClientDeleteTablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesClientDeleteTableResponse, error) {
+	respType := TableResourcesClientDeleteTableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -5097,13 +4844,13 @@ func (l TableResourcesDeleteTablePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a TableResourcesDeleteTablePollerResponse from the provided client and resume token.
-func (l *TableResourcesDeleteTablePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.DeleteTable", token, client.pl, client.deleteTableHandleError)
+// Resume rehydrates a TableResourcesClientDeleteTablePollerResponse from the provided client and resume token.
+func (l *TableResourcesClientDeleteTablePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.DeleteTable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TableResourcesDeleteTablePoller{
+	poller := &TableResourcesClientDeleteTablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -5115,60 +4862,62 @@ func (l *TableResourcesDeleteTablePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// TableResourcesDeleteTableResponse contains the response from method TableResources.DeleteTable.
-type TableResourcesDeleteTableResponse struct {
+// TableResourcesClientDeleteTableResponse contains the response from method TableResourcesClient.DeleteTable.
+type TableResourcesClientDeleteTableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesGetTableResponse contains the response from method TableResources.GetTable.
-type TableResourcesGetTableResponse struct {
-	TableResourcesGetTableResult
+// TableResourcesClientGetTableResponse contains the response from method TableResourcesClient.GetTable.
+type TableResourcesClientGetTableResponse struct {
+	TableResourcesClientGetTableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesGetTableResult contains the result from method TableResources.GetTable.
-type TableResourcesGetTableResult struct {
+// TableResourcesClientGetTableResult contains the result from method TableResourcesClient.GetTable.
+type TableResourcesClientGetTableResult struct {
 	TableGetResults
 }
 
-// TableResourcesGetTableThroughputResponse contains the response from method TableResources.GetTableThroughput.
-type TableResourcesGetTableThroughputResponse struct {
-	TableResourcesGetTableThroughputResult
+// TableResourcesClientGetTableThroughputResponse contains the response from method TableResourcesClient.GetTableThroughput.
+type TableResourcesClientGetTableThroughputResponse struct {
+	TableResourcesClientGetTableThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesGetTableThroughputResult contains the result from method TableResources.GetTableThroughput.
-type TableResourcesGetTableThroughputResult struct {
+// TableResourcesClientGetTableThroughputResult contains the result from method TableResourcesClient.GetTableThroughput.
+type TableResourcesClientGetTableThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// TableResourcesListTablesResponse contains the response from method TableResources.ListTables.
-type TableResourcesListTablesResponse struct {
-	TableResourcesListTablesResult
+// TableResourcesClientListTablesResponse contains the response from method TableResourcesClient.ListTables.
+type TableResourcesClientListTablesResponse struct {
+	TableResourcesClientListTablesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesListTablesResult contains the result from method TableResources.ListTables.
-type TableResourcesListTablesResult struct {
+// TableResourcesClientListTablesResult contains the result from method TableResourcesClient.ListTables.
+type TableResourcesClientListTablesResult struct {
 	TableListResult
 }
 
-// TableResourcesMigrateTableToAutoscalePollerResponse contains the response from method TableResources.MigrateTableToAutoscale.
-type TableResourcesMigrateTableToAutoscalePollerResponse struct {
+// TableResourcesClientMigrateTableToAutoscalePollerResponse contains the response from method TableResourcesClient.MigrateTableToAutoscale.
+type TableResourcesClientMigrateTableToAutoscalePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TableResourcesMigrateTableToAutoscalePoller
+	Poller *TableResourcesClientMigrateTableToAutoscalePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l TableResourcesMigrateTableToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesMigrateTableToAutoscaleResponse, error) {
-	respType := TableResourcesMigrateTableToAutoscaleResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TableResourcesClientMigrateTableToAutoscalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesClientMigrateTableToAutoscaleResponse, error) {
+	respType := TableResourcesClientMigrateTableToAutoscaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -5177,13 +4926,13 @@ func (l TableResourcesMigrateTableToAutoscalePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a TableResourcesMigrateTableToAutoscalePollerResponse from the provided client and resume token.
-func (l *TableResourcesMigrateTableToAutoscalePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.MigrateTableToAutoscale", token, client.pl, client.migrateTableToAutoscaleHandleError)
+// Resume rehydrates a TableResourcesClientMigrateTableToAutoscalePollerResponse from the provided client and resume token.
+func (l *TableResourcesClientMigrateTableToAutoscalePollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.MigrateTableToAutoscale", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TableResourcesMigrateTableToAutoscalePoller{
+	poller := &TableResourcesClientMigrateTableToAutoscalePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -5195,30 +4944,32 @@ func (l *TableResourcesMigrateTableToAutoscalePollerResponse) Resume(ctx context
 	return nil
 }
 
-// TableResourcesMigrateTableToAutoscaleResponse contains the response from method TableResources.MigrateTableToAutoscale.
-type TableResourcesMigrateTableToAutoscaleResponse struct {
-	TableResourcesMigrateTableToAutoscaleResult
+// TableResourcesClientMigrateTableToAutoscaleResponse contains the response from method TableResourcesClient.MigrateTableToAutoscale.
+type TableResourcesClientMigrateTableToAutoscaleResponse struct {
+	TableResourcesClientMigrateTableToAutoscaleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesMigrateTableToAutoscaleResult contains the result from method TableResources.MigrateTableToAutoscale.
-type TableResourcesMigrateTableToAutoscaleResult struct {
+// TableResourcesClientMigrateTableToAutoscaleResult contains the result from method TableResourcesClient.MigrateTableToAutoscale.
+type TableResourcesClientMigrateTableToAutoscaleResult struct {
 	ThroughputSettingsGetResults
 }
 
-// TableResourcesMigrateTableToManualThroughputPollerResponse contains the response from method TableResources.MigrateTableToManualThroughput.
-type TableResourcesMigrateTableToManualThroughputPollerResponse struct {
+// TableResourcesClientMigrateTableToManualThroughputPollerResponse contains the response from method TableResourcesClient.MigrateTableToManualThroughput.
+type TableResourcesClientMigrateTableToManualThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TableResourcesMigrateTableToManualThroughputPoller
+	Poller *TableResourcesClientMigrateTableToManualThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l TableResourcesMigrateTableToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesMigrateTableToManualThroughputResponse, error) {
-	respType := TableResourcesMigrateTableToManualThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TableResourcesClientMigrateTableToManualThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesClientMigrateTableToManualThroughputResponse, error) {
+	respType := TableResourcesClientMigrateTableToManualThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -5227,13 +4978,14 @@ func (l TableResourcesMigrateTableToManualThroughputPollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a TableResourcesMigrateTableToManualThroughputPollerResponse from the provided client and resume token.
-func (l *TableResourcesMigrateTableToManualThroughputPollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.MigrateTableToManualThroughput", token, client.pl, client.migrateTableToManualThroughputHandleError)
+// Resume rehydrates a TableResourcesClientMigrateTableToManualThroughputPollerResponse from the provided client and resume
+// token.
+func (l *TableResourcesClientMigrateTableToManualThroughputPollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.MigrateTableToManualThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TableResourcesMigrateTableToManualThroughputPoller{
+	poller := &TableResourcesClientMigrateTableToManualThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -5245,30 +4997,32 @@ func (l *TableResourcesMigrateTableToManualThroughputPollerResponse) Resume(ctx 
 	return nil
 }
 
-// TableResourcesMigrateTableToManualThroughputResponse contains the response from method TableResources.MigrateTableToManualThroughput.
-type TableResourcesMigrateTableToManualThroughputResponse struct {
-	TableResourcesMigrateTableToManualThroughputResult
+// TableResourcesClientMigrateTableToManualThroughputResponse contains the response from method TableResourcesClient.MigrateTableToManualThroughput.
+type TableResourcesClientMigrateTableToManualThroughputResponse struct {
+	TableResourcesClientMigrateTableToManualThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesMigrateTableToManualThroughputResult contains the result from method TableResources.MigrateTableToManualThroughput.
-type TableResourcesMigrateTableToManualThroughputResult struct {
+// TableResourcesClientMigrateTableToManualThroughputResult contains the result from method TableResourcesClient.MigrateTableToManualThroughput.
+type TableResourcesClientMigrateTableToManualThroughputResult struct {
 	ThroughputSettingsGetResults
 }
 
-// TableResourcesUpdateTableThroughputPollerResponse contains the response from method TableResources.UpdateTableThroughput.
-type TableResourcesUpdateTableThroughputPollerResponse struct {
+// TableResourcesClientUpdateTableThroughputPollerResponse contains the response from method TableResourcesClient.UpdateTableThroughput.
+type TableResourcesClientUpdateTableThroughputPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TableResourcesUpdateTableThroughputPoller
+	Poller *TableResourcesClientUpdateTableThroughputPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-func (l TableResourcesUpdateTableThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesUpdateTableThroughputResponse, error) {
-	respType := TableResourcesUpdateTableThroughputResponse{}
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TableResourcesClientUpdateTableThroughputPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TableResourcesClientUpdateTableThroughputResponse, error) {
+	respType := TableResourcesClientUpdateTableThroughputResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ThroughputSettingsGetResults)
 	if err != nil {
 		return respType, err
@@ -5277,13 +5031,13 @@ func (l TableResourcesUpdateTableThroughputPollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a TableResourcesUpdateTableThroughputPollerResponse from the provided client and resume token.
-func (l *TableResourcesUpdateTableThroughputPollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.UpdateTableThroughput", token, client.pl, client.updateTableThroughputHandleError)
+// Resume rehydrates a TableResourcesClientUpdateTableThroughputPollerResponse from the provided client and resume token.
+func (l *TableResourcesClientUpdateTableThroughputPollerResponse) Resume(ctx context.Context, client *TableResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TableResourcesClient.UpdateTableThroughput", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TableResourcesUpdateTableThroughputPoller{
+	poller := &TableResourcesClientUpdateTableThroughputPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -5295,14 +5049,14 @@ func (l *TableResourcesUpdateTableThroughputPollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// TableResourcesUpdateTableThroughputResponse contains the response from method TableResources.UpdateTableThroughput.
-type TableResourcesUpdateTableThroughputResponse struct {
-	TableResourcesUpdateTableThroughputResult
+// TableResourcesClientUpdateTableThroughputResponse contains the response from method TableResourcesClient.UpdateTableThroughput.
+type TableResourcesClientUpdateTableThroughputResponse struct {
+	TableResourcesClientUpdateTableThroughputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableResourcesUpdateTableThroughputResult contains the result from method TableResources.UpdateTableThroughput.
-type TableResourcesUpdateTableThroughputResult struct {
+// TableResourcesClientUpdateTableThroughputResult contains the result from method TableResourcesClient.UpdateTableThroughput.
+type TableResourcesClientUpdateTableThroughputResult struct {
 	ThroughputSettingsGetResults
 }

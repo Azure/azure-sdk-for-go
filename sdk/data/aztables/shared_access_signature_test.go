@@ -4,14 +4,12 @@
 package aztables
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -23,19 +21,19 @@ func TestSASServiceClient(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	resources := AccountSASResourceTypes{
@@ -57,16 +55,16 @@ func TestSASServiceClient(t *testing.T) {
 	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
-	svcClient, err := createServiceClientForRecording(t, sasUrl, azcore.NewAnonymousCredential())
+	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
-	_, err = svcClient.CreateTable(context.Background(), tableName+"002", nil)
+	_, err = svcClient.CreateTable(ctx, tableName+"002", nil)
 	require.NoError(t, err)
 
-	_, err = svcClient.DeleteTable(context.Background(), tableName+"002", nil)
+	_, err = svcClient.DeleteTable(ctx, tableName+"002", nil)
 	require.NoError(t, err)
 }
 
@@ -77,19 +75,19 @@ func TestSASClient(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	permissions := SASPermissions{
@@ -103,11 +101,11 @@ func TestSASClient(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -117,7 +115,7 @@ func TestSASClient(t *testing.T) {
 	marshalled, err := json.Marshal(entity)
 	require.NoError(t, err)
 
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.NoError(t, err)
 }
 
@@ -128,19 +126,19 @@ func TestSASClientReadOnly(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	client := serviceClient.NewClient(tableName)
@@ -157,11 +155,11 @@ func TestSASClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -172,13 +170,13 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(ctx) {
 		count += len(pager.PageResponse().Entities)
 	}
 
@@ -193,19 +191,19 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	client := serviceClient.NewClient(tableName)
@@ -222,11 +220,11 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -237,13 +235,13 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(ctx) {
 		count += len(pager.PageResponse().Entities)
 	}
 

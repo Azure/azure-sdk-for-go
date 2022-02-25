@@ -11,46 +11,67 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 type OperationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationClient creates a new instance of OperationClient with the specified values.
-func NewOperationClient(con *arm.Connection, subscriptionID string) *OperationClient {
-	return &OperationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &OperationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByTags - Lists a collection of operations associated with tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationClient) ListByTags(resourceGroupName string, serviceName string, apiID string, options *OperationListByTagsOptions) *OperationListByTagsPager {
-	return &OperationListByTagsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// options - OperationClientListByTagsOptions contains the optional parameters for the OperationClient.ListByTags method.
+func (client *OperationClient) ListByTags(resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) *OperationClientListByTagsPager {
+	return &OperationClientListByTagsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTagsCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp OperationListByTagsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OperationClientListByTagsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagResourceCollection.NextLink)
 		},
 	}
 }
 
 // listByTagsCreateRequest creates the ListByTags request.
-func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *OperationListByTagsOptions) (*policy.Request, error) {
+func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operationsByTags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -68,7 +89,7 @@ func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,30 +106,17 @@ func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, reso
 	if options != nil && options.IncludeNotTaggedOperations != nil {
 		reqQP.Set("includeNotTaggedOperations", strconv.FormatBool(*options.IncludeNotTaggedOperations))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByTagsHandleResponse handles the ListByTags response.
-func (client *OperationClient) listByTagsHandleResponse(resp *http.Response) (OperationListByTagsResponse, error) {
-	result := OperationListByTagsResponse{RawResponse: resp}
+func (client *OperationClient) listByTagsHandleResponse(resp *http.Response) (OperationClientListByTagsResponse, error) {
+	result := OperationClientListByTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return OperationListByTagsResponse{}, err
+		return OperationClientListByTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// listByTagsHandleError handles the ListByTags error response.
-func (client *OperationClient) listByTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

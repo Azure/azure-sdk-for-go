@@ -11,49 +11,72 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QuotaByCounterKeysClient contains the methods for the QuotaByCounterKeys group.
 // Don't use this type directly, use NewQuotaByCounterKeysClient() instead.
 type QuotaByCounterKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQuotaByCounterKeysClient creates a new instance of QuotaByCounterKeysClient with the specified values.
-func NewQuotaByCounterKeysClient(con *arm.Connection, subscriptionID string) *QuotaByCounterKeysClient {
-	return &QuotaByCounterKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaByCounterKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
+	}
+	client := &QuotaByCounterKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListByService - Lists a collection of current quota counter periods associated with the counter-key configured in the policy on the specified service
-// instance. The api does not support paging yet.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotaByCounterKeysClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, options *QuotaByCounterKeysListByServiceOptions) (QuotaByCounterKeysListByServiceResponse, error) {
+// ListByService - Lists a collection of current quota counter periods associated with the counter-key configured in the policy
+// on the specified service instance. The api does not support paging yet.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
+// quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible by "ba" key
+// options - QuotaByCounterKeysClientListByServiceOptions contains the optional parameters for the QuotaByCounterKeysClient.ListByService
+// method.
+func (client *QuotaByCounterKeysClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, options *QuotaByCounterKeysClientListByServiceOptions) (QuotaByCounterKeysClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, options)
 	if err != nil {
-		return QuotaByCounterKeysListByServiceResponse{}, err
+		return QuotaByCounterKeysClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaByCounterKeysListByServiceResponse{}, err
+		return QuotaByCounterKeysClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaByCounterKeysListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return QuotaByCounterKeysClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, options *QuotaByCounterKeysListByServiceOptions) (*policy.Request, error) {
+func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, options *QuotaByCounterKeysClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,59 +94,54 @@ func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.Response) (QuotaByCounterKeysListByServiceResponse, error) {
-	result := QuotaByCounterKeysListByServiceResponse{RawResponse: resp}
+func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.Response) (QuotaByCounterKeysClientListByServiceResponse, error) {
+	result := QuotaByCounterKeysClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
-		return QuotaByCounterKeysListByServiceResponse{}, err
+		return QuotaByCounterKeysClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *QuotaByCounterKeysClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates all the quota counter values specified with the existing quota counter key to a value in the specified service instance. This should
-// be used for reset of the quota counter values.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotaByCounterKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByCounterKeysUpdateOptions) (QuotaByCounterKeysUpdateResponse, error) {
+// Update - Updates all the quota counter values specified with the existing quota counter key to a value in the specified
+// service instance. This should be used for reset of the quota counter values.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
+// quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible by "ba" key
+// parameters - The value of the quota counter to be applied to all quota counter periods.
+// options - QuotaByCounterKeysClientUpdateOptions contains the optional parameters for the QuotaByCounterKeysClient.Update
+// method.
+func (client *QuotaByCounterKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByCounterKeysClientUpdateOptions) (QuotaByCounterKeysClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, parameters, options)
 	if err != nil {
-		return QuotaByCounterKeysUpdateResponse{}, err
+		return QuotaByCounterKeysClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaByCounterKeysUpdateResponse{}, err
+		return QuotaByCounterKeysClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaByCounterKeysUpdateResponse{}, client.updateHandleError(resp)
+		return QuotaByCounterKeysClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByCounterKeysUpdateOptions) (*policy.Request, error) {
+func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByCounterKeysClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,35 +159,22 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response) (QuotaByCounterKeysUpdateResponse, error) {
-	result := QuotaByCounterKeysUpdateResponse{RawResponse: resp}
+func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response) (QuotaByCounterKeysClientUpdateResponse, error) {
+	result := QuotaByCounterKeysClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
-		return QuotaByCounterKeysUpdateResponse{}, err
+		return QuotaByCounterKeysClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *QuotaByCounterKeysClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

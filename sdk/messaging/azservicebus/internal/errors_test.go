@@ -90,18 +90,19 @@ func Test_recoveryKind(t *testing.T) {
 			})
 		}
 
-		t.Run("sentintel errors", func(t *testing.T) {
+		t.Run("sentinel errors", func(t *testing.T) {
 			sbe := GetSBErrInfo(amqp.ErrLinkClosed)
 			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
 
 			sbe = GetSBErrInfo(amqp.ErrSessionClosed)
-			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
+			require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind)
 		})
 	})
 
 	t.Run("connection", func(t *testing.T) {
 		codes := []string{
 			string(amqp.ErrorConnectionForced),
+			string(amqp.ErrorInternalError),
 		}
 
 		for _, code := range codes {
@@ -119,8 +120,6 @@ func Test_recoveryKind(t *testing.T) {
 
 	t.Run("nonretriable", func(t *testing.T) {
 		codes := []string{
-			string(amqp.ErrorTransferLimitExceeded),
-			string(amqp.ErrorInternalError),
 			string(amqp.ErrorUnauthorizedAccess),
 			string(amqp.ErrorNotFound),
 			string(amqp.ErrorMessageSizeExceeded),
@@ -170,6 +169,7 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")},
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:timeout")},
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
+		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
 		mgmtError{Resp: &RPCResponse{Code: 408}},
@@ -186,7 +186,9 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	var connErrors = []error{
 		&amqp.Error{Condition: amqp.ErrorConnectionForced},
+		&amqp.Error{Condition: amqp.ErrorInternalError},
 		amqp.ErrConnClosed,
+		amqp.ErrSessionClosed,
 		io.EOF,
 		fakeNetError{temp: true},
 		fakeNetError{timeout: true},
@@ -197,11 +199,14 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
+
+	// unknown errors will just result in a connection recovery
+	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
+	require.EqualValues(t, RecoveryKindConn, rk, "some unknown error")
 }
 
 func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 	var linkErrors = []error{
-		amqp.ErrSessionClosed,
 		amqp.ErrLinkClosed,
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
@@ -224,7 +229,6 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		amqp.ErrorUnauthorizedAccess,
 		amqp.ErrorNotFound,
 		amqp.ErrorNotAllowed,
-		amqp.ErrorInternalError,
 		amqp.ErrorCondition("com.microsoft:entity-disabled"),
 		amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"),
 		amqp.ErrorCondition("com.microsoft:message-lock-lost"),
@@ -234,8 +238,4 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		rk := GetSBErrInfo(&amqp.Error{Condition: cond}).RecoveryKind
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
-
-	// unknown errors are also considered fatal
-	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
-	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
 }

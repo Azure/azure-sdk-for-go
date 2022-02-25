@@ -46,8 +46,7 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run()
 
 	// 3. Reset
-	// TODO: Add after sanitizer PR
-	if recording.GetRecordMode() != "live" {
+	if recording.GetRecordMode() == "record" {
 		err := recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)

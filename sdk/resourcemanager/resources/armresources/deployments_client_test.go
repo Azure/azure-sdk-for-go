@@ -102,17 +102,22 @@ func TestDeploymentsClient_BeginCreateOrUpdate(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
+	createDeployment(ctx, t, deploymentsClient, rgName)
+}
+
+// create deployment
+func createDeployment(ctx context.Context, t *testing.T, client *armresources.DeploymentsClient, rgName string) *armresources.DeploymentExtended {
 	deploymentName, err := createRandomName(t, "rs")
-	temp, err := unmarshalTemplate(template)
+	tmp, err := unmarshalTemplate(template)
 	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
+	pollerResp, err := client.BeginCreateOrUpdate(
 		ctx,
 		rgName,
 		deploymentName,
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
 				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: temp,
+				Template: tmp,
 				Parameters: map[string]interface{}{
 					"location": map[string]string{
 						"value": "West US",
@@ -123,9 +128,23 @@ func TestDeploymentsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
+	return &resp.DeploymentExtended
 }
 
 func TestDeploymentsClient_ListByResourceGroup(t *testing.T) {
@@ -143,30 +162,7 @@ func TestDeploymentsClient_ListByResourceGroup(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	createDeployment(ctx, t, deploymentsClient, rgName)
 
 	listPager := deploymentsClient.ListByResourceGroup(rgName, nil)
 	require.True(t, listPager.NextPage(ctx))
@@ -187,35 +183,12 @@ func TestDeploymentsClient_Get(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
 
 	// get
-	getResp, err := deploymentsClient.Get(ctx, rgName, deploymentName, nil)
+	getResp, err := deploymentsClient.Get(ctx, rgName, *deployment.Name, nil)
 	require.NoError(t, err)
-	require.Equal(t, deploymentName, *getResp.Name)
+	require.Equal(t, *deployment.Name, *getResp.Name)
 }
 
 func TestDeploymentsClient_BeginWhatIf(t *testing.T) {
@@ -254,8 +227,21 @@ func TestDeploymentsClient_BeginWhatIf(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// what if
@@ -272,9 +258,21 @@ func TestDeploymentsClient_BeginWhatIf(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	whatResp, err := whatPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	//require.Equal(t, deploymentName, *whatResp.Status)
+	var whatResp armresources.DeploymentsClientWhatIfResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = whatPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if whatPoller.Poller.Done() {
+				whatResp, err = whatPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		whatResp, err = whatPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, "InvalidTemplate", *whatResp.Error.Code)
 }
 
@@ -293,31 +291,10 @@ func TestDeploymentsClient_BeginValidate(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
+	tmp, err := unmarshalTemplate(template)
 	vPoller, err := deploymentsClient.BeginValidate(
 		ctx,
 		rgName,
@@ -325,7 +302,7 @@ func TestDeploymentsClient_BeginValidate(t *testing.T) {
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
 				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
+				Template: tmp,
 				Parameters: map[string]interface{}{
 					"location": map[string]string{
 						"value": "West US",
@@ -336,8 +313,21 @@ func TestDeploymentsClient_BeginValidate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armresources.DeploymentsClientValidateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPoller.Poller.Done() {
+				vResp, err = vPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, "Incremental", string(*vResp.Properties.Mode))
 }
 
@@ -356,30 +346,8 @@ func TestDeploymentsClient_ExportTemplate(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
 	// export template
 	exportTemplate, err := deploymentsClient.ExportTemplate(ctx, rgName, deploymentName, nil)
@@ -402,36 +370,27 @@ func TestDeploymentsClient_BeginDelete(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
 	// delete deployment
 	delPoller, err := deploymentsClient.BeginDelete(ctx, rgName, deploymentName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var delResp armresources.DeploymentsClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 204, delResp.RawResponse.StatusCode)
 }
 
@@ -493,8 +452,21 @@ func TestDeploymentsClient_BeginCreateOrUpdateAtScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 }
 
@@ -534,8 +506,21 @@ func TestDeploymentsClient_ListAtScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment at scope
@@ -579,8 +564,21 @@ func TestDeploymentsClient_GetAtScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// get deployment at scope
@@ -604,31 +602,10 @@ func TestDeploymentsClient_BeginValidateAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
+	tmp, _ := unmarshalTemplate(template)
 	vPoller, err := deploymentsClient.BeginValidateAtScope(
 		ctx,
 		*rg.ID,
@@ -636,7 +613,7 @@ func TestDeploymentsClient_BeginValidateAtScope(t *testing.T) {
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
 				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
+				Template: tmp,
 				Parameters: map[string]interface{}{
 					"location": map[string]string{
 						"value": "West US",
@@ -647,8 +624,22 @@ func TestDeploymentsClient_BeginValidateAtScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+
+	var vResp armresources.DeploymentsClientValidateAtScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPoller.Poller.Done() {
+				vResp, err = vPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, "Incremental", string(*vResp.Properties.Mode))
 }
 
@@ -667,30 +658,8 @@ func TestDeploymentsClient_ExportTemplateAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
 	// export template
 	exportTemplate, err := deploymentsClient.ExportTemplateAtScope(ctx, *rg.ID, deploymentName, nil)
@@ -713,30 +682,8 @@ func TestDeploymentsClient_BeginDeleteAtScope(t *testing.T) {
 
 	// create deployment
 	deploymentsClient := armresources.NewDeploymentsClient(subscriptionID, cred, opt)
-	deploymentName, err := createRandomName(t, "rs")
-	template, err := unmarshalTemplate(template)
-	require.NoError(t, err)
-	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
-		ctx,
-		rgName,
-		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Mode:     armresources.DeploymentModeIncremental.ToPtr(),
-				Template: template,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
-	require.Equal(t, deploymentName, *resp.Name)
+	deployment := createDeployment(ctx, t, deploymentsClient, rgName)
+	deploymentName := *deployment.Name
 
 	// delete deployment
 	delPoller, err := deploymentsClient.BeginDeleteAtScope(ctx, *rg.ID, deploymentName, nil)
@@ -786,8 +733,21 @@ func TestDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope(t *testing.
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -814,8 +774,21 @@ func TestDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope(t *testing.
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 }
 
@@ -839,8 +812,21 @@ func TestDeploymentsClient_ListAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -867,8 +853,21 @@ func TestDeploymentsClient_ListAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment
@@ -896,8 +895,21 @@ func TestDeploymentsClient_GetAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -924,8 +936,21 @@ func TestDeploymentsClient_GetAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// get deployment
@@ -954,8 +979,21 @@ func TestDeploymentsClient_BeginValidateAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 
 	// create deployment
@@ -981,8 +1019,21 @@ func TestDeploymentsClient_BeginValidateAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -1031,8 +1082,21 @@ func TestDeploymentsClient_ExportTemplateAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -1059,8 +1123,21 @@ func TestDeploymentsClient_ExportTemplateAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// export template deployment
@@ -1089,8 +1166,21 @@ func TestDeploymentsClient_BeginDeleteAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	mgResp, err := mgPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var mgResp armmanagementgroups.ClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = mgPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if mgPoller.Poller.Done() {
+				mgResp, err = mgPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		mgResp, err = mgPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, groupName, *mgResp.Name)
 	defer cleanupManagement(t, managementGroupsClient, groupName)
 
@@ -1117,15 +1207,41 @@ func TestDeploymentsClient_BeginDeleteAtManagementGroupScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// delete template deployment
 	delPoller, err := deploymentsClient.BeginDeleteAtManagementGroupScope(ctx, groupName, deploymentName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var delResp armresources.DeploymentsClientDeleteAtManagementGroupScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 204, delResp.RawResponse.StatusCode)
 }
 
@@ -1176,8 +1292,21 @@ func TestDeploymentsClient_ListAtTenantScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment
@@ -1232,8 +1361,21 @@ func TestDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope(t *testing.T) 
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 }
 
@@ -1267,8 +1409,21 @@ func TestDeploymentsClient_ListAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment
@@ -1306,8 +1461,21 @@ func TestDeploymentsClient_GetAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// get deployment
@@ -1346,8 +1514,21 @@ func TestDeploymentsClient_BeginWhatIfAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// what if deployment
@@ -1369,8 +1550,21 @@ func TestDeploymentsClient_BeginWhatIfAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	whatIfResp, err := whatIfPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var whatIfResp armresources.DeploymentsClientWhatIfAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = whatIfPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if whatIfPoller.Poller.Done() {
+				whatIfResp, err = whatIfPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		whatIfResp, err = whatIfPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 200, whatIfResp.RawResponse.StatusCode)
 }
 
@@ -1404,8 +1598,21 @@ func TestDeploymentsClient_BeginValidateAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// validate deployment
@@ -1427,8 +1634,21 @@ func TestDeploymentsClient_BeginValidateAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	validateResp, err := validatePoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var validateResp armresources.DeploymentsClientValidateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = validatePoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if validatePoller.Poller.Done() {
+				validateResp, err = validatePoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		validateResp, err = validatePoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 200, validateResp.RawResponse.StatusCode)
 }
 
@@ -1462,8 +1682,21 @@ func TestDeploymentsClient_ExportTemplateAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// export template deployment
@@ -1502,15 +1735,41 @@ func TestDeploymentsClient_BeginDeleteAtSubscriptionScope(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	resp, err := pollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var resp armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = pollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if pollerResp.Poller.Done() {
+				resp, err = pollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		resp, err = pollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// delete deployment
 	delPoller, err := deploymentsClient.BeginDeleteAtSubscriptionScope(ctx, deploymentName, nil)
 	require.NoError(t, err)
-	delResp, err := delPoller.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var delResp armresources.DeploymentsClientDeleteAtSubscriptionScopeResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 204, delResp.RawResponse.StatusCode)
 }
 

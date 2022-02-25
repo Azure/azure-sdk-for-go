@@ -32,6 +32,7 @@ func TestVaultsClient_BeginCreateOrUpdate(t *testing.T) {
 	defer clean()
 	rgName := *rg.Name
 
+	// create vault
 	vaultsClient := armkeyvault.NewVaultsClient(subscriptionID, cred, opt)
 	vaultName, _ := createRandomName(t, "vault")
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
@@ -73,8 +74,21 @@ func TestVaultsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 }
 
@@ -135,8 +149,21 @@ func TestVaultsClient_UpdateAccessPolicy(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	accessPolicyResp, err := vaultsClient.UpdateAccessPolicy(
@@ -229,8 +256,21 @@ func TestVaultsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// get vault
@@ -297,8 +337,21 @@ func TestVaultsClient_Update(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// update vault
@@ -375,8 +428,21 @@ func TestVaultsClient_ListDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// list vault deleted
@@ -465,8 +531,21 @@ func TestVaultsClient_Delete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
@@ -533,8 +612,21 @@ func TestVaultsClient_GetDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
@@ -547,6 +639,7 @@ func TestVaultsClient_GetDeleted(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, vaultName, *deletedResp.Name)
 }
+
 func TestVaultsClient_BeginPurgeDeleted(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -605,8 +698,21 @@ func TestVaultsClient_BeginPurgeDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
@@ -617,7 +723,20 @@ func TestVaultsClient_BeginPurgeDeleted(t *testing.T) {
 	// purge deleted vault
 	purgePollerResp, err := vaultsClient.BeginPurgeDeleted(ctx, vaultName, location, nil)
 	require.NoError(t, err)
-	purgeResp, err := purgePollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var purgeResp armkeyvault.VaultsClientPurgeDeletedResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = purgePollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if purgePollerResp.Poller.Done() {
+				purgeResp, err = purgePollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		purgeResp, err = purgePollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, 200, purgeResp.RawResponse.StatusCode)
 }

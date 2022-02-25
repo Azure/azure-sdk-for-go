@@ -253,8 +253,21 @@ func createVault(t *testing.T, ctx context.Context, vaultsClient *armkeyvault.Va
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	require.NoError(t, err)
+	var vResp armkeyvault.VaultsClientCreateOrUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = vPollerResp.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if vPollerResp.Poller.Done() {
+				vResp, err = vPollerResp.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		vResp, err = vPollerResp.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
 	require.Equal(t, vaultName, *vResp.Name)
 	return &vResp.Vault
 }

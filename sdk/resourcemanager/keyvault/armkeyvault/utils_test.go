@@ -109,7 +109,7 @@ func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
-	_, err := h.Write([]byte(t.Name() + fmt.Sprint(time.Now().Unix())))
+	_, err := h.Write([]byte(t.Name()))
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 

@@ -13,17 +13,16 @@ import (
 
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -38,44 +37,44 @@ func (s *azblobTestSuite) TestPutGetPages() {
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	reader, _ := generateData(1024)
 	putResp, err := pbClient.UploadPages(context.Background(), reader, &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(putResp.LastModified)
-	_assert.Equal((*putResp.LastModified).IsZero(), false)
-	_assert.NotNil(putResp.ETag)
-	_assert.Nil(putResp.ContentMD5)
-	_assert.Equal(*putResp.BlobSequenceNumber, int64(0))
-	_assert.NotNil(*putResp.RequestID)
-	_assert.NotNil(*putResp.Version)
-	_assert.NotNil(putResp.Date)
-	_assert.Equal((*putResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), putResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), putResp.LastModified)
+	require.Equal(s.T(), (*putResp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), putResp.ETag)
+	require.Nil(s.T(), putResp.ContentMD5)
+	require.Equal(s.T(), *putResp.BlobSequenceNumber, int64(0))
+	require.NotNil(s.T(), *putResp.RequestID)
+	require.NotNil(s.T(), *putResp.Version)
+	require.NotNil(s.T(), putResp.Date)
+	require.Equal(s.T(), (*putResp.Date).IsZero(), false)
 
 	pageList, err := pbClient.GetPageRanges(context.Background(), HttpRange{0, 1023}, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageList.RawResponse.StatusCode, 200)
-	_assert.NotNil(pageList.LastModified)
-	_assert.Equal((*pageList.LastModified).IsZero(), false)
-	_assert.NotNil(pageList.ETag)
-	_assert.Equal(*pageList.BlobContentLength, int64(512*10))
-	_assert.NotNil(*pageList.RequestID)
-	_assert.NotNil(*pageList.Version)
-	_assert.NotNil(pageList.Date)
-	_assert.Equal((*pageList.Date).IsZero(), false)
-	_assert.NotNil(pageList.PageList)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageList.RawResponse.StatusCode, 200)
+	require.NotNil(s.T(), pageList.LastModified)
+	require.Equal(s.T(), (*pageList.LastModified).IsZero(), false)
+	require.NotNil(s.T(), pageList.ETag)
+	require.Equal(s.T(), *pageList.BlobContentLength, int64(512*10))
+	require.NotNil(s.T(), *pageList.RequestID)
+	require.NotNil(s.T(), *pageList.Version)
+	require.NotNil(s.T(), pageList.Date)
+	require.Equal(s.T(), (*pageList.Date).IsZero(), false)
+	require.NotNil(s.T(), pageList.PageList)
 	pageRangeResp := pageList.PageList.PageRange
-	_assert.Len(pageRangeResp, 1)
+	require.Len(s.T(), pageRangeResp, 1)
 	rawStart, rawEnd := (pageRangeResp)[0].Raw()
-	_assert.Equal(rawStart, offset)
-	_assert.Equal(rawEnd, count-1)
+	require.Equal(s.T(), rawStart, offset)
+	require.Equal(s.T(), rawEnd, count-1)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -91,21 +90,21 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
-	_assert.NotNil(uploadSrcResp1.LastModified)
-	_assert.Equal((*uploadSrcResp1.LastModified).IsZero(), false)
-	_assert.NotNil(uploadSrcResp1.ETag)
-	_assert.Nil(uploadSrcResp1.ContentMD5)
-	_assert.Equal(*uploadSrcResp1.BlobSequenceNumber, int64(0))
-	_assert.NotNil(*uploadSrcResp1.RequestID)
-	_assert.NotNil(*uploadSrcResp1.Version)
-	_assert.NotNil(uploadSrcResp1.Date)
-	_assert.Equal((*uploadSrcResp1.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp1.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), uploadSrcResp1.LastModified)
+	require.Equal(s.T(), (*uploadSrcResp1.LastModified).IsZero(), false)
+	require.NotNil(s.T(), uploadSrcResp1.ETag)
+	require.Nil(s.T(), uploadSrcResp1.ContentMD5)
+	require.Equal(s.T(), *uploadSrcResp1.BlobSequenceNumber, int64(0))
+	require.NotNil(s.T(), *uploadSrcResp1.RequestID)
+	require.NotNil(s.T(), *uploadSrcResp1.Version)
+	require.NotNil(s.T(), uploadSrcResp1.Date)
+	require.Equal(s.T(), (*uploadSrcResp1.Date).IsZero(), false)
 
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -116,38 +115,38 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		_assert.Error(err)
+		require.Error(s.T(), err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Upload page from URL.
 	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), nil)
-	_assert.NoError(err)
-	_assert.Equal(pResp1.RawResponse.StatusCode, 201)
-	_assert.NotNil(pResp1.ETag)
-	_assert.NotNil(pResp1.LastModified)
-	_assert.NotNil(pResp1.ContentMD5)
-	_assert.NotNil(pResp1.RequestID)
-	_assert.NotNil(pResp1.Version)
-	_assert.NotNil(pResp1.Date)
-	_assert.Equal((*pResp1.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pResp1.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pResp1.ETag)
+	require.NotNil(s.T(), pResp1.LastModified)
+	require.NotNil(s.T(), pResp1.ContentMD5)
+	require.NotNil(s.T(), pResp1.RequestID)
+	require.NotNil(s.T(), pResp1.Version)
+	require.NotNil(s.T(), pResp1.Date)
+	require.Equal(s.T(), (*pResp1.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, sourceData)
+	require.NoError(s.T(), err)
+	require.EqualValues(s.T(), destData, sourceData)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -166,12 +165,12 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp1.RawResponse.StatusCode, 201)
 
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -182,7 +181,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		_assert.Error(err)
+		require.Error(s.T(), err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -192,24 +191,24 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 		SourceContentMD5: contentMD5,
 	}
 	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(pResp1.RawResponse.StatusCode, 201)
-	_assert.NotNil(pResp1.ETag)
-	_assert.NotNil(pResp1.LastModified)
-	_assert.NotNil(pResp1.ContentMD5)
-	_assert.EqualValues(pResp1.ContentMD5, contentMD5)
-	_assert.NotNil(pResp1.RequestID)
-	_assert.NotNil(pResp1.Version)
-	_assert.NotNil(pResp1.Date)
-	_assert.Equal((*pResp1.Date).IsZero(), false)
-	_assert.Equal(*pResp1.BlobSequenceNumber, int64(0))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pResp1.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pResp1.ETag)
+	require.NotNil(s.T(), pResp1.LastModified)
+	require.NotNil(s.T(), pResp1.ContentMD5)
+	require.EqualValues(s.T(), pResp1.ContentMD5, contentMD5)
+	require.NotNil(s.T(), pResp1.RequestID)
+	require.NotNil(s.T(), pResp1.Version)
+	require.NotNil(s.T(), pResp1.Date)
+	require.Equal(s.T(), (*pResp1.Date).IsZero(), false)
+	require.Equal(s.T(), *pResp1.BlobSequenceNumber, int64(0))
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, sourceData)
+	require.NoError(s.T(), err)
+	require.EqualValues(s.T(), destData, sourceData)
 
 	// Upload page from URL with bad MD5
 	_, badMD5 := getRandomDataAndReader(16)
@@ -218,18 +217,18 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 		SourceContentMD5: badContentMD5,
 	}
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeMD5Mismatch)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -244,33 +243,33 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	pageRangeResp := pageListResp.PageList.PageRange
-	_assert.NotNil(pageRangeResp)
-	_assert.Len(pageRangeResp, 1)
-	// _assert.((pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
+	require.NotNil(s.T(), pageRangeResp)
+	require.Len(s.T(), pageRangeResp, 1)
+	// require.(s.T(), (pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
 	rawStart, rawEnd := (pageRangeResp)[0].Raw()
-	_assert.Equal(rawStart, offset1)
-	_assert.Equal(rawEnd, end1)
+	require.Equal(s.T(), rawStart, offset1)
+	require.Equal(s.T(), rawEnd, end1)
 
 	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, nil)
-	_assert.NoError(err)
-	_assert.Equal(clearResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), clearResp.RawResponse.StatusCode, 201)
 
 	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
-	_assert.NoError(err)
-	_assert.Nil(pageListResp.PageList.PageRange)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), pageListResp.PageList.PageRange)
 }
 
 //nolint
@@ -292,11 +291,11 @@ func waitForIncrementalCopy(t *testing.T, copyBlobClient PageBlobClient, blobCop
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -308,7 +307,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	srcBlob := createNewPageBlob(s.T(), "src"+generateBlobName(testName), containerClient)
 
@@ -317,31 +316,31 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	dstBlob := containerClient.NewPageBlobClient("dst" + generateBlobName(testName))
 
 	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 202)
-	_assert.NotNil(resp.LastModified)
-	_assert.Equal((*resp.LastModified).IsZero(), false)
-	_assert.NotNil(resp.ETag)
-	_assert.NotEqual(*resp.RequestID, "")
-	_assert.NotEqual(*resp.Version, "")
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
-	_assert.NotEqual(*resp.CopyID, "")
-	_assert.Equal(*resp.CopyStatus, CopyStatusTypePending)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 202)
+	require.NotNil(s.T(), resp.LastModified)
+	require.Equal(s.T(), (*resp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), resp.ETag)
+	require.NotEqual(s.T(), *resp.RequestID, "")
+	require.NotEqual(s.T(), *resp.Version, "")
+	require.NotNil(s.T(), resp.Date)
+	require.Equal(s.T(), (*resp.Date).IsZero(), false)
+	require.NotEqual(s.T(), *resp.CopyID, "")
+	require.Equal(s.T(), *resp.CopyStatus, CopyStatusTypePending)
 
 	waitForIncrementalCopy(s.T(), dstBlob, &resp)
 }
 
 func (s *azblobTestSuite) TestResizePageBlob() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
@@ -350,7 +349,7 @@ func (s *azblobTestSuite) TestResizePageBlob() {
 	}
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -361,25 +360,25 @@ func (s *azblobTestSuite) TestResizePageBlob() {
 	pbClient := createNewPageBlob(s.T(), blobName, containerClient)
 
 	resp, err := pbClient.Resize(context.Background(), 2048, nil)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 200)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 200)
 
 	resp, err = pbClient.Resize(context.Background(), 8192, nil)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 200)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 200)
 
 	resp2, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp2.ContentLength, int64(8192))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *resp2.ContentLength, int64(8192))
 }
 
 func (s *azblobTestSuite) TestPageSequenceNumbers() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -396,8 +395,8 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 		ActionType:         &actionType,
 	}
 	resp, err := pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 200)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 200)
 
 	sequenceNumber = int64(7)
 	actionType = SequenceNumberActionTypeMax
@@ -406,8 +405,8 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 		ActionType:         &actionType,
 	}
 	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 200)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 200)
 
 	sequenceNumber = int64(11)
 	actionType = SequenceNumberActionTypeUpdate
@@ -416,17 +415,17 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 		ActionType:         &actionType,
 	}
 	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 200)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 200)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -449,18 +448,18 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	}
 
 	putResp, err := pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(putResp.LastModified)
-	_assert.Equal((*putResp.LastModified).IsZero(), false)
-	_assert.NotNil(putResp.ETag)
-	_assert.NotNil(putResp.ContentMD5)
-	_assert.EqualValues(putResp.ContentMD5, contentMD5)
-	_assert.Equal(*putResp.BlobSequenceNumber, int64(0))
-	_assert.NotNil(*putResp.RequestID)
-	_assert.NotNil(*putResp.Version)
-	_assert.NotNil(putResp.Date)
-	_assert.Equal((*putResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), putResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), putResp.LastModified)
+	require.Equal(s.T(), (*putResp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), putResp.ETag)
+	require.NotNil(s.T(), putResp.ContentMD5)
+	require.EqualValues(s.T(), putResp.ContentMD5, contentMD5)
+	require.Equal(s.T(), *putResp.BlobSequenceNumber, int64(0))
+	require.NotNil(s.T(), *putResp.RequestID)
+	require.NotNil(s.T(), *putResp.Version)
+	require.NotNil(s.T(), putResp.Date)
+	require.Equal(s.T(), (*putResp.Date).IsZero(), false)
 
 	// put page with bad MD5
 	readerToBody, body = getRandomDataAndReader(1024)
@@ -472,18 +471,18 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 		TransactionalContentMD5: basContentMD5,
 	}
 	putResp, err = pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -498,18 +497,18 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 		BlobSequenceNumber: &sequenceNumber,
 	}
 	_, err = pbClient.Create(ctx, 1, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -524,16 +523,16 @@ func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 		BlobSequenceNumber: &sequenceNumber,
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -549,21 +548,21 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 		Metadata:           basicMetadata,
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(resp.Metadata)
-	_assert.EqualValues(resp.Metadata, basicMetadata)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), resp.Metadata)
+	require.EqualValues(s.T(), resp.Metadata, basicMetadata)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -579,20 +578,20 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 		Metadata:           map[string]string{},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.Metadata)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), resp.Metadata)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -608,18 +607,18 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 		Metadata:           map[string]string{"In valid1": "bar"},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
-	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
+	require.Error(s.T(), err)
+	require.Contains(s.T(), err.Error(), invalidHeaderErrorSubstring)
 
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -635,12 +634,12 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 		HTTPHeaders:        &basicHeaders,
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	h := resp.GetHTTPHeaders()
-	_assert.EqualValues(h, basicHeaders)
+	require.EqualValues(s.T(), h, basicHeaders)
 }
 
 func validatePageBlobPut(t *testing.T, pbClient PageBlobClient) {
@@ -652,12 +651,12 @@ func validatePageBlobPut(t *testing.T, pbClient PageBlobClient) {
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -668,7 +667,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, PageBlobPageBytes, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
 
@@ -684,18 +683,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validatePageBlobPut(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -706,7 +705,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, PageBlobPageBytes, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
 
@@ -722,18 +721,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -744,7 +743,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, PageBlobPageBytes, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
 
@@ -760,18 +759,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validatePageBlobPut(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -782,7 +781,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, PageBlobPageBytes, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
 
@@ -798,18 +797,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -820,7 +819,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 	pbClient := createNewPageBlob(s.T(), blobName, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
@@ -834,18 +833,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validatePageBlobPut(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -868,18 +867,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -902,18 +901,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validatePageBlobPut(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -937,18 +936,18 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 		},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -963,7 +962,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	offset, count := int64(0), int64(contentSize/2)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 //// Body cannot be nil check already added in the request preparer
@@ -974,16 +973,16 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 ////	pbClient, _ := createNewPageBlob(c, containerClient)
 ////
 ////	_, err := pbClient.UploadPages(ctx, nil, nil)
-////	_assert.Error(err)
+////	require.Error(s.T(), err)
 ////}
 
 func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -997,16 +996,16 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 	offset, count := int64(0), int64(0)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1020,7 +1019,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeBlobNotFound)
 }
@@ -1037,12 +1036,12 @@ func validateUploadPages(t *testing.T, pbClient PageBlobClient) {
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1052,9 +1051,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -1069,18 +1068,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1090,9 +1089,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -1107,18 +1106,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1128,9 +1127,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -1145,18 +1144,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1166,9 +1165,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -1183,18 +1182,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1204,9 +1203,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -1221,18 +1220,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1242,9 +1241,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1258,18 +1257,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1279,9 +1278,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1295,18 +1294,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1316,9 +1315,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -1333,18 +1332,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1364,18 +1363,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1392,7 +1391,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 		ActionType:         &actionType,
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1404,18 +1403,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1436,18 +1435,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 	}
 
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1464,7 +1463,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 		ActionType:         &actionType,
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1476,18 +1475,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1504,7 +1503,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 		ActionType:         &actionType,
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1516,18 +1515,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1547,16 +1546,16 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1573,7 +1572,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 		ActionType:         &actionType,
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1585,18 +1584,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUploadPages(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -1616,18 +1615,18 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 		},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
 //	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
-//		_assert.Fail("Unable to fetch service client because " + err.Error())
+//		require.Fail(s.T(), "Unable to fetch service client because " + err.Error())
 //	}
 //
 //	containerName := generateContainerName(testName)
@@ -1647,7 +1646,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //		},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions) // This will cause the library to set the value of the header to 0
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //}
 
 func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBlobClient) {
@@ -1680,23 +1679,23 @@ func validateClearPagesTest(t *testing.T, pbClient PageBlobClient) {
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes + 1}, nil)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
@@ -1708,19 +1707,19 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
@@ -1732,19 +1731,19 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
@@ -1756,19 +1755,19 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
@@ -1780,19 +1779,19 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	clearPageOptions := ClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -1802,13 +1801,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1822,13 +1821,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1842,13 +1841,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1863,13 +1862,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1881,13 +1880,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1899,7 +1898,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 		ActionType:         &actionType,
 	}
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	ifSequenceNumberLessThan := int64(1)
 	clearPageOptions := ClearPagesOptions{
@@ -1908,13 +1907,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1926,13 +1925,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1944,13 +1943,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1962,7 +1961,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 		ActionType:         &actionType,
 	}
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
 	clearPageOptions := ClearPagesOptions{
@@ -1971,13 +1970,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -1989,13 +1988,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2007,7 +2006,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 		ActionType:         &actionType,
 	}
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	ifSequenceNumberEqualTo := int64(10)
 	clearPageOptions := ClearPagesOptions{
@@ -2016,13 +2015,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateClearPagesTest(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2034,7 +2033,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 		ActionType:         &actionType,
 	}
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	ifSequenceNumberEqualTo := int64(1)
 	clearPageOptions := ClearPagesOptions{
@@ -2043,13 +2042,13 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 		},
 	}
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2061,7 +2060,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 		},
 	}
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidInput)
 }
@@ -2098,12 +2097,12 @@ func validateBasicGetPageRanges(t *testing.T, resp PageList, err error) {
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2114,33 +2113,33 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 	pbClient := createNewPageBlob(s.T(), blobName, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.PageList.PageRange)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), resp.PageList.PageRange)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{-2, 500}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2151,60 +2150,60 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	pageListResp := resp.PageList.PageRange
-	_assert.NotNil(pageListResp)
-	_assert.Len(pageListResp, 2)
+	require.NotNil(s.T(), pageListResp)
+	require.Len(s.T(), pageListResp, 2)
 
 	start, end := int64(0), int64(PageBlobPageBytes-1)
 	rawStart, rawEnd := pageListResp[0].Raw()
-	_assert.Equal(rawStart, start)
-	_assert.Equal(rawEnd, end)
+	require.Equal(s.T(), rawStart, start)
+	require.Equal(s.T(), rawEnd, end)
 
 	start, end = int64(PageBlobPageBytes*2), int64((PageBlobPageBytes*3)-1)
 	rawStart, rawEnd = pageListResp[1].Raw()
-	_assert.Equal(rawStart, start)
-	_assert.Equal(rawEnd, end)
+	require.Equal(s.T(), rawStart, start)
+	require.Equal(s.T(), rawEnd, end)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 2000}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(resp.Snapshot)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), resp.Snapshot)
 
 	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp2.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
@@ -2216,18 +2215,18 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 		},
 	}
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
@@ -2239,20 +2238,20 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	//serr := err.(StorageError)
-	//_assert.(serr.RawResponse.StatusCode, chk.Equals, 304)
+	//require.(s.T(), serr.RawResponse.StatusCode, chk.Equals, 304)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
@@ -2264,18 +2263,18 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 		},
 	}
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
@@ -2287,19 +2286,19 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getPageRangesOptions := GetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2309,12 +2308,12 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 		},
 	}
 	resp2, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp2.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2328,13 +2327,13 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 		},
 	}
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2348,12 +2347,12 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 		},
 	}
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateBasicGetPageRanges(s.T(), resp.PageList, err)
 }
 
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2368,9 +2367,9 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 		},
 	}
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 	//serr := err.(StorageError)
-	//_assert.(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
+	//require.(s.T(), serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 }
 
 //nolint
@@ -2426,7 +2425,7 @@ func validateDiffPageRanges(t *testing.T, resp PageList, err error) {
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2434,24 +2433,24 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshotTime.Format(SnapshotTimeFormat), nil)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodePreviousSnapshotNotFound)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2466,13 +2465,13 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 		},
 	}
 	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateDiffPageRanges(s.T(), resp.PageList, err)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2487,15 +2486,15 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 		},
 	}
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	//stgErr := err.(StorageError)
-	//_assert.(stgErr.Response().StatusCode, chk.Equals, 304)
+	//require.(s.T(), stgErr.Response().StatusCode, chk.Equals, 304)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2510,13 +2509,13 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 		},
 	}
 	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateDiffPageRanges(s.T(), resp.PageList, err)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2531,14 +2530,14 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 		},
 	}
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2553,13 +2552,13 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 		},
 	}
 	resp2, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateDiffPageRanges(s.T(), resp2.PageList, err)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2573,14 +2572,14 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 		},
 	}
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2594,13 +2593,13 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 		},
 	}
 	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateDiffPageRanges(s.T(), resp.PageList, err)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), testName)
 	defer deleteContainer(s.T(), containerClient)
@@ -2615,16 +2614,16 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 		},
 	}
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobResizeZero() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2636,20 +2635,20 @@ func (s *azblobTestSuite) TestBlobResizeZero() {
 
 	// The default pbClient is created with size > 0, so this should actually update
 	_, err = pbClient.Resize(ctx, 0, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp.ContentLength, int64(0))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *resp.ContentLength, int64(0))
 }
 
 func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2660,16 +2659,16 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
 	pbClient := createNewPageBlob(s.T(), blobName, containerClient)
 
 	_, err = pbClient.Resize(ctx, -4, nil)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2680,7 +2679,7 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
 	pbClient := createNewPageBlob(s.T(), blobName, containerClient)
 
 	_, err = pbClient.Resize(ctx, 12, nil)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 }
 
 func validateResize(t *testing.T, pbClient PageBlobClient) {
@@ -2690,12 +2689,12 @@ func validateResize(t *testing.T, pbClient PageBlobClient) {
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2706,9 +2705,9 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -2720,18 +2719,18 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateResize(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2742,9 +2741,9 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -2756,18 +2755,18 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2778,9 +2777,9 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -2792,18 +2791,18 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateResize(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2814,9 +2813,9 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -2828,18 +2827,18 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2859,18 +2858,18 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateResize(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2889,18 +2888,18 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2919,18 +2918,18 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateResize(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2950,18 +2949,18 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 		},
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -2978,18 +2977,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 		ActionType:         &actionType,
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3011,7 +3010,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	}
 
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeInvalidHeaderValue)
 }
@@ -3023,12 +3022,12 @@ func validateSequenceNumberSet(t *testing.T, pbClient PageBlobClient) {
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3039,9 +3038,9 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -3055,18 +3054,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateSequenceNumberSet(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3077,9 +3076,9 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -3093,18 +3092,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3115,9 +3114,9 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
@@ -3131,18 +3130,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateSequenceNumberSet(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3153,9 +3152,9 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, PageBlobPageBytes*10, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	_assert.NotNil(pageBlobCreateResponse.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), pageBlobCreateResponse.Date)
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
@@ -3169,18 +3168,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3202,18 +3201,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateSequenceNumberSet(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3234,18 +3233,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3266,18 +3265,18 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateSequenceNumberSet(s.T(), pbClient)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		require.Fail(s.T(), "Unable to fetch service client because "+err.Error())
 	}
 
 	containerName := generateContainerName(testName)
@@ -3299,7 +3298,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 		},
 	}
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
@@ -3313,7 +3312,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	}
 //	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 //	if err != nil {
-//		_assert.Fail("Unable to fetch service client because " + err.Error())
+//		require.Fail(s.T(), "Unable to fetch service client because " + err.Error())
 //	}
 //
 //	containerName := generateContainerName(testName)
@@ -3325,7 +3324,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 //	}
 //	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //
 //	pbClient = createNewPageBlob(s.T(), generateBlobName(testName), containerClient)
 //	resp, _ := pbClient.CreateSnapshot(ctx, nil)
@@ -3334,7 +3333,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	// Must create the incremental copy pbClient so that the access conditions work on it
 //	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //	waitForIncrementalCopy(s.T(), copyPBClient, &resp2)
 //
 //	resp, _ = pbClient.CreateSnapshot(ctx, nil) // Take a new snapshot so the next copy will succeed
@@ -3348,16 +3347,16 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
 //	copySnapshotURL := copyPBClient.WithSnapshot(*t)
 //	_, err := copySnapshotURL.GetProperties(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
 //	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
-//		_assert.Fail("Unable to fetch service client because " + err.Error())
+//		require.Fail(s.T(), "Unable to fetch service client because " + err.Error())
 //	}
 //
 //	containerName := generateContainerName(testName)
@@ -3370,13 +3369,13 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)
 //	_, err = copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
-//	_assert.Error(err)
+//	require.Error(s.T(), err)
 //
 //	validateStorageError(s.T(), err, StorageErrorCodeCannotVerifyCopySource)
 //}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //
@@ -3390,13 +3389,13 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	resp, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //
 //	validateIncrementalCopy(s.T(), copyPBClient, &resp)
 //}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //
@@ -3410,13 +3409,13 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	_, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.Error(err)
+//	require.Error(s.T(), err)
 //
 //	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 //}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //
@@ -3430,13 +3429,13 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	resp, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //
 //	validateIncrementalCopy(s.T(), copyPBClient, &resp)
 //}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //
@@ -3450,14 +3449,14 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	_, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.Error(err)
+//	require.Error(s.T(), err)
 //
 //	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 //}
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfMatchTrue() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //	resp, _ := copyPBClient.GetProperties(ctx, nil)
@@ -3468,7 +3467,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //
 //	validateIncrementalCopy(s.T(), copyPBClient, &resp2)
 //	defer deleteContainer(s.T(), containerClient)
@@ -3477,7 +3476,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfMatchFalse() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //
@@ -3490,7 +3489,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	_, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.Error(err)
+//	require.Error(s.T(), err)
 //
 //	validateStorageError(s.T(), err, StorageErrorCodeTargetConditionNotMet)
 //}
@@ -3498,7 +3497,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //	defer deleteContainer(s.T(), containerClient)
@@ -3510,7 +3509,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	resp, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(s.T(), err)
 //
 //	validateIncrementalCopy(s.T(), copyPBClient, &resp)
 //}
@@ -3518,7 +3517,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse() {
-//	_assert := assert.New(s.T())
+//
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(s.T(), testName)
 //	defer deleteContainer(s.T(), containerClient)
@@ -3531,7 +3530,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //		},
 //	}
 //	_, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	_assert.Error(err)
+//	require.Error(s.T(), err)
 //
 //	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 //}

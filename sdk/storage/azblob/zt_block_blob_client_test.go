@@ -17,12 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestStageGetBlocks() {
-	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -44,63 +42,63 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
 		io.NopCloser(strings.NewReader("hello world"))
 		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
-		_assert.NoError(err)
-		_assert.Equal(putResp.RawResponse.StatusCode, 201)
-		_assert.Nil(putResp.ContentMD5)
-		_assert.NotNil(putResp.RequestID)
-		_assert.NotNil(putResp.Version)
-		_assert.NotNil(putResp.Date)
-		_assert.Equal((*putResp.Date).IsZero(), false)
+		require.NoError(s.T(), err)
+		require.Equal(s.T(), putResp.RawResponse.StatusCode, 201)
+		require.Nil(s.T(), putResp.ContentMD5)
+		require.NotNil(s.T(), putResp.RequestID)
+		require.NotNil(s.T(), putResp.Version)
+		require.NotNil(s.T(), putResp.Date)
+		require.Equal(s.T(), (*putResp.Date).IsZero(), false)
 	}
 
 	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.Nil(blockList.LastModified)
-	_assert.Nil(blockList.ETag)
-	_assert.NotNil(blockList.ContentType)
-	_assert.Nil(blockList.BlobContentLength)
-	_assert.NotNil(blockList.RequestID)
-	_assert.NotNil(blockList.Version)
-	_assert.NotNil(blockList.Date)
-	_assert.Equal((*blockList.Date).IsZero(), false)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.CommittedBlocks)
-	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.UncommittedBlocks, len(data))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), blockList.RawResponse.StatusCode, 200)
+	require.Nil(s.T(), blockList.LastModified)
+	require.Nil(s.T(), blockList.ETag)
+	require.NotNil(s.T(), blockList.ContentType)
+	require.Nil(s.T(), blockList.BlobContentLength)
+	require.NotNil(s.T(), blockList.RequestID)
+	require.NotNil(s.T(), blockList.Version)
+	require.NotNil(s.T(), blockList.Date)
+	require.Equal(s.T(), (*blockList.Date).IsZero(), false)
+	require.NotNil(s.T(), blockList.BlockList)
+	require.Nil(s.T(), blockList.BlockList.CommittedBlocks)
+	require.NotNil(s.T(), blockList.BlockList.UncommittedBlocks)
+	require.Len(s.T(), blockList.BlockList.UncommittedBlocks, len(data))
 
 	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-	_assert.NoError(err)
-	_assert.Equal(listResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(listResp.LastModified)
-	_assert.Equal((*listResp.LastModified).IsZero(), false)
-	_assert.NotNil(listResp.ETag)
-	_assert.NotNil(listResp.RequestID)
-	_assert.NotNil(listResp.Version)
-	_assert.NotNil(listResp.Date)
-	_assert.Equal((*listResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), listResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), listResp.LastModified)
+	require.Equal(s.T(), (*listResp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), listResp.ETag)
+	require.NotNil(s.T(), listResp.RequestID)
+	require.NotNil(s.T(), listResp.Version)
+	require.NotNil(s.T(), listResp.Date)
+	require.Equal(s.T(), (*listResp.Date).IsZero(), false)
 
 	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.LastModified)
-	_assert.Equal((*blockList.LastModified).IsZero(), false)
-	_assert.NotNil(blockList.ETag)
-	_assert.NotNil(blockList.ContentType)
-	_assert.Equal(*blockList.BlobContentLength, int64(25))
-	_assert.NotNil(blockList.RequestID)
-	_assert.NotNil(blockList.Version)
-	_assert.NotNil(blockList.Date)
-	_assert.Equal((*blockList.Date).IsZero(), false)
-	_assert.NotNil(blockList.BlockList)
-	_assert.NotNil(blockList.BlockList.CommittedBlocks)
-	_assert.Nil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.CommittedBlocks, len(data))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), blockList.RawResponse.StatusCode, 200)
+	require.NotNil(s.T(), blockList.LastModified)
+	require.Equal(s.T(), (*blockList.LastModified).IsZero(), false)
+	require.NotNil(s.T(), blockList.ETag)
+	require.NotNil(s.T(), blockList.ContentType)
+	require.Equal(s.T(), *blockList.BlobContentLength, int64(25))
+	require.NotNil(s.T(), blockList.RequestID)
+	require.NotNil(s.T(), blockList.Version)
+	require.NotNil(s.T(), blockList.Date)
+	require.Equal(s.T(), (*blockList.Date).IsZero(), false)
+	require.NotNil(s.T(), blockList.BlockList)
+	require.NotNil(s.T(), blockList.BlockList.CommittedBlocks)
+	require.Nil(s.T(), blockList.BlockList.UncommittedBlocks)
+	require.Len(s.T(), blockList.BlockList.CommittedBlocks, len(data))
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -123,14 +121,14 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -139,7 +137,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -150,56 +148,56 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 		Offset: to.Int64Ptr(0),
 		Count:  to.Int64Ptr(int64(contentSize / 2)),
 	})
-	_assert.NoError(err)
-	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp1.ContentMD5, "")
-	_assert.NotEqual(stageResp1.RequestID, "")
-	_assert.NotEqual(stageResp1.Version, "")
-	_assert.Equal(stageResp1.Date.IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), stageResp1.RawResponse.StatusCode, 201)
+	require.NotEqual(s.T(), stageResp1.ContentMD5, "")
+	require.NotEqual(s.T(), stageResp1.RequestID, "")
+	require.NotEqual(s.T(), stageResp1.Version, "")
+	require.Equal(s.T(), stageResp1.Date.IsZero(), false)
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
 		Offset: to.Int64Ptr(int64(contentSize / 2)),
 		Count:  to.Int64Ptr(int64(CountToEnd)),
 	})
-	_assert.NoError(err)
-	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp2.ContentMD5, "")
-	_assert.NotEqual(stageResp2.RequestID, "")
-	_assert.NotEqual(stageResp2.Version, "")
-	_assert.Equal(stageResp2.Date.IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), stageResp2.RawResponse.StatusCode, 201)
+	require.NotEqual(s.T(), stageResp2.ContentMD5, "")
+	require.NotEqual(s.T(), stageResp2.RequestID, "")
+	require.NotEqual(s.T(), stageResp2.Version, "")
+	require.Equal(s.T(), stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.CommittedBlocks)
-	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), blockList.RawResponse.StatusCode, 200)
+	require.NotNil(s.T(), blockList.BlockList)
+	require.Nil(s.T(), blockList.BlockList.CommittedBlocks)
+	require.NotNil(s.T(), blockList.BlockList.UncommittedBlocks)
+	require.Len(s.T(), blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-	_assert.NoError(err)
-	_assert.Equal(listResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(listResp.LastModified)
-	_assert.Equal((*listResp.LastModified).IsZero(), false)
-	_assert.NotNil(listResp.ETag)
-	_assert.NotNil(listResp.RequestID)
-	_assert.NotNil(listResp.Version)
-	_assert.NotNil(listResp.Date)
-	_assert.Equal((*listResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), listResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), listResp.LastModified)
+	require.Equal(s.T(), (*listResp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), listResp.ETag)
+	require.NotNil(s.T(), listResp.RequestID)
+	require.NotNil(s.T(), listResp.Version)
+	require.NotNil(s.T(), listResp.Date)
+	require.Equal(s.T(), (*listResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, content)
+	require.NoError(s.T(), err)
+	require.EqualValues(s.T(), destData, content)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -221,14 +219,14 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(body), nil)
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -249,31 +247,31 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 		Metadata:         map[string]string{"foo": "bar"},
 		SourceContentMD5: sourceContentMD5,
 	})
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 202)
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
-	_assert.NotNil(resp.CopyID)
-	_assert.EqualValues(resp.ContentMD5, sourceContentMD5)
-	_assert.Equal(*resp.CopyStatus, "success")
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 202)
+	require.NotNil(s.T(), resp.ETag)
+	require.NotNil(s.T(), resp.RequestID)
+	require.NotNil(s.T(), resp.Version)
+	require.NotNil(s.T(), resp.Date)
+	require.Equal(s.T(), (*resp.Date).IsZero(), false)
+	require.NotNil(s.T(), resp.CopyID)
+	require.EqualValues(s.T(), resp.ContentMD5, sourceContentMD5)
+	require.Equal(s.T(), *resp.CopyStatus, "success")
 
 	// Make sure the metadata got copied over
 	getPropResp, err := destBlob.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	metadata := getPropResp.Metadata
-	_assert.NotNil(metadata)
-	_assert.Len(metadata, 1)
-	_assert.EqualValues(metadata, map[string]string{"Foo": "bar"})
+	require.NotNil(s.T(), metadata)
+	require.Len(s.T(), metadata, 1)
+	require.EqualValues(s.T(), metadata, map[string]string{"Foo": "bar"})
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, content)
+	require.NoError(s.T(), err)
+	require.EqualValues(s.T(), destData, content)
 
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
@@ -281,21 +279,21 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 		SourceContentMD5: badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
 		SourceContentMD5: sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 202)
-	_assert.EqualValues(*resp.CopyStatus, "success")
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), resp.RawResponse.StatusCode, 202)
+	require.EqualValues(s.T(), *resp.CopyStatus, "success")
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -316,8 +314,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	uploadSrcResp, err := bbClient.Upload(ctx, internal.NopCloser(body), nil)
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get blob url with SAS.
 	blobParts := NewBlobURLParts(bbClient.URL())
@@ -329,7 +327,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	contentTypeVal := "content-type-override"
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	// Append User Delegation SAS token to URL
 	blobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -343,27 +341,27 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 		ContentLanguage:    contentLanguageVal,
 		ContentType:        contentTypeVal,
 	}.NewSASQueryParameters(credential)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	// Generate new bbClient client
 	blobURLWithSAS := blobParts.URL()
-	_assert.NotNil(blobURLWithSAS)
+	require.NotNil(s.T(), blobURLWithSAS)
 
 	blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*gResp.CacheControl, cacheControlVal)
-	_assert.Equal(*gResp.ContentDisposition, contentDispositionVal)
-	_assert.Equal(*gResp.ContentEncoding, contentEncodingVal)
-	_assert.Equal(*gResp.ContentLanguage, contentLanguageVal)
-	_assert.Equal(*gResp.ContentType, contentTypeVal)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *gResp.CacheControl, cacheControlVal)
+	require.Equal(s.T(), *gResp.ContentDisposition, contentDispositionVal)
+	require.Equal(s.T(), *gResp.ContentEncoding, contentEncodingVal)
+	require.Equal(s.T(), *gResp.ContentLanguage, contentLanguageVal)
+	require.Equal(s.T(), *gResp.ContentType, contentTypeVal)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -391,13 +389,13 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 			TransactionalContentMD5: contentMD5,
 		},
 	})
-	_assert.NoError(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.EqualValues(putResp.ContentMD5, contentMD5)
-	_assert.NotNil(putResp.RequestID)
-	_assert.NotNil(putResp.Version)
-	_assert.NotNil(putResp.Date)
-	_assert.Equal((*putResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), putResp.RawResponse.StatusCode, 201)
+	require.EqualValues(s.T(), putResp.ContentMD5, contentMD5)
+	require.NotNil(s.T(), putResp.RequestID)
+	require.NotNil(s.T(), putResp.Version)
+	require.NotNil(s.T(), putResp.Date)
+	require.Equal(s.T(), (*putResp.Date).IsZero(), false)
 
 	// test put block with bad MD5 value
 	_, badContent := getRandomDataAndReader(contentSize)
@@ -411,12 +409,12 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 			TransactionalContentMD5: badContentMD5,
 		},
 	})
-	_assert.Error(err)
-	_assert.Contains(err.Error(), StorageErrorCodeMD5Mismatch)
+	require.Error(s.T(), err)
+	require.Contains(s.T(), err.Error(), StorageErrorCodeMD5Mismatch)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -436,17 +434,17 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
 		HTTPHeaders: &basicHeaders,
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	h := resp.GetHTTPHeaders()
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
-	_assert.EqualValues(h, basicHeaders)
+	require.EqualValues(s.T(), h, basicHeaders)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -466,17 +464,17 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	actualMetadata := resp.Metadata
-	_assert.NotNil(actualMetadata)
-	_assert.EqualValues(actualMetadata, basicMetadata)
+	require.NotNil(s.T(), actualMetadata)
+	require.EqualValues(s.T(), actualMetadata, basicMetadata)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -496,15 +494,15 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
 	rsc := internal.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.Metadata)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), resp.Metadata)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -526,12 +524,12 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
 	})
-	_assert.Error(err)
-	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
+	require.Error(s.T(), err)
+	require.Contains(s.T(), err.Error(), invalidHeaderErrorSubstring)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -547,9 +545,9 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NoError(err)
-	_assert.Equal(createResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(createResp.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), createResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
@@ -562,12 +560,12 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 			},
 		},
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -583,9 +581,9 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NoError(err)
-	_assert.Equal(createResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(createResp.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), createResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
 
@@ -602,13 +600,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	}
 
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -624,9 +622,9 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NoError(err)
-	_assert.Equal(createResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(createResp.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), createResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
 
@@ -642,13 +640,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -664,9 +662,9 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NoError(err)
-	_assert.Equal(createResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(createResp.Date)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), createResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
@@ -684,7 +682,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -700,7 +698,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -713,13 +711,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 			},
 		},
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -735,7 +733,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -749,12 +747,12 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 		},
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
-	_assert.Error(err)
+	require.Error(s.T(), err)
 	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -770,7 +768,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -786,13 +784,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	}
 
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -808,7 +806,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -849,7 +847,7 @@ func setupPutBlockListTest(t *testing.T, _context *testContext, testName string)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
@@ -858,26 +856,26 @@ func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
 		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.ContentDisposition)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), resp.ContentDisposition)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
-	_assert.NotNil(commitBlockListResp.Date)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
@@ -885,21 +883,21 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	getPropertyResp, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(getPropertyResp.Date)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), getPropertyResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
 
@@ -913,15 +911,15 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
-	_assert.NotNil(commitBlockListResp.Date)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
 
@@ -929,21 +927,21 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
-	_assert.NotNil(commitBlockListResp.Date)
+	require.NoError(s.T(), err)
+	require.NotNil(s.T(), commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
@@ -957,33 +955,33 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
@@ -995,34 +993,34 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	commitBlockListOptions := CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
@@ -1033,55 +1031,55 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-	_assert.NoError(err)
-	_assert.Equal(string(data), blockBlobDefaultData)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), string(data), blockBlobDefaultData)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(s.T(), _context, testName)
 	defer deleteContainer(s.T(), containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	_, err = bbClient.StageBlock(ctx, "0001", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient.StageBlock(ctx, "0010", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient.StageBlock(ctx, "0011", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient.StageBlock(ctx, "0100", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Len(resp.BlockList.CommittedBlocks, 2)
+	require.NoError(s.T(), err)
+	require.Len(s.T(), resp.BlockList.CommittedBlocks, 2)
 	committed := resp.BlockList.CommittedBlocks
-	_assert.Equal(*(committed[0].Name), "0001")
-	_assert.Equal(*(committed[1].Name), "0011")
-	_assert.Nil(resp.BlockList.UncommittedBlocks)
+	require.Equal(s.T(), *(committed[0].Name), "0001")
+	require.Equal(s.T(), *(committed[1].Name), "0011")
+	require.Nil(s.T(), resp.BlockList.UncommittedBlocks)
 }
 
 func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -1102,16 +1100,16 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 			Tier:        &tier,
 		}
 		_, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
-		_assert.NoError(err)
+		require.NoError(s.T(), err)
 
 		resp, err := bbClient.GetProperties(ctx, nil)
-		_assert.NoError(err)
-		_assert.Equal(*resp.AccessTier, string(tier))
+		require.NoError(s.T(), err)
+		require.Equal(s.T(), *resp.AccessTier, string(tier))
 	}
 }
 
 func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -1129,25 +1127,25 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 
 		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 		_, err := bbClient.StageBlock(ctx, blockID, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-		_assert.NoError(err)
+		require.NoError(s.T(), err)
 
 		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &CommitBlockListOptions{
 			Tier: &tier,
 		})
-		_assert.NoError(err)
+		require.NoError(s.T(), err)
 
 		resp, err := bbClient.GetBlockList(ctx, BlockListTypeCommitted, nil)
-		_assert.NoError(err)
-		_assert.NotNil(resp.BlockList)
-		_assert.NotNil(resp.BlockList.CommittedBlocks)
-		_assert.Nil(resp.BlockList.UncommittedBlocks)
-		_assert.Len(resp.BlockList.CommittedBlocks, 1)
+		require.NoError(s.T(), err)
+		require.NotNil(s.T(), resp.BlockList)
+		require.NotNil(s.T(), resp.BlockList.CommittedBlocks)
+		require.Nil(s.T(), resp.BlockList.UncommittedBlocks)
+		require.Len(s.T(), resp.BlockList.CommittedBlocks, 1)
 	}
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -1166,12 +1164,12 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &UploadBlockBlobOptions{Tier: &tier})
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	if err != nil {
@@ -1184,7 +1182,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		Services:      AccountSASServices{Blob: true}.String(),
 		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
 	}.Sign(credential)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -1199,19 +1197,19 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 			Metadata: map[string]string{"foo": "bar"},
 		}
 		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-		_assert.NoError(err)
-		_assert.Equal(resp.RawResponse.StatusCode, 202)
-		_assert.Equal(*resp.CopyStatus, "success")
+		require.NoError(s.T(), err)
+		require.Equal(s.T(), resp.RawResponse.StatusCode, 202)
+		require.Equal(s.T(), *resp.CopyStatus, "success")
 
 		destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-		_assert.NoError(err)
-		_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
+		require.NoError(s.T(), err)
+		require.Equal(s.T(), *destBlobPropResp.AccessTier, string(tier))
 	}
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -1231,13 +1229,13 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
-	_assert.NoError(err)
-	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -1259,12 +1257,12 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 		Count:  &count1,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-	_assert.NoError(err)
-	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
-	_assert.Nil(stageResp1.ContentMD5)
-	_assert.NotEqual(*stageResp1.RequestID, "")
-	_assert.NotEqual(*stageResp1.Version, "")
-	_assert.Equal(stageResp1.Date.IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), stageResp1.RawResponse.StatusCode, 201)
+	require.Nil(s.T(), stageResp1.ContentMD5)
+	require.NotEqual(s.T(), *stageResp1.RequestID, "")
+	require.NotEqual(s.T(), *stageResp1.Version, "")
+	require.Equal(s.T(), stageResp1.Date.IsZero(), false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
@@ -1273,51 +1271,51 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 		Count:  &count2,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-	_assert.NoError(err)
-	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp2.ContentMD5, "")
-	_assert.NotEqual(stageResp2.RequestID, "")
-	_assert.NotEqual(stageResp2.Version, "")
-	_assert.Equal(stageResp2.Date.IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), stageResp2.RawResponse.StatusCode, 201)
+	require.NotEqual(s.T(), stageResp2.ContentMD5, "")
+	require.NotEqual(s.T(), stageResp2.RequestID, "")
+	require.NotEqual(s.T(), stageResp2.Version, "")
+	require.Equal(s.T(), stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.CommittedBlocks)
-	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), blockList.RawResponse.StatusCode, 200)
+	require.NotNil(s.T(), blockList.BlockList)
+	require.Nil(s.T(), blockList.BlockList.CommittedBlocks)
+	require.NotNil(s.T(), blockList.BlockList.UncommittedBlocks)
+	require.Len(s.T(), blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &CommitBlockListOptions{
 		Tier: &tier,
 	})
-	_assert.NoError(err)
-	_assert.Equal(listResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(listResp.LastModified)
-	_assert.Equal((*listResp.LastModified).IsZero(), false)
-	_assert.NotNil(listResp.ETag)
-	_assert.NotNil(listResp.RequestID)
-	_assert.NotNil(listResp.Version)
-	_assert.NotNil(listResp.Date)
-	_assert.Equal((*listResp.Date).IsZero(), false)
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), listResp.RawResponse.StatusCode, 201)
+	require.NotNil(s.T(), listResp.LastModified)
+	require.Equal(s.T(), (*listResp.LastModified).IsZero(), false)
+	require.NotNil(s.T(), listResp.ETag)
+	require.NotNil(s.T(), listResp.RequestID)
+	require.NotNil(s.T(), listResp.Version)
+	require.NotNil(s.T(), listResp.Date)
+	require.Equal(s.T(), (*listResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, content)
+	require.NoError(s.T(), err)
+	require.EqualValues(s.T(), destData, content)
 
 	// Get properties to validate the tier
 	destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *destBlobPropResp.AccessTier, string(tier))
 }
 
 func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -1336,22 +1334,22 @@ func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
 	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
 		RehydratePriority: &rehydratePriority,
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp1, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp1.AccessTier, string(standardTier))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp1.AccessTier, string(standardTier))
 
 	_, err = bbClient.SetTier(ctx, rehydrateTier, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp2, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 }
 
 func (s *azblobTestSuite) TestRehydrateStatus() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -1369,16 +1367,16 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	bbClient1 := getBlockBlobClient(blobName1, containerClient)
 	reader1, _ := generateData(1024)
 	_, err = bbClient1.Upload(ctx, reader1, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient1.SetTier(ctx, AccessTierArchive, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient1.SetTier(ctx, AccessTierCool, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp1, err := bbClient1.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp1.AccessTier, string(AccessTierArchive))
-	_assert.Equal(*getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp1.AccessTier, string(AccessTierArchive))
+	require.Equal(s.T(), *getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 
 	pager := containerClient.ListBlobsFlat(nil)
 	var blobs []*BlobItemInternal
@@ -1386,30 +1384,30 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 		resp := pager.PageResponse()
 		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
 	}
-	_assert.Nil(pager.Err())
-	_assert.GreaterOrEqual(len(blobs), 1)
-	_assert.Equal(*blobs[0].Properties.AccessTier, AccessTierArchive)
-	_assert.Equal(*blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)
+	require.Nil(s.T(), pager.Err())
+	require.GreaterOrEqual(s.T(), len(blobs), 1)
+	require.Equal(s.T(), *blobs[0].Properties.AccessTier, AccessTierArchive)
+	require.Equal(s.T(), *blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)
 
 	// ------------------------------------------
 
 	bbClient2 := getBlockBlobClient(blobName2, containerClient)
 	reader2, _ := generateData(1024)
 	_, err = bbClient2.Upload(ctx, reader2, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient2.SetTier(ctx, AccessTierArchive, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 	_, err = bbClient2.SetTier(ctx, AccessTierHot, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp2, err := bbClient2.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp2.AccessTier, string(AccessTierArchive))
-	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp2.AccessTier, string(AccessTierArchive))
+	require.Equal(s.T(), *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
 }
 
 func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
-	_assert := assert.New(s.T())
+
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
@@ -1432,16 +1430,16 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 		RehydratePriority: &rehydratePriority,
 		Tier:              &blobTier,
 	})
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp1, err := destBBClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp1.AccessTier, string(blobTier))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp1.AccessTier, string(blobTier))
 
 	_, err = destBBClient.SetTier(ctx, AccessTierHot, nil)
-	_assert.NoError(err)
+	require.NoError(s.T(), err)
 
 	getResp2, err := destBBClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+	require.NoError(s.T(), err)
+	require.Equal(s.T(), *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
 }

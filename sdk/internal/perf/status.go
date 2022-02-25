@@ -164,10 +164,10 @@ func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup 
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvgSec := float64(totalOperations) / opsPerSecond
 	fmt.Printf(
-		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)\n",
+		"Completed %s operations in a weighted-average of %ss (%s ops/s, %s s/op)\n",
 		messagePrinter.Sprintf("%d", totalOperations),
-		weightedAvgSec,
-		messagePrinter.Sprintf("%d", int(opsPerSecond)),
-		secondsPerOp,
+		messagePrinter.Sprintf("%.2f", weightedAvgSec),
+		messagePrinter.Sprintf("%.2f", opsPerSecond),
+		messagePrinter.Sprintf("%.3f", secondsPerOp),
 	)
 }

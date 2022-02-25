@@ -332,7 +332,7 @@ func TestQueryComplexEntity(t *testing.T) {
 
 			// Add 5 entities
 			entitiesToCreate := createComplexEntities(5, "partition")
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalledEntity, err := json.Marshal(e)
 				require.NoError(t, err)
 				_, err = client.AddEntity(ctx, marshalledEntity, nil)
@@ -355,13 +355,13 @@ func TestQueryComplexEntity(t *testing.T) {
 					require.NoError(t, err)
 
 					require.Equal(t, model.PartitionKey, "partition")
-					require.Equal(t, model.RowKey, (*entitiesToCreate)[idx].RowKey)
-					require.Equal(t, model.Integer, (*entitiesToCreate)[idx].Integer)
-					require.Equal(t, model.String, (*entitiesToCreate)[idx].String)
-					require.Equal(t, model.Bool, (*entitiesToCreate)[idx].Bool)
-					require.Equal(t, model.Float, (*entitiesToCreate)[idx].Float)
-					require.Equal(t, model.DateTime, (*entitiesToCreate)[idx].DateTime)
-					require.Equal(t, model.Byte, (*entitiesToCreate)[idx].Byte)
+					require.Equal(t, model.RowKey, (entitiesToCreate)[idx].RowKey)
+					require.Equal(t, model.Integer, (entitiesToCreate)[idx].Integer)
+					require.Equal(t, model.String, (entitiesToCreate)[idx].String)
+					require.Equal(t, model.Bool, (entitiesToCreate)[idx].Bool)
+					require.Equal(t, model.Float, (entitiesToCreate)[idx].Float)
+					require.Equal(t, model.DateTime, (entitiesToCreate)[idx].DateTime)
+					require.Equal(t, model.Byte, (entitiesToCreate)[idx].Byte)
 				}
 			}
 		})

@@ -6,6 +6,7 @@ package aztables_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -99,122 +100,62 @@ func ExampleNewServiceClientWithNoCredential() {
 
 type MyEntity struct {
 	aztables.Entity
-	Price       float32
-	Inventory   int32
-	ProductName string
-	OnSale      bool
+	Value int
 }
 
 func ExampleClient_SubmitTransaction() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
-	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "tableName")
-
-	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", "myAccountName", "tableName")
+	client, err := aztables.NewClient(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
 
 	batch := []aztables.TransactionAction{}
 
-	entity1 := MyEntity{
+	baseEntity := MyEntity{
 		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk001",
+			PartitionKey: "myPartitionKey",
+			RowKey:       "",
 		},
-		Price:       3.99,
-		Inventory:   10,
-		ProductName: "Pens",
-		OnSale:      false,
 	}
-	marshalled, err := json.Marshal(entity1)
-	if err != nil {
-		panic(err)
+	for i := 0; i < 10; i++ {
+		baseEntity.RowKey = fmt.Sprintf("rk-%d", i)
+		baseEntity.Value = i
+		marshalled, err := json.Marshal(baseEntity)
+		if err != nil {
+			panic(err)
+		}
+		batch = append(batch, aztables.TransactionAction{
+			ActionType: aztables.TransactionTypeAdd,
+			Entity:     marshalled,
+		})
 	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.TransactionTypeAdd,
-		Entity:     marshalled,
-	})
-
-	entity2 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk002",
-		},
-		Price:       19.99,
-		Inventory:   15,
-		ProductName: "Calculators",
-		OnSale:      false,
-	}
-	marshalled, err = json.Marshal(entity2)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.TransactionTypeUpdateMerge,
-		Entity:     marshalled,
-	})
-
-	entity3 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk003",
-		},
-		Price:       0.99,
-		Inventory:   150,
-		ProductName: "Pens",
-		OnSale:      true,
-	}
-	marshalled, err = json.Marshal(entity3)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.TransactionTypeInsertReplace,
-		Entity:     marshalled,
-	})
-
-	entity4 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk004",
-		},
-		Price:       3.99,
-		Inventory:   150,
-		ProductName: "100ct Paper Clips",
-		OnSale:      false,
-	}
-	marshalled, err = json.Marshal(entity4)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.TransactionTypeDelete,
-		Entity:     marshalled,
-	})
 
 	resp, err := client.SubmitTransaction(context.TODO(), batch, nil)
 	if err != nil {
-		panic(err)
-	}
-
-	for _, subResp := range *resp.TransactionResponses {
-		if subResp.StatusCode != http.StatusAccepted {
-			body, err := ioutil.ReadAll(subResp.Body)
+		var httpErr *azcore.ResponseError
+		if errors.As(err, &httpErr) {
+			body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(string(body))
+			fmt.Println(string(body)) // Do some parsing of the body
+		} else {
+			panic(err)
+		}
+	} else {
+		for _, subResp := range resp.TransactionResponses {
+			if subResp.StatusCode != http.StatusAccepted {
+				body, err := ioutil.ReadAll(subResp.Body)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(string(body))
+			}
 		}
 	}
 }

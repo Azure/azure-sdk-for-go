@@ -100,13 +100,11 @@ func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials
 	errorMessage := strings.Join(errorMessages, "\n\t")
 
 	if numberOfSuccessfulCredentials == 0 {
-		err := errors.New(errorMessage)
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize the Default Azure Credential:\n\t%s", err.Error())
-		return err
+		return errors.New(errorMessage)
 	}
 
 	if len(errorMessages) != 0 {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
+		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", errorMessage)
 	}
 
 	return nil

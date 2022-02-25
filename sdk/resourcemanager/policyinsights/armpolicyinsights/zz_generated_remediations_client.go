@@ -35,30 +35,29 @@ type RemediationsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RemediationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &RemediationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
 
 // CancelAtManagementGroup - Cancels a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
 // method.
-func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (RemediationsClientCancelAtManagementGroupResponse, error) {
-	req, err := client.cancelAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (RemediationsClientCancelAtManagementGroupResponse, error) {
+	req, err := client.cancelAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtManagementGroupResponse{}, err
 	}
@@ -73,12 +72,9 @@ func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, m
 }
 
 // cancelAtManagementGroupCreateRequest creates the CancelAtManagementGroup request.
-func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/cancel"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -265,14 +261,13 @@ func (client *RemediationsClient) cancelAtSubscriptionHandleResponse(resp *http.
 
 // CreateOrUpdateAtManagementGroup - Creates or updates a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
 // options - RemediationsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtManagementGroup
 // method.
-func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
-	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, parameters, options)
+func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
+	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -287,12 +282,9 @@ func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Co
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
-func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -482,13 +474,12 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionHandleResponse(res
 
 // DeleteAtManagementGroup - Deletes an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtManagementGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtManagementGroup
 // method.
-func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (RemediationsClientDeleteAtManagementGroupResponse, error) {
-	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (RemediationsClientDeleteAtManagementGroupResponse, error) {
+	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtManagementGroupResponse{}, err
 	}
@@ -503,12 +494,9 @@ func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, m
 }
 
 // deleteAtManagementGroupCreateRequest creates the DeleteAtManagementGroup request.
-func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -695,13 +683,12 @@ func (client *RemediationsClient) deleteAtSubscriptionHandleResponse(resp *http.
 
 // GetAtManagementGroup - Gets an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtManagementGroupOptions contains the optional parameters for the RemediationsClient.GetAtManagementGroup
 // method.
-func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (RemediationsClientGetAtManagementGroupResponse, error) {
-	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (RemediationsClientGetAtManagementGroupResponse, error) {
+	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtManagementGroupResponse{}, err
 	}
@@ -716,12 +703,9 @@ func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, mana
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
-func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -908,16 +892,15 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 
 // ListDeploymentsAtManagementGroup - Gets all deployments for a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtManagementGroup(managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtManagementGroupPager {
+func (client *RemediationsClient) ListDeploymentsAtManagementGroup(managementGroupID string, remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtManagementGroupPager {
 	return &RemediationsClientListDeploymentsAtManagementGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeploymentsAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+			return client.listDeploymentsAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 		},
 		advancer: func(ctx context.Context, resp RemediationsClientListDeploymentsAtManagementGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationDeploymentsListResult.NextLink)
@@ -926,12 +909,9 @@ func (client *RemediationsClient) ListDeploymentsAtManagementGroup(managementGro
 }
 
 // listDeploymentsAtManagementGroupCreateRequest creates the ListDeploymentsAtManagementGroup request.
-func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/listDeployments"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -1121,15 +1101,14 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionHandleResponse(re
 
 // ListForManagementGroup - Gets all remediations for the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListForManagementGroup(managementGroupsNamespace Enum0, managementGroupID string, options *QueryOptions) *RemediationsClientListForManagementGroupPager {
+func (client *RemediationsClient) ListForManagementGroup(managementGroupID string, options *QueryOptions) *RemediationsClientListForManagementGroupPager {
 	return &RemediationsClientListForManagementGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, options)
+			return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
 		},
 		advancer: func(ctx context.Context, resp RemediationsClientListForManagementGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationListResult.NextLink)
@@ -1138,12 +1117,9 @@ func (client *RemediationsClient) ListForManagementGroup(managementGroupsNamespa
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
-func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}

@@ -27,7 +27,7 @@ func ExampleInformationProtectionPoliciesClient_Get() {
 	client := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<scope>",
-		armsecurity.Enum18("custom"),
+		armsecurity.InformationProtectionPolicyName("custom"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +45,7 @@ func ExampleInformationProtectionPoliciesClient_CreateOrUpdate() {
 	client := armsecurity.NewInformationProtectionPoliciesClient(cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<scope>",
-		armsecurity.Enum18("custom"),
+		armsecurity.InformationProtectionPolicyName("custom"),
 		armsecurity.InformationProtectionPolicy{
 			Properties: &armsecurity.InformationProtectionPolicyProperties{
 				InformationTypes: map[string]*armsecurity.InformationType{

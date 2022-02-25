@@ -103,7 +103,7 @@ type ClientGetOptions struct {
 	// The $expand=children query string parameter allows clients to request inclusion of children in the response payload. $expand=path
 	// includes the path from the root group to the current group.
 	// $expand=ancestors includes the ancestor Ids of the current group.
-	Expand *Enum0
+	Expand *ManagementGroupExpandType
 	// A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType ne Subscription')
 	Filter *string
 	// The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy in the response payload.
@@ -358,7 +358,7 @@ type EntitiesClientListOptions struct {
 	// $search=ChildrenOnly the API will return only the first level of children of the group entity info specified in $filter.
 	// The user must have direct access to the children entities or one of it's
 	// descendants for it to show up in the results.
-	Search *Enum2
+	Search *EntitySearchType
 	// This parameter specifies the fields to include in the response. Can include any combination of Name,DisplayName,Type,ParentDisplayNameChain,ParentChain,
 	// e.g.
 	// '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can override
@@ -373,43 +373,7 @@ type EntitiesClientListOptions struct {
 	// Number of elements to return when retrieving results. Passing this in will override $skipToken.
 	Top *int32
 	// The view parameter allows clients to filter the type of data that is returned by the getEntities call.
-	View *Enum3
-}
-
-// EntityHierarchyItem - The management group details for the hierarchy view.
-type EntityHierarchyItem struct {
-	// The generic properties of a management group.
-	Properties *EntityHierarchyItemProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The fully qualified ID for the management group. For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the management group. For example, 00000000-0000-0000-0000-000000000000
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. For example, Microsoft.Management/managementGroups
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// EntityHierarchyItemProperties - The generic properties of a management group.
-type EntityHierarchyItemProperties struct {
-	// The list of children.
-	Children []*EntityHierarchyItem `json:"children,omitempty"`
-
-	// The friendly name of the management group.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The users specific permissions to this item.
-	Permissions *Permissions `json:"permissions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityHierarchyItemProperties.
-func (e EntityHierarchyItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "children", e.Children)
-	populate(objectMap, "displayName", e.DisplayName)
-	populate(objectMap, "permissions", e.Permissions)
-	return json.Marshal(objectMap)
+	View *EntityViewParameterType
 }
 
 // EntityInfo - The entity.
@@ -501,24 +465,6 @@ func (e EntityListResult) MarshalJSON() ([]byte, error) {
 type EntityParentGroupInfo struct {
 	// The fully qualified ID for the parent management group. For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-}
-
-// ErrorDetails - The details of the error.
-type ErrorDetails struct {
-	// One of a server-defined set of error codes.
-	Code *string `json:"code,omitempty"`
-
-	// A human-readable representation of the error's details.
-	Details *string `json:"details,omitempty"`
-
-	// A human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
-}
-
-// ErrorResponse - The error object.
-type ErrorResponse struct {
-	// The details of the error.
-	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // HierarchySettings - Settings defined at the Management Group scope.
@@ -889,21 +835,6 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", o.NextLink)
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// OperationResults - The results of an asynchronous operation.
-type OperationResults struct {
-	// The generic properties of a management group.
-	Properties *ManagementGroupInfoProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The fully qualified ID for the management group. For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the management group. For example, 00000000-0000-0000-0000-000000000000
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. For example, Microsoft.Management/managementGroups
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.

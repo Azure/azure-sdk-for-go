@@ -93,7 +93,7 @@ func ExampleTasksClient_UpdateSubscriptionLevelTaskState() {
 		"<asc-location>", cred, nil)
 	_, err = client.UpdateSubscriptionLevelTaskState(ctx,
 		"<task-name>",
-		armsecurity.Enum16("Dismiss"),
+		armsecurity.TaskUpdateActionType("Dismiss"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -156,7 +156,7 @@ func ExampleTasksClient_UpdateResourceGroupLevelTaskState() {
 	_, err = client.UpdateResourceGroupLevelTaskState(ctx,
 		"<resource-group-name>",
 		"<task-name>",
-		armsecurity.Enum16("Dismiss"),
+		armsecurity.TaskUpdateActionType("Dismiss"),
 		nil)
 	if err != nil {
 		log.Fatal(err)

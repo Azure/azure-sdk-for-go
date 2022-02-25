@@ -35,34 +35,33 @@ type PolicyTrackedResourcesClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyTrackedResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &PolicyTrackedResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
 
 // ListQueryResultsForManagementGroup - Queries policy tracked resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupName - Management group name.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForManagementGroup(managementGroupsNamespace Enum0, managementGroupName string, policyTrackedResourcesResource Enum1, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForManagementGroupPager {
+func (client *PolicyTrackedResourcesClient) ListQueryResultsForManagementGroup(managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForManagementGroupPager {
 	return &PolicyTrackedResourcesClientListQueryResultsForManagementGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupName, policyTrackedResourcesResource, options)
+			return client.listQueryResultsForManagementGroupCreateRequest(ctx, managementGroupName, policyTrackedResourcesResource, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyTrackedResourcesQueryResults.NextLink)
@@ -71,12 +70,9 @@ func (client *PolicyTrackedResourcesClient) ListQueryResultsForManagementGroup(m
 }
 
 // listQueryResultsForManagementGroupCreateRequest creates the ListQueryResultsForManagementGroup request.
-func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupName string, policyTrackedResourcesResource Enum1, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyTrackedResources/{policyTrackedResourcesResource}/queryResults"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupName == "" {
 		return nil, errors.New("parameter managementGroupName cannot be empty")
 	}
@@ -118,7 +114,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 // is allowed.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForResource(resourceID string, policyTrackedResourcesResource Enum1, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForResourcePager {
+func (client *PolicyTrackedResourcesClient) ListQueryResultsForResource(resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForResourcePager {
 	return &PolicyTrackedResourcesClientListQueryResultsForResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -131,7 +127,7 @@ func (client *PolicyTrackedResourcesClient) ListQueryResultsForResource(resource
 }
 
 // listQueryResultsForResourceCreateRequest creates the ListQueryResultsForResource request.
-func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceCreateRequest(ctx context.Context, resourceID string, policyTrackedResourcesResource Enum1, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceCreateRequest(ctx context.Context, resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyTrackedResources/{policyTrackedResourcesResource}/queryResults"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if policyTrackedResourcesResource == "" {
@@ -171,7 +167,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 // is allowed.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(resourceGroupName string, policyTrackedResourcesResource Enum1, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForResourceGroupPager {
+func (client *PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForResourceGroupPager {
 	return &PolicyTrackedResourcesClientListQueryResultsForResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -184,7 +180,7 @@ func (client *PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(res
 }
 
 // listQueryResultsForResourceGroupCreateRequest creates the ListQueryResultsForResourceGroup request.
-func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, policyTrackedResourcesResource Enum1, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyTrackedResources/{policyTrackedResourcesResource}/queryResults"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -230,7 +226,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 // is allowed.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForSubscription(policyTrackedResourcesResource Enum1, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForSubscriptionPager {
+func (client *PolicyTrackedResourcesClient) ListQueryResultsForSubscription(policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) *PolicyTrackedResourcesClientListQueryResultsForSubscriptionPager {
 	return &PolicyTrackedResourcesClientListQueryResultsForSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -243,7 +239,7 @@ func (client *PolicyTrackedResourcesClient) ListQueryResultsForSubscription(poli
 }
 
 // listQueryResultsForSubscriptionCreateRequest creates the ListQueryResultsForSubscription request.
-func (client *PolicyTrackedResourcesClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyTrackedResourcesResource Enum1, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyTrackedResourcesClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyTrackedResources/{policyTrackedResourcesResource}/queryResults"
 	if policyTrackedResourcesResource == "" {
 		return nil, errors.New("parameter policyTrackedResourcesResource cannot be empty")

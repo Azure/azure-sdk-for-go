@@ -12,6 +12,7 @@
 * Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
 * Renamed `JSONWebKeyOperation` to `KeyOperation`.
 * Renamed `JSONWebKeyCurveName` to `KeyCurveName`
+* Changed `CreateOCTKey`/`Response`/`Options` to `CreateOctKey`/`Response`/`Options`
 
 ### Bugs Fixed
 

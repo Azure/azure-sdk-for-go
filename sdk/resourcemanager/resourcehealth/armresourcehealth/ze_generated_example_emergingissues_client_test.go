@@ -25,7 +25,6 @@ func ExampleEmergingIssuesClient_Get() {
 	ctx := context.Background()
 	client := armresourcehealth.NewEmergingIssuesClient(cred, nil)
 	res, err := client.Get(ctx,
-		armresourcehealth.Enum0("default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)

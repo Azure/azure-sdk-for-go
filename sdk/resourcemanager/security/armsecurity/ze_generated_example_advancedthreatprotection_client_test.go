@@ -27,7 +27,6 @@ func ExampleAdvancedThreatProtectionClient_Get() {
 	client := armsecurity.NewAdvancedThreatProtectionClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-id>",
-		armsecurity.Enum5("current"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +44,6 @@ func ExampleAdvancedThreatProtectionClient_Create() {
 	client := armsecurity.NewAdvancedThreatProtectionClient(cred, nil)
 	res, err := client.Create(ctx,
 		"<resource-id>",
-		armsecurity.Enum5("current"),
 		armsecurity.AdvancedThreatProtectionSetting{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),

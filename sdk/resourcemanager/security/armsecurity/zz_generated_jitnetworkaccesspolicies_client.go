@@ -227,11 +227,10 @@ func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // jitNetworkAccessPolicyName - Name of a Just-in-Time access configuration policy.
-// jitNetworkAccessPolicyInitiateType - Type of the action to do on the Just-in-Time access policy.
 // options - JitNetworkAccessPoliciesClientInitiateOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.Initiate
 // method.
-func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, jitNetworkAccessPolicyInitiateType Enum56, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesClientInitiateOptions) (JitNetworkAccessPoliciesClientInitiateResponse, error) {
-	req, err := client.initiateCreateRequest(ctx, resourceGroupName, jitNetworkAccessPolicyName, jitNetworkAccessPolicyInitiateType, body, options)
+func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesClientInitiateOptions) (JitNetworkAccessPoliciesClientInitiateResponse, error) {
+	req, err := client.initiateCreateRequest(ctx, resourceGroupName, jitNetworkAccessPolicyName, body, options)
 	if err != nil {
 		return JitNetworkAccessPoliciesClientInitiateResponse{}, err
 	}
@@ -246,7 +245,7 @@ func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, reso
 }
 
 // initiateCreateRequest creates the Initiate request.
-func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, jitNetworkAccessPolicyInitiateType Enum56, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesClientInitiateOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesClientInitiateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}/{jitNetworkAccessPolicyInitiateType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,10 +263,7 @@ func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.
 		return nil, errors.New("parameter jitNetworkAccessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyName}", url.PathEscape(jitNetworkAccessPolicyName))
-	if jitNetworkAccessPolicyInitiateType == "" {
-		return nil, errors.New("parameter jitNetworkAccessPolicyInitiateType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyInitiateType}", url.PathEscape(string(jitNetworkAccessPolicyInitiateType)))
+	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyInitiateType}", url.PathEscape("initiate"))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err

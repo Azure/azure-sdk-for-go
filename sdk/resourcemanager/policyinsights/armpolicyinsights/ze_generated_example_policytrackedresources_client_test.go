@@ -24,9 +24,8 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForManagementGroup() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
-	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.Enum0("Microsoft.Management"),
-		"<management-group-name>",
-		armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForManagementGroup("<management-group-name>",
+		armpolicyinsights.PolicyTrackedResourcesResourceType("default"),
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -59,7 +58,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForSubscription() {
 	}
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
-	pager := client.ListQueryResultsForSubscription(armpolicyinsights.Enum1("default"),
+	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyTrackedResourcesResourceType("default"),
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -93,7 +92,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResourceGroup() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	pager := client.ListQueryResultsForResourceGroup("<resource-group-name>",
-		armpolicyinsights.Enum1("default"),
+		armpolicyinsights.PolicyTrackedResourcesResourceType("default"),
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -127,7 +126,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResource() {
 	ctx := context.Background()
 	client := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
 	pager := client.ListQueryResultsForResource("<resource-id>",
-		armpolicyinsights.Enum1("default"),
+		armpolicyinsights.PolicyTrackedResourcesResourceType("default"),
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,

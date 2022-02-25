@@ -34,17 +34,17 @@ type OperationStatusClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &OperationStatusClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -60,7 +60,7 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 // extensionName - Name of the Extension.
 // operationID - operation Id
 // options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
-func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
+func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationID, options)
 	if err != nil {
 		return OperationStatusClientGetResponse{}, err
@@ -76,7 +76,7 @@ func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (*policy.Request, error) {
+func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensions/{extensionName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,7 +135,7 @@ func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (Ope
 // (for OnPrem K8S clusters).
 // clusterName - The name of the kubernetes cluster.
 // options - OperationStatusClientListOptions contains the optional parameters for the OperationStatusClient.List method.
-func (client *OperationStatusClient) List(resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *OperationStatusClientListOptions) *OperationStatusClientListPager {
+func (client *OperationStatusClient) List(resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *OperationStatusClientListOptions) *OperationStatusClientListPager {
 	return &OperationStatusClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -148,7 +148,7 @@ func (client *OperationStatusClient) List(resourceGroupName string, clusterRp En
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationStatusClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *OperationStatusClientListOptions) (*policy.Request, error) {
+func (client *OperationStatusClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *OperationStatusClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

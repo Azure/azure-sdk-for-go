@@ -10,7 +10,7 @@ package armazurearcdata
 
 const (
 	moduleName    = "armazurearcdata"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ArcSQLManagedInstanceLicenseType - The license type to apply for this managed instance.

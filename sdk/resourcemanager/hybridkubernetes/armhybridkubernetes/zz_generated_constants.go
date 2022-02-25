@@ -10,7 +10,7 @@ package armhybridkubernetes
 
 const (
 	moduleName    = "armhybridkubernetes"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // AuthenticationMethod - The mode of client authentication.

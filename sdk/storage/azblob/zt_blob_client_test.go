@@ -156,7 +156,6 @@ func TestBlobStartCopyDestEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -194,7 +193,6 @@ func TestBlobStartCopyMetadata(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -230,7 +228,6 @@ func TestBlobStartCopyMetadataNil(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -262,7 +259,6 @@ func TestBlobStartCopyMetadataNil(t *testing.T) {
 func TestBlobStartCopyMetadataEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -299,7 +295,6 @@ func TestBlobStartCopyMetadataEmpty(t *testing.T) {
 func TestBlobStartCopyMetadataInvalidField(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -352,7 +347,6 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -383,7 +377,6 @@ func TestBlobStartCopyUsingSASSrc(t *testing.T) {
 	recording.LiveOnly(t) // SAS are live only
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -454,7 +447,6 @@ func TestBlobStartCopyUsingSASSrc(t *testing.T) {
 func TestBlobStartCopyUsingSASDest(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 
@@ -608,7 +600,6 @@ func TestBlobStartCopySourceIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -642,7 +633,6 @@ func TestBlobStartCopySourceIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -672,7 +662,6 @@ func TestBlobStartCopySourceIfMatchFalse(t *testing.T) {
 func TestBlobStartCopySourceIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -707,7 +696,6 @@ func TestBlobStartCopySourceIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -738,7 +726,6 @@ func TestBlobStartCopySourceIfNoneMatchFalse(t *testing.T) {
 func TestBlobStartCopyDestIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -774,7 +761,6 @@ func TestBlobStartCopyDestIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -805,7 +791,6 @@ func TestBlobStartCopyDestIfModifiedSinceFalse(t *testing.T) {
 func TestBlobStartCopyDestIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -842,7 +827,6 @@ func TestBlobStartCopyDestIfUnmodifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -874,7 +858,6 @@ func TestBlobStartCopyDestIfUnmodifiedSinceFalse(t *testing.T) {
 func TestBlobStartCopyDestIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -908,7 +891,6 @@ func TestBlobStartCopyDestIfMatchTrue(t *testing.T) {
 func TestBlobStartCopyDestIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -945,7 +927,6 @@ func TestBlobStartCopyDestIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -981,7 +962,6 @@ func TestBlobStartCopyDestIfNoneMatchTrue(t *testing.T) {
 func TestBlobStartCopyDestIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1094,7 +1074,6 @@ func TestBlobSnapshotMetadata(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1123,7 +1102,6 @@ func TestBlobSnapshotMetadata(t *testing.T) {
 func TestBlobSnapshotMetadataEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1154,7 +1132,6 @@ func TestBlobSnapshotMetadataNil(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1182,7 +1159,6 @@ func TestBlobSnapshotMetadataNil(t *testing.T) {
 func TestBlobSnapshotMetadataInvalid(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1225,7 +1201,6 @@ func TestBlobSnapshotBlobNotExist(t *testing.T) {
 func TestBlobSnapshotOfSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1375,7 +1350,6 @@ func TestBlobSnapshotIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1404,7 +1378,6 @@ func TestBlobSnapshotIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1430,7 +1403,6 @@ func TestBlobSnapshotIfMatchFalse(t *testing.T) {
 func TestBlobSnapshotIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1458,7 +1430,6 @@ func TestBlobSnapshotIfNoneMatchTrue(t *testing.T) {
 func TestBlobSnapshotIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1506,7 +1477,6 @@ func TestBlobDownloadDataNegativeOffset(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1528,7 +1498,6 @@ func TestBlobDownloadDataNegativeOffset(t *testing.T) {
 func TestBlobDownloadDataOffsetOutOfRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1553,7 +1522,6 @@ func TestBlobDownloadDataCountNegative(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1575,7 +1543,6 @@ func TestBlobDownloadDataCountNegative(t *testing.T) {
 func TestBlobDownloadDataCountZero(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1604,7 +1571,6 @@ func TestBlobDownloadDataCountExact(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1632,7 +1598,6 @@ func TestBlobDownloadDataCountOutOfRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1658,7 +1623,6 @@ func TestBlobDownloadDataCountOutOfRange(t *testing.T) {
 func TestBlobDownloadDataEmptyRangeStruct(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1686,7 +1650,6 @@ func TestBlobDownloadDataEmptyRangeStruct(t *testing.T) {
 func TestBlobDownloadDataContentMD5(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1839,7 +1802,6 @@ func TestBlobDownloadDataIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1867,7 +1829,6 @@ func TestBlobDownloadDataIfMatchTrue(t *testing.T) {
 func TestBlobDownloadDataIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1900,7 +1861,6 @@ func TestBlobDownloadDataIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1932,7 +1892,6 @@ func TestBlobDownloadDataIfNoneMatchTrue(t *testing.T) {
 func TestBlobDownloadDataIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1979,7 +1938,6 @@ func TestBlobDeleteNonExistent(t *testing.T) {
 func TestBlobDeleteSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2055,7 +2013,6 @@ func TestBlobDeleteSnapshot(t *testing.T) {
 func TestBlobDeleteSnapshotsNoneWithSnapshots(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2211,7 +2168,6 @@ func TestBlobDeleteIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2239,7 +2195,6 @@ func TestBlobDeleteIfMatchTrue(t *testing.T) {
 func TestBlobDeleteIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2272,7 +2227,6 @@ func TestBlobDeleteIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2303,7 +2257,6 @@ func TestBlobDeleteIfNoneMatchTrue(t *testing.T) {
 func TestBlobDeleteIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2470,7 +2423,6 @@ func TestBlobGetPropsAndMetadataIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2521,7 +2473,6 @@ func TestBlobGetPropsAndMetadataIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2549,7 +2500,6 @@ func TestBlobGetPropsAndMetadataIfMatchFalse(t *testing.T) {
 func TestBlobGetPropsAndMetadataIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2579,7 +2529,6 @@ func TestBlobGetPropsAndMetadataIfNoneMatchTrue(t *testing.T) {
 func TestBlobGetPropsAndMetadataIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2611,7 +2560,6 @@ func TestBlobSetPropertiesBasic(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2634,7 +2582,6 @@ func TestBlobSetPropertiesBasic(t *testing.T) {
 func TestBlobSetPropertiesEmptyValue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2787,7 +2734,6 @@ func TestBlobSetPropertiesIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2813,7 +2759,6 @@ func TestBlobSetPropertiesIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2833,7 +2778,6 @@ func TestBlobSetPropertiesIfMatchFalse(t *testing.T) {
 func TestBlobSetPropertiesIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2857,7 +2801,6 @@ func TestBlobSetPropertiesIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2880,7 +2823,6 @@ func TestBlobSetPropertiesIfNoneMatchFalse(t *testing.T) {
 func TestBlobSetMetadataNil(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -2908,7 +2850,6 @@ func TestBlobSetMetadataEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2934,7 +2875,6 @@ func TestBlobSetMetadataEmpty(t *testing.T) {
 func TestBlobSetMetadataInvalidField(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -3079,7 +3019,6 @@ func TestBlobSetMetadataIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -3107,7 +3046,6 @@ func TestBlobSetMetadataIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -3130,7 +3068,6 @@ func TestBlobSetMetadataIfMatchFalse(t *testing.T) {
 func TestBlobSetMetadataIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -3156,7 +3093,6 @@ func TestBlobSetMetadataIfNoneMatchTrue(t *testing.T) {
 func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -3205,7 +3141,6 @@ func TestBlobServiceClientDelete(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -3225,7 +3160,6 @@ func setAndCheckBlobTier(t *testing.T, bbClient BlobClient, tier AccessTier) {
 func TestBlobSetTierAllTiers(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -3404,7 +3338,6 @@ func TestBlobClientPartsSASQueryTimes(t *testing.T) {
 func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)

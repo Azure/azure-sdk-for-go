@@ -7,7 +7,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestErrorResponseUnmarshal(t *testing.T) {
@@ -21,14 +21,13 @@ func TestErrorResponseUnmarshal(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			_assert := assert.New(t)
 			se := StorageError{}
-			_assert.Nil(xml.Unmarshal([]byte(c.input), &se))
+			require.Nil(t, xml.Unmarshal([]byte(c.input), &se))
 
-			_assert.Contains(se.details, "Code")
-			_assert.Equal("ContainerAlreadyExists", se.details["Code"])
+			require.Contains(t, se.details, "Code")
+			require.Equal(t, "ContainerAlreadyExists", se.details["Code"])
 
-			_assert.Equal("The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z", se.description)
+			require.Equal(t, "The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z", se.description)
 		})
 	}
 }

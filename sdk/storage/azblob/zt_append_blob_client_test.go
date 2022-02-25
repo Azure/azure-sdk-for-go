@@ -576,7 +576,6 @@ func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -610,7 +609,6 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -640,7 +638,6 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -672,7 +669,6 @@ func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
 func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -707,7 +703,6 @@ func TestBlobAppendBlockNilBody(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -728,7 +723,6 @@ func TestBlobAppendBlockNilBody(t *testing.T) {
 func TestBlobAppendBlockEmptyBody(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -922,7 +916,6 @@ func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -952,7 +945,6 @@ func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -979,7 +971,6 @@ func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1005,7 +996,6 @@ func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1075,7 +1065,6 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1104,7 +1093,6 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1132,7 +1120,6 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1156,7 +1143,6 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1182,7 +1168,6 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1206,7 +1191,6 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 func TestSealAppendBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -1274,7 +1258,6 @@ func TestCopySealedBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1336,7 +1319,6 @@ func TestCopySealedBlob(t *testing.T) {
 func TestCopyUnsealedBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)

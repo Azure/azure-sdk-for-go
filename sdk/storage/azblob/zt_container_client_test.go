@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -914,7 +913,6 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -939,7 +937,7 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			_assert.Equal(nameMap[*blob.Name], true)
+			require.Equal(t, nameMap[*blob.Name], true)
 		}
 	}
 
@@ -950,7 +948,6 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -977,7 +974,7 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			_assert.Equal(nameMap[*blob.Name], true)
+			require.Equal(t, nameMap[*blob.Name], true)
 		}
 	}
 

@@ -1,13 +1,48 @@
 {
   "Entries": [
     {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-createIPG2918392337?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "249",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 25 Feb 2022 07:18:23 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "7e4dcfaa-c49c-4dd2-b6cc-74f39cfc70b9",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "7e4dcfaa-c49c-4dd2-b6cc-74f39cfc70b9",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220225T071824Z:7e4dcfaa-c49c-4dd2-b6cc-74f39cfc70b9"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337",
+        "name": "testRG-createIPG2918392337",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
       "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337?api-version=2021-05-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "PUT",
-        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337?api-version=2021-05-01",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
@@ -27,53 +62,48 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/f6cd3763-d889-4ee6-a913-298f228142ce?api-version=2021-05-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/2b305bf0-150c-4a5c-b8f7-5b6014081001?api-version=2021-05-01",
         "Cache-Control": "no-cache",
         "Content-Length": "524",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 23 Feb 2022 05:26:14 GMT",
+        "Date": "Fri, 25 Feb 2022 07:18:30 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "0aa9843c-f566-4817-ba74-5db9dc4a0313",
-        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-correlation-request-id": "54717a97-42f7-45d4-80c2-91e7ba6d4470",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
         "x-ms-request-id": [
-          "f6cd3763-d889-4ee6-a913-298f228142ce",
-          "f6cd3763-d889-4ee6-a913-298f228142ce"
+          "2b305bf0-150c-4a5c-b8f7-5b6014081001",
+          "2b305bf0-150c-4a5c-b8f7-5b6014081001"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220223T052615Z:0aa9843c-f566-4817-ba74-5db9dc4a0313"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220225T071831Z:54717a97-42f7-45d4-80c2-91e7ba6d4470"
       },
-      "ResponseBody": [
-        "{\r\n",
-        "  \u0022properties\u0022: {\r\n",
-        "    \u0022firewalls\u0022: [],\r\n",
-        "    \u0022firewallPolicies\u0022: [],\r\n",
-        "    \u0022ipAddresses\u0022: [\r\n",
-        "      \u002213.64.39.16/32\u0022,\r\n",
-        "      \u002240.74.146.80/31\u0022,\r\n",
-        "      \u002240.74.147.32/28\u0022\r\n",
-        "    ],\r\n",
-        "    \u0022provisioningState\u0022: \u0022Updating\u0022\r\n",
-        "  },\r\n",
-        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337\u0022,\r\n",
-        "  \u0022name\u0022: \u0022ipg2918392337\u0022,\r\n",
-        "  \u0022type\u0022: \u0022Microsoft.Network/IpGroups\u0022,\r\n",
-        "  \u0022etag\u0022: \u002289d1b8e4-fca9-4c3c-8f86-679e4963409c\u0022,\r\n",
-        "  \u0022location\u0022: \u0022westus\u0022\r\n",
-        "}"
-      ]
+      "ResponseBody": {
+        "properties": {
+          "firewalls": [],
+          "firewallPolicies": [],
+          "ipAddresses": [
+            "13.64.39.16/32",
+            "40.74.146.80/31",
+            "40.74.147.32/28"
+          ],
+          "provisioningState": "Updating"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337",
+        "name": "ipg2918392337",
+        "type": "Microsoft.Network/IpGroups",
+        "etag": "7855efee-4ca0-43b4-a174-1817c5674c5d",
+        "location": "westus"
+      }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/f6cd3763-d889-4ee6-a913-298f228142ce?api-version=2021-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/2b305bf0-150c-4a5c-b8f7-5b6014081001?api-version=2021-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/f6cd3763-d889-4ee6-a913-298f228142ce?api-version=2021-05-01",
-        ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-armnetwork/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
@@ -84,7 +114,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 23 Feb 2022 05:26:25 GMT",
+        "Date": "Fri, 25 Feb 2022 07:18:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -92,28 +122,23 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "5fdee231-6806-4725-bf0a-0fa1c30615a0",
+        "x-ms-correlation-request-id": "193cfbfb-ff73-4c89-8f16-99d20185e9af",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
         "x-ms-request-id": [
-          "50c6de58-cc8f-45ce-bd43-0cdff35b3b20",
-          "50c6de58-cc8f-45ce-bd43-0cdff35b3b20"
+          "d7a69e37-d151-4ab5-a87f-db92bc5d8f9c",
+          "d7a69e37-d151-4ab5-a87f-db92bc5d8f9c"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220223T052625Z:5fdee231-6806-4725-bf0a-0fa1c30615a0"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220225T071841Z:193cfbfb-ff73-4c89-8f16-99d20185e9af"
       },
-      "ResponseBody": [
-        "{\r\n",
-        "  \u0022status\u0022: \u0022Succeeded\u0022\r\n",
-        "}"
-      ]
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
     },
     {
       "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337?api-version=2021-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337?api-version=2021-05-01",
-        ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-armnetwork/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
@@ -124,8 +149,8 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 23 Feb 2022 05:26:25 GMT",
-        "ETag": "\u002289d1b8e4-fca9-4c3c-8f86-679e4963409c\u0022",
+        "Date": "Fri, 25 Feb 2022 07:18:41 GMT",
+        "ETag": "\u00227855efee-4ca0-43b4-a174-1817c5674c5d\u0022",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -133,30 +158,56 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "f7842779-4ef3-414a-a5ca-a551c88349ba",
+        "x-ms-correlation-request-id": "ab048583-5699-4508-9189-60a3a2972ef0",
         "x-ms-ratelimit-remaining-subscription-reads": "11998",
-        "x-ms-request-id": "f7842779-4ef3-414a-a5ca-a551c88349ba",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220223T052626Z:f7842779-4ef3-414a-a5ca-a551c88349ba"
+        "x-ms-request-id": "ab048583-5699-4508-9189-60a3a2972ef0",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220225T071842Z:ab048583-5699-4508-9189-60a3a2972ef0"
       },
-      "ResponseBody": [
-        "{\r\n",
-        "  \u0022properties\u0022: {\r\n",
-        "    \u0022firewalls\u0022: [],\r\n",
-        "    \u0022firewallPolicies\u0022: [],\r\n",
-        "    \u0022ipAddresses\u0022: [\r\n",
-        "      \u002213.64.39.16/32\u0022,\r\n",
-        "      \u002240.74.146.80/31\u0022,\r\n",
-        "      \u002240.74.147.32/28\u0022\r\n",
-        "    ],\r\n",
-        "    \u0022provisioningState\u0022: \u0022Succeeded\u0022\r\n",
-        "  },\r\n",
-        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337\u0022,\r\n",
-        "  \u0022name\u0022: \u0022ipg2918392337\u0022,\r\n",
-        "  \u0022type\u0022: \u0022Microsoft.Network/IpGroups\u0022,\r\n",
-        "  \u0022etag\u0022: \u002289d1b8e4-fca9-4c3c-8f86-679e4963409c\u0022,\r\n",
-        "  \u0022location\u0022: \u0022westus\u0022\r\n",
-        "}"
-      ]
+      "ResponseBody": {
+        "properties": {
+          "firewalls": [],
+          "firewallPolicies": [],
+          "ipAddresses": [
+            "13.64.39.16/32",
+            "40.74.146.80/31",
+            "40.74.147.32/28"
+          ],
+          "provisioningState": "Succeeded"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createIPG2918392337/providers/Microsoft.Network/ipGroups/ipg2918392337",
+        "name": "ipg2918392337",
+        "type": "Microsoft.Network/IpGroups",
+        "etag": "7855efee-4ca0-43b4-a174-1817c5674c5d",
+        "location": "westus"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-createIPG2918392337?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 25 Feb 2022 07:18:44 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1URVNUUkc6MkRDUkVBVEVJUEcyOTE4MzkyMzM3LVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "6c5a9ae8-49c3-4156-b76c-517f55f57369",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "6c5a9ae8-49c3-4156-b76c-517f55f57369",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220225T071844Z:6c5a9ae8-49c3-4156-b76c-517f55f57369"
+      },
+      "ResponseBody": null
     }
   ],
   "Variables": {}

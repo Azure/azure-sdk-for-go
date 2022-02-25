@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -448,7 +447,6 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -456,7 +454,7 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+	bbClient := createNewBlockBlob(t, generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
 		"Microsoft Azure": "Azure Storage",
 		"Storage+SDK":     "SDK/GO",
@@ -483,7 +481,6 @@ func TestListBlobReturnsTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -492,7 +489,7 @@ func TestListBlobReturnsTags(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	blobClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobClient := createNewBlockBlob(t, blobName, containerClient)
 	blobTagsMap := map[string]string{
 		"+-./:=_ ": "firsttag",
 		"tag2":     "+-./:=_",
@@ -660,7 +657,6 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -668,7 +664,7 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(_assert, "src"+generateBlobName(testName), containerClient)
+	pbClient := createNewPageBlob(t, "src"+generateBlobName(testName), containerClient)
 
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
@@ -737,7 +733,6 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -745,7 +740,7 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+	pbClient := createNewPageBlob(t, generateBlobName(testName), containerClient)
 
 	setTagsBlobOptions := SetTagsBlobOptions{
 		TagsMap: specialCharBlobTagsMap,

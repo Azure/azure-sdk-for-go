@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -315,7 +314,7 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
@@ -505,7 +504,6 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -545,7 +543,7 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
@@ -583,7 +581,6 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -606,7 +603,7 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
@@ -644,7 +641,6 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -667,5 +663,5 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }

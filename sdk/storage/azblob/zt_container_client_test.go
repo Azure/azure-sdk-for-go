@@ -48,8 +48,6 @@ func TestContainerCreateInvalidName(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
-	// testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 	containerClient := svcClient.NewContainerClient("foo bar")
@@ -61,15 +59,13 @@ func TestContainerCreateInvalidName(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
+	validateStorageError(t, err, StorageErrorCodeInvalidResourceName)
 }
 
 func TestContainerCreateEmptyName(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
-	// testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -83,14 +79,13 @@ func TestContainerCreateEmptyName(t *testing.T) {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func TestContainerCreateNameCollision(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -110,7 +105,7 @@ func TestContainerCreateNameCollision(t *testing.T) {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
+	validateStorageError(t, err, StorageErrorCodeContainerAlreadyExists)
 }
 
 func TestContainerCreateInvalidMetadata(t *testing.T) {
@@ -384,7 +379,7 @@ func validateContainerDeleted(t *testing.T, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerDelete(t *testing.T) {
@@ -447,7 +442,6 @@ func TestContainerDeleteNonExistent(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -458,14 +452,13 @@ func TestContainerDeleteNonExistent(t *testing.T) {
 	_, err = containerClient.Delete(ctx, nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	// _assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -493,7 +486,6 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -516,14 +508,13 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	// _assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -552,7 +543,6 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -575,7 +565,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 ////func (s *azblobTestSuite) TestContainerAccessConditionsUnsupportedConditions() {
@@ -678,7 +668,6 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -689,7 +678,7 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 
 	// initialize a blob and create a snapshot of it
 	snapBlobName := generateBlobName(testName)
-	snapBlob := createNewBlockBlob(_assert, snapBlobName, containerClient)
+	snapBlob := createNewBlockBlob(t, snapBlobName, containerClient)
 	snap, err := snapBlob.CreateSnapshot(ctx, nil)
 	// snap.
 	require.NoError(t, err)
@@ -719,7 +708,6 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -730,7 +718,7 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
 		blobName := prefix + generateBlobName(testName)
-		createNewBlockBlob(_assert, blobName, containerClient)
+		createNewBlockBlob(t, blobName, containerClient)
 	}
 
 	pager := containerClient.ListBlobsHierarchy("^", nil)
@@ -937,8 +925,8 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 	blobNames := make([]string, 2)
 	blobName := generateBlobName(testName)
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
-	createNewBlockBlob(_assert, blobNames[0], containerClient)
-	createNewBlockBlob(_assert, blobNames[1], containerClient)
+	createNewBlockBlob(t, blobNames[0], containerClient)
+	createNewBlockBlob(t, blobNames[1], containerClient)
 
 	maxResult := int32(2)
 	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
@@ -974,8 +962,8 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 	blobNames := make([]string, 2)
 	blobName := generateBlobName(testName)
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
-	createNewBlockBlob(_assert, blobNames[0], containerClient)
-	createNewBlockBlob(_assert, blobNames[1], containerClient)
+	createNewBlockBlob(t, blobNames[0], containerClient)
+	createNewBlockBlob(t, blobNames[1], containerClient)
 
 	maxResult := int32(3)
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
@@ -1035,7 +1023,6 @@ func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1046,7 +1033,7 @@ func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
 	_, err = containerClient.GetProperties(ctx, nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerSetMetadataEmpty(t *testing.T) {
@@ -1132,7 +1119,6 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -1143,7 +1129,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 	_, err = containerClient.SetMetadata(ctx, nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 //
@@ -1196,7 +1182,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 //	_assert.Error(err)
 //
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+//	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 //}
 
 func TestContainerNewBlobURL(t *testing.T) {

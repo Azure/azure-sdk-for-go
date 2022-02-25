@@ -10,7 +10,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -410,8 +409,6 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
-
 	var svcClient ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
@@ -427,7 +424,7 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 		_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 		require.Error(t, err)
 
-		validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+		validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 	}
 }
 
@@ -435,7 +432,6 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -444,5 +440,5 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }

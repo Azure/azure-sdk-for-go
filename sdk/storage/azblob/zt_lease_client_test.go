@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -42,7 +41,6 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -75,7 +73,6 @@ func TestContainerReleaseLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -106,7 +103,6 @@ func TestContainerRenewLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -133,7 +129,6 @@ func TestContainerRenewLease(t *testing.T) {
 func TestContainerChangeLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
-
 
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
@@ -169,7 +164,6 @@ func TestBlobAcquireLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -179,7 +173,7 @@ func TestBlobAcquireLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -196,7 +190,6 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -206,7 +199,7 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -233,7 +226,6 @@ func TestBlobReleaseLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -243,7 +235,7 @@ func TestBlobReleaseLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -266,7 +258,6 @@ func TestBlobRenewLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -276,7 +267,7 @@ func TestBlobRenewLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -296,7 +287,6 @@ func TestBlobChangeLease(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -306,7 +296,7 @@ func TestBlobChangeLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()

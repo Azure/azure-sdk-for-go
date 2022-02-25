@@ -813,7 +813,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(s.T(), pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -870,7 +870,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	pbClient := createNewPageBlobWithCPK(s.T(), pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -921,9 +921,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(testName)
-	bbClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	bbClient := createNewPageBlobWithSize(s.T(), srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(testName)
-	destBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destBlob := createNewPageBlobWithCPK(s.T(), dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1006,9 +1006,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(testName)
-	srcPBClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcPBClient := createNewPageBlobWithSize(s.T(), srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(testName)
-	dstPBBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	dstPBBlob := createNewPageBlobWithCPK(s.T(), dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1081,7 +1081,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	srcPBName := "src" + generateBlobName(testName)
-	srcBlob := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcBlob := createNewPageBlobWithSize(s.T(), srcPBName, containerClient, int64(contentSize))
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1108,7 +1108,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	dstPBName := "dst" + generateBlobName(testName)
-	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destPBClient := createNewPageBlobWithCPK(s.T(), dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
@@ -1157,7 +1157,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(s.T(), err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
@@ -1172,7 +1172,7 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	defer deleteContainer(s.T(), containerClient)
 
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(s.T(), pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
@@ -1225,7 +1225,7 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 	defer deleteContainer(s.T(), containerClient)
 
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(s.T(), pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -1252,7 +1252,7 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(s.T(), bbName, containerClient, &testCPKByValue, nil)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
@@ -1298,7 +1298,7 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(s.T(), bbName, containerClient, nil, &testCPKByScope)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
@@ -1337,7 +1337,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(s.T(), bbName, containerClient, &testCPKByValue, nil)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)
@@ -1386,7 +1386,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	defer deleteContainer(s.T(), containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(s.T(), bbName, containerClient, nil, &testCPKByScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)

@@ -429,7 +429,7 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -459,7 +459,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -489,7 +489,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -517,7 +517,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -563,7 +563,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 		},
 	})
 	_assert.NoError(err)
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
@@ -604,7 +604,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
@@ -644,7 +644,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.NoError(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
@@ -680,7 +680,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
 	_ = err
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
@@ -697,7 +697,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -715,7 +715,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	})
 	_assert.NoError(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
@@ -732,7 +732,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -750,7 +750,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
 	_assert.Error(err)
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
@@ -767,7 +767,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -788,7 +788,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.NoError(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(s.T(), bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
@@ -805,7 +805,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	defer deleteContainer(s.T(), containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -822,13 +822,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 		},
 	})
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateBlobCommitted(t *testing.T, bbClient BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Len(resp.BlockList.CommittedBlocks, 1)
+	require.NoError(t, err)
+	require.Len(t, resp.BlockList.CommittedBlocks, 1)
 }
 
 func setupPutBlockListTest(t *testing.T, _context *testContext, testName string) (ContainerClient, BlockBlobClient, []string) {
@@ -887,7 +887,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
 	})
 	_assert.NoError(err)
 
-	validateBlobCommitted(_assert, bbClient)
+	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
@@ -909,7 +909,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 	})
 	_ = err
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
@@ -931,7 +931,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	_assert.NoError(err)
 
-	validateBlobCommitted(_assert, bbClient)
+	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
@@ -953,7 +953,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
@@ -972,7 +972,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
 	})
 	_assert.NoError(err)
 
-	validateBlobCommitted(_assert, bbClient)
+	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
@@ -991,7 +991,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
@@ -1011,7 +1011,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	_assert.NoError(err)
 
-	validateBlobCommitted(_assert, bbClient)
+	validateBlobCommitted(s.T(), bbClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
@@ -1029,7 +1029,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(s.T(), err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
@@ -1331,7 +1331,7 @@ func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
 
 	standardTier, rehydrateTier, rehydratePriority := AccessTierArchive, AccessTierCool, RehydratePriorityStandard
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+	bbClient := createNewBlockBlob(s.T(), bbName, containerClient)
 
 	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
 		RehydratePriority: &rehydratePriority,
@@ -1422,7 +1422,7 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 	defer deleteContainer(s.T(), containerClient)
 
 	sourceBlobName := generateBlobName(testName)
-	sourceBBClient := createNewBlockBlob(_assert, sourceBlobName, containerClient)
+	sourceBBClient := createNewBlockBlob(s.T(), sourceBlobName, containerClient)
 
 	blobTier, rehydratePriority := AccessTierArchive, RehydratePriorityHigh
 

@@ -23,9 +23,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -67,7 +69,7 @@ func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 	// mode should be test_framework.Playback.
 	// This will automatically record if no test recording is available and playback if it is.
 	recording, err := testframework.NewRecording(_testContext, mode)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
 	if err != nil {
@@ -262,18 +264,18 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
+func createNewContainer(t *testing.T, containerName string, serviceClient ServiceClient) ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }
 
 func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
@@ -282,7 +284,7 @@ func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, contai
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return bbClient
@@ -299,7 +301,7 @@ func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, cont
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return abClient
 }
@@ -313,7 +315,7 @@ func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
 	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pbClient
 }
@@ -326,7 +328,7 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 		CpkScopeInfo: cpkScopeInfo,
 	}
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*cResp.IsServerEncrypted, true)
 	if cpkInfo != nil {
@@ -346,7 +348,7 @@ func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, c
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	})
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	return
 }
@@ -432,7 +434,6 @@ const (
 	testAccountDefault   testAccountType = ""
 	testAccountSecondary testAccountType = "SECONDARY_"
 	testAccountPremium   testAccountType = "PREMIUM_"
-	//testAccountBlobStorage testAccountType = "BLOB_"
 )
 
 func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
@@ -488,9 +489,9 @@ func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceCl
 	err := testImplFunc(_assert, bsu)
 	// We cannot assume that the error indicative of slow update will necessarily be a StorageError. As in ListBlobs.
 	if err != nil && err.Error() == code {
-		time.Sleep(time.Second * 30)
+		recording.Sleep(time.Second * 30)
 		err = testImplFunc(_assert, bsu)
-		_assert.Nil(err)
+		_assert.NoError(err)
 	}
 }
 
@@ -498,19 +499,19 @@ func enableSoftDelete(_assert *assert.Assertions, serviceClient ServiceClient) {
 	days := int32(1)
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
 		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
-	_assert.Nil(err)
+	_assert.NoError(err)
 }
 
 func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
-	_assert.Nil(err)
+	_assert.NoError(err)
 }
 
 func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Len(data, 0)
 }
 
@@ -531,7 +532,7 @@ func blockIDIntToBase64(blockID int) string {
 
 // TODO: Figure out in which scenario, the parsing will fail.
 func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
-	_assert.NotNil(err)
+	_assert.Error(err)
 	var storageError *StorageError
 	// TOOD: this should really be require.Equal so that if it fails we don't try the next line which will panic
 	_assert.Equal(true, errors.As(err, &storageError))

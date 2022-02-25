@@ -1,0 +1,91 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/goccontainerdeleteifunmodifiedsincetrue?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 19:57:35 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 19:57:35 GMT",
+        "ETag": "\u00220x8D9F18694369A52\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 19:57:36 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "6d4819fc-c01e-0032-276f-2371aa000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/goccontainerdeleteifunmodifiedsincetrue?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "If-Unmodified-Since": "Wed, 16 Feb 2022 19:57:45 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 19:57:36 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 19:57:36 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "6d481a36-c01e-0032-5c6f-2371aa000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/goccontainerdeleteifunmodifiedsincetrue?comp=acl\u0026restype=container",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 19:57:36 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "225",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 16 Feb 2022 19:57:36 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-error-code": "ContainerNotFound",
+        "x-ms-request-id": "6d481aa8-c01e-0032-3c6f-2371aa000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EContainerNotFound\u003C/Code\u003E\u003CMessage\u003EThe specified container does not exist.\n",
+        "RequestId:6d481aa8-c01e-0032-3c6f-2371aa000000\n",
+        "Time:2022-02-16T19:57:36.7282139Z\u003C/Message\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {}
+}

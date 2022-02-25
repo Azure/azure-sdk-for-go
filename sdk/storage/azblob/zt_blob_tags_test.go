@@ -63,6 +63,7 @@ func TestSetBlobTags(t *testing.T) {
 }
 
 func TestSetBlobTagsWithVID(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

@@ -486,7 +486,7 @@ func enableSoftDelete(t *testing.T, serviceClient ServiceClient) {
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
 		DeleteRetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
-			Days: to.Int32Ptr(1),
+			Days:    to.Int32Ptr(1),
 		},
 	})
 	require.NoError(t, err)

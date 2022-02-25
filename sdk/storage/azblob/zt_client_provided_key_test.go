@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -596,6 +597,7 @@ func TestAppendBlockWithCPKScope(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -906,6 +908,7 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 }
 
 func TestPageBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1064,6 +1067,7 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 }
 
 func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1367,8 +1371,6 @@ func TestBlobSnapshotWithCPK(t *testing.T) {
 	// Get blob properties of snapshot without encryption key should fail the request.
 	_, err = snapshotURL.GetProperties(ctx, nil)
 	require.Error(t, err)
-
-	//_assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 }
 
 func TestBlobSnapshotWithCPKScope(t *testing.T) {

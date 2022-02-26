@@ -469,7 +469,7 @@ func flushPrefetchedMessages(ctx context.Context, receiver internal.AMQPReceiver
 		am, err := receiver.Prefetched(ctx)
 
 		// we've removed any code of consequence from Prefetched.
-		if am == nil || err != nil || internal.IsCancelError(err) {
+		if am == nil || err != nil {
 			return
 		}
 

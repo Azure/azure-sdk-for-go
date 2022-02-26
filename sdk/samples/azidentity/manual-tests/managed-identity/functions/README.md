@@ -63,7 +63,7 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN -l westus2 --s
 
 ## Functions App: system-assigned identity
 ```sh
-az functionapp create -g $RESOURCE_GROUP -n $FUNCTION_APP_SYSTEM_ASSIGNED -s $STORAGE_ACCOUNT_NAME -p $APP_SERVICE_PLAN --runtime python
+az functionapp create -g $RESOURCE_GROUP -n $FUNCTION_APP_SYSTEM_ASSIGNED -s $STORAGE_ACCOUNT_NAME -p $APP_SERVICE_PLAN --runtime custom
 ```
 
 Set app configuration:
@@ -99,7 +99,7 @@ az keyvault set-policy -n $KEY_VAULT_NAME \
 
 ## Functions App: user-assigned identity
 ```sh
-az functionapp create -g $RESOURCE_GROUP -n $FUNCTION_APP_USER_ASSIGNED -s $STORAGE_ACCOUNT_NAME -p $APP_SERVICE_PLAN --runtime python
+az functionapp create -g $RESOURCE_GROUP -n $FUNCTION_APP_USER_ASSIGNED -s $STORAGE_ACCOUNT_NAME -p $APP_SERVICE_PLAN --runtime custom
 ```
 
 Set app configuration:

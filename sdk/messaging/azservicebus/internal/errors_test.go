@@ -169,7 +169,6 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")},
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:timeout")},
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
-		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
 		mgmtError{Resp: &RPCResponse{Code: 408}},
@@ -210,6 +209,7 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		amqp.ErrLinkClosed,
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
+		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		// we lost the session lock, attempt link recovery
 		mgmtError{Resp: &RPCResponse{Code: 410}},
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being

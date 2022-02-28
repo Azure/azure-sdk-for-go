@@ -116,7 +116,7 @@ type SetSecretOptions struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The secret management attributes.
-	SecretAttributes *Properties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -161,8 +161,8 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 		options = &SetSecretOptions{}
 	}
 	var secretAttribs internal.SecretAttributes
-	if options.SecretAttributes != nil {
-		secretAttribs = *options.SecretAttributes.toGenerated()
+	if options.Properties != nil {
+		secretAttribs = *options.Properties.toGenerated()
 	}
 	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, secretName, internal.SecretSetParameters{
 		Value:            &value,
@@ -375,7 +375,7 @@ type UpdateSecretPropertiesOptions struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The secret management attributes.
-	SecretAttributes *Properties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -388,7 +388,7 @@ func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpd
 func (u UpdateSecretPropertiesOptions) toGeneratedProperties() internal.SecretUpdateParameters {
 	return internal.SecretUpdateParameters{
 		ContentType:      u.ContentType,
-		SecretAttributes: u.SecretAttributes.toGenerated(),
+		SecretAttributes: u.Properties.toGenerated(),
 		Tags:             convertToGeneratedMap(u.Tags),
 	}
 }

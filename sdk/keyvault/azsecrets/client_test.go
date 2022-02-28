@@ -104,7 +104,7 @@ func TestSecretTags(t *testing.T) {
 	require.Equal(t, "Val1", getResp.Tags["Tag1"])
 
 	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
-		SecretAttributes: &Properties{
+		Properties: &Properties{
 			ExpiresOn: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
 		},
 	})
@@ -349,7 +349,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
-		SecretAttributes: &Properties{
+		Properties: &Properties{
 			Enabled:   to.BoolPtr(true),
 			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
 			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),

@@ -16,8 +16,7 @@ import (
 )
 
 // Optional parameters for the SetBodilessMatcher operation
-type MatcherOptions struct {
-}
+type MatcherOptions struct{}
 
 // SetBodilessMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
 // Pass in `nil` for `t` if you want the bodiless matcher to apply everywhere

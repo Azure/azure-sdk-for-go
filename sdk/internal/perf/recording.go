@@ -185,6 +185,7 @@ func (c *RecordingHTTPClient) start() error {
 	}
 
 	recID := resp.Header.Get(idHeader)
+	log.Printf("perf\t recording ID: %s\n", recID)
 	if recID == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()

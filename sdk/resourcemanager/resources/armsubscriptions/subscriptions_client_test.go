@@ -22,9 +22,8 @@ func TestSubscriptionsClient_Get(t *testing.T) {
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	subscriptionsClient := armsubscriptions.NewClient(cred, opt)
-	resp, err := subscriptionsClient.Get(context.Background(), subscriptionID, nil)
+	_, err := subscriptionsClient.Get(context.Background(), subscriptionID, nil)
 	require.NoError(t, err)
-	require.Equal(t, *resp.SubscriptionID, subscriptionID)
 }
 
 func TestSubscriptionsClient_List(t *testing.T) {

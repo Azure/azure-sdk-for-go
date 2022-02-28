@@ -92,17 +92,17 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
 
 	// Link recovery needed
 	amqp.ErrorDetachForced:          RecoveryKindLink, // "amqp:link:detach-forced"
-	amqp.ErrorTransferLimitExceeded: RecoveryKindLink,
+	amqp.ErrorTransferLimitExceeded: RecoveryKindLink, // "amqp:link:transfer-limit-exceeded"
 
 	// Connection recovery needed
 	amqp.ErrorConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
 	amqp.ErrorInternalError:    RecoveryKindConn, // "amqp:internal-error"
 
 	// No recovery possible - this operation is non retriable.
-	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal,
+	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal, // "amqp:link:message-size-exceeded"
 	amqp.ErrorUnauthorizedAccess:                                  RecoveryKindFatal, // creds are bad
-	amqp.ErrorNotFound:                                            RecoveryKindFatal,
-	amqp.ErrorNotAllowed:                                          RecoveryKindFatal,
+	amqp.ErrorNotFound:                                            RecoveryKindFatal, // "amqp:not-found"
+	amqp.ErrorNotAllowed:                                          RecoveryKindFatal, // "amqp:not-allowed"
 	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
 	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
 	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,

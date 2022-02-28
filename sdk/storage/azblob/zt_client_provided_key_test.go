@@ -166,7 +166,6 @@ func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
 	require.EqualValues(t, *getResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-//nolint
 func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 	stop := start(t)
 	defer stop()

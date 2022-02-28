@@ -2999,7 +2999,6 @@ func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-//nolint
 func testBlobServiceClientDeleteImpl(_ *testing.T, _ ServiceClient) error {
 	//containerClient := createNewContainer(t, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(t, containerClient)
@@ -3253,7 +3252,6 @@ func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
 	require.EqualValues(t, buf, []byte(blockBlobDefaultData))
 }
 
-//nolint
 func InjectErrorInRetryReaderOptions(err error) *RetryReaderOptions {
 	return &RetryReaderOptions{
 		MaxRetryRequests:       1,

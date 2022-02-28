@@ -206,7 +206,6 @@ func TestAppendBlockFromURL(t *testing.T) {
 	require.NoError(t, err)
 }
 
-//nolint
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	t.Skip("md5 fails authentication")
 	stop := start(t)

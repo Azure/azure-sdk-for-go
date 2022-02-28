@@ -24,12 +24,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// Vars for
-const DefaultEndpointSuffix = "core.windows.net/"
-const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
-const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
-const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
-
 const (
 	containerPrefix             = "goc"
 	blobPrefix                  = "gotestblob"
@@ -58,14 +52,12 @@ var basicHeaders = BlobHTTPHeaders{
 
 var basicMetadata = map[string]string{"Foo": "bar"}
 
-//nolint
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
 }
 
-//nolint
 var specialCharBlobTagsMap = map[string]string{
 	"+-./:=_ ":        "firsttag",
 	"tag2":            "+-./:=_",
@@ -253,7 +245,6 @@ const (
 	testAccountPremium   testAccountType = "PREMIUM_"
 )
 
-//nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)

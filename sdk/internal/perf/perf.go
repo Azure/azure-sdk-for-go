@@ -12,6 +12,24 @@ import (
 	"runtime"
 )
 
+func init() {
+	flag.IntVar(&duration, "d", 10, "Duration of test in seconds.")
+	flag.IntVar(&duration, "duration", 10, "Duration of test in seconds.")
+
+	flag.StringVar(&testProxyURLs, "test-proxies", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
+	flag.StringVar(&testProxyURLs, "x", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
+
+	flag.IntVar(&warmUpDuration, "warmup", 5, "Duration of warmup in seconds.")
+	flag.IntVar(&warmUpDuration, "w", 5, "Duration of warmup in seconds.")
+
+	flag.IntVar(&parallelInstances, "parallel", 1, "Degree of parallelism to run with.")
+	flag.IntVar(&parallelInstances, "p", 1, "Degree of parallelism to run with.")
+
+	flag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
+
+	flag.BoolVar(&debug, "debug", false, "Print debugging information")
+}
+
 // GlobalPerfTest methods execute once per process
 type GlobalPerfTest interface {
 	// NewPerfTest creates an instance of a PerfTest for each goroutine.
@@ -59,29 +77,6 @@ type PerfMethods struct {
 
 // Run runs an individual test, registers, and parses command line flags
 func Run(tests map[string]PerfMethods) {
-	// Start with adding all of our arguments
-	flag.IntVar(&duration, "d", 10, "Duration of test in seconds.")
-	flag.IntVar(&duration, "duration", 10, "Duration of test in seconds.")
-
-	flag.StringVar(&testProxyURLs, "test-proxies", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
-	flag.StringVar(&testProxyURLs, "x", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
-
-	flag.IntVar(&warmUpDuration, "warmup", 5, "Duration of warmup in seconds.")
-	flag.IntVar(&warmUpDuration, "w", 5, "Duration of warmup in seconds.")
-
-	flag.IntVar(&parallelInstances, "parallel", 1, "Degree of parallelism to run with.")
-	flag.IntVar(&parallelInstances, "p", 1, "Degree of parallelism to run with.")
-
-	flag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
-
-	flag.BoolVar(&debug, "debug", false, "Print debugging information")
-
-	if numProcesses > 0 {
-		val := runtime.GOMAXPROCS(numProcesses)
-		if debug {
-			fmt.Printf("Changed GOMAXPROCS from %d to %d\n", val, numProcesses)
-		}
-	}
 
 	if len(os.Args) < 2 {
 		// Error out and show available perf tests
@@ -113,12 +108,14 @@ func Run(tests map[string]PerfMethods) {
 	// We strip off the first argument because that is used in determining the test
 	os.Args = os.Args[1:]
 
-	fmt.Println(flag.Args(), os.Args[1:])
-	fmt.Println("Parsing: ", os.Args[1:])
 	flag.Parse()
-	fmt.Printf("Duration: %d\n", duration)
-	fmt.Printf("d: %d\n", duration)
-	fmt.Println("tail:", flag.Args())
+
+	if numProcesses > 0 {
+		val := runtime.GOMAXPROCS(numProcesses)
+		if debug {
+			fmt.Printf("Changed GOMAXPROCS from %d to %d\n", val, numProcesses)
+		}
+	}
 
 	fmt.Printf("\tRunning %s\n", testNameToRun)
 

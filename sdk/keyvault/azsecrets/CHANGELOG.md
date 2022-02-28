@@ -10,6 +10,7 @@
 * Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
 * Changes `Item` to `SecretItem`
 * Pollers and pagers are structs instead of interfaces
+* Prefixed all `DeletionRecoveryLevel` constants with "DeletionRecoveryLevel"
 
 ## 0.5.0 (2022-02-08)
 

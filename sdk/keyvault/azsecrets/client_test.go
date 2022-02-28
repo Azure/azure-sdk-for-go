@@ -482,25 +482,25 @@ func TestTimeout(t *testing.T) {
 }
 
 func TestConstants(t *testing.T) {
-	d := CustomizedRecoverable
+	d := DeletionRecoveryLevelCustomizedRecoverable
 	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
 
-	d1 := CustomizedRecoverableProtectedSubscription
+	d1 := DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
 	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
 
-	d2 := CustomizedRecoverablePurgeable
+	d2 := DeletionRecoveryLevelCustomizedRecoverablePurgeable
 	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
 
-	d3 := Purgeable
+	d3 := DeletionRecoveryLevelPurgeable
 	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
 
-	d4 := Recoverable
+	d4 := DeletionRecoveryLevelRecoverable
 	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
 
-	d5 := RecoverableProtectedSubscription
+	d5 := DeletionRecoveryLevelRecoverableProtectedSubscription
 	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
 
-	d6 := RecoverablePurgeable
+	d6 := DeletionRecoveryLevelRecoverablePurgeable
 	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
 }
 

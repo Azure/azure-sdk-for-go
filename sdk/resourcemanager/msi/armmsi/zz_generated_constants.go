@@ -10,5 +10,5 @@ package armmsi
 
 const (
 	moduleName    = "armmsi"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.3.1"
 )

@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 const headerAuthorization = "Authorization"
@@ -57,6 +58,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
+		if resp.StatusCode > 399 && resp.StatusCode != http.StatusUnauthorized {
+			// the request failed for some other reason, don't try any further
+			return resp, nil
+		}
 		err = k.findScopeAndTenant(resp)
 		if err != nil {
 			return nil, err
@@ -128,11 +133,29 @@ func parseTenant(url string) *string {
 	return &tenant
 }
 
+type challengePolicyError struct {
+	err error
+}
+
+func (c *challengePolicyError) Error() string {
+	return c.err.Error()
+}
+
+func (*challengePolicyError) NonRetriable() {
+	// marker method
+}
+
+func (c *challengePolicyError) Unwrap() error {
+	return c.err
+}
+
+var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
+
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
-		return errors.New("response has no WWW-Authenticate header for challenge authentication")
+		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
 	}
 
 	// Strip down to auth and resource
@@ -161,7 +184,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 		}
 		k.scope = &resource
 	} else {
-		return errors.New("could not find a valid resource in the WWW-Authenticate header")
+		return &challengePolicyError{err: errors.New("could not find a valid resource in the WWW-Authenticate header")}
 	}
 
 	return nil
@@ -170,7 +193,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
-		return nil, err
+		return nil, &challengePolicyError{err: err}
 	}
 
 	req.Raw().Header = orig.Raw().Header
@@ -183,7 +206,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	copied.Raw().Header.Set("Content-Length", "0")
 	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
 	if err != nil {
-		return nil, err
+		return nil, &challengePolicyError{err: err}
 	}
 	copied.Raw().Header.Del("Content-Type")
 

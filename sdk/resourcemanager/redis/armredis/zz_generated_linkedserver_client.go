@@ -11,7 +11,6 @@ package armredis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // LinkedServerClient contains the methods for the LinkedServer group.
 // Don't use this type directly, use NewLinkedServerClient() instead.
 type LinkedServerClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLinkedServerClient creates a new instance of LinkedServerClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &LinkedServerClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LinkedServerClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreate - Adds a linked server to the Redis cache (requires Premium SKU).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters RedisLinkedServerCreateParameters, options *LinkedServerBeginCreateOptions) (LinkedServerCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the Redis cache.
+// linkedServerName - The name of the linked server that is being added to the Redis cache.
+// parameters - Parameters supplied to the Create Linked server operation.
+// options - LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate
+// method.
+func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (LinkedServerClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 	if err != nil {
-		return LinkedServerCreatePollerResponse{}, err
+		return LinkedServerClientCreatePollerResponse{}, err
 	}
-	result := LinkedServerCreatePollerResponse{
+	result := LinkedServerClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LinkedServerClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("LinkedServerClient.Create", "", resp, client.pl)
 	if err != nil {
-		return LinkedServerCreatePollerResponse{}, err
+		return LinkedServerClientCreatePollerResponse{}, err
 	}
-	result.Poller = &LinkedServerCreatePoller{
+	result.Poller = &LinkedServerClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Adds a linked server to the Redis cache (requires Premium SKU).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters RedisLinkedServerCreateParameters, options *LinkedServerBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters RedisLinkedServerCreateParameters, options *LinkedServerBeginCreateOptions) (*policy.Request, error) {
+func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,49 +112,40 @@ func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *LinkedServerClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the linked server from a redis cache (requires Premium SKU).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedServerClient) Delete(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerDeleteOptions) (LinkedServerDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the redis cache.
+// linkedServerName - The name of the linked server that is being added to the Redis cache.
+// options - LinkedServerClientDeleteOptions contains the optional parameters for the LinkedServerClient.Delete method.
+func (client *LinkedServerClient) Delete(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientDeleteOptions) (LinkedServerClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, linkedServerName, options)
 	if err != nil {
-		return LinkedServerDeleteResponse{}, err
+		return LinkedServerClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServerDeleteResponse{}, err
+		return LinkedServerClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return LinkedServerDeleteResponse{}, client.deleteHandleError(resp)
+		return LinkedServerClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LinkedServerDeleteResponse{RawResponse: resp}, nil
+	return LinkedServerClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerDeleteOptions) (*policy.Request, error) {
+func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -158,49 +163,40 @@ func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LinkedServerClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedServerClient) Get(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerGetOptions) (LinkedServerGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the redis cache.
+// linkedServerName - The name of the linked server.
+// options - LinkedServerClientGetOptions contains the optional parameters for the LinkedServerClient.Get method.
+func (client *LinkedServerClient) Get(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientGetOptions) (LinkedServerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, linkedServerName, options)
 	if err != nil {
-		return LinkedServerGetResponse{}, err
+		return LinkedServerClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServerGetResponse{}, err
+		return LinkedServerClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedServerGetResponse{}, client.getHandleError(resp)
+		return LinkedServerClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerGetOptions) (*policy.Request, error) {
+func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,55 +214,45 @@ func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (LinkedServerGetResponse, error) {
-	result := LinkedServerGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RedisLinkedServerWithProperties); err != nil {
-		return LinkedServerGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (LinkedServerClientGetResponse, error) {
+	result := LinkedServerClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServerWithProperties); err != nil {
+		return LinkedServerClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LinkedServerClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedServerClient) List(resourceGroupName string, name string, options *LinkedServerListOptions) *LinkedServerListPager {
-	return &LinkedServerListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the redis cache.
+// options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
+func (client *LinkedServerClient) List(resourceGroupName string, name string, options *LinkedServerClientListOptions) *LinkedServerClientListPager {
+	return &LinkedServerClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp LinkedServerListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RedisLinkedServerWithPropertiesList.NextLink)
+		advancer: func(ctx context.Context, resp LinkedServerClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.LinkedServerWithPropertiesList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LinkedServerListOptions) (*policy.Request, error) {
+func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LinkedServerClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -280,35 +266,22 @@ func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LinkedServerClient) listHandleResponse(resp *http.Response) (LinkedServerListResponse, error) {
-	result := LinkedServerListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RedisLinkedServerWithPropertiesList); err != nil {
-		return LinkedServerListResponse{}, runtime.NewResponseError(err, resp)
+func (client *LinkedServerClient) listHandleResponse(resp *http.Response) (LinkedServerClientListResponse, error) {
+	result := LinkedServerClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServerWithPropertiesList); err != nil {
+		return LinkedServerClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LinkedServerClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

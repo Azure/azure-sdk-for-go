@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-02-01/examples/RenewDomain.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/RenewDomain.json
 func ExampleDomainsClient_Renew() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,4 +31,22 @@ func ExampleDomainsClient_Renew() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/TransferOutDomain.json
+func ExampleDomainsClient_TransferOut() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armappservice.NewDomainsClient("<subscription-id>", cred, nil)
+	res, err := client.TransferOut(ctx,
+		"<resource-group-name>",
+		"<domain-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.DomainsClientTransferOutResult)
 }

@@ -58,7 +58,6 @@ func (tp *TokenProvider) GetToken(uri string) (*auth.Token, error) {
 // GetToken returns a token (that is compatible as an auth.TokenProvider) and
 // the calculated time when you should renew your token.
 func (tp *TokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenProvider, time.Time, error) {
-
 	token, renewAt, err := tp.getTokenImpl(uri)
 
 	if err != nil {

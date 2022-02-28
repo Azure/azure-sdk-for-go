@@ -10,7 +10,7 @@ package armoperationalinsights
 
 const (
 	moduleName    = "armoperationalinsights"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.3.1"
 )
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional

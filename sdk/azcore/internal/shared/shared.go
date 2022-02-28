@@ -7,7 +7,6 @@
 package shared
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -47,6 +46,9 @@ type CtxWithHTTPHeaderKey struct{}
 // CtxWithRetryOptionsKey is used as a context key for adding/retrieving RetryOptions.
 type CtxWithRetryOptionsKey struct{}
 
+// CtxIncludeResponseKey is used as a context key for retrieving the raw response.
+type CtxIncludeResponseKey struct{}
+
 type nopCloser struct {
 	io.ReadSeeker
 }
@@ -76,16 +78,13 @@ var ErrNoBody = errors.New("the response did not contain a body")
 // GetJSON reads the response body into a raw JSON object.
 // It returns ErrNoBody if there was no content.
 func GetJSON(resp *http.Response) (map[string]interface{}, error) {
-	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
+	body, err := Payload(resp)
 	if err != nil {
 		return nil, err
 	}
 	if len(body) == 0 {
 		return nil, ErrNoBody
 	}
-	// put the body back so it's available to others
-	resp.Body = ioutil.NopCloser(bytes.NewReader(body))
 	// unmarshall the body to get the value
 	var jsonBody map[string]interface{}
 	if err = json.Unmarshal(body, &jsonBody); err != nil {

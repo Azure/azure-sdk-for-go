@@ -7,15 +7,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
 	claimNegotiated int
 	recovered       uint64
 	clientRevisions []uint64
-	MgmtClient      MgmtClient
-	RPCLink         *rpc.Link
+	RPCLink         RPCLink
 	Session         AMQPSessionCloser
 	AMQPLinks       *FakeAMQPLinks
 }
@@ -30,21 +30,16 @@ type FakeAMQPSession struct {
 	closed int
 }
 
-type fakeMgmtClient struct {
-	MgmtClient
-	closed int
-}
-
 type FakeAMQPLinks struct {
 	AMQPLinks
 
 	Closed int
 
 	// values to be returned for each `Get` call
-	Revision uint64
+	Revision LinkID
 	Receiver AMQPReceiver
 	Sender   AMQPSender
-	Mgmt     MgmtClient
+	RPC      RPCLink
 	Err      error
 
 	permanently bool
@@ -52,13 +47,50 @@ type FakeAMQPLinks struct {
 
 type FakeAMQPReceiver struct {
 	AMQPReceiver
-	Closed int
-	Drain  int
+	Closed           int
+	Drain            int
+	RequestedCredits uint32
+
+	ReceiveResults chan struct {
+		M *amqp.Message
+		E error
+	}
+}
+
+func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
+	r.RequestedCredits += credit
+	return nil
 }
 
 func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 	r.Drain++
-	return nil
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
+}
+
+func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
+	select {
+	case res := <-r.ReceiveResults:
+		return res.M, res.E
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
+	select {
+	case res := <-r.ReceiveResults:
+		return res.M, res.E
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+		return nil, nil
+	}
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -66,8 +98,28 @@ func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
-	return l.Sender, l.Receiver, l.Mgmt, l.Revision, l.Err
+func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+		return &LinksWithID{
+			Sender:   l.Sender,
+			Receiver: l.Receiver,
+			RPC:      l.RPC,
+			ID:       l.Revision,
+		}, l.Err
+	}
+}
+
+func (l *FakeAMQPLinks) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
+	lwr, err := l.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return fn(ctx, lwr, &utils.RetryFnArgs{})
 }
 
 func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
@@ -93,11 +145,6 @@ func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	return nil
 }
 
-func (m *fakeMgmtClient) Close(ctx context.Context) error {
-	m.closed++
-	return nil
-}
-
 func (ns *FakeNS) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
 	ch := make(chan struct{})
 	close(ch)
@@ -117,26 +164,20 @@ func (ns *FakeNS) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64
 	return ns.Session, ns.recovered + 100, nil
 }
 
-func (ns *FakeNS) NewMgmtClient(ctx context.Context, links AMQPLinks) (MgmtClient, error) {
-	return ns.MgmtClient, nil
-}
-
-func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error) {
+func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (RPCLink, error) {
 	return ns.RPCLink, nil
 }
 
-func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) error {
+func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, error) {
 	ns.clientRevisions = append(ns.clientRevisions, clientRevision)
 	ns.recovered++
+	return true, nil
+}
+
+func (ns *FakeNS) CloseIfNeeded(ctx context.Context, clientRevision uint64) error {
 	return nil
 }
 
 func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
 	return ns.AMQPLinks
-}
-
-type createLinkResponse struct {
-	sender   AMQPSenderCloser
-	receiver AMQPReceiverCloser
-	err      error
 }

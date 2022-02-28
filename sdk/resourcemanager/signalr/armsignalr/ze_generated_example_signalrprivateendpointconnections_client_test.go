@@ -20,34 +20,38 @@ import (
 )
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRPrivateEndpointConnections_List.json
-func ExampleSignalRPrivateEndpointConnectionsClient_List() {
+func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRPrivateEndpointConnections_Get.json
-func ExampleSignalRPrivateEndpointConnectionsClient_Get() {
+func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
@@ -56,17 +60,17 @@ func ExampleSignalRPrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRPrivateEndpointConnections_Update.json
-func ExampleSignalRPrivateEndpointConnectionsClient_Update() {
+func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
@@ -78,7 +82,7 @@ func ExampleSignalRPrivateEndpointConnectionsClient_Update() {
 				},
 				PrivateLinkServiceConnectionState: &armsignalr.PrivateLinkServiceConnectionState{
 					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armsignalr.PrivateLinkServiceConnectionStatusApproved.ToPtr(),
+					Status:          armsignalr.PrivateLinkServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -86,17 +90,17 @@ func ExampleSignalRPrivateEndpointConnectionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRPrivateEndpointConnections_Delete.json
-func ExampleSignalRPrivateEndpointConnectionsClient_BeginDelete() {
+func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",

@@ -14,6 +14,8 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+const credNameDeviceCode = "DeviceCodeCredential"
+
 // DeviceCodeCredentialOptions contains optional parameters for DeviceCodeCredential.
 type DeviceCodeCredentialOptions struct {
 	azcore.ClientOptions
@@ -71,7 +73,7 @@ type DeviceCodeCredential struct {
 }
 
 // NewDeviceCodeCredential creates a DeviceCodeCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
 	cp := DeviceCodeCredentialOptions{}
 	if options != nil {
@@ -106,8 +108,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	err = c.userPrompt(ctx, DeviceCodeMessage{
 		UserCode:        dc.Result.UserCode,
@@ -119,8 +120,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	ar, err = dc.AuthenticationResult(ctx)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

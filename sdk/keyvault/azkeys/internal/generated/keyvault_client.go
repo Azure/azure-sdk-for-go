@@ -11,12 +11,13 @@ package generated
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
@@ -311,62 +312,6 @@ func (client *KeyVaultClient) encryptHandleResponse(resp *http.Response) (KeyVau
 	result := KeyVaultClientEncryptResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientEncryptResponse{}, err
-	}
-	return result, nil
-}
-
-// Export - The export key operation is applicable to all key types. The target key must be marked exportable. This operation
-// requires the keys/export permission.
-// If the operation fails it returns an *azcore.ResponseError type.
-// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
-// keyName - The name of the key to get.
-// keyVersion - Adding the version parameter retrieves a specific version of a key.
-// parameters - The parameters for the key export operation.
-// options - KeyVaultClientExportOptions contains the optional parameters for the KeyVaultClient.Export method.
-func (client *KeyVaultClient) Export(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyExportParameters, options *KeyVaultClientExportOptions) (KeyVaultClientExportResponse, error) {
-	req, err := client.exportCreateRequest(ctx, vaultBaseURL, keyName, keyVersion, parameters, options)
-	if err != nil {
-		return KeyVaultClientExportResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return KeyVaultClientExportResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientExportResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.exportHandleResponse(resp)
-}
-
-// exportCreateRequest creates the Export request.
-func (client *KeyVaultClient) exportCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyExportParameters, options *KeyVaultClientExportOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
-	urlPath := "/keys/{key-name}/{key-version}/export"
-	if keyName == "" {
-		return nil, errors.New("parameter keyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// exportHandleResponse handles the Export response.
-func (client *KeyVaultClient) exportHandleResponse(resp *http.Response) (KeyVaultClientExportResponse, error) {
-	result := KeyVaultClientExportResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
-		return KeyVaultClientExportResponse{}, err
 	}
 	return result, nil
 }

@@ -30,12 +30,16 @@ func ExampleContainersClient_ListByStorageAccount() {
 		"<storage-account-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Container.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -57,7 +61,7 @@ func ExampleContainersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Container.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainersClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ContainerPut.json
@@ -75,7 +79,7 @@ func ExampleContainersClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		armdataboxedge.Container{
 			Properties: &armdataboxedge.ContainerProperties{
-				DataFormat: armdataboxedge.AzureContainerDataFormatBlockBlob.ToPtr(),
+				DataFormat: armdataboxedge.AzureContainerDataFormat("BlockBlob").ToPtr(),
 			},
 		},
 		nil)
@@ -86,7 +90,7 @@ func ExampleContainersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Container.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ContainerDelete.json

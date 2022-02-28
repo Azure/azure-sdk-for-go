@@ -17,14 +17,14 @@ import (
 )
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listAllGuestConfigurationAssignmentReports.json
-func ExampleGuestConfigurationAssignmentReportsClient_List() {
+func ExampleAssignmentReportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentReportsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armguestconfiguration.NewAssignmentReportsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
 		"<vm-name>",
@@ -32,16 +32,17 @@ func ExampleGuestConfigurationAssignmentReportsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AssignmentReportsClientListResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationAssignmentReportById.json
-func ExampleGuestConfigurationAssignmentReportsClient_Get() {
+func ExampleAssignmentReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentReportsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewAssignmentReportsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -51,5 +52,5 @@ func ExampleGuestConfigurationAssignmentReportsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignmentReport.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentReportsClientGetResult)
 }

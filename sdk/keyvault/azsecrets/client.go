@@ -439,14 +439,10 @@ type Properties struct {
 
 // convert the publicly exposed version to the generated version
 func (s Properties) toGenerated() internal.SecretUpdateParameters {
-	var secAttribs *internal.SecretAttributes
-	if s.SecretAttributes != nil {
-		secAttribs = s.SecretAttributes.toGenerated()
-	}
 	return internal.SecretUpdateParameters{
 		ContentType:      s.ContentType,
 		Tags:             createPtrMap(s.Tags),
-		SecretAttributes: secAttribs,
+		SecretAttributes: s.SecretAttributes.toGenerated(),
 	}
 }
 

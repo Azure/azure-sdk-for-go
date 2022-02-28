@@ -10,7 +10,7 @@ package armservicefabricmesh
 
 const (
 	moduleName    = "armservicefabricmesh"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ApplicationScopedVolumeKind - Specifies the application-scoped volume kind.

@@ -18,29 +18,25 @@ import (
 )
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/createOrUpdateGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_CreateOrUpdate() {
+func ExampleAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<guest-configuration-assignment-name>",
 		"<resource-group-name>",
 		"<vm-name>",
-		armguestconfiguration.GuestConfigurationAssignment{
-			ProxyResource: armguestconfiguration.ProxyResource{
-				Resource: armguestconfiguration.Resource{
-					Name:     to.StringPtr("<name>"),
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Properties: &armguestconfiguration.GuestConfigurationAssignmentProperties{
+		armguestconfiguration.Assignment{
+			Name:     to.StringPtr("<name>"),
+			Location: to.StringPtr("<location>"),
+			Properties: &armguestconfiguration.AssignmentProperties{
 				Context: to.StringPtr("<context>"),
-				GuestConfiguration: &armguestconfiguration.GuestConfigurationNavigation{
+				GuestConfiguration: &armguestconfiguration.Navigation{
 					Name:           to.StringPtr("<name>"),
-					AssignmentType: armguestconfiguration.AssignmentTypeApplyAndAutoCorrect.ToPtr(),
+					AssignmentType: armguestconfiguration.AssignmentType("ApplyAndAutoCorrect").ToPtr(),
 					ConfigurationParameter: []*armguestconfiguration.ConfigurationParameter{
 						{
 							Name:  to.StringPtr("<name>"),
@@ -56,17 +52,17 @@ func ExampleGuestConfigurationAssignmentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_Get() {
+func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -75,17 +71,17 @@ func ExampleGuestConfigurationAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/deleteGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_Delete() {
+func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -97,49 +93,52 @@ func ExampleGuestConfigurationAssignmentsClient_Delete() {
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listSubGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_SubscriptionList() {
+func ExampleAssignmentsClient_SubscriptionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.SubscriptionList(ctx,
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	res, err := client.SubscriptionList(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AssignmentsClientSubscriptionListResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listRGGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_RGList() {
+func ExampleAssignmentsClient_RGList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.RGList(ctx,
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	res, err := client.RGList(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AssignmentsClientRGListResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_List() {
+func ExampleAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<vm-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AssignmentsClientListResult)
 }

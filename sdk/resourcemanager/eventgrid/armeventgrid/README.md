@@ -50,6 +50,13 @@ options = arm.ClientOptions{
 client := armeventgrid.NewPartnerNamespacesClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Domain](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain)
+- [Domain Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain_topic)
+- [System Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/systemtopic)
+- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/topic)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

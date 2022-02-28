@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // LivePipelineOperationStatusesClient contains the methods for the LivePipelineOperationStatuses group.
 // Don't use this type directly, use NewLivePipelineOperationStatusesClient() instead.
 type LivePipelineOperationStatusesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLivePipelineOperationStatusesClient creates a new instance of LivePipelineOperationStatusesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLivePipelineOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LivePipelineOperationStatusesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &LivePipelineOperationStatusesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LivePipelineOperationStatusesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Get - Get the operation status of a live pipeline.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelineOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesGetOptions) (LivePipelineOperationStatusesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// operationID - The operation ID.
+// options - LivePipelineOperationStatusesClientGetOptions contains the optional parameters for the LivePipelineOperationStatusesClient.Get
+// method.
+func (client *LivePipelineOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesClientGetOptions) (LivePipelineOperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, operationID, options)
 	if err != nil {
-		return LivePipelineOperationStatusesGetResponse{}, err
+		return LivePipelineOperationStatusesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelineOperationStatusesGetResponse{}, err
+		return LivePipelineOperationStatusesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LivePipelineOperationStatusesGetResponse{}, client.getHandleError(resp)
+		return LivePipelineOperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesGetOptions) (*policy.Request, error) {
+func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}/operationStatuses/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +107,10 @@ func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *LivePipelineOperationStatusesClient) getHandleResponse(resp *http.Response) (LivePipelineOperationStatusesGetResponse, error) {
-	result := LivePipelineOperationStatusesGetResponse{RawResponse: resp}
+func (client *LivePipelineOperationStatusesClient) getHandleResponse(resp *http.Response) (LivePipelineOperationStatusesClientGetResponse, error) {
+	result := LivePipelineOperationStatusesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipelineOperationStatus); err != nil {
-		return LivePipelineOperationStatusesGetResponse{}, runtime.NewResponseError(err, resp)
+		return LivePipelineOperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *LivePipelineOperationStatusesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

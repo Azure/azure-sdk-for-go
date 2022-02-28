@@ -20,14 +20,14 @@ import (
 )
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_CheckNameAvailability.json
-func ExampleWebPubSubClient_CheckNameAvailability() {
+func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armwebpubsub.NameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
@@ -37,55 +37,64 @@ func ExampleWebPubSubClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_ListBySubscription.json
-func ExampleWebPubSubClient_ListBySubscription() {
+func ExampleClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebPubSubResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_ListByResourceGroup.json
-func ExampleWebPubSubClient_ListByResourceGroup() {
+func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebPubSubResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_Get.json
-func ExampleWebPubSubClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -93,31 +102,29 @@ func ExampleWebPubSubClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebPubSubResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_CreateOrUpdate.json
-func ExampleWebPubSubClient_BeginCreateOrUpdate() {
+func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armwebpubsub.WebPubSubResource{
-			TrackedResource: armwebpubsub.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("value1"),
-				},
+		armwebpubsub.ResourceInfo{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("value1"),
 			},
 			Identity: &armwebpubsub.ManagedIdentity{
-				Type: armwebpubsub.ManagedIdentityTypeSystemAssigned.ToPtr(),
+				Type: armwebpubsub.ManagedIdentityType("SystemAssigned").ToPtr(),
 			},
-			Properties: &armwebpubsub.WebPubSubProperties{
+			Properties: &armwebpubsub.Properties{
 				DisableAADAuth:   to.BoolPtr(false),
 				DisableLocalAuth: to.BoolPtr(false),
 				LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
@@ -128,30 +135,28 @@ func ExampleWebPubSubClient_BeginCreateOrUpdate() {
 						}},
 					Enabled: to.StringPtr("<enabled>"),
 				},
-				NetworkACLs: &armwebpubsub.WebPubSubNetworkACLs{
-					DefaultAction: armwebpubsub.ACLActionDeny.ToPtr(),
+				NetworkACLs: &armwebpubsub.NetworkACLs{
+					DefaultAction: armwebpubsub.ACLAction("Deny").ToPtr(),
 					PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 						{
-							NetworkACL: armwebpubsub.NetworkACL{
-								Allow: []*armwebpubsub.WebPubSubRequestType{
-									armwebpubsub.WebPubSubRequestTypeServerConnection.ToPtr()},
-							},
+							Allow: []*armwebpubsub.WebPubSubRequestType{
+								armwebpubsub.WebPubSubRequestType("ServerConnection").ToPtr()},
 							Name: to.StringPtr("<name>"),
 						}},
 					PublicNetwork: &armwebpubsub.NetworkACL{
 						Allow: []*armwebpubsub.WebPubSubRequestType{
-							armwebpubsub.WebPubSubRequestTypeClientConnection.ToPtr()},
+							armwebpubsub.WebPubSubRequestType("ClientConnection").ToPtr()},
 					},
 				},
 				PublicNetworkAccess: to.StringPtr("<public-network-access>"),
-				TLS: &armwebpubsub.WebPubSubTLSSettings{
+				TLS: &armwebpubsub.TLSSettings{
 					ClientCertEnabled: to.BoolPtr(false),
 				},
 			},
 			SKU: &armwebpubsub.ResourceSKU{
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(1),
-				Tier:     armwebpubsub.WebPubSubSKUTierStandard.ToPtr(),
+				Tier:     armwebpubsub.WebPubSubSKUTier("Standard").ToPtr(),
 			},
 		},
 		nil)
@@ -162,17 +167,17 @@ func ExampleWebPubSubClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebPubSubResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_Delete.json
-func ExampleWebPubSubClient_BeginDelete() {
+func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -187,27 +192,25 @@ func ExampleWebPubSubClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_Update.json
-func ExampleWebPubSubClient_BeginUpdate() {
+func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armwebpubsub.WebPubSubResource{
-			TrackedResource: armwebpubsub.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("value1"),
-				},
+		armwebpubsub.ResourceInfo{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("value1"),
 			},
 			Identity: &armwebpubsub.ManagedIdentity{
-				Type: armwebpubsub.ManagedIdentityTypeSystemAssigned.ToPtr(),
+				Type: armwebpubsub.ManagedIdentityType("SystemAssigned").ToPtr(),
 			},
-			Properties: &armwebpubsub.WebPubSubProperties{
+			Properties: &armwebpubsub.Properties{
 				DisableAADAuth:   to.BoolPtr(false),
 				DisableLocalAuth: to.BoolPtr(false),
 				LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
@@ -218,30 +221,28 @@ func ExampleWebPubSubClient_BeginUpdate() {
 						}},
 					Enabled: to.StringPtr("<enabled>"),
 				},
-				NetworkACLs: &armwebpubsub.WebPubSubNetworkACLs{
-					DefaultAction: armwebpubsub.ACLActionDeny.ToPtr(),
+				NetworkACLs: &armwebpubsub.NetworkACLs{
+					DefaultAction: armwebpubsub.ACLAction("Deny").ToPtr(),
 					PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 						{
-							NetworkACL: armwebpubsub.NetworkACL{
-								Allow: []*armwebpubsub.WebPubSubRequestType{
-									armwebpubsub.WebPubSubRequestTypeServerConnection.ToPtr()},
-							},
+							Allow: []*armwebpubsub.WebPubSubRequestType{
+								armwebpubsub.WebPubSubRequestType("ServerConnection").ToPtr()},
 							Name: to.StringPtr("<name>"),
 						}},
 					PublicNetwork: &armwebpubsub.NetworkACL{
 						Allow: []*armwebpubsub.WebPubSubRequestType{
-							armwebpubsub.WebPubSubRequestTypeClientConnection.ToPtr()},
+							armwebpubsub.WebPubSubRequestType("ClientConnection").ToPtr()},
 					},
 				},
 				PublicNetworkAccess: to.StringPtr("<public-network-access>"),
-				TLS: &armwebpubsub.WebPubSubTLSSettings{
+				TLS: &armwebpubsub.TLSSettings{
 					ClientCertEnabled: to.BoolPtr(false),
 				},
 			},
 			SKU: &armwebpubsub.ResourceSKU{
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(1),
-				Tier:     armwebpubsub.WebPubSubSKUTierStandard.ToPtr(),
+				Tier:     armwebpubsub.WebPubSubSKUTier("Standard").ToPtr(),
 			},
 		},
 		nil)
@@ -252,39 +253,40 @@ func ExampleWebPubSubClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebPubSubResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_ListKeys.json
-func ExampleWebPubSubClient_ListKeys() {
+func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientListKeysResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_RegenerateKey.json
-func ExampleWebPubSubClient_BeginRegenerateKey() {
+func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginRegenerateKey(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armwebpubsub.RegenerateKeyParameters{
-			KeyType: armwebpubsub.KeyTypePrimary.ToPtr(),
+			KeyType: armwebpubsub.KeyType("Primary").ToPtr(),
 		},
 		nil)
 	if err != nil {
@@ -297,13 +299,13 @@ func ExampleWebPubSubClient_BeginRegenerateKey() {
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_Restart.json
-func ExampleWebPubSubClient_BeginRestart() {
+func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginRestart(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -312,23 +314,6 @@ func ExampleWebPubSubClient_BeginRestart() {
 		log.Fatal(err)
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_ListSkus.json
-func ExampleWebPubSubClient_ListSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUs(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		nil)
 	if err != nil {
 		log.Fatal(err)
 	}

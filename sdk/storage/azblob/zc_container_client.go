@@ -187,9 +187,8 @@ func (c ContainerClient) ListBlobsFlat(listOptions *ContainerListBlobFlatSegment
 
 	// override the advancer
 	pager.advancer = func(ctx context.Context, response ContainerListBlobFlatSegmentResponse) (*policy.Request, error) {
-		return c.client.listBlobFlatSegmentCreateRequest(ctx, &ContainerListBlobFlatSegmentOptions{
-			Marker: response.NextMarker,
-		})
+		listOptions.Marker = response.NextMarker
+		return c.client.listBlobFlatSegmentCreateRequest(ctx, listOptions)
 	}
 
 	// TODO: Come Here
@@ -217,9 +216,8 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 
 	// override the advancer
 	pager.advancer = func(ctx context.Context, response ContainerListBlobHierarchySegmentResponse) (*policy.Request, error) {
-		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, &ContainerListBlobHierarchySegmentOptions{
-			Marker: response.NextMarker,
-		})
+		listOptions.Marker = response.NextMarker
+		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, listOptions)
 	}
 
 	// todo: come here
@@ -232,7 +230,7 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (c ContainerClient) GetSASToken(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(c.URL())
 
 	// Containers do not have snapshots, nor versions.

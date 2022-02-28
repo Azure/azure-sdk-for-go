@@ -3,12 +3,13 @@
 
 package azblob
 
-import "github.com/stretchr/testify/assert"
+import (
+	"testing"
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
-	_assert := assert.New(s.T())
+	"github.com/stretchr/testify/require"
+)
 
+func TestDeserializeORSPolicies(t *testing.T) {
 	headers := map[string]string{
 		"x-ms-or-111_111":   "Completed",
 		"x-ms-or-111_222":   "Failed",
@@ -19,34 +20,34 @@ func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 	}
 
 	result := deserializeORSPolicies(headers)
-	_assert.NotNil(result)
+	require.NotNil(t, result)
 	rules0, rules1 := *result[0].Rules, *result[1].Rules
-	_assert.Len(result, 2)
-	_assert.Len(rules0, 2)
-	_assert.Len(rules1, 2)
+	require.Len(t, result, 2)
+	require.Len(t, rules0, 2)
+	require.Len(t, rules1, 2)
 
 	if rules0[0].RuleId == "111" {
-		_assert.Equal(rules0[0].Status, "Completed")
+		require.Equal(t, rules0[0].Status, "Completed")
 	} else {
-		_assert.Equal(rules0[0].Status, "Failed")
+		require.Equal(t, rules0[0].Status, "Failed")
 	}
 
 	if rules0[1].RuleId == "222" {
-		_assert.Equal(rules0[1].Status, "Failed")
+		require.Equal(t, rules0[1].Status, "Failed")
 	} else {
-		_assert.Equal(rules0[1].Status, "Completed")
+		require.Equal(t, rules0[1].Status, "Completed")
 	}
 
 	if rules1[0].RuleId == "111" {
-		_assert.Equal(rules1[0].Status, "Completed")
+		require.Equal(t, rules1[0].Status, "Completed")
 	} else {
-		_assert.Equal(rules1[0].Status, "Failed")
+		require.Equal(t, rules1[0].Status, "Failed")
 	}
 
 	if rules1[1].RuleId == "222" {
-		_assert.Equal(rules1[1].Status, "Failed")
+		require.Equal(t, rules1[1].Status, "Failed")
 	} else {
-		_assert.Equal(rules1[1].Status, "Completed")
+		require.Equal(t, rules1[1].Status, "Completed")
 	}
 }
 
@@ -66,6 +67,6 @@ func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 //	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
 //
 //	getResp, err := bbClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.Nil(getResp.ObjectReplicationRules)
 //}

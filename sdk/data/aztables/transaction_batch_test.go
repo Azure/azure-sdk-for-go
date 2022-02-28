@@ -16,11 +16,14 @@ import (
 )
 
 func TestBatchAdd(t *testing.T) {
-	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
-			defer delete()
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(10, "partition")
 			var batch []TransactionAction
@@ -31,11 +34,8 @@ func TestBatchAdd(t *testing.T) {
 				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalled})
 			}
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
+
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -56,11 +56,14 @@ func TestBatchAdd(t *testing.T) {
 }
 
 func TestBatchInsert(t *testing.T) {
-	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
-			defer delete()
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(1, "partition")
 			var batch []TransactionAction
@@ -77,11 +80,7 @@ func TestBatchInsert(t *testing.T) {
 				)
 			}
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 			for i := 1; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -101,11 +100,14 @@ func TestBatchInsert(t *testing.T) {
 }
 
 func TestBatchMixed(t *testing.T) {
-	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
-			defer delete()
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(5, "partition")
 			var batch []TransactionAction
@@ -119,11 +121,7 @@ func TestBatchMixed(t *testing.T) {
 				})
 			}
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -186,11 +184,7 @@ func TestBatchMixed(t *testing.T) {
 			batch2 = append(batch2, TransactionAction{ActionType: UpdateMerge, Entity: marshalled4thEntity})
 			batch2 = append(batch2, TransactionAction{ActionType: InsertMerge, Entity: marshalled5thEntity})
 
-			u1, err = uuid.New()
-			require.NoError(t, err)
-			u2, err = uuid.New()
-			require.NoError(t, err)
-			resp, err = client.submitTransactionInternal(ctx, &batch2, u1, u2, nil)
+			resp, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
 
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
@@ -216,11 +210,14 @@ func TestBatchMixed(t *testing.T) {
 }
 
 func TestBatchError(t *testing.T) {
-	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
-			defer delete()
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(3, "partition")
 
@@ -250,11 +247,7 @@ func TestBatchError(t *testing.T) {
 				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalledEntity})
 			}
 
-			u1, err = uuid.New()
-			require.NoError(t, err)
-			u2, err = uuid.New()
-			require.NoError(t, err)
-			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NotNil(t, err)
 			require.Contains(t, err.Error(), "EntityAlreadyExists")
 		})
@@ -262,17 +255,20 @@ func TestBatchError(t *testing.T) {
 }
 
 func TestBatchComplex(t *testing.T) {
-	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
-			defer delete()
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
 
-			edmEntity := createEdmEntity(1, "pk001")
-			edmEntity2 := createEdmEntity(2, "pk001")
-			edmEntity3 := createEdmEntity(3, "pk001")
-			edmEntity4 := createEdmEntity(4, "pk001")
-			edmEntity5 := createEdmEntity(5, "pk001")
+			edmEntity := createEdmEntity(1, "pk01")
+			edmEntity2 := createEdmEntity(2, "pk01")
+			edmEntity3 := createEdmEntity(3, "pk01")
+			edmEntity4 := createEdmEntity(4, "pk01")
+			edmEntity5 := createEdmEntity(5, "pk01")
 			var batch []TransactionAction
 
 			marshalled1, err := json.Marshal(edmEntity)
@@ -310,11 +306,7 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled5,
 			})
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -346,11 +338,7 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled3,
 			})
 
-			u1, err = uuid.New()
-			require.NoError(t, err)
-			u2, err = uuid.New()
-			require.NoError(t, err)
-			resp, err = client.submitTransactionInternal(ctx, &batch2, u1, u2, nil)
+			resp, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]

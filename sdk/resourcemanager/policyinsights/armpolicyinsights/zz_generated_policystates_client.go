@@ -34,16 +34,16 @@ type PolicyStatesClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyStatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &PolicyStatesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -52,15 +52,14 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupName - Management group name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForManagementGroup(policyStatesResource PolicyStatesResource, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForManagementGroupPager {
+func (client *PolicyStatesClient) ListQueryResultsForManagementGroup(policyStatesResource PolicyStatesResource, managementGroupName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForManagementGroupPager {
 	return &PolicyStatesClientListQueryResultsForManagementGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyStatesResource, managementGroupsNamespace, managementGroupName, options)
+			return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyStatesResource, managementGroupName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyStatesClientListQueryResultsForManagementGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyStatesQueryResults.ODataNextLink)
@@ -69,16 +68,13 @@ func (client *PolicyStatesClient) ListQueryResultsForManagementGroup(policyState
 }
 
 // listQueryResultsForManagementGroupCreateRequest creates the ListQueryResultsForManagementGroup request.
-func (client *PolicyStatesClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
 	if policyStatesResource == "" {
 		return nil, errors.New("parameter policyStatesResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupName == "" {
 		return nil, errors.New("parameter managementGroupName cannot be empty")
 	}
@@ -132,16 +128,14 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleRespon
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyDefinitionName - Policy definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForPolicyDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForPolicyDefinitionPager {
+func (client *PolicyStatesClient) ListQueryResultsForPolicyDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, policyDefinitionName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForPolicyDefinitionPager {
 	return &PolicyStatesClientListQueryResultsForPolicyDefinitionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyStatesResource, subscriptionID, authorizationNamespace, policyDefinitionName, options)
+			return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyStatesResource, subscriptionID, policyDefinitionName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyStatesClientListQueryResultsForPolicyDefinitionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyStatesQueryResults.ODataNextLink)
@@ -150,7 +144,7 @@ func (client *PolicyStatesClient) ListQueryResultsForPolicyDefinition(policyStat
 }
 
 // listQueryResultsForPolicyDefinitionCreateRequest creates the ListQueryResultsForPolicyDefinition request.
-func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
 	if policyStatesResource == "" {
 		return nil, errors.New("parameter policyStatesResource cannot be empty")
@@ -160,10 +154,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionCreateReque
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyDefinitionName == "" {
 		return nil, errors.New("parameter policyDefinitionName cannot be empty")
 	}
@@ -217,16 +208,14 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleRespo
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policySetDefinitionName - Policy set definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForPolicySetDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForPolicySetDefinitionPager {
+func (client *PolicyStatesClient) ListQueryResultsForPolicySetDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, policySetDefinitionName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForPolicySetDefinitionPager {
 	return &PolicyStatesClientListQueryResultsForPolicySetDefinitionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyStatesResource, subscriptionID, authorizationNamespace, policySetDefinitionName, options)
+			return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyStatesResource, subscriptionID, policySetDefinitionName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyStatesQueryResults.ODataNextLink)
@@ -235,7 +224,7 @@ func (client *PolicyStatesClient) ListQueryResultsForPolicySetDefinition(policyS
 }
 
 // listQueryResultsForPolicySetDefinitionCreateRequest creates the ListQueryResultsForPolicySetDefinition request.
-func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
 	if policyStatesResource == "" {
 		return nil, errors.New("parameter policyStatesResource cannot be empty")
@@ -245,10 +234,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionCreateRe
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
 	}
@@ -456,16 +442,14 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager {
+func (client *PolicyStatesClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager {
 	return &PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyStatesResource, subscriptionID, resourceGroupName, authorizationNamespace, policyAssignmentName, options)
+			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyStatesResource, subscriptionID, resourceGroupName, policyAssignmentName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyStatesQueryResults.ODataNextLink)
@@ -474,7 +458,7 @@ func (client *PolicyStatesClient) ListQueryResultsForResourceGroupLevelPolicyAss
 }
 
 // listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForResourceGroupLevelPolicyAssignment request.
-func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
 	if policyStatesResource == "" {
 		return nil, errors.New("parameter policyStatesResource cannot be empty")
@@ -488,10 +472,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
@@ -619,16 +600,14 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager {
+func (client *PolicyStatesClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, policyAssignmentName string, options *QueryOptions) *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager {
 	return &PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesResource, subscriptionID, authorizationNamespace, policyAssignmentName, options)
+			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesResource, subscriptionID, policyAssignmentName, options)
 		},
 		advancer: func(ctx context.Context, resp PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyStatesQueryResults.ODataNextLink)
@@ -637,7 +616,7 @@ func (client *PolicyStatesClient) ListQueryResultsForSubscriptionLevelPolicyAssi
 }
 
 // listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForSubscriptionLevelPolicyAssignment request.
-func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, subscriptionID string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
 	if policyStatesResource == "" {
 		return nil, errors.New("parameter policyStatesResource cannot be empty")
@@ -647,10 +626,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssi
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
@@ -703,12 +679,11 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssi
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupName - Management group name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForManagementGroup(ctx context.Context, policyStatesSummaryResource Enum6, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) (PolicyStatesClientSummarizeForManagementGroupResponse, error) {
-	req, err := client.summarizeForManagementGroupCreateRequest(ctx, policyStatesSummaryResource, managementGroupsNamespace, managementGroupName, options)
+func (client *PolicyStatesClient) SummarizeForManagementGroup(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, managementGroupName string, options *QueryOptions) (PolicyStatesClientSummarizeForManagementGroupResponse, error) {
+	req, err := client.summarizeForManagementGroupCreateRequest(ctx, policyStatesSummaryResource, managementGroupName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForManagementGroupResponse{}, err
 	}
@@ -723,16 +698,13 @@ func (client *PolicyStatesClient) SummarizeForManagementGroup(ctx context.Contex
 }
 
 // summarizeForManagementGroupCreateRequest creates the SummarizeForManagementGroup request.
-func (client *PolicyStatesClient) summarizeForManagementGroupCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, managementGroupsNamespace Enum0, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForManagementGroupCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, managementGroupName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupName == "" {
 		return nil, errors.New("parameter managementGroupName cannot be empty")
 	}
@@ -774,13 +746,11 @@ func (client *PolicyStatesClient) summarizeForManagementGroupHandleResponse(resp
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyDefinitionName - Policy definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForPolicyDefinition(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) (PolicyStatesClientSummarizeForPolicyDefinitionResponse, error) {
-	req, err := client.summarizeForPolicyDefinitionCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, authorizationNamespace, policyDefinitionName, options)
+func (client *PolicyStatesClient) SummarizeForPolicyDefinition(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) (PolicyStatesClientSummarizeForPolicyDefinitionResponse, error) {
+	req, err := client.summarizeForPolicyDefinitionCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, policyDefinitionName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForPolicyDefinitionResponse{}, err
 	}
@@ -795,7 +765,7 @@ func (client *PolicyStatesClient) SummarizeForPolicyDefinition(ctx context.Conte
 }
 
 // summarizeForPolicyDefinitionCreateRequest creates the SummarizeForPolicyDefinition request.
-func (client *PolicyStatesClient) summarizeForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policyDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -805,10 +775,7 @@ func (client *PolicyStatesClient) summarizeForPolicyDefinitionCreateRequest(ctx 
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyDefinitionName == "" {
 		return nil, errors.New("parameter policyDefinitionName cannot be empty")
 	}
@@ -850,13 +817,11 @@ func (client *PolicyStatesClient) summarizeForPolicyDefinitionHandleResponse(res
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policySetDefinitionName - Policy set definition name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForPolicySetDefinition(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) (PolicyStatesClientSummarizeForPolicySetDefinitionResponse, error) {
-	req, err := client.summarizeForPolicySetDefinitionCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, authorizationNamespace, policySetDefinitionName, options)
+func (client *PolicyStatesClient) SummarizeForPolicySetDefinition(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) (PolicyStatesClientSummarizeForPolicySetDefinitionResponse, error) {
+	req, err := client.summarizeForPolicySetDefinitionCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, policySetDefinitionName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}, err
 	}
@@ -871,7 +836,7 @@ func (client *PolicyStatesClient) SummarizeForPolicySetDefinition(ctx context.Co
 }
 
 // summarizeForPolicySetDefinitionCreateRequest creates the SummarizeForPolicySetDefinition request.
-func (client *PolicyStatesClient) summarizeForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policySetDefinitionName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -881,10 +846,7 @@ func (client *PolicyStatesClient) summarizeForPolicySetDefinitionCreateRequest(c
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
 	}
@@ -928,7 +890,7 @@ func (client *PolicyStatesClient) summarizeForPolicySetDefinitionHandleResponse(
 // resourceID - Resource ID.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForResource(ctx context.Context, policyStatesSummaryResource Enum6, resourceID string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceResponse, error) {
+func (client *PolicyStatesClient) SummarizeForResource(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, resourceID string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceResponse, error) {
 	req, err := client.summarizeForResourceCreateRequest(ctx, policyStatesSummaryResource, resourceID, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForResourceResponse{}, err
@@ -944,7 +906,7 @@ func (client *PolicyStatesClient) SummarizeForResource(ctx context.Context, poli
 }
 
 // summarizeForResourceCreateRequest creates the SummarizeForResource request.
-func (client *PolicyStatesClient) summarizeForResourceCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, resourceID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForResourceCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, resourceID string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -991,7 +953,7 @@ func (client *PolicyStatesClient) summarizeForResourceHandleResponse(resp *http.
 // resourceGroupName - Resource group name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForResourceGroup(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, resourceGroupName string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceGroupResponse, error) {
+func (client *PolicyStatesClient) SummarizeForResourceGroup(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceGroupResponse, error) {
 	req, err := client.summarizeForResourceGroupCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, resourceGroupName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForResourceGroupResponse{}, err
@@ -1007,7 +969,7 @@ func (client *PolicyStatesClient) SummarizeForResourceGroup(ctx context.Context,
 }
 
 // summarizeForResourceGroupCreateRequest creates the SummarizeForResourceGroup request.
-func (client *PolicyStatesClient) summarizeForResourceGroupCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForResourceGroupCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -1059,13 +1021,11 @@ func (client *PolicyStatesClient) summarizeForResourceGroupHandleResponse(resp *
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForResourceGroupLevelPolicyAssignment(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse, error) {
-	req, err := client.summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, resourceGroupName, authorizationNamespace, policyAssignmentName, options)
+func (client *PolicyStatesClient) SummarizeForResourceGroupLevelPolicyAssignment(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) (PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse, error) {
+	req, err := client.summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, resourceGroupName, policyAssignmentName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}, err
 	}
@@ -1080,7 +1040,7 @@ func (client *PolicyStatesClient) SummarizeForResourceGroupLevelPolicyAssignment
 }
 
 // summarizeForResourceGroupLevelPolicyAssignmentCreateRequest creates the SummarizeForResourceGroupLevelPolicyAssignment request.
-func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, resourceGroupName string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -1094,10 +1054,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignment
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
@@ -1141,7 +1098,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignment
 // subscriptionID - Microsoft Azure subscription ID.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForSubscription(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, options *QueryOptions) (PolicyStatesClientSummarizeForSubscriptionResponse, error) {
+func (client *PolicyStatesClient) SummarizeForSubscription(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, options *QueryOptions) (PolicyStatesClientSummarizeForSubscriptionResponse, error) {
 	req, err := client.summarizeForSubscriptionCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForSubscriptionResponse{}, err
@@ -1157,7 +1114,7 @@ func (client *PolicyStatesClient) SummarizeForSubscription(ctx context.Context, 
 }
 
 // summarizeForSubscriptionCreateRequest creates the SummarizeForSubscription request.
-func (client *PolicyStatesClient) summarizeForSubscriptionCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForSubscriptionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -1204,13 +1161,11 @@ func (client *PolicyStatesClient) summarizeForSubscriptionHandleResponse(resp *h
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
-// authorizationNamespace - The namespace for Microsoft Authorization resource provider; only "Microsoft.Authorization" is
-// allowed.
 // policyAssignmentName - Policy assignment name.
 // options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) SummarizeForSubscriptionLevelPolicyAssignment(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse, error) {
-	req, err := client.summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, authorizationNamespace, policyAssignmentName, options)
+func (client *PolicyStatesClient) SummarizeForSubscriptionLevelPolicyAssignment(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) (PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse, error) {
+	req, err := client.summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesSummaryResource, subscriptionID, policyAssignmentName, options)
 	if err != nil {
 		return PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}, err
 	}
@@ -1225,7 +1180,7 @@ func (client *PolicyStatesClient) SummarizeForSubscriptionLevelPolicyAssignment(
 }
 
 // summarizeForSubscriptionLevelPolicyAssignmentCreateRequest creates the SummarizeForSubscriptionLevelPolicyAssignment request.
-func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesSummaryResource Enum6, subscriptionID string, authorizationNamespace Enum4, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, subscriptionID string, policyAssignmentName string, options *QueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
 	if policyStatesSummaryResource == "" {
 		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
@@ -1235,10 +1190,7 @@ func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentC
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if authorizationNamespace == "" {
-		return nil, errors.New("parameter authorizationNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape(string(authorizationNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
 	if policyAssignmentName == "" {
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}

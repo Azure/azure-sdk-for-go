@@ -1,6 +1,6 @@
 # Release History
 
-## 0.13.1 (Unreleased)
+## 0.13.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01
+
+## 0.13.1 (2022-02-08)
+
+### Features Added
+* `EnvironmentCredential` supports certificate SNI authentication when
+  `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` is "true".
+  ([#16851](https://github.com/Azure/azure-sdk-for-go/pull/16851))
+
+### Bugs Fixed
+* `ManagedIdentityCredential.GetToken()` now returns an error when configured for
+   a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
+   ([#16946](https://github.com/Azure/azure-sdk-for-go/pull/16946))
+
+### Other Changes
+* `NewDefaultAzureCredential()` logs non-fatal errors. These errors are also included in the
+  error returned by `DefaultAzureCredential.GetToken()` when it's unable to acquire a token
+  from any source. ([#15923](https://github.com/Azure/azure-sdk-for-go/issues/15923))
 
 ## 0.13.0 (2022-01-11)
 

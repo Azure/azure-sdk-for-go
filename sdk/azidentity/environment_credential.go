@@ -8,11 +8,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
+
+const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
@@ -48,7 +51,7 @@ type EnvironmentCredential struct {
 }
 
 // NewEnvironmentCredential creates an EnvironmentCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
 	if options == nil {
 		options = &EnvironmentCredentialOptions{}
@@ -62,7 +65,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		return nil, errors.New("missing environment variable AZURE_CLIENT_ID")
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
-		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
+		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
 		o := &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
@@ -71,7 +74,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		return &EnvironmentCredential{cred: cred}, nil
 	}
 	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
-		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
+		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
@@ -81,6 +84,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
 		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
+			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
+		}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, o)
 		if err != nil {
 			return nil, err
@@ -89,7 +95,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
-			log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
+			log.Write(EventAuthentication, "EnvironmentCredential will authenticate with UsernamePasswordCredential")
 			o := &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
@@ -97,8 +103,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			}
 			return &EnvironmentCredential{cred: cred}, nil
 		}
+		return nil, errors.New("no value for AZURE_PASSWORD")
 	}
-	return nil, errors.New("missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
+	return nil, errors.New("incomplete environment variable configuration. Only AZURE_TENANT_ID and AZURE_CLIENT_ID are set")
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.

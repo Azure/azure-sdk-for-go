@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputblockandputblocklistwithcpkbyscope?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:36 GMT
+      - Mon, 07 Feb 2022 06:22:40 GMT
       Etag:
-      - '"0x8D97501810D2B3B"'
+      - '"0x8D9EA023E9E7D58"'
       Last-Modified:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ea54dcc2-701e-002b-6bea-a64219000000
+      - 8d859326-b01e-004f-3beb-1bfe2c000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -50,9 +50,9 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -65,7 +65,7 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:36 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -73,7 +73,7 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - ea54dd50-701e-002b-65ea-a64219000000
+      - 8d8593d9-b01e-004f-5deb-1bfe2c000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -94,9 +94,9 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -109,7 +109,7 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:36 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -117,7 +117,7 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - ea54ddd3-701e-002b-52ea-a64219000000
+      - 8d8595f9-b01e-004f-59eb-1bfe2c000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -138,9 +138,9 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -153,7 +153,7 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:36 GMT
+      - Mon, 07 Feb 2022 06:22:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -161,7 +161,7 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - ea54de4a-701e-002b-38ea-a64219000000
+      - 8d859730-b01e-004f-7ceb-1bfe2c000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -182,9 +182,9 @@ interactions:
       Content-Type:
       - application/xml
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -197,11 +197,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Etag:
-      - '"0x8D9750181D57249"'
+      - '"0x8D9EA023F5FC7C6"'
       Last-Modified:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -209,13 +209,13 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - ea54df47-701e-002b-05ea-a64219000000
+      - 8d859839-b01e-004f-7beb-1bfe2c000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-11T08:52:38.3302217Z"
+      - "2022-02-07T06:22:42.3711686Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -228,9 +228,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -242,20 +242,20 @@ interactions:
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputblockandputblocklistwithcpkbyscope/gotestblobputblockandputblocklistwithcpkbyscope
     method: GET
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x42\x6C\x6F\x62\x43\x75\x73\x74\x6F\x6D\x65\x72\x53\x70\x65\x63\x69\x66\x69\x65\x64\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x4D\x69\x73\x6D\x61\x74\x63\x68\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x67\x69\x76\x65\x6E\x20\x63\x75\x73\x74\x6F\x6D\x65\x72\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x6D\x61\x74\x63\x68\x20\x74\x68\x65\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x75\x73\x65\x64\x20\x74\x6F\x20\x65\x6E\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x62\x6C\x6F\x62\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x65\x61\x35\x34\x64\x66\x62\x63\x2D\x37\x30\x31\x65\x2D\x30\x30\x32\x62\x2D\x36\x61\x65\x61\x2D\x61\x36\x34\x32\x31\x39\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x39\x2D\x31\x31\x54\x30\x38\x3A\x35\x32\x3A\x33\x38\x2E\x35\x38\x33\x39\x39\x32\x31\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x42\x6C\x6F\x62\x43\x75\x73\x74\x6F\x6D\x65\x72\x53\x70\x65\x63\x69\x66\x69\x65\x64\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x4D\x69\x73\x6D\x61\x74\x63\x68\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x67\x69\x76\x65\x6E\x20\x63\x75\x73\x74\x6F\x6D\x65\x72\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x6D\x61\x74\x63\x68\x20\x74\x68\x65\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x75\x73\x65\x64\x20\x74\x6F\x20\x65\x6E\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x62\x6C\x6F\x62\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x38\x64\x38\x35\x39\x39\x30\x34\x2D\x62\x30\x31\x65\x2D\x30\x30\x34\x66\x2D\x33\x30\x65\x62\x2D\x31\x62\x66\x65\x32\x63\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x32\x2D\x30\x32\x2D\x30\x37\x54\x30\x36\x3A\x32\x32\x3A\x34\x32\x2E\x36\x31\x34\x35\x35\x32\x30\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "303"
       Content-Type:
       - application/xml
       Date:
-      - Sat, 11 Sep 2021 08:52:37 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobCustomerSpecifiedEncryptionMismatch
       X-Ms-Request-Id:
-      - ea54dfbc-701e-002b-6aea-a64219000000
+      - 8d859904-b01e-004f-30eb-1bfe2c000000
       X-Ms-Version:
       - "2019-12-12"
     status: 409 The given customer specified encryption does not match the encryption
@@ -271,9 +271,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputblockandputblocklistwithcpkbyscope/gotestblobputblockandputblocklistwithcpkbyscope
@@ -288,17 +288,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Etag:
-      - '"0x8D9750181D57249"'
+      - '"0x8D9EA023F5FC7C6"'
       Last-Modified:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Is-Current-Version:
@@ -308,13 +308,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - ea54e013-701e-002b-34ea-a64219000000
+      - 8d859a2a-b01e-004f-40eb-1bfe2c000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-11T08:52:38.3302217Z"
+      - "2022-02-07T06:22:42.3711686Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -327,9 +327,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Sat, 11 Sep 2021 08:52:39 GMT
+      - Mon, 07 Feb 2022 06:22:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputblockandputblocklistwithcpkbyscope?restype=container
@@ -340,11 +340,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 11 Sep 2021 08:52:38 GMT
+      - Mon, 07 Feb 2022 06:22:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ea54e083-701e-002b-12ea-a64219000000
+      - 8d859b36-b01e-004f-34eb-1bfe2c000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -10,9 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func (s *azblobUnrecordedTestSuite) TestErrorResponseUnmarshal() {
-	t := s.T()
-
+func TestErrorResponseUnmarshal(t *testing.T) {
 	cases := []struct {
 		name  string
 		input string

@@ -27,13 +27,17 @@ func ExampleJobsClient_List() {
 	}
 	ctx := context.Background()
 	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armdatabox.JobsListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armdatabox.JobsClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,13 +74,17 @@ func ExampleJobsClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdatabox.JobsListByResourceGroupOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatabox.JobsClientListByResourceGroupOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -92,11 +100,11 @@ func ExampleJobsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<job-name>",
-		&armdatabox.JobsGetOptions{Expand: to.StringPtr("<expand>")})
+		&armdatabox.JobsClientGetOptions{Expand: to.StringPtr("<expand>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
 }
 
 // x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsCreate.json
@@ -111,43 +119,37 @@ func ExampleJobsClient_BeginCreate() {
 		"<resource-group-name>",
 		"<job-name>",
 		armdatabox.JobResource{
-			Resource: armdatabox.Resource{
-				Location: to.StringPtr("<location>"),
-				SKU: &armdatabox.SKU{
-					Name: armdatabox.SKUNameDataBox.ToPtr(),
-				},
+			Location: to.StringPtr("<location>"),
+			SKU: &armdatabox.SKU{
+				Name: armdatabox.SKUNameDataBox.ToPtr(),
 			},
 			Properties: &armdatabox.JobProperties{
 				TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-				Details: &armdatabox.DataBoxJobDetails{
-					JobDetails: armdatabox.JobDetails{
-						ContactDetails: &armdatabox.ContactDetails{
-							ContactName: to.StringPtr("<contact-name>"),
-							EmailList: []*string{
-								to.StringPtr("testing@microsoft.com")},
-							Phone:          to.StringPtr("<phone>"),
-							PhoneExtension: to.StringPtr("<phone-extension>"),
-						},
-						DataImportDetails: []*armdatabox.DataImportDetails{
-							{
-								AccountDetails: &armdatabox.StorageAccountDetails{
-									DataAccountDetails: armdatabox.DataAccountDetails{
-										DataAccountType: armdatabox.DataAccountTypeStorageAccount.ToPtr(),
-									},
-									StorageAccountID: to.StringPtr("<storage-account-id>"),
-								},
-							}},
-						JobDetailsType: armdatabox.ClassDiscriminatorDataBox.ToPtr(),
-						ShippingAddress: &armdatabox.ShippingAddress{
-							AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-							City:            to.StringPtr("<city>"),
-							CompanyName:     to.StringPtr("<company-name>"),
-							Country:         to.StringPtr("<country>"),
-							PostalCode:      to.StringPtr("<postal-code>"),
-							StateOrProvince: to.StringPtr("<state-or-province>"),
-							StreetAddress1:  to.StringPtr("<street-address1>"),
-							StreetAddress2:  to.StringPtr("<street-address2>"),
-						},
+				Details: &armdatabox.JobDetails{
+					ContactDetails: &armdatabox.ContactDetails{
+						ContactName: to.StringPtr("<contact-name>"),
+						EmailList: []*string{
+							to.StringPtr("testing@microsoft.com")},
+						Phone:          to.StringPtr("<phone>"),
+						PhoneExtension: to.StringPtr("<phone-extension>"),
+					},
+					DataImportDetails: []*armdatabox.DataImportDetails{
+						{
+							AccountDetails: &armdatabox.StorageAccountDetails{
+								DataAccountType:  armdatabox.DataAccountTypeStorageAccount.ToPtr(),
+								StorageAccountID: to.StringPtr("<storage-account-id>"),
+							},
+						}},
+					JobDetailsType: armdatabox.ClassDiscriminatorDataBox.ToPtr(),
+					ShippingAddress: &armdatabox.ShippingAddress{
+						AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
+						City:            to.StringPtr("<city>"),
+						CompanyName:     to.StringPtr("<company-name>"),
+						Country:         to.StringPtr("<country>"),
+						PostalCode:      to.StringPtr("<postal-code>"),
+						StateOrProvince: to.StringPtr("<state-or-province>"),
+						StreetAddress1:  to.StringPtr("<street-address1>"),
+						StreetAddress2:  to.StringPtr("<street-address2>"),
 					},
 				},
 			},
@@ -160,7 +162,7 @@ func ExampleJobsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientCreateResult)
 }
 
 // x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsDelete.json
@@ -218,7 +220,7 @@ func ExampleJobsClient_BeginUpdate() {
 				},
 			},
 		},
-		&armdatabox.JobsBeginUpdateOptions{IfMatch: nil})
+		&armdatabox.JobsClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -226,7 +228,7 @@ func ExampleJobsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/BookShipmentPickupPost.json
@@ -237,7 +239,7 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	}
 	ctx := context.Background()
 	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	_, err = client.BookShipmentPickUp(ctx,
+	res, err := client.BookShipmentPickUp(ctx,
 		"<resource-group-name>",
 		"<job-name>",
 		armdatabox.ShipmentPickUpRequest{
@@ -249,6 +251,7 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.JobsClientBookShipmentPickUpResult)
 }
 
 // x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsCancelPost.json
@@ -279,11 +282,12 @@ func ExampleJobsClient_ListCredentials() {
 	}
 	ctx := context.Background()
 	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	_, err = client.ListCredentials(ctx,
+	res, err := client.ListCredentials(ctx,
 		"<resource-group-name>",
 		"<job-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.JobsClientListCredentialsResult)
 }

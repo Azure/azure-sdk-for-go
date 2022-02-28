@@ -34,17 +34,17 @@ type ClusterExtensionTypeClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewClusterExtensionTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterExtensionTypeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &ClusterExtensionTypeClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -60,7 +60,7 @@ func NewClusterExtensionTypeClient(subscriptionID string, credential azcore.Toke
 // extensionTypeName - Extension type name
 // options - ClusterExtensionTypeClientGetOptions contains the optional parameters for the ClusterExtensionTypeClient.Get
 // method.
-func (client *ClusterExtensionTypeClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (ClusterExtensionTypeClientGetResponse, error) {
+func (client *ClusterExtensionTypeClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (ClusterExtensionTypeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionTypeName, options)
 	if err != nil {
 		return ClusterExtensionTypeClientGetResponse{}, err
@@ -76,7 +76,7 @@ func (client *ClusterExtensionTypeClient) Get(ctx context.Context, resourceGroup
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (*policy.Request, error) {
+func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes/{extensionTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

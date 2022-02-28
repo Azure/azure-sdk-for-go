@@ -17,14 +17,14 @@ import (
 )
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listAllGuestConfigurationHCRPAssignmentReports.json
-func ExampleGuestConfigurationHCRPAssignmentReportsClient_List() {
+func ExampleHCRPAssignmentReportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armguestconfiguration.NewHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
 		"<machine-name>",
@@ -32,16 +32,17 @@ func ExampleGuestConfigurationHCRPAssignmentReportsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.HCRPAssignmentReportsClientListResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationHCRPAssignmentReportById.json
-func ExampleGuestConfigurationHCRPAssignmentReportsClient_Get() {
+func ExampleHCRPAssignmentReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -51,5 +52,5 @@ func ExampleGuestConfigurationHCRPAssignmentReportsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignmentReport.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HCRPAssignmentReportsClientGetResult)
 }

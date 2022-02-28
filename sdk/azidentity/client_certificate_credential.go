@@ -21,6 +21,8 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
+const credNameCert = "ClientCertificateCredential"
+
 // ClientCertificateCredentialOptions contains optional parameters for ClientCertificateCredential.
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
@@ -44,7 +46,7 @@ type ClientCertificateCredential struct {
 // clientID: The application's client ID.
 // certs: one or more certificates, for example as returned by ParseCertificates()
 // key: the signing certificate's private key, for example as returned by ParseCertificates()
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")
@@ -61,7 +63,6 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		logCredentialError("Client Certificate Credential", err)
 		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
@@ -98,8 +99,7 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Certificate Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}
 	logGetTokenSuccess(c, opts)
 	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err

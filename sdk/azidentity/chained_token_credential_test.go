@@ -292,9 +292,9 @@ func TestChainedTokenCredential_Race(t *testing.T) {
 			)
 			for i := 0; i < 5; i++ {
 				go func() {
-					success.GetToken(context.Background(), tro)
-					failure.GetToken(context.Background(), tro)
-					unavailable.GetToken(context.Background(), tro)
+					_, _ = success.GetToken(context.Background(), tro)
+					_, _ = failure.GetToken(context.Background(), tro)
+					_, _ = unavailable.GetToken(context.Background(), tro)
 				}()
 			}
 		})

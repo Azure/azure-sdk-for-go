@@ -34,7 +34,6 @@ type ChainedTokenCredential struct {
 	name                 string
 	cond                 *sync.Cond
 	iterating            bool
-	mut                  *sync.RWMutex
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
@@ -54,10 +53,8 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	if options == nil {
 		options = &ChainedTokenCredentialOptions{}
 	}
-	mut := sync.RWMutex{}
 	return &ChainedTokenCredential{
-		cond:         sync.NewCond(&mut),
-		mut:          &mut,
+		cond:         sync.NewCond(&sync.Mutex{}),
 		sources:      cp,
 		name:         "ChainedTokenCredential",
 		retrySources: options.RetrySources,
@@ -70,15 +67,12 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if !c.retrySources {
 		// ensure only one goroutine at a time iterates the sources and perhaps sets c.successfulCredential
+		c.cond.L.Lock()
 		for {
-			c.mut.RLock()
-			mustIterate := c.successfulCredential == nil
-			c.mut.RUnlock()
-			if !mustIterate {
+			if c.successfulCredential != nil {
+				c.cond.L.Unlock()
 				return c.successfulCredential.GetToken(ctx, opts)
 			}
-			c.cond.L.Lock()
-			defer c.cond.L.Unlock()
 			if !c.iterating {
 				c.iterating = true
 				break
@@ -106,6 +100,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	}
 	if c.iterating {
 		c.iterating = false
+		c.cond.L.Unlock()
 		c.cond.Broadcast()
 	}
 	// err is the error returned by the last GetToken call. It will be nil when that call succeeds

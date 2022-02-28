@@ -35,6 +35,7 @@ func newHmacAuthenticationPolicy(credential string, secret []byte) *hmacAuthenti
 func (policy *hmacAuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if bd := req.Body(); bd != nil {
 		if body, err := ioutil.ReadAll(bd); err == nil {
+			req.RewindBody()
 			h := hmac.New(sha256.New, policy.secret)
 			if _, err := h.Write(body); err == nil {
 				url := req.Raw().URL

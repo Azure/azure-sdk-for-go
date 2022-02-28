@@ -13,7 +13,6 @@ import (
 )
 
 func init() {
-	// Start with adding all of our arguments
 	flag.IntVar(&duration, "d", 10, "Duration of test in seconds.")
 	flag.IntVar(&duration, "duration", 10, "Duration of test in seconds.")
 

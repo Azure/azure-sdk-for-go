@@ -1,8 +1,6 @@
 # Release History
 
-## 0.5.1 (Unreleased)
-
-### Features Added
+## 0.5.1 (2022-03-08)
 
 ### Breaking Changes
 * Changes `Attributes` to `Properties`
@@ -11,10 +9,7 @@
 * Changes `DeletedDate` to `DeletedOn`, `Created` to `CreatedOn`, and `Updated` to `UpdatedOn`
 * Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
 * Changes `Item` to `SecretItem`
-
-### Bugs Fixed
-
-### Other Changes
+* Pollers and pagers are structs instead of interfaces
 
 ## 0.5.0 (2022-02-08)
 

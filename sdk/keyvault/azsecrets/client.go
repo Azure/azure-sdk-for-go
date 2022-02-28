@@ -218,22 +218,8 @@ func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteS
 	return &internal.KeyVaultClientDeleteSecretOptions{}
 }
 
-// DeleteSecretPoller is the interface for the Client.DeleteSecret operation.
-type DeleteSecretPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (DeleteSecretResponse, error)
-}
-
 // The poller returned by the Client.StartDeleteSecret operation
-type startDeleteSecretPoller struct {
+type DeleteSecretPoller struct {
 	secretName     string // This is the secret to Poll for in GetDeletedSecret
 	vaultUrl       string
 	client         *internal.KeyVaultClient
@@ -243,14 +229,14 @@ type startDeleteSecretPoller struct {
 }
 
 // Done returns true if the LRO has reached a terminal state
-func (s *startDeleteSecretPoller) Done() bool {
+func (s *DeleteSecretPoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedSecret(ctx, s.vaultUrl, s.secretName, nil)
 	if err == nil {
 		// Service recognizes DeletedSecret, operation is done
@@ -268,13 +254,13 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (s *startDeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
+func (s *DeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
 	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
 }
 
 // pollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *startDeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
+func (s *DeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
@@ -321,7 +307,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 		}
 	}
 
-	s := &startDeleteSecretPoller{
+	s := DeleteSecretPoller{
 		vaultUrl:       c.vaultUrl,
 		secretName:     secretName,
 		client:         c.kvClient,
@@ -577,21 +563,7 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, opti
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
-// RecoverDeletedSecretPoller is the interface for the Client.RecoverDeletedSecret operation
-type RecoverDeletedSecretPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (RecoverDeletedSecretResponse, error)
-}
-
-type beginRecoverPoller struct {
+type RecoverDeletedSecretPoller struct {
 	secretName      string
 	vaultUrl        string
 	client          *internal.KeyVaultClient
@@ -601,14 +573,14 @@ type beginRecoverPoller struct {
 }
 
 // Done returns true when the polling operation is completed
-func (b *beginRecoverPoller) Done() bool {
+func (b *RecoverDeletedSecretPoller) Done() bool {
 	return b.RawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
 	b.lastResponse = resp
 	var httpErr *azcore.ResponseError
@@ -619,11 +591,11 @@ func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
+func (b *RecoverDeletedSecretPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
 
-func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
+func (b *RecoverDeletedSecretPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -712,7 +684,7 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 		}
 	}
 
-	b := &beginRecoverPoller{
+	b := RecoverDeletedSecretPoller{
 		lastResponse:    getResp,
 		secretName:      secretName,
 		client:          c.kvClient,
@@ -728,25 +700,13 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 	}, nil
 }
 
-// ListDeletedSecrets is the interface for the Client.ListDeletedSecrets operation
-type ListDeletedSecretsPager interface {
-	// PageResponse returns the current ListDeletedSecretPage
-	PageResponse() ListDeletedSecretsPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listDeletedSecretsPager is the pager returned by Client.ListDeletedSecrets
-type listDeletedSecretsPager struct {
+// ListDeletedSecretsPager is the pager returned by Client.ListDeletedSecrets
+type ListDeletedSecretsPager struct {
 	genPager *internal.KeyVaultClientGetDeletedSecretsPager
 }
 
 // PageResponse returns the current page of results
-func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
+func (l *ListDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
 	resp := l.genPager.PageResponse()
 
 	var values []DeletedSecretItem
@@ -762,12 +722,12 @@ func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
 }
 
 // Err returns an error if the last operation resulted in an error.
-func (l *listDeletedSecretsPager) Err() error {
+func (l *ListDeletedSecretsPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next page of results.
-func (l *listDeletedSecretsPager) NextPage(ctx context.Context) bool {
+func (l *ListDeletedSecretsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -803,42 +763,30 @@ func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) ListDele
 		options = &ListDeletedSecretsOptions{}
 	}
 
-	return &listDeletedSecretsPager{
+	return ListDeletedSecretsPager{
 		genPager: c.kvClient.GetDeletedSecrets(c.vaultUrl, options.toGenerated()),
 	}
 
 }
 
-// ListSecretVersionsPager is a Pager for Client.ListSecretVersions results
-type ListSecretVersionsPager interface {
-	// PageResponse returns the current ListSecretVersionsPage
-	PageResponse() ListSecretVersionsPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-type listSecretVersionsPager struct {
+type ListSecretVersionsPager struct {
 	genPager *internal.KeyVaultClientGetSecretVersionsPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-func (l *listSecretVersionsPager) PageResponse() ListSecretVersionsPage {
+func (l *ListSecretVersionsPager) PageResponse() ListSecretVersionsPage {
 	return listSecretVersionsPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *listSecretVersionsPager) Err() error {
+func (l *ListSecretVersionsPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listSecretVersionsPager) NextPage(ctx context.Context) bool {
+func (l *ListSecretVersionsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -891,7 +839,7 @@ func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersio
 		options = &ListSecretVersionsOptions{}
 	}
 
-	return &listSecretVersionsPager{
+	return ListSecretVersionsPager{
 		genPager: c.kvClient.GetSecretVersions(
 			c.vaultUrl,
 			secretName,
@@ -900,37 +848,25 @@ func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersio
 	}
 }
 
-// ListSecretsPager is a Pager for the Client.ListSecrets operation
-type ListSecretsPager interface {
-	// PageResponse returns the current ListSecretsPage
-	PageResponse() ListSecretsPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listSecretsPager implements the ListSecretsPager interface
-type listSecretsPager struct {
+// ListSecretsPager implements the ListSecretsPager interface
+type ListSecretsPager struct {
 	genPager *internal.KeyVaultClientGetSecretsPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
-func (l *listSecretsPager) PageResponse() ListSecretsPage {
+func (l *ListSecretsPager) PageResponse() ListSecretsPage {
 	return listSecretsPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *listSecretsPager) Err() error {
+func (l *ListSecretsPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listSecretsPager) NextPage(ctx context.Context) bool {
+func (l *ListSecretsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -983,7 +919,7 @@ func (c *Client) ListSecrets(options *ListSecretsOptions) ListSecretsPager {
 		options = &ListSecretsOptions{}
 	}
 
-	return &listSecretsPager{
+	return ListSecretsPager{
 		genPager: c.kvClient.GetSecrets(c.vaultUrl, options.toGenerated()),
 	}
 }

@@ -103,15 +103,15 @@ func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGe
 		dt = &str
 	}
 
-	sf := make([]generated.Enum6Tags, len(sc.fields))
+	sf := make([]generated.Enum6, len(sc.fields))
 	for i := range sc.fields {
-		sf[i] = (generated.Enum6Tags)(sc.fields[i])
+		sf[i] = (generated.Enum6)(sc.fields[i])
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
-		AcceptDateTime: dt,
-		Key:            sc.keyFilter,
-		Label:          sc.labelFilter,
-		Select:         sf,
+		After:  dt,
+		Key:    sc.keyFilter,
+		Label:  sc.labelFilter,
+		Select: sf,
 	}
 }

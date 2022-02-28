@@ -134,11 +134,11 @@ type GetRevisionsPage struct {
 	RawResponse *http.Response
 }
 
-func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetKeyValuesResponse) GetRevisionsPage {
+func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetRevisionsResponse) GetRevisionsPage {
 	var css []ConfigurationSetting
 	for _, cs := range g.Items {
 		if cs != nil {
-			css = append(css, configurationSettingFromGenerated(cs))
+			css = append(css, configurationSettingFromGenerated(*cs))
 		}
 	}
 

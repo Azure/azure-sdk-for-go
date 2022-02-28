@@ -33,15 +33,15 @@ type getRevisionsPager struct {
 	genPager *generated.AzureAppConfigurationClientGetRevisionsPager
 }
 
-func (p *getRevisionsPager) PageResponse() GetRevisionsPage {
+func (p getRevisionsPager) PageResponse() GetRevisionsPage {
 	return getRevisionsPageFromGenerated(p.genPager.PageResponse())
 }
 
-func (p *getRevisionsPager) Err() error {
+func (p getRevisionsPager) Err() error {
 	return p.genPager.Err()
 }
 
-func (p *getRevisionsPager) NextPage(ctx context.Context) bool {
+func (p getRevisionsPager) NextPage(ctx context.Context) bool {
 	return p.genPager.NextPage(ctx)
 }
 
@@ -52,5 +52,5 @@ type GetRevisionsOptions struct {
 // GetRevisions retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
 func (c *Client) GetRevisions(selector SettingSelector, options *GetRevisionsOptions) GetRevisionsPager {
 	_ = options
-	return c.appConfigClient.GetRevisions(selector.toGenerated())
+	return getRevisionsPager{genPager: c.appConfigClient.GetRevisions(selector.toGenerated())}
 }

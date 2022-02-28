@@ -38,27 +38,26 @@ func (policy *hmacAuthenticationPolicy) Do(req *policy.Request) (*http.Response,
 			h := hmac.New(sha256.New, policy.secret)
 			if _, err := h.Write(body); err == nil {
 				url := req.Raw().URL
-				if host, _, err := net.SplitHostPort(url.Host); err == nil {
-					contentHash := base64.StdEncoding.EncodeToString(h.Sum(nil))
-					utcNowString := time.Now().UTC().Format(http.TimeFormat)
+				host, _, _ := net.SplitHostPort(url.Host)
+				contentHash := base64.StdEncoding.EncodeToString(h.Sum(nil))
+				utcNowString := time.Now().UTC().Format(http.TimeFormat)
 
-					pathAndQuery := req.Raw().URL.Path
-					if query := url.RawQuery; query != "" {
-						pathAndQuery = pathAndQuery + "?" + query
-					}
+				pathAndQuery := req.Raw().URL.Path
+				if query := url.RawQuery; query != "" {
+					pathAndQuery = pathAndQuery + "?" + query
+				}
 
-					stringToSign := req.Raw().Method + "\n" + pathAndQuery + "\n" + utcNowString + ";" + host + ";" + contentHash
+				stringToSign := req.Raw().Method + "\n" + pathAndQuery + "\n" + utcNowString + ";" + host + ";" + contentHash
 
-					h = hmac.New(sha256.New, policy.secret)
-					if _, err := h.Write([]byte(stringToSign)); err == nil {
-						signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
+				h = hmac.New(sha256.New, policy.secret)
+				if _, err := h.Write([]byte(stringToSign)); err == nil {
+					signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
-						req.Raw().Header["x-ms-content-sha256"] = []string{contentHash}
-						req.Raw().Header["Date"] = []string{utcNowString}
+					req.Raw().Header["x-ms-content-sha256"] = []string{contentHash}
+					req.Raw().Header["Date"] = []string{utcNowString}
 
-						req.Raw().Header["Authorizarion"] = []string{
-							"HMAC-SHA256 Credential=" + policy.credential + "&SignedHeaders=date;host;x-ms-content-sha256&Signature=" + signature,
-						}
+					req.Raw().Header["Authorizarion"] = []string{
+						"HMAC-SHA256 Credential=" + policy.credential + "&SignedHeaders=date;host;x-ms-content-sha256&Signature=" + signature,
 					}
 				}
 			}

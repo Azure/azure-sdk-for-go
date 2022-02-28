@@ -88,14 +88,14 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	genOptions := options.toConnectionOptions()
 
 	endpoint, credential, secret, err := parseConnectionString(connectionString)
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
 	syncTokenPolicy := newSyncTokenPolicy()
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		runtime.hmacAuthenticationPolicy(credential, secret),
+		newHmacAuthenticationPolicy(credential, secret),
 		syncTokenPolicy,
 	)
 

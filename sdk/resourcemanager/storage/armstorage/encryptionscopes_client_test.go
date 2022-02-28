@@ -87,7 +87,7 @@ func TestEncryptionScopesClient_Put(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, scName, *putResp.Name)
+	require.Equal(t, encryptionScopeName, *putResp.Name)
 }
 
 func TestEncryptionScopesClient_Get(t *testing.T) {
@@ -161,7 +161,7 @@ func TestEncryptionScopesClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, scName, *putResp.Name)
+	require.Equal(t, encryptionScopeName, *putResp.Name)
 
 	// get
 	getResp, err := encryptionScopesClient.Get(ctx, rgName, scName, encryptionScopeName, nil)
@@ -240,7 +240,7 @@ func TestEncryptionScopesClient_List(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, scName, *putResp.Name)
+	require.Equal(t, encryptionScopeName, *putResp.Name)
 
 	// list
 	listPager := encryptionScopesClient.List(rgName, scName, nil)
@@ -319,7 +319,7 @@ func TestEncryptionScopesClient_Patch(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, scName, *putResp.Name)
+	require.Equal(t, encryptionScopeName, *putResp.Name)
 
 	// patch
 	patchResp, err := encryptionScopesClient.Patch(

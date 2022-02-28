@@ -371,7 +371,7 @@ func TestStorageAccountsClient_RegenerateKey(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Greater(t, 1, len(regResp.Keys))
+	require.Less(t, 1, len(regResp.Keys))
 }
 
 func TestStorageAccountsClient_ListKeys(t *testing.T) {

@@ -120,7 +120,7 @@ func TestManagementPoliciesClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, "olcmtest", *mpResp.Name)
+	require.Equal(t, "DefaultManagementPolicy", *mpResp.Name)
 }
 
 func TestManagementPoliciesClient_Get(t *testing.T) {
@@ -227,12 +227,12 @@ func TestManagementPoliciesClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, "olcmtest", *mpResp.Name)
+	require.Equal(t, "DefaultManagementPolicy", *mpResp.Name)
 
 	// get management policy
 	getResp, err := managementPoliciesClient.Get(ctx, rgName, scName, "default", nil)
 	require.NoError(t, err)
-	require.Equal(t, "default", *getResp.Name)
+	require.Equal(t, "DefaultManagementPolicy", *getResp.Name)
 }
 
 func TestManagementPoliciesClient_Delete(t *testing.T) {
@@ -339,7 +339,7 @@ func TestManagementPoliciesClient_Delete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, "olcmtest", *mpResp.Name)
+	require.Equal(t, "DefaultManagementPolicy", *mpResp.Name)
 
 	// delete management policy
 	delResp, err := managementPoliciesClient.Delete(ctx, rgName, scName, "default", nil)

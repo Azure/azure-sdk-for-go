@@ -249,7 +249,7 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{

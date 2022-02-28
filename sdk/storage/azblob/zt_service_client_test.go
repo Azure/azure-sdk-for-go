@@ -158,72 +158,6 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 	require.GreaterOrEqual(t, count, 0)
 }
 
-//func (s *azblobTestSuite) TestListContainersPaged() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	const numContainers = 6
-//	maxResults := int32(2)
-//	const pagedContainersPrefix = "azcontainerpaged"
-//
-//	containers := make([]ContainerClient, numContainers)
-//	expectedResults := make(map[string]bool)
-//	for i := 0; i < numContainers; i++ {
-//		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)
-//		containerClient := createNewContainer(t, containerName, svcClient)
-//		containers[i] = containerClient
-//		expectedResults[containerName] = false
-//	}
-//
-//	defer func() {
-//		for i := range containers {
-//			deleteContainer(t, containers[i])
-//		}
-//	}()
-//
-//	// list for a first time
-//	prefix := containerPrefix + pagedContainersPrefix
-//	listOptions := ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
-//	count := 0
-//	results := make([]ContainerItem, 0)
-//
-//	pager := sa.ListContainers(&listOptions)
-//
-//	for pager.NextPage(ctx) {
-//		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
-//			if container == nil {
-//				continue
-//			}
-//
-//			results = append(results, *container)
-//			count += 1
-//			_assert.(container.Name, chk.NotNil)
-//		}
-//	}
-//
-//	_assert.(pager.Err(), chk.IsNil)
-//	_assert.(count, chk.Equals, numContainers)
-//	_assert.(len(results), chk.Equals, numContainers)
-//
-//	// make sure each container we see is expected
-//	for _, container := range results {
-//		_, ok := expectedResults[*container.Name]
-//		_assert.(ok, chk.Equals, true)
-//
-//		expectedResults[*container.Name] = true
-//	}
-//
-//	// make sure every expected container was seen
-//	for _, seen := range expectedResults {
-//		_assert.(seen, chk.Equals, true)
-//	}
-//}
-
 func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	stop := start(t)
 	defer stop()
@@ -251,50 +185,6 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, count, 2)
 }
-
-//// TODO re-enable after fixing error handling
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
-////	svcClient := getServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(t, containerClient)
-////
-////	illegalMaxResults := []int32{-2, 0}
-////	for _, num := range illegalMaxResults {
-////		options := ListContainersOptions{MaxResults: &num}
-////
-////		// getting the pager should still work
-////		pager, err := svcClient.ListContainers(context.Background(), 100, time.Hour, &options)
-////		_assert.NoError(err)
-////
-////		// getting the next page should fail
-////
-////	}
-////}
-//
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact() {
-////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
-////	svcClient := getServiceClient()
-////	containerClient1, containerName1 := createNewContainerWithSuffix(c, svcClient, "abc")
-////	defer deleteContainer(containerClient1)
-////	containerClient2, containerName2 := createNewContainerWithSuffix(c, svcClient, "abcde")
-////	defer deleteContainer(containerClient2)
-////
-////	prefix := containerPrefix + "abc"
-////	maxResults := int32(2)
-////	options := ListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
-////	pager, err := svcClient.ListContainers(&options)
-////	_assert.NoError(err)
-////
-////	// getting the next page should work
-////	hasPage := pager.NextPage(context.Background())
-////	_assert.(hasPage, chk.Equals, true)
-////
-////	page := pager.PageResponse()
-////	_assert.NoError(err)
-////	_assert.(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
-////	_assert.(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
-////	_assert.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
-////}
 
 func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	stop := start(t)

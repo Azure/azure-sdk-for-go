@@ -13,36 +13,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//nolint
-//func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
-//	_assert := assert.New(s.T())
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	testURL := svcClient.NewContainerClient(containerPrefix)
-//
-//	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.NoError(err)
-//	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
-//	_assert.Equal(testURL.URL(), correctURL)
-//}
-
-//nolint
-//func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
-//	_assert := assert.New(s.T())
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	testURL := svcClient.NewContainerClient(ContainerNameRoot)
-//
-//	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.NoError(err)
-//	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
-//	_assert.Equal(testURL.URL(), correctURL)
-//}
-
 func TestContainerCreateInvalidName(t *testing.T) {
 	stop := start(t)
 	defer stop()

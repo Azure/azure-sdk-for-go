@@ -12,113 +12,20 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"math/rand"
-	"net/url"
-	"os"
 	"runtime"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
 )
-
-type azblobTestSuite struct {
-	suite.Suite
-	mode testframework.RecordMode
-}
-
-//nolint
-type azblobUnrecordedTestSuite struct {
-	suite.Suite
-}
-
-// Hookup to the testing framework
-func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
-}
-
-type testContext struct {
-	recording *testframework.Recording
-	context   *testframework.TestContext
-}
-
-// a map to store our created test contexts
-var clientsMap = make(map[string]*testContext)
-
-// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
-	testName := t.Name()
-
-	// init the test framework
-	_testContext := testframework.NewTestContext(
-		func(msg string) { require.FailNow(t, msg) },
-		func(msg string) { t.Log(msg) },
-		func() string { return testName })
-
-	// mode should be test_framework.Playback.
-	// This will automatically record if no test recording is available and playback if it is.
-	recording, err := testframework.NewRecording(_testContext, mode)
-	require.NoError(t, err)
-
-	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
-
-	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
-}
-
-func getTestContext(key string) *testContext {
-	return clientsMap[key]
-}
-
-func recordedTestTeardown(key string) {
-	_context, ok := clientsMap[key]
-	if ok && !(*_context.context).IsFailed() {
-		_ = _context.recording.Stop()
-	}
-}
-
-//nolint
-func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// set up the test environment
-	recordedTestSetup(s.T(), s.mode)
-}
-
-//nolint
-func (s *azblobTestSuite) AfterTest(suite string, test string) {
-	// teardown the test context
-	recordedTestTeardown(s.T().Name())
-}
-
-//nolint
-func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
-
-}
-
-//nolint
-func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
-
-}
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
-
-//const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
 const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
 const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
@@ -173,7 +80,6 @@ var specialCharBlobTagsMap = map[string]string{
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
-//nolint
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name
@@ -227,7 +133,6 @@ func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	return internal.NopCloser(r)
 }
 
-//nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
 	rand.Read(data)
@@ -340,81 +245,6 @@ func createNewPageBlobWithCPK(t *testing.T, pageBlobName string, container Conta
 	return
 }
 
-// getRequiredEnv gets an environment variable by name and returns an error if it is not found
-func getRequiredEnv(name string) (string, error) {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		return env, nil
-	} else {
-		return "", errors.New("Required environment variable not set: " + name)
-	}
-}
-func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
-	accountNameEnvVar := string(accountType) + AccountNameEnvVar
-	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
-	var err error
-	accountName, accountKey := "", ""
-	if recording == nil {
-		accountName, err = getRequiredEnv(accountNameEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = getRequiredEnv(accountKeyEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-	} else {
-		accountName, err = recording.GetEnvVar(accountNameEnvVar, testframework.NoSanitization)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = recording.GetEnvVar(accountKeyEnvVar, testframework.Secret_Base64String)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-	}
-	return accountName, accountKey
-}
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
-	accountName, accountKey := getAccountInfo(recording, accountType)
-	if accountName == "" || accountKey == "" {
-		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
-	}
-	return NewSharedKeyCredential(accountName, accountKey)
-}
-
-//nolint
-func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
-	accountName, accountKey := getAccountInfo(recording, accountType)
-	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
-		accountName, accountKey)
-	return connectionString
-}
-
-//nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	connectionString := getConnectionString(recording, accountType)
-	primaryURL, cred, err := parseConnectionString(connectionString)
-	if err != nil {
-		return ServiceClient{}, nil
-	}
-
-	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
-	return svcClient, err
-}
-
 type testAccountType string
 
 const (
@@ -422,26 +252,6 @@ const (
 	testAccountSecondary testAccountType = "SECONDARY_"
 	testAccountPremium   testAccountType = "PREMIUM_"
 )
-
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	cred, err := getGenericCredential(recording, accountType)
-	if err != nil {
-		return ServiceClient{}, err
-	}
-
-	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
-
-	return serviceClient, err
-}
 
 //nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
@@ -453,12 +263,6 @@ func getRelativeTimeGMT(amount time.Duration) time.Time {
 func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
 	return anchorTime.Add(amount * time.Second)
 }
-
-//func generateCurrentTimeWithModerateResolution() time.Time {
-//	highResolutionTime := time.Now().UTC()
-//	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
-//		highResolutionTime.Second(), 0, highResolutionTime.Location())
-//}
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.
 // We will enable the necessary property and try to run the test implementation. If it fails with an error that should be due to

@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -67,6 +68,7 @@ func TestPutGetPages(t *testing.T) {
 }
 
 func TestUploadPagesFromURL(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -136,6 +138,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 }
 
 func TestUploadPagesFromURLWithMD5(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -701,7 +704,7 @@ func TestBlobCreatePageIfModifiedSinceFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobCreatePageIfUnmodifiedSinceTrue(t *testing.T) {
+func TestBlobCreatePageIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -876,7 +879,7 @@ func TestBlobCreatePageIfNoneMatchTrue(t *testing.T) {
 	validatePageBlobPut(t, pbClient)
 }
 
-func  TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
+func TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -910,7 +913,7 @@ func  TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobPutPagesInvalidRange(t *testing.T) {
+func TestBlobPutPagesInvalidRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -955,7 +958,7 @@ func TestBlobPutPagesEmptyBody(t *testing.T) {
 	require.Error(t, err)
 }
 
-func  TestBlobPutPagesNonExistentBlob(t *testing.T) {
+func TestBlobPutPagesNonExistentBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1064,7 +1067,7 @@ func TestBlobPutPagesIfModifiedSinceFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobPutPagesIfUnmodifiedSinceTrue(t *testing.T) {
+func TestBlobPutPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1138,7 +1141,7 @@ func TestBlobPutPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobPutPagesIfMatchTrue(t *testing.T) {
+func TestBlobPutPagesIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1175,7 +1178,7 @@ func  TestBlobPutPagesIfMatchTrue(t *testing.T) {
 	validateUploadPages(t, pbClient)
 }
 
-func  TestBlobPutPagesIfMatchFalse(t *testing.T) {
+func TestBlobPutPagesIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1211,7 +1214,7 @@ func  TestBlobPutPagesIfMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobPutPagesIfNoneMatchTrue(t *testing.T) {
+func TestBlobPutPagesIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1284,7 +1287,7 @@ func TestBlobPutPagesIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
+func TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1314,7 +1317,7 @@ func  TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	validateUploadPages(t, pbClient)
 }
 
-func  TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
+func TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1384,7 +1387,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeInvalidInput)
 }
 
-func  TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
+func TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1423,7 +1426,7 @@ func  TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 	validateUploadPages(t, pbClient)
 }
 
-func  TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
+func TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1490,7 +1493,7 @@ func TestBlobPutPagesIfSequenceNumberLTENegOne(t *testing.T) {
 	require.Error(t, err)
 }
 
-func  TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
+func TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1651,7 +1654,7 @@ func TestBlobClearPagesIfModifiedSinceFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobClearPagesIfUnmodifiedSinceTrue(t *testing.T) {
+func TestBlobClearPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1677,7 +1680,7 @@ func  TestBlobClearPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	validateClearPagesTest(t, pbClient)
 }
 
-func  TestBlobClearPagesIfUnmodifiedSinceFalse(t *testing.T) {
+func TestBlobClearPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1703,7 +1706,7 @@ func  TestBlobClearPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobClearPagesIfMatchTrue(t *testing.T) {
+func TestBlobClearPagesIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1749,7 +1752,7 @@ func TestBlobClearPagesIfMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func  TestBlobClearPagesIfNoneMatchTrue(t *testing.T) {
+func TestBlobClearPagesIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1771,7 +1774,7 @@ func  TestBlobClearPagesIfNoneMatchTrue(t *testing.T) {
 	validateClearPagesTest(t, pbClient)
 }
 
-func  TestBlobClearPagesIfNoneMatchFalse(t *testing.T) {
+func TestBlobClearPagesIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -1843,7 +1846,7 @@ func TestBlobClearPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
-func  TestBlobClearPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
+func TestBlobClearPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -2060,7 +2063,7 @@ func TestBlobGetPageRangesEmptyBlob(t *testing.T) {
 	require.Nil(t, resp.PageList.PageRange)
 }
 
-func  TestBlobGetPageRangesEmptyRange(t *testing.T) {
+func TestBlobGetPageRangesEmptyRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
@@ -2379,7 +2382,8 @@ func validateDiffPageRanges(t *testing.T, resp PageList, err error) {
 	require.EqualValues(t, rawEnd, end)
 }
 
-func  TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
+func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2396,6 +2400,7 @@ func  TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2407,6 +2412,7 @@ func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2429,6 +2435,7 @@ func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2450,6 +2457,7 @@ func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfUnmodifiedSinceTrue(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2472,6 +2480,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfUnmodifiedSinceFalse(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2495,6 +2504,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfMatchTrue(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2517,6 +2527,7 @@ func TestBlobDiffPageRangeIfMatchTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfMatchFalse(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2539,6 +2550,7 @@ func TestBlobDiffPageRangeIfMatchFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2560,6 +2572,7 @@ func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfNoneMatchFalse(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2971,7 +2984,7 @@ func validateSequenceNumberSet(t *testing.T, pbClient PageBlobClient) {
 	require.Equal(t, *resp.BlobSequenceNumber, int64(1))
 }
 
-func  TestBlobSetSequenceNumberIfModifiedSinceTrue(t *testing.T) {
+func TestBlobSetSequenceNumberIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 

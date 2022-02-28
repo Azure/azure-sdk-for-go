@@ -9,7 +9,7 @@
 
 package sqlvirtualmachineapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2017-03-01-preview/sqlvirtualmachine/sqlvirtualmachineapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine/sqlvirtualmachineapi"
 
 type AvailabilityGroupListenersClientAPI = original.AvailabilityGroupListenersClientAPI
 type GroupsClientAPI = original.GroupsClientAPI

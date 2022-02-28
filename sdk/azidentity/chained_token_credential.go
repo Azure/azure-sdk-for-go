@@ -28,12 +28,12 @@ type ChainedTokenCredentialOptions struct {
 // By default, this credential will assume that the first successful credential should be the only credential used on future requests.
 // If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 type ChainedTokenCredential struct {
-	sources              []azcore.TokenCredential
-	successfulCredential azcore.TokenCredential
-	retrySources         bool
-	name                 string
 	cond                 *sync.Cond
 	iterating            bool
+	name                 string
+	retrySources         bool
+	sources              []azcore.TokenCredential
+	successfulCredential azcore.TokenCredential
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
@@ -55,9 +55,9 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	}
 	return &ChainedTokenCredential{
 		cond:         sync.NewCond(&sync.Mutex{}),
-		sources:      cp,
 		name:         "ChainedTokenCredential",
 		retrySources: options.RetrySources,
+		sources:      cp,
 	}, nil
 }
 

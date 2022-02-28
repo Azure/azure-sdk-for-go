@@ -6,6 +6,7 @@
 * Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
 
 ### Breaking Changes
+* Removes all dependencies on `go-vcrpy`.
 
 ### Bugs Fixed
 

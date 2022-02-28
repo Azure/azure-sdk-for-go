@@ -86,6 +86,7 @@ func TestUriSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
+	require.Greater(t, len(data.Entries), 0)
 	require.Equal(t, data.Entries[0].RequestURI, "https://replacement.com/")
 }
 

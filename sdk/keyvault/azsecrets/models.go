@@ -113,7 +113,7 @@ func (s *Properties) toGenerated() *internal.SecretAttributes {
 }
 
 // create a SecretAttributes object from an internal.SecretAttributes object
-func secretAttributesFromGenerated(i *internal.SecretAttributes) *Properties {
+func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
 	if i == nil {
 		return nil
 	}
@@ -153,7 +153,7 @@ func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
 	}
 
 	return SecretItem{
-		Properties:  secretAttributesFromGenerated(i.Attributes),
+		Properties:  secretPropertiesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
 		Tags:        convertPtrMap(i.Tags),
@@ -195,7 +195,7 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 	}
 
 	return DeletedSecretItem{
-		Properties:         secretAttributesFromGenerated(i.Attributes),
+		Properties:         secretPropertiesFromGenerated(i.Attributes),
 		ContentType:        i.ContentType,
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,

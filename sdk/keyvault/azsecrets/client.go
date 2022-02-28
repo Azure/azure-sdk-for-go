@@ -89,7 +89,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 	return &GetSecretResponse{
 		RawResponse: i.RawResponse,
 		Secret: Secret{
-			Properties:  secretAttributesFromGenerated(i.Attributes),
+			Properties:  secretPropertiesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
@@ -132,37 +132,25 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 
 // SetSecretResponse is the response struct for the Client.SetSecret operation.
 type SetSecretResponse struct {
+	Secret
+
+	// RawResponse holds the underlying HTTP response
 	RawResponse *http.Response
-
-	// The secret management attributes.
-	Attributes *Properties `json:"attributes,omitempty"`
-
-	// The secret id.
-	ID *string `json:"id,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// The secret value.
-	Value *string `json:"value,omitempty"`
-
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
-	KID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
 	return SetSecretResponse{
 		RawResponse: i.RawResponse,
-		Attributes:  secretAttributesFromGenerated(i.Attributes),
-		ID:          i.ID,
-		Tags:        convertPtrMap(i.Tags),
-		Value:       i.Value,
-		KID:         i.Kid,
-		Managed:     i.Managed,
+		Secret: Secret{
+			Properties:  secretPropertiesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Value:       i.Value,
+			KeyID:       i.Kid,
+			Managed:     i.Managed,
+		},
 	}
 }
 
@@ -188,6 +176,7 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 // DeletedSecretResponse contains the response for a Client.DeleteSecret operation.
 type DeleteSecretResponse struct {
 	DeletedSecret
+
 	// RawResponse holds the underlying HTTP response
 	RawResponse *http.Response
 }
@@ -367,7 +356,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 	return GetDeletedSecretResponse{
 		RawResponse: i.RawResponse,
 		DeletedSecret: DeletedSecret{
-			Properties:         secretAttributesFromGenerated(i.Attributes),
+			Properties:         secretPropertiesFromGenerated(i.Attributes),
 			ContentType:        i.ContentType,
 			ID:                 i.ID,
 			RecoveryID:         i.RecoveryID,
@@ -429,7 +418,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 	return UpdateSecretPropertiesResponse{
 		RawResponse: i.RawResponse,
 		Secret: Secret{
-			Properties:  secretAttributesFromGenerated(i.Attributes),
+			Properties:  secretPropertiesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
@@ -514,6 +503,7 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 // RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
 type RestoreSecretBackupResponse struct {
 	Secret
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

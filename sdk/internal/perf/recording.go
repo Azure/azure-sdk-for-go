@@ -213,6 +213,12 @@ func (c *RecordingHTTPClient) stop() error {
 
 	req.Header.Set("x-recording-id", c.recID)
 	resp, err := defaultHTTPClient.Do(req)
+
+	log.Println(*resp)
+	b, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	log.Println(string(b))
+
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()

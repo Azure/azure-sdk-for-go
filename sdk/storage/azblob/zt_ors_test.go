@@ -50,23 +50,3 @@ func TestDeserializeORSPolicies(t *testing.T) {
 		require.Equal(t, rules1[1].Status, "Completed")
 	}
 }
-
-//func (s * azblobUnrecordedTestSuite) TestORSSource() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	bbName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
-//
-//	getResp, err := bbClient.GetProperties(ctx, nil)
-//	_assert.NoError(err)
-//	_assert.Nil(getResp.ObjectReplicationRules)
-//}

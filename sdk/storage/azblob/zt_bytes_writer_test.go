@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//nolint
 func TestBytesWriterWriteAt(t *testing.T) {
 	b := make([]byte, 10)
 	buffer := newBytesWriter(b)

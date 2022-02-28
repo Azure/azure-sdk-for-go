@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,14 +16,13 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
 	require.NoError(t, err)
@@ -34,14 +32,13 @@ func TestSetAccessPolicy(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -73,14 +70,13 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
@@ -122,14 +118,13 @@ func TestSetNullAccessPolicy(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
@@ -154,7 +149,6 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -162,7 +156,7 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// Define the policies
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -206,7 +200,6 @@ func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -220,7 +213,7 @@ func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
 	require.NoError(t, err)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
@@ -232,14 +225,13 @@ func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -259,7 +251,6 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -267,7 +258,7 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	access := PublicAccessTypeContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -287,14 +278,13 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	require.NoError(t, err)
@@ -324,14 +314,13 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -339,7 +328,7 @@ func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	require.NoError(t, err)
@@ -395,7 +384,6 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -403,7 +391,7 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	require.NoError(t, err)
@@ -456,7 +444,6 @@ func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -464,7 +451,7 @@ func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// Swap start and expiry
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -500,7 +487,6 @@ func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -508,7 +494,7 @@ func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
@@ -518,7 +504,6 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -526,7 +511,7 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
 
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	id := ""
 	for i := 0; i < 65; i++ {
@@ -558,14 +543,13 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -576,7 +560,7 @@ func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
 	cResp, err := containerClient.Create(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -597,7 +581,6 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -608,7 +591,7 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 	cResp, err := containerClient.Create(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -620,14 +603,13 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -638,7 +620,7 @@ func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
 	cResp, err := containerClient.Create(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -659,7 +641,6 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -670,7 +651,7 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	cResp, err := containerClient.Create(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -682,5 +663,5 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }

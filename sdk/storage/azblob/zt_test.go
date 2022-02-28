@@ -12,129 +12,17 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"math/rand"
-	"net/url"
-	"os"
 	"runtime"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
 )
-
-type azblobTestSuite struct {
-	suite.Suite
-	mode testframework.RecordMode
-}
-
-//nolint
-type azblobUnrecordedTestSuite struct {
-	suite.Suite
-}
-
-// Hookup to the testing framework
-func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
-}
-
-type testContext struct {
-	recording *testframework.Recording
-	context   *testframework.TestContext
-}
-
-// a map to store our created test contexts
-var clientsMap = make(map[string]*testContext)
-
-// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
-	testName := t.Name()
-	_assert := assert.New(t)
-
-	// init the test framework
-	_testContext := testframework.NewTestContext(
-		func(msg string) { _assert.FailNow(msg) },
-		func(msg string) { t.Log(msg) },
-		func() string { return testName })
-
-	// mode should be test_framework.Playback.
-	// This will automatically record if no test recording is available and playback if it is.
-	recording, err := testframework.NewRecording(_testContext, mode)
-	_assert.NoError(err)
-
-	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
-
-	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
-}
-
-func getTestContext(key string) *testContext {
-	return clientsMap[key]
-}
-
-func recordedTestTeardown(key string) {
-	_context, ok := clientsMap[key]
-	if ok && !(*_context.context).IsFailed() {
-		_ = _context.recording.Stop()
-	}
-}
-
-//nolint
-func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// set up the test environment
-	recordedTestSetup(s.T(), s.mode)
-}
-
-//nolint
-func (s *azblobTestSuite) AfterTest(suite string, test string) {
-	// teardown the test context
-	recordedTestTeardown(s.T().Name())
-}
-
-//nolint
-func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
-
-}
-
-//nolint
-func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
-
-}
-
-//// Note that this function is adding to the list of ignored headers not creating from scratch
-//func ignoreHeaders(recording *testframework.Recording, headers []string) {
-//	ignoredHeaders := recording.Matcher.IgnoredHeaders
-//	for _, header := range headers {
-//		// TODO: Mohit Come Here
-//		//ignoredHeaders[header] = nil
-//		_ = header
-//	}
-//	_ = ignoredHeaders
-//}
-
-// Vars for
-const DefaultEndpointSuffix = "core.windows.net/"
-
-//const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
-const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
-const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
-const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 
 const (
 	containerPrefix             = "goc"
@@ -164,14 +52,12 @@ var basicHeaders = BlobHTTPHeaders{
 
 var basicMetadata = map[string]string{"Foo": "bar"}
 
-//nolint
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
 }
 
-//nolint
 var specialCharBlobTagsMap = map[string]string{
 	"+-./:=_ ":        "firsttag",
 	"tag2":            "+-./:=_",
@@ -186,7 +72,6 @@ var specialCharBlobTagsMap = map[string]string{
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
-//nolint
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name
@@ -240,7 +125,6 @@ func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	return internal.NopCloser(r)
 }
 
-//nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
 	rand.Read(data)
@@ -273,54 +157,54 @@ func createNewContainer(t *testing.T, containerName string, serviceClient Servic
 	return containerClient
 }
 
-func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient) {
+func deleteContainer(t *testing.T, containerClient ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
-	_assert.NoError(err)
-	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
+	require.NoError(t, err)
+	require.Equal(t, deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
-func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+func createNewBlockBlob(t *testing.T, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 
 	return bbClient
 }
 
-func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerClient ContainerClient) {
+func createNewBlobs(t *testing.T, blobNames []string, containerClient ContainerClient) {
 	for _, blobName := range blobNames {
-		createNewBlockBlob(_assert, blobName, containerClient)
+		createNewBlockBlob(t, blobName, containerClient)
 	}
 }
 
-func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+func createNewAppendBlob(t *testing.T, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
 	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return abClient
 }
 
-func createNewPageBlob(_assert *assert.Assertions, pageBlobName string, containerClient ContainerClient) PageBlobClient {
-	return createNewPageBlobWithSize(_assert, pageBlobName, containerClient, PageBlobPageBytes*10)
+func createNewPageBlob(t *testing.T, pageBlobName string, containerClient ContainerClient) PageBlobClient {
+	return createNewPageBlobWithSize(t, pageBlobName, containerClient, PageBlobPageBytes*10)
 }
 
-func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
+func createNewPageBlobWithSize(t *testing.T, pageBlobName string,
 	containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
 	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pbClient
 }
 
-func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
+func createNewBlockBlobWithCPK(t *testing.T, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
 	bbClient = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
@@ -328,19 +212,19 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 		CpkScopeInfo: cpkScopeInfo,
 	}
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*cResp.IsServerEncrypted, true)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *cResp.IsServerEncrypted, true)
 	if cpkInfo != nil {
-		_assert.EqualValues(cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
+		require.EqualValues(t, cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkScopeInfo != nil {
-		_assert.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
+		require.EqualValues(t, cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
 	}
 	return
 }
 
-func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container ContainerClient,
+func createNewPageBlobWithCPK(t *testing.T, pageBlobName string, container ContainerClient,
 	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
@@ -348,84 +232,9 @@ func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, c
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	})
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
 	return
-}
-
-// getRequiredEnv gets an environment variable by name and returns an error if it is not found
-func getRequiredEnv(name string) (string, error) {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		return env, nil
-	} else {
-		return "", errors.New("Required environment variable not set: " + name)
-	}
-}
-func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
-	accountNameEnvVar := string(accountType) + AccountNameEnvVar
-	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
-	var err error
-	accountName, accountKey := "", ""
-	if recording == nil {
-		accountName, err = getRequiredEnv(accountNameEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = getRequiredEnv(accountKeyEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-	} else {
-		accountName, err = recording.GetEnvVar(accountNameEnvVar, testframework.NoSanitization)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = recording.GetEnvVar(accountKeyEnvVar, testframework.Secret_Base64String)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-	}
-	return accountName, accountKey
-}
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
-	accountName, accountKey := getAccountInfo(recording, accountType)
-	if accountName == "" || accountKey == "" {
-		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
-	}
-	return NewSharedKeyCredential(accountName, accountKey)
-}
-
-//nolint
-func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
-	accountName, accountKey := getAccountInfo(recording, accountType)
-	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
-		accountName, accountKey)
-	return connectionString
-}
-
-//nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	connectionString := getConnectionString(recording, accountType)
-	primaryURL, cred, err := parseConnectionString(connectionString)
-	if err != nil {
-		return ServiceClient{}, nil
-	}
-
-	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
-	return svcClient, err
 }
 
 type testAccountType string
@@ -436,27 +245,6 @@ const (
 	testAccountPremium   testAccountType = "PREMIUM_"
 )
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	cred, err := getGenericCredential(recording, accountType)
-	if err != nil {
-		return ServiceClient{}, err
-	}
-
-	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
-
-	return serviceClient, err
-}
-
-//nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -467,52 +255,49 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 	return anchorTime.Add(amount * time.Second)
 }
 
-//func generateCurrentTimeWithModerateResolution() time.Time {
-//	highResolutionTime := time.Now().UTC()
-//	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
-//		highResolutionTime.Second(), 0, highResolutionTime.Location())
-//}
-
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.
 // We will enable the necessary property and try to run the test implementation. If it fails with an error that should be due to
 // those changes not being reflected yet, we will wait 30 seconds and try the test again. If it fails this time for any reason,
 // we fail the test. It is the responsibility of the the testImplFunc to determine which error string indicates the test should be retried.
 // There can only be one such string. All errors that cannot be due to this detail should be asserted and not returned as an error string.
-func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceClient, code string,
-	enableServicePropertyFunc func(*assert.Assertions, ServiceClient),
-	testImplFunc func(*assert.Assertions, ServiceClient) error,
-	disableServicePropertyFunc func(*assert.Assertions, ServiceClient)) {
+func runTestRequiringServiceProperties(t *testing.T, bsu ServiceClient, code string,
+	enableServicePropertyFunc func(*testing.T, ServiceClient),
+	testImplFunc func(*testing.T, ServiceClient) error,
+	disableServicePropertyFunc func(*testing.T, ServiceClient)) {
 
-	enableServicePropertyFunc(_assert, bsu)
-	defer disableServicePropertyFunc(_assert, bsu)
+	enableServicePropertyFunc(t, bsu)
+	defer disableServicePropertyFunc(t, bsu)
 
-	err := testImplFunc(_assert, bsu)
+	err := testImplFunc(t, bsu)
 	// We cannot assume that the error indicative of slow update will necessarily be a StorageError. As in ListBlobs.
 	if err != nil && err.Error() == code {
 		recording.Sleep(time.Second * 30)
-		err = testImplFunc(_assert, bsu)
-		_assert.NoError(err)
+		err = testImplFunc(t, bsu)
+		require.NoError(t, err)
 	}
 }
 
-func enableSoftDelete(_assert *assert.Assertions, serviceClient ServiceClient) {
-	days := int32(1)
+func enableSoftDelete(t *testing.T, serviceClient ServiceClient) {
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
-		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
-	_assert.NoError(err)
+		DeleteRetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(1),
+		},
+	})
+	require.NoError(t, err)
 }
 
-func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
+func disableSoftDelete(t *testing.T, bsu ServiceClient) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
-func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
+func validateUpload(t *testing.T, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-	_assert.NoError(err)
-	_assert.Len(data, 0)
+	require.NoError(t, err)
+	require.Len(t, data, 0)
 }
 
 func generateBlockIDsList(count int) []string {
@@ -531,13 +316,12 @@ func blockIDIntToBase64(blockID int) string {
 }
 
 // TODO: Figure out in which scenario, the parsing will fail.
-func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
-	_assert.Error(err)
+func validateStorageError(t *testing.T, err error, code StorageErrorCode) {
+	require.Error(t, err)
 	var storageError *StorageError
-	// TOOD: this should really be require.Equal so that if it fails we don't try the next line which will panic
-	_assert.Equal(true, errors.As(err, &storageError))
 
-	_assert.Equal(storageError.ErrorCode, code)
+	require.Equal(t, true, errors.As(err, &storageError))
+	require.Equal(t, storageError.ErrorCode, code)
 }
 
 func blobListToMap(list []string) map[string]bool {

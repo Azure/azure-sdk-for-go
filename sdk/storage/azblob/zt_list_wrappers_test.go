@@ -7,7 +7,6 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,7 +15,6 @@ func TestBlobListWrapper(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -26,11 +24,11 @@ func TestBlobListWrapper(t *testing.T) {
 
 	_, err = containerClient.Create(ctx, nil)
 	require.NoError(t, err)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(_assert, files, containerClient)
+	createNewBlobs(t, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -56,7 +54,6 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -64,12 +61,12 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	defer deleteContainer(t, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(_assert, files, containerClient)
+	createNewBlobs(t, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 

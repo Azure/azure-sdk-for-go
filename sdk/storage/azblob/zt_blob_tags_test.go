@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,13 +23,12 @@ func TestSetBlobTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -65,16 +63,16 @@ func TestSetBlobTags(t *testing.T) {
 }
 
 func TestSetBlobTagsWithVID(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -127,13 +125,12 @@ func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
@@ -165,13 +162,12 @@ func TestStageBlockWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
@@ -232,7 +228,6 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -240,7 +235,7 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := generateData(contentSize)
@@ -336,7 +331,6 @@ func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
@@ -344,7 +338,7 @@ func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 1 * 1024 * 1024 // 1MB
 	r, sourceData := generateData(contentSize)
@@ -421,13 +415,12 @@ func TestGetPropertiesReturnsTagsCount(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
@@ -455,15 +448,14 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
-	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+	bbClient := createNewBlockBlob(t, generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
 		"Microsoft Azure": "Azure Storage",
 		"Storage+SDK":     "SDK/GO",
@@ -490,16 +482,15 @@ func TestListBlobReturnsTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(testName)
-	blobClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobClient := createNewBlockBlob(t, blobName, containerClient)
 	blobTagsMap := map[string]string{
 		"+-./:=_ ": "firsttag",
 		"tag2":     "+-./:=_",
@@ -532,150 +523,19 @@ func TestListBlobReturnsTags(t *testing.T) {
 	}
 }
 
-//nolint
-//func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient1 := createNewContainer(t, generateContainerName(testName) + "1", svcClient)
-//	defer deleteContainer(_assert, containerClient1)
-//
-//	containerClient2 := createNewContainer(t, generateContainerName(testName) + "2", svcClient)
-//	defer deleteContainer(_assert, containerClient2)
-//
-//	containerClient3 := createNewContainer(t, generateContainerName(testName) + "3", svcClient)
-//	defer deleteContainer(_assert, containerClient3)
-//
-//	blobTagsMap1 := map[string]string{
-//		"tag2": "tagsecond",
-//		"tag3": "tagthird",
-//	}
-//	blobTagsMap2 := map[string]string{
-//		"tag1": "firsttag",
-//		"tag2": "secondtag",
-//		"tag3": "thirdtag",
-//	}
-//
-//	blobURL11 := getBlockBlobClient(generateBlobName(testName) + "11", containerClient1)
-//	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &UploadBlockBlobOptions{
-//		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap1,
-//	})
-//	_assert.NoError(err)
-//
-//	blobURL12 := getBlockBlobClient(generateBlobName(testName) + "12", containerClient1)
-//	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &UploadBlockBlobOptions{
-//		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap2,
-//	})
-//	_assert.NoError(err)
-//
-//	blobURL21 := getBlockBlobClient(generateBlobName(testName) + "21", containerClient2)
-//	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.NoError(err)
-//
-//	blobURL22 := getBlockBlobClient(generateBlobName(testName) + "22", containerClient2)
-//	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
-//	_assert.NoError(err)
-//
-//	blobURL31 := getBlockBlobClient(generateBlobName(testName) + "31", containerClient3)
-//	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.NoError(err)
-//
-//	where := "\"tag4\"='fourthtag'"
-//	lResp, err := svcClient.FindBlobByTags(ctx, nil, nil, &where, Marker{}, nil)
-//	_assert.NoError(err)
-//	_assert(lResp.Blobs, chk.HasLen, 0)
-//
-//	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
-//	//TODO: Figure out how to do a composite query based on container.
-//	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
-//
-//	lResp, err = svcClient.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-//	_assert.NoError(err)
-//
-//	for _, blob := range lResp.Blobs {
-//		_assert(blob.TagValue, chk.Equals, "firsttag")
-//	}
-//}
-
-//nolint
-//func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
-//	accountName, accountKey := accountInfo()
-//	credential, err := NewSharedKeyCredential(accountName, accountKey)
-//	if err != nil {
-//		s.T().Fail()
-//	}
-//
-//	sasQueryParams, err := AccountSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
-//		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
-//		Services:      AccountSASServices{Blob: true}.String(),
-//		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	qp := sasQueryParams.Encode()
-//	urlToSendToSomeone := fmt.Sprintf("https://%s.blob.core.windows.net?%s", accountName, qp)
-//	u, _ := url.Parse(urlToSendToSomeone)
-//	serviceURL := NewServiceURL(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
-//
-//	containerName := generateContainerName()
-//	containerClient := serviceURL.NewcontainerClient(containerName)
-//	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
-//	defer containerClient.Delete(ctx, BlobAccessConditions{})
-//	if err != nil {
-//		s.T().Fatal(err)
-//	}
-//
-//	blobClient := containerClient.NewBlockBlobURL("temp")
-//	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	if err != nil {
-//		s.T().Fail()
-//	}
-//
-//	blobTagsMap := TagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
-//	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
-//	_assert.NoError(err)
-//	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
-//
-//	blobGetTagsResp, err := blobClient.GetTags(ctx, nil, nil, nil, nil, nil)
-//	_assert.NoError(err)
-//	_assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
-//	_assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
-//	for _, blobTag := range blobGetTagsResp.BlobTagSet {
-//		_assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
-//	}
-//
-//	time.Sleep(30 * time.Second)
-//	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
-//	_, err = serviceURL.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-//	_assert.NoError(err)
-//}
-
 func TestCreatePageBlobWithTags(t *testing.T) {
 	recording.LiveOnly(t) // bodies do not match
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(_assert, "src"+generateBlobName(testName), containerClient)
+	pbClient := createNewPageBlob(t, "src"+generateBlobName(testName), containerClient)
 
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
@@ -744,15 +604,14 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+	pbClient := createNewPageBlob(t, generateBlobName(testName), containerClient)
 
 	setTagsBlobOptions := SetTagsBlobOptions{
 		TagsMap: specialCharBlobTagsMap,
@@ -783,13 +642,12 @@ func TestCreateAppendBlobWithTags(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := getAppendBlobClient(generateBlobName(testName), containerClient)
 

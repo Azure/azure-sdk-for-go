@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -30,13 +30,12 @@ func TestServiceClientFromConnectionString(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 
 	svcClient, err := createServiceClientFromConnectionString(t, testAccountDefault)
 	require.NoError(t, err)
 	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 }
 
 func TestListContainersBasic(t *testing.T) {
@@ -159,85 +158,18 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 	require.GreaterOrEqual(t, count, 0)
 }
 
-//func (s *azblobTestSuite) TestListContainersPaged() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	const numContainers = 6
-//	maxResults := int32(2)
-//	const pagedContainersPrefix = "azcontainerpaged"
-//
-//	containers := make([]ContainerClient, numContainers)
-//	expectedResults := make(map[string]bool)
-//	for i := 0; i < numContainers; i++ {
-//		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)
-//		containerClient := createNewContainer(t, containerName, svcClient)
-//		containers[i] = containerClient
-//		expectedResults[containerName] = false
-//	}
-//
-//	defer func() {
-//		for i := range containers {
-//			deleteContainer(_assert, containers[i])
-//		}
-//	}()
-//
-//	// list for a first time
-//	prefix := containerPrefix + pagedContainersPrefix
-//	listOptions := ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
-//	count := 0
-//	results := make([]ContainerItem, 0)
-//
-//	pager := sa.ListContainers(&listOptions)
-//
-//	for pager.NextPage(ctx) {
-//		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
-//			if container == nil {
-//				continue
-//			}
-//
-//			results = append(results, *container)
-//			count += 1
-//			_assert.(container.Name, chk.NotNil)
-//		}
-//	}
-//
-//	_assert.(pager.Err(), chk.IsNil)
-//	_assert.(count, chk.Equals, numContainers)
-//	_assert.(len(results), chk.Equals, numContainers)
-//
-//	// make sure each container we see is expected
-//	for _, container := range results {
-//		_, ok := expectedResults[*container.Name]
-//		_assert.(ok, chk.Equals, true)
-//
-//		expectedResults[*container.Name] = true
-//	}
-//
-//	// make sure every expected container was seen
-//	for _, seen := range expectedResults {
-//		_assert.(seen, chk.Equals, true)
-//	}
-//}
-
 func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerClient1 := createNewContainer(t, generateContainerName(testName)+"1", svcClient)
-	defer deleteContainer(_assert, containerClient1)
+	defer deleteContainer(t, containerClient1)
 	containerClient2 := createNewContainer(t, generateContainerName(testName)+"2", svcClient)
-	defer deleteContainer(_assert, containerClient2)
+	defer deleteContainer(t, containerClient2)
 
 	count := 0
 	pager := svcClient.ListContainers(nil)
@@ -254,50 +186,6 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	require.GreaterOrEqual(t, count, 2)
 }
 
-//// TODO re-enable after fixing error handling
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
-////	svcClient := getServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
-////
-////	illegalMaxResults := []int32{-2, 0}
-////	for _, num := range illegalMaxResults {
-////		options := ListContainersOptions{MaxResults: &num}
-////
-////		// getting the pager should still work
-////		pager, err := svcClient.ListContainers(context.Background(), 100, time.Hour, &options)
-////		_assert.NoError(err)
-////
-////		// getting the next page should fail
-////
-////	}
-////}
-//
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact() {
-////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
-////	svcClient := getServiceClient()
-////	containerClient1, containerName1 := createNewContainerWithSuffix(c, svcClient, "abc")
-////	defer deleteContainer(containerClient1)
-////	containerClient2, containerName2 := createNewContainerWithSuffix(c, svcClient, "abcde")
-////	defer deleteContainer(containerClient2)
-////
-////	prefix := containerPrefix + "abc"
-////	maxResults := int32(2)
-////	options := ListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
-////	pager, err := svcClient.ListContainers(&options)
-////	_assert.NoError(err)
-////
-////	// getting the next page should work
-////	hasPage := pager.NextPage(context.Background())
-////	_assert.(hasPage, chk.Equals, true)
-////
-////	page := pager.PageResponse()
-////	_assert.NoError(err)
-////	_assert.(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
-////	_assert.(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
-////	_assert.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
-////}
-
 func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	stop := start(t)
 	defer stop()
@@ -311,7 +199,7 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -323,7 +211,7 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -344,7 +232,7 @@ func TestAccountDeleteRetentionPolicyEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -369,7 +257,7 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
@@ -380,7 +268,7 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 	require.NoError(t, err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(ctx)
@@ -411,8 +299,6 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
-
 	var svcClient ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
@@ -428,7 +314,7 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 		_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 		require.Error(t, err)
 
-		validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+		validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 	}
 }
 
@@ -436,7 +322,6 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -445,5 +330,5 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }

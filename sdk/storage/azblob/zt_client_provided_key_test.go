@@ -12,10 +12,12 @@ import (
 	"io/ioutil"
 	"strconv"
 	"strings"
+	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 /*
@@ -50,17 +52,16 @@ var testInvalidCPKByScope = CpkScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
 }
 
-func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
 
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
@@ -72,49 +73,52 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 			CpkInfo: &testCPKByValue,
 		}
 		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
-		_assert.NoError(err)
+		require.NoError(t, err)
 	}
 
 	commitBlockListOptions := CommitBlockListOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.Equal(*resp.IsServerEncrypted, true)
-	_assert.EqualValues(*resp.EncryptionKeySHA256, *(testCPKByValue.EncryptionKeySHA256))
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.Equal(t, *resp.IsServerEncrypted, true)
+	require.EqualValues(t, *resp.EncryptionKeySHA256, *(testCPKByValue.EncryptionKeySHA256))
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	b := bytes.Buffer{}
 	reader := getResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue})
-	_, _ = b.ReadFrom(reader)
-	_ = reader.Close()
-	_assert.Equal(b.String(), "AAA BBB CCC ")
-	_assert.EqualValues(*getResp.ETag, *resp.ETag)
-	_assert.EqualValues(*getResp.LastModified, *resp.LastModified)
+	_, err = b.ReadFrom(reader)
+	require.NoError(t, err)
+	err = reader.Close()
+	require.NoError(t, err)
+	require.Equal(t, b.String(), "AAA BBB CCC ")
+	require.EqualValues(t, *getResp.ETag, *resp.ETag)
+	require.EqualValues(t, *getResp.LastModified, *resp.LastModified)
 }
 
-func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
@@ -126,52 +130,52 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 			CpkScopeInfo: &testCPKByScope,
 		}
 		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
-		_assert.NoError(err)
+		require.NoError(t, err)
 	}
 
 	commitBlockListOptions := CommitBlockListOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-	_assert.NoError(err)
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.Equal(*resp.IsServerEncrypted, true)
-	_assert.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.Equal(t, *resp.IsServerEncrypted, true)
+	require.EqualValues(t, resp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	_, err = bbClient.Download(ctx, &downloadBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	b := bytes.Buffer{}
 	reader := getResp.Body(nil)
 	_, err = b.ReadFrom(reader)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	_ = reader.Close() // The client must close the response body when finished with it
-	_assert.Equal(b.String(), "AAA BBB CCC ")
-	_assert.EqualValues(*getResp.ETag, *resp.ETag)
-	_assert.EqualValues(*getResp.LastModified, *resp.LastModified)
-	_assert.Equal(*getResp.IsServerEncrypted, true)
-	_assert.EqualValues(*getResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.Equal(t, b.String(), "AAA BBB CCC ")
+	require.EqualValues(t, *getResp.ETag, *resp.ETag)
+	require.EqualValues(t, *getResp.LastModified, *resp.LastModified)
+	require.Equal(t, *getResp.IsServerEncrypted, true)
+	require.EqualValues(t, *getResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -181,13 +185,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
 	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -195,9 +199,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -210,12 +212,12 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-	_assert.NoError(err)
-	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp1.ContentMD5, "")
-	_assert.NotEqual(stageResp1.RequestID, "")
-	_assert.NotEqual(stageResp1.Version, "")
-	_assert.Equal(stageResp1.Date.IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, stageResp1.RawResponse.StatusCode, 201)
+	require.NotEqual(t, stageResp1.ContentMD5, "")
+	require.NotEqual(t, stageResp1.RequestID, "")
+	require.NotEqual(t, stageResp1.Version, "")
+	require.Equal(t, stageResp1.Date.IsZero(), false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
@@ -225,71 +227,72 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-	_assert.NoError(err)
-	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp2.ContentMD5, "")
-	_assert.NotEqual(stageResp2.RequestID, "")
-	_assert.NotEqual(stageResp2.Version, "")
-	_assert.Equal(stageResp2.Date.IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, stageResp2.RawResponse.StatusCode, 201)
+	require.NotEqual(t, stageResp2.ContentMD5, "")
+	require.NotEqual(t, stageResp2.RequestID, "")
+	require.NotEqual(t, stageResp2.Version, "")
+	require.Equal(t, stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.CommittedBlocks)
-	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
+	require.NoError(t, err)
+	require.Equal(t, blockList.RawResponse.StatusCode, 200)
+	require.NotNil(t, blockList.BlockList)
+	require.Nil(t, blockList.BlockList.CommittedBlocks)
+	require.NotNil(t, blockList.BlockList.UncommittedBlocks)
+	require.Len(t, blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	commitBlockListOptions := CommitBlockListOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-	_assert.NoError(err)
-	_assert.Equal(listResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(listResp.LastModified)
-	_assert.Equal((*listResp.LastModified).IsZero(), false)
-	_assert.NotNil(listResp.ETag)
-	_assert.NotNil(listResp.RequestID)
-	_assert.NotNil(listResp.Version)
-	_assert.NotNil(listResp.Date)
-	_assert.Equal((*listResp.Date).IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, listResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, listResp.LastModified)
+	require.Equal(t, (*listResp.LastModified).IsZero(), false)
+	require.NotNil(t, listResp.ETag)
+	require.NotNil(t, listResp.RequestID)
+	require.NotNil(t, listResp.Version)
+	require.NotNil(t, listResp.Date)
+	require.Equal(t, (*listResp.Date).IsZero(), false)
 
 	// Check block list.
 	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.UncommittedBlocks)
-	_assert.NotNil(blockList.BlockList.CommittedBlocks)
-	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
+	require.NoError(t, err)
+	require.Equal(t, blockList.RawResponse.StatusCode, 200)
+	require.NotNil(t, blockList.BlockList)
+	require.Nil(t, blockList.BlockList.UncommittedBlocks)
+	require.NotNil(t, blockList.BlockList.CommittedBlocks)
+	require.Len(t, blockList.BlockList.CommittedBlocks, 2)
 
 	// Check data integrity through downloading.
 	_, err = destBlob.BlobClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, content)
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, content)
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -299,13 +302,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
 	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -313,9 +316,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -328,12 +329,12 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 		CpkScopeInfo: &testCPKByScope,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-	_assert.NoError(err)
-	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp1.ContentMD5, "")
-	_assert.NotEqual(stageResp1.RequestID, "")
-	_assert.NotEqual(stageResp1.Version, "")
-	_assert.Equal(stageResp1.Date.IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, stageResp1.RawResponse.StatusCode, 201)
+	require.NotEqual(t, stageResp1.ContentMD5, "")
+	require.NotEqual(t, stageResp1.RequestID, "")
+	require.NotEqual(t, stageResp1.Version, "")
+	require.Equal(t, stageResp1.Date.IsZero(), false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
@@ -343,67 +344,67 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 		CpkScopeInfo: &testCPKByScope,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-	_assert.NoError(err)
-	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
-	_assert.NotEqual(stageResp2.ContentMD5, "")
-	_assert.NotEqual(stageResp2.RequestID, "")
-	_assert.NotEqual(stageResp2.Version, "")
-	_assert.Equal(stageResp2.Date.IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, stageResp2.RawResponse.StatusCode, 201)
+	require.NotEqual(t, stageResp2.ContentMD5, "")
+	require.NotEqual(t, stageResp2.RequestID, "")
+	require.NotEqual(t, stageResp2.Version, "")
+	require.Equal(t, stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.CommittedBlocks)
-	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
+	require.NoError(t, err)
+	require.Equal(t, blockList.RawResponse.StatusCode, 200)
+	require.NotNil(t, blockList.BlockList)
+	require.Nil(t, blockList.BlockList.CommittedBlocks)
+	require.NotNil(t, blockList.BlockList.UncommittedBlocks)
+	require.Len(t, blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	commitBlockListOptions := CommitBlockListOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-	_assert.NoError(err)
-	_assert.Equal(listResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(listResp.LastModified)
-	_assert.Equal((*listResp.LastModified).IsZero(), false)
-	_assert.NotNil(listResp.ETag)
-	_assert.NotNil(listResp.RequestID)
-	_assert.NotNil(listResp.Version)
-	_assert.NotNil(listResp.Date)
-	_assert.Equal((*listResp.Date).IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, listResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, listResp.LastModified)
+	require.Equal(t, (*listResp.LastModified).IsZero(), false)
+	require.NotNil(t, listResp.ETag)
+	require.NotNil(t, listResp.RequestID)
+	require.NotNil(t, listResp.Version)
+	require.NotNil(t, listResp.Date)
+	require.Equal(t, (*listResp.Date).IsZero(), false)
 
 	// Check block list.
 	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Equal(blockList.RawResponse.StatusCode, 200)
-	_assert.NotNil(blockList.BlockList)
-	_assert.Nil(blockList.BlockList.UncommittedBlocks)
-	_assert.NotNil(blockList.BlockList.CommittedBlocks)
-	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
+	require.NoError(t, err)
+	require.Equal(t, blockList.RawResponse.StatusCode, 200)
+	require.NotNil(t, blockList.BlockList)
+	require.Nil(t, blockList.BlockList.UncommittedBlocks)
+	require.NotNil(t, blockList.BlockList.CommittedBlocks)
+	require.Len(t, blockList.BlockList.CommittedBlocks, 2)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, content)
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, content)
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestUploadBlobWithMD5WithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -414,42 +415,43 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*uploadResp.IsServerEncrypted, true)
-	_assert.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *uploadResp.IsServerEncrypted, true)
+	require.EqualValues(t, uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	_, err = bbClient.Download(ctx, &DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	})
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadResp, err := bbClient.BlobClient.Download(ctx, &DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	})
-	_assert.NoError(err)
-	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
+	require.NoError(t, err)
+	require.EqualValues(t, downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
-	_assert.EqualValues(downloadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
+	require.EqualValues(t, downloadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -460,34 +462,34 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*uploadResp.IsServerEncrypted, true)
-	_assert.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *uploadResp.IsServerEncrypted, true)
+	require.EqualValues(t, uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
+	require.NoError(t, err)
+	require.EqualValues(t, downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-func (s *azblobTestSuite) TestAppendBlockWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestAppendBlockWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
@@ -495,8 +497,8 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -504,49 +506,50 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 			CpkInfo: &testCPKByValue,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
-		_assert.NoError(err)
-		_assert.Equal(resp.RawResponse.StatusCode, 201)
-		_assert.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
-		_assert.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
-		_assert.NotNil(resp.ETag)
-		_assert.NotNil(resp.LastModified)
-		_assert.Equal(resp.LastModified.IsZero(), false)
-		_assert.NotEqual(resp.ContentMD5, "")
+		require.NoError(t, err)
+		require.Equal(t, resp.RawResponse.StatusCode, 201)
+		require.Equal(t, *resp.BlobAppendOffset, strconv.Itoa(index*4))
+		require.Equal(t, *resp.BlobCommittedBlockCount, int32(index+1))
+		require.NotNil(t, resp.ETag)
+		require.NotNil(t, resp.LastModified)
+		require.Equal(t, resp.LastModified.IsZero(), false)
+		require.NotEqual(t, resp.ContentMD5, "")
 
-		_assert.NotEqual(resp.Version, "")
-		_assert.NotNil(resp.Date)
-		_assert.Equal((*resp.Date).IsZero(), false)
-		_assert.Equal(*resp.IsServerEncrypted, true)
-		_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+		require.NotEqual(t, resp.Version, "")
+		require.NotNil(t, resp.Date)
+		require.Equal(t, (*resp.Date).IsZero(), false)
+		require.Equal(t, *resp.IsServerEncrypted, true)
+		require.EqualValues(t, resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 	}
 
 	// Get blob content without encryption key should fail the request.
 	_, err = abClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	data, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(string(data), "AAA BBB CCC ")
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, string(data), "AAA BBB CCC ")
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestAppendBlockWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
@@ -554,8 +557,8 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -563,20 +566,20 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 			CpkScopeInfo: &testCPKByScope,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
-		_assert.NoError(err)
-		_assert.Equal(resp.RawResponse.StatusCode, 201)
-		_assert.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
-		_assert.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
-		_assert.NotNil(resp.ETag)
-		_assert.NotNil(resp.LastModified)
-		_assert.Equal(resp.LastModified.IsZero(), false)
-		_assert.NotEqual(resp.ContentMD5, "")
+		require.NoError(t, err)
+		require.Equal(t, resp.RawResponse.StatusCode, 201)
+		require.Equal(t, *resp.BlobAppendOffset, strconv.Itoa(index*4))
+		require.Equal(t, *resp.BlobCommittedBlockCount, int32(index+1))
+		require.NotNil(t, resp.ETag)
+		require.NotNil(t, resp.LastModified)
+		require.Equal(t, resp.LastModified.IsZero(), false)
+		require.NotEqual(t, resp.ContentMD5, "")
 
-		_assert.NotEqual(resp.Version, "")
-		_assert.NotNil(resp.Date)
-		_assert.Equal((*resp.Date).IsZero(), false)
-		_assert.Equal(*resp.IsServerEncrypted, true)
-		_assert.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
+		require.NotEqual(t, resp.Version, "")
+		require.NotNil(t, resp.Date)
+		require.Equal(t, (*resp.Date).IsZero(), false)
+		require.Equal(t, *resp.IsServerEncrypted, true)
+		require.EqualValues(t, resp.EncryptionScope, testCPKByScope.EncryptionScope)
 	}
 
 	// Download blob to do data integrity check.
@@ -584,24 +587,25 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	data, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(string(data), "AAA BBB CCC ")
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, string(data), "AAA BBB CCC ")
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestAppendBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -612,27 +616,27 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 
 	cResp1, err := srcABClient.Create(context.Background(), nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp1.RawResponse.StatusCode, 201)
 
 	resp, err := srcABClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
-	_assert.Equal(*resp.BlobAppendOffset, "0")
-	_assert.Equal(*resp.BlobCommittedBlockCount, int32(1))
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.Equal((*resp.LastModified).IsZero(), false)
-	_assert.Nil(resp.ContentMD5)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
+	require.Equal(t, *resp.BlobAppendOffset, "0")
+	require.Equal(t, *resp.BlobCommittedBlockCount, int32(1))
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.Equal(t, (*resp.LastModified).IsZero(), false)
+	require.Nil(t, resp.ContentMD5)
+	require.NotNil(t, resp.RequestID)
+	require.NotNil(t, resp.Version)
+	require.NotNil(t, resp.Date)
+	require.Equal(t, (*resp.Date).IsZero(), false)
 
 	srcBlobParts := NewBlobURLParts(srcABClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -640,9 +644,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -650,8 +652,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -661,57 +663,58 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 		CpkInfo: &testCPKByValue,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*appendFromURLResp.BlobAppendOffset, "0")
-	_assert.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
-	_assert.NotNil(appendFromURLResp.ETag)
-	_assert.NotNil(appendFromURLResp.LastModified)
-	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
-	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
-	_assert.NotNil(appendFromURLResp.RequestID)
-	_assert.NotNil(appendFromURLResp.Version)
-	_assert.NotNil(appendFromURLResp.Date)
-	_assert.Equal((*appendFromURLResp.Date).IsZero(), false)
-	_assert.Equal(*appendFromURLResp.IsServerEncrypted, true)
+	require.NoError(t, err)
+	require.Equal(t, appendFromURLResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *appendFromURLResp.BlobAppendOffset, "0")
+	require.Equal(t, *appendFromURLResp.BlobCommittedBlockCount, int32(1))
+	require.NotNil(t, appendFromURLResp.ETag)
+	require.NotNil(t, appendFromURLResp.LastModified)
+	require.Equal(t, (*appendFromURLResp.LastModified).IsZero(), false)
+	require.NotNil(t, appendFromURLResp.ContentMD5)
+	require.EqualValues(t, appendFromURLResp.ContentMD5, contentMD5)
+	require.NotNil(t, appendFromURLResp.RequestID)
+	require.NotNil(t, appendFromURLResp.Version)
+	require.NotNil(t, appendFromURLResp.Date)
+	require.Equal(t, (*appendFromURLResp.Date).IsZero(), false)
+	require.Equal(t, *appendFromURLResp.IsServerEncrypted, true)
 
 	// Get blob content without encryption key should fail the request.
 	_, err = destBlob.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = destBlob.Download(ctx, &downloadBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
-	_assert.Equal(*downloadResp.IsServerEncrypted, true)
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.Equal(t, *downloadResp.IsServerEncrypted, true)
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -722,27 +725,27 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 
 	cResp1, err := srcClient.Create(context.Background(), nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp1.RawResponse.StatusCode, 201)
 
 	resp, err := srcClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
-	_assert.Equal(*resp.BlobAppendOffset, "0")
-	_assert.Equal(*resp.BlobCommittedBlockCount, int32(1))
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.Equal((*resp.LastModified).IsZero(), false)
-	_assert.Nil(resp.ContentMD5)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
+	require.Equal(t, *resp.BlobAppendOffset, "0")
+	require.Equal(t, *resp.BlobCommittedBlockCount, int32(1))
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.Equal(t, (*resp.LastModified).IsZero(), false)
+	require.Nil(t, resp.ContentMD5)
+	require.NotNil(t, resp.RequestID)
+	require.NotNil(t, resp.Version)
+	require.NotNil(t, resp.Date)
+	require.Equal(t, (*resp.Date).IsZero(), false)
 
 	srcBlobParts := NewBlobURLParts(srcClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -750,9 +753,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -760,8 +761,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -771,49 +772,49 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*appendFromURLResp.BlobAppendOffset, "0")
-	_assert.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
-	_assert.NotNil(appendFromURLResp.ETag)
-	_assert.NotNil(appendFromURLResp.LastModified)
-	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
-	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
-	_assert.NotNil(appendFromURLResp.RequestID)
-	_assert.NotNil(appendFromURLResp.Version)
-	_assert.NotNil(appendFromURLResp.Date)
-	_assert.Equal((*appendFromURLResp.Date).IsZero(), false)
-	_assert.Equal(*appendFromURLResp.IsServerEncrypted, true)
+	require.NoError(t, err)
+	require.Equal(t, appendFromURLResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *appendFromURLResp.BlobAppendOffset, "0")
+	require.Equal(t, *appendFromURLResp.BlobCommittedBlockCount, int32(1))
+	require.NotNil(t, appendFromURLResp.ETag)
+	require.NotNil(t, appendFromURLResp.LastModified)
+	require.Equal(t, (*appendFromURLResp.LastModified).IsZero(), false)
+	require.NotNil(t, appendFromURLResp.ContentMD5)
+	require.EqualValues(t, appendFromURLResp.ContentMD5, contentMD5)
+	require.NotNil(t, appendFromURLResp.RequestID)
+	require.NotNil(t, appendFromURLResp.Version)
+	require.NotNil(t, appendFromURLResp.Date)
+	require.Equal(t, (*appendFromURLResp.Date).IsZero(), false)
+	require.Equal(t, *appendFromURLResp.IsServerEncrypted, true)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(*downloadResp.IsServerEncrypted, true)
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.Equal(t, *downloadResp.IsServerEncrypted, true)
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPageBlockWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -821,56 +822,57 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 		CpkInfo:   &testCPKByValue,
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_assert.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+	require.EqualValues(t, uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(contentSize-1)
 	rawStart, rawEnd := pageListResp[0].Raw()
-	_assert.Equal(rawStart, start)
-	_assert.Equal(rawEnd, end)
+	require.Equal(t, rawStart, start)
+	require.Equal(t, rawEnd, end)
 
 	// Get blob content without encryption key should fail the request.
 	_, err = pbClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = pbClient.Download(ctx, &downloadBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPageBlockWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -878,42 +880,43 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 		CpkScopeInfo: &testCPKByScope,
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_assert.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+	require.EqualValues(t, uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(contentSize-1)
 	// _assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
 	rawStart, rawEnd := pageListResp[0].Raw()
-	_assert.Equal(rawStart, start)
-	_assert.Equal(rawEnd, end)
+	require.Equal(t, rawStart, start)
+	require.Equal(t, rawEnd, end)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPageBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -921,21 +924,21 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(testName)
-	bbClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	bbClient := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(testName)
-	destBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destBlob := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(bbClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -943,9 +946,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
@@ -953,52 +954,53 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 		CpkInfo:          &testCPKByValue,
 	}
 	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(resp.ContentMD5, contentMD5)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
-	_assert.Equal(*resp.BlobSequenceNumber, int64(0))
-	_assert.Equal(*resp.IsServerEncrypted, true)
-	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.NotNil(t, resp.ContentMD5)
+	require.EqualValues(t, resp.ContentMD5, contentMD5)
+	require.NotNil(t, resp.RequestID)
+	require.NotNil(t, resp.Version)
+	require.NotNil(t, resp.Date)
+	require.Equal(t, (*resp.Date).IsZero(), false)
+	require.Equal(t, *resp.BlobSequenceNumber, int64(0))
+	require.Equal(t, *resp.IsServerEncrypted, true)
+	require.EqualValues(t, resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	_, err = destBlob.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = destBlob.Download(ctx, &downloadBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestPageBlockFromURLWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -1006,21 +1008,21 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(testName)
-	srcPBClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcPBClient := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(testName)
-	dstPBBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	dstPBBlob := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(srcPBClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -1028,9 +1030,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
@@ -1038,63 +1038,64 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 		CpkScopeInfo:     &testCPKByScope,
 	}
 	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(resp.ContentMD5, contentMD5)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
-	_assert.Equal(*resp.BlobSequenceNumber, int64(0))
-	_assert.Equal(*resp.IsServerEncrypted, true)
-	_assert.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.NotNil(t, resp.ContentMD5)
+	require.EqualValues(t, resp.ContentMD5, contentMD5)
+	require.NotNil(t, resp.RequestID)
+	require.NotNil(t, resp.Version)
+	require.NotNil(t, resp.Date)
+	require.Equal(t, (*resp.Date).IsZero(), false)
+	require.Equal(t, *resp.BlobSequenceNumber, int64(0))
+	require.Equal(t, *resp.IsServerEncrypted, true)
+	require.EqualValues(t, resp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := dstPBBlob.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, *downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
+	recording.LiveOnly(t)
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := getRandomDataAndReader(contentSize)
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	srcPBName := "src" + generateBlobName(testName)
-	srcBlob := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcBlob := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
-	_assert.NoError(err)
+	credential, err := getCredential(testAccountDefault)
+	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -1102,52 +1103,50 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		s.T().Fatal(err)
-	}
+	require.NoError(t, err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	dstPBName := "dst" + generateBlobName(testName)
-	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destPBClient := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
 	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
-	_assert.NotNil(resp.ETag)
-	_assert.NotNil(resp.LastModified)
-	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(resp.ContentMD5, contentMD5)
-	_assert.NotNil(resp.RequestID)
-	_assert.NotNil(resp.Version)
-	_assert.NotNil(resp.Date)
-	_assert.Equal((*resp.Date).IsZero(), false)
-	_assert.Equal(*resp.BlobSequenceNumber, int64(0))
-	_assert.Equal(*resp.IsServerEncrypted, true)
-	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
+	require.NotNil(t, resp.ETag)
+	require.NotNil(t, resp.LastModified)
+	require.NotNil(t, resp.ContentMD5)
+	require.EqualValues(t, resp.ContentMD5, contentMD5)
+	require.NotNil(t, resp.RequestID)
+	require.NotNil(t, resp.Version)
+	require.NotNil(t, resp.Date)
+	require.Equal(t, (*resp.Date).IsZero(), false)
+	require.Equal(t, *resp.BlobSequenceNumber, int64(0))
+	require.Equal(t, *resp.IsServerEncrypted, true)
+	require.EqualValues(t, resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	_, err = destPBClient.Download(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = destPBClient.Download(ctx, &downloadBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := destPBClient.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, *downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
-	_assert.NoError(err)
-	_assert.EqualValues(destData, srcData)
+	require.NoError(t, err)
+	require.EqualValues(t, destData, srcData)
 
 	_, badMD5 := getRandomDataAndReader(16)
 	badContentMD5 := badMD5[:]
@@ -1155,264 +1154,264 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 		SourceContentMD5: badContentMD5,
 	}
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
-	_assert.Error(err)
+	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
-func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestClearDiffPagesWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	pageRangeResp := pageListResp.PageList.PageRange
-	_assert.NotNil(pageRangeResp)
-	_assert.Len(pageRangeResp, 1)
+	require.NotNil(t, pageRangeResp)
+	require.Len(t, pageRangeResp, 1)
 	rawStart, rawEnd := pageRangeResp[0].Raw()
-	_assert.Equal(rawStart, offset1)
-	_assert.Equal(rawEnd, end1)
+	require.Equal(t, rawStart, offset1)
+	require.Equal(t, rawEnd, end1)
 
 	clearPagesOptions := ClearPagesOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, &clearPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(clearResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, clearResp.RawResponse.StatusCode, 201)
 
 	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
-	_assert.NoError(err)
-	_assert.Nil(pageListResp.PageList.PageRange)
+	require.NoError(t, err)
+	require.Nil(t, pageListResp.PageList.PageRange)
 }
 
-func (s *azblobTestSuite) TestBlobResizeWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestBlobResizeWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, _ := pbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-	_assert.Equal(*resp.ContentLength, int64(PageBlobPageBytes))
+	require.Equal(t, *resp.ContentLength, int64(PageBlobPageBytes))
 }
 
-func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestGetSetBlobMetadataWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, &testCPKByValue, nil)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	setBlobMetadataOptions := SetBlobMetadataOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob properties without encryption key should fail the request.
 	_, err = bbClient.GetProperties(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	getResp, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-	_assert.NoError(err)
-	_assert.NotNil(getResp.Metadata)
-	_assert.Len(getResp.Metadata, len(basicMetadata))
-	_assert.EqualValues(getResp.Metadata, basicMetadata)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Metadata)
+	require.Len(t, getResp.Metadata, len(basicMetadata))
+	require.EqualValues(t, getResp.Metadata, basicMetadata)
 
 	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-	_assert.NoError(err)
-	_assert.Nil(getResp.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, getResp.Metadata)
 }
 
-func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, nil, &testCPKByScope)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	setBlobMetadataOptions := SetBlobMetadataOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, resp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	getResp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(getResp.Metadata)
-	_assert.Len(getResp.Metadata, len(basicMetadata))
-	_assert.EqualValues(getResp.Metadata, basicMetadata)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Metadata)
+	require.Len(t, getResp.Metadata, len(basicMetadata))
+	require.EqualValues(t, getResp.Metadata, basicMetadata)
 
 	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	getResp, err = bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(getResp.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, getResp.Metadata)
 }
 
-func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestBlobSnapshotWithCPK(t *testing.T) {
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, &testCPKByValue, nil)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
-	_assert.NoError(err)
-	_assert.Equal(*resp.IsServerEncrypted, false)
+	require.NoError(t, err)
+	require.Equal(t, *resp.IsServerEncrypted, false)
 
 	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(*dResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
+	require.NoError(t, err)
+	require.EqualValues(t, *dResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
 	_, err = snapshotURL.Delete(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	// Get blob properties of snapshot without encryption key should fail the request.
 	_, err = snapshotURL.GetProperties(ctx, nil)
-	_assert.Error(err)
-
-	//_assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
+	require.Error(t, err)
 }
 
-func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(s.T(), generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestBlobSnapshotWithCPKScope(t *testing.T) {
+	t.Skip("encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	testName := t.Name()
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(t, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, nil, &testCPKByScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 		CpkScopeInfo: &testInvalidCPKByScope,
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
-	_assert.NoError(err)
-	_assert.Equal(*resp.IsServerEncrypted, false)
+	require.NoError(t, err)
+	require.Equal(t, *resp.IsServerEncrypted, false)
 
 	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
-	_assert.NoError(err)
-	_assert.EqualValues(*dResp.EncryptionScope, *testCPKByScope.EncryptionScope)
+	require.NoError(t, err)
+	require.EqualValues(t, *dResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
 	_, err = snapshotURL.Delete(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }

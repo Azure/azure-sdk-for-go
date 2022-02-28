@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,14 +22,13 @@ func TestAppendBlock(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -64,14 +62,13 @@ func TestAppendBlockWithMD5(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
@@ -111,7 +108,7 @@ func TestAppendBlockWithMD5(t *testing.T) {
 	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
 func TestAppendBlockFromURL(t *testing.T) {
@@ -119,14 +116,13 @@ func TestAppendBlockFromURL(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	//ctx := context.Background()
 	contentSize := 4 * 1024 * 1024 // 4MB
@@ -210,20 +206,18 @@ func TestAppendBlockFromURL(t *testing.T) {
 	require.NoError(t, err)
 }
 
-//nolint
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	t.Skip("md5 fails authentication")
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
@@ -254,7 +248,7 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -312,21 +306,20 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
 func TestBlobCreateAppendMetadataNonEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -346,14 +339,13 @@ func TestBlobCreateAppendMetadataEmpty(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -373,14 +365,13 @@ func TestBlobCreateAppendMetadataInvalid(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -397,14 +388,13 @@ func TestBlobCreateAppendHTTPHeaders(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -433,14 +423,13 @@ func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -472,14 +461,13 @@ func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -504,21 +492,20 @@ func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -550,14 +537,13 @@ func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -582,24 +568,23 @@ func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -623,17 +608,16 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		HTTPHeaders: &basicHeaders,
@@ -647,24 +631,23 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
@@ -686,17 +669,16 @@ func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -713,65 +695,62 @@ func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockNilBody(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockEmptyBody(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -779,7 +758,7 @@ func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
+	validateStorageError(t, err, StorageErrorCodeBlobNotFound)
 }
 
 func validateBlockAppended(t *testing.T, abClient AppendBlobClient, expectedSize int) {
@@ -792,14 +771,13 @@ func TestBlobAppendBlockIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -829,14 +807,13 @@ func TestBlobAppendBlockIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -859,21 +836,20 @@ func TestBlobAppendBlockIfModifiedSinceFalse(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfUnmodifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -903,14 +879,13 @@ func TestBlobAppendBlockIfUnmodifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
@@ -933,24 +908,23 @@ func TestBlobAppendBlockIfUnmodifiedSinceFalse(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -970,17 +944,16 @@ func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -990,24 +963,23 @@ func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -1024,17 +996,16 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -1046,14 +1017,14 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 //// TODO: Fix this
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(t, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	appendPosition := int64(-1)
@@ -1071,7 +1042,7 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchZero() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(t, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
@@ -1093,17 +1064,16 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.NoError(t, err)
@@ -1122,17 +1092,16 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.NoError(t, err)
@@ -1143,24 +1112,23 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1168,24 +1136,23 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeAppendPositionConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeAppendPositionConditionNotMet)
 }
 
 func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1200,17 +1167,16 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1218,24 +1184,23 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(_assert, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
 
 func TestSealAppendBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.NoError(t, err)
@@ -1249,7 +1214,7 @@ func TestSealAppendBlob(t *testing.T) {
 
 	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(_assert, err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -1268,10 +1233,10 @@ func TestSealAppendBlob(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	abName := generateBlobName(testName)
-//	abClient := createNewAppendBlob(_assert, abName, containerClient)
+//	abClient := createNewAppendBlob(t, abName, containerClient)
 //
 //	sealResp, err := abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1292,17 +1257,16 @@ func TestCopySealedBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.SealAppendBlob(ctx, nil)
 	require.NoError(t, err)
@@ -1318,7 +1282,7 @@ func TestCopySealedBlob(t *testing.T) {
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(_assert, err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
@@ -1332,7 +1296,7 @@ func TestCopySealedBlob(t *testing.T) {
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(_assert, err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
@@ -1355,17 +1319,16 @@ func TestCopyUnsealedBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := createNewAppendBlob(_assert, abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	copiedBlob := getAppendBlobClient("copy"+abName, containerClient)
 	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{

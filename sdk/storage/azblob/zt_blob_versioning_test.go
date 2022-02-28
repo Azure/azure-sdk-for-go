@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,15 +18,14 @@ func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+	defer deleteContainer(t, containerClient)
+	bbClient := createNewBlockBlob(t, generateBlobName(testName), containerClient)
 
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
@@ -53,15 +51,14 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	abClient := createNewAppendBlob(_assert, generateBlobName(testName), containerClient)
+	defer deleteContainer(t, containerClient)
+	abClient := createNewAppendBlob(t, generateBlobName(testName), containerClient)
 
 	blobProp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -83,63 +80,18 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 	require.Equal(t, *blobProp.IsCurrentVersion, true)
 }
 
-//nolint
-//func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	bbName := generateName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
-//
-//	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
-//	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
-//	_assert.NoError(err)
-//	_assert.NotNil(resp.VersionID)
-//
-//	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
-//		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
-//	})
-//
-//	if !pager.NextPage(ctx) {
-//		_assert.Nil(pager.Err()) // check for an error first
-//		s.T().Fail()             // no page was gotten
-//	}
-//
-//	pageResp := pager.PageResponse()
-//
-//	_assert.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
-//	blobList := pageResp.EnumerationResults.Segment.BlobItems
-//	_assert.Len(blobList, 1)
-//	blobResp1 := blobList[0]
-//	_assert.Equal(*blobResp1.Name, bbName)
-//	_assert.NotNil(blobResp1.Metadata.AdditionalProperties)
-//	_assert.Len(blobResp1.Metadata.AdditionalProperties, 2)
-//	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
-//
-//}
-
 func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 	t.Skipf("VersionID is not filled")
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
@@ -172,7 +124,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
 //	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &UploadBlockBlobOptions{
@@ -234,7 +186,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //
 //	resp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
@@ -282,7 +234,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //	blobURL, _ := getBlockBlobClient(c, containerClient)
 //
 //	blockBlobUploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
@@ -323,7 +275,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
 //	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.NoError(err)
@@ -365,7 +317,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	testSize := 4 * 1024 * 1024 // 4MB
 //	r, sourceData := getRandomDataAndReader(testSize)
@@ -433,7 +385,7 @@ func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(t, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	testSize := 2 * 1024 * 1024 // 1MB
 //	r, _ := getRandomDataAndReader(testSize)
@@ -478,14 +430,13 @@ func TestPutBlockListReturnsVID(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
@@ -517,16 +468,15 @@ func TestCreatePageBlobReturnsVID(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	testName := t.Name()
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
-	pbClob := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+	pbClob := createNewPageBlob(t, generateBlobName(testName), containerClient)
 
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)

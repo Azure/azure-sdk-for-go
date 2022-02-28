@@ -211,7 +211,7 @@ func (c *RecordingHTTPClient) stop() error {
 		return errors.New("recording ID was never set. Did you call Start?")
 	}
 
-	req.Header.Set("x-recording-id", c.recID) //recTest)
+	req.Header.Set("x-recording-id", c.recID)
 	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
@@ -220,6 +220,8 @@ func (c *RecordingHTTPClient) stop() error {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
 		}
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
+	} else {
+		log.Printf("successfully stopped the recording with ID: %s\n", c.recID)
 	}
 	if err != nil {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())

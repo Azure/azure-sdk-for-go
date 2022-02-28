@@ -36,6 +36,20 @@ const (
 	AggregatedReplicationStateUnknown    AggregatedReplicationState = original.AggregatedReplicationStateUnknown
 )
 
+type Architecture = original.Architecture
+
+const (
+	ArchitectureArm64 Architecture = original.ArchitectureArm64
+	ArchitectureX64   Architecture = original.ArchitectureX64
+)
+
+type ArchitectureTypes = original.ArchitectureTypes
+
+const (
+	ArchitectureTypesArm64 ArchitectureTypes = original.ArchitectureTypesArm64
+	ArchitectureTypesX64   ArchitectureTypes = original.ArchitectureTypesX64
+)
+
 type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
 
 const (
@@ -75,6 +89,14 @@ type ComponentNames = original.ComponentNames
 
 const (
 	ComponentNamesMicrosoftWindowsShellSetup ComponentNames = original.ComponentNamesMicrosoftWindowsShellSetup
+)
+
+type ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionType
+
+const (
+	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk
+	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedWithCmk
+	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedWithPmk
 )
 
 type ConsistencyModeTypes = original.ConsistencyModeTypes
@@ -240,6 +262,19 @@ type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+)
+
+type GalleryExpandParams = original.GalleryExpandParams
+
+const (
+	GalleryExpandParamsSharingProfileGroups GalleryExpandParams = original.GalleryExpandParamsSharingProfileGroups
+)
+
+type GalleryExtendedLocationType = original.GalleryExtendedLocationType
+
+const (
+	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = original.GalleryExtendedLocationTypeEdgeZone
+	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = original.GalleryExtendedLocationTypeUnknown
 )
 
 type GallerySharingPermissionTypes = original.GallerySharingPermissionTypes
@@ -657,15 +692,26 @@ type SharingProfileGroupTypes = original.SharingProfileGroupTypes
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = original.SharingProfileGroupTypesAADTenants
+	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = original.SharingProfileGroupTypesCommunity
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = original.SharingProfileGroupTypesSubscriptions
+)
+
+type SharingState = original.SharingState
+
+const (
+	SharingStateFailed     SharingState = original.SharingStateFailed
+	SharingStateInProgress SharingState = original.SharingStateInProgress
+	SharingStateSucceeded  SharingState = original.SharingStateSucceeded
+	SharingStateUnknown    SharingState = original.SharingStateUnknown
 )
 
 type SharingUpdateOperationTypes = original.SharingUpdateOperationTypes
 
 const (
-	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = original.SharingUpdateOperationTypesAdd
-	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = original.SharingUpdateOperationTypesRemove
-	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = original.SharingUpdateOperationTypesReset
+	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = original.SharingUpdateOperationTypesAdd
+	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = original.SharingUpdateOperationTypesEnableCommunity
+	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = original.SharingUpdateOperationTypesRemove
+	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = original.SharingUpdateOperationTypesReset
 )
 
 type SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypes
@@ -1095,6 +1141,7 @@ type CommunityGalleryImageVersion = original.CommunityGalleryImageVersion
 type CommunityGalleryImageVersionProperties = original.CommunityGalleryImageVersionProperties
 type CommunityGalleryImageVersionsClient = original.CommunityGalleryImageVersionsClient
 type CommunityGalleryImagesClient = original.CommunityGalleryImagesClient
+type CommunityGalleryInfo = original.CommunityGalleryInfo
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
@@ -1216,6 +1263,7 @@ type GalleryArtifactSource = original.GalleryArtifactSource
 type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
 type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
+type GalleryExtendedLocation = original.GalleryExtendedLocation
 type GalleryIdentifier = original.GalleryIdentifier
 type GalleryImage = original.GalleryImage
 type GalleryImageFeature = original.GalleryImageFeature
@@ -1248,6 +1296,7 @@ type GalleryOSDiskImage = original.GalleryOSDiskImage
 type GalleryProperties = original.GalleryProperties
 type GallerySharingProfileClient = original.GallerySharingProfileClient
 type GallerySharingProfileUpdateFuture = original.GallerySharingProfileUpdateFuture
+type GalleryTargetExtendedLocation = original.GalleryTargetExtendedLocation
 type GalleryUpdate = original.GalleryUpdate
 type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
@@ -1305,6 +1354,7 @@ type NetworkProfile = original.NetworkProfile
 type OSDisk = original.OSDisk
 type OSDiskImage = original.OSDiskImage
 type OSDiskImageEncryption = original.OSDiskImageEncryption
+type OSDiskImageSecurityProfile = original.OSDiskImageSecurityProfile
 type OSFamily = original.OSFamily
 type OSFamilyListResult = original.OSFamilyListResult
 type OSFamilyListResultIterator = original.OSFamilyListResultIterator
@@ -1355,6 +1405,7 @@ type ReadCloser = original.ReadCloser
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
 type RecoveryWalkResponse = original.RecoveryWalkResponse
 type RegionalReplicationStatus = original.RegionalReplicationStatus
+type RegionalSharingStatus = original.RegionalSharingStatus
 type ReplicationStatus = original.ReplicationStatus
 type RequestRateByIntervalInput = original.RequestRateByIntervalInput
 type Resource = original.Resource
@@ -1452,6 +1503,7 @@ type SharedGalleryListIterator = original.SharedGalleryListIterator
 type SharedGalleryListPage = original.SharedGalleryListPage
 type SharingProfile = original.SharingProfile
 type SharingProfileGroup = original.SharingProfileGroup
+type SharingStatus = original.SharingStatus
 type SharingUpdate = original.SharingUpdate
 type Sku = original.Sku
 type Snapshot = original.Snapshot
@@ -2257,6 +2309,12 @@ func PossibleAccessLevelValues() []AccessLevel {
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return original.PossibleAggregatedReplicationStateValues()
 }
+func PossibleArchitectureTypesValues() []ArchitectureTypes {
+	return original.PossibleArchitectureTypesValues()
+}
+func PossibleArchitectureValues() []Architecture {
+	return original.PossibleArchitectureValues()
+}
 func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
 	return original.PossibleAvailabilitySetSkuTypesValues()
 }
@@ -2274,6 +2332,9 @@ func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 }
 func PossibleComponentNamesValues() []ComponentNames {
 	return original.PossibleComponentNamesValues()
+}
+func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
+	return original.PossibleConfidentialVMEncryptionTypeValues()
 }
 func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 	return original.PossibleConsistencyModeTypesValues()
@@ -2334,6 +2395,12 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 }
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
+	return original.PossibleGalleryExpandParamsValues()
+}
+func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
+	return original.PossibleGalleryExtendedLocationTypeValues()
 }
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
 	return original.PossibleGallerySharingPermissionTypesValues()
@@ -2499,6 +2566,9 @@ func PossibleSharedToValuesValues() []SharedToValues {
 }
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return original.PossibleSharingProfileGroupTypesValues()
+}
+func PossibleSharingStateValues() []SharingState {
+	return original.PossibleSharingStateValues()
 }
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return original.PossibleSharingUpdateOperationTypesValues()

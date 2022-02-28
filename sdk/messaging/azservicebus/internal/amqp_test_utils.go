@@ -19,7 +19,7 @@ type FakeNS struct {
 	Session         AMQPSessionCloser
 	AMQPLinks       *FakeAMQPLinks
 
-	CloseCalled int
+	CloseCalled       int
 }
 
 type FakeAMQPSender struct {

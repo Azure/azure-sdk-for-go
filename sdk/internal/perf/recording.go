@@ -180,6 +180,10 @@ func (c *RecordingHTTPClient) start() error {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
 
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("did not receive a successful status code. status: %s\turl: %s", resp.Status, resp.Request.URL.String())
+	}
+
 	recID := resp.Header.Get(idHeader)
 	if recID == "" {
 		b, err := ioutil.ReadAll(resp.Body)

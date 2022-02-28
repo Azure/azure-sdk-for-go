@@ -85,3 +85,16 @@ func TestParseProxyURLs(t *testing.T) {
 	result = parseProxyURLS()
 	require.Equal(t, []string{"https://localhost:5001", "https://abc", "https://def"}, result)
 }
+
+func TestRecordingHTTPClient_start_stop(t *testing.T) {
+	client := NewProxyTransport(&TransportOptions{
+		TestName: t.Name(),
+		proxyURL: "https://localhost:5001",
+	})
+	client.SetMode("record")
+
+	err := client.start()
+	require.NoError(t, err)
+	err = client.stop()
+	require.NoError(t, err)
+}

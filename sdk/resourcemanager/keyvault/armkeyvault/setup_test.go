@@ -24,16 +24,16 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
-	err := recording.AddBodyKeySanitizer("$.properties.tenantId", "11111111-1111-1111-1111-111111111111", tenantID, nil)
+	err := recording.AddBodyKeySanitizer("$.properties.tenantId", "00000000-0000-0000-0000-000000000000", tenantID, nil)
 	if err != nil {
 		panic(err)
 	}
-	err = recording.AddBodyKeySanitizer("$.properties.accessPolicies[0].tenantId", "11111111-1111-1111-1111-111111111111", tenantID, nil)
+	err = recording.AddBodyKeySanitizer("$.properties.accessPolicies[0].tenantId", "00000000-0000-0000-0000-000000000000", tenantID, nil)
 	if err != nil {
 		panic(err)
 	}
 	objectID := os.Getenv("AZURE_OBJECT_ID")
-	err = recording.AddBodyKeySanitizer("$.properties.accessPolicies[0].objectId", "22222222-2222-2222-2222-222222222222", objectID, nil)
+	err = recording.AddBodyKeySanitizer("$.properties.accessPolicies[0].objectId", "00000000-0000-0000-0000-000000000000", objectID, nil)
 	if err != nil {
 		panic(err)
 	}

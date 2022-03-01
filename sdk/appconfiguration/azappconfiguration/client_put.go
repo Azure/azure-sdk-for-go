@@ -17,6 +17,6 @@ func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcor
 		Entity:      cs.toGenerated(),
 		IfMatch:     (*string)(ifMatch),
 		IfNoneMatch: (*string)(ifNoneMatch),
-		Label:       cs.label,
+		Label:       cs.Label,
 	}
 }

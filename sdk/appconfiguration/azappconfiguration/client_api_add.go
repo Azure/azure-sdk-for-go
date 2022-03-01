@@ -22,7 +22,7 @@ type AddConfigurationSettingOptions struct {
 // AddConfigurationSetting creates a configuration setting only if the setting does not already exist in the configuration store.
 func (c *Client) AddConfigurationSetting(ctx context.Context, setting Setting, options *AddConfigurationSettingOptions) (AddConfigurationSettingResponse, error) {
 	etagAny := azcore.ETagAny
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.key, setting.toGeneratedPutOptions(nil, &etagAny))
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
 	if err != nil {
 		return AddConfigurationSettingResponse{}, err
 	}

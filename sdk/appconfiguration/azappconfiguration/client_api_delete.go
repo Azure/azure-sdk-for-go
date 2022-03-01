@@ -28,7 +28,7 @@ type DeleteConfigurationSettingOptions struct {
 func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
 	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
 		IfMatch: (*string)(ifMatch),
-		Label:   cs.label,
+		Label:   cs.Label,
 	}
 }
 
@@ -36,10 +36,10 @@ func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.Azur
 func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Setting, options *DeleteConfigurationSettingOptions) (DeleteConfigurationSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.etag
+		ifMatch = setting.ETag
 	}
 
-	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.key, setting.toGeneratedDeleteOptions(ifMatch))
+	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
 		return DeleteConfigurationSettingResponse{}, err
 	}

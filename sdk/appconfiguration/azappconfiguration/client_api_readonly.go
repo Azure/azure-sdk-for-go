@@ -28,14 +28,14 @@ type SetReadOnlyOptions struct {
 func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
 	return &generated.AzureAppConfigurationClientPutLockOptions{
 		IfMatch: (*string)(ifMatch),
-		Label:   cs.label,
+		Label:   cs.Label,
 	}
 }
 
 func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
 	return &generated.AzureAppConfigurationClientDeleteLockOptions{
 		IfMatch: (*string)(ifMatch),
-		Label:   cs.label,
+		Label:   cs.Label,
 	}
 }
 
@@ -43,19 +43,19 @@ func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.
 func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.etag
+		ifMatch = setting.ETag
 	}
 
 	var err error
 	if isReadOnly {
 		var resp generated.AzureAppConfigurationClientPutLockResponse
-		resp, err = c.appConfigClient.PutLock(ctx, *setting.key, setting.toGeneratedPutLockOptions(ifMatch))
+		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(ifMatch))
 		if err == nil {
 			return (SetReadOnlyResponse)(responseFromGeneratedPutLock(resp)), nil
 		}
 	} else {
 		var resp generated.AzureAppConfigurationClientDeleteLockResponse
-		resp, err = c.appConfigClient.DeleteLock(ctx, *setting.key, setting.toGeneratedDeleteLockOptions(ifMatch))
+		resp, err = c.appConfigClient.DeleteLock(ctx, *setting.Key, setting.toGeneratedDeleteLockOptions(ifMatch))
 		if err == nil {
 			return (SetReadOnlyResponse)(responseFromGeneratedDeleteLock(resp)), nil
 		}

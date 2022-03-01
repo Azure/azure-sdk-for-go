@@ -44,74 +44,41 @@ const (
 // SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities
 // from the configuration store, and optionally allows indicating which fields of each setting to retrieve.
 type SettingSelector struct {
-	keyFilter      *string
-	labelFilter    *string
-	acceptDateTime *time.Time
-	fields         []SettingFields
+	KeyFilter      *string
+	LabelFilter    *string
+	AcceptDateTime *time.Time
+	Fields         []SettingFields
 }
 
-var allSettingFields []SettingFields = []SettingFields{
-	SettingFieldsKey,
-	SettingFieldsLabel,
-	SettingFieldsValue,
-	SettingFieldsContentType,
-	SettingFieldsETag,
-	SettingFieldsLastModified,
-	SettingFieldsIsReadOnly,
-	SettingFieldsTags,
-}
-
-// NewSettingSelector creates a new setting selector.
-func NewSettingSelector() SettingSelector {
-	return SettingSelector{fields: allSettingFields}
-}
-
-// WithKeyFilter creates a copy of the setting selector with the key filter provided.
-func (ss SettingSelector) WithKeyFilter(keyFilter string) SettingSelector {
-	result := ss
-	result.keyFilter = &keyFilter
-	return result
-}
-
-// WithLabelFilter creates a copy of the setting selector with the label filter provided.
-func (ss SettingSelector) WithLabelFilter(labelFilter string) SettingSelector {
-	result := ss
-	result.labelFilter = &labelFilter
-	return result
-}
-
-// WithAcceptDateTime creates a copy of the setting selector with the time
-// that specifies a point in time in the revision history of the selected entities to retrieve.
-func (ss SettingSelector) WithAcceptDateTime(acceptDateTime time.Time) SettingSelector {
-	result := ss
-	result.acceptDateTime = &acceptDateTime
-	return result
-}
-
-// WithAcceptDateTime creates a copy of the setting selector with the fields
-// to retrieve for each setting in the retrieved group.
-func (ss SettingSelector) WithFields(fields []SettingFields) SettingSelector {
-	result := ss
-	result.fields = fields
-	return result
+func AllSettingFields() []SettingFields {
+	return []SettingFields{
+		SettingFieldsKey,
+		SettingFieldsLabel,
+		SettingFieldsValue,
+		SettingFieldsContentType,
+		SettingFieldsETag,
+		SettingFieldsLastModified,
+		SettingFieldsIsReadOnly,
+		SettingFieldsTags,
+	}
 }
 
 func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGetRevisionsOptions {
 	var dt *string
-	if sc.acceptDateTime != nil {
-		str := sc.acceptDateTime.Format(timeFormat)
+	if sc.AcceptDateTime != nil {
+		str := sc.AcceptDateTime.Format(timeFormat)
 		dt = &str
 	}
 
-	sf := make([]generated.Enum6, len(sc.fields))
-	for i := range sc.fields {
-		sf[i] = (generated.Enum6)(sc.fields[i])
+	sf := make([]generated.Enum6, len(sc.Fields))
+	for i := range sc.Fields {
+		sf[i] = (generated.Enum6)(sc.Fields[i])
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
 		After:  dt,
-		Key:    sc.keyFilter,
-		Label:  sc.labelFilter,
+		Key:    sc.KeyFilter,
+		Label:  sc.LabelFilter,
 		Select: sf,
 	}
 }

@@ -163,13 +163,13 @@ func TestConfigurationSettingPrivateFieldGetters(t *testing.T) {
 	isReadOnly := true
 
 	cs := Setting{
-		key:         &key,
-		value:       &value,
-		label:       &label,
-		contentType: &contentType,
-		etag:        &etag,
-		tags:        tags,
-		isReadOnly:  &isReadOnly,
+		Key:         &key,
+		Value:       &value,
+		Label:       &label,
+		ContentType: &contentType,
+		ETag:        &etag,
+		Tags:        tags,
+		IsReadOnly:  &isReadOnly,
 	}
 
 	require.Equal(t, cs.GetKey(), &key)

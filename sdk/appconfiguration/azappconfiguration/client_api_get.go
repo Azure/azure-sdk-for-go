@@ -36,7 +36,7 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 	return &generated.AzureAppConfigurationClientGetKeyValueOptions{
 		AcceptDatetime: dt,
 		IfNoneMatch:    (*string)(ifNoneMatch),
-		Label:          cs.label,
+		Label:          cs.Label,
 	}
 }
 
@@ -46,13 +46,13 @@ func (c *Client) GetConfigurationSetting(ctx context.Context, setting Setting, o
 	var acceptDateTime *time.Time
 	if options != nil {
 		if options.OnlyIfChanged {
-			ifNoneMatch = setting.etag
+			ifNoneMatch = setting.ETag
 		}
 
 		acceptDateTime = options.AcceptDateTime
 	}
 
-	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
+	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
 		return GetConfigurationSettingResponse{}, err
 	}

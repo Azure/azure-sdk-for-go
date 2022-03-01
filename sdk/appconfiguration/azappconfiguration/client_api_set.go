@@ -27,10 +27,10 @@ type SetConfigurationSettingOptions struct {
 func (c *Client) SetConfigurationSetting(ctx context.Context, setting Setting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.etag
+		ifMatch = setting.ETag
 	}
 
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.key, setting.toGeneratedPutOptions(ifMatch, nil))
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
 	if err != nil {
 		return SetConfigurationSettingResponse{}, err
 	}

@@ -361,6 +361,86 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	require.EqualValues(t, 2, clientRev)
 }
 
+func TestAMQPLinksCloseIfNeeded(t *testing.T) {
+	t.Run("fatal", func(t *testing.T) {
+		for _, fatalErr := range []error{NewErrNonRetriable(""), context.Canceled, context.DeadlineExceeded} {
+			receiver := &FakeAMQPReceiver{}
+			sender := &FakeAMQPSender{}
+			ns := &FakeNS{}
+
+			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			})
+
+			_, err := links.Get(context.Background())
+			require.NoError(t, err)
+
+			rk := links.CloseIfNeeded(context.Background(), fatalErr)
+			require.Equal(t, RecoveryKindFatal, rk)
+			require.Equal(t, 0, receiver.Closed)
+			require.Equal(t, 0, sender.Closed)
+			require.Equal(t, 0, ns.CloseCalled)
+		}
+	})
+
+	t.Run("link", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), amqp.ErrLinkClosed)
+		require.Equal(t, RecoveryKindLink, rk)
+		require.Equal(t, 1, receiver.Closed)
+		require.Equal(t, 1, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+	})
+
+	t.Run("conn", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), amqp.ErrConnClosed)
+		require.Equal(t, RecoveryKindConn, rk)
+		require.Equal(t, 1, receiver.Closed)
+		require.Equal(t, 1, sender.Closed)
+		require.Equal(t, 1, ns.CloseCalled)
+	})
+
+	t.Run("none", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), nil)
+		require.Equal(t, RecoveryKindNone, rk)
+		require.Equal(t, 0, receiver.Closed)
+		require.Equal(t, 0, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+	})
+}
+
 func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 	receiveMode := amqp.ModeSecond
 

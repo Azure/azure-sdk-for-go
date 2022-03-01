@@ -18,6 +18,8 @@ type FakeNS struct {
 	RPCLink         RPCLink
 	Session         AMQPSessionCloser
 	AMQPLinks       *FakeAMQPLinks
+
+	CloseCalled int
 }
 
 type FakeAMQPSender struct {
@@ -33,25 +35,40 @@ type FakeAMQPSession struct {
 type FakeAMQPLinks struct {
 	AMQPLinks
 
-	Closed int
+	Closed              int
+	CloseIfNeededCalled int
 
 	// values to be returned for each `Get` call
 	Revision LinkID
 	Receiver AMQPReceiver
 	Sender   AMQPSender
 	RPC      RPCLink
-	Err      error
+
+	// Err is the error returned as part of Get()
+	Err error
 
 	permanently bool
 }
 
 type FakeAMQPReceiver struct {
 	AMQPReceiver
-	Closed           int
-	Drain            int
+	Closed int
+
+	DrainCalled     int
+	DrainCreditImpl func(ctx context.Context) error
+
+	IssueCreditErr   error
 	RequestedCredits uint32
 
-	ReceiveResults chan struct {
+	PrefetchedCalled int
+	ReceiveCalled    int
+
+	ReceiveResults []struct {
+		M *amqp.Message
+		E error
+	}
+
+	PrefetchResults []struct {
 		M *amqp.Message
 		E error
 	}
@@ -59,11 +76,20 @@ type FakeAMQPReceiver struct {
 
 func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
 	r.RequestedCredits += credit
+
+	if r.IssueCreditErr != nil {
+		return r.IssueCreditErr
+	}
+
 	return nil
 }
 
 func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
-	r.Drain++
+	r.DrainCalled++
+
+	if r.DrainCreditImpl != nil {
+		return r.DrainCreditImpl(ctx)
+	}
 
 	select {
 	case <-ctx.Done():
@@ -73,24 +99,35 @@ func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 	}
 }
 
+// Receive returns the next result from ReceiveResults or, if the ReceiveResults
+// is empty, will block on ctx.Done().
 func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
-	select {
-	case res := <-r.ReceiveResults:
-		return res.M, res.E
-	case <-ctx.Done():
+	r.ReceiveCalled++
+
+	if len(r.ReceiveResults) == 0 {
+		<-ctx.Done()
 		return nil, ctx.Err()
 	}
+
+	res := r.ReceiveResults[0]
+	r.ReceiveResults = r.ReceiveResults[1:]
+
+	return res.M, res.E
 }
 
+// Prefetched will return the next reuslt from PrefetchedResults or, if the PrefetchedResults
+// is empty will return nil, nil.
 func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
-	select {
-	case res := <-r.ReceiveResults:
-		return res.M, res.E
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	default:
+	r.PrefetchedCalled++
+
+	if len(r.PrefetchResults) == 0 {
 		return nil, nil
 	}
+
+	res := r.PrefetchResults[0]
+	r.ReceiveResults = r.PrefetchResults[1:]
+
+	return res.M, res.E
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -129,6 +166,11 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 
 	l.Closed++
 	return nil
+}
+
+func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+	l.CloseIfNeededCalled++
+	return GetRecoveryKind(err)
 }
 
 func (l *FakeAMQPLinks) ClosedPermanently() bool {
@@ -174,7 +216,8 @@ func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, err
 	return true, nil
 }
 
-func (ns *FakeNS) CloseIfNeeded(ctx context.Context, clientRevision uint64) error {
+func (ns *FakeNS) Close(ctx context.Context) error {
+	ns.CloseCalled++
 	return nil
 }
 

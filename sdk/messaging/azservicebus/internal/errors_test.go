@@ -153,10 +153,10 @@ func Test_IsNonRetriable(t *testing.T) {
 	errs := []error{
 		context.Canceled,
 		context.DeadlineExceeded,
-		ErrNonRetriable{Message: "any message"},
+		NewErrNonRetriable("any message"),
 		fmt.Errorf("wrapped: %w", context.Canceled),
 		fmt.Errorf("wrapped: %w", context.DeadlineExceeded),
-		fmt.Errorf("wrapped: %w", ErrNonRetriable{Message: "any message"}),
+		fmt.Errorf("wrapped: %w", NewErrNonRetriable("any message")),
 	}
 
 	for _, err := range errs {

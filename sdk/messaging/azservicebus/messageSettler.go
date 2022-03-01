@@ -41,7 +41,7 @@ func (s *messageSettler) useManagementLink(m *ReceivedMessage, receiver internal
 
 func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error) error {
 	if s == nil {
-		return internal.ErrNonRetriable{Message: "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable"}
+		return internal.NewErrNonRetriable("messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 	}
 
 	err := s.links.Retry(ctx, "settle", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {

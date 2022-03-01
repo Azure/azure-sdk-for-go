@@ -16,14 +16,34 @@ import (
 
 // Setting is a setting, defined by a unique combination of a Key and Label.
 type Setting struct {
-	Key          *string
-	Value        *string
-	Label        *string
-	ContentType  *string
-	ETag         *azcore.ETag
-	Tags         map[string]*string
+	// The primary identifier of the configuration setting.
+	// A Key is used together with a Label to uniquely identify a configuration setting.
+	Key *string
+
+	// The configuration setting's value.
+	Value *string
+
+	// A value used to group configuration settings.
+	// A Label is used together with a Key to uniquely identify a configuration setting.
+	Label *string
+
+	// The content type of the configuration setting's value.
+	// Providing a proper content-type can enable transformations of values when they are retrieved by applications.
+	ContentType *string
+
+	// An ETag indicating the state of a configuration setting within a configuration store.
+	ETag *azcore.ETag
+
+	// A dictionary of tags used to assign additional properties to a configuration setting.
+	// These can be used to indicate how a configuration setting may be applied.
+	Tags map[string]*string
+
+	// The last time a modifying operation was performed on the given configuration setting.
 	LastModified *time.Time
-	IsReadOnly   *bool
+
+	// A value indicating whether the configuration setting is read only.
+	// A read only configuration setting may not be modified until it is made writable.
+	IsReadOnly *bool
 }
 
 func configurationSettingFromGenerated(kv generated.KeyValue) Setting {

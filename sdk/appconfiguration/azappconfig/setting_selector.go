@@ -44,10 +44,18 @@ const (
 // SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities
 // from the configuration store, and optionally allows indicating which fields of each setting to retrieve.
 type SettingSelector struct {
-	KeyFilter      *string
-	LabelFilter    *string
+	// Key filter that will be used to select a set of configuration setting entities.
+	KeyFilter *string
+
+	// Label filter that will be used to select a set of configuration setting entities.
+	LabelFilter *string
+
+	// Indicates the point in time in the revision history of the selected configuration setting entities to retrieve.
+	// If set, all properties of the configuration setting entities in the returned group will be exactly what they were at this time.
 	AcceptDateTime *time.Time
-	Fields         []SettingFields
+
+	// The fields of the configuration setting to retrieve for each setting in the retrieved group.
+	Fields []SettingFields
 }
 
 func AllSettingFields() []SettingFields {

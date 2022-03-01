@@ -84,16 +84,16 @@ func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse
 	}
 }
 
-// GetRevisionsPage contains the configuration settings returned by GetRevisionsPager.
-type GetRevisionsPage struct {
+// ListRevisionsPage contains the configuration settings returned by ListRevisionsPager.
+type ListRevisionsPage struct {
 	// Contains the configuration settings returned that match the setting selector provided.
-	Items []Setting
+	Settings []Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRevisionsResponse) GetRevisionsPage {
+func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRevisionsResponse) ListRevisionsPage {
 	var css []Setting
 	for _, cs := range g.Items {
 		if cs != nil {
@@ -101,8 +101,8 @@ func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRev
 		}
 	}
 
-	return GetRevisionsPage{
-		Items:     css,
+	return ListRevisionsPage{
+		Settings:  css,
 		SyncToken: g.SyncToken,
 	}
 }

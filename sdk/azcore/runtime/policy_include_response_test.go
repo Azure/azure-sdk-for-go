@@ -18,12 +18,13 @@ import (
 )
 
 func TestIncludeResponse(t *testing.T) {
-	ctx, respFn := WithCaptureResponse(context.Background())
+	var respFromCtx *http.Response
+	ctx := WithCaptureResponse(context.Background(), &respFromCtx)
 	require.NotNil(t, ctx)
 	raw := ctx.Value(shared.CtxIncludeResponseKey{})
 	_, ok := raw.(**http.Response)
 	require.Truef(t, ok, "unexpected type %T", raw)
-	require.Nil(t, respFn())
+	require.Nil(t, respFromCtx)
 }
 
 func TestIncludeResponsePolicy(t *testing.T) {
@@ -33,12 +34,12 @@ func TestIncludeResponsePolicy(t *testing.T) {
 	srv.SetResponse()
 	// include response policy is automatically added during pipeline construction
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	ctxWithResp, respFn := WithCaptureResponse(context.Background())
+	var respFromCtx *http.Response
+	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
 	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	require.NoError(t, err)
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
-	rawResp := respFn()
-	require.NotNil(t, rawResp)
-	require.Equal(t, rawResp, resp)
+	require.NotNil(t, respFromCtx)
+	require.Equal(t, respFromCtx, resp)
 }

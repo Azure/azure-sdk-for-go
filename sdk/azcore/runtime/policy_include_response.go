@@ -28,12 +28,7 @@ func includeResponsePolicy(req *policy.Request) (*http.Response, error) {
 }
 
 // WithCaptureResponse applies the HTTP response retrieval annotation to the parent context.
-// Call the returned function to retrieve the HTTP response after the request has completed.
-// The created context is NOT safe to use across multiple goroutines.
-func WithCaptureResponse(parent context.Context) (context.Context, func() *http.Response) {
-	var resp *http.Response
-	return context.WithValue(parent, shared.CtxIncludeResponseKey{}, &resp), func() *http.Response {
-		cap := &resp
-		return *cap
-	}
+// The resp parameter will contain the HTTP response after the request has completed.
+func WithCaptureResponse(parent context.Context, resp **http.Response) context.Context {
+	return context.WithValue(parent, shared.CtxIncludeResponseKey{}, resp)
 }

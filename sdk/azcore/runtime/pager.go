@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -25,11 +24,8 @@ type PageProcessor[T any] struct {
 	// It uses the provided page to make the determination.
 	More func(T) bool
 
-	// Requester creates the request to fetch the first page.
-	Requester func(context.Context) (*policy.Request, error)
-
-	// Advancer creates the request to fetch subsequent pages.
-	Advancer func(context.Context, T) (*policy.Request, error)
+	// Fetcher creates the request to fetch pages.
+	Fetcher func(context.Context, *T) (*policy.Request, error)
 
 	// Responder handles the responses when fetching pages.
 	Responder func(*http.Response) (T, error)
@@ -37,7 +33,7 @@ type PageProcessor[T any] struct {
 
 // Pager provides operations for iterating over paged responses.
 type Pager[T any] struct {
-	current   T
+	current   *T
 	processor PageProcessor[T]
 	firstPage bool
 }
@@ -52,8 +48,8 @@ func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
 
 // More returns true if there are more pages to retrieve.
 func (p *Pager[T]) More() bool {
-	if !reflect.ValueOf(p.current).IsZero() {
-		return p.processor.More(p.current)
+	if p.current != nil {
+		return p.processor.More(*p.current)
 	}
 	return true
 }
@@ -62,19 +58,19 @@ func (p *Pager[T]) More() bool {
 func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 	var req *policy.Request
 	var err error
-	if !reflect.ValueOf(p.current).IsZero() && p.firstPage {
-		// we get here if it's an LRO-pager, we already have the first page
-		p.firstPage = false
-		return p.current, nil
-	} else if !reflect.ValueOf(p.current).IsZero() {
-		if !p.processor.More(p.current) {
+	if p.current != nil {
+		if p.firstPage {
+			// we get here if it's an LRO-pager, we already have the first page
+			p.firstPage = false
+			return *p.current, nil
+		} else if !p.processor.More(*p.current) {
 			return *new(T), errors.New("no more pages")
 		}
-		req, err = p.processor.Advancer(ctx, p.current)
+		req, err = p.processor.Fetcher(ctx, p.current)
 	} else {
-		// non-LRO case
+		// non-LRO case, first page
 		p.firstPage = false
-		req, err = p.processor.Requester(ctx)
+		req, err = p.processor.Fetcher(ctx, nil)
 	}
 	if err != nil {
 		return *new(T), err
@@ -90,6 +86,6 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 	if err != nil {
 		return *new(T), err
 	}
-	p.current = result
-	return p.current, nil
+	p.current = &result
+	return *p.current, nil
 }

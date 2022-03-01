@@ -421,13 +421,13 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) ListPropertiesOfKeysPager {
+func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *ListPropertiesOfKeysPager {
 	if options == nil {
 		options = &ListPropertiesOfKeysOptions{}
 	}
 	p := c.kvClient.GetKeys(c.vaultUrl, options.toGenerated())
 
-	return ListPropertiesOfKeysPager{genPager: *p}
+	return &ListPropertiesOfKeysPager{genPager: *p}
 }
 
 // GetKeyOptions contains the options for the Client.GetKey method
@@ -653,7 +653,7 @@ type DeleteKeyPollerResponse struct {
 	PollUntilDone func(context.Context, time.Duration) (DeleteKeyResponse, error)
 
 	// Poller contains an initialized WidgetPoller
-	Poller DeleteKeyPoller
+	Poller *DeleteKeyPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -679,7 +679,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 		}
 	}
 
-	s := DeleteKeyPoller{
+	s := &DeleteKeyPoller{
 		vaultUrl:       c.vaultUrl,
 		keyName:        keyName,
 		client:         c.kvClient,
@@ -826,7 +826,7 @@ type RecoverDeletedKeyPollerResponse struct {
 	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedKeyResponse, error)
 
 	// Poller contains an initialized RecoverDeletedKeyPoller
-	Poller RecoverDeletedKeyPoller
+	Poller *RecoverDeletedKeyPoller
 
 	// RawResponse cotains the underlying HTTP response
 	RawResponse *http.Response
@@ -852,7 +852,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 		}
 	}
 
-	b := RecoverDeletedKeyPoller{
+	b := &RecoverDeletedKeyPoller{
 		lastResponse:    getResp,
 		keyName:         keyName,
 		client:          c.kvClient,
@@ -1011,12 +1011,12 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 // The ListDeleted operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
 // an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
-func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) ListDeletedKeysPager {
+func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *ListDeletedKeysPager {
 	if options == nil {
 		options = &ListDeletedKeysOptions{}
 	}
 
-	return ListDeletedKeysPager{
+	return &ListDeletedKeysPager{
 		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
 	}
 }
@@ -1084,12 +1084,12 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 // ListPropertiesOfKeyVersions lists all versions of the specified key. The full key identifer and
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) ListPropertiesOfKeyVersionsPager {
+func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *ListPropertiesOfKeyVersionsPager {
 	if options == nil {
 		options = &ListPropertiesOfKeyVersionsOptions{}
 	}
 
-	return ListPropertiesOfKeyVersionsPager{
+	return &ListPropertiesOfKeyVersionsPager{
 		genPager: c.kvClient.GetKeyVersions(
 			c.vaultUrl,
 			keyName,

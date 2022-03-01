@@ -39,8 +39,10 @@ type Pager[T any] struct {
 }
 
 // NewPager creates an instance of Pager using the specified PageProcessor.
-func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
+// Pass a non-nil T for firstPage if the first page has already been retrieved.
+func NewPager[T any](processor PageProcessor[T], firstPage *T) *Pager[T] {
 	return &Pager[T]{
+		current:   firstPage,
 		processor: processor,
 		firstPage: true,
 	}

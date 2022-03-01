@@ -3580,7 +3580,7 @@ func (c *CefSolutionProperties) UnmarshalJSON(data []byte) error {
 // CloudOfferingClassification provides polymorphic access to related types.
 // Call the interface's GetCloudOffering() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CloudOffering, *CspmMonitorAwsOffering, *DefenderForContainersAwsOffering, *DefenderForServersAwsOffering
+// - *CloudOffering, *CspmMonitorAwsOffering, *DefenderForContainersAwsOffering, *DefenderForServersAwsOffering, *InformationProtectionAwsOffering
 type CloudOfferingClassification interface {
 	// GetCloudOffering returns the CloudOffering content of the underlying type.
 	GetCloudOffering() *CloudOffering
@@ -4936,7 +4936,7 @@ func (d DefenderForServersAwsOffering) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "arcAutoProvisioning", d.ArcAutoProvisioning)
 	populate(objectMap, "defenderForServers", d.DefenderForServers)
 	populate(objectMap, "description", d.Description)
-	objectMap["offeringType"] = "DefenderForServersAWS"
+	objectMap["offeringType"] = OfferingTypeDefenderForServersAws
 	return json.Marshal(objectMap)
 }
 
@@ -6215,6 +6215,67 @@ type HybridComputeSettingsProperties struct {
 
 	// READ-ONLY; State of the service principal and its secret
 	HybridComputeProvisioningState *HybridComputeProvisioningState `json:"hybridComputeProvisioningState,omitempty" azure:"ro"`
+}
+
+// InformationProtectionAwsOffering - The information protection for AWS offering configurations
+type InformationProtectionAwsOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType `json:"offeringType,omitempty"`
+
+	// The native cloud connection configuration
+	InformationProtection *InformationProtectionAwsOfferingInformationProtection `json:"informationProtection,omitempty"`
+
+	// READ-ONLY; The offering description.
+	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type InformationProtectionAwsOffering.
+func (i *InformationProtectionAwsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: i.OfferingType,
+		Description:  i.Description,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InformationProtectionAwsOffering.
+func (i InformationProtectionAwsOffering) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", i.Description)
+	populate(objectMap, "informationProtection", i.InformationProtection)
+	objectMap["offeringType"] = OfferingTypeInformationProtectionAws
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InformationProtectionAwsOffering.
+func (i *InformationProtectionAwsOffering) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, &i.Description)
+			delete(rawMsg, key)
+		case "informationProtection":
+			err = unpopulate(val, &i.InformationProtection)
+			delete(rawMsg, key)
+		case "offeringType":
+			err = unpopulate(val, &i.OfferingType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// InformationProtectionAwsOfferingInformationProtection - The native cloud connection configuration
+type InformationProtectionAwsOfferingInformationProtection struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string `json:"cloudRoleArn,omitempty"`
 }
 
 // InformationProtectionKeyword - The information type keyword.

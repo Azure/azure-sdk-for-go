@@ -90,7 +90,6 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		addGetTokenFailureLogs(credNameBrowser, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
 	}
 	c.account = ar.Account

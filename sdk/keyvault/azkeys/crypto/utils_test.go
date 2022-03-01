@@ -105,7 +105,7 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 	}, nil
 }
 
-func createCryptoClient(t *testing.T, key string) (*Client, error) {
+func createCryptoClient(t *testing.T, key string) (Client, error) {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -126,7 +126,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func createClient(t *testing.T) (*azkeys.Client, error) {
+func createClient(t *testing.T) (azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)

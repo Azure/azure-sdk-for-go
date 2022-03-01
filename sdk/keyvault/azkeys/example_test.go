@@ -17,8 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-var client *azkeys.Client
-
 func ExampleNewClient() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -26,10 +24,11 @@ func ExampleNewClient() {
 		panic(err)
 	}
 
-	client, err = azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
 	if err != nil {
 		panic(err)
 	}
+	_ = client // do something with client
 }
 
 func ExampleClient_CreateRSAKey() {

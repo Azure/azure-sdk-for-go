@@ -47,7 +47,7 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 }
 
 // NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -60,7 +60,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return &Client{
+	return Client{
 		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
@@ -161,7 +161,7 @@ type CreateECKeyOptions struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
-	HardwareProtected bool
+	HardwareProtected *bool
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
@@ -199,7 +199,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := KeyTypeEC
 
-	if options != nil && options.HardwareProtected {
+	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
 		keyType = KeyTypeECHSM
 	} else if options == nil {
 		options = &CreateECKeyOptions{}
@@ -216,7 +216,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 // CreateOCTKeyOptions contains the optional parameters for the Client.CreateOCTKey method
 type CreateOCTKeyOptions struct {
 	// Hardware Protected OCT Key
-	HardwareProtected bool
+	HardwareProtected *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	Size *int32 `json:"key_size,omitempty"`
@@ -260,7 +260,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
 	keyType := KeyTypeOct
 
-	if options != nil && options.HardwareProtected {
+	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
 		keyType = KeyTypeOctHSM
 	} else if options == nil {
 		options = &CreateOCTKeyOptions{}

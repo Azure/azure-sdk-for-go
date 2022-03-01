@@ -15,18 +15,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
 )
 
-var client *crypto.Client
-
 func ExampleNewClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
+	_ = client // do something with client
 }
 
 func ExampleClient_Encrypt() {
@@ -35,7 +34,7 @@ func ExampleClient_Encrypt() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -53,7 +52,7 @@ func ExampleClient_Decrypt() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -77,7 +76,7 @@ func ExampleClient_WrapKey() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -98,7 +97,7 @@ func ExampleClient_UnwrapKey() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -126,7 +125,7 @@ func ExampleClient_Sign() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -151,7 +150,7 @@ func ExampleClient_Verify() {
 		panic(err)
 	}
 
-	client, err = crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
 	if err != nil {
 		panic(err)
 	}

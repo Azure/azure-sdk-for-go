@@ -211,7 +211,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 }
 
 // BeginDeleteSecretOptions contains the optional parameters for the Client.BeginDeleteSecret method.
-type BeginDeleteSecretOptions struct{
+type BeginDeleteSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -325,7 +325,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 }
 
 // GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
-type GetDeletedSecretOptions struct{
+type GetDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -443,7 +443,7 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 }
 
 // BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
-type BackupSecretOptions struct{
+type BackupSecretOptions struct {
 	// placeholder for future optional parameters
 }
 

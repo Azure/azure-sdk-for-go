@@ -417,25 +417,25 @@ func ExampleClient_List() {
 	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.TODO()) {
-		response := pager.PageResponse()
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 
 	// To list all entities in a table, provide nil to Query()
 	listPager := client.List(nil)
-	pageCount = 1
-	for listPager.NextPage(context.TODO()) {
-		response := listPager.PageResponse()
+	pageCount = 0
+	for listPager.More() {
+		response, err := listPager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 }
 

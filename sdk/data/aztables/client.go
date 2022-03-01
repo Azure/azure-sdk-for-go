@@ -9,6 +9,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -193,7 +194,7 @@ type ListEntitiesResponse struct {
 }
 
 // transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (ListEntitiesPage, error) {
+func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesPage, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
@@ -226,56 +227,50 @@ func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (List
 //
 // PageResponse returns the results from the page most recently fetched from the service.
 type ListEntitiesPager struct {
-	tableClient       *Client
-	current           *ListEntitiesPage
-	tableQueryOptions *generated.TableClientQueryEntitiesOptions
-	listOptions       *ListEntitiesOptions
-	err               error
+	tableName   string
+	client      *generated.TableClient
+	current     generated.TableClientQueryEntitiesResponse
+	listOptions *ListEntitiesOptions
+	nextPK      *string
+	nextRK      *string
 }
 
+// NextPagePartitionKey returns one of the continuation tokens for the ListEntitiesPager.
+// Use in conjunction with the NewPageRowKey.
 func (p *ListEntitiesPager) NextPagePartitionKey() *string {
-	return p.tableQueryOptions.NextPartitionKey
+	return p.nextPK
 }
 
+// NextPageRowKey returns one of the continuation tokens for the ListEntitiesPager.
+// Use in conjunction with the NewPagePartitionKey.
 func (p *ListEntitiesPager) NextPageRowKey() *string {
-	return p.tableQueryOptions.NextRowKey
+	return p.nextRK
+}
+
+func (p *ListEntitiesPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {
+			return false
+		}
+	}
+	return true
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-func (p *ListEntitiesPager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.ContinuationNextPartitionKey == nil && p.current.ContinuationNextRowKey == nil) {
-		return false
-	}
-	var resp generated.TableClientQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(
-		ctx,
-		generated.Enum1Three0,
-		p.tableClient.name,
-		p.tableQueryOptions,
-		p.listOptions.toQueryOptions(),
-	)
-
-	c, err := newListEntitiesPage(&resp)
+func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPage, error) {
+	resp, err := p.client.QueryEntities(ctx, generated.Enum1Three0, p.tableName, &generated.TableClientQueryEntitiesOptions{
+		NextPartitionKey: p.nextPK,
+		NextRowKey:       p.nextRK,
+	}, p.listOptions.toQueryOptions())
 	if err != nil {
-		p.err = nil
+		return ListEntitiesPage{}, err
 	}
-
-	p.current = &c
-	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
-	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && len(resp.TableEntityQueryResponse.Value) > 0
-}
-
-// PageResponse returns the results from the page most recently fetched from the service.
-func (p *ListEntitiesPager) PageResponse() ListEntitiesPage {
-	return *p.current
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *ListEntitiesPager) Err() error {
-	return p.err
+	p.current = resp
+	p.nextPK = resp.XMSContinuationNextPartitionKey
+	p.nextRK = resp.XMSContinuationNextRowKey
+	return newListEntitiesPage(resp)
 }
 
 // List queries the entities using the specified ListEntitiesOptions.
@@ -296,12 +291,12 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 		listOptions = &ListEntitiesOptions{}
 	}
 	return ListEntitiesPager{
-		tableClient: t,
+		client:      t.client,
+		tableName:   t.name,
 		listOptions: listOptions,
-		tableQueryOptions: &generated.TableClientQueryEntitiesOptions{
-			NextPartitionKey: listOptions.PartitionKey,
-			NextRowKey:       listOptions.RowKey,
-		},
+		current:     generated.TableClientQueryEntitiesResponse{},
+		nextPK:      listOptions.PartitionKey,
+		nextRK:      listOptions.RowKey,
 	}
 }
 

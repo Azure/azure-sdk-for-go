@@ -11,6 +11,9 @@
 * Changed the `ListTablesPager` and `ListEntitiesPager` to structs.
 * Renamed the `ResponseProperties` type to `TableProperties`.
 * Removing `ContentType` from the `TransactionResponse` struct.
+* Update `ListEntitiesPager` and `ListTablesPager`.
+    * The `More` method checks whether there are more pages to retrieve.
+    * The `NextPage(context.Context)` method gets the next page and returns a response and an `error`.
 
 ### Bugs Fixed
 

@@ -43,8 +43,9 @@ func TestBatchAdd(t *testing.T) {
 
 			pager := client.List(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				response := pager.PageResponse()
+			for pager.More() {
+				response, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				count += len(response.Entities)
 			}
 
@@ -88,8 +89,9 @@ func TestBatchInsert(t *testing.T) {
 
 			pager := client.List(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				response := pager.PageResponse()
+			for pager.More() {
+				response, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				count += len(response.Entities)
 			}
 
@@ -131,8 +133,9 @@ func TestBatchMixed(t *testing.T) {
 			filter := "RowKey eq '1'"
 			list := &ListEntitiesOptions{Filter: &filter}
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			preMerge := qResp.Entities[0]
 			var unMarshalledPreMerge map[string]interface{}
@@ -193,8 +196,9 @@ func TestBatchMixed(t *testing.T) {
 			}
 
 			pager = client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unMarshaledPostMerge map[string]interface{}

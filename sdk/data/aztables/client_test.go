@@ -164,8 +164,9 @@ func TestMergeEntity(t *testing.T) {
 
 			var qResp ListEntitiesPage
 			pager := client.List(listOptions)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
@@ -236,8 +237,9 @@ func TestInsertEntity(t *testing.T) {
 			// 5. Query for new entity
 			var qResp ListEntitiesPage
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
@@ -294,8 +296,9 @@ func TestQuerySimpleEntity(t *testing.T) {
 
 			var resp ListEntitiesPage
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				resp = pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				require.Equal(t, len(resp.Entities), expectedCount)
 			}
 
@@ -343,10 +346,10 @@ func TestQueryComplexEntity(t *testing.T) {
 			expectedCount := 4
 			options := &ListEntitiesOptions{Filter: &filter}
 
-			var resp ListEntitiesPage
 			pager := client.List(options)
-			for pager.NextPage(ctx) {
-				resp = pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				require.Equal(t, expectedCount, len(resp.Entities))
 
 				for idx, entity := range resp.Entities {
@@ -401,14 +404,15 @@ func TestContinuationTokens(t *testing.T) {
 			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
 			var pkContToken *string
 			var rkContToken *string
-			for pager.NextPage(ctx) {
-				require.Equal(t, 1, len(pager.PageResponse().Entities))
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				require.Equal(t, 1, len(resp.Entities))
 				pkContToken = pager.NextPagePartitionKey()
 				rkContToken = pager.NextPageRowKey()
 				break
 			}
 
-			require.NoError(t, pager.Err())
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
@@ -417,11 +421,11 @@ func TestContinuationTokens(t *testing.T) {
 				RowKey:       rkContToken,
 			})
 			count := 0
-			for newPager.NextPage(ctx) {
-				count += len(newPager.PageResponse().Entities)
+			for newPager.More() {
+				resp, err := newPager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Entities)
 			}
-
-			require.NoError(t, pager.Err())
 			require.Equal(t, 9, count)
 		})
 	}
@@ -442,14 +446,15 @@ func TestContinuationTokensFilters(t *testing.T) {
 			})
 			var pkContToken *string
 			var rkContToken *string
-			for pager.NextPage(ctx) {
-				require.Equal(t, 1, len(pager.PageResponse().Entities))
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				require.Equal(t, 1, len(resp.Entities))
 				pkContToken = pager.NextPagePartitionKey()
 				rkContToken = pager.NextPageRowKey()
 				break
 			}
 
-			require.NoError(t, pager.Err())
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
@@ -459,11 +464,11 @@ func TestContinuationTokensFilters(t *testing.T) {
 				Filter:       to.StringPtr("Value le 5"),
 			})
 			count := 0
-			for newPager.NextPage(ctx) {
-				count += len(newPager.PageResponse().Entities)
+			for newPager.More() {
+				resp, err := newPager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Entities)
 			}
-
-			require.NoError(t, pager.Err())
 			require.Equal(t, 4, count)
 		})
 	}
@@ -528,9 +533,10 @@ func TestAzurite(t *testing.T) {
 
 	count := 0
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Entities)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		count += len(resp.Entities)
 	}
-	require.NoError(t, pager.Err())
 	require.Equal(t, 1, count)
 }

@@ -273,7 +273,8 @@ func (p *ListTablesPager) More() bool {
 	return true
 }
 
-func (p *ListTablesPager) ContinuationToken() *string {
+// NextPageTableName returns the continuation token for the ListTablesPager
+func (p *ListTablesPager) NextPageTableName() *string {
 	return p.nextTableName
 }
 

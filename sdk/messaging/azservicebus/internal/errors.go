@@ -91,17 +91,18 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
 	amqp.ErrorCondition("com.microsoft:operation-cancelled"): RecoveryKindNone,
 
 	// Link recovery needed
-	amqp.ErrorDetachForced: RecoveryKindLink, // "amqp:link:detach-forced"
+	amqp.ErrorDetachForced:          RecoveryKindLink, // "amqp:link:detach-forced"
+	amqp.ErrorTransferLimitExceeded: RecoveryKindLink, // "amqp:link:transfer-limit-exceeded"
 
 	// Connection recovery needed
 	amqp.ErrorConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
+	amqp.ErrorInternalError:    RecoveryKindConn, // "amqp:internal-error"
 
 	// No recovery possible - this operation is non retriable.
-	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal,
+	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal, // "amqp:link:message-size-exceeded"
 	amqp.ErrorUnauthorizedAccess:                                  RecoveryKindFatal, // creds are bad
-	amqp.ErrorNotFound:                                            RecoveryKindFatal,
-	amqp.ErrorNotAllowed:                                          RecoveryKindFatal,
-	amqp.ErrorInternalError:                                       RecoveryKindFatal, // "amqp:internal-error"
+	amqp.ErrorNotFound:                                            RecoveryKindFatal, // "amqp:not-found"
+	amqp.ErrorNotAllowed:                                          RecoveryKindFatal, // "amqp:not-allowed"
 	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
 	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
 	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,
@@ -121,7 +122,7 @@ func GetRecoveryKind(err error) recoveryKind {
 		return RecoveryKindConn
 	}
 
-	var errNonRetriable *ErrNonRetriable
+	var errNonRetriable ErrNonRetriable
 
 	if errors.As(err, &errNonRetriable) {
 		return RecoveryKindFatal
@@ -130,13 +131,14 @@ func GetRecoveryKind(err error) recoveryKind {
 	var de *amqp.DetachError
 
 	// check the "special" AMQP errors that aren't condition-based.
-	if errors.Is(err, amqp.ErrSessionClosed) ||
-		errors.Is(err, amqp.ErrLinkClosed) ||
+	if errors.Is(err, amqp.ErrLinkClosed) ||
 		errors.As(err, &de) {
 		return RecoveryKindLink
 	}
 
-	if errors.Is(err, amqp.ErrConnClosed) {
+	if errors.Is(err, amqp.ErrConnClosed) ||
+		// session closures appear to leak through when the connection itself is going down.
+		errors.Is(err, amqp.ErrSessionClosed) {
 		return RecoveryKindConn
 	}
 
@@ -183,8 +185,8 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 	}
 
-	// this is some error type we've never seen.
-	return RecoveryKindFatal
+	// this is some error type we've never seen - recover the entire connection.
+	return RecoveryKindConn
 }
 
 type (

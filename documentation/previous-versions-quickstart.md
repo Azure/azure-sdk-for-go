@@ -165,7 +165,7 @@ below.
 
 > Note: If you need to create a new service principal, run `az ad sp create-for-rbac -n "<app_name>" --role Contributor` in the
 > [azure-cli](https://github.com/Azure/azure-cli). See [these
-> docs](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+> docs](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli)
 > for more info. Copy the new principal's ID, secret, and tenant ID for use in
 > your app, or consider the `--sdk-auth` parameter for serialized output.
 

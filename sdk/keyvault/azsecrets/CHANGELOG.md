@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.1 (2022-03-08)
+## 0.6.0 (2022-03-08)
 
 ### Breaking Changes
 * Changes `Attributes` to `Properties`

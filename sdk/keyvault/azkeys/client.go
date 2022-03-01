@@ -47,7 +47,7 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 }
 
 // NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
+func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -60,7 +60,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return Client{
+	return &Client{
 		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil

@@ -127,7 +127,7 @@ func (d *downloadPerfTest) Run(ctx context.Context) error {
 		return err
 	}
 	downloadedData := &bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = downloadedData.ReadFrom(reader)
 	if err != nil {
 		return err

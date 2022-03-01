@@ -134,7 +134,7 @@ func TestCreateOCTKey(t *testing.T) {
 			require.NoError(t, err)
 
 			resp, err := client.CreateOctKey(ctx, key, &CreateOctKeyOptions{
-				Size: to.Int32Ptr(256),
+				Size:              to.Int32Ptr(256),
 				HardwareProtected: to.BoolPtr(true)},
 			)
 

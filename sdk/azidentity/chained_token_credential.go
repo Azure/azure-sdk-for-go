@@ -91,7 +91,9 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		if err == nil {
 			log.Writef(EventAuthentication, "%s authenticated with %s", c.name, extractCredentialName(cred))
 			if c.iterating {
+				c.cond.L.Lock()
 				c.successfulCredential = cred
+				c.cond.L.Unlock()
 			}
 			break
 		}

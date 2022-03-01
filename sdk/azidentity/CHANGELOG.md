@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * Prevented a data race in `DefaultAzureCredential` and `ChainedTokenCredential`
+  ([#17144](https://github.com/Azure/azure-sdk-for-go/issues/17144))
 
 ### Other Changes
 * Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01

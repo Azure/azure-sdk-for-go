@@ -206,12 +206,6 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 	}
 }
 
-// BackupSecretResult - The backup secret result, containing the backup blob.
-type BackupSecretResult struct {
-	// READ-ONLY; The backup blob containing the backed up secret.
-	Value []byte `json:"value,omitempty" azure:"ro"`
-}
-
 func convertPtrMap(m map[string]*string) map[string]string {
 	if m == nil {
 		return nil

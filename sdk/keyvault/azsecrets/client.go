@@ -211,7 +211,9 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 }
 
 // BeginDeleteSecretOptions contains the optional parameters for the Client.BeginDeleteSecret method.
-type BeginDeleteSecretOptions struct{}
+type BeginDeleteSecretOptions struct{
+	// placeholder for future optional parameters
+}
 
 // convert public options to generated options struct
 func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteSecretOptions {
@@ -323,7 +325,9 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 }
 
 // GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
-type GetDeletedSecretOptions struct{}
+type GetDeletedSecretOptions struct{
+	// placeholder for future optional parameters
+}
 
 func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretOptions {
 	return &internal.KeyVaultClientGetDeletedSecretOptions{}
@@ -439,7 +443,9 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 }
 
 // BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
-type BackupSecretOptions struct{}
+type BackupSecretOptions struct{
+	// placeholder for future optional parameters
+}
 
 func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecretOptions {
 	return &internal.KeyVaultClientBackupSecretOptions{}
@@ -447,7 +453,9 @@ func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecret
 
 // BackupSecretResponse contains the response object for the Client.BackupSecret method.
 type BackupSecretResponse struct {
-	BackupSecretResult
+	// READ-ONLY; The backup blob containing the backed up secret.
+	Value []byte `json:"value,omitempty" azure:"ro"`
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -456,9 +464,7 @@ type BackupSecretResponse struct {
 func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
 	return BackupSecretResponse{
 		RawResponse: i.RawResponse,
-		BackupSecretResult: BackupSecretResult{
-			Value: i.Value,
-		},
+		Value:       i.Value,
 	}
 }
 
@@ -534,7 +540,9 @@ func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options
 }
 
 // PurgeDeletedSecretOptions is the struct for any future options for Client.PurgeDeletedSecret.
-type PurgeDeletedSecretOptions struct{}
+type PurgeDeletedSecretOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (p *PurgeDeletedSecretOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedSecretOptions {
 	return &internal.KeyVaultClientPurgeDeletedSecretOptions{}
@@ -611,7 +619,9 @@ func (b *RecoverDeletedSecretPoller) pollUntilDone(ctx context.Context, t time.D
 }
 
 // BeginRecoverDeletedSecretOptions contains the optional parameters for the Client.BeginRecoverDeletedSecret operation
-type BeginRecoverDeletedSecretOptions struct{}
+type BeginRecoverDeletedSecretOptions struct {
+	// placeholder for future optional parameters
+}
 
 // Convert the publicly exposed options object to the generated version
 func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedSecretOptions {

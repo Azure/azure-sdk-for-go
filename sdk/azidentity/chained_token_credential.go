@@ -75,6 +75,8 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			}
 			if !c.iterating {
 				c.iterating = true
+				// allow other goroutines to wait while this one iterates
+				c.cond.L.Unlock()
 				break
 			}
 			c.cond.Wait()
@@ -99,6 +101,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		}
 	}
 	if c.iterating {
+		c.cond.L.Lock()
 		c.iterating = false
 		c.cond.L.Unlock()
 		c.cond.Broadcast()

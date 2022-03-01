@@ -106,7 +106,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 }
 
 // Options for Client.Delete and ServiceClient.DeleteTable methods
-type DeleteTableOptions struct {}
+type DeleteTableOptions struct{}
 
 func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
@@ -216,7 +216,7 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 
 	return &TableProperties{
-		Name:     g.TableName,
+		Name:          g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,
 		ODataType:     g.ODataType,
@@ -282,7 +282,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 }
 
 // GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
-type GetStatisticsOptions struct {}
+type GetStatisticsOptions struct{}
 
 type GetStatisticsResponse struct {
 	RawResponse    *http.Response
@@ -310,7 +310,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
-type GetPropertiesOptions struct {}
+type GetPropertiesOptions struct{}
 
 func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
 	return &generated.ServiceClientGetPropertiesOptions{}

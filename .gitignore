@@ -46,3 +46,6 @@ vendor/
 # vscode
 **/.vscode/*
 !.vscode/cspell.json
+
+# perf
+**/testdata/perf

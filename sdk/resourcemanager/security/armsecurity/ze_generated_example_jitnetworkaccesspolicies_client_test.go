@@ -229,7 +229,6 @@ func ExampleJitNetworkAccessPoliciesClient_Initiate() {
 	_, err = client.Initiate(ctx,
 		"<resource-group-name>",
 		"<jit-network-access-policy-name>",
-		armsecurity.Enum56("initiate"),
 		armsecurity.JitNetworkAccessPolicyInitiateRequest{
 			Justification: to.StringPtr("<justification>"),
 			VirtualMachines: []*armsecurity.JitNetworkAccessPolicyInitiateVirtualMachine{

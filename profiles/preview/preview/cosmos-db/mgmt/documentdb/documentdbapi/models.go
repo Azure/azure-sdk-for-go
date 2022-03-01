@@ -9,9 +9,8 @@
 
 package documentdbapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-04-01-preview/documentdb/documentdbapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-11-15-preview/documentdb/documentdbapi"
 
-type BaseClientAPI = original.BaseClientAPI
 type CassandraClustersClientAPI = original.CassandraClustersClientAPI
 type CassandraDataCentersClientAPI = original.CassandraDataCentersClientAPI
 type CassandraResourcesClientAPI = original.CassandraResourcesClientAPI
@@ -19,10 +18,13 @@ type CollectionClientAPI = original.CollectionClientAPI
 type CollectionPartitionClientAPI = original.CollectionPartitionClientAPI
 type CollectionPartitionRegionClientAPI = original.CollectionPartitionRegionClientAPI
 type CollectionRegionClientAPI = original.CollectionRegionClientAPI
+type DataTransferJobsClientAPI = original.DataTransferJobsClientAPI
 type DatabaseAccountRegionClientAPI = original.DatabaseAccountRegionClientAPI
 type DatabaseAccountsClientAPI = original.DatabaseAccountsClientAPI
 type DatabaseClientAPI = original.DatabaseClientAPI
+type GraphResourcesClientAPI = original.GraphResourcesClientAPI
 type GremlinResourcesClientAPI = original.GremlinResourcesClientAPI
+type LocationsClientAPI = original.LocationsClientAPI
 type MongoDBResourcesClientAPI = original.MongoDBResourcesClientAPI
 type NotebookWorkspacesClientAPI = original.NotebookWorkspacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
@@ -34,12 +36,17 @@ type PercentileTargetClientAPI = original.PercentileTargetClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type RestorableDatabaseAccountsClientAPI = original.RestorableDatabaseAccountsClientAPI
+type RestorableGremlinDatabasesClientAPI = original.RestorableGremlinDatabasesClientAPI
+type RestorableGremlinGraphsClientAPI = original.RestorableGremlinGraphsClientAPI
+type RestorableGremlinResourcesClientAPI = original.RestorableGremlinResourcesClientAPI
 type RestorableMongodbCollectionsClientAPI = original.RestorableMongodbCollectionsClientAPI
 type RestorableMongodbDatabasesClientAPI = original.RestorableMongodbDatabasesClientAPI
 type RestorableMongodbResourcesClientAPI = original.RestorableMongodbResourcesClientAPI
 type RestorableSQLContainersClientAPI = original.RestorableSQLContainersClientAPI
 type RestorableSQLDatabasesClientAPI = original.RestorableSQLDatabasesClientAPI
 type RestorableSQLResourcesClientAPI = original.RestorableSQLResourcesClientAPI
+type RestorableTableResourcesClientAPI = original.RestorableTableResourcesClientAPI
+type RestorableTablesClientAPI = original.RestorableTablesClientAPI
 type SQLResourcesClientAPI = original.SQLResourcesClientAPI
 type ServiceClientAPI = original.ServiceClientAPI
 type TableResourcesClientAPI = original.TableResourcesClientAPI

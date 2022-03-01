@@ -170,8 +170,10 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorAwsOffering{}
 	case string(OfferingTypeDefenderForContainersAws):
 		b = &DefenderForContainersAwsOffering{}
-	case "DefenderForServersAWS":
+	case string(OfferingTypeDefenderForServersAws):
 		b = &DefenderForServersAwsOffering{}
+	case string(OfferingTypeInformationProtectionAws):
+		b = &InformationProtectionAwsOffering{}
 	default:
 		b = &CloudOffering{}
 	}

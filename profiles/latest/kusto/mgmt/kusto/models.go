@@ -12,7 +12,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-08-27/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2022-02-01/kusto"
 )
 
 const (
@@ -36,20 +36,39 @@ const (
 	AzureSkuNameStandardD12V2         AzureSkuName = original.AzureSkuNameStandardD12V2
 	AzureSkuNameStandardD13V2         AzureSkuName = original.AzureSkuNameStandardD13V2
 	AzureSkuNameStandardD14V2         AzureSkuName = original.AzureSkuNameStandardD14V2
+	AzureSkuNameStandardD16dV5        AzureSkuName = original.AzureSkuNameStandardD16dV5
+	AzureSkuNameStandardD32dV4        AzureSkuName = original.AzureSkuNameStandardD32dV4
+	AzureSkuNameStandardD32dV5        AzureSkuName = original.AzureSkuNameStandardD32dV5
 	AzureSkuNameStandardDS13V21TBPS   AzureSkuName = original.AzureSkuNameStandardDS13V21TBPS
 	AzureSkuNameStandardDS13V22TBPS   AzureSkuName = original.AzureSkuNameStandardDS13V22TBPS
 	AzureSkuNameStandardDS14V23TBPS   AzureSkuName = original.AzureSkuNameStandardDS14V23TBPS
 	AzureSkuNameStandardDS14V24TBPS   AzureSkuName = original.AzureSkuNameStandardDS14V24TBPS
+	AzureSkuNameStandardE16adsV5      AzureSkuName = original.AzureSkuNameStandardE16adsV5
 	AzureSkuNameStandardE16asV43TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV43TBPS
 	AzureSkuNameStandardE16asV44TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV44TBPS
+	AzureSkuNameStandardE16asV53TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV53TBPS
+	AzureSkuNameStandardE16asV54TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV54TBPS
 	AzureSkuNameStandardE16aV4        AzureSkuName = original.AzureSkuNameStandardE16aV4
+	AzureSkuNameStandardE16sV43TBPS   AzureSkuName = original.AzureSkuNameStandardE16sV43TBPS
+	AzureSkuNameStandardE16sV44TBPS   AzureSkuName = original.AzureSkuNameStandardE16sV44TBPS
+	AzureSkuNameStandardE16sV53TBPS   AzureSkuName = original.AzureSkuNameStandardE16sV53TBPS
+	AzureSkuNameStandardE16sV54TBPS   AzureSkuName = original.AzureSkuNameStandardE16sV54TBPS
+	AzureSkuNameStandardE2adsV5       AzureSkuName = original.AzureSkuNameStandardE2adsV5
 	AzureSkuNameStandardE2aV4         AzureSkuName = original.AzureSkuNameStandardE2aV4
+	AzureSkuNameStandardE4adsV5       AzureSkuName = original.AzureSkuNameStandardE4adsV5
 	AzureSkuNameStandardE4aV4         AzureSkuName = original.AzureSkuNameStandardE4aV4
 	AzureSkuNameStandardE64iV3        AzureSkuName = original.AzureSkuNameStandardE64iV3
 	AzureSkuNameStandardE80idsV4      AzureSkuName = original.AzureSkuNameStandardE80idsV4
+	AzureSkuNameStandardE8adsV5       AzureSkuName = original.AzureSkuNameStandardE8adsV5
 	AzureSkuNameStandardE8asV41TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV41TBPS
 	AzureSkuNameStandardE8asV42TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV42TBPS
+	AzureSkuNameStandardE8asV51TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV51TBPS
+	AzureSkuNameStandardE8asV52TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV52TBPS
 	AzureSkuNameStandardE8aV4         AzureSkuName = original.AzureSkuNameStandardE8aV4
+	AzureSkuNameStandardE8sV41TBPS    AzureSkuName = original.AzureSkuNameStandardE8sV41TBPS
+	AzureSkuNameStandardE8sV42TBPS    AzureSkuName = original.AzureSkuNameStandardE8sV42TBPS
+	AzureSkuNameStandardE8sV51TBPS    AzureSkuName = original.AzureSkuNameStandardE8sV51TBPS
+	AzureSkuNameStandardE8sV52TBPS    AzureSkuName = original.AzureSkuNameStandardE8sV52TBPS
 	AzureSkuNameStandardL16s          AzureSkuName = original.AzureSkuNameStandardL16s
 	AzureSkuNameStandardL16sV2        AzureSkuName = original.AzureSkuNameStandardL16sV2
 	AzureSkuNameStandardL4s           AzureSkuName = original.AzureSkuNameStandardL4s
@@ -118,6 +137,13 @@ const (
 	DatabasePrincipalTypeApp   DatabasePrincipalType = original.DatabasePrincipalTypeApp
 	DatabasePrincipalTypeGroup DatabasePrincipalType = original.DatabasePrincipalTypeGroup
 	DatabasePrincipalTypeUser  DatabasePrincipalType = original.DatabasePrincipalTypeUser
+)
+
+type DatabaseRouting = original.DatabaseRouting
+
+const (
+	DatabaseRoutingMulti  DatabaseRouting = original.DatabaseRoutingMulti
+	DatabaseRoutingSingle DatabaseRouting = original.DatabaseRoutingSingle
 )
 
 type DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKind
@@ -256,6 +282,13 @@ const (
 	ProvisioningStateMoving    ProvisioningState = original.ProvisioningStateMoving
 	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type PublicIPType = original.PublicIPType
+
+const (
+	PublicIPTypeDualStack PublicIPType = original.PublicIPTypeDualStack
+	PublicIPTypeIPv4      PublicIPType = original.PublicIPTypeIPv4
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
@@ -408,6 +441,7 @@ type OperationResultErrorProperties = original.OperationResultErrorProperties
 type OperationResultProperties = original.OperationResultProperties
 type OperationsClient = original.OperationsClient
 type OperationsResultsClient = original.OperationsResultsClient
+type OperationsResultsLocationClient = original.OperationsResultsLocationClient
 type OptimizedAutoscale = original.OptimizedAutoscale
 type OutboundNetworkDependenciesEndpoint = original.OutboundNetworkDependenciesEndpoint
 type OutboundNetworkDependenciesEndpointListResult = original.OutboundNetworkDependenciesEndpointListResult
@@ -512,6 +546,12 @@ func NewOperationsResultsClient(subscriptionID string) OperationsResultsClient {
 func NewOperationsResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationsResultsClient {
 	return original.NewOperationsResultsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationsResultsLocationClient(subscriptionID string) OperationsResultsLocationClient {
+	return original.NewOperationsResultsLocationClient(subscriptionID)
+}
+func NewOperationsResultsLocationClientWithBaseURI(baseURI string, subscriptionID string) OperationsResultsLocationClient {
+	return original.NewOperationsResultsLocationClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOutboundNetworkDependenciesEndpointListResultIterator(page OutboundNetworkDependenciesEndpointListResultPage) OutboundNetworkDependenciesEndpointListResultIterator {
 	return original.NewOutboundNetworkDependenciesEndpointListResultIterator(page)
 }
@@ -569,6 +609,9 @@ func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 	return original.PossibleDatabasePrincipalTypeValues()
 }
+func PossibleDatabaseRoutingValues() []DatabaseRouting {
+	return original.PossibleDatabaseRoutingValues()
+}
 func PossibleDefaultPrincipalsModificationKindValues() []DefaultPrincipalsModificationKind {
 	return original.PossibleDefaultPrincipalsModificationKindValues()
 }
@@ -604,6 +647,9 @@ func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicIPTypeValues() []PublicIPType {
+	return original.PossiblePublicIPTypeValues()
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()

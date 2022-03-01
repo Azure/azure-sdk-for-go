@@ -34,7 +34,7 @@ jobs:
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
       go.list.filter: 'profiles services storage'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune -o'
 
     steps:
     - task: GoTool@0

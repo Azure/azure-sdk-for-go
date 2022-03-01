@@ -7,7 +7,6 @@
 package azappconfig
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -15,8 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
 )
 
-// ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
-type ConfigurationSettingResult struct {
+type configurationSettingResult struct {
 	Setting
 
 	// ETag of the configuration setting.
@@ -26,76 +24,59 @@ type ConfigurationSettingResult struct {
 	SyncToken *string
 }
 
-type configurationSettingResponse struct {
-	// Contains the configuration setting returned by Azure App Configuration client methods.
-	Result ConfigurationSettingResult
+// AddConfigurationSettingResult contains the response from AddConfigurationSetting method.
+type AddConfigurationSettingResult configurationSettingResult
 
-	// Contains the raw HTTP response from Azure App Configuration client method invocation.
-	RawResponse *http.Response
-}
+// SetConfigurationSettingResult contains the response from SetConfigurationSetting method.
+type SetConfigurationSettingResult configurationSettingResult
 
-func responseFromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValueResponse) configurationSettingResponse {
-	return configurationSettingResponse{
-		Result: ConfigurationSettingResult{
-			Setting:   configurationSettingFromGenerated(g.KeyValue),
-			ETag:      (*azcore.ETag)(g.Etag),
-			SyncToken: g.SyncToken,
-		},
-		RawResponse: g.RawResponse,
+// DeleteConfigurationSettingResult contains the response from DeleteConfigurationSetting method.
+type DeleteConfigurationSettingResult configurationSettingResult
+
+// SetReadOnlyResult contains the response from SetReadOnly method.
+type SetReadOnlyResult configurationSettingResult
+
+func fromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValueResponse) configurationSettingResult {
+	return configurationSettingResult{
+		Setting:   configurationSettingFromGenerated(g.KeyValue),
+		ETag:      (*azcore.ETag)(g.Etag),
+		SyncToken: g.SyncToken,
 	}
 }
 
-func responseFromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) configurationSettingResponse {
-	return configurationSettingResponse{
-		Result: ConfigurationSettingResult{
-			Setting:   configurationSettingFromGenerated(g.KeyValue),
-			ETag:      (*azcore.ETag)(g.Etag),
-			SyncToken: g.SyncToken,
-		},
-		RawResponse: g.RawResponse,
+func fromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) DeleteConfigurationSettingResult {
+	return DeleteConfigurationSettingResult{
+		Setting:   configurationSettingFromGenerated(g.KeyValue),
+		ETag:      (*azcore.ETag)(g.Etag),
+		SyncToken: g.SyncToken,
 	}
 }
 
-func responseFromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) configurationSettingResponse {
-	return configurationSettingResponse{
-		Result: ConfigurationSettingResult{
-			Setting:   configurationSettingFromGenerated(g.KeyValue),
-			ETag:      (*azcore.ETag)(g.Etag),
-			SyncToken: g.SyncToken,
-		},
-		RawResponse: g.RawResponse,
+func fromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) SetReadOnlyResult {
+	return SetReadOnlyResult{
+		Setting:   configurationSettingFromGenerated(g.KeyValue),
+		ETag:      (*azcore.ETag)(g.Etag),
+		SyncToken: g.SyncToken,
 	}
 }
 
-func responseFromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) configurationSettingResponse {
-	return configurationSettingResponse{
-		Result: ConfigurationSettingResult{
-			Setting:   configurationSettingFromGenerated(g.KeyValue),
-			ETag:      (*azcore.ETag)(g.Etag),
-			SyncToken: g.SyncToken,
-		},
-		RawResponse: g.RawResponse,
+func fromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) SetReadOnlyResult {
+	return SetReadOnlyResult{
+		Setting:   configurationSettingFromGenerated(g.KeyValue),
+		ETag:      (*azcore.ETag)(g.Etag),
+		SyncToken: g.SyncToken,
 	}
 }
 
 // GetConfigurationSettingResult contains the configuration setting retrieved by GetConfigurationSetting method.
 type GetConfigurationSettingResult struct {
-	ConfigurationSettingResult
+	configurationSettingResult
 
 	// Contains the timestamp of when the configuration setting was last modified.
 	LastModified *time.Time
 }
 
-// GetConfigurationSettingResponse contains the response from GetConfigurationSetting method.
-type GetConfigurationSettingResponse struct {
-	// Contains the configuration setting returned by the GetConfigurationSetting method.
-	Result GetConfigurationSettingResult
-
-	// Contains the raw HTTP response from Azure App Configuration client method invocation.
-	RawResponse *http.Response
-}
-
-func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse) GetConfigurationSettingResponse {
+func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse) GetConfigurationSettingResult {
 	var t *time.Time
 	if g.LastModified != nil {
 		if tt, err := time.Parse(timeFormat, *g.LastModified); err == nil {
@@ -103,38 +84,26 @@ func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValue
 		}
 	}
 
-	return GetConfigurationSettingResponse{
-		Result: GetConfigurationSettingResult{
-			ConfigurationSettingResult: ConfigurationSettingResult{
-				Setting:   configurationSettingFromGenerated(g.KeyValue),
-				ETag:      (*azcore.ETag)(g.Etag),
-				SyncToken: g.SyncToken,
-			},
-			LastModified: t,
+	return GetConfigurationSettingResult{
+		configurationSettingResult: configurationSettingResult{
+			Setting:   configurationSettingFromGenerated(g.KeyValue),
+			ETag:      (*azcore.ETag)(g.Etag),
+			SyncToken: g.SyncToken,
 		},
-		RawResponse: g.RawResponse,
+		LastModified: t,
 	}
 }
 
-// ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
-type GetRevisionsResult struct {
+// GetRevisionsPage contains the configuration settings returned by GetRevisionsPager.
+type GetRevisionsPage struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Items []Setting
 
-	// Sync token for the Azure App Configuration client, corresponding to the curent state of the client.
+	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-// GetRevisionsPage contains the response returned from the GetRevisions method call.
-type GetRevisionsPage struct {
-	// Contains the configuration settings returned by the GetRevisions method call.
-	Result GetRevisionsResult
-
-	// Contains the raw HTTP response from Azure App Configuration client method invocation.
-	RawResponse *http.Response
-}
-
-func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetRevisionsResponse) GetRevisionsPage {
+func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRevisionsResponse) GetRevisionsPage {
 	var css []Setting
 	for _, cs := range g.Items {
 		if cs != nil {
@@ -143,10 +112,7 @@ func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetRev
 	}
 
 	return GetRevisionsPage{
-		Result: GetRevisionsResult{
-			Items:     css,
-			SyncToken: g.SyncToken,
-		},
-		RawResponse: g.RawResponse,
+		Items:     css,
+		SyncToken: g.SyncToken,
 	}
 }

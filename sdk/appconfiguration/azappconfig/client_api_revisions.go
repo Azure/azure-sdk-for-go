@@ -34,7 +34,7 @@ type getRevisionsPager struct {
 }
 
 func (p getRevisionsPager) PageResponse() GetRevisionsPage {
-	return getRevisionsPageFromGenerated(p.genPager.PageResponse())
+	return fromGeneratedGetRevisionsPage(p.genPager.PageResponse())
 }
 
 func (p getRevisionsPager) Err() error {

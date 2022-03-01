@@ -41,7 +41,7 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 }
 
 // GetConfigurationSetting retrieves an existing configuration setting from the configuration store.
-func (c *Client) GetConfigurationSetting(ctx context.Context, setting Setting, options *GetConfigurationSettingOptions) (GetConfigurationSettingResponse, error) {
+func (c *Client) GetConfigurationSetting(ctx context.Context, setting Setting, options *GetConfigurationSettingOptions) (GetConfigurationSettingResult, error) {
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time
 	if options != nil {
@@ -54,8 +54,8 @@ func (c *Client) GetConfigurationSetting(ctx context.Context, setting Setting, o
 
 	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
-		return GetConfigurationSettingResponse{}, err
+		return GetConfigurationSettingResult{}, err
 	}
 
-	return responseFromGeneratedGet(resp), nil
+	return fromGeneratedGet(resp), nil
 }

@@ -12,9 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// SetConfigurationSettingResponse contains the response from SetConfigurationSetting method.
-type SetConfigurationSettingResponse configurationSettingResponse
-
 // SetConfigurationSettingOptions contains the optional parameters for the SetConfigurationSetting method.
 type SetConfigurationSettingOptions struct {
 	// If set to true and the configuration setting exists in the configuration store, overwrite the setting
@@ -24,7 +21,7 @@ type SetConfigurationSettingOptions struct {
 }
 
 // SetConfigurationSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
-func (c *Client) SetConfigurationSetting(ctx context.Context, setting Setting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResponse, error) {
+func (c *Client) SetConfigurationSetting(ctx context.Context, setting Setting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResult, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -32,8 +29,8 @@ func (c *Client) SetConfigurationSetting(ctx context.Context, setting Setting, o
 
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
 	if err != nil {
-		return SetConfigurationSettingResponse{}, err
+		return SetConfigurationSettingResult{}, err
 	}
 
-	return (SetConfigurationSettingResponse)(responseFromGeneratedPut(resp)), nil
+	return (SetConfigurationSettingResult)(fromGeneratedPut(resp)), nil
 }

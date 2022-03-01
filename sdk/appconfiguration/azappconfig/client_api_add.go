@@ -12,20 +12,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// AddConfigurationSettingResponse contains the response from AddConfigurationSetting method.
-type AddConfigurationSettingResponse configurationSettingResponse
-
 // AddConfigurationSettingOptions contains the optional parameters for the AddConfigurationSetting method.
 type AddConfigurationSettingOptions struct {
 }
 
 // AddConfigurationSetting creates a configuration setting only if the setting does not already exist in the configuration store.
-func (c *Client) AddConfigurationSetting(ctx context.Context, setting Setting, options *AddConfigurationSettingOptions) (AddConfigurationSettingResponse, error) {
+func (c *Client) AddConfigurationSetting(ctx context.Context, setting Setting, options *AddConfigurationSettingOptions) (AddConfigurationSettingResult, error) {
 	etagAny := azcore.ETagAny
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
 	if err != nil {
-		return AddConfigurationSettingResponse{}, err
+		return AddConfigurationSettingResult{}, err
 	}
 
-	return (AddConfigurationSettingResponse)(responseFromGeneratedPut(resp)), nil
+	return (AddConfigurationSettingResult)(fromGeneratedPut(resp)), nil
 }

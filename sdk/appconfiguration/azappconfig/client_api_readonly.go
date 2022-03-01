@@ -14,9 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
 )
 
-// SetReadOnlyResponse contains the response from SetReadOnly method.
-type SetReadOnlyResponse configurationSettingResponse
-
 // SetReadOnlyOptions contains the optional parameters for the SetReadOnly method.
 type SetReadOnlyOptions struct {
 	// If set to true and the configuration setting exists in the configuration store, update the setting
@@ -40,7 +37,7 @@ func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.
 }
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
-func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
+func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResult, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -51,15 +48,15 @@ func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bo
 		var resp generated.AzureAppConfigurationClientPutLockResponse
 		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(ifMatch))
 		if err == nil {
-			return (SetReadOnlyResponse)(responseFromGeneratedPutLock(resp)), nil
+			return fromGeneratedPutLock(resp), nil
 		}
 	} else {
 		var resp generated.AzureAppConfigurationClientDeleteLockResponse
 		resp, err = c.appConfigClient.DeleteLock(ctx, *setting.Key, setting.toGeneratedDeleteLockOptions(ifMatch))
 		if err == nil {
-			return (SetReadOnlyResponse)(responseFromGeneratedDeleteLock(resp)), nil
+			return fromGeneratedDeleteLock(resp), nil
 		}
 	}
 
-	return SetReadOnlyResponse{}, err
+	return SetReadOnlyResult{}, err
 }

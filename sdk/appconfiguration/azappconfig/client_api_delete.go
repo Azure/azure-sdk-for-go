@@ -14,9 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
 )
 
-// DeleteConfigurationSettingResponse contains the response from DeleteConfigurationSetting method.
-type DeleteConfigurationSettingResponse configurationSettingResponse
-
 // DeleteConfigurationSettingOptions contains the optional parameters for the DeleteConfigurationSetting method.
 type DeleteConfigurationSettingOptions struct {
 	// If set to true and the configuration setting exists in the configuration store,
@@ -33,7 +30,7 @@ func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.Azur
 }
 
 // DeleteConfigurationSetting deletes a configuration setting from the configuration store.
-func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Setting, options *DeleteConfigurationSettingOptions) (DeleteConfigurationSettingResponse, error) {
+func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Setting, options *DeleteConfigurationSettingOptions) (DeleteConfigurationSettingResult, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -41,8 +38,8 @@ func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Setting
 
 	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
-		return DeleteConfigurationSettingResponse{}, err
+		return DeleteConfigurationSettingResult{}, err
 	}
 
-	return (DeleteConfigurationSettingResponse)(responseFromGeneratedDelete(resp)), nil
+	return fromGeneratedDelete(resp), nil
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (2022-03-08)
 
 ### Features Added
 * Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct.
@@ -18,10 +18,6 @@
 * Renamed `ListKeyVersions` to `ListPropertiesOfKeyVersions`
 * Removed `Attributes` struct
 * Changed `CreateOCTKey`/`Response`/`Options` to `CreateOctKey`/`Response`/`Options`
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.3.0 (2022-02-08)
 

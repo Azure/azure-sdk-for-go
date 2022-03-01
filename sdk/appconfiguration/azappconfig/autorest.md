@@ -10,7 +10,7 @@ input-file:
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: true
 output-folder: internal/generated
-module: azappconfiguration
+module: azappconfig
 openapi-type: "data-plane"
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.35"

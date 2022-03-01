@@ -10,10 +10,11 @@ package generated
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClientGetDeletedKeysPager provides operations for iterating over paged responses.
@@ -47,7 +48,7 @@ func (p *KeyVaultClientGetDeletedKeysPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,7 +102,7 @@ func (p *KeyVaultClientGetKeyVersionsPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -126,16 +127,16 @@ func (p *KeyVaultClientGetKeyVersionsPager) PageResponse() KeyVaultClientGetKeyV
 
 // KeyVaultClientGetKeysPager provides operations for iterating over paged responses.
 type KeyVaultClientGetKeysPager struct {
-	client    *KeyVaultClient
-	current   KeyVaultClientGetKeysResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, KeyVaultClientGetKeysResponse) (*policy.Request, error)
+	Client    *KeyVaultClient
+	Current   KeyVaultClientGetKeysResponse
+	Error     error
+	Requester func(context.Context) (*policy.Request, error)
+	Advancer  func(context.Context, KeyVaultClientGetKeysResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
 func (p *KeyVaultClientGetKeysPager) Err() error {
-	return p.err
+	return p.Error
 }
 
 // NextPage returns true if the pager advanced to the next page.
@@ -143,37 +144,37 @@ func (p *KeyVaultClientGetKeysPager) Err() error {
 func (p *KeyVaultClientGetKeysPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
+	if !reflect.ValueOf(p.Current).IsZero() {
+		if p.Current.KeyListResult.NextLink == nil || len(*p.Current.KeyListResult.NextLink) == 0 {
 			return false
 		}
-		req, err = p.advancer(ctx, p.current)
+		req, err = p.Advancer(ctx, p.Current)
 	} else {
-		req, err = p.requester(ctx)
+		req, err = p.Requester(ctx)
 	}
 	if err != nil {
-		p.err = err
+		p.Error = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.Client.Pl.Do(req)
 	if err != nil {
-		p.err = err
+		p.Error = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = runtime.NewResponseError(resp)
+		p.Error = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getKeysHandleResponse(resp)
+	result, err := p.Client.GetKeysHandleResponse(resp)
 	if err != nil {
-		p.err = err
+		p.Error = err
 		return false
 	}
-	p.current = result
+	p.Current = result
 	return true
 }
 
 // PageResponse returns the current KeyVaultClientGetKeysResponse page.
 func (p *KeyVaultClientGetKeysPager) PageResponse() KeyVaultClientGetKeysResponse {
-	return p.current
+	return p.Current
 }

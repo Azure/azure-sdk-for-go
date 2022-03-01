@@ -152,13 +152,13 @@ func ExampleClient_ListPropertiesOfKeys() {
 	}
 
 	pager := client.ListPropertiesOfKeys(nil)
-	for pager.NextPage(context.TODO()) {
-		for _, key := range pager.PageResponse().Keys {
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, key := range resp.Keys {
 			fmt.Println(*key.ID)
 		}
-	}
-
-	if pager.Err() != nil {
-		panic(pager.Err())
 	}
 }

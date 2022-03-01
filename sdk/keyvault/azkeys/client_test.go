@@ -170,14 +170,14 @@ func TestListKeys(t *testing.T) {
 
 			pager := client.ListPropertiesOfKeys(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().Keys)
-				for _, key := range pager.PageResponse().Keys {
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Keys)
+				for _, key := range resp.Keys {
 					require.NotNil(t, key)
 				}
 			}
-
-			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 4)
 
 			for i := 0; i < 4; i++ {

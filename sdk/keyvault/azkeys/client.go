@@ -10,11 +10,13 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -362,33 +364,64 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 
 // ListPropertiesOfKeysPager implements the ListKeysPager interface
 type ListPropertiesOfKeysPager struct {
-	genPager generated.KeyVaultClientGetKeysPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	current   generated.KeyVaultClientGetKeysResponse
+	nextLink  *string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListPropertiesOfKeysPager) PageResponse() ListKeysPage {
-	return listKeysPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListPropertiesOfKeysPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListPropertiesOfKeysPager) Err() error {
-	return l.genPager.Err()
-}
+// NextPage fetches the next available page of results from the service.
+func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) (ListKeysPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetKeysCreateRequest(ctx, l.vaultURL, &generated.KeyVaultClientGetKeysOptions{})
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+	}
+	if err != nil {
+		return ListKeysPage{}, err
+	}
+	result, err := l.genClient.GetKeysHandleResponse(resp)
+	if err != nil {
+		return ListKeysPage{}, err
+	}
 
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listKeysPageFromGenerated(result), nil
+
 }
 
 // ListPropertiesOfKeysOptions contains the optional parameters for the Client.ListKeys method
 type ListPropertiesOfKeysOptions struct{}
-
-// convert ListKeysOptions to generated options
-func (l ListPropertiesOfKeysOptions) toGenerated() *generated.KeyVaultClientGetKeysOptions {
-	return &generated.KeyVaultClientGetKeysOptions{}
-}
 
 // ListKeysPage contains the current page of results for the Client.ListSecrets operation
 type ListKeysPage struct {
@@ -420,12 +453,11 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
 func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *ListPropertiesOfKeysPager {
-	if options == nil {
-		options = &ListPropertiesOfKeysOptions{}
+	return &ListPropertiesOfKeysPager{
+		vaultURL:  c.vaultUrl,
+		genClient: c.kvClient,
+		current:   generated.KeyVaultClientGetKeysResponse{},
 	}
-	p := c.kvClient.GetKeys(c.vaultUrl, options.toGenerated())
-
-	return &ListPropertiesOfKeysPager{genPager: *p}
 }
 
 // GetKeyOptions contains the options for the Client.GetKey method

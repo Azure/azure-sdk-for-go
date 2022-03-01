@@ -290,8 +290,6 @@ type CreateRSAKeyOptions struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// Elliptic curve name. For valid values, see KeyCurveName.
-
 	// The attributes of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`

@@ -60,9 +60,9 @@ func TestCreateTableFromService(t *testing.T) {
 }
 
 func TestQueryTable(t *testing.T) {
-	for _, service := range services {
-		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service)
+	for _, svc := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), svc), func(t *testing.T) {
+			service, delete := initServiceTest(t, svc)
 			defer delete()
 
 			tableCount := 5
@@ -89,12 +89,12 @@ func TestQueryTable(t *testing.T) {
 			pager := service.ListTables(&ListTablesOptions{Filter: &filter})
 
 			resultCount := 0
-			for pager.NextPage(ctx) {
-				resp := pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				resultCount += len(resp.Tables)
 			}
 
-			require.NoError(t, pager.Err())
 			require.Equal(t, resultCount, tableCount-1)
 
 			// Query for tables with pagination
@@ -103,16 +103,17 @@ func TestQueryTable(t *testing.T) {
 
 			resultCount = 0
 			pageCount := 0
-			for pager.NextPage(ctx) {
-				resp := pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				resultCount += len(resp.Tables)
 				pageCount++
 			}
 
-			require.NoError(t, pager.Err())
 			require.Equal(t, resultCount, tableCount-1)
-			require.Equal(t, pageCount, int(top))
-
+			if svc == "storage" {
+				require.Equal(t, pageCount, int(top))
+			}
 		})
 	}
 }
@@ -135,12 +136,12 @@ func TestListTables(t *testing.T) {
 
 			count := 0
 			pager := service.ListTables(nil)
-			for pager.NextPage(ctx) {
-				resp := pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				count += len(resp.Tables)
 			}
 
-			require.NoError(t, pager.Err())
 			require.Equal(t, 5, count)
 
 			deleteTable := func() {

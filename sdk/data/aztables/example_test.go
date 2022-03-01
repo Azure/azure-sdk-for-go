@@ -464,15 +464,15 @@ func ExampleServiceClient_ListTables() {
 	pager := service.ListTables(&aztables.ListTablesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.TODO()) {
-		response := pager.PageResponse()
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d tables in page #%d\n", len(response.Tables), pageCount)
 		for _, table := range response.Tables {
 			fmt.Printf("\tTableName: %s\n", *table.Name)
 		}
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 }

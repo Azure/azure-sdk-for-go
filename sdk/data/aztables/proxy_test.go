@@ -269,8 +269,11 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 
 func clearAllTables(service *ServiceClient) error {
 	pager := service.ListTables(nil)
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
 		for _, v := range resp.Tables {
 			_, err := service.DeleteTable(ctx, *v.Name, nil)
 			if err != nil {
@@ -278,5 +281,5 @@ func clearAllTables(service *ServiceClient) error {
 			}
 		}
 	}
-	return pager.Err()
+	return nil
 }

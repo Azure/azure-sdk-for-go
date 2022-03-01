@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
@@ -175,18 +176,14 @@ type ListTablesPage struct {
 	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
-	if g == nil {
-		return nil
-	}
-
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPage {
 	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return &ListTablesPage{
+	return ListTablesPage{
 		RawResponse:               g.RawResponse,
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:             g.ODataMetadata,
@@ -233,34 +230,51 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 // PageResponse returns the results from the page most recently fetched from the service.
 type ListTablesPager struct {
 	client            *generated.TableClient
-	current           *generated.TableClientQueryResponse
+	current           generated.TableClientQueryResponse
 	tableQueryOptions *generated.TableClientQueryOptions
 	listOptions       *ListTablesOptions
-	err               error
+	nextTableName     *string
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *ListTablesPager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
-		return false
+func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPage, error) {
+	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
+		NextTableName: p.nextTableName,
+	}, p.listOptions.toQueryOptions())
+	if err != nil {
+		return ListTablesPage{}, err
 	}
-	var resp generated.TableClientQueryResponse
-	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
-	p.current = &resp
-	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
-	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
+	resp, err := p.client.Pl.Do(req)
+	if err != nil {
+		return ListTablesPage{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ListTablesPage{}, runtime.NewResponseError(resp)
+	}
+
+	result, err := p.client.QueryHandleResponse(resp)
+	if err != nil {
+		return ListTablesPage{}, err
+	}
+	p.current = result
+	p.nextTableName = p.current.XMSContinuationNextTableName
+	return fromGeneratedTableQueryResponseEnvelope(p.current), nil
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (p *ListTablesPager) PageResponse() ListTablesPage {
-	return *fromGeneratedTableQueryResponseEnvelope(p.current)
+// More returns true if there are more pages to retrieve
+func (p *ListTablesPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.XMSContinuationNextTableName == nil || len(*p.current.XMSContinuationNextTableName) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *ListTablesPager) Err() error {
-	return p.err
+func (p *ListTablesPager) ContinuationToken() *string {
+	return p.nextTableName
 }
 
 // List queries the existing tables using the specified ListTablesOptions.
@@ -276,8 +290,8 @@ func (p *ListTablesPager) Err() error {
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return ListTablesPager{
 		client:            t.client,
+		tableQueryOptions: &generated.TableClientQueryOptions{},
 		listOptions:       listOptions,
-		tableQueryOptions: new(generated.TableClientQueryOptions),
 	}
 }
 

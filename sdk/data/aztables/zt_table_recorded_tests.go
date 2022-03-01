@@ -30,7 +30,7 @@ func cosmosURI(accountName string) string {
 	return fmt.Sprintf("https://%v.table.cosmos.azure.com/", accountName)
 }
 
-func insertNEntities(pk string, n int, client Client) error {
+func insertNEntities(pk string, n int, client *Client) error {
 	for i := 0; i < n; i++ {
 		e := &map[string]interface{}{
 			"PartitionKey": pk,

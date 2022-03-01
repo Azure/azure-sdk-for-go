@@ -10,7 +10,6 @@
 * Changed the `SharedKeyCredential.ComputeHMACSHA256` method to a private method.
 * Changed the `ListTablesPager` and `ListEntitiesPager` to structs.
 * Renamed the `ResponseProperties` type to `TableProperties`.
-* Returns `Client` and `ServiceClient` by value instead of by reference.
 * Removing `ContentType` from the `TransactionResponse` struct.
 
 ### Bugs Fixed

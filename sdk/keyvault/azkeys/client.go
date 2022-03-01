@@ -199,10 +199,11 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := KeyTypeEC
 
-	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
-		keyType = KeyTypeECHSM
-	} else if options == nil {
+	if options == nil {
 		options = &CreateECKeyOptions{}
+	}
+	if options.HardwareProtected != nil && *options.HardwareProtected {
+		keyType = KeyTypeECHSM
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
@@ -310,7 +311,6 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 	}
 	return generated.KeyCreateParameters{
 		Kty:            k.toGenerated(),
-		Curve:          (*generated.JSONWebKeyCurveName)(c.Curve),
 		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
 		Tags:           convertToGeneratedMap(c.Tags),
@@ -347,10 +347,11 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := KeyTypeRSA
 
-	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
-		keyType = KeyTypeRSAHSM
-	} else if options == nil {
+	if options == nil {
 		options = &CreateRSAKeyOptions{}
+	}
+	if options.HardwareProtected != nil && *options.HardwareProtected {
+		keyType = KeyTypeRSAHSM
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})

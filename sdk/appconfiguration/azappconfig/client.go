@@ -53,7 +53,7 @@ func getDefaultScope(endpoint string) (string, error) {
 }
 
 // NewClient returns a pointer to a Client object affinitized to an endpointUrl.
-func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -73,14 +73,14 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return &Client{
+	return Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -100,7 +100,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return &Client{
+	return Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil

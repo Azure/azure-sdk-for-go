@@ -12,7 +12,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -22,19 +22,19 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Tue, 01 Mar 2022 20:40:23 GMT",
-        "Location": "https://fakeaccount.table.core.windows.net/Tables(\u0027tableName3669222822\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "Location": "https://rosebudprim.table.core.windows.net/Tables(\u0027tableName3669222822\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729130b9-b002-0028-36ac-2d1075000000",
+        "x-ms-request-id": "f991928d-b002-0054-7065-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
-        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#Tables/@Element",
+        "odata.metadata": "https://rosebudprim.table.core.windows.net/$metadata#Tables/@Element",
         "TableName": "tableName3669222822"
       }
     },
@@ -51,7 +51,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -63,17 +63,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00270\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:23 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.4317535Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00270\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00270\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.4180314Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00270\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729130d5-b002-0028-4fac-2d1075000000",
+        "x-ms-request-id": "f99192b5-b002-0054-1465-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -91,7 +91,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -103,17 +103,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00271\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:23 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.5247009Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00271\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00271\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.5089783Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729130ee-b002-0028-68ac-2d1075000000",
+        "x-ms-request-id": "f99192e2-b002-0054-3f65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -131,7 +131,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -143,17 +143,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00272\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:23 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.6176478Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00272\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00272\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.6009247Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00272\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729130f7-b002-0028-70ac-2d1075000000",
+        "x-ms-request-id": "f9919308-b002-0054-6565-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -171,7 +171,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -183,17 +183,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00273\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.7245865Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00273\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00273\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.7138597Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00273\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "72913108-b002-0028-01ac-2d1075000000",
+        "x-ms-request-id": "f9919337-b002-0054-1365-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -211,7 +211,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -223,17 +223,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00274\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.8175345Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00274\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00274\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.806806Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00274\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "7291311c-b002-0028-14ac-2d1075000000",
+        "x-ms-request-id": "f991935e-b002-0054-3a65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -251,7 +251,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -263,17 +263,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00275\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.910481Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00275\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00275\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.9027508Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00275\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "7291312d-b002-0028-24ac-2d1075000000",
+        "x-ms-request-id": "f9919394-b002-0054-7065-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -291,7 +291,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -303,17 +303,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00276\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.0054263Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00276\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00276\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:35 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.9936978Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00276\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "72913143-b002-0028-38ac-2d1075000000",
+        "x-ms-request-id": "f99193c2-b002-0054-1c65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -331,7 +331,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -343,17 +343,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00277\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.0973744Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00277\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00277\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.0856452Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00277\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "7291315e-b002-0028-51ac-2d1075000000",
+        "x-ms-request-id": "f99193f6-b002-0054-4a65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -371,7 +371,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:35 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -383,17 +383,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00278\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.1903218Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00278\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00278\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.1875863Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00278\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "72913169-b002-0028-5bac-2d1075000000",
+        "x-ms-request-id": "f991941b-b002-0054-6e65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -411,7 +411,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:25 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:35 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -423,17 +423,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00279\u0027)",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
-        "ETag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.2852674Z\u0027\u0022",
-        "Location": "https://fakeaccount.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00279\u0027)",
+        "DataServiceId": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00279\u0027)",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.2795321Z\u0027\u0022",
+        "Location": "https://rosebudprim.table.core.windows.net/tableName3669222822(PartitionKey=\u0027contToken\u0027,RowKey=\u00279\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "72913180-b002-0028-70ac-2d1075000000",
+        "x-ms-request-id": "f9919448-b002-0054-1865-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
@@ -448,7 +448,7 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:25 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:35 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -456,26 +456,27 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
+        "Vary": "Origin",
         "X-Content-Type-Options": "nosniff",
         "x-ms-continuation-NextPartitionKey": "1!12!Y29udFRva2Vu",
         "x-ms-continuation-NextRowKey": "1!4!MQ--",
-        "x-ms-request-id": "72913197-b002-0028-07ac-2d1075000000",
+        "x-ms-request-id": "f9919474-b002-0054-4365-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
-        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#tableName3669222822",
+        "odata.metadata": "https://rosebudprim.table.core.windows.net/$metadata#tableName3669222822",
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.4317535Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.4180314Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "0",
-            "Timestamp": "2022-03-01T20:40:24.4317535Z",
+            "Timestamp": "2022-01-24T20:59:35.4180314Z",
             "Value": 1
           }
         ]
@@ -491,7 +492,7 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:25 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:35 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -499,80 +500,81 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
+        "Vary": "Origin",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729131a5-b002-0028-15ac-2d1075000000",
+        "x-ms-request-id": "f991949f-b002-0054-6d65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
-        "odata.metadata": "https://fakeaccount.table.core.windows.net/$metadata#tableName3669222822",
+        "odata.metadata": "https://rosebudprim.table.core.windows.net/$metadata#tableName3669222822",
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.5247009Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.5089783Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "1",
-            "Timestamp": "2022-03-01T20:40:24.5247009Z",
+            "Timestamp": "2022-01-24T20:59:35.5089783Z",
             "Value": 2
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.6176478Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.6009247Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "2",
-            "Timestamp": "2022-03-01T20:40:24.6176478Z",
+            "Timestamp": "2022-01-24T20:59:35.6009247Z",
             "Value": 3
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.7245865Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.7138597Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "3",
-            "Timestamp": "2022-03-01T20:40:24.7245865Z",
+            "Timestamp": "2022-01-24T20:59:35.7138597Z",
             "Value": 4
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.8175345Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.806806Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "4",
-            "Timestamp": "2022-03-01T20:40:24.8175345Z",
+            "Timestamp": "2022-01-24T20:59:35.806806Z",
             "Value": 5
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A24.910481Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.9027508Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "5",
-            "Timestamp": "2022-03-01T20:40:24.910481Z",
+            "Timestamp": "2022-01-24T20:59:35.9027508Z",
             "Value": 6
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.0054263Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A35.9936978Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "6",
-            "Timestamp": "2022-03-01T20:40:25.0054263Z",
+            "Timestamp": "2022-01-24T20:59:35.9936978Z",
             "Value": 7
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.0973744Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.0856452Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "7",
-            "Timestamp": "2022-03-01T20:40:25.0973744Z",
+            "Timestamp": "2022-01-24T20:59:36.0856452Z",
             "Value": 8
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.1903218Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.1875863Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "8",
-            "Timestamp": "2022-03-01T20:40:25.1903218Z",
+            "Timestamp": "2022-01-24T20:59:36.1875863Z",
             "Value": 9
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272022-03-01T20%3A40%3A25.2852674Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-24T20%3A59%3A36.2795321Z\u0027\u0022",
             "PartitionKey": "contToken",
             "RowKey": "9",
-            "Timestamp": "2022-03-01T20:40:25.2852674Z",
+            "Timestamp": "2022-01-24T20:59:36.2795321Z",
             "Value": 10
           }
         ]
@@ -586,7 +588,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Tue, 01 Mar 2022 20:40:25 GMT",
+        "x-ms-date": "Mon, 24 Jan 2022 20:59:35 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -594,13 +596,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 01 Mar 2022 20:40:24 GMT",
+        "Date": "Mon, 24 Jan 2022 20:59:36 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "729131b4-b002-0028-24ac-2d1075000000",
+        "x-ms-request-id": "f99194c0-b002-0054-0e65-11ec4e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

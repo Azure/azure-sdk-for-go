@@ -26,7 +26,7 @@ type GetConfigurationSettingOptions struct {
 	AcceptDateTime *time.Time
 }
 
-func (cs ConfigurationSetting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
+func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
 	var dt *string
 	if acceptDateTime != nil {
 		str := acceptDateTime.Format(timeFormat)
@@ -41,7 +41,7 @@ func (cs ConfigurationSetting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, a
 }
 
 // GetConfigurationSetting retrieves an existing configuration setting from the configuration store.
-func (c *Client) GetConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *GetConfigurationSettingOptions) (GetConfigurationSettingResponse, error) {
+func (c *Client) GetConfigurationSetting(ctx context.Context, setting Setting, options *GetConfigurationSettingOptions) (GetConfigurationSettingResponse, error) {
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time
 	if options != nil {

@@ -24,7 +24,7 @@ type SetConfigurationSettingOptions struct {
 }
 
 // SetConfigurationSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
-func (c *Client) SetConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResponse, error) {
+func (c *Client) SetConfigurationSetting(ctx context.Context, setting Setting, options *SetConfigurationSettingOptions) (SetConfigurationSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.etag

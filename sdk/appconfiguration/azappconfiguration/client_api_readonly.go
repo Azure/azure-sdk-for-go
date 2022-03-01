@@ -25,14 +25,14 @@ type SetReadOnlyOptions struct {
 	OnlyIfUnchanged bool
 }
 
-func (cs ConfigurationSetting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
+func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
 	return &generated.AzureAppConfigurationClientPutLockOptions{
 		IfMatch: (*string)(ifMatch),
 		Label:   cs.label,
 	}
 }
 
-func (cs ConfigurationSetting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
+func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
 	return &generated.AzureAppConfigurationClientDeleteLockOptions{
 		IfMatch: (*string)(ifMatch),
 		Label:   cs.label,
@@ -40,7 +40,7 @@ func (cs ConfigurationSetting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag
 }
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
-func (c *Client) SetReadOnly(ctx context.Context, setting ConfigurationSetting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
+func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.etag

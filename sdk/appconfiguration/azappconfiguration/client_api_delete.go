@@ -25,7 +25,7 @@ type DeleteConfigurationSettingOptions struct {
 	OnlyIfUnchanged bool
 }
 
-func (cs ConfigurationSetting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
+func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
 	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
 		IfMatch: (*string)(ifMatch),
 		Label:   cs.label,
@@ -33,7 +33,7 @@ func (cs ConfigurationSetting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *g
 }
 
 // DeleteConfigurationSetting deletes a configuration setting from the configuration store.
-func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting ConfigurationSetting, options *DeleteConfigurationSettingOptions) (DeleteConfigurationSettingResponse, error) {
+func (c *Client) DeleteConfigurationSetting(ctx context.Context, setting Setting, options *DeleteConfigurationSettingOptions) (DeleteConfigurationSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.etag

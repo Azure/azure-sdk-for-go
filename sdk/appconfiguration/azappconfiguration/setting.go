@@ -14,8 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfiguration/internal/generated"
 )
 
-// ConfigurationSetting is a setting, defined by a unique combination of a key and label.
-type ConfigurationSetting struct {
+// Setting is a setting, defined by a unique combination of a key and label.
+type Setting struct {
 	key          *string
 	value        *string
 	label        *string
@@ -26,83 +26,83 @@ type ConfigurationSetting struct {
 	isReadOnly   *bool
 }
 
-// NewConfigurationSetting creates a new ConfigurationSetting.
-func NewConfigurationSetting(key string) ConfigurationSetting {
-	return ConfigurationSetting{
+// NewConfigurationSetting creates a new Setting.
+func NewConfigurationSetting(key string) Setting {
+	return Setting{
 		key: &key,
 	}
 }
 
 // WithKey creates a copy of the configuration setting with the key provided.
-func (cs ConfigurationSetting) WithKey(key string) ConfigurationSetting {
+func (cs Setting) WithKey(key string) Setting {
 	result := cs
 	result.key = &key
 	return result
 }
 
 // GetKey gets the configuration setting key.
-func (cs ConfigurationSetting) GetKey() *string {
+func (cs Setting) GetKey() *string {
 	return cs.key
 }
 
 // WithValue creates a copy of the configuration setting with the value provided.
-func (cs ConfigurationSetting) WithValue(value string) ConfigurationSetting {
+func (cs Setting) WithValue(value string) Setting {
 	result := cs
 	result.value = &value
 	return result
 }
 
 // GetValue gets the configuration setting value.
-func (cs ConfigurationSetting) GetValue() *string {
+func (cs Setting) GetValue() *string {
 	return cs.value
 }
 
 // WithLabel creates a copy of the configuration setting with the label provided.
-func (cs ConfigurationSetting) WithLabel(label string) ConfigurationSetting {
+func (cs Setting) WithLabel(label string) Setting {
 	result := cs
 	result.label = &label
 	return result
 }
 
 // GetLabel gets the configuration setting label.
-func (cs ConfigurationSetting) GetLabel() *string {
+func (cs Setting) GetLabel() *string {
 	return cs.label
 }
 
 // WithContentType creates a copy of the configuration setting with the content type provided.
-func (cs ConfigurationSetting) WithContentType(contentType string) ConfigurationSetting {
+func (cs Setting) WithContentType(contentType string) Setting {
 	result := cs
 	result.contentType = &contentType
 	return result
 }
 
 // GetContentType gets the configuration setting content type.
-func (cs ConfigurationSetting) GetContentType() *string {
+func (cs Setting) GetContentType() *string {
 	return cs.contentType
 }
 
 // GetETag gets the configuration setting content ETag.
-func (cs ConfigurationSetting) GetETag() *azcore.ETag {
+func (cs Setting) GetETag() *azcore.ETag {
 	return cs.etag
 }
 
 // GetTags gets the list of the configuration setting tags.
-func (cs ConfigurationSetting) GetTags() map[string]*string {
+func (cs Setting) GetTags() map[string]*string {
 	return cs.tags
 }
 
 // GetLastModified gets the configuration setting last modified timestamp.
-func (cs ConfigurationSetting) GetLastModified() *time.Time {
+func (cs Setting) GetLastModified() *time.Time {
 	return cs.lastModified
 }
 
 // IsReadOnly gets the read-only status of the configuration setting.
-func (cs ConfigurationSetting) IsReadOnly() *bool {
+func (cs Setting) IsReadOnly() *bool {
 	return cs.isReadOnly
 }
 
-func configurationSettingFromGenerated(kv generated.KeyValue) ConfigurationSetting {
-	return ConfigurationSetting{
+func configurationSettingFromGenerated(kv generated.KeyValue) Setting {
+	return Setting{
 		key:          kv.Key,
 		value:        kv.Value,
 		label:        kv.Label,
@@ -114,7 +114,7 @@ func configurationSettingFromGenerated(kv generated.KeyValue) ConfigurationSetti
 	}
 }
 
-func (cs ConfigurationSetting) toGenerated() *generated.KeyValue {
+func (cs Setting) toGenerated() *generated.KeyValue {
 	return &generated.KeyValue{
 		ContentType:  cs.contentType,
 		Etag:         (*string)(cs.etag),

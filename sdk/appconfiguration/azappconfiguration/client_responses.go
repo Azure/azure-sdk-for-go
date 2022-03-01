@@ -17,7 +17,7 @@ import (
 
 // ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
 type ConfigurationSettingResult struct {
-	ConfigurationSetting
+	Setting
 
 	// ETag of the configuration setting.
 	ETag *azcore.ETag
@@ -37,9 +37,9 @@ type configurationSettingResponse struct {
 func responseFromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValueResponse) configurationSettingResponse {
 	return configurationSettingResponse{
 		Result: ConfigurationSettingResult{
-			ConfigurationSetting: configurationSettingFromGenerated(g.KeyValue),
-			ETag:                 (*azcore.ETag)(g.Etag),
-			SyncToken:            g.SyncToken,
+			Setting:   configurationSettingFromGenerated(g.KeyValue),
+			ETag:      (*azcore.ETag)(g.Etag),
+			SyncToken: g.SyncToken,
 		},
 		RawResponse: g.RawResponse,
 	}
@@ -48,9 +48,9 @@ func responseFromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValue
 func responseFromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) configurationSettingResponse {
 	return configurationSettingResponse{
 		Result: ConfigurationSettingResult{
-			ConfigurationSetting: configurationSettingFromGenerated(g.KeyValue),
-			ETag:                 (*azcore.ETag)(g.Etag),
-			SyncToken:            g.SyncToken,
+			Setting:   configurationSettingFromGenerated(g.KeyValue),
+			ETag:      (*azcore.ETag)(g.Etag),
+			SyncToken: g.SyncToken,
 		},
 		RawResponse: g.RawResponse,
 	}
@@ -59,9 +59,9 @@ func responseFromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKe
 func responseFromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) configurationSettingResponse {
 	return configurationSettingResponse{
 		Result: ConfigurationSettingResult{
-			ConfigurationSetting: configurationSettingFromGenerated(g.KeyValue),
-			ETag:                 (*azcore.ETag)(g.Etag),
-			SyncToken:            g.SyncToken,
+			Setting:   configurationSettingFromGenerated(g.KeyValue),
+			ETag:      (*azcore.ETag)(g.Etag),
+			SyncToken: g.SyncToken,
 		},
 		RawResponse: g.RawResponse,
 	}
@@ -70,9 +70,9 @@ func responseFromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLock
 func responseFromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) configurationSettingResponse {
 	return configurationSettingResponse{
 		Result: ConfigurationSettingResult{
-			ConfigurationSetting: configurationSettingFromGenerated(g.KeyValue),
-			ETag:                 (*azcore.ETag)(g.Etag),
-			SyncToken:            g.SyncToken,
+			Setting:   configurationSettingFromGenerated(g.KeyValue),
+			ETag:      (*azcore.ETag)(g.Etag),
+			SyncToken: g.SyncToken,
 		},
 		RawResponse: g.RawResponse,
 	}
@@ -106,9 +106,9 @@ func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValue
 	return GetConfigurationSettingResponse{
 		Result: GetConfigurationSettingResult{
 			ConfigurationSettingResult: ConfigurationSettingResult{
-				ConfigurationSetting: configurationSettingFromGenerated(g.KeyValue),
-				ETag:                 (*azcore.ETag)(g.Etag),
-				SyncToken:            g.SyncToken,
+				Setting:   configurationSettingFromGenerated(g.KeyValue),
+				ETag:      (*azcore.ETag)(g.Etag),
+				SyncToken: g.SyncToken,
 			},
 			LastModified: t,
 		},
@@ -119,7 +119,7 @@ func responseFromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValue
 // ConfigurationSettingResult contains the configuration setting returned from Azure App Configuration client methods.
 type GetRevisionsResult struct {
 	// Contains the configuration settings returned that match the setting selector provided.
-	Items []ConfigurationSetting
+	Items []Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the curent state of the client.
 	SyncToken *string
@@ -135,7 +135,7 @@ type GetRevisionsPage struct {
 }
 
 func getRevisionsPageFromGenerated(g generated.AzureAppConfigurationClientGetRevisionsResponse) GetRevisionsPage {
-	var css []ConfigurationSetting
+	var css []Setting
 	for _, cs := range g.Items {
 		if cs != nil {
 			css = append(css, configurationSettingFromGenerated(*cs))

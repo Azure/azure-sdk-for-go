@@ -162,7 +162,7 @@ func TestConfigurationSettingPrivateFieldGetters(t *testing.T) {
 
 	isReadOnly := true
 
-	cs := ConfigurationSetting{
+	cs := Setting{
 		key:         &key,
 		value:       &value,
 		label:       &label,

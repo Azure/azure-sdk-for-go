@@ -62,7 +62,7 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 
 	tokenScope, err := getDefaultScope(endpointUrl)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 
 	syncTokenPolicy := newSyncTokenPolicy()
@@ -89,7 +89,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 	endpoint, credential, secret, err := parseConnectionString(connectionString)
 	if err != nil {
-		return nil, err
+		return Client{}, err
 	}
 
 	syncTokenPolicy := newSyncTokenPolicy()

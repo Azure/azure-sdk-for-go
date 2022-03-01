@@ -290,7 +290,6 @@ type CreateRSAKeyOptions struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// Elliptic curve name. For valid values, see KeyCurveName.
-	Curve *CurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`

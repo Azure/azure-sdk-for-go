@@ -7,12 +7,13 @@
 package azappconfiguration
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"strings"
 	"time"
@@ -32,40 +33,80 @@ func newHmacAuthenticationPolicy(credential string, secret []byte) *hmacAuthenti
 	}
 }
 
-func (policy *hmacAuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
-	if bd := req.Body(); bd != nil {
-		if body, err := ioutil.ReadAll(bd); err == nil {
-			req.RewindBody()
-			h := hmac.New(sha256.New, policy.secret)
-			if _, err := h.Write(body); err == nil {
-				url := req.Raw().URL
-				host, _, _ := net.SplitHostPort(url.Host)
-				contentHash := base64.StdEncoding.EncodeToString(h.Sum(nil))
-				utcNowString := time.Now().UTC().Format(http.TimeFormat)
+func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Response, error) {
+	req := request.Raw()
+	id := policy.credential
+	key := policy.secret
 
-				pathAndQuery := req.Raw().URL.Path
-				if query := url.RawQuery; query != "" {
-					pathAndQuery = pathAndQuery + "?" + query
-				}
-
-				stringToSign := req.Raw().Method + "\n" + pathAndQuery + "\n" + utcNowString + ";" + host + ";" + contentHash
-
-				h = hmac.New(sha256.New, policy.secret)
-				if _, err := h.Write([]byte(stringToSign)); err == nil {
-					signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
-
-					req.Raw().Header["x-ms-content-sha256"] = []string{contentHash}
-					req.Raw().Header["Date"] = []string{utcNowString}
-
-					req.Raw().Header["Authorizarion"] = []string{
-						"HMAC-SHA256 Credential=" + policy.credential + "&SignedHeaders=date;host;x-ms-content-sha256&Signature=" + signature,
-					}
-				}
-			}
-		}
+	method := req.Method
+	host := req.URL.Host
+	pathAndQuery := req.URL.Path
+	if req.URL.RawQuery != "" {
+		pathAndQuery = pathAndQuery + "?" + req.URL.RawQuery
 	}
 
-	return req.Next()
+	var content []byte
+	if req.Body != nil {
+		var err error
+		if content, err = ioutil.ReadAll(req.Body); err != nil {
+			return nil, err
+		}
+	}
+	req.Body = ioutil.NopCloser(bytes.NewBuffer(content))
+
+	timestamp := time.Now().UTC().Format(http.TimeFormat)
+	contentHash := getContentHashBase64(content)
+	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(method), pathAndQuery, timestamp, host, contentHash)
+	signature := getHmac(stringToSign, key)
+
+	req.Header.Set("x-ms-content-sha256", contentHash)
+	req.Header.Set("x-ms-date", timestamp)
+	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+id+", SignedHeaders=x-ms-date;host;x-ms-content-sha256, Signature="+signature)
+
+	return request.Next()
+}
+
+func signRequest(id string, secret string, req *http.Request) error {
+	method := req.Method
+	host := req.URL.Host
+	pathAndQuery := req.URL.Path
+	if req.URL.RawQuery != "" {
+		pathAndQuery = pathAndQuery + "?" + req.URL.RawQuery
+	}
+
+	content, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewBuffer(content))
+
+	key, err := base64.StdEncoding.DecodeString(secret)
+	if err != nil {
+		return err
+	}
+
+	timestamp := time.Now().UTC().Format(http.TimeFormat)
+	contentHash := getContentHashBase64(content)
+	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(method), pathAndQuery, timestamp, host, contentHash)
+	signature := getHmac(stringToSign, key)
+
+	req.Header.Set("x-ms-content-sha256", contentHash)
+	req.Header.Set("x-ms-date", timestamp)
+	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+id+", SignedHeaders=x-ms-date;host;x-ms-content-sha256, Signature="+signature)
+
+	return nil
+}
+
+func getContentHashBase64(content []byte) string {
+	hasher := sha256.New()
+	hasher.Write(content)
+	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
+}
+
+func getHmac(content string, key []byte) string {
+	hmac := hmac.New(sha256.New, key)
+	hmac.Write([]byte(content))
+	return base64.StdEncoding.EncodeToString(hmac.Sum(nil))
 }
 
 func parseConnectionString(connectionString string) (endpoint string, credential string, secret []byte, err error) {

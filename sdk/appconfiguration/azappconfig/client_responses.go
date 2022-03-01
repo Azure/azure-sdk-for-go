@@ -9,16 +9,11 @@ package azappconfig
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
 )
 
 type configurationSettingResult struct {
 	Setting
-
-	// ETag of the configuration setting.
-	ETag *azcore.ETag
 
 	// Sync token for the Azure App Configuration client, corresponding to the curent state of the client.
 	SyncToken *string
@@ -39,7 +34,6 @@ type SetReadOnlyResult configurationSettingResult
 func fromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValueResponse) configurationSettingResult {
 	return configurationSettingResult{
 		Setting:   configurationSettingFromGenerated(g.KeyValue),
-		ETag:      (*azcore.ETag)(g.Etag),
 		SyncToken: g.SyncToken,
 	}
 }
@@ -47,7 +41,6 @@ func fromGeneratedPut(g generated.AzureAppConfigurationClientPutKeyValueResponse
 func fromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) DeleteConfigurationSettingResult {
 	return DeleteConfigurationSettingResult{
 		Setting:   configurationSettingFromGenerated(g.KeyValue),
-		ETag:      (*azcore.ETag)(g.Etag),
 		SyncToken: g.SyncToken,
 	}
 }
@@ -55,7 +48,6 @@ func fromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueRe
 func fromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) SetReadOnlyResult {
 	return SetReadOnlyResult{
 		Setting:   configurationSettingFromGenerated(g.KeyValue),
-		ETag:      (*azcore.ETag)(g.Etag),
 		SyncToken: g.SyncToken,
 	}
 }
@@ -63,7 +55,6 @@ func fromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse
 func fromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) SetReadOnlyResult {
 	return SetReadOnlyResult{
 		Setting:   configurationSettingFromGenerated(g.KeyValue),
-		ETag:      (*azcore.ETag)(g.Etag),
 		SyncToken: g.SyncToken,
 	}
 }
@@ -87,7 +78,6 @@ func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse
 	return GetConfigurationSettingResult{
 		configurationSettingResult: configurationSettingResult{
 			Setting:   configurationSettingFromGenerated(g.KeyValue),
-			ETag:      (*azcore.ETag)(g.Etag),
 			SyncToken: g.SyncToken,
 		},
 		LastModified: t,

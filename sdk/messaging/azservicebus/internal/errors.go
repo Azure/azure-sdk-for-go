@@ -16,11 +16,15 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
-type ErrNonRetriable struct {
+type errNonRetriable struct {
 	Message string
 }
 
-func (e ErrNonRetriable) Error() string { return e.Message }
+func NewErrNonRetriable(message string) error {
+	return errNonRetriable{Message: message}
+}
+
+func (e errNonRetriable) Error() string { return e.Message }
 
 type recoveryKind string
 
@@ -125,7 +129,7 @@ func GetRecoveryKind(err error) recoveryKind {
 		return RecoveryKindConn
 	}
 
-	var errNonRetriable *ErrNonRetriable
+	var errNonRetriable errNonRetriable
 
 	if errors.As(err, &errNonRetriable) {
 		return RecoveryKindFatal

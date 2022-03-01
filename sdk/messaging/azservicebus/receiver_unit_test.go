@@ -15,7 +15,7 @@ import (
 
 func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	fakeAMQPLinks := &internal.FakeAMQPLinks{
-		Err: &internal.ErrNonRetriable{Message: "failed to create links"},
+		Err: internal.NewErrNonRetriable("failed to create links"),
 	}
 
 	receiver := &Receiver{
@@ -24,9 +24,8 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	}
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
-	var errNonRetriable *internal.ErrNonRetriable
-	require.ErrorAs(t, err, &errNonRetriable)
-	require.Equal(t, "failed to create links", errNonRetriable.Message)
+	require.Equal(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(err))
+	require.Equal(t, "failed to create links", err.Error())
 	require.Empty(t, messages)
 }
 
@@ -82,7 +81,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 		Expected error
 	}{
 		// a fatal error is always returned in peekLock mode
-		{Err: &internal.ErrNonRetriable{Message: "non retriable error"}, Expected: &internal.ErrNonRetriable{Message: "non retriable error"}},
+		{Err: internal.NewErrNonRetriable("non retriable error"), Expected: internal.NewErrNonRetriable("non retriable error")},
 		// non-fatal errors are "erased" and the error will be caught on the next iteration of the loop
 		{Err: amqp.ErrLinkClosed, Expected: nil},
 	}
@@ -111,7 +110,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 				require.NoError(t, err)
 
 				messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-				require.EqualValues(t, err, data.Expected)
+				require.EqualValues(t, data.Expected, err)
 				require.Empty(t, messages)
 
 				require.Equal(t, 0, fakeAMQPReceiver.DrainCalled, "didn't drain on a broken link/connection")
@@ -221,7 +220,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 			E error
 		}{
 			{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-			{E: &internal.ErrNonRetriable{Message: "non-retriable error on second message"}},
+			{E: internal.NewErrNonRetriable("non-retriable error on second message")},
 		},
 	}
 

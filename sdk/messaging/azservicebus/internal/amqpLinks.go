@@ -136,7 +136,7 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 
 	if closedPermanently {
 		span.AddAttributes(tab.StringAttribute("outcome", "was_closed_permanently"))
-		return ErrNonRetriable{Message: "Link has been closed permanently"}
+		return NewErrNonRetriable("link was closed by user")
 	}
 
 	// cheap check before we do the lock
@@ -259,7 +259,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	l.mu.RUnlock()
 
 	if closedPermanently {
-		return nil, ErrNonRetriable{}
+		return nil, NewErrNonRetriable("link was closed by user")
 	}
 
 	if sender != nil || receiver != nil {

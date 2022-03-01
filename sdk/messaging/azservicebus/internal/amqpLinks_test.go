@@ -363,7 +363,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 
 func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 	t.Run("fatal", func(t *testing.T) {
-		for _, fatalErr := range []error{&ErrNonRetriable{}, context.Canceled, context.DeadlineExceeded} {
+		for _, fatalErr := range []error{NewErrNonRetriable(""), context.Canceled, context.DeadlineExceeded} {
 			receiver := &FakeAMQPReceiver{}
 			sender := &FakeAMQPSender{}
 			ns := &FakeNS{}

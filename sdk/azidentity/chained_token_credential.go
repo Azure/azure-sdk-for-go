@@ -35,7 +35,7 @@ type ChainedTokenCredential struct {
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
 		return nil, errors.New("sources must contain at least one TokenCredential")
@@ -65,7 +65,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	for _, cred := range c.sources {
 		token, err := cred.GetToken(ctx, opts)
 		if err == nil {
-			log.Writef(EventAuthentication, "Azure Identity => %s authenticated with %s", c.name, extractCredentialName(cred))
+			log.Writef(EventAuthentication, "%s authenticated with %s", c.name, extractCredentialName(cred))
 			c.successfulCredential = cred
 			return token, nil
 		}
@@ -78,9 +78,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	}
 	// if we get here, all credentials returned credentialUnavailableError
 	msg := createChainedErrorMessage(errs)
-	err := newCredentialUnavailableError(c.name, msg)
-	log.Write(EventAuthentication, "Azure Identity => ERROR: "+err.Error())
-	return nil, err
+	return nil, newCredentialUnavailableError(c.name, msg)
 }
 
 func createChainedErrorMessage(errs []error) string {

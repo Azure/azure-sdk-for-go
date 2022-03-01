@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## `v62.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2022-02-01/kusto`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-12-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-11-15-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2021-06-01-preview/healthcareapis`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-11-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/compute/mgmt/2021-11-01/compute/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v61.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp`
+
+## `v61.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-01-02-preview/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-08-01/storage`
+
 ## `v61.4.0`
 
 ### New Packages

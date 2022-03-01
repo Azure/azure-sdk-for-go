@@ -50,7 +50,7 @@ type InteractiveBrowserCredential struct {
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {
@@ -90,7 +90,6 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		addGetTokenFailureLogs(credNameBrowser, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
 	}
 	c.account = ar.Account

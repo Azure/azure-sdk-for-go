@@ -10,7 +10,6 @@ package armresourcehealth
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -32,26 +31,25 @@ type EmergingIssuesClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EmergingIssuesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &EmergingIssuesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
 
 // Get - Gets Azure services' emerging issues.
 // If the operation fails it returns an *azcore.ResponseError type.
-// issueName - The name of the emerging issue.
 // options - EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
-func (client *EmergingIssuesClient) Get(ctx context.Context, issueName Enum0, options *EmergingIssuesClientGetOptions) (EmergingIssuesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, issueName, options)
+func (client *EmergingIssuesClient) Get(ctx context.Context, options *EmergingIssuesClientGetOptions) (EmergingIssuesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return EmergingIssuesClientGetResponse{}, err
 	}
@@ -66,12 +64,9 @@ func (client *EmergingIssuesClient) Get(ctx context.Context, issueName Enum0, op
 }
 
 // getCreateRequest creates the Get request.
-func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueName Enum0, options *EmergingIssuesClientGetOptions) (*policy.Request, error) {
+func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, options *EmergingIssuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/emergingIssues/{issueName}"
-	if issueName == "" {
-		return nil, errors.New("parameter issueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(string(issueName)))
+	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape("default"))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err

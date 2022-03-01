@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -34,17 +35,17 @@ type LegacyPeeringsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LegacyPeeringsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &LegacyPeeringsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -54,7 +55,7 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 // peeringLocation - The location of the peering.
 // kind - The kind of the peering.
 // options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
-func (client *LegacyPeeringsClient) List(peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) *LegacyPeeringsClientListPager {
+func (client *LegacyPeeringsClient) List(peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) *LegacyPeeringsClientListPager {
 	return &LegacyPeeringsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -67,7 +68,7 @@ func (client *LegacyPeeringsClient) List(peeringLocation string, kind Enum1, opt
 }
 
 // listCreateRequest creates the List request.
-func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
+func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +81,10 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("peeringLocation", peeringLocation)
 	reqQP.Set("kind", string(kind))
-	reqQP.Set("api-version", "2019-08-01-preview")
+	if options != nil && options.Asn != nil {
+		reqQP.Set("asn", strconv.FormatInt(int64(*options.Asn), 10))
+	}
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

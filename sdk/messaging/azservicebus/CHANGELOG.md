@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.5 (Unreleased)
+## 0.3.6 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Fix connection recovery in situations where network errors bubble up from go-amqp (#17048)
+
 ### Other Changes
+
+## 0.3.5 (2022-02-10)
+
+### Bugs Fixed
+
+- Fix panic() when go-amqp was returning an incorrect error on drain failures. (#17036)
 
 ## 0.3.4 (2022-02-08)
 

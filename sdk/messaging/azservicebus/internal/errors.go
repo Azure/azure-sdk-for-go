@@ -114,13 +114,10 @@ func GetRecoveryKind(err error) recoveryKind {
 
 	var netErr net.Error
 
-	if errors.As(err, &netErr) {
-		// ie, just retry
-		return RecoveryKindNone
-	}
-
-	// this is a carryover from another library. I haven't seen this in the wild.
-	if errors.Is(err, io.EOF) {
+	// these are errors that can flow from the go-amqp connection to
+	// us. There's work underway to improve this but for now we can handle
+	// these as "catastrophic" errors and reset everything.
+	if errors.Is(err, io.EOF) || errors.As(err, &netErr) {
 		return RecoveryKindConn
 	}
 

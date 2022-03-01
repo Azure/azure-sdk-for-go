@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.1 (2022-02-22)
+
+### Other Changes
+
+- Remove the go_mod_tidy_hack.go file.
+
 ## 0.4.0 (2022-01-25)
 ### Breaking Changes
 

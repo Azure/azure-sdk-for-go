@@ -7,6 +7,7 @@
 package runtime
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -28,4 +29,11 @@ func httpHeaderPolicy(req *policy.Request) (*http.Response, error) {
 		}
 	}
 	return req.Next()
+}
+
+// WithHTTPHeader adds the specified http.Header to the parent context.
+// Use this to specify custom HTTP headers at the API-call level.
+// Any overlapping headers will have their values replaced with the values specified here.
+func WithHTTPHeader(parent context.Context, header http.Header) context.Context {
+	return context.WithValue(parent, shared.CtxWithHTTPHeaderKey{}, header)
 }

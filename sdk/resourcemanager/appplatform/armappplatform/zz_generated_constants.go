@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	moduleName    = "armappplatform"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.3.1"
 )
 
 // APIPortalProvisioningState - State of the API portal.

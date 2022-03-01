@@ -435,7 +435,9 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 				return ret(err)
 			}
 
-			return ret(err)
+			// ignore the drain error - the link will be reopened at the next chance anyways
+			// and there's nothing the user is expected to or needs to do here.
+			return ret(nil)
 		}
 
 		// Draining data from the receiver's prefetched queue. This won't wait for new messages to

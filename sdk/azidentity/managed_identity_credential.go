@@ -72,14 +72,13 @@ type ManagedIdentityCredential struct {
 }
 
 // NewManagedIdentityCredential creates a ManagedIdentityCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
 	client, err := newManagedIdentityClient(options)
 	if err != nil {
-		logCredentialError(credNameManagedIdentity, err)
 		return nil, err
 	}
 	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
@@ -91,14 +90,12 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
 		err := errors.New(credNameManagedIdentity + ": GetToken() requires exactly one scope")
-		addGetTokenFailureLogs(credNameManagedIdentity, err, true)
 		return nil, err
 	}
 	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
-		addGetTokenFailureLogs(credNameManagedIdentity, err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01
 
 ## 0.13.1 (2022-02-08)
 

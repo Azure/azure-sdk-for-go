@@ -12,7 +12,7 @@ package automation
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation"
 )
 
 const (
@@ -48,6 +48,15 @@ const (
 	CountTypeStatus            CountType = original.CountTypeStatus
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type DscConfigurationProvisioningState = original.DscConfigurationProvisioningState
 
 const (
@@ -67,6 +76,13 @@ type EncryptionKeySourceType = original.EncryptionKeySourceType
 const (
 	EncryptionKeySourceTypeMicrosoftAutomation EncryptionKeySourceType = original.EncryptionKeySourceTypeMicrosoftAutomation
 	EncryptionKeySourceTypeMicrosoftKeyvault   EncryptionKeySourceType = original.EncryptionKeySourceTypeMicrosoftKeyvault
+)
+
+type GraphRunbookType = original.GraphRunbookType
+
+const (
+	GraphRunbookTypeGraphPowerShell         GraphRunbookType = original.GraphRunbookTypeGraphPowerShell
+	GraphRunbookTypeGraphPowerShellWorkflow GraphRunbookType = original.GraphRunbookTypeGraphPowerShellWorkflow
 )
 
 type GroupTypeEnum = original.GroupTypeEnum
@@ -340,6 +356,13 @@ const (
 	WindowsUpdateClassesUpdates      WindowsUpdateClasses = original.WindowsUpdateClassesUpdates
 )
 
+type WorkerType = original.WorkerType
+
+const (
+	WorkerTypeHybridV1 WorkerType = original.WorkerTypeHybridV1
+	WorkerTypeHybridV2 WorkerType = original.WorkerTypeHybridV2
+)
+
 type Account = original.Account
 type AccountClient = original.AccountClient
 type AccountCreateOrUpdateParameters = original.AccountCreateOrUpdateParameters
@@ -463,13 +486,24 @@ type EncryptionPropertiesIdentity = original.EncryptionPropertiesIdentity
 type ErrorResponse = original.ErrorResponse
 type FieldDefinition = original.FieldDefinition
 type FieldsClient = original.FieldsClient
+type GraphicalRunbookContent = original.GraphicalRunbookContent
 type HybridRunbookWorker = original.HybridRunbookWorker
+type HybridRunbookWorkerCreateOrUpdateParameters = original.HybridRunbookWorkerCreateOrUpdateParameters
+type HybridRunbookWorkerCreateParameters = original.HybridRunbookWorkerCreateParameters
 type HybridRunbookWorkerGroup = original.HybridRunbookWorkerGroup
 type HybridRunbookWorkerGroupClient = original.HybridRunbookWorkerGroupClient
+type HybridRunbookWorkerGroupCreateOrUpdateParameters = original.HybridRunbookWorkerGroupCreateOrUpdateParameters
 type HybridRunbookWorkerGroupUpdateParameters = original.HybridRunbookWorkerGroupUpdateParameters
 type HybridRunbookWorkerGroupsListResult = original.HybridRunbookWorkerGroupsListResult
 type HybridRunbookWorkerGroupsListResultIterator = original.HybridRunbookWorkerGroupsListResultIterator
 type HybridRunbookWorkerGroupsListResultPage = original.HybridRunbookWorkerGroupsListResultPage
+type HybridRunbookWorkerLegacy = original.HybridRunbookWorkerLegacy
+type HybridRunbookWorkerMoveParameters = original.HybridRunbookWorkerMoveParameters
+type HybridRunbookWorkerProperties = original.HybridRunbookWorkerProperties
+type HybridRunbookWorkersClient = original.HybridRunbookWorkersClient
+type HybridRunbookWorkersListResult = original.HybridRunbookWorkersListResult
+type HybridRunbookWorkersListResultIterator = original.HybridRunbookWorkersListResultIterator
+type HybridRunbookWorkersListResultPage = original.HybridRunbookWorkersListResultPage
 type Identity = original.Identity
 type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type Job = original.Job
@@ -543,6 +577,7 @@ type Python2PackageClient = original.Python2PackageClient
 type PythonPackageCreateParameters = original.PythonPackageCreateParameters
 type PythonPackageCreateProperties = original.PythonPackageCreateProperties
 type PythonPackageUpdateParameters = original.PythonPackageUpdateParameters
+type RawGraphicalRunbookContent = original.RawGraphicalRunbookContent
 type ReadCloser = original.ReadCloser
 type Resource = original.Resource
 type RunAsCredentialAssociationProperty = original.RunAsCredentialAssociationProperty
@@ -628,6 +663,7 @@ type Statistics = original.Statistics
 type StatisticsClient = original.StatisticsClient
 type StatisticsListResult = original.StatisticsListResult
 type String = original.String
+type SystemData = original.SystemData
 type TagSettingsProperties = original.TagSettingsProperties
 type TargetProperties = original.TargetProperties
 type TaskProperties = original.TaskProperties
@@ -833,6 +869,18 @@ func NewHybridRunbookWorkerGroupsListResultIterator(page HybridRunbookWorkerGrou
 }
 func NewHybridRunbookWorkerGroupsListResultPage(cur HybridRunbookWorkerGroupsListResult, getNextPage func(context.Context, HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)) HybridRunbookWorkerGroupsListResultPage {
 	return original.NewHybridRunbookWorkerGroupsListResultPage(cur, getNextPage)
+}
+func NewHybridRunbookWorkersClient(subscriptionID string) HybridRunbookWorkersClient {
+	return original.NewHybridRunbookWorkersClient(subscriptionID)
+}
+func NewHybridRunbookWorkersClientWithBaseURI(baseURI string, subscriptionID string) HybridRunbookWorkersClient {
+	return original.NewHybridRunbookWorkersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHybridRunbookWorkersListResultIterator(page HybridRunbookWorkersListResultPage) HybridRunbookWorkersListResultIterator {
+	return original.NewHybridRunbookWorkersListResultIterator(page)
+}
+func NewHybridRunbookWorkersListResultPage(cur HybridRunbookWorkersListResult, getNextPage func(context.Context, HybridRunbookWorkersListResult) (HybridRunbookWorkersListResult, error)) HybridRunbookWorkersListResultPage {
+	return original.NewHybridRunbookWorkersListResultPage(cur, getNextPage)
 }
 func NewJobClient(subscriptionID string) JobClient {
 	return original.NewJobClient(subscriptionID)
@@ -1095,6 +1143,9 @@ func PossibleContentSourceTypeValues() []ContentSourceType {
 func PossibleCountTypeValues() []CountType {
 	return original.PossibleCountTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisioningState {
 	return original.PossibleDscConfigurationProvisioningStateValues()
 }
@@ -1103,6 +1154,9 @@ func PossibleDscConfigurationStateValues() []DscConfigurationState {
 }
 func PossibleEncryptionKeySourceTypeValues() []EncryptionKeySourceType {
 	return original.PossibleEncryptionKeySourceTypeValues()
+}
+func PossibleGraphRunbookTypeValues() []GraphRunbookType {
+	return original.PossibleGraphRunbookTypeValues()
 }
 func PossibleGroupTypeEnumValues() []GroupTypeEnum {
 	return original.PossibleGroupTypeEnumValues()
@@ -1175,6 +1229,9 @@ func PossibleTokenTypeValues() []TokenType {
 }
 func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
 	return original.PossibleWindowsUpdateClassesValues()
+}
+func PossibleWorkerTypeValues() []WorkerType {
+	return original.PossibleWorkerTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

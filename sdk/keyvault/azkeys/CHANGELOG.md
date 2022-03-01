@@ -17,6 +17,7 @@
 * Renamed `KeyAttributes` to `KeyProperties`
 * Renamed `ListKeyVersions` to `ListPropertiesOfKeyVersions`
 * Removed `Attributes` struct
+* Changed `CreateOCTKey`/`Response`/`Options` to `CreateOctKey`/`Response`/`Options`
 
 ### Bugs Fixed
 

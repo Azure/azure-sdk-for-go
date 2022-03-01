@@ -44,7 +44,7 @@ type AuthorizationCodeCredential struct {
 // clientID: The application's client ID.
 // authCode: The authorization code received from the authorization code flow. Note that authorization codes are single-use.
 // redirectURL: The application's redirect URL. Must match the redirect URL used to request the authorization code.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURL string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)
@@ -92,7 +92,6 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 		}
 		ar, err = c.cca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 		if err != nil {
-			addGetTokenFailureLogs(credNameAuthCode, err, true)
 			return nil, newAuthenticationFailedErrorFromMSALError(credNameAuthCode, err)
 		}
 		logGetTokenSuccess(c, opts)
@@ -107,7 +106,6 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 	}
 	ar, err = c.pca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(credNameAuthCode, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameAuthCode, err)
 	}
 	logGetTokenSuccess(c, opts)

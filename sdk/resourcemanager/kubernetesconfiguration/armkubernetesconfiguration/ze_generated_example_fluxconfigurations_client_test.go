@@ -29,8 +29,8 @@ func ExampleFluxConfigurationsClient_Get() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		nil)
@@ -50,8 +50,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfiguration{
@@ -111,8 +111,8 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfigurationPatch{
@@ -154,8 +154,8 @@ func ExampleFluxConfigurationsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		&armkubernetesconfiguration.FluxConfigurationsClientBeginDeleteOptions{ForceDelete: nil})
@@ -177,8 +177,8 @@ func ExampleFluxConfigurationsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		nil)
 	for {

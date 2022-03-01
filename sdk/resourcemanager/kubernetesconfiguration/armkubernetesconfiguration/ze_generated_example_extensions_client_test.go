@@ -29,8 +29,8 @@ func ExampleExtensionsClient_BeginCreate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.Extension{
@@ -73,8 +73,8 @@ func ExampleExtensionsClient_Get() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		nil)
@@ -94,8 +94,8 @@ func ExampleExtensionsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil})
@@ -118,8 +118,8 @@ func ExampleExtensionsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.PatchExtension{
@@ -154,8 +154,8 @@ func ExampleExtensionsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.Enum1("connectedClusters"),
+		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
 		"<cluster-name>",
 		nil)
 	for {

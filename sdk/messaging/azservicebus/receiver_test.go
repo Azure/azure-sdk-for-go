@@ -85,6 +85,43 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
 }
 
+func TestReceiverDrainHasError(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	// close the link _just_ before the drain credit to simulate connection loss.
+	addStub(t, receiver, &StubAMQPReceiver{
+		stubDrainCredit: func(inner internal.AMQPReceiverCloser, ctx context.Context) error {
+			require.NoError(t, inner.Close(context.Background()))
+			return inner.DrainCredit(ctx)
+		},
+	})
+
+	// there's only one message, requesting more messages will time out.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	messages, err := receiver.ReceiveMessages(ctx, 1+1, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t,
+		[]string{"hello"},
+		getSortedBodies(messages))
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+}
+
 func TestReceiverAbandon(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

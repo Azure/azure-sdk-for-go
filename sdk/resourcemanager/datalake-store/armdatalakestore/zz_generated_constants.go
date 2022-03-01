@@ -10,7 +10,7 @@ package armdatalakestore
 
 const (
 	moduleName    = "armdatalakestore"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.3.1"
 )
 
 // CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value

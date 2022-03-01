@@ -10,7 +10,7 @@ package armstoragesync
 
 const (
 	moduleName    = "armstoragesync"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ChangeDetectionMode - Change Detection Mode. Applies to a directory specified in directoryPath parameter.

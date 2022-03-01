@@ -73,7 +73,7 @@ type DeviceCodeCredential struct {
 }
 
 // NewDeviceCodeCredential creates a DeviceCodeCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
 	cp := DeviceCodeCredentialOptions{}
 	if options != nil {
@@ -108,7 +108,6 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(credNameDeviceCode, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	err = c.userPrompt(ctx, DeviceCodeMessage{
@@ -121,7 +120,6 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	ar, err = dc.AuthenticationResult(ctx)
 	if err != nil {
-		addGetTokenFailureLogs(credNameDeviceCode, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	c.account = ar.Account

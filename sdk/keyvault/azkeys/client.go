@@ -70,7 +70,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
-	// Elliptic curve name. For valid values, see KeyCurveName.
+	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	Curve *CurveName `json:"crv,omitempty"`
 
 	// The properties of a key managed by the key vault service.
@@ -155,7 +155,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see KeyCurveName.
+	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	CurveName *CurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.

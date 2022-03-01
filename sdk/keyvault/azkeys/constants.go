@@ -91,7 +91,7 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	}
 }
 
-// CurveName - Elliptic curve name. For valid values, see CurveName.
+// CurveName - Elliptic curve name. For valid values, see PossibleCurveNameValues.
 type CurveName string
 
 const (

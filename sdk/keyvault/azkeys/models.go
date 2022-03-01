@@ -96,7 +96,7 @@ type Key struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see KeyCurveName.
+	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	Crv *CurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.

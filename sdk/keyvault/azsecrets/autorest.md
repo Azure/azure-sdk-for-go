@@ -13,6 +13,6 @@ output-folder: internal
 tag: package-7.2
 credential-scope: none
 use: "@autorest/go@4.0.0-preview.36"
-module-version: 0.5.1
+module-version: 0.6.0
 export-clients: true
 ```

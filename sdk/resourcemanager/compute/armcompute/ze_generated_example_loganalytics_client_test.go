@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/LogAnalyticsRequestRateByInterval.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/LogAnalyticsRequestRateByInterval.json
 func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	log.Printf("Response result: %#v\n", res.LogAnalyticsClientExportRequestRateByIntervalResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/LogAnalyticsThrottledRequests.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/LogAnalyticsThrottledRequests.json
 func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -140,10 +140,14 @@ type AutomaticRepairsPolicy struct {
 
 	// The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the
 	// state change has completed. This helps avoid premature or accidental repairs.
-	// The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which
+	// The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes (PT10M), which
 	// is also the default value. The maximum allowed grace period is 90 minutes
 	// (PT90M).
 	GracePeriod *string `json:"gracePeriod,omitempty"`
+
+	// Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines in the scale
+	// set. Default value is replace.
+	RepairAction *RepairAction `json:"repairAction,omitempty"`
 }
 
 // AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to. Virtual
@@ -715,6 +719,10 @@ type CapacityReservationProperties struct {
 	// the lifetime of the resource.
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies the time at which the Capacity Reservation resource was created.
+	// Minimum api-version: 2021-11-01.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
 	// READ-ONLY; A list of all virtual machine resource ids that are associated with the capacity reservation.
 	VirtualMachinesAssociated []*SubResourceReadOnly `json:"virtualMachinesAssociated,omitempty" azure:"ro"`
 }
@@ -726,6 +734,7 @@ func (c CapacityReservationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populateTimeRFC3339(objectMap, "provisioningTime", c.ProvisioningTime)
 	populate(objectMap, "reservationId", c.ReservationID)
+	populateTimeRFC3339(objectMap, "timeCreated", c.TimeCreated)
 	populate(objectMap, "virtualMachinesAssociated", c.VirtualMachinesAssociated)
 	return json.Marshal(objectMap)
 }
@@ -750,6 +759,9 @@ func (c *CapacityReservationProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "reservationId":
 			err = unpopulate(val, &c.ReservationID)
+			delete(rawMsg, key)
+		case "timeCreated":
+			err = unpopulateTimeRFC3339(val, &c.TimeCreated)
 			delete(rawMsg, key)
 		case "virtualMachinesAssociated":
 			err = unpopulate(val, &c.VirtualMachinesAssociated)
@@ -829,12 +841,6 @@ type CapacityReservationsClientGetOptions struct {
 // method.
 type CapacityReservationsClientListByCapacityReservationGroupOptions struct {
 	// placeholder for future optional parameters
-}
-
-// CloudError - An error response from the Compute service.
-type CloudError struct {
-	// Api error.
-	Error *APIError `json:"error,omitempty"`
 }
 
 // CloudService - Describes the cloud service.
@@ -2020,6 +2026,10 @@ type DedicatedHostProperties struct {
 	// READ-ONLY; The date when the host was first provisioned.
 	ProvisioningTime *time.Time `json:"provisioningTime,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies the time at which the Dedicated Host resource was created.
+	// Minimum api-version: 2021-11-01.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
 	// READ-ONLY; A list of references to all virtual machines in the Dedicated Host.
 	VirtualMachines []*SubResourceReadOnly `json:"virtualMachines,omitempty" azure:"ro"`
 }
@@ -2034,6 +2044,7 @@ func (d DedicatedHostProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "platformFaultDomain", d.PlatformFaultDomain)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populateTimeRFC3339(objectMap, "provisioningTime", d.ProvisioningTime)
+	populateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	populate(objectMap, "virtualMachines", d.VirtualMachines)
 	return json.Marshal(objectMap)
 }
@@ -2067,6 +2078,9 @@ func (d *DedicatedHostProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningTime":
 			err = unpopulateTimeRFC3339(val, &d.ProvisioningTime)
+			delete(rawMsg, key)
+		case "timeCreated":
+			err = unpopulateTimeRFC3339(val, &d.TimeCreated)
 			delete(rawMsg, key)
 		case "virtualMachines":
 			err = unpopulate(val, &d.VirtualMachines)
@@ -2105,6 +2119,11 @@ type DedicatedHostsClientBeginCreateOrUpdateOptions struct {
 
 // DedicatedHostsClientBeginDeleteOptions contains the optional parameters for the DedicatedHostsClient.BeginDelete method.
 type DedicatedHostsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DedicatedHostsClientBeginRestartOptions contains the optional parameters for the DedicatedHostsClient.BeginRestart method.
+type DedicatedHostsClientBeginRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2883,6 +2902,15 @@ type DiskRestorePointClientListByRestorePointOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DiskRestorePointInstanceView - The instance view of a disk restore point.
+type DiskRestorePointInstanceView struct {
+	// Disk restore point Id.
+	ID *string `json:"id,omitempty"`
+
+	// The disk restore point replication status information.
+	ReplicationStatus interface{} `json:"replicationStatus,omitempty"`
+}
+
 // DiskRestorePointList - The List Disk Restore Points operation response.
 type DiskRestorePointList struct {
 	// REQUIRED; A list of disk restore points.
@@ -3376,6 +3404,8 @@ type GalleriesClientBeginUpdateOptions struct {
 
 // GalleriesClientGetOptions contains the optional parameters for the GalleriesClient.Get method.
 type GalleriesClientGetOptions struct {
+	// The expand query option to apply on the operation.
+	Expand *GalleryExpandParams
 	// The select expression to apply on the operation.
 	Select *SelectPermissions
 }
@@ -3665,6 +3695,9 @@ type GalleryApplicationVersionPublishingProfile struct {
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 
+	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
+	TargetExtendedLocations []*GalleryTargetExtendedLocation `json:"targetExtendedLocations,omitempty"`
+
 	// The target regions where the Image Version is going to be replicated to. This property is updatable.
 	TargetRegions []*TargetRegion `json:"targetRegions,omitempty"`
 
@@ -3684,6 +3717,7 @@ func (g GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, error
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "source", g.Source)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
+	populate(objectMap, "targetExtendedLocations", g.TargetExtendedLocations)
 	populate(objectMap, "targetRegions", g.TargetRegions)
 	return json.Marshal(objectMap)
 }
@@ -3723,6 +3757,9 @@ func (g *GalleryApplicationVersionPublishingProfile) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "storageAccountType":
 			err = unpopulate(val, &g.StorageAccountType)
+			delete(rawMsg, key)
+		case "targetExtendedLocations":
+			err = unpopulate(val, &g.TargetExtendedLocations)
 			delete(rawMsg, key)
 		case "targetRegions":
 			err = unpopulate(val, &g.TargetRegions)
@@ -3843,6 +3880,9 @@ type GalleryArtifactPublishingProfileBase struct {
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 
+	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
+	TargetExtendedLocations []*GalleryTargetExtendedLocation `json:"targetExtendedLocations,omitempty"`
+
 	// The target regions where the Image Version is going to be replicated to. This property is updatable.
 	TargetRegions []*TargetRegion `json:"targetRegions,omitempty"`
 
@@ -3859,6 +3899,7 @@ func (g GalleryArtifactPublishingProfileBase) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
+	populate(objectMap, "targetExtendedLocations", g.TargetExtendedLocations)
 	populate(objectMap, "targetRegions", g.TargetRegions)
 	return json.Marshal(objectMap)
 }
@@ -3890,6 +3931,9 @@ func (g *GalleryArtifactPublishingProfileBase) UnmarshalJSON(data []byte) error 
 		case "storageAccountType":
 			err = unpopulate(val, &g.StorageAccountType)
 			delete(rawMsg, key)
+		case "targetExtendedLocations":
+			err = unpopulate(val, &g.TargetExtendedLocations)
+			delete(rawMsg, key)
 		case "targetRegions":
 			err = unpopulate(val, &g.TargetRegions)
 			delete(rawMsg, key)
@@ -3899,12 +3943,6 @@ func (g *GalleryArtifactPublishingProfileBase) UnmarshalJSON(data []byte) error 
 		}
 	}
 	return nil
-}
-
-// GalleryArtifactSource - The source image from which the Image Version is going to be created.
-type GalleryArtifactSource struct {
-	// REQUIRED; The managed artifact.
-	ManagedImage *ManagedArtifact `json:"managedImage,omitempty"`
 }
 
 // GalleryArtifactVersionSource - The gallery artifact version source.
@@ -3943,6 +3981,14 @@ type GalleryDiskImage struct {
 
 	// READ-ONLY; This property indicates the size of the VHD to be created.
 	SizeInGB *int32 `json:"sizeInGB,omitempty" azure:"ro"`
+}
+
+// GalleryExtendedLocation - The name of the extended location.
+type GalleryExtendedLocation struct {
+	Name *string `json:"name,omitempty"`
+
+	// It is type of the extended location.
+	Type *GalleryExtendedLocationType `json:"type,omitempty"`
 }
 
 // GalleryIdentifier - Describes the gallery unique name.
@@ -4039,6 +4085,9 @@ type GalleryImageProperties struct {
 	// Linux
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
 
+	// The architecture of the image. Applicable to OS disks only.
+	Architecture *Architecture `json:"architecture,omitempty"`
+
 	// The description of this gallery image definition resource. This property is updatable.
 	Description *string `json:"description,omitempty"`
 
@@ -4077,6 +4126,7 @@ type GalleryImageProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type GalleryImageProperties.
 func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "architecture", g.Architecture)
 	populate(objectMap, "description", g.Description)
 	populate(objectMap, "disallowed", g.Disallowed)
 	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
@@ -4103,6 +4153,9 @@ func (g *GalleryImageProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "architecture":
+			err = unpopulate(val, &g.Architecture)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, &g.Description)
 			delete(rawMsg, key)
@@ -4267,6 +4320,9 @@ type GalleryImageVersionPublishingProfile struct {
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 
+	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
+	TargetExtendedLocations []*GalleryTargetExtendedLocation `json:"targetExtendedLocations,omitempty"`
+
 	// The target regions where the Image Version is going to be replicated to. This property is updatable.
 	TargetRegions []*TargetRegion `json:"targetRegions,omitempty"`
 
@@ -4283,6 +4339,7 @@ func (g GalleryImageVersionPublishingProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
+	populate(objectMap, "targetExtendedLocations", g.TargetExtendedLocations)
 	populate(objectMap, "targetRegions", g.TargetRegions)
 	return json.Marshal(objectMap)
 }
@@ -4313,6 +4370,9 @@ func (g *GalleryImageVersionPublishingProfile) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "storageAccountType":
 			err = unpopulate(val, &g.StorageAccountType)
+			delete(rawMsg, key)
+		case "targetExtendedLocations":
+			err = unpopulate(val, &g.TargetExtendedLocations)
 			delete(rawMsg, key)
 		case "targetRegions":
 			err = unpopulate(val, &g.TargetRegions)
@@ -4476,12 +4536,32 @@ type GalleryProperties struct {
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *GalleryPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Sharing status of current gallery.
+	SharingStatus *SharingStatus `json:"sharingStatus,omitempty" azure:"ro"`
 }
 
 // GallerySharingProfileClientBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
 // method.
 type GallerySharingProfileClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+type GalleryTargetExtendedLocation struct {
+	// Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
+	Encryption *EncryptionImages `json:"encryption,omitempty"`
+
+	// The name of the extended location.
+	ExtendedLocation *GalleryExtendedLocation `json:"extendedLocation,omitempty"`
+
+	// The number of replicas of the Image Version to be created per extended location. This property is updatable.
+	ExtendedLocationReplicaCount *int32 `json:"extendedLocationReplicaCount,omitempty"`
+
+	// The name of the region.
+	Name *string `json:"name,omitempty"`
+
+	// Specifies the storage account type to be used to store the image. This property is not updatable.
+	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
 // GalleryUpdate - Specifies information about the Shared Image Gallery that you want to update.
@@ -4755,6 +4835,10 @@ type ImagePurchasePlan struct {
 // image, marketplace image, or virtual machine image, but is not used in other creation operations. NOTE: Image reference
 // publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
+	// Specified the community gallery image unique id for vm deployment. This can be fetched from community gallery image GET
+	// call.
+	CommunityGalleryImageID *string `json:"communityGalleryImageId,omitempty"`
+
 	// Resource Id
 	ID *string `json:"id,omitempty"`
 
@@ -4774,7 +4858,10 @@ type ImageReference struct {
 	// are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers.
 	// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image
 	// will not automatically update after deploy time even if a new version becomes
-	// available.
+	// available. Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for
+	// deployment, to use 'latest' version of gallery image, just set
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+	// in the 'id' field without version input.
 	Version *string `json:"version,omitempty"`
 
 	// READ-ONLY; Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
@@ -5406,12 +5493,6 @@ func (m *MaintenanceRedeployStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ManagedArtifact - The managed artifact.
-type ManagedArtifact struct {
-	// REQUIRED; The managed artifact id.
-	ID *string `json:"id,omitempty"`
-}
-
 // ManagedDiskParameters - The parameters of a managed disk.
 type ManagedDiskParameters struct {
 	// Specifies the customer managed disk encryption set resource id for the managed disk.
@@ -5419,6 +5500,9 @@ type ManagedDiskParameters struct {
 
 	// Resource Id
 	ID *string `json:"id,omitempty"`
+
+	// Specifies the security profile for the managed disk.
+	SecurityProfile *VMDiskSecurityProfile `json:"securityProfile,omitempty"`
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
 	// be used with OS Disk.
@@ -5538,6 +5622,18 @@ type OSDiskImage struct {
 type OSDiskImageEncryption struct {
 	// A relative URI containing the resource ID of the disk encryption set.
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+
+	// This property specifies the security profile of an OS disk image.
+	SecurityProfile *OSDiskImageSecurityProfile `json:"securityProfile,omitempty"`
+}
+
+// OSDiskImageSecurityProfile - Contains security profile for an OS disk image.
+type OSDiskImageSecurityProfile struct {
+	// confidential VM encryption types
+	ConfidentialVMEncryptionType *ConfidentialVMEncryptionType `json:"confidentialVMEncryptionType,omitempty"`
+
+	// secure VM disk encryption set id
+	SecureVMDiskEncryptionSetID *string `json:"secureVMDiskEncryptionSetId,omitempty"`
 }
 
 // OSFamily - Describes a cloud service OS family.
@@ -6197,7 +6293,7 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PublicIPAddressSKU - Describes the public IP Sku
+// PublicIPAddressSKU - Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
 type PublicIPAddressSKU struct {
 	// Specify public IP sku name
 	Name *PublicIPAddressSKUName `json:"name,omitempty"`
@@ -6251,6 +6347,18 @@ type RegionalReplicationStatus struct {
 
 	// READ-ONLY; This is the regional replication state.
 	State *ReplicationState `json:"state,omitempty" azure:"ro"`
+}
+
+// RegionalSharingStatus - Gallery regional sharing status
+type RegionalSharingStatus struct {
+	// Details of gallery regional sharing failure.
+	Details *string `json:"details,omitempty"`
+
+	// Region name
+	Region *string `json:"region,omitempty"`
+
+	// READ-ONLY; Gallery sharing state in current region
+	State *SharingState `json:"state,omitempty" azure:"ro"`
 }
 
 // ReplicationStatus - This is the replication status of the gallery image version.
@@ -6842,17 +6950,40 @@ type RestorePointCollectionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RestorePointInstanceView - The instance view of a restore point.
+type RestorePointInstanceView struct {
+	// The disk restore points information.
+	DiskRestorePoints []*DiskRestorePointInstanceView `json:"diskRestorePoints,omitempty"`
+
+	// The resource status information.
+	Statuses []*InstanceViewStatus `json:"statuses,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RestorePointInstanceView.
+func (r RestorePointInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "diskRestorePoints", r.DiskRestorePoints)
+	populate(objectMap, "statuses", r.Statuses)
+	return json.Marshal(objectMap)
+}
+
 // RestorePointProperties - The restore point properties.
 type RestorePointProperties struct {
 	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks
 	// will be included.
 	ExcludeDisks []*APIEntityReference `json:"excludeDisks,omitempty"`
 
+	// Resource Id of the source restore point from which a copy needs to be created.
+	SourceRestorePoint *APIEntityReference `json:"sourceRestorePoint,omitempty"`
+
 	// Gets the creation time of the restore point.
 	TimeCreated *time.Time `json:"timeCreated,omitempty"`
 
 	// READ-ONLY; Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details.
 	ConsistencyMode *ConsistencyModeTypes `json:"consistencyMode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The restore point instance view.
+	InstanceView *RestorePointInstanceView `json:"instanceView,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the provisioning state of the restore point.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -6866,8 +6997,10 @@ func (r RestorePointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "consistencyMode", r.ConsistencyMode)
 	populate(objectMap, "excludeDisks", r.ExcludeDisks)
+	populate(objectMap, "instanceView", r.InstanceView)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "sourceMetadata", r.SourceMetadata)
+	populate(objectMap, "sourceRestorePoint", r.SourceRestorePoint)
 	populateTimeRFC3339(objectMap, "timeCreated", r.TimeCreated)
 	return json.Marshal(objectMap)
 }
@@ -6887,11 +7020,17 @@ func (r *RestorePointProperties) UnmarshalJSON(data []byte) error {
 		case "excludeDisks":
 			err = unpopulate(val, &r.ExcludeDisks)
 			delete(rawMsg, key)
+		case "instanceView":
+			err = unpopulate(val, &r.InstanceView)
+			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &r.ProvisioningState)
 			delete(rawMsg, key)
 		case "sourceMetadata":
 			err = unpopulate(val, &r.SourceMetadata)
+			delete(rawMsg, key)
+		case "sourceRestorePoint":
+			err = unpopulate(val, &r.SourceRestorePoint)
 			delete(rawMsg, key)
 		case "timeCreated":
 			err = unpopulateTimeRFC3339(val, &r.TimeCreated)
@@ -7007,7 +7146,9 @@ type RestorePointsClientBeginDeleteOptions struct {
 
 // RestorePointsClientGetOptions contains the optional parameters for the RestorePointsClient.Get method.
 type RestorePointsClientGetOptions struct {
-	// placeholder for future optional parameters
+	// The expand expression to apply on the operation. 'InstanceView' retrieves information about the run-time state of a restore
+	// point.
+	Expand *RestorePointExpandOptions
 }
 
 // RetrieveBootDiagnosticsDataResult - The SAS URIs of the console screenshot and serial log blobs.
@@ -7631,8 +7772,8 @@ type SecurityProfile struct {
 	// Default: The Encryption at host will be disabled unless this property is set to true for the resource.
 	EncryptionAtHost *bool `json:"encryptionAtHost,omitempty"`
 
-	// Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
-	// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
+	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+	// Default: UefiSettings will not be enabled unless this property is set.
 	SecurityType *SecurityTypes `json:"securityType,omitempty"`
 
 	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
@@ -7920,6 +8061,9 @@ func (s SharedGalleryList) MarshalJSON() ([]byte, error) {
 
 // SharingProfile - Profile for gallery sharing to subscription or tenant
 type SharingProfile struct {
+	// Information of community gallery if current gallery is shared to community.
+	CommunityGalleryInfo interface{} `json:"communityGalleryInfo,omitempty"`
+
 	// This property allows you to specify the permission of sharing gallery.
 	// Possible values are:
 	// Private
@@ -7933,6 +8077,7 @@ type SharingProfile struct {
 // MarshalJSON implements the json.Marshaller interface for type SharingProfile.
 func (s SharingProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "communityGalleryInfo", &s.CommunityGalleryInfo)
 	populate(objectMap, "groups", s.Groups)
 	populate(objectMap, "permissions", s.Permissions)
 	return json.Marshal(objectMap)
@@ -7947,6 +8092,7 @@ type SharingProfileGroup struct {
 	// Possible values are:
 	// Subscriptions
 	// AADTenants
+	// Community
 	Type *SharingProfileGroupTypes `json:"type,omitempty"`
 }
 
@@ -7955,6 +8101,23 @@ func (s SharingProfileGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "ids", s.IDs)
 	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
+// SharingStatus - Sharing status of current gallery.
+type SharingStatus struct {
+	// Summary of all regional sharing status.
+	Summary []*RegionalSharingStatus `json:"summary,omitempty"`
+
+	// READ-ONLY; Aggregated sharing state of current gallery.
+	AggregatedState *SharingState `json:"aggregatedState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SharingStatus.
+func (s SharingStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "aggregatedState", s.AggregatedState)
+	populate(objectMap, "summary", s.Summary)
 	return json.Marshal(objectMap)
 }
 
@@ -8738,6 +8901,20 @@ type UserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
+// VMDiskSecurityProfile - Specifies the security profile settings for the managed disk.
+// NOTE: It can only be set for Confidential VMs
+type VMDiskSecurityProfile struct {
+	// Specifies the customer managed disk encryption set resource id for the managed disk that is used for Customer Managed Key
+	// encrypted ConfidentialVM OS Disk and VMGuest blob.
+	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
+
+	// Specifies the EncryptionType of the managed disk.
+	// It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly
+	// for encryption of just the VMGuestState blob.
+	// NOTE: It can be set for only Confidential VMs.
+	SecurityEncryptionType *SecurityEncryptionTypes `json:"securityEncryptionType,omitempty"`
+}
+
 // VMGalleryApplication - Specifies the required information to reference a compute gallery application version
 type VMGalleryApplication struct {
 	// REQUIRED; Specifies the GalleryApplicationVersion resource id on the form of
@@ -9012,10 +9189,10 @@ type VirtualMachineCaptureResult struct {
 	ContentVersion *string `json:"contentVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; parameters of the captured virtual machine
-	Parameters map[string]interface{} `json:"parameters,omitempty" azure:"ro"`
+	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; a list of resource items of the captured virtual machine
-	Resources []map[string]interface{} `json:"resources,omitempty" azure:"ro"`
+	Resources []interface{} `json:"resources,omitempty" azure:"ro"`
 
 	// READ-ONLY; the schema of the captured virtual machine
 	Schema *string `json:"$schema,omitempty" azure:"ro"`
@@ -9026,7 +9203,7 @@ func (v VirtualMachineCaptureResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "contentVersion", v.ContentVersion)
 	populate(objectMap, "id", v.ID)
-	populate(objectMap, "parameters", v.Parameters)
+	populate(objectMap, "parameters", &v.Parameters)
 	populate(objectMap, "resources", v.Resources)
 	populate(objectMap, "$schema", v.Schema)
 	return json.Marshal(objectMap)
@@ -9198,13 +9375,16 @@ type VirtualMachineExtensionProperties struct {
 	InstanceView *VirtualMachineExtensionInstanceView `json:"instanceView,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+
+	// The extensions protected settings that are passed by reference, and consumed from key vault
+	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
 	// to the VM will not be suppressed regardless of this value). The default is false.
@@ -9252,13 +9432,16 @@ type VirtualMachineExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+
+	// The extensions protected settings that are passed by reference, and consumed from key vault
+	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
 	// to the VM will not be suppressed regardless of this value). The default is false.
@@ -9406,6 +9589,9 @@ type VirtualMachineImageFeature struct {
 
 // VirtualMachineImageProperties - Describes the properties of a Virtual Machine Image.
 type VirtualMachineImageProperties struct {
+	// Specifies the Architecture Type
+	Architecture *ArchitectureTypes `json:"architecture,omitempty"`
+
 	// Describes automatic OS upgrade properties on the image.
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties `json:"automaticOSUpgradeProperties,omitempty"`
 	DataDiskImages               []*DataDiskImage              `json:"dataDiskImages,omitempty"`
@@ -9427,6 +9613,7 @@ type VirtualMachineImageProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineImageProperties.
 func (v VirtualMachineImageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "architecture", v.Architecture)
 	populate(objectMap, "automaticOSUpgradeProperties", v.AutomaticOSUpgradeProperties)
 	populate(objectMap, "dataDiskImages", v.DataDiskImages)
 	populate(objectMap, "disallowed", v.Disallowed)
@@ -10013,9 +10200,140 @@ type VirtualMachineProperties struct {
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created.
+	// Minimum api-version: 2021-11-01.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
 	// READ-ONLY; Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS
 	// and can be read using platform BIOS commands.
 	VMID *string `json:"vmId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineProperties.
+func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "additionalCapabilities", v.AdditionalCapabilities)
+	populate(objectMap, "applicationProfile", v.ApplicationProfile)
+	populate(objectMap, "availabilitySet", v.AvailabilitySet)
+	populate(objectMap, "billingProfile", v.BillingProfile)
+	populate(objectMap, "capacityReservation", v.CapacityReservation)
+	populate(objectMap, "diagnosticsProfile", v.DiagnosticsProfile)
+	populate(objectMap, "evictionPolicy", v.EvictionPolicy)
+	populate(objectMap, "extensionsTimeBudget", v.ExtensionsTimeBudget)
+	populate(objectMap, "hardwareProfile", v.HardwareProfile)
+	populate(objectMap, "host", v.Host)
+	populate(objectMap, "hostGroup", v.HostGroup)
+	populate(objectMap, "instanceView", v.InstanceView)
+	populate(objectMap, "licenseType", v.LicenseType)
+	populate(objectMap, "networkProfile", v.NetworkProfile)
+	populate(objectMap, "osProfile", v.OSProfile)
+	populate(objectMap, "platformFaultDomain", v.PlatformFaultDomain)
+	populate(objectMap, "priority", v.Priority)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "proximityPlacementGroup", v.ProximityPlacementGroup)
+	populate(objectMap, "scheduledEventsProfile", v.ScheduledEventsProfile)
+	populate(objectMap, "securityProfile", v.SecurityProfile)
+	populate(objectMap, "storageProfile", v.StorageProfile)
+	populateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
+	populate(objectMap, "userData", v.UserData)
+	populate(objectMap, "vmId", v.VMID)
+	populate(objectMap, "virtualMachineScaleSet", v.VirtualMachineScaleSet)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineProperties.
+func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalCapabilities":
+			err = unpopulate(val, &v.AdditionalCapabilities)
+			delete(rawMsg, key)
+		case "applicationProfile":
+			err = unpopulate(val, &v.ApplicationProfile)
+			delete(rawMsg, key)
+		case "availabilitySet":
+			err = unpopulate(val, &v.AvailabilitySet)
+			delete(rawMsg, key)
+		case "billingProfile":
+			err = unpopulate(val, &v.BillingProfile)
+			delete(rawMsg, key)
+		case "capacityReservation":
+			err = unpopulate(val, &v.CapacityReservation)
+			delete(rawMsg, key)
+		case "diagnosticsProfile":
+			err = unpopulate(val, &v.DiagnosticsProfile)
+			delete(rawMsg, key)
+		case "evictionPolicy":
+			err = unpopulate(val, &v.EvictionPolicy)
+			delete(rawMsg, key)
+		case "extensionsTimeBudget":
+			err = unpopulate(val, &v.ExtensionsTimeBudget)
+			delete(rawMsg, key)
+		case "hardwareProfile":
+			err = unpopulate(val, &v.HardwareProfile)
+			delete(rawMsg, key)
+		case "host":
+			err = unpopulate(val, &v.Host)
+			delete(rawMsg, key)
+		case "hostGroup":
+			err = unpopulate(val, &v.HostGroup)
+			delete(rawMsg, key)
+		case "instanceView":
+			err = unpopulate(val, &v.InstanceView)
+			delete(rawMsg, key)
+		case "licenseType":
+			err = unpopulate(val, &v.LicenseType)
+			delete(rawMsg, key)
+		case "networkProfile":
+			err = unpopulate(val, &v.NetworkProfile)
+			delete(rawMsg, key)
+		case "osProfile":
+			err = unpopulate(val, &v.OSProfile)
+			delete(rawMsg, key)
+		case "platformFaultDomain":
+			err = unpopulate(val, &v.PlatformFaultDomain)
+			delete(rawMsg, key)
+		case "priority":
+			err = unpopulate(val, &v.Priority)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &v.ProvisioningState)
+			delete(rawMsg, key)
+		case "proximityPlacementGroup":
+			err = unpopulate(val, &v.ProximityPlacementGroup)
+			delete(rawMsg, key)
+		case "scheduledEventsProfile":
+			err = unpopulate(val, &v.ScheduledEventsProfile)
+			delete(rawMsg, key)
+		case "securityProfile":
+			err = unpopulate(val, &v.SecurityProfile)
+			delete(rawMsg, key)
+		case "storageProfile":
+			err = unpopulate(val, &v.StorageProfile)
+			delete(rawMsg, key)
+		case "timeCreated":
+			err = unpopulateTimeRFC3339(val, &v.TimeCreated)
+			delete(rawMsg, key)
+		case "userData":
+			err = unpopulate(val, &v.UserData)
+			delete(rawMsg, key)
+		case "vmId":
+			err = unpopulate(val, &v.VMID)
+			delete(rawMsg, key)
+		case "virtualMachineScaleSet":
+			err = unpopulate(val, &v.VirtualMachineScaleSet)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // VirtualMachinePublicIPAddressConfiguration - Describes a virtual machines IP Configuration's PublicIPAddress configuration
@@ -10026,7 +10344,7 @@ type VirtualMachinePublicIPAddressConfiguration struct {
 	// Describes a virtual machines IP Configuration's PublicIPAddress configuration
 	Properties *VirtualMachinePublicIPAddressConfigurationProperties `json:"properties,omitempty"`
 
-	// Describes the public IP Sku
+	// Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
 	SKU *PublicIPAddressSKU `json:"sku,omitempty"`
 }
 
@@ -10508,7 +10826,10 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+
+	// The extensions protected settings that are passed by reference, and consumed from key vault
+	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// Collection of extension names after which this extension needs to be provisioned.
 	ProvisionAfterExtensions []*string `json:"provisionAfterExtensions,omitempty"`
@@ -10517,7 +10838,7 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
 	// to the VM will not be suppressed regardless of this value). The default is false.
@@ -10539,11 +10860,12 @@ func (v VirtualMachineScaleSetExtensionProperties) MarshalJSON() ([]byte, error)
 	populate(objectMap, "autoUpgradeMinorVersion", v.AutoUpgradeMinorVersion)
 	populate(objectMap, "enableAutomaticUpgrade", v.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", v.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", v.ProtectedSettings)
+	populate(objectMap, "protectedSettings", &v.ProtectedSettings)
+	populate(objectMap, "protectedSettingsFromKeyVault", &v.ProtectedSettingsFromKeyVault)
 	populate(objectMap, "provisionAfterExtensions", v.ProvisionAfterExtensions)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publisher", v.Publisher)
-	populate(objectMap, "settings", v.Settings)
+	populate(objectMap, "settings", &v.Settings)
 	populate(objectMap, "suppressFailures", v.SuppressFailures)
 	populate(objectMap, "type", v.Type)
 	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
@@ -10604,6 +10926,13 @@ type VirtualMachineScaleSetExtensionsClientGetOptions struct {
 // method.
 type VirtualMachineScaleSetExtensionsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// VirtualMachineScaleSetHardwareProfile - Specifies the hardware settings for the virtual machine scale set.
+type VirtualMachineScaleSetHardwareProfile struct {
+	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-11-01.
+	// Please follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
+	VMSizeProperties *VMSizeProperties `json:"vmSizeProperties,omitempty"`
 }
 
 // VirtualMachineScaleSetIPConfiguration - Describes a virtual machine scale set network profile's IP configuration.
@@ -10829,6 +11158,9 @@ type VirtualMachineScaleSetManagedDiskParameters struct {
 	// Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 
+	// Specifies the security profile for the managed disk.
+	SecurityProfile *VMDiskSecurityProfile `json:"securityProfile,omitempty"`
+
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
 	// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes `json:"storageAccountType,omitempty"`
@@ -11017,6 +11349,10 @@ type VirtualMachineScaleSetOSProfile struct {
 	// Max-length (Windows): 20 characters
 	AdminUsername *string `json:"adminUsername,omitempty"`
 
+	// Specifies whether extension operations should be allowed on the virtual machine scale set.
+	// This may only be set to False when no extensions are present on the virtual machine scale set.
+	AllowExtensionOperations *bool `json:"allowExtensionOperations,omitempty"`
+
 	// Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must be 1 to
 	// 15 characters long.
 	ComputerNamePrefix *string `json:"computerNamePrefix,omitempty"`
@@ -11047,6 +11383,7 @@ func (v VirtualMachineScaleSetOSProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "adminPassword", v.AdminPassword)
 	populate(objectMap, "adminUsername", v.AdminUsername)
+	populate(objectMap, "allowExtensionOperations", v.AllowExtensionOperations)
 	populate(objectMap, "computerNamePrefix", v.ComputerNamePrefix)
 	populate(objectMap, "customData", v.CustomData)
 	populate(objectMap, "linuxConfiguration", v.LinuxConfiguration)
@@ -11112,8 +11449,103 @@ type VirtualMachineScaleSetProperties struct {
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies the time at which the Virtual Machine Scale Set resource was created.
+	// Minimum api-version: 2021-11-01.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
 	// READ-ONLY; Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
 	UniqueID *string `json:"uniqueId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineScaleSetProperties.
+func (v VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "additionalCapabilities", v.AdditionalCapabilities)
+	populate(objectMap, "automaticRepairsPolicy", v.AutomaticRepairsPolicy)
+	populate(objectMap, "doNotRunExtensionsOnOverprovisionedVMs", v.DoNotRunExtensionsOnOverprovisionedVMs)
+	populate(objectMap, "hostGroup", v.HostGroup)
+	populate(objectMap, "orchestrationMode", v.OrchestrationMode)
+	populate(objectMap, "overprovision", v.Overprovision)
+	populate(objectMap, "platformFaultDomainCount", v.PlatformFaultDomainCount)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "proximityPlacementGroup", v.ProximityPlacementGroup)
+	populate(objectMap, "scaleInPolicy", v.ScaleInPolicy)
+	populate(objectMap, "singlePlacementGroup", v.SinglePlacementGroup)
+	populate(objectMap, "spotRestorePolicy", v.SpotRestorePolicy)
+	populateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
+	populate(objectMap, "uniqueId", v.UniqueID)
+	populate(objectMap, "upgradePolicy", v.UpgradePolicy)
+	populate(objectMap, "virtualMachineProfile", v.VirtualMachineProfile)
+	populate(objectMap, "zoneBalance", v.ZoneBalance)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineScaleSetProperties.
+func (v *VirtualMachineScaleSetProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalCapabilities":
+			err = unpopulate(val, &v.AdditionalCapabilities)
+			delete(rawMsg, key)
+		case "automaticRepairsPolicy":
+			err = unpopulate(val, &v.AutomaticRepairsPolicy)
+			delete(rawMsg, key)
+		case "doNotRunExtensionsOnOverprovisionedVMs":
+			err = unpopulate(val, &v.DoNotRunExtensionsOnOverprovisionedVMs)
+			delete(rawMsg, key)
+		case "hostGroup":
+			err = unpopulate(val, &v.HostGroup)
+			delete(rawMsg, key)
+		case "orchestrationMode":
+			err = unpopulate(val, &v.OrchestrationMode)
+			delete(rawMsg, key)
+		case "overprovision":
+			err = unpopulate(val, &v.Overprovision)
+			delete(rawMsg, key)
+		case "platformFaultDomainCount":
+			err = unpopulate(val, &v.PlatformFaultDomainCount)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &v.ProvisioningState)
+			delete(rawMsg, key)
+		case "proximityPlacementGroup":
+			err = unpopulate(val, &v.ProximityPlacementGroup)
+			delete(rawMsg, key)
+		case "scaleInPolicy":
+			err = unpopulate(val, &v.ScaleInPolicy)
+			delete(rawMsg, key)
+		case "singlePlacementGroup":
+			err = unpopulate(val, &v.SinglePlacementGroup)
+			delete(rawMsg, key)
+		case "spotRestorePolicy":
+			err = unpopulate(val, &v.SpotRestorePolicy)
+			delete(rawMsg, key)
+		case "timeCreated":
+			err = unpopulateTimeRFC3339(val, &v.TimeCreated)
+			delete(rawMsg, key)
+		case "uniqueId":
+			err = unpopulate(val, &v.UniqueID)
+			delete(rawMsg, key)
+		case "upgradePolicy":
+			err = unpopulate(val, &v.UpgradePolicy)
+			delete(rawMsg, key)
+		case "virtualMachineProfile":
+			err = unpopulate(val, &v.VirtualMachineProfile)
+			delete(rawMsg, key)
+		case "zoneBalance":
+			err = unpopulate(val, &v.ZoneBalance)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfiguration - Describes a virtual machines scale set IP Configuration's PublicIPAddress
@@ -11125,7 +11557,7 @@ type VirtualMachineScaleSetPublicIPAddressConfiguration struct {
 	// Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration
 	Properties *VirtualMachineScaleSetPublicIPAddressConfigurationProperties `json:"properties,omitempty"`
 
-	// Describes the public IP Sku
+	// Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
 	SKU *PublicIPAddressSKU `json:"sku,omitempty"`
 }
 
@@ -11553,6 +11985,9 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 
 	// The idle timeout of the public IP address.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
+
+	// The PublicIPPrefix from which to allocate publicIP addresses.
+	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
 }
 
 // VirtualMachineScaleSetUpdateStorageProfile - Describes a virtual machine scale set storage profile.
@@ -11914,6 +12349,10 @@ type VirtualMachineScaleSetVMProfile struct {
 
 	// Specifies a collection of settings for extensions installed on virtual machines in the scale set.
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
+
+	// Specifies the hardware profile related details of a scale set.
+	// Minimum api-version: 2021-11-01.
+	HardwareProfile *VirtualMachineScaleSetHardwareProfile `json:"hardwareProfile,omitempty"`
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
 	// Possible values for Windows Server operating system are:
@@ -12291,7 +12730,10 @@ type VirtualMachineScaleSetsClientConvertToSinglePlacementGroupOptions struct {
 // VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions contains the optional parameters
 // for the VirtualMachineScaleSetsClient.ForceRecoveryServiceFabricPlatformUpdateDomainWalk method.
 type VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions struct {
-	// placeholder for future optional parameters
+	// The placement group id for which the manual recovery walk is requested.
+	PlacementGroupID *string
+	// The zone in which the manual recovery walk is requested for cross zone virtual machine scale set
+	Zone *string
 }
 
 // VirtualMachineScaleSetsClientGetInstanceViewOptions contains the optional parameters for the VirtualMachineScaleSetsClient.GetInstanceView
@@ -12631,6 +13073,9 @@ type VirtualMachinesClientInstanceViewOptions struct {
 
 // VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.ListAll method.
 type VirtualMachinesClientListAllOptions struct {
+	// The system query option to filter VMs returned in the response. Allowed value is 'virtualMachineScaleSet/id' eq
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
+	Filter *string
 	// statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
 	StatusOnly *string
 }
@@ -12649,7 +13094,9 @@ type VirtualMachinesClientListByLocationOptions struct {
 
 // VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
 type VirtualMachinesClientListOptions struct {
-	// placeholder for future optional parameters
+	// The system query option to filter VMs returned in the response. Allowed value is 'virtualMachineScaleSet/id' eq
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
+	Filter *string
 }
 
 // VirtualMachinesClientRetrieveBootDiagnosticsDataOptions contains the optional parameters for the VirtualMachinesClient.RetrieveBootDiagnosticsData

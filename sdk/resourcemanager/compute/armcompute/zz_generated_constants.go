@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type AccessLevel string
@@ -57,6 +57,48 @@ func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 
 // ToPtr returns a *AggregatedReplicationState pointing to the current value.
 func (c AggregatedReplicationState) ToPtr() *AggregatedReplicationState {
+	return &c
+}
+
+// Architecture - The architecture of the image. Applicable to OS disks only.
+type Architecture string
+
+const (
+	ArchitectureArm64 Architecture = "Arm64"
+	ArchitectureX64   Architecture = "x64"
+)
+
+// PossibleArchitectureValues returns the possible values for the Architecture const type.
+func PossibleArchitectureValues() []Architecture {
+	return []Architecture{
+		ArchitectureArm64,
+		ArchitectureX64,
+	}
+}
+
+// ToPtr returns a *Architecture pointing to the current value.
+func (c Architecture) ToPtr() *Architecture {
+	return &c
+}
+
+// ArchitectureTypes - Specifies the Architecture Type
+type ArchitectureTypes string
+
+const (
+	ArchitectureTypesArm64 ArchitectureTypes = "Arm64"
+	ArchitectureTypesX64   ArchitectureTypes = "x64"
+)
+
+// PossibleArchitectureTypesValues returns the possible values for the ArchitectureTypes const type.
+func PossibleArchitectureTypesValues() []ArchitectureTypes {
+	return []ArchitectureTypes{
+		ArchitectureTypesArm64,
+		ArchitectureTypesX64,
+	}
+}
+
+// ToPtr returns a *ArchitectureTypes pointing to the current value.
+func (c ArchitectureTypes) ToPtr() *ArchitectureTypes {
 	return &c
 }
 
@@ -174,6 +216,29 @@ func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 
 // ToPtr returns a *CloudServiceUpgradeMode pointing to the current value.
 func (c CloudServiceUpgradeMode) ToPtr() *CloudServiceUpgradeMode {
+	return &c
+}
+
+// ConfidentialVMEncryptionType - confidential VM encryption types
+type ConfidentialVMEncryptionType string
+
+const (
+	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = "EncryptedVMGuestStateOnlyWithPmk"
+	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = "EncryptedWithCmk"
+	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = "EncryptedWithPmk"
+)
+
+// PossibleConfidentialVMEncryptionTypeValues returns the possible values for the ConfidentialVMEncryptionType const type.
+func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
+	return []ConfidentialVMEncryptionType{
+		ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk,
+		ConfidentialVMEncryptionTypeEncryptedWithCmk,
+		ConfidentialVMEncryptionTypeEncryptedWithPmk,
+	}
+}
+
+// ToPtr returns a *ConfidentialVMEncryptionType pointing to the current value.
+func (c ConfidentialVMEncryptionType) ToPtr() *ConfidentialVMEncryptionType {
 	return &c
 }
 
@@ -759,6 +824,45 @@ func (c GalleryApplicationVersionPropertiesProvisioningState) ToPtr() *GalleryAp
 	return &c
 }
 
+type GalleryExpandParams string
+
+const (
+	GalleryExpandParamsSharingProfileGroups GalleryExpandParams = "SharingProfile/Groups"
+)
+
+// PossibleGalleryExpandParamsValues returns the possible values for the GalleryExpandParams const type.
+func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
+	return []GalleryExpandParams{
+		GalleryExpandParamsSharingProfileGroups,
+	}
+}
+
+// ToPtr returns a *GalleryExpandParams pointing to the current value.
+func (c GalleryExpandParams) ToPtr() *GalleryExpandParams {
+	return &c
+}
+
+// GalleryExtendedLocationType - It is type of the extended location.
+type GalleryExtendedLocationType string
+
+const (
+	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = "EdgeZone"
+	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = "Unknown"
+)
+
+// PossibleGalleryExtendedLocationTypeValues returns the possible values for the GalleryExtendedLocationType const type.
+func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
+	return []GalleryExtendedLocationType{
+		GalleryExtendedLocationTypeEdgeZone,
+		GalleryExtendedLocationTypeUnknown,
+	}
+}
+
+// ToPtr returns a *GalleryExtendedLocationType pointing to the current value.
+func (c GalleryExtendedLocationType) ToPtr() *GalleryExtendedLocationType {
+	return &c
+}
+
 // GalleryImagePropertiesProvisioningState - The provisioning state, which only appears in the response.
 type GalleryImagePropertiesProvisioningState string
 
@@ -1166,13 +1270,12 @@ func (c NetworkAccessPolicy) ToPtr() *NetworkAccessPolicy {
 	return &c
 }
 
-// OperatingSystemStateTypes - The OS State.
+// OperatingSystemStateTypes - This property allows the user to specify whether the virtual machines created under this image
+// are 'Generalized' or 'Specialized'.
 type OperatingSystemStateTypes string
 
 const (
-	// OperatingSystemStateTypesGeneralized - Generalized image. Needs to be provisioned during deployment time.
 	OperatingSystemStateTypesGeneralized OperatingSystemStateTypes = "Generalized"
-	// OperatingSystemStateTypesSpecialized - Specialized image. Contains already provisioned OS Disk.
 	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = "Specialized"
 )
 
@@ -1210,7 +1313,11 @@ func (c OperatingSystemType) ToPtr() *OperatingSystemType {
 	return &c
 }
 
-// OperatingSystemTypes - The operating system of the osDiskImage.
+// OperatingSystemTypes - This property allows you to specify the type of the OS that is included in the disk when creating
+// a VM from a managed image.
+// Possible values are:
+// Windows
+// Linux
 type OperatingSystemTypes string
 
 const (
@@ -1580,6 +1687,30 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
+// RepairAction - Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines
+// in the scale set. Default value is replace.
+type RepairAction string
+
+const (
+	RepairActionReimage RepairAction = "Reimage"
+	RepairActionReplace RepairAction = "Replace"
+	RepairActionRestart RepairAction = "Restart"
+)
+
+// PossibleRepairActionValues returns the possible values for the RepairAction const type.
+func PossibleRepairActionValues() []RepairAction {
+	return []RepairAction{
+		RepairActionReimage,
+		RepairActionReplace,
+		RepairActionRestart,
+	}
+}
+
+// ToPtr returns a *RepairAction pointing to the current value.
+func (c RepairAction) ToPtr() *RepairAction {
+	return &c
+}
+
 // ReplicationMode - Optional parameter which specifies the mode to be used for replication. This property is not updatable.
 type ReplicationMode string
 
@@ -1754,6 +1885,24 @@ func (c RestorePointCollectionExpandOptions) ToPtr() *RestorePointCollectionExpa
 	return &c
 }
 
+type RestorePointExpandOptions string
+
+const (
+	RestorePointExpandOptionsInstanceView RestorePointExpandOptions = "instanceView"
+)
+
+// PossibleRestorePointExpandOptionsValues returns the possible values for the RestorePointExpandOptions const type.
+func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
+	return []RestorePointExpandOptions{
+		RestorePointExpandOptionsInstanceView,
+	}
+}
+
+// ToPtr returns a *RestorePointExpandOptions pointing to the current value.
+func (c RestorePointExpandOptions) ToPtr() *RestorePointExpandOptions {
+	return &c
+}
+
 // RollingUpgradeActionType - The last action performed on the rolling upgrade.
 type RollingUpgradeActionType string
 
@@ -1800,17 +1949,43 @@ func (c RollingUpgradeStatusCode) ToPtr() *RollingUpgradeStatusCode {
 	return &c
 }
 
-// SecurityTypes - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
-// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk.
+// It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly
+// for encryption of just the VMGuestState blob.
+// NOTE: It can be set for only Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
+}
+
+// ToPtr returns a *SecurityEncryptionTypes pointing to the current value.
+func (c SecurityEncryptionTypes) ToPtr() *SecurityEncryptionTypes {
+	return &c
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+// Default: UefiSettings will not be enabled unless this property is set.
 type SecurityTypes string
 
 const (
-	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
+	SecurityTypesTrustedLaunch  SecurityTypes = "TrustedLaunch"
 )
 
 // PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
 		SecurityTypesTrustedLaunch,
 	}
 }
@@ -1882,10 +2057,12 @@ func (c SharedToValues) ToPtr() *SharedToValues {
 // Possible values are:
 // Subscriptions
 // AADTenants
+// Community
 type SharingProfileGroupTypes string
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = "AADTenants"
+	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = "Community"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
@@ -1893,12 +2070,38 @@ const (
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAADTenants,
+		SharingProfileGroupTypesCommunity,
 		SharingProfileGroupTypesSubscriptions,
 	}
 }
 
 // ToPtr returns a *SharingProfileGroupTypes pointing to the current value.
 func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
+	return &c
+}
+
+// SharingState - The sharing state of the gallery, which only appears in the response.
+type SharingState string
+
+const (
+	SharingStateFailed     SharingState = "Failed"
+	SharingStateInProgress SharingState = "InProgress"
+	SharingStateSucceeded  SharingState = "Succeeded"
+	SharingStateUnknown    SharingState = "Unknown"
+)
+
+// PossibleSharingStateValues returns the possible values for the SharingState const type.
+func PossibleSharingStateValues() []SharingState {
+	return []SharingState{
+		SharingStateFailed,
+		SharingStateInProgress,
+		SharingStateSucceeded,
+		SharingStateUnknown,
+	}
+}
+
+// ToPtr returns a *SharingState pointing to the current value.
+func (c SharingState) ToPtr() *SharingState {
 	return &c
 }
 
@@ -1910,15 +2113,17 @@ func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
 type SharingUpdateOperationTypes string
 
 const (
-	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = "Add"
-	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = "Remove"
-	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = "Reset"
+	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = "Add"
+	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = "EnableCommunity"
+	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = "Remove"
+	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = "Reset"
 )
 
 // PossibleSharingUpdateOperationTypesValues returns the possible values for the SharingUpdateOperationTypes const type.
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return []SharingUpdateOperationTypes{
 		SharingUpdateOperationTypesAdd,
+		SharingUpdateOperationTypesEnableCommunity,
 		SharingUpdateOperationTypesRemove,
 		SharingUpdateOperationTypesReset,
 	}

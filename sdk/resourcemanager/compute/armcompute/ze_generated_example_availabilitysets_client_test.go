@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAnAvailabilitySet.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnAvailabilitySet.json
 func ExampleAvailabilitySetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,81 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.AvailabilitySetsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListAvailabilitySetsInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_Update_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	res, err := client.Update(ctx,
+		"<resource-group-name>",
+		"<availability-set-name>",
+		armcompute.AvailabilitySetUpdate{
+			Tags: map[string]*string{
+				"key2574": to.StringPtr("aaaaaaaa"),
+			},
+			Properties: &armcompute.AvailabilitySetProperties{
+				PlatformFaultDomainCount:  to.Int32Ptr(2),
+				PlatformUpdateDomainCount: to.Int32Ptr(20),
+				ProximityPlacementGroup: &armcompute.SubResource{
+					ID: to.StringPtr("<id>"),
+				},
+				VirtualMachines: []*armcompute.SubResource{
+					{
+						ID: to.StringPtr("<id>"),
+					}},
+			},
+			SKU: &armcompute.SKU{
+				Name:     to.StringPtr("<name>"),
+				Capacity: to.Int64Ptr(7),
+				Tier:     to.StringPtr("<tier>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.AvailabilitySetsClientUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_Delete_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	_, err = client.Delete(ctx,
+		"<resource-group-name>",
+		"<availability-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_Get_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	res, err := client.Get(ctx,
+		"<resource-group-name>",
+		"<availability-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.AvailabilitySetsClientGetResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListAvailabilitySetsInASubscription.json
 func ExampleAvailabilitySetsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,4 +137,46 @@ func ExampleAvailabilitySetsClient_ListBySubscription() {
 			log.Printf("Pager result: %#v\n", v)
 		}
 	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_List_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_List() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	pager := client.List("<resource-group-name>",
+		nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_ListAvailableSizes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	res, err := client.ListAvailableSizes(ctx,
+		"<resource-group-name>",
+		"<availability-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.AvailabilitySetsClientListAvailableSizesResult)
 }

@@ -324,7 +324,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 				// Whereas normally you'd do (for non-detach errors):
 				//   0th attempt
 				//   (actual retries)
-				log.Writef(EventConn, "Link was previously detached. attempting quick reconnect to recover from error: %s", err.Error())
+				log.Writef(EventConn, "Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error())
 				didQuickRetry = true
 				args.ResetAttempts()
 			}

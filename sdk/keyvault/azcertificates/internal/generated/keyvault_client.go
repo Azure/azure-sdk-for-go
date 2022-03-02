@@ -649,7 +649,7 @@ func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certif
 	return &KeyVaultClientGetCertificateVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
+			return client.GetCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
 		},
 		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateVersionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
@@ -657,8 +657,8 @@ func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certif
 	}
 }
 
-// getCertificateVersionsCreateRequest creates the GetCertificateVersions request.
-func (client *KeyVaultClient) getCertificateVersionsCreateRequest(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) (*policy.Request, error) {
+// GetCertificateVersionsCreateRequest creates the GetCertificateVersions request.
+func (client *KeyVaultClient) GetCertificateVersionsCreateRequest(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/certificates/{certificate-name}/versions"
@@ -680,8 +680,8 @@ func (client *KeyVaultClient) getCertificateVersionsCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// getCertificateVersionsHandleResponse handles the GetCertificateVersions response.
-func (client *KeyVaultClient) getCertificateVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateVersionsResponse, error) {
+// GetCertificateVersionsHandleResponse handles the GetCertificateVersions response.
+func (client *KeyVaultClient) GetCertificateVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateVersionsResponse, error) {
 	result := KeyVaultClientGetCertificateVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
 		return KeyVaultClientGetCertificateVersionsResponse{}, err

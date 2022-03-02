@@ -701,36 +701,68 @@ func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertific
 
 // ListCertificateVersionsPager is the pager returned by Client.ListCertificateVersions
 type ListCertificateVersionsPager struct {
-	genPager *generated.KeyVaultClientGetCertificateVersionsPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
+	certName   string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (l *ListCertificateVersionsPager) PageResponse() ListCertificateVersionsPage {
-	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListCertificateVersionsPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *ListCertificateVersionsPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) (ListCertificateVersionsPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetCertificateVersionsCreateRequest(
+			ctx,
+			l.vaultURL,
+			l.certName,
+			&generated.KeyVaultClientGetCertificateVersionsOptions{},
+		)
+		if err != nil {
+			return ListCertificateVersionsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificateVersionsPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListCertificateVersionsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificateVersionsPage{}, err
+		}
+	}
+	if err != nil {
+		return ListCertificateVersionsPage{}, err
+	}
+	result, err := l.genClient.GetCertificateVersionsHandleResponse(resp)
+	if err != nil {
+		return ListCertificateVersionsPage{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listCertificateVersionsPageFromGenerated(result), nil
 }
 
 // ListCertificateVersionsOptions contains the options for the ListCertificateVersions operations
-type ListCertificateVersionsOptions struct{}
-
-// convert the public ListCertificateVersionsOptions to the generated version
-func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClientGetCertificateVersionsOptions {
-	if l == nil {
-		return &generated.KeyVaultClientGetCertificateVersionsOptions{}
-	}
-
-	return &generated.KeyVaultClientGetCertificateVersionsOptions{}
+type ListCertificateVersionsOptions struct {
+	// placeholder for future optional parameters.
 }
 
 // ListCertificateVersionsPage contains the current page from a ListCertificateVersionsPager.PageResponse method
@@ -742,8 +774,8 @@ type ListCertificateVersionsPage struct {
 	RawResponse *http.Response
 }
 
-// create ListKeysPage from generated pager
-func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsPage {
+// create ListCertificatesPage from generated pager
+func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsPage {
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
@@ -765,11 +797,10 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 // requires the certificates/list permission.
 func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
 	return ListCertificateVersionsPager{
-		genPager: c.genClient.GetCertificateVersions(
-			c.vaultURL,
-			certificateName,
-			options.toGenerated(),
-		),
+		certName:   certificateName,
+		vaultURL:  c.vaultURL,
+		genClient: c.genClient,
+		nextLink:  nil,
 	}
 }
 

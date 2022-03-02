@@ -254,12 +254,13 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	pager := client.ListCertificateVersions(name, nil)
 	count := 0
-	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Certificates)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		count += len(resp.Certificates)
 	}
 
 	require.Equal(t, 1, count)
-	require.NoError(t, pager.Err())
 
 	// Add a second version
 	createCert(t, client, name)
@@ -267,12 +268,13 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
-	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Certificates)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		count += len(resp.Certificates)
 	}
 
 	require.Equal(t, 2, count)
-	require.NoError(t, pager.Err())
 
 	// Add a third version
 	createCert(t, client, name)
@@ -280,12 +282,13 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
-	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Certificates)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		count += len(resp.Certificates)
 	}
 
 	require.Equal(t, 3, count)
-	require.NoError(t, pager.Err())
 }
 
 func TestClient_ImportCertificate(t *testing.T) {

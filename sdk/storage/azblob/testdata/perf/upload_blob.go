@@ -10,6 +10,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/google/uuid"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
@@ -28,7 +30,6 @@ func uploadTestRegister() {
 type uploadTestGlobal struct {
 	perf.PerfTestOptions
 	containerName         string
-	blobName              string
 	globalContainerClient azblob.ContainerClient
 }
 
@@ -36,8 +37,7 @@ type uploadTestGlobal struct {
 func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	u := &uploadTestGlobal{
 		PerfTestOptions: options,
-		containerName:   "uploadcontainer",
-		blobName:        "uploadblob",
+		containerName:   "uploadcontainer-" + uuid.NewString(),
 	}
 
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
@@ -67,6 +67,7 @@ type uploadPerfTest struct {
 	*uploadTestGlobal
 	perf.PerfTestOptions
 	data       io.ReadSeekCloser
+	blobName   string
 	blobClient azblob.BlockBlobClient
 }
 
@@ -92,6 +93,9 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 	if err != nil {
 		return nil, err
 	}
+
+	u.blobName = "uploadblob-" + uuid.NewString()
+
 	bc := containerClient.NewBlockBlobClient(u.blobName)
 	u.blobClient = bc
 

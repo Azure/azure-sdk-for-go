@@ -11,6 +11,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/google/uuid"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
@@ -36,7 +38,7 @@ type downloadTestGlobal struct {
 func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	d := &downloadTestGlobal{
 		PerfTestOptions: options,
-		containerName:   "downloadcontainer",
+		containerName:   "downloadcontainer-" + uuid.NewString(),
 		blobName:        "downloadblob",
 	}
 

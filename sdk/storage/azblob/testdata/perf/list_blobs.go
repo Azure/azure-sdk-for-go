@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/google/uuid"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
@@ -35,7 +37,7 @@ type listTestGlobal struct {
 func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	l := &listTestGlobal{
 		PerfTestOptions: options,
-		containerName:   "listcontainer",
+		containerName:   "listcontainer-" + uuid.NewString(),
 		blobName:        "listblob",
 	}
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")

@@ -246,6 +246,8 @@ func runPerfTest(name string, p NewPerfTest) error {
 		close(messages)
 	}()
 
+	warmUpStatus := newStatusRunner(time.Now(), warmUpDuration)
+	// status := newStatusRunner(time.Now().Add(time.Duration(warmUpDuration)*time.Second), duration)
 	// Read incoming messages and handle status updates
 	for msg := range messages {
 		if debug {
@@ -254,11 +256,16 @@ func runPerfTest(name string, p NewPerfTest) error {
 		if msg.err != nil {
 			panic(msg.err)
 		}
-		handleMessage(w, msg)
+		if msg.warmup {
+			warmUpStatus.handleMessage(msg, w)
+		} else {
+			// status.handleMessage(msg, w)
+		}
+		// handleMessage(w, msg)
 	}
 
 	// Print before running the cleanup in case cleanup takes a while
-	printFinalResults(elapsedTimes, perSecondCount, false)
+	// printFinalResults(elapsedTimes, perSecondCount, false)
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {

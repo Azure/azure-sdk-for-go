@@ -14,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -24,6 +23,25 @@ type PageResponse struct {
 	NextPage bool  `json:"next"`
 }
 
+func pageResponseFetcher(ctx context.Context, pl Pipeline, endpoint string) (PageResponse, error) {
+	req, err := NewRequest(ctx, http.MethodGet, endpoint)
+	if err != nil {
+		return PageResponse{}, err
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		return PageResponse{}, err
+	}
+	if !HasStatusCode(resp, http.StatusOK) {
+		return PageResponse{}, shared.NewResponseError(resp)
+	}
+	pr := PageResponse{}
+	if err := UnmarshalAsJSON(resp, &pr); err != nil {
+		return PageResponse{}, err
+	}
+	return pr, nil
+}
+
 func TestPagerSinglePage(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -31,19 +49,11 @@ func TestPagerSinglePage(t *testing.T) {
 	pl := pipeline.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, nil)
 	require.True(t, pager.firstPage)
@@ -72,24 +82,16 @@ func TestPagerMultiplePages(t *testing.T) {
 
 	pageCount := 0
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			if pageCount == 1 {
 				require.Nil(t, current)
 			} else {
 				require.NotNil(t, current)
 			}
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, nil)
 	require.True(t, pager.firstPage)
@@ -123,19 +125,11 @@ func TestPagerLROMultiplePages(t *testing.T) {
 	pl := pipeline.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, &PageResponse{
 		Values:   []int{1, 2, 3, 4, 5},
@@ -164,24 +158,12 @@ func TestPagerLROMultiplePages(t *testing.T) {
 }
 
 func TestPagerFetcherError(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	pl := pipeline.NewPipeline(srv)
-
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
-			return nil, errors.New("fetcher failed")
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return PageResponse{}, errors.New("fetcher failed")
 		},
 	}, nil)
 	require.True(t, pager.firstPage)
@@ -198,19 +180,11 @@ func TestPagerPipelineError(t *testing.T) {
 	pl := pipeline.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, nil)
 	require.True(t, pager.firstPage)
@@ -229,24 +203,16 @@ func TestPagerSecondPageError(t *testing.T) {
 
 	pageCount := 0
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			if pageCount == 1 {
 				require.Nil(t, current)
 			} else {
 				require.NotNil(t, current)
 			}
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, nil)
 	require.True(t, pager.firstPage)
@@ -278,19 +244,11 @@ func TestPagerResponderError(t *testing.T) {
 	pl := pipeline.NewPipeline(srv)
 
 	pager := NewPager(PageProcessor[PageResponse]{
-		Do: pl.Do,
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
-		Fetcher: func(ctx context.Context, current *PageResponse) (*policy.Request, error) {
-			return NewRequest(ctx, http.MethodGet, srv.URL())
-		},
-		Responder: func(resp *http.Response) (PageResponse, error) {
-			pr := PageResponse{}
-			if err := UnmarshalAsJSON(resp, &pr); err != nil {
-				return PageResponse{}, err
-			}
-			return pr, nil
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
 	}, nil)
 	require.True(t, pager.firstPage)

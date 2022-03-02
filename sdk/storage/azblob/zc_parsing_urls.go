@@ -11,6 +11,7 @@ import (
 
 const (
 	snapshot           = "snapshot"
+	versionId          = "versionid"
 	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 )
 
@@ -133,6 +134,14 @@ func (up BlobURLParts) URL() string {
 	//If no snapshot is initially provided, fill it in from the SAS query properties to help the user
 	if up.Snapshot == "" && !up.SAS.snapshotTime.IsZero() {
 		up.Snapshot = up.SAS.snapshotTime.Format(SnapshotTimeFormat)
+	}
+
+	// Concatenate blob version id query parameter (if it exists)
+	if up.VersionID != "" {
+		if len(rawQuery) > 0 {
+			rawQuery += "&"
+		}
+		rawQuery += versionId + "=" + up.VersionID
 	}
 
 	// Concatenate blob snapshot query parameter (if it exists)

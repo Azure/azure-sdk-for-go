@@ -132,7 +132,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	require.NoError(t, err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	require.NoError(t, err)
 	require.EqualValues(t, destData, sourceData)
 }
@@ -201,7 +201,7 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	require.NoError(t, err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	require.NoError(t, err)
 	require.EqualValues(t, destData, sourceData)
 

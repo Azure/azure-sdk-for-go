@@ -1415,3 +1415,121 @@ func TestBlobSnapshotWithCPKScope(t *testing.T) {
 	_, err = snapshotURL.Delete(ctx, nil)
 	require.NoError(t, err)
 }
+
+func TestUploadStreamToBlobBlobPropertiesWithCPKKey(t *testing.T) {
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+	testName := t.Name()
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
+
+	// Set up test blob
+	blobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	// Create some data to test the upload stream
+	blobContentReader, blobData := generateData(blobSize)
+
+	// Perform UploadStreamToBlockBlob
+	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
+		UploadStreamToBlockBlobOptions{
+			BufferSize:  bufferSize,
+			MaxBuffers:  maxBuffers,
+			Metadata:    basicMetadata,
+			BlobTagsMap: basicBlobTagsMap,
+			HTTPHeaders: &basicHeaders,
+			CpkInfo:     &testCPKByValue,
+		})
+
+	// Assert that upload was successful
+	require.Equal(t, err, nil)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := blobClient.GetProperties(ctx, &GetBlobPropertiesOptions{CpkInfo: &testCPKByValue})
+	require.NoError(t, err)
+	require.EqualValues(t, getPropertiesResp.Metadata, basicMetadata)
+	require.Equal(t, *getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	require.Equal(t, getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+
+	getTagsResp, err := blobClient.GetTags(ctx, nil)
+	require.NoError(t, err)
+	require.Len(t, getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		require.Equal(t, basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := blobClient.Download(ctx, &DownloadBlobOptions{CpkInfo: &testCPKByValue})
+	require.NoError(t, err)
+
+	// Assert that the content is correct
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	require.NoError(t, err)
+	require.Equal(t, len(actualBlobData), blobSize)
+	require.EqualValues(t, actualBlobData, blobData)
+}
+
+func TestUploadStreamToBlobBlobPropertiesWithCPKScope(t *testing.T) {
+	svcClient, err := createServiceClient(t, testAccountDefault)
+	require.NoError(t, err)
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+	testName := t.Name()
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
+
+	// Set up test blob
+	blobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	// Create some data to test the upload stream
+	blobContentReader, blobData := generateData(blobSize)
+
+	// Perform UploadStreamToBlockBlob
+	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
+		UploadStreamToBlockBlobOptions{
+			BufferSize:   bufferSize,
+			MaxBuffers:   maxBuffers,
+			Metadata:     basicMetadata,
+			BlobTagsMap:  basicBlobTagsMap,
+			HTTPHeaders:  &basicHeaders,
+			CpkScopeInfo: &testCPKByScope,
+		})
+
+	// Assert that upload was successful
+	require.Equal(t, err, nil)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := blobClient.GetProperties(ctx, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, getPropertiesResp.Metadata, basicMetadata)
+	require.Equal(t, *getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	require.Equal(t, getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+
+	getTagsResp, err := blobClient.GetTags(ctx, nil)
+	require.NoError(t, err)
+	require.Len(t, getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		require.Equal(t, basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := blobClient.Download(ctx, &DownloadBlobOptions{CpkScopeInfo: &testCPKByScope})
+	require.NoError(t, err)
+
+	// Assert that the content is correct
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	require.NoError(t, err)
+	require.Equal(t, len(actualBlobData), blobSize)
+	require.EqualValues(t, actualBlobData, blobData)
+}

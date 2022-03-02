@@ -19,7 +19,68 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/UpdateVMExtensionWithSuppressFailureEnabled.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginCreateOrUpdate(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		"<vm-extension-name>",
+		armcompute.VirtualMachineExtension{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key9183": to.StringPtr("aa"),
+			},
+			Properties: &armcompute.VirtualMachineExtensionProperties{
+				Type:                    to.StringPtr("<type>"),
+				AutoUpgradeMinorVersion: to.BoolPtr(true),
+				EnableAutomaticUpgrade:  to.BoolPtr(true),
+				ForceUpdateTag:          to.StringPtr("<force-update-tag>"),
+				InstanceView: &armcompute.VirtualMachineExtensionInstanceView{
+					Name: to.StringPtr("<name>"),
+					Type: to.StringPtr("<type>"),
+					Statuses: []*armcompute.InstanceViewStatus{
+						{
+							Code:          to.StringPtr("<code>"),
+							DisplayStatus: to.StringPtr("<display-status>"),
+							Level:         armcompute.StatusLevelTypesInfo.ToPtr(),
+							Message:       to.StringPtr("<message>"),
+							Time:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+						}},
+					Substatuses: []*armcompute.InstanceViewStatus{
+						{
+							Code:          to.StringPtr("<code>"),
+							DisplayStatus: to.StringPtr("<display-status>"),
+							Level:         armcompute.StatusLevelTypesInfo.ToPtr(),
+							Message:       to.StringPtr("<message>"),
+							Time:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+						}},
+					TypeHandlerVersion: to.StringPtr("<type-handler-version>"),
+				},
+				ProtectedSettings:  map[string]interface{}{},
+				Publisher:          to.StringPtr("<publisher>"),
+				Settings:           map[string]interface{}{},
+				SuppressFailures:   to.BoolPtr(true),
+				TypeHandlerVersion: to.StringPtr("<type-handler-version>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.VirtualMachineExtensionsClientCreateOrUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/UpdateVMExtension.json
 func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +96,13 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 			Properties: &armcompute.VirtualMachineExtensionUpdateProperties{
 				Type:                    to.StringPtr("<type>"),
 				AutoUpgradeMinorVersion: to.BoolPtr(true),
-				Publisher:               to.StringPtr("<publisher>"),
+				ProtectedSettingsFromKeyVault: map[string]interface{}{
+					"secretUrl": "https://kvName.vault.azure.net/secrets/secretName/79b88b3a6f5440ffb2e73e44a0db712e",
+					"sourceVault": map[string]interface{}{
+						"id": "/subscriptions/a53f7094-a16c-47af-abe4-b05c05d0d79a/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kvName",
+					},
+				},
+				Publisher: to.StringPtr("<publisher>"),
 				Settings: map[string]interface{}{
 					"UserName": "xyz@microsoft.com",
 				},
@@ -52,4 +119,63 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 		log.Fatal(err)
 	}
 	log.Printf("Response result: %#v\n", res.VirtualMachineExtensionsClientUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginDelete(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		"<vm-extension-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_Get_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	res, err := client.Get(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		"<vm-extension-name>",
+		&armcompute.VirtualMachineExtensionsClientGetOptions{Expand: to.StringPtr("<expand>")})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.VirtualMachineExtensionsClientGetResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_List_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_List() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		&armcompute.VirtualMachineExtensionsClientListOptions{Expand: to.StringPtr("<expand>")})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.VirtualMachineExtensionsClientListResult)
 }

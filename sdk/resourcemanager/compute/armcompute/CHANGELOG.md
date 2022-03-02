@@ -1,5 +1,121 @@
 # Release History
 
+## 0.4.0 (2022-03-02)
+### Breaking Changes
+
+- Type of `VirtualMachineExtensionProperties.ProtectedSettings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineExtensionProperties.Settings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineScaleSetExtensionProperties.ProtectedSettings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineScaleSetExtensionProperties.Settings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineCaptureResult.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineCaptureResult.Resources` has been changed from `[]map[string]interface{}` to `[]interface{}`
+- Type of `VirtualMachineExtensionUpdateProperties.ProtectedSettings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VirtualMachineExtensionUpdateProperties.Settings` has been changed from `map[string]interface{}` to `interface{}`
+- Struct `CloudError` has been removed
+- Struct `GalleryArtifactSource` has been removed
+- Struct `ManagedArtifact` has been removed
+
+### Features Added
+
+- New const `RepairActionReplace`
+- New const `RestorePointExpandOptionsInstanceView`
+- New const `GalleryExtendedLocationTypeEdgeZone`
+- New const `ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk`
+- New const `SharingProfileGroupTypesCommunity`
+- New const `ArchitectureTypesArm64`
+- New const `RepairActionReimage`
+- New const `ArchitectureX64`
+- New const `SecurityEncryptionTypesDiskWithVMGuestState`
+- New const `SecurityTypesConfidentialVM`
+- New const `SharingStateSucceeded`
+- New const `RepairActionRestart`
+- New const `SecurityEncryptionTypesVMGuestStateOnly`
+- New const `SharingUpdateOperationTypesEnableCommunity`
+- New const `SharingStateUnknown`
+- New const `SharingStateInProgress`
+- New const `ConfidentialVMEncryptionTypeEncryptedWithPmk`
+- New const `SharingStateFailed`
+- New const `ConfidentialVMEncryptionTypeEncryptedWithCmk`
+- New const `ArchitectureTypesX64`
+- New const `GalleryExtendedLocationTypeUnknown`
+- New const `GalleryExpandParamsSharingProfileGroups`
+- New const `ArchitectureArm64`
+- New function `RestorePointExpandOptions.ToPtr() *RestorePointExpandOptions`
+- New function `PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType`
+- New function `PossibleGalleryExpandParamsValues() []GalleryExpandParams`
+- New function `PossibleSharingStateValues() []SharingState`
+- New function `PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes`
+- New function `PossibleArchitectureTypesValues() []ArchitectureTypes`
+- New function `*DedicatedHostsClientRestartPollerResponse.Resume(context.Context, *DedicatedHostsClient, string) error`
+- New function `DedicatedHostsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedHostsClientRestartResponse, error)`
+- New function `ConfidentialVMEncryptionType.ToPtr() *ConfidentialVMEncryptionType`
+- New function `SharingState.ToPtr() *SharingState`
+- New function `PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType`
+- New function `*DedicatedHostsClient.BeginRestart(context.Context, string, string, string, *DedicatedHostsClientBeginRestartOptions) (DedicatedHostsClientRestartPollerResponse, error)`
+- New function `RestorePointInstanceView.MarshalJSON() ([]byte, error)`
+- New function `*DedicatedHostsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineProperties.UnmarshalJSON([]byte) error`
+- New function `SharingStatus.MarshalJSON() ([]byte, error)`
+- New function `SecurityEncryptionTypes.ToPtr() *SecurityEncryptionTypes`
+- New function `PossibleArchitectureValues() []Architecture`
+- New function `PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions`
+- New function `GalleryExtendedLocationType.ToPtr() *GalleryExtendedLocationType`
+- New function `ArchitectureTypes.ToPtr() *ArchitectureTypes`
+- New function `GalleryExpandParams.ToPtr() *GalleryExpandParams`
+- New function `*DedicatedHostsClientRestartPoller.Done() bool`
+- New function `RepairAction.ToPtr() *RepairAction`
+- New function `PossibleRepairActionValues() []RepairAction`
+- New function `VirtualMachineScaleSetProperties.MarshalJSON() ([]byte, error)`
+- New function `*VirtualMachineScaleSetProperties.UnmarshalJSON([]byte) error`
+- New function `*DedicatedHostsClientRestartPoller.FinalResponse(context.Context) (DedicatedHostsClientRestartResponse, error)`
+- New function `*DedicatedHostsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `Architecture.ToPtr() *Architecture`
+- New function `VirtualMachineProperties.MarshalJSON() ([]byte, error)`
+- New struct `DedicatedHostsClientBeginRestartOptions`
+- New struct `DedicatedHostsClientRestartPoller`
+- New struct `DedicatedHostsClientRestartPollerResponse`
+- New struct `DedicatedHostsClientRestartResponse`
+- New struct `DiskRestorePointInstanceView`
+- New struct `GalleryExtendedLocation`
+- New struct `GalleryTargetExtendedLocation`
+- New struct `OSDiskImageSecurityProfile`
+- New struct `RegionalSharingStatus`
+- New struct `RestorePointInstanceView`
+- New struct `SharingStatus`
+- New struct `VMDiskSecurityProfile`
+- New struct `VirtualMachineScaleSetHardwareProfile`
+- New field `SourceRestorePoint` in struct `RestorePointProperties`
+- New field `InstanceView` in struct `RestorePointProperties`
+- New field `SecurityProfile` in struct `VirtualMachineScaleSetManagedDiskParameters`
+- New field `TimeCreated` in struct `VirtualMachineProperties`
+- New field `ProtectedSettingsFromKeyVault` in struct `VirtualMachineExtensionUpdateProperties`
+- New field `SecurityProfile` in struct `ManagedDiskParameters`
+- New field `TimeCreated` in struct `CapacityReservationProperties`
+- New field `Expand` in struct `RestorePointsClientGetOptions`
+- New field `PlacementGroupID` in struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions`
+- New field `Zone` in struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions`
+- New field `TimeCreated` in struct `VirtualMachineScaleSetProperties`
+- New field `CommunityGalleryImageID` in struct `ImageReference`
+- New field `AllowExtensionOperations` in struct `VirtualMachineScaleSetOSProfile`
+- New field `ProtectedSettingsFromKeyVault` in struct `VirtualMachineScaleSetExtensionProperties`
+- New field `PublicIPPrefix` in struct `VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties`
+- New field `Filter` in struct `VirtualMachinesClientListOptions`
+- New field `TargetExtendedLocations` in struct `GalleryImageVersionPublishingProfile`
+- New field `Architecture` in struct `VirtualMachineImageProperties`
+- New field `HardwareProfile` in struct `VirtualMachineScaleSetVMProfile`
+- New field `Architecture` in struct `GalleryImageProperties`
+- New field `SecurityProfile` in struct `OSDiskImageEncryption`
+- New field `TimeCreated` in struct `DedicatedHostProperties`
+- New field `TargetExtendedLocations` in struct `GalleryArtifactPublishingProfileBase`
+- New field `TargetExtendedLocations` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `Expand` in struct `GalleriesClientGetOptions`
+- New field `Filter` in struct `VirtualMachinesClientListAllOptions`
+- New field `RepairAction` in struct `AutomaticRepairsPolicy`
+- New field `SharingStatus` in struct `GalleryProperties`
+- New field `CommunityGalleryInfo` in struct `SharingProfile`
+- New field `ProtectedSettingsFromKeyVault` in struct `VirtualMachineExtensionProperties`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

@@ -704,7 +704,7 @@ type ListCertificateVersionsPager struct {
 	vaultURL  string
 	genClient *generated.KeyVaultClient
 	nextLink  *string
-	certName   string
+	certName  string
 }
 
 // More returns true if there are more pages to return
@@ -797,7 +797,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 // requires the certificates/list permission.
 func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
 	return ListCertificateVersionsPager{
-		certName:   certificateName,
+		certName:  certificateName,
 		vaultURL:  c.vaultURL,
 		genClient: c.genClient,
 		nextLink:  nil,
@@ -962,36 +962,66 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 
 // ListPropertiesOfIssuersPager is the pager returned by Client.ListIssuers
 type ListPropertiesOfIssuersPager struct {
-	genPager *generated.KeyVaultClientGetCertificateIssuersPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListPropertiesOfIssuersPager) PageResponse() ListIssuersPropertiesOfIssuersPage {
-	return listIssuersPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListPropertiesOfIssuersPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListPropertiesOfIssuersPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) (ListIssuersPropertiesOfIssuersPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetCertificateIssuersCreateRequest(
+			ctx,
+			l.vaultURL,
+			&generated.KeyVaultClientGetCertificateIssuersOptions{},
+		)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPage{}, err
+		}
+	}
+	if err != nil {
+		return ListIssuersPropertiesOfIssuersPage{}, err
+	}
+	result, err := l.genClient.GetCertificateIssuersHandleResponse(resp)
+	if err != nil {
+		return ListIssuersPropertiesOfIssuersPage{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listIssuersPageFromGenerated(result), nil
 }
 
 // ListPropertiesOfIssuersOptions contains the optional parameters for the Client.ListIssuers method
-type ListPropertiesOfIssuersOptions struct{}
-
-// convert ListIssuersOptions to generated options
-func (l *ListPropertiesOfIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
-	if l == nil {
-		return &generated.KeyVaultClientGetCertificateIssuersOptions{}
-	}
-
-	return &generated.KeyVaultClientGetCertificateIssuersOptions{}
+type ListPropertiesOfIssuersOptions struct{
+	// placeholder for future optional parameters
 }
 
 // ListIssuersPropertiesOfIssuersPage contains the current page of results for the Client.ListSecrets operation
@@ -1021,7 +1051,9 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) ListPropertiesOfIssuers(options *ListPropertiesOfIssuersOptions) ListPropertiesOfIssuersPager {
 	return ListPropertiesOfIssuersPager{
-		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
+		genClient: c.genClient,
+		vaultURL:  c.vaultURL,
+		nextLink:  nil,
 	}
 }
 

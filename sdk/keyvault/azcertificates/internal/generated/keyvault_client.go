@@ -500,7 +500,7 @@ func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options
 	return &KeyVaultClientGetCertificateIssuersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
+			return client.GetCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
 		},
 		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateIssuersResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateIssuerListResult.NextLink)
@@ -508,8 +508,8 @@ func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options
 	}
 }
 
-// getCertificateIssuersCreateRequest creates the GetCertificateIssuers request.
-func (client *KeyVaultClient) getCertificateIssuersCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) (*policy.Request, error) {
+// GetCertificateIssuersCreateRequest creates the GetCertificateIssuers request.
+func (client *KeyVaultClient) GetCertificateIssuersCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/certificates/issuers"
@@ -527,8 +527,8 @@ func (client *KeyVaultClient) getCertificateIssuersCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// getCertificateIssuersHandleResponse handles the GetCertificateIssuers response.
-func (client *KeyVaultClient) getCertificateIssuersHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateIssuersResponse, error) {
+// GetCertificateIssuersHandleResponse handles the GetCertificateIssuers response.
+func (client *KeyVaultClient) GetCertificateIssuersHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateIssuersResponse, error) {
 	result := KeyVaultClientGetCertificateIssuersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateIssuerListResult); err != nil {
 		return KeyVaultClientGetCertificateIssuersResponse{}, err

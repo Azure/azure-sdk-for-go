@@ -56,7 +56,7 @@ func (p *KeyVaultClientGetCertificateIssuersPager) NextPage(ctx context.Context)
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getCertificateIssuersHandleResponse(resp)
+	result, err := p.client.GetCertificateIssuersHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

@@ -366,14 +366,15 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	// List operation
 	pager := client.ListPropertiesOfIssuers(nil)
 	count := 0
-	for pager.NextPage(ctx) {
-		for _, issuer := range pager.PageResponse().Issuers {
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		for _, issuer := range page.Issuers {
 			require.Equal(t, "Test", *issuer.Provider)
 			count += 1
 		}
 	}
 	require.GreaterOrEqual(t, count, 2)
-	require.NoError(t, pager.Err())
 
 	// Update the certificate issuer
 	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{

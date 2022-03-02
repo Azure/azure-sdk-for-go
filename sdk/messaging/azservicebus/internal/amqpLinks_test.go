@@ -506,7 +506,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			require.Equal(t, testData.Attempts, attempts)
 
 			if testData.ExpectReset {
-				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached (err: %s), attempting quick reconnect", err.Error()))
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. attempting quick reconnect to recover from error: %s", err.Error()))
 			} else {
 				for _, msg := range logMessages {
 					require.NotContains(t, msg, "Link was previously detached")

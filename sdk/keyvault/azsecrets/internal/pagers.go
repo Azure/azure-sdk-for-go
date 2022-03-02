@@ -164,7 +164,7 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) bool {
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretsHandleResponse(resp)
+	result, err := p.client.GetSecretsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

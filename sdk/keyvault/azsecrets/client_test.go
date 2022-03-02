@@ -174,12 +174,12 @@ func TestListSecrets(t *testing.T) {
 
 	count := 0
 	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.Secrets)
 	}
 	require.Equal(t, count, 4)
-	require.NoError(t, pager.Err())
 }
 
 func TestListDeletedSecrets(t *testing.T) {

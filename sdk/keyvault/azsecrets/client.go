@@ -835,7 +835,7 @@ func (l *ListSecretVersionsPager) More() bool {
 }
 
 // NextPage returns the next page of results
-func (l *ListSecretVersionsPager) NextPage(ctx context.Context) (ListSecretVersionsPage, error) {
+func (l *ListSecretVersionsPager) NextPage(ctx context.Context) (ListSecretVersionsPageResponse, error) {
 	var resp *http.Response
 	var err error
 	if l.nextLink == nil {
@@ -846,28 +846,28 @@ func (l *ListSecretVersionsPager) NextPage(ctx context.Context) (ListSecretVersi
 			&internal.KeyVaultClientGetSecretVersionsOptions{},
 		)
 		if err != nil {
-			return ListSecretVersionsPage{}, err
+			return ListSecretVersionsPageResponse{}, err
 		}
 		resp, err = l.genClient.Pl.Do(req)
 		if err != nil {
-			return ListSecretVersionsPage{}, err
+			return ListSecretVersionsPageResponse{}, err
 		}
 	} else {
 		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
 		if err != nil {
-			return ListSecretVersionsPage{}, err
+			return ListSecretVersionsPageResponse{}, err
 		}
 		resp, err = l.genClient.Pl.Do(req)
 		if err != nil {
-			return ListSecretVersionsPage{}, err
+			return ListSecretVersionsPageResponse{}, err
 		}
 	}
 	if err != nil {
-		return ListSecretVersionsPage{}, err
+		return ListSecretVersionsPageResponse{}, err
 	}
 	result, err := l.genClient.GetSecretVersionsHandleResponse(resp)
 	if err != nil {
-		return ListSecretVersionsPage{}, err
+		return ListSecretVersionsPageResponse{}, err
 	}
 	if result.NextLink == nil {
 		// Set it to the zero value
@@ -883,7 +883,7 @@ type ListSecretVersionsOptions struct {
 }
 
 // The secret list result
-type ListSecretVersionsPage struct {
+type ListSecretVersionsPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -895,12 +895,12 @@ type ListSecretVersionsPage struct {
 }
 
 // create ListSecretsPage from generated pager
-func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsPage {
+func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsPageResponse {
 	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
-	return ListSecretVersionsPage{
+	return ListSecretVersionsPageResponse{
 		RawResponse: i.RawResponse,
 		NextLink:    i.NextLink,
 		Secrets:     secrets,
@@ -921,40 +921,66 @@ func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersio
 
 // ListSecretsPager implements the ListSecretsPager interface
 type ListSecretsPager struct {
-	genPager *internal.KeyVaultClientGetSecretsPager
+	vaultURL  string
+	genClient *internal.KeyVaultClient
+	nextLink  *string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListSecretsPager) PageResponse() ListSecretsPage {
-	return listSecretsPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListSecretsPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *ListSecretsPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListSecretsPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListSecretsPager) NextPage(ctx context.Context) (ListSecretsPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetSecretsCreateRequest(
+			ctx,
+			l.vaultURL,
+			&internal.KeyVaultClientGetSecretsOptions{},
+		)
+		if err != nil {
+			return ListSecretsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListSecretsPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListSecretsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListSecretsPage{}, err
+		}
+	}
+	if err != nil {
+		return ListSecretsPage{}, err
+	}
+	result, err := l.genClient.GetSecretsHandleResponse(resp)
+	if err != nil {
+		return ListSecretsPage{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listSecretsPageFromGenerated(result), nil
 }
 
 // ListSecretsOptions contains the options for the ListSecretVersions operations
 type ListSecretsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
-}
-
-// converts the public struct to the generated code version.
-func (l *ListSecretsOptions) toGenerated() *internal.KeyVaultClientGetSecretsOptions {
-	if l == nil {
-		return nil
-	}
-	return &internal.KeyVaultClientGetSecretsOptions{
-		Maxresults: l.MaxResults,
-	}
+	// placeholder for future optional parameters.
 }
 
 // ListSecretsPage contains the current page of results for the Client.ListSecrets operation.
@@ -986,11 +1012,9 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 // however, only the base secret identifier and its attributes are provided in the response. Individual
 // secret versions are not listed in the response. This operation requires the secrets/list permission.
 func (c *Client) ListSecrets(options *ListSecretsOptions) ListSecretsPager {
-	if options == nil {
-		options = &ListSecretsOptions{}
-	}
-
 	return ListSecretsPager{
-		genPager: c.kvClient.GetSecrets(c.vaultUrl, options.toGenerated()),
+		vaultURL:  c.vaultUrl,
+		genClient: c.kvClient,
+		nextLink:  nil,
 	}
 }

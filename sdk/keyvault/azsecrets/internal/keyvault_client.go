@@ -352,7 +352,7 @@ func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultC
 	return &KeyVaultClientGetSecretsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getSecretsCreateRequest(ctx, vaultBaseURL, options)
+			return client.GetSecretsCreateRequest(ctx, vaultBaseURL, options)
 		},
 		advancer: func(ctx context.Context, resp KeyVaultClientGetSecretsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretListResult.NextLink)
@@ -360,8 +360,8 @@ func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultC
 	}
 }
 
-// getSecretsCreateRequest creates the GetSecrets request.
-func (client *KeyVaultClient) getSecretsCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) (*policy.Request, error) {
+// GetSecretsCreateRequest creates the GetSecrets request.
+func (client *KeyVaultClient) GetSecretsCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/secrets"
@@ -379,8 +379,8 @@ func (client *KeyVaultClient) getSecretsCreateRequest(ctx context.Context, vault
 	return req, nil
 }
 
-// getSecretsHandleResponse handles the GetSecrets response.
-func (client *KeyVaultClient) getSecretsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretsResponse, error) {
+// GetSecretsHandleResponse handles the GetSecrets response.
+func (client *KeyVaultClient) GetSecretsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretsResponse, error) {
 	result := KeyVaultClientGetSecretsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
 		return KeyVaultClientGetSecretsResponse{}, err

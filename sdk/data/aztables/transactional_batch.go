@@ -97,7 +97,7 @@ type TransactionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 	// The response for a single table.
-	TransactionResponses []*http.Response
+	TransactionResponses []http.Response
 }
 
 type SubmitTransactionOptions struct {
@@ -182,7 +182,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 
 // create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
-	innerResponses := make([]*http.Response, itemCount)
+	innerResponses := make([]http.Response, itemCount)
 	result := TransactionResponse{RawResponse: resp, TransactionResponses: innerResponses}
 
 	bytesBody, err := ioutil.ReadAll(resp.Body)
@@ -225,14 +225,14 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 			if err != nil {
 				return &TransactionResponse{}, err
 			} else {
-				// innerResponses = []*http.Response{r}
+				// innerResponses = []http.Response{*r}
 				retError := newTableTransactionError(errorBody, resp)
 				ret := retError.(*transactionError)
 				ret.statusCode = r.StatusCode
 				return &result, runtime.NewResponseError(resp)
 			}
 		}
-		innerResponses[i] = r
+		innerResponses[i] = *r
 		i++
 	}
 

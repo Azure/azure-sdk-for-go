@@ -90,6 +90,7 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 
 // Options for Client.Create and ServiceClient.CreateTable method
 type CreateTableOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
@@ -107,7 +108,9 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 }
 
 // Options for Client.Delete and ServiceClient.DeleteTable methods
-type DeleteTableOptions struct{}
+type DeleteTableOptions struct{
+	// placeholder for future optional parameters
+}
 
 func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
@@ -297,7 +300,9 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 }
 
 // GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
-type GetStatisticsOptions struct{}
+type GetStatisticsOptions struct{
+	// placeholder for future optional parameters
+}
 
 type GetStatisticsResponse struct {
 	RawResponse    *http.Response
@@ -325,7 +330,10 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
-type GetPropertiesOptions struct{}
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties function
+type GetPropertiesOptions struct{
+	// placeholder for future optional parameters
+}
 
 func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
 	return &generated.ServiceClientGetPropertiesOptions{}
@@ -373,7 +381,10 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
-type SetPropertiesOptions struct{}
+// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
+type SetPropertiesOptions struct{
+	// placeholder for future optional parameters
+}
 
 func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetPropertiesOptions {
 	return &generated.ServiceClientSetPropertiesOptions{}

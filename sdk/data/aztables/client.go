@@ -302,6 +302,7 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 
 // Options for Client.GetEntity method
 type GetEntityOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
@@ -647,7 +648,9 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	return InsertEntityResponse{}, errInvalidUpdateMode
 }
 
+// GetAccessPolicyOptions provides optional parameters for the Client.GetAccessPolicy methods
 type GetAccessPolicyOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPolicyOptions {

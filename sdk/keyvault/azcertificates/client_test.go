@@ -230,12 +230,13 @@ func TestClient_ListCertificates(t *testing.T) {
 	time.Sleep(10 * delay())
 
 	pager := client.ListCertificates(nil)
-	for pager.NextPage(ctx) {
-		createdCount -= len(pager.PageResponse().Certificates)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		createdCount -= len(page.Certificates)
 	}
 
 	require.Equal(t, 0, createdCount)
-	require.NoError(t, pager.Err())
 }
 
 func TestClient_ListCertificateVersions(t *testing.T) {

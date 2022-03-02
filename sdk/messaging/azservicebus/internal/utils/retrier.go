@@ -60,6 +60,12 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 
 		if args.resetAttempts {
 			log.Writef(EventRetry, "(%s) Resetting attempts", name)
+
+			// it looks weird, but we're doing -1 here because the post-increment
+			// will set it back to 0, which is what we want - go back to the 0th
+			// iteration so we don't sleep before the attempt.
+			//
+			// You'll use this when you want to get another "fast" retry attempt.
 			i = int32(-1)
 		}
 

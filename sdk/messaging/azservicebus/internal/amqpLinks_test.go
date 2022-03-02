@@ -6,6 +6,7 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"sync"
 	"testing"
@@ -441,10 +442,19 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 	})
 }
 
+func addLoggerForTest(logMessages *[]string) func() {
+	azlog.SetListener(func(e azlog.Event, s string) {
+		*logMessages = append(*logMessages, fmt.Sprintf("[%s] %s", e, s))
+	})
+
+	return func() { azlog.SetListener(nil) }
+}
+
 func TestAMQPLinksRetriesUnit(t *testing.T) {
 	tests := []struct {
-		Err      error
-		Attempts []int32
+		Err         error
+		Attempts    []int32
+		ExpectReset bool
 	}{
 		// nothing goes wrong, only need the one attempt
 		{Err: nil, Attempts: []int32{0}},
@@ -460,7 +470,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		// retry for attempt '0', to avoid sleeping if the error was stale. This mostly happens
 		// in situations like sending, where you might have long times in between sends and your
 		// link is closed due to idling.
-		{Err: &amqp.DetachError{}, Attempts: []int32{0, 0, 1, 2, 3}},
+		{Err: &amqp.DetachError{}, Attempts: []int32{0, 0, 1, 2, 3}, ExpectReset: true},
 	}
 
 	for _, testData := range tests {
@@ -481,14 +491,27 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			var attempts []int32
 
+			var logMessages []string
+			removeLogging := addLoggerForTest(&logMessages)
+			defer removeLogging()
+
 			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
 				return testData.Err
 			}, utils.RetryOptions{
 				RetryDelay: time.Millisecond,
 			})
+
 			require.Equal(t, testData.Err, err)
 			require.Equal(t, testData.Attempts, attempts)
+
+			if testData.ExpectReset {
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached (err: %s), attempting quick reconnect", err.Error()))
+			} else {
+				for _, msg := range logMessages {
+					require.NotContains(t, msg, "Link was previously detached")
+				}
+			}
 		})
 	}
 }

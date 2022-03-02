@@ -177,26 +177,26 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// EncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type EncryptionAlgorithm string
+// ExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type ExportEncryptionAlgorithm string
 
 const (
-	EncryptionAlgorithmCKMRSAAESKEYWRAP EncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	EncryptionAlgorithmRSAAESKEYWRAP256 EncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	EncryptionAlgorithmRSAAESKEYWRAP384 EncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	ExportEncryptionAlgorithmCKMRSAAESKEYWRAP ExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP256 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP384 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
 
-// ToPtr returns a *EncryptionAlgorithm pointing to the current value.
-func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
+// ToPtr returns a *ExportEncryptionAlgorithm pointing to the current value.
+func (c ExportEncryptionAlgorithm) ToPtr() *ExportEncryptionAlgorithm {
 	return &c
 }
 
-// PossibleEncryptionAlgorithmValues provides a slice of all possible EncryptionAlgorithms
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{
-		EncryptionAlgorithmCKMRSAAESKEYWRAP,
-		EncryptionAlgorithmRSAAESKEYWRAP256,
-		EncryptionAlgorithmRSAAESKEYWRAP384,
+// PossibleExportEncryptionAlgorithmValues provides a slice of all possible ExportEncryptionAlgorithms
+func PossibleExportEncryptionAlgorithmValues() []ExportEncryptionAlgorithm {
+	return []ExportEncryptionAlgorithm{
+		ExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP256,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP384,
 	}
 }
 

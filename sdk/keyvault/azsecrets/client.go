@@ -937,7 +937,7 @@ func (l *ListSecretsPager) More() bool {
 }
 
 // NextPage returns the current page of results
-func (l *ListSecretsPager) NextPage(ctx context.Context) (ListSecretsPage, error) {
+func (l *ListSecretsPager) NextPage(ctx context.Context) (ListSecretsPageResponse, error) {
 	var resp *http.Response
 	var err error
 	if l.nextLink == nil {
@@ -947,28 +947,28 @@ func (l *ListSecretsPager) NextPage(ctx context.Context) (ListSecretsPage, error
 			&internal.KeyVaultClientGetSecretsOptions{},
 		)
 		if err != nil {
-			return ListSecretsPage{}, err
+			return ListSecretsPageResponse{}, err
 		}
 		resp, err = l.genClient.Pl.Do(req)
 		if err != nil {
-			return ListSecretsPage{}, err
+			return ListSecretsPageResponse{}, err
 		}
 	} else {
 		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
 		if err != nil {
-			return ListSecretsPage{}, err
+			return ListSecretsPageResponse{}, err
 		}
 		resp, err = l.genClient.Pl.Do(req)
 		if err != nil {
-			return ListSecretsPage{}, err
+			return ListSecretsPageResponse{}, err
 		}
 	}
 	if err != nil {
-		return ListSecretsPage{}, err
+		return ListSecretsPageResponse{}, err
 	}
 	result, err := l.genClient.GetSecretsHandleResponse(resp)
 	if err != nil {
-		return ListSecretsPage{}, err
+		return ListSecretsPageResponse{}, err
 	}
 	if result.NextLink == nil {
 		// Set it to the zero value
@@ -983,8 +983,8 @@ type ListSecretsOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// ListSecretsPage contains the current page of results for the Client.ListSecrets operation.
-type ListSecretsPage struct {
+// ListSecretsPageResponse contains the current page of results for the Client.ListSecrets operation.
+type ListSecretsPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -996,12 +996,12 @@ type ListSecretsPage struct {
 }
 
 // create a ListSecretsPage from a generated code response
-func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsPage {
+func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsPageResponse {
 	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
-	return ListSecretsPage{
+	return ListSecretsPageResponse{
 		RawResponse: i.RawResponse,
 		NextLink:    i.NextLink,
 		Secrets:     secrets,

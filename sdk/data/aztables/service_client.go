@@ -108,7 +108,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 }
 
 // Options for Client.Delete and ServiceClient.DeleteTable methods
-type DeleteTableOptions struct{
+type DeleteTableOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -145,8 +145,10 @@ func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *D
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
+
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
+
 	// Maximum number of records to return.
 	Top *int32
 }
@@ -164,8 +166,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPage contains the properties of a single page response from a ListTables operation
-type ListTablesPage struct {
+// ListTablesPageResponse contains the properties of a single page response from a ListTables operation
+type ListTablesPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -179,14 +181,14 @@ type ListTablesPage struct {
 	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPage {
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPageResponse {
 	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return ListTablesPage{
+	return ListTablesPageResponse{
 		RawResponse:               g.RawResponse,
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:             g.ODataMetadata,
@@ -242,24 +244,24 @@ type ListTablesPager struct {
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPage, error) {
+func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse, error) {
 	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
 		NextTableName: p.nextTableName,
 	}, p.listOptions.toQueryOptions())
 	if err != nil {
-		return ListTablesPage{}, err
+		return ListTablesPageResponse{}, err
 	}
 	resp, err := p.client.Pl.Do(req)
 	if err != nil {
-		return ListTablesPage{}, err
+		return ListTablesPageResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ListTablesPage{}, runtime.NewResponseError(resp)
+		return ListTablesPageResponse{}, runtime.NewResponseError(resp)
 	}
 
 	result, err := p.client.QueryHandleResponse(resp)
 	if err != nil {
-		return ListTablesPage{}, err
+		return ListTablesPageResponse{}, err
 	}
 	p.current = result
 	p.nextTableName = p.current.XMSContinuationNextTableName
@@ -277,8 +279,11 @@ func (p *ListTablesPager) More() bool {
 }
 
 // NextPageTableName returns the continuation token for the ListTablesPager
-func (p *ListTablesPager) NextPageTableName() *string {
-	return p.nextTableName
+func (p *ListTablesPager) NextPageTableName() string {
+	if p.nextTableName == nil {
+		return ""
+	}
+	return *p.nextTableName
 }
 
 // List queries the existing tables using the specified ListTablesOptions.
@@ -300,7 +305,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 }
 
 // GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
-type GetStatisticsOptions struct{
+type GetStatisticsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -331,7 +336,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties function
-type GetPropertiesOptions struct{
+type GetPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -382,7 +387,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 }
 
 // SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
-type SetPropertiesOptions struct{
+type SetPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 

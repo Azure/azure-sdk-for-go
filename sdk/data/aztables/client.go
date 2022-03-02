@@ -166,8 +166,8 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListEntitiesPage is the response envelope for operations that return a list of entities.
-type ListEntitiesPage struct {
+// ListEntitiesPageResponse is the response envelope for operations that return a list of entities.
+type ListEntitiesPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -184,37 +184,23 @@ type ListEntitiesPage struct {
 	Entities [][]byte
 }
 
-// ListEntitiesResponse - The properties for the table entity query response.
-type ListEntitiesResponse struct {
-	// The metadata response of the table.
-	ODataMetadata *string
-
-	// List of table entities stored as byte slices.
-	Entities [][]byte
-}
-
 // transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesPage, error) {
+func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesPageResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return ListEntitiesPage{}, err
+			return ListEntitiesPageResponse{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
 
-	t := ListEntitiesResponse{
-		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
-		Entities:      marshalledValue,
-	}
-
-	return ListEntitiesPage{
+	return ListEntitiesPageResponse{
 		RawResponse:                  resp.RawResponse,
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
-		ODataMetadata:                t.ODataMetadata,
-		Entities:                     t.Entities,
+		ODataMetadata:                resp.TableEntityQueryResponse.ODataMetadata,
+		Entities:                     marshalledValue,
 	}, nil
 }
 
@@ -237,14 +223,20 @@ type ListEntitiesPager struct {
 
 // NextPagePartitionKey returns one of the continuation tokens for the ListEntitiesPager.
 // Use in conjunction with the NewPageRowKey.
-func (p *ListEntitiesPager) NextPagePartitionKey() *string {
-	return p.nextPK
+func (p *ListEntitiesPager) NextPagePartitionKey() string {
+	if p.nextPK == nil {
+		return ""
+	}
+	return *p.nextPK
 }
 
 // NextPageRowKey returns one of the continuation tokens for the ListEntitiesPager.
 // Use in conjunction with the NewPagePartitionKey.
-func (p *ListEntitiesPager) NextPageRowKey() *string {
-	return p.nextRK
+func (p *ListEntitiesPager) NextPageRowKey() string {
+	if p.nextRK == nil {
+		return ""
+	}
+	return *p.nextRK
 }
 
 func (p *ListEntitiesPager) More() bool {
@@ -259,13 +251,13 @@ func (p *ListEntitiesPager) More() bool {
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPage, error) {
+func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPageResponse, error) {
 	resp, err := p.client.QueryEntities(ctx, generated.Enum1Three0, p.tableName, &generated.TableClientQueryEntitiesOptions{
 		NextPartitionKey: p.nextPK,
 		NextRowKey:       p.nextRK,
 	}, p.listOptions.toQueryOptions())
 	if err != nil {
-		return ListEntitiesPage{}, err
+		return ListEntitiesPageResponse{}, err
 	}
 	p.current = resp
 	p.nextPK = resp.XMSContinuationNextPartitionKey

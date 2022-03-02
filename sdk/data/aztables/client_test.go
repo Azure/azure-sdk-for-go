@@ -162,7 +162,7 @@ func TestMergeEntity(t *testing.T) {
 			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Nil(t, updateErr)
 
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			pager := client.List(listOptions)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
@@ -235,7 +235,7 @@ func TestInsertEntity(t *testing.T) {
 			require.Nil(t, err)
 
 			// 5. Query for new entity
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			pager := client.List(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
@@ -294,7 +294,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			list := &ListEntitiesOptions{Filter: &filter}
 			expectedCount := 4
 
-			var resp ListEntitiesPage
+			var resp ListEntitiesPageResponse
 			pager := client.List(list)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -402,8 +402,8 @@ func TestContinuationTokens(t *testing.T) {
 			require.NoError(t, err)
 
 			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
-			var pkContToken *string
-			var rkContToken *string
+			var pkContToken string
+			var rkContToken string
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -417,8 +417,8 @@ func TestContinuationTokens(t *testing.T) {
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: pkContToken,
-				RowKey:       rkContToken,
+				PartitionKey: &pkContToken,
+				RowKey:       &rkContToken,
 			})
 			count := 0
 			for newPager.More() {
@@ -444,8 +444,8 @@ func TestContinuationTokensFilters(t *testing.T) {
 				Top:    to.Int32Ptr(1),
 				Filter: to.StringPtr("Value le 5"),
 			})
-			var pkContToken *string
-			var rkContToken *string
+			var pkContToken string
+			var rkContToken string
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -459,8 +459,8 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: pkContToken,
-				RowKey:       rkContToken,
+				PartitionKey: &pkContToken,
+				RowKey:       &rkContToken,
 				Filter:       to.StringPtr("Value le 5"),
 			})
 			count := 0

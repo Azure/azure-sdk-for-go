@@ -129,7 +129,7 @@ func TestBatchMixed(t *testing.T) {
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			filter := "RowKey eq '1'"
 			list := &ListEntitiesOptions{Filter: &filter}
 			pager := client.List(list)

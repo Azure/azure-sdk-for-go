@@ -24,7 +24,7 @@ var listTestOpts listTestOptions = listTestOptions{count: 100}
 
 // uploadTestRegister is called once per process
 func listTestRegister() {
-	flag.IntVar(&listTestOpts.count, "num-blobs", 100, "Number of blobs to list.")
+	flag.IntVar(&listTestOpts.count, "count", 100, "Number of blobs to list.")
 }
 
 type listTestGlobal struct {
@@ -54,7 +54,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		return nil, err
 	}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < listTestOpts.count; i++ {
 		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
 		_, err = blobClient.Upload(
 			context.Background(),

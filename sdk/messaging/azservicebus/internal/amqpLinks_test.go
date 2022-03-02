@@ -5,6 +5,7 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"log"
 	"sync"
 	"testing"
@@ -265,7 +266,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 
 	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
-		return &amqp.DetachError{}
+		return amqp.ErrConnClosed
 	}, utils.RetryOptions{
 		MaxRetries: 2,
 		// note: omitting MaxRetries just to give a sanity check that
@@ -274,8 +275,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	})
 
-	var detachErr *amqp.DetachError
-	require.ErrorAs(t, err, &detachErr)
+	require.ErrorIs(t, err, amqp.ErrConnClosed)
 	require.EqualValues(t, 3, createLinksCalled)
 }
 
@@ -439,6 +439,58 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		require.Equal(t, 0, sender.Closed)
 		require.Equal(t, 0, ns.CloseCalled)
 	})
+}
+
+func TestAMQPLinksRetriesUnit(t *testing.T) {
+	tests := []struct {
+		Err      error
+		Attempts []int32
+	}{
+		// nothing goes wrong, only need the one attempt
+		{Err: nil, Attempts: []int32{0}},
+
+		// connection related or unknown failures happen, all attempts exhausted
+		{Err: amqp.ErrConnClosed, Attempts: []int32{0, 1, 2, 3}},
+		{Err: errors.New("unknown error"), Attempts: []int32{0, 1, 2, 3}},
+
+		// fatal errors don't retry at all.
+		{Err: NewErrNonRetriable("non retriable error"), Attempts: []int32{0}},
+
+		// detach error happens - we have slightly special behavior here in that we do a quick
+		// retry for attempt '0', to avoid sleeping if the error was stale. This mostly happens
+		// in situations like sending, where you might have long times in between sends and your
+		// link is closed due to idling.
+		{Err: &amqp.DetachError{}, Attempts: []int32{0, 0, 1, 2, 3}},
+	}
+
+	for _, testData := range tests {
+		var testName string = ""
+
+		if testData.Err != nil {
+			testName = testData.Err.Error()
+		}
+
+		t.Run(testName, func(t *testing.T) {
+			receiver := &FakeAMQPReceiver{}
+			sender := &FakeAMQPSender{}
+			ns := &FakeNS{}
+
+			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			})
+
+			var attempts []int32
+
+			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+				attempts = append(attempts, args.I)
+				return testData.Err
+			}, utils.RetryOptions{
+				RetryDelay: time.Millisecond,
+			})
+			require.Equal(t, testData.Err, err)
+			require.Equal(t, testData.Attempts, attempts)
+		})
+	}
 }
 
 func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {

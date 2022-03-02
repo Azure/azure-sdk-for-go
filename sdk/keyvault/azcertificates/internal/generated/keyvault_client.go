@@ -802,7 +802,7 @@ func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, option
 	return &KeyVaultClientGetDeletedCertificatesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
+			return client.GetDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
 		},
 		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedCertificatesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedCertificateListResult.NextLink)
@@ -810,8 +810,8 @@ func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, option
 	}
 }
 
-// getDeletedCertificatesCreateRequest creates the GetDeletedCertificates request.
-func (client *KeyVaultClient) getDeletedCertificatesCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) (*policy.Request, error) {
+// GetDeletedCertificatesCreateRequest creates the GetDeletedCertificates request.
+func (client *KeyVaultClient) GetDeletedCertificatesCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/deletedcertificates"
@@ -832,8 +832,8 @@ func (client *KeyVaultClient) getDeletedCertificatesCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// getDeletedCertificatesHandleResponse handles the GetDeletedCertificates response.
-func (client *KeyVaultClient) getDeletedCertificatesHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedCertificatesResponse, error) {
+// GetDeletedCertificatesHandleResponse handles the GetDeletedCertificates response.
+func (client *KeyVaultClient) GetDeletedCertificatesHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedCertificatesResponse, error) {
 	result := KeyVaultClientGetDeletedCertificatesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificateListResult); err != nil {
 		return KeyVaultClientGetDeletedCertificatesResponse{}, err

@@ -15,7 +15,7 @@ import (
 	"testing"
 )
 
-func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
+func TestAvailabilitySetsClient(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -49,242 +49,27 @@ func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
 	)
 	require.NoError(t, err)
 	require.Equal(t, *resp.Name, name)
-}
 
-func TestAvailabilitySetsClient_Delete(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteAS", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
-	delResp, err := client.Delete(context.Background(), rgName, name, nil)
-	require.NoError(t, err)
-	require.Equal(t, delResp.RawResponse.StatusCode, 200)
-}
-
-func TestAvailabilitySetsClient_Get(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "getAS", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
+	// get
 	getResp, err := client.Get(context.Background(), rgName, name, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Name, name)
-}
 
-func TestAvailabilitySetsClient_List(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listAS", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
+	// list
 	listPager := client.List(rgName, nil)
 	require.Equal(t, listPager.Err(), nil)
-}
 
-func TestAvailabilitySetsClient_ListAvailableSizes(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listSize", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
+	// list available size
 	listResp, err := client.ListAvailableSizes(context.Background(), rgName, name, nil)
 	require.NoError(t, err)
 	require.Equal(t, listResp.RawResponse.StatusCode, 200)
-}
 
-func TestAvailabilitySetsClient_ListBySubscription(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	// list by subscription
+	listBySubscription := client.ListBySubscription(nil)
+	require.NoError(t, listBySubscription.Err())
+	require.Equal(t, listBySubscription.NextPage(context.Background()), true)
 
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listSize", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
-	listResp := client.ListBySubscription(nil)
-	require.NoError(t, listResp.Err())
-	require.Equal(t, listResp.NextPage(context.Background()), true)
-}
-
-func TestAvailabilitySetsClient_Update(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "updateAS", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(subscriptionID, cred, opt)
-	name, err := createRandomName(t, "set")
-	require.NoError(t, err)
-	resp, err := client.CreateOrUpdate(
-		context.Background(),
-		rgName,
-		name,
-		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
-			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
-			},
-			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, name)
-
+	// update
 	updateResp, err := client.Update(
 		context.Background(),
 		rgName,
@@ -298,4 +83,9 @@ func TestAvailabilitySetsClient_Update(t *testing.T) {
 	)
 	require.NoError(t, err)
 	require.Equal(t, *updateResp.Name, name)
+
+	// delete
+	delResp, err := client.Delete(context.Background(), rgName, name, nil)
+	require.NoError(t, err)
+	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }

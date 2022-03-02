@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
+func TestVirtualMachineScaleSetsClient(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -61,8 +61,6 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vnResp, err := vnPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -143,8 +141,6 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		},
 		nil,
 	)
-	//vmssResp, err := vmssPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var vmssResp armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {

@@ -38,10 +38,7 @@ func authenticateTest(t *testing.T) (azcore.TokenCredential, *arm.ClientOptions)
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("AZURE_TENANT_ID")
-		clientId := lookupEnvVar("AZURE_CLIENT_ID")
-		clientSecret := lookupEnvVar("AZURE_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		cred, err = azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
 	} else {
 		cred = &fakeCredential{}

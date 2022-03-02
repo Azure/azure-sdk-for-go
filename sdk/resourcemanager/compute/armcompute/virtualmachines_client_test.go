@@ -8,8 +8,6 @@ package armcompute_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -19,23 +17,7 @@ import (
 	"time"
 )
 
-func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createVM", "westus2")
-	rgName := *rg.Name
-	defer clean()
-
-	//create virtual machine
-	_, _ = createVirtualMachineTest(t, cred, opt, subscriptionID, rgName)
-}
-
-func TestVirtualMachinesClient_BeginDelete(t *testing.T) {
+func TestVirtualMachinesClient(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -48,127 +30,10 @@ func TestVirtualMachinesClient_BeginDelete(t *testing.T) {
 	rgName := *rg.Name
 	defer clean()
 
-	// create virtual machine
-	vmClient, vm := createVirtualMachineTest(t, cred, opt, subscriptionID, rgName)
-
-	// delete virtual machine
-	delPoller, err := vmClient.BeginDelete(context.Background(), rgName, *vm.Name, nil)
-	require.NoError(t, err)
-	//delResp, err := delPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
-	var delResp armcompute.VirtualMachinesClientDeleteResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = delPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
-			if delPoller.Poller.Done() {
-				delResp, err = delPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
-				break
-			}
-		}
-	} else {
-		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
-	}
-	require.Equal(t, delResp.RawResponse.StatusCode, 200)
-}
-
-func TestVirtualMachinesClient_Get(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "getVM", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create virtual machine
-	vmClient, vm := createVirtualMachineTest(t, cred, opt, subscriptionID, rgName)
-
-	// virtual machine get
-	resp, err := vmClient.Get(context.Background(), rgName, *vm.Name, nil)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, *vm.Name)
-}
-
-func TestVirtualMachinesClient_List(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "listVM", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create virtual machine
-	vmClient, _ := createVirtualMachineTest(t, cred, opt, subscriptionID, rgName)
-
-	// virtual machine list
-	resp := vmClient.List(rgName, nil)
-	require.Equal(t, resp.NextPage(context.Background()), true)
-}
-
-func TestVirtualMachinesClient_BeginUpdate(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "updateVM", "westus")
-	rgName := *rg.Name
-	defer clean()
-
-	// create virtual machine
-	vmClient, vm := createVirtualMachineTest(t, cred, opt, subscriptionID, rgName)
-
-	// virtual machine update
-	updatePoller, err := vmClient.BeginUpdate(
-		context.Background(),
-		rgName,
-		*vm.Name,
-		armcompute.VirtualMachineUpdate{
-			Tags: map[string]*string{
-				"tag": to.StringPtr("value"),
-			},
-		},
-		nil,
-	)
-	require.NoError(t, err)
-	//updateResp, err := updatePoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
-	var updateResp armcompute.VirtualMachinesClientUpdateResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = updatePoller.Poller.Poll(ctx)
-			require.NoError(t, err)
-			if updatePoller.Poller.Done() {
-				updateResp, err = updatePoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
-				break
-			}
-		}
-	} else {
-		updateResp, err = updatePoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
-	}
-	require.Equal(t, *updateResp.Name, *vm.Name)
-}
-
-func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *arm.ClientOptions, subscriptionID, rgName string) (*armcompute.VirtualMachinesClient, *armcompute.VirtualMachine) {
+	// create virtual network
 	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID, cred, opt)
 	vnName, err := createRandomName(t, "network")
 	require.NoError(t, err)
-	ctx := context.Background()
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
@@ -186,9 +51,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//vnResp, err := vnPoller.PollUntilDone(ctx, 10*time.Second)
-	//require.NoError(t, err)
-	//require.Equal(t, *vnResp.Name, vnName)
 	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -223,8 +85,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//subResp, err := subPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -259,8 +119,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//ipResp, err := ipPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var ipResp armnetwork.PublicIPAddressesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -325,8 +183,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//nsgResp, err := nsgPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var nsgResp armnetwork.SecurityGroupsClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -378,8 +234,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//nicResp, err := nicPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var nicResp armnetwork.InterfacesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -449,8 +303,6 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		nil,
 	)
 	require.NoError(t, err)
-	//vmResp, err := vmPoller.PollUntilDone(context.Background(), 10*time.Second)
-	//require.NoError(t, err)
 	var vmResp armcompute.VirtualMachinesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
@@ -467,5 +319,63 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		require.NoError(t, err)
 	}
 	require.Equal(t, *vmResp.Name, vmName)
-	return vmClient, &vmResp.VirtualMachine
+
+	// virtual machine update
+	updatePoller, err := vmClient.BeginUpdate(
+		context.Background(),
+		rgName,
+		*vmResp.Name,
+		armcompute.VirtualMachineUpdate{
+			Tags: map[string]*string{
+				"tag": to.StringPtr("value"),
+			},
+		},
+		nil,
+	)
+	require.NoError(t, err)
+	var updateResp armcompute.VirtualMachinesClientUpdateResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = updatePoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if updatePoller.Poller.Done() {
+				updateResp, err = updatePoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		updateResp, err = updatePoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
+	require.Equal(t, *updateResp.Name, *vmResp.Name)
+
+	// virtual machine get
+	resp, err := vmClient.Get(context.Background(), rgName, *vmResp.Name, nil)
+	require.NoError(t, err)
+	require.Equal(t, *resp.Name, *vmResp.Name)
+
+	// virtual machine list
+	vmList := vmClient.List(rgName, nil)
+	require.Equal(t, vmList.NextPage(context.Background()), true)
+
+	// delete virtual machine
+	delPoller, err := vmClient.BeginDelete(context.Background(), rgName, *vmResp.Name, nil)
+	require.NoError(t, err)
+	var delResp armcompute.VirtualMachinesClientDeleteResponse
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		for {
+			_, err = delPoller.Poller.Poll(ctx)
+			require.NoError(t, err)
+			if delPoller.Poller.Done() {
+				delResp, err = delPoller.Poller.FinalResponse(ctx)
+				require.NoError(t, err)
+				break
+			}
+		}
+	} else {
+		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
+		require.NoError(t, err)
+	}
+	require.Equal(t, delResp.RawResponse.StatusCode, 200)
 }

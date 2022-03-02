@@ -110,7 +110,7 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) boo
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretVersionsHandleResponse(resp)
+	result, err := p.client.GetSecretVersionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

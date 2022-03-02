@@ -302,7 +302,7 @@ func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName 
 	return &KeyVaultClientGetSecretVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getSecretVersionsCreateRequest(ctx, vaultBaseURL, secretName, options)
+			return client.GetSecretVersionsCreateRequest(ctx, vaultBaseURL, secretName, options)
 		},
 		advancer: func(ctx context.Context, resp KeyVaultClientGetSecretVersionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretListResult.NextLink)
@@ -310,8 +310,8 @@ func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName 
 	}
 }
 
-// getSecretVersionsCreateRequest creates the GetSecretVersions request.
-func (client *KeyVaultClient) getSecretVersionsCreateRequest(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) (*policy.Request, error) {
+// GetSecretVersionsCreateRequest creates the GetSecretVersions request.
+func (client *KeyVaultClient) GetSecretVersionsCreateRequest(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/secrets/{secret-name}/versions"
@@ -333,8 +333,8 @@ func (client *KeyVaultClient) getSecretVersionsCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// getSecretVersionsHandleResponse handles the GetSecretVersions response.
-func (client *KeyVaultClient) getSecretVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretVersionsResponse, error) {
+// GetSecretVersionsHandleResponse handles the GetSecretVersions response.
+func (client *KeyVaultClient) GetSecretVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretVersionsResponse, error) {
 	result := KeyVaultClientGetSecretVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
 		return KeyVaultClientGetSecretVersionsResponse{}, err

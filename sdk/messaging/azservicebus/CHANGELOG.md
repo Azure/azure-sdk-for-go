@@ -1,14 +1,12 @@
 # Release History
 
-## 0.3.6 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.3.6 (2022-03-08)
 
 ### Bugs Fixed
 
-- Fix connection recovery in situations where network errors bubble up from go-amqp (#17048)
+- Fix connection recovery in situations where network errors bubble up from go-amqp. (#17048)
+- Quicker reattach for idle links. (#17205)
+- Quick exit on receiver reconnects to avoid potentially returning duplicate messages. (#17157)
 
 ### Other Changes
 

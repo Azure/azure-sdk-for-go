@@ -10,3 +10,5 @@ scenarios:
 - "longRunningRenewLock"
 - "rapidOpenClose"
 - "receiveCancellation"
+- "idleFastReconnect"
+

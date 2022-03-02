@@ -40,6 +40,7 @@ func Run(remainingArgs []string) {
 		"longRunningRenewLock":     LongRunningRenewLockTest,
 		"rapidOpenClose":           RapidOpenCloseTest,
 		"receiveCancellation":      ReceiveCancellation,
+		"idleFastReconnect":        IdleFastReconnect,
 	}
 
 	if len(remainingArgs) == 0 {
@@ -70,6 +71,6 @@ func printUsageAndQuit(allTests map[string]func(args []string)) {
 
 	sort.Strings(names)
 
-	fmt.Printf("Usage: stress test (%s)", strings.Join(names, " or "))
+	fmt.Printf("Usage: stress test <stress test name, listed below> \n  %s\n", strings.Join(names, "\n  "))
 	os.Exit(1)
 }

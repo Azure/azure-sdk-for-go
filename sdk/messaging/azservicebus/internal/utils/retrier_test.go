@@ -114,23 +114,25 @@ func TestRetrier(t *testing.T) {
 
 		var actualAttempts []int32
 
+		maxRetries := int32(2)
+
 		err := Retry(context.Background(), "ResetAttempts", func(ctx context.Context, args *RetryFnArgs) error {
 			actualAttempts = append(actualAttempts, args.I)
 
-			if len(actualAttempts) == 3 {
+			if len(actualAttempts) == int(maxRetries+1) {
 				args.ResetAttempts()
 			}
 
 			return errors.New("whatever")
 		}, isFatalFn, RetryOptions{
-			MaxRetries:    2,
+			MaxRetries:    maxRetries,
 			RetryDelay:    time.Millisecond,
 			MaxRetryDelay: time.Millisecond,
 		})
 
 		expectedAttempts := []int32{
 			0, 1, 2, // we resetted attempts here.
-			1, 2, // and we start at the first retry attempt again.
+			0, 1, 2, // and we start at the first retry attempt again.
 		}
 
 		require.EqualValues(t, "whatever", err.Error())

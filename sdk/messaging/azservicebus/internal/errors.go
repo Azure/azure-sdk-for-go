@@ -67,6 +67,11 @@ func GetSBErrInfo(err error) *SBErrInfo {
 	return sbe
 }
 
+func IsDetachError(err error) bool {
+	var de *amqp.DetachError
+	return errors.As(err, &de)
+}
+
 func IsCancelError(err error) bool {
 	if err == nil {
 		return false
@@ -136,11 +141,9 @@ func GetRecoveryKind(err error) recoveryKind {
 		return RecoveryKindFatal
 	}
 
-	var de *amqp.DetachError
-
 	// check the "special" AMQP errors that aren't condition-based.
 	if errors.Is(err, amqp.ErrLinkClosed) ||
-		errors.As(err, &de) {
+		IsDetachError(err) {
 		return RecoveryKindLink
 	}
 

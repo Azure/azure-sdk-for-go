@@ -92,7 +92,7 @@ type CreateCertificatePoller struct {
 	client         *generated.KeyVaultClient
 	createResponse CreateCertificateResponse
 	lastResponse   generated.KeyVaultClientGetCertificateResponse
-	RawResponse    *http.Response
+	rawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -135,7 +135,7 @@ func (b *CreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 		if err != nil {
 			return CreateCertificateResponse{}, err
 		}
-		b.RawResponse = resp
+		b.rawResponse = resp
 		if b.Done() {
 			break
 		}
@@ -314,7 +314,7 @@ type DeleteCertificatePoller struct {
 	client          *generated.KeyVaultClient
 	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
 	lastResponse    generated.KeyVaultClientGetDeletedCertificateResponse
-	RawResponse     *http.Response
+	rawResponse     *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -356,7 +356,7 @@ func (s *DeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 		if err != nil {
 			return DeleteCertificateResponse{}, err
 		}
-		s.RawResponse = resp
+		s.rawResponse = resp
 		if s.Done() {
 			break
 		}
@@ -1462,12 +1462,12 @@ type RecoverDeletedCertificatePoller struct {
 	client          *generated.KeyVaultClient
 	recoverResponse generated.KeyVaultClientRecoverDeletedCertificateResponse
 	lastResponse    generated.KeyVaultClientGetCertificateResponse
-	RawResponse     *http.Response
+	rawResponse     *http.Response
 }
 
 // Done returns true when the polling operation is completed
 func (b *RecoverDeletedCertificatePoller) Done() bool {
-	return b.RawResponse.StatusCode == http.StatusOK
+	return b.rawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
@@ -1493,12 +1493,12 @@ func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t t
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
-			b.RawResponse = resp
+			b.rawResponse = resp
 		}
 		if b.Done() {
 			break
 		}
-		b.RawResponse = resp
+		b.rawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
@@ -1550,7 +1550,7 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 		client:          c.genClient,
 		vaultUrl:        c.vaultURL,
 		recoverResponse: resp,
-		RawResponse:     getResp.RawResponse,
+		rawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedCertificatePollerResponse{

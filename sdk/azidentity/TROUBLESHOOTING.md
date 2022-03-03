@@ -60,7 +60,7 @@ This error contains several pieces of information:
 
 ### Enable and configure logging
 
-`azidentity` provides the same [logging capabilities](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Diagnostics.md#logging) as the rest of the Azure SDK. The simplest way to see the logs to help debug authentication issues is to print credential logs to the console.
+`azidentity` provides the same logging capabilities as the rest of the Azure SDK. The simplest way to see the logs to help debug authentication issues is to print credential logs to the console.
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 

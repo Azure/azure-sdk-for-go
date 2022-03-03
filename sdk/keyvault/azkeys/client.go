@@ -593,6 +593,7 @@ type DeleteKeyPoller struct {
 	client         *generated.KeyVaultClient
 	deleteResponse generated.KeyVaultClientDeleteKeyResponse
 	lastResponse   generated.KeyVaultClientGetDeletedKeyResponse
+	rawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -630,10 +631,11 @@ func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse,
 // Poll is a wait determined by the t parameter.
 func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
 	for {
-		_, err := s.Poll(ctx)
+		resp, err := s.Poll(ctx)
 		if err != nil {
 			return DeleteKeyResponse{}, err
 		}
+		s.rawResponse = resp
 		if s.Done() {
 			break
 		}
@@ -749,11 +751,12 @@ type RecoverDeletedKeyPoller struct {
 	client          *generated.KeyVaultClient
 	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
 	lastResponse    generated.KeyVaultClientGetKeyResponse
+	rawResponse     *http.Response
 }
 
 // Done returns true when the polling operation is completed
 func (p *RecoverDeletedKeyPoller) Done() bool {
-	return p.lastResponse.RawResponse == nil
+	return p.rawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
@@ -777,13 +780,14 @@ func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDel
 // pollUntilDone is the method for the Response.PollUntilDone struct
 func (p *RecoverDeletedKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
-		_, err := p.Poll(ctx)
+		resp, err := p.Poll(ctx)
 		if err != nil {
-			return RecoverDeletedKeyResponse{}, err
+			p.rawResponse = resp
 		}
 		if p.Done() {
 			break
 		}
+		p.rawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
@@ -849,6 +853,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
+		rawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedKeyPollerResponse{
@@ -1054,8 +1059,8 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 		}
 	}
 	return ListPropertiesOfKeyVersionsPage{
-		NextLink:    i.NextLink,
-		Keys:        keys,
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }
 
@@ -1206,7 +1211,7 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	}
 
 	return GetRandomBytesResponse{
-		Value:       resp.Value,
+		Value: resp.Value,
 	}, nil
 }
 
@@ -1345,7 +1350,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 	}
 
 	return ReleaseKeyResponse{
-		Value:       resp.Value,
+		Value: resp.Value,
 	}, err
 }
 

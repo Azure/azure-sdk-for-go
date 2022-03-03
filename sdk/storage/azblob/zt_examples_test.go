@@ -185,7 +185,7 @@ func ExampleBlobURLParts() {
 		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562=="
 
 	// Breaking the URL down into it's parts by conversion to BlobURLParts
-	parts := azblob.NewBlobURLParts(u)
+	parts, _ := azblob.NewBlobURLParts(u)
 
 	// The BlobURLParts allows access to individual portions of a Blob URL
 	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
@@ -246,7 +246,7 @@ func ExampleServiceClient_GetSASToken() {
 	}
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := azblob.NewBlobURLParts(serviceClientUsingSAS.URL())
+	blobURLParts, _ := azblob.NewBlobURLParts(serviceClientUsingSAS.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -280,7 +280,7 @@ func ExampleAccountSASSignatureValues_Sign() {
 	}
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := azblob.NewBlobURLParts(serviceClient.URL())
+	blobURLParts, _ := azblob.NewBlobURLParts(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -318,7 +318,7 @@ func ExampleBlobSASSignatureValues() {
 	}
 
 	// if you have a SAS query parameter string, you can parse it into it's parts.
-	blobURLParts := azblob.NewBlobURLParts(blob.URL())
+	blobURLParts, _ := azblob.NewBlobURLParts(blob.URL())
 	fmt.Printf("SAS expiry time=%v", blobURLParts.SAS.ExpiryTime())
 }
 

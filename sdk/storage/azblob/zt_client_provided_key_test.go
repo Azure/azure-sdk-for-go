@@ -189,7 +189,7 @@ func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -306,7 +306,7 @@ func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
 	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -633,7 +633,7 @@ func TestAppendBlockFromURLWithCPK(t *testing.T) {
 	require.NotNil(t, resp.Date)
 	require.Equal(t, (*resp.Date).IsZero(), false)
 
-	srcBlobParts := NewBlobURLParts(srcABClient.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcABClient.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -742,7 +742,7 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 	require.NotNil(t, resp.Date)
 	require.Equal(t, (*resp.Date).IsZero(), false)
 
-	srcBlobParts := NewBlobURLParts(srcClient.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcClient.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -935,7 +935,7 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	require.NoError(t, err)
 	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
-	srcBlobParts := NewBlobURLParts(bbClient.URL())
+	srcBlobParts, _ := NewBlobURLParts(bbClient.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -1019,7 +1019,7 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	require.NoError(t, err)
 	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
-	srcBlobParts := NewBlobURLParts(srcPBClient.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcPBClient.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -1092,7 +1092,7 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)

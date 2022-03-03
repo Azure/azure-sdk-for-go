@@ -294,7 +294,8 @@ func TestBlobStartCopyUsingSASSrc(t *testing.T) {
 	require.NoError(t, err)
 
 	// Create URLs to the destination blob with sas parameters
-	sasURL := NewBlobURLParts(bbClient.URL())
+	sasURL, err := NewBlobURLParts(bbClient.URL())
+	require.NoError(t, err)
 	sasURL.SAS = queryParams
 
 	// Create a new container for the destination
@@ -3204,7 +3205,7 @@ func TestBlobClientPartsSASQueryTimes(t *testing.T) {
 				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
 				"sv=2019-10-10"
 
-		parts := NewBlobURLParts(urlString)
+		parts, _ := NewBlobURLParts(urlString)
 		require.Equal(t, parts.Scheme, "https")
 		require.Equal(t, parts.Host, "myaccount.blob.core.windows.net")
 		require.Equal(t, parts.ContainerName, "mycontainer")

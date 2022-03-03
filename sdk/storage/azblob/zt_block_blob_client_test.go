@@ -125,7 +125,7 @@ func TestStageBlockFromURL(t *testing.T) {
 	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -222,7 +222,7 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -315,7 +315,7 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get blob url with SAS.
-	blobParts := NewBlobURLParts(bbClient.URL())
+	blobParts, _ := NewBlobURLParts(bbClient.URL())
 
 	cacheControlVal := "cache-control-override"
 	contentDispositionVal := "content-disposition-override"
@@ -1177,7 +1177,7 @@ func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
 	}.Sign(credential)
 	require.NoError(t, err)
 
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -1225,7 +1225,7 @@ func TestSetTierOnStageBlockFromURL(t *testing.T) {
 	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{

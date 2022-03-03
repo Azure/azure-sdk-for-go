@@ -104,7 +104,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -168,7 +168,7 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)

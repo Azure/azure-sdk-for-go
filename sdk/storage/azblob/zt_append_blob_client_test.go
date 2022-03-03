@@ -152,7 +152,7 @@ func TestAppendBlockFromURL(t *testing.T) {
 	require.Equal(t, (*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)
@@ -246,7 +246,7 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	require.Equal(t, (*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getCredential(testAccountDefault)
 	require.NoError(t, err)

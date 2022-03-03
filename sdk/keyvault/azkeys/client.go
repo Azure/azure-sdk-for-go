@@ -121,14 +121,11 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 // KeyVaultClientCreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type CreateKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	return CreateKeyResponse{
-		RawResponse: g.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
@@ -177,14 +174,11 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 // CreateECKeyResponse contains the response from method Client.CreateECKey.
 type CreateECKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	return CreateECKeyResponse{
-		RawResponse: g.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
@@ -240,14 +234,11 @@ func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 // CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
 type CreateOctKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert generated response to CreateOCTKeyResponse
 func createOctKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
 	return CreateOctKeyResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -323,14 +314,11 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 // CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
 type CreateRSAKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	return CreateRSAKeyResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -430,9 +418,6 @@ type ListKeysPage struct {
 
 	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
 	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal Response to ListKeysPage
@@ -442,9 +427,8 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 		keys = append(keys, keyItemFromGenerated(k))
 	}
 	return ListKeysPage{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Keys:        keys,
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }
 
@@ -468,14 +452,11 @@ type GetKeyOptions struct {
 // GetKeyResponse contains the response for the Client.GetResponse method
 type GetKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	return GetKeyResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -512,14 +493,11 @@ func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedK
 // GetDeletedKeyResponse contains the response from a Client.GetDeletedKey
 type GetDeletedKeyResponse struct {
 	DeletedKey
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert generated response to GetDeletedKeyResponse
 func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
 	return GetDeletedKeyResponse{
-		RawResponse: i.RawResponse,
 		DeletedKey: DeletedKey{
 			Properties:         keyPropertiesFromGenerated(i.Attributes),
 			Key:                jsonWebKeyFromGenerated(i.Key),
@@ -558,16 +536,11 @@ func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDel
 }
 
 // PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedKey.
-type PurgeDeletedKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
+type PurgeDeletedKeyResponse struct{}
 
 // Converts the generated response to the publicly exposed version.
 func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
-	return PurgeDeletedKeyResponse{
-		RawResponse: i.RawResponse,
-	}
+	return PurgeDeletedKeyResponse{}
 }
 
 // PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
@@ -584,8 +557,6 @@ func (c *Client) PurgeDeletedKey(ctx context.Context, keyName string, options *P
 // DeletedKeyResponse contains the response for a Client.BeginDeleteKey operation.
 type DeleteKeyResponse struct {
 	DeletedKey
-	// RawResponse holds the underlying HTTP response
-	RawResponse *http.Response
 }
 
 // convert interal response to DeleteKeyResponse
@@ -594,7 +565,16 @@ func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse
 		return nil
 	}
 	return &DeleteKeyResponse{
-		RawResponse: i.RawResponse,
+		DeletedKey: DeletedKey{
+			Properties:         keyPropertiesFromGenerated(i.Attributes),
+			Key:                jsonWebKeyFromGenerated(i.Key),
+			RecoveryID:         i.RecoveryID,
+			ReleasePolicy:      keyReleasePolicyFromGenerated(i.ReleasePolicy),
+			Tags:               convertGeneratedMap(i.Tags),
+			DeletedOn:          i.DeletedDate,
+			Managed:            i.Managed,
+			ScheduledPurgeDate: i.ScheduledPurgeDate,
+		},
 	}
 }
 
@@ -663,7 +643,6 @@ func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (D
 	}
 
 	return DeleteKeyResponse{
-		RawResponse: s.RawResponse,
 		DeletedKey: DeletedKey{
 			RecoveryID:         s.deleteResponse.RecoveryID,
 			DeletedOn:          s.deleteResponse.DeletedDate,
@@ -684,9 +663,6 @@ type DeleteKeyPollerResponse struct {
 
 	// Poller contains an initialized WidgetPoller
 	Poller *DeleteKeyPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
@@ -719,7 +695,6 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 
 	return DeleteKeyPollerResponse{
 		Poller:        s,
-		RawResponse:   resp.RawResponse,
 		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
@@ -736,15 +711,11 @@ func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOption
 type BackupKeyResponse struct {
 	// READ-ONLY; The backup blob containing the backed up key.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal reponse to BackupKeyResponse
 func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
 	return BackupKeyResponse{
-		RawResponse: i.RawResponse,
 		Value:       i.Value,
 	}
 }
@@ -833,14 +804,11 @@ func (b BeginRecoverDeletedKeyOptions) toGenerated() *generated.KeyVaultClientRe
 // RecoverDeletedKeyResponse is the response object for the Client.RecoverDeletedKey operation.
 type RecoverDeletedKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // change recover deleted key reponse to the generated version.
 func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
 	return RecoverDeletedKeyResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -857,9 +825,6 @@ type RecoverDeletedKeyPollerResponse struct {
 
 	// Poller contains an initialized RecoverDeletedKeyPoller
 	Poller *RecoverDeletedKeyPoller
-
-	// RawResponse cotains the underlying HTTP response
-	RawResponse *http.Response
 }
 
 // BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
@@ -894,7 +859,6 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	return RecoverDeletedKeyPollerResponse{
 		PollUntilDone: b.pollUntilDone,
 		Poller:        b,
-		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 
@@ -947,14 +911,11 @@ func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *generated.KeyVaultClie
 // UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
 type UpdateKeyPropertiesResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert the internal response to UpdateKeyPropertiesResponse
 func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
 	return UpdateKeyPropertiesResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -1001,7 +962,6 @@ func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	}
 
 	return ListDeletedKeysPage{
-		RawResponse: resp.RawResponse,
 		NextLink:    resp.NextLink,
 		DeletedKeys: values,
 	}
@@ -1019,9 +979,6 @@ func (l *ListDeletedKeysPager) NextPage(ctx context.Context) bool {
 
 // ListDeletedKeysPage holds the data for a single page.
 type ListDeletedKeysPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of deleted keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -1086,9 +1043,6 @@ func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultCl
 
 // ListPropertiesOfKeyVersionsPage contains the current page from a ListKeyVersionsPager.PageResponse method
 type ListPropertiesOfKeyVersionsPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -1105,7 +1059,6 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 		}
 	}
 	return ListPropertiesOfKeyVersionsPage{
-		RawResponse: i.RawResponse,
 		NextLink:    i.NextLink,
 		Keys:        keys,
 	}
@@ -1138,14 +1091,11 @@ func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreK
 // RestoreKeyBackupResponse contains the response object for the Client.RestoreKeyBackup operation.
 type RestoreKeyBackupResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // converts the generated response to the publicly exposed version.
 func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
 	return RestoreKeyBackupResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -1199,14 +1149,11 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 // ImportKeyResponse contains the response of the Client.ImportKey method
 type ImportKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert the generated response to the ImportKeyResponse
 func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
 	return ImportKeyResponse{
-		RawResponse: i.RawResponse,
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(i.Attributes),
 			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
@@ -1243,9 +1190,6 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 type GetRandomBytesResponse struct {
 	// The bytes encoded as a base64url string.
 	Value []byte `json:"value,omitempty"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetRandomBytes gets the requested number of bytes containing random values from a managed HSM.
@@ -1268,7 +1212,6 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 
 	return GetRandomBytesResponse{
 		Value:       resp.Value,
-		RawResponse: resp.RawResponse,
 	}, nil
 }
 
@@ -1280,8 +1223,6 @@ func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOption
 
 type RotateKeyResponse struct {
 	Key
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // RotateKey will rotate the key based on the key policy. It requires the keys/rotate permission.
@@ -1303,7 +1244,6 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 	}
 
 	return RotateKeyResponse{
-		RawResponse: resp.RawResponse,
 		Key: Key{
 			Properties:    keyPropertiesFromGenerated(resp.Attributes),
 			JSONWebKey:    jsonWebKeyFromGenerated(resp.Key),
@@ -1324,8 +1264,6 @@ func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetK
 // GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
 type GetKeyRotationPolicyResponse struct {
 	RotationPolicy
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
@@ -1342,7 +1280,6 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 		}
 	}
 	return GetKeyRotationPolicyResponse{
-		RawResponse: i.RawResponse,
 		RotationPolicy: RotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,
@@ -1384,9 +1321,6 @@ type ReleaseKeyOptions struct {
 
 // ReleaseKeyResponse contains the response of Client.ReleaseKey
 type ReleaseKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; A signed object containing the released key.
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
@@ -1416,7 +1350,6 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 	}
 
 	return ReleaseKeyResponse{
-		RawResponse: resp.RawResponse,
 		Value:       resp.Value,
 	}, err
 }
@@ -1458,9 +1391,6 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.RotationPolicy {
 // UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyResponse struct {
 	RotationPolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
@@ -1477,7 +1407,6 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 		}
 	}
 	return UpdateKeyRotationPolicyResponse{
-		RawResponse: i.RawResponse,
 		RotationPolicy: RotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,

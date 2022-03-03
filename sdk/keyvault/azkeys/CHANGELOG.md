@@ -18,6 +18,7 @@
 * Renamed `ListKeyVersions` to `ListPropertiesOfKeyVersions`
 * Removed `Attributes` struct
 * Changed `CreateOCTKey`/`Response`/`Options` to `CreateOctKey`/`Response`/`Options`
+* Removed all `RawResponse *http.Response` fields from response structs.
 
 ## 0.3.0 (2022-02-08)
 

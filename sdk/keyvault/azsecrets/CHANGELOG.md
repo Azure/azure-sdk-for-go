@@ -11,6 +11,9 @@
 * Changes `Item` to `SecretItem`
 * Pollers and pagers are structs instead of interfaces
 * Prefixed all `DeletionRecoveryLevel` constants with "DeletionRecoveryLevel"
+* Changed pager APIs for `ListSecretVersionsPager`, `ListDeletedSecretsPager`, and `ListSecretsPager`
+    * Use the `More()` method to determine if there are more pages to fetch
+    * Use the `NextPage(context.Context)` to fetch the next page of results
 
 ## 0.5.0 (2022-02-08)
 

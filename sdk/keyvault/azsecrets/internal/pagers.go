@@ -47,7 +47,7 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -56,7 +56,7 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) boo
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getDeletedSecretsHandleResponse(resp)
+	result, err := p.client.GetDeletedSecretsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,7 +101,7 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -110,7 +110,7 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) boo
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretVersionsHandleResponse(resp)
+	result, err := p.client.GetSecretVersionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -155,7 +155,7 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -164,7 +164,7 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) bool {
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretsHandleResponse(resp)
+	result, err := p.client.GetSecretsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

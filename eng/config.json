@@ -25,8 +25,8 @@
             "CoverageGoal": 0.71
         },
         {
-            "Name": "azsecrets",
-            "CoverageGoal": 0.86
+            "Name": "keyvault/azsecrets",
+            "CoverageGoal": 0.80
         },
         {
             "Name": "data",

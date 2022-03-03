@@ -143,12 +143,12 @@ func TestListSecretVersions(t *testing.T) {
 
 	count := 0
 	pager := client.ListSecretVersions(secret, nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.Secrets)
 	}
 	require.GreaterOrEqual(t, count, 3)
-	require.NoError(t, pager.Err())
 }
 
 func TestListSecrets(t *testing.T) {
@@ -174,12 +174,12 @@ func TestListSecrets(t *testing.T) {
 
 	count := 0
 	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.Secrets)
 	}
 	require.Equal(t, count, 4)
-	require.NoError(t, pager.Err())
 }
 
 func TestListDeletedSecrets(t *testing.T) {
@@ -231,8 +231,9 @@ func TestListDeletedSecrets(t *testing.T) {
 	}
 	count := 0
 	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.DeletedSecrets)
 		for _, secret := range page.DeletedSecrets {
 			for deleted := range deletedSecrets {
@@ -313,8 +314,9 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	require.NoError(t, err)
 
 	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		for _, secret := range page.DeletedSecrets {
 			require.NotEqual(t, *secret.ID, secret)
 		}

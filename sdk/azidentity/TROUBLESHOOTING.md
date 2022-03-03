@@ -22,7 +22,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle azidentity errors
 
-Any service client method that makes a request to the service may return an error due to authentication failure. This is because the credential authenticates on the first call to the service and on any subsequent call that needs to refresh an access token. Authentication errors include a description of the failure and possibly an error message from Azure Active Directory. Depending on the application, these errors may or may not be recoverable.
+Any service client method that makes a request to the service may return an error due to authentication failure. This is because the credential authenticates on the first call to the service and on any subsequent call that needs to refresh an access token. Authentication errors include a description of the failure and possibly an error message from Azure Active Directory (Azure AD). Depending on the application, these errors may or may not be recoverable.
 
 ### Permission issues
 
@@ -30,7 +30,7 @@ Service client errors with a status code of 401 or 403 often indicate that authe
 
 ## Find relevant information in errors
 
-Authentication errors can include responses from Azure Active Directory and often contain information helpful in diagnosis. Consider the following error message.
+Authentication errors can include responses from Azure AD and often contain information helpful in diagnosis. Consider the following error message:
 
 ```
 ClientSecretCredential authentication failed
@@ -51,7 +51,9 @@ RESPONSE 401 Unauthorized
 }
 --------------------------------------------------------------------------------
 ```
+
 This error contains several pieces of information:
+
 - __Failing Credential Type__: The type of credential that failed to authenticate. This can be helpful when diagnosing issues with chained credential types such as `DefaultAzureCredential` or `ChainedTokenCredential`.
 
 - __Azure AD Error Code and Message__: The error code and message returned by Azure AD. This can give insight into the specific reason the request failed. For instance, in this case authentication failed because the provided client secret is incorrect. [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/reference-aadsts-error-codes#aadsts-error-codes) has more information on AADSTS error codes.
@@ -90,16 +92,16 @@ azlog.SetEvents(azidentity.EventAuthentication)
 
 | Error Code | Issue | Mitigation |
 |---|---|---|
-|AADSTS7000215|An invalid client secret was provided.|Ensure the secret provided to the credential constructor is valid. If unsure, create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
-|AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
-|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure Active Directory instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
+|AADSTS7000215|An invalid client secret was provided.|Ensure the secret provided to the credential constructor is valid. If unsure, create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
+|AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
+|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure AD instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
 ## Troubleshoot ClientCertificateCredential authentication issues
 
 | Error Code | Description | Mitigation |
 |---|---|---|
-|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
-|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure Active Directory instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
+|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
+|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure AD instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
 ## Troubleshoot UsernamePasswordCredential authentication issues
 
@@ -128,13 +130,14 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |No response received from the managed identity endpoint.|No response was received for the request to IMDS or the request timed out.|<ul><li>Ensure the VM is configured for managed identity as described in [managed identity documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM. See [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
 |Multiple attempts failed to obtain a token from the managed identity endpoint.|The credential has exhausted its retries for a token request.|<ul><li>Refer to the error message for more details on specific failures.<li>Ensure the VM is configured for managed identity as described in [managed identity documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM. See [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
 
-#### __Verify IMDS is available on the VM__
+#### Verify IMDS is available on the VM
 
-If you have access to the VM, you can use `curl` to verify the manged identity endpoint is available.
+If you have access to the VM, you can use `curl` to verify the managed identity endpoint is available.
 
 ```sh
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
+
 > Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ### Azure App Service and Azure Functions managed identity
@@ -143,12 +146,13 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 |---|---|---|
 |Get "`http://169.254.169.254/...`" i/o timeout|The App Service host hasn't set environment variables for managed identity configuration.|<ul><li>Ensure the App Service is configured for managed identity as described in [App Service documentation](https://docs.microsoft.com/azure/app-service/overview-managed-identity).</li><li>Verify the App Service environment is properly configured and the managed identity endpoint is available. See [below](#verify-the-app-service-managed-identity-endpoint-is-available) for instructions.</li></ul>|
 
-#### __Verify the App Service managed identity endpoint is available__
+#### Verify the App Service managed identity endpoint is available
 
 If you can SSH into the App Service, you can verify managed identity is available in the environment. First ensure the environment variables `IDENTITY_ENDPOINT` and `IDENTITY_SECRET` are set. Then you can verify the managed identity endpoint is available using `curl`.
 ```sh
 curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-version=2019-08-01" -H "X-IDENTITY-HEADER: $IDENTITY_HEADER"
 ```
+
 > Note that the output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ### Azure Kubernetes Service managed identity
@@ -166,21 +170,22 @@ curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-versio
 |Azure CLI not found on path|The Azure CLI isn’t installed or isn't on the application's path.|<ul><li>Ensure the Azure CLI is installed as described in [Azure CLI documentation](https://docs.microsoft.com/cli/azure/install-azure-cli).</li><li>Validate the installation location is in the application's `PATH` environment variable.</li></ul>|
 |Please run 'az login' to set up account|No account is currently logged into the Azure CLI, or the login has expired.|<ul><li>Run `az login` to log into the Azure CLI. More information about Azure CLI authentication is available in the [Azure CLI documentation](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).</li><li>Verify that the Azure CLI can obtain tokens. See [below](#verify-the-azure-cli-can-obtain-tokens) for instructions.</li></ul>|
 
-#### __Verify the Azure CLI can obtain tokens__
+#### Verify the Azure CLI can obtain tokens
 
-You can manually verify that the Azure CLI can authenticate and obtain tokens. First use the `account` command to verify the logged in account.
+You can manually verify that the Azure CLI can authenticate and obtain tokens. First, use the `account` command to verify the logged in account.
 
-```sh
+```azurecli
 az account show
 ```
 
-Once you've verified the Azure CLI is using the correct account, you can validate that it’s able to obtain tokens for that account.
+Once you've verified the Azure CLI is using the correct account, you can validate that it's able to obtain tokens for that account.
 
-```sh
+```azurecli
 az account get-access-token --output json --resource https://management.core.windows.net
 ```
+
 >Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ## Get additional help
 
-Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-go/blob/main/SUPPORT.md) at the root of the repo.
+Additional information on ways to reach out for support can be found in [SUPPORT.md](https://github.com/Azure/azure-sdk-for-go/blob/main/SUPPORT.md).

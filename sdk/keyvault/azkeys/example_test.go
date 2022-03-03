@@ -17,8 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-var client *azkeys.Client
-
 func ExampleNewClient() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -26,10 +24,11 @@ func ExampleNewClient() {
 		panic(err)
 	}
 
-	client, err = azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
 	if err != nil {
 		panic(err)
 	}
+	_ = client // do something with client
 }
 
 func ExampleClient_CreateRSAKey() {
@@ -44,12 +43,12 @@ func ExampleClient_CreateRSAKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{KeySize: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
-	fmt.Println(*resp.Key.KeyType)
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 }
 
 func ExampleClient_CreateECKey() {
@@ -64,12 +63,12 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.KeyCurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
-	fmt.Println(*resp.Key.KeyType)
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 }
 
 func ExampleClient_GetKey() {
@@ -88,7 +87,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+	fmt.Println(*resp.JSONWebKey.ID)
 }
 
 func ExampleClient_UpdateKeyProperties() {
@@ -107,14 +106,14 @@ func ExampleClient_UpdateKeyProperties() {
 		Tags: map[string]string{
 			"Tag1": "val1",
 		},
-		KeyAttributes: &azkeys.KeyAttributes{
+		Properties: &azkeys.Properties{
 			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Attributes.RecoveryLevel, resp.Tags["Tag1"])
+	fmt.Println(*resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -140,7 +139,7 @@ func ExampleClient_BeginDeleteKey() {
 	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
-func ExampleClient_ListKeys() {
+func ExampleClient_ListPropertiesOfKeys() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,14 +151,14 @@ func ExampleClient_ListKeys() {
 		panic(err)
 	}
 
-	pager := client.ListKeys(nil)
-	for pager.NextPage(context.TODO()) {
-		for _, key := range pager.PageResponse().Keys {
-			fmt.Println(*key.KID)
+	pager := client.ListPropertiesOfKeys(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
 		}
-	}
-
-	if pager.Err() != nil {
-		panic(pager.Err())
+		for _, key := range resp.Keys {
+			fmt.Println(*key.ID)
+		}
 	}
 }

@@ -251,7 +251,7 @@ azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 ### Accessing `http.Response`
 You can access the raw `*http.Response` returned by the service using the `runtime.WithCaptureResponse` method and a context passed to any client method.
 
-```
+```go
 var respFromCtx *http.Response
 ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
 

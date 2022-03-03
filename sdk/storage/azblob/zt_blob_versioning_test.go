@@ -6,6 +6,7 @@ package azblob
 import (
 	"bytes"
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
@@ -15,6 +16,7 @@ import (
 )
 
 func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -37,7 +39,7 @@ func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
 	}
 	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
 	require.NoError(t, err)
-	t.Skip("expected VersionID to be not nil")
+	//t.Skip("expected VersionID to be not nil")
 	require.NotNil(t, uploadResp.VersionID)
 	blobProp, _ = bbClient.GetProperties(ctx, nil)
 	require.EqualValues(t, uploadResp.VersionID, blobProp.VersionID)
@@ -430,6 +432,7 @@ func TestCreateBlockBlobReturnsVID(t *testing.T) {
 }
 
 func TestPutBlockListReturnsVID(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -457,7 +460,7 @@ func TestPutBlockListReturnsVID(t *testing.T) {
 
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, nil)
 	require.NoError(t, err)
-	t.Skip("expected VersionID to be not nil")
+	//t.Skip("expected VersionID to be not nil")
 	require.NotNil(t, commitResp.VersionID)
 
 	contentResp, err := bbClient.Download(ctx, nil)

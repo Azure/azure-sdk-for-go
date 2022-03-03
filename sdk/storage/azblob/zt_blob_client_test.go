@@ -3220,7 +3220,7 @@ func TestBlobClientPartsSASQueryTimes(t *testing.T) {
 }
 
 func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
-	t.Skip("The range specified is invalid for the current size of the resource")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

@@ -58,7 +58,8 @@ func TestAppendBlock(t *testing.T) {
 }
 
 func TestAppendBlockWithMD5(t *testing.T) {
-	t.Skip("md5 fails authentication")
+	//t.Skip("md5 fails authentication")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -207,7 +208,8 @@ func TestAppendBlockFromURL(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
-	t.Skip("md5 fails authentication")
+	//t.Skip("md5 fails authentication")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

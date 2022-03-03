@@ -357,7 +357,8 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 }
 
 func TestStageBlockWithMD5(t *testing.T) {
-	t.Skip("authentication failed")
+	//t.Skip("authentication failed")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

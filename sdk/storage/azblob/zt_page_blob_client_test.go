@@ -406,7 +406,8 @@ func TestPageSequenceNumbers(t *testing.T) {
 }
 
 func TestPutPagesWithMD5(t *testing.T) {
-	t.Skip("AuthenticationFailed")
+	//t.Skip("AuthenticationFailed")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

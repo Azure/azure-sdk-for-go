@@ -109,7 +109,8 @@ func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
 }
 
 func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -283,7 +284,8 @@ func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 }
 
 func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -442,7 +444,8 @@ func TestUploadBlobWithMD5WithCPK(t *testing.T) {
 }
 
 func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -540,7 +543,8 @@ func TestAppendBlockWithCPK(t *testing.T) {
 }
 
 func TestAppendBlockWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -705,7 +709,8 @@ func TestAppendBlockFromURLWithCPK(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -858,7 +863,8 @@ func TestPageBlockWithCPK(t *testing.T) {
 }
 
 func TestPageBlockWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -991,7 +997,8 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 }
 
 func TestPageBlockFromURLWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope not available")
+	//t.Skip("encryption scope not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1286,7 +1293,8 @@ func TestGetSetBlobMetadataWithCPK(t *testing.T) {
 }
 
 func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope is not available")
+	//t.Skip("encryption scope is not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1373,7 +1381,8 @@ func TestBlobSnapshotWithCPK(t *testing.T) {
 }
 
 func TestBlobSnapshotWithCPKScope(t *testing.T) {
-	t.Skip("encryption scope is not available")
+	//t.Skip("encryption scope is not available")
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

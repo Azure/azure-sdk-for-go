@@ -117,7 +117,7 @@ func TestSetBlobTagsWithVID(t *testing.T) {
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
 	require.NoError(t, err)
 	require.Equal(t, blobGetTagsResponse.RawResponse.StatusCode, 200)
-	t.Skip("expected nil, got result")
+	//t.Skip("expected nil, got result")
 	require.Nil(t, blobGetTagsResponse.BlobTagSet)
 }
 
@@ -159,6 +159,7 @@ func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {
 }
 
 func TestStageBlockWithTags(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -193,7 +194,7 @@ func TestStageBlockWithTags(t *testing.T) {
 	}
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
 	require.NoError(t, err)
-	t.Skip("expecting not nil, got nil")
+	//t.Skip("expecting not nil, got nil")
 	require.NotNil(t, commitResp.VersionID)
 	versionId := commitResp.VersionID
 
@@ -639,6 +640,7 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 }
 
 func TestCreateAppendBlobWithTags(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -656,7 +658,7 @@ func TestCreateAppendBlobWithTags(t *testing.T) {
 	}
 	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
 	require.NoError(t, err)
-	t.Skip("expected createResp.VersionID to be not nil, got nil")
+	//t.Skip("expected createResp.VersionID to be not nil, got nil")
 	require.NotNil(t, createResp.VersionID)
 
 	_, err = abClient.GetProperties(ctx, nil)

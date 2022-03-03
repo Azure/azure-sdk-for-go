@@ -416,7 +416,7 @@ func (p *PurgeDeletedCertificateOptions) toGenerated() *generated.KeyVaultClient
 }
 
 // PurgeDeletedCertificateResponse contains the response from method Client.PurgeDeletedCertificate.
-type PurgeDeletedCertificateResponse struct {}
+type PurgeDeletedCertificateResponse struct{}
 
 // PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
@@ -489,7 +489,7 @@ func (c *Client) BackupCertificate(ctx context.Context, certName string, options
 	}
 
 	return BackupCertificateResponse{
-		Value:       resp.Value,
+		Value: resp.Value,
 	}, nil
 }
 

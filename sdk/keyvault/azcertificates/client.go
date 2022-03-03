@@ -82,9 +82,6 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 // CreateCertificateResponse contains the response from method Client.BeginCreateCertificate.
 type CreateCertificateResponse struct {
 	CertificateOperation
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // the poller returned by the Client.BeginCreateCertificate
@@ -123,7 +120,7 @@ func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 	}
 
 	// There was an error in this operation, return the original raw response and the error
-	return b.createResponse.RawResponse, err
+	return nil, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -154,9 +151,6 @@ type CreateCertificatePollerResponse struct {
 
 	// Poller contains an initialized WidgetPoller
 	Poller CreateCertificatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // BeginCreateCertificate creates a new certificate resource, if a certificate with this name already exists, a new version is created. This operation requires the certificates/create permission.
@@ -187,7 +181,6 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		vaultURL:    c.vaultURL,
 		client:      c.genClient,
 		createResponse: CreateCertificateResponse{
-			RawResponse: resp.RawResponse,
 			CertificateOperation: CertificateOperation{
 				CancellationRequested: resp.CancellationRequested,
 				Csr:                   resp.Csr,
@@ -205,7 +198,6 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 
 	return CreateCertificatePollerResponse{
 		Poller:        p,
-		RawResponse:   resp.RawResponse,
 		PollUntilDone: p.pollUntilDone,
 	}, nil
 }
@@ -218,9 +210,6 @@ type GetCertificateOptions struct {
 // GetCertificateResponse contains the result from method Client.GetCertificate.
 type GetCertificateResponse struct {
 	KeyVaultCertificateWithPolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetCertificate gets information about a specific certificate. This operation requires the certificates/get permission.
@@ -235,7 +224,6 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 	}
 
 	return GetCertificateResponse{
-		RawResponse: resp.RawResponse,
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
@@ -260,9 +248,6 @@ func (g *GetCertificateOperationOptions) toGenerated() *generated.KeyVaultClient
 // GetCertificateOperationResponse contains the result from method Client.GetCertificateOperation.
 type GetCertificateOperationResponse struct {
 	CertificateOperation
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetCertificateOperation gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
@@ -273,7 +258,6 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certName string, o
 	}
 
 	return GetCertificateOperationResponse{
-		RawResponse: resp.RawResponse,
 		CertificateOperation: CertificateOperation{
 			CancellationRequested: resp.CancellationRequested,
 			Csr:                   resp.Csr,
@@ -299,9 +283,6 @@ func (b *BeginDeleteCertificateOptions) toGenerated() *generated.KeyVaultClientD
 // DeleteCertificateResponse contains the response structure for the BeginDeleteCertificatePoller.FinalResponse function
 type DeleteCertificateResponse struct {
 	DeletedCertificate
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCertificateResponse) DeleteCertificateResponse {
@@ -309,7 +290,6 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 		return DeleteCertificateResponse{}
 	}
 	return DeleteCertificateResponse{
-		RawResponse: g.RawResponse,
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         g.RecoveryID,
 			DeletedDate:        g.DeletedDate,
@@ -392,9 +372,6 @@ type DeleteCertificatePollerResponse struct {
 
 	// Poller contains an initialized WidgetPoller
 	Poller DeleteCertificatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // BeginDeleteCertificate deletes a certificate from the keyvault. Delete cannot be applied to an individual version of a certificate. This operation
@@ -427,7 +404,6 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 
 	return DeleteCertificatePollerResponse{
 		Poller:        s,
-		RawResponse:   resp.RawResponse,
 		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
@@ -440,22 +416,17 @@ func (p *PurgeDeletedCertificateOptions) toGenerated() *generated.KeyVaultClient
 }
 
 // PurgeDeletedCertificateResponse contains the response from method Client.PurgeDeletedCertificate.
-type PurgeDeletedCertificateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
+type PurgeDeletedCertificateResponse struct {}
 
 // PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
 func (c *Client) PurgeDeletedCertificate(ctx context.Context, certName string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
-	resp, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+	_, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
 	if err != nil {
 		return PurgeDeletedCertificateResponse{}, err
 	}
 
-	return PurgeDeletedCertificateResponse{
-		RawResponse: resp.RawResponse,
-	}, nil
+	return PurgeDeletedCertificateResponse{}, nil
 }
 
 // Optional parameters for the Client.GetDeletedCertificate function
@@ -468,9 +439,6 @@ func (g *GetDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientGe
 // GetDeletedCertificateResponse is the response struct for the Client.GetDeletedCertificate function.
 type GetDeletedCertificateResponse struct {
 	DeletedCertificate
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetDeletedCertificate retrieves the deleted certificate information plus its attributes, such as retention interval, scheduled permanent deletion
@@ -482,7 +450,6 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 	}
 
 	return GetDeletedCertificateResponse{
-		RawResponse: resp.RawResponse,
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         resp.RecoveryID,
 			DeletedDate:        resp.DeletedDate,
@@ -511,9 +478,6 @@ func (b *BackupCertificateOptions) toGenerated() *generated.KeyVaultClientBackup
 type BackupCertificateResponse struct {
 	// READ-ONLY; The backup blob containing the backed up certificate.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // BackupCertificate requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded.
@@ -525,7 +489,6 @@ func (c *Client) BackupCertificate(ctx context.Context, certName string, options
 	}
 
 	return BackupCertificateResponse{
-		RawResponse: resp.RawResponse,
 		Value:       resp.Value,
 	}, nil
 }
@@ -552,9 +515,6 @@ func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImport
 // ImportCertificateResponse is the response struct for the Client.ImportCertificate function.
 type ImportCertificateResponse struct {
 	KeyVaultCertificateWithPolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // ImportCertificate imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires the
@@ -582,7 +542,6 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	}
 
 	return ImportCertificateResponse{
-		RawResponse: resp.RawResponse,
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
@@ -663,9 +622,6 @@ type ListCertificatesOptions struct{}
 type ListCertificatesPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal Response to ListCertificatesPage
@@ -682,7 +638,6 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 	}
 
 	return ListCertificatesPageResponse{
-		RawResponse:  i.RawResponse,
 		Certificates: vals,
 	}
 }
@@ -769,9 +724,6 @@ type ListCertificateVersionsOptions struct {
 type ListCertificateVersionsPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // create ListCertificatesPage from generated pager
@@ -787,7 +739,6 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	}
 
 	return ListCertificateVersionsPageResponse{
-		RawResponse:  i.RawResponse,
 		Certificates: vals,
 	}
 }
@@ -826,8 +777,6 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 // CreateIssuerResponse is the response struct for the Client.CreateIssuer function
 type CreateIssuerResponse struct {
 	CertificateIssuer
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // CreateIssuer adds or updates the specified certificate issuer. This operation requires the certificates/setissuers permission.
@@ -874,7 +823,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		return CreateIssuerResponse{}, err
 	}
 
-	cr := CreateIssuerResponse{RawResponse: resp.RawResponse}
+	cr := CreateIssuerResponse{}
 	cr.CertificateIssuer = CertificateIssuer{
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 		Provider:    resp.Provider,
@@ -916,8 +865,6 @@ func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificate
 // GetIssuerResponse contains the response from method Client.GetIssuer.
 type GetIssuerResponse struct {
 	CertificateIssuer
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetIssuer returns the specified certificate issuer resources in the specified key vault. This operation
@@ -928,7 +875,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		return GetIssuerResponse{}, err
 	}
 
-	g := GetIssuerResponse{RawResponse: resp.RawResponse}
+	g := GetIssuerResponse{}
 	g.CertificateIssuer = CertificateIssuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
@@ -1028,9 +975,6 @@ type ListPropertiesOfIssuersOptions struct {
 type ListIssuersPropertiesOfIssuersPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Issuers []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal Response to ListPropertiesOfIssuersPage
@@ -1041,10 +985,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
 	}
 
-	return ListIssuersPropertiesOfIssuersPageResponse{
-		RawResponse: i.RawResponse,
-		Issuers:     vals,
-	}
+	return ListIssuersPropertiesOfIssuersPageResponse{Issuers: vals}
 }
 
 // ListPropertiesOfIssuers returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
@@ -1067,8 +1008,6 @@ func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCerti
 // DeleteIssuerResponse contains the response from method Client.DeleteIssuer.
 type DeleteIssuerResponse struct {
 	CertificateIssuer
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // DeleteIssuer permanently removes the specified certificate issuer from the vault. This operation requires the certificates/manageissuers/deleteissuers permission.
@@ -1078,7 +1017,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 		return DeleteIssuerResponse{}, err
 	}
 
-	d := DeleteIssuerResponse{RawResponse: resp.RawResponse}
+	d := DeleteIssuerResponse{}
 	d.CertificateIssuer = CertificateIssuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
@@ -1170,9 +1109,6 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 // UpdateIssuerResponse contains the response from method Client.UpdateIssuer.
 type UpdateIssuerResponse struct {
 	CertificateIssuer
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // UpdateIssuer performs an update on the specified certificate issuer entity. This operation requires
@@ -1189,7 +1125,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 		return UpdateIssuerResponse{}, err
 	}
 
-	u := UpdateIssuerResponse{RawResponse: resp.RawResponse}
+	u := UpdateIssuerResponse{}
 	u.CertificateIssuer = CertificateIssuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
@@ -1231,8 +1167,6 @@ func (s *SetContactsOptions) toGenerated() *generated.KeyVaultClientSetCertifica
 // SetContactsResponse contains the response from method Client.CreateContacts.
 type SetContactsResponse struct {
 	Contacts
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // SetCertificateContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
@@ -1249,7 +1183,6 @@ func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *Se
 	}
 
 	return SetContactsResponse{
-		RawResponse: resp.RawResponse,
 		Contacts: Contacts{
 			ID:          resp.ID,
 			ContactList: contactListFromGenerated(resp.ContactList),
@@ -1267,9 +1200,6 @@ func (g *GetContactsOptions) toGenerated() *generated.KeyVaultClientGetCertifica
 // GetContactsResponse contains the response from method Client.GetContacts.
 type GetContactsResponse struct {
 	Contacts
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetCertificateContacts returns the set of certificate contact resources in the specified key vault. This operation
@@ -1281,7 +1211,6 @@ func (c *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (
 	}
 
 	return GetContactsResponse{
-		RawResponse: resp.RawResponse,
 		Contacts: Contacts{
 			ID:          resp.ID,
 			ContactList: contactListFromGenerated(resp.ContactList),
@@ -1299,9 +1228,6 @@ func (d *DeleteContactsOptions) toGenerated() *generated.KeyVaultClientDeleteCer
 // DeleteContactsResponse contains the response from method Client.DeleteContacts.
 type DeleteContactsResponse struct {
 	Contacts
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // DeleteContacts deletes the certificate contacts for a specified key vault certificate. This operation requires the certificates/managecontacts permission.
@@ -1312,7 +1238,6 @@ func (c *Client) DeleteContacts(ctx context.Context, options *DeleteContactsOpti
 	}
 
 	return DeleteContactsResponse{
-		RawResponse: resp.RawResponse,
 		Contacts: Contacts{
 			ContactList: contactListFromGenerated(resp.ContactList),
 			ID:          resp.ID,
@@ -1330,9 +1255,6 @@ func (u *UpdateCertificatePolicyOptions) toGenerated() *generated.KeyVaultClient
 // UpdateCertificatePolicyResponse contains the response from method Client.UpdateCertificatePolicy.
 type UpdateCertificatePolicyResponse struct {
 	CertificatePolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // UpdateCertificatePolicy sets specified members in the certificate policy, leave others as null. This operation requires the certificates/update permission.
@@ -1350,7 +1272,6 @@ func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, p
 	}
 
 	return UpdateCertificatePolicyResponse{
-		RawResponse:       resp.RawResponse,
 		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
 	}, nil
 }
@@ -1365,9 +1286,6 @@ func (g *GetCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientGet
 // GetCertificatePolicyResponse contains the response from method Client.GetCertificatePolicy.
 type GetCertificatePolicyResponse struct {
 	CertificatePolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetCertificatePolicy returns the specified certificate policy resources in the specified key vault. This operation requires the certificates/get permission.
@@ -1383,7 +1301,6 @@ func (c *Client) GetCertificatePolicy(ctx context.Context, certName string, opti
 	}
 
 	return GetCertificatePolicyResponse{
-		RawResponse:       resp.RawResponse,
 		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
 	}, nil
 }
@@ -1410,8 +1327,6 @@ func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultCl
 // UpdateCertificatePropertiesResponse contains the result from method Client.UpdateCertificateProperties.
 type UpdateCertificatePropertiesResponse struct {
 	KeyVaultCertificate
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // UpdateCertificate applies the specified update on the given certificate; the only elements updated are the certificate's
@@ -1436,7 +1351,6 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 		return UpdateCertificatePropertiesResponse{}, err
 	}
 	return UpdateCertificatePropertiesResponse{
-		RawResponse:         resp.RawResponse,
 		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
@@ -1457,9 +1371,6 @@ func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCe
 // MergeCertificateResponse contains the response from method Client.MergeCertificate.
 type MergeCertificateResponse struct {
 	KeyVaultCertificateWithPolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
@@ -1482,7 +1393,6 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 	}
 
 	return MergeCertificateResponse{
-		RawResponse: resp.RawResponse,
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
@@ -1507,9 +1417,6 @@ func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClien
 // RestoreCertificateBackupResponse contains the response from method Client.RestoreCertificateBackup
 type RestoreCertificateBackupResponse struct {
 	KeyVaultCertificateWithPolicy
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults
@@ -1527,7 +1434,6 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 	}
 
 	return RestoreCertificateBackupResponse{
-		RawResponse: resp.RawResponse,
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
@@ -1601,16 +1507,12 @@ func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t t
 // RecoverDeletedCertificateResponse is the response object for the Client.RecoverDeletedCertificate operation.
 type RecoverDeletedCertificateResponse struct {
 	KeyVaultCertificate
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // change recover deleted certificate reponse to the generated version.
 func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedCertificateResponse) RecoverDeletedCertificateResponse {
 	return RecoverDeletedCertificateResponse{
 		KeyVaultCertificate: certificateFromGenerated(&i.CertificateBundle),
-		RawResponse:         i.RawResponse,
 	}
 }
 
@@ -1621,9 +1523,6 @@ type RecoverDeletedCertificatePollerResponse struct {
 
 	// Poller contains an initialized RecoverDeletedCertificatePoller
 	Poller RecoverDeletedCertificatePoller
-
-	// RawResponse cotains the underlying HTTP response
-	RawResponse *http.Response
 }
 
 // BeginRecoverDeletedCertificate recovers the deleted certificate in the specified vault to the latest version.
@@ -1657,7 +1556,6 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 	return RecoverDeletedCertificatePollerResponse{
 		PollUntilDone: p.pollUntilDone,
 		Poller:        p,
-		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 
@@ -1724,9 +1622,6 @@ func (l *ListDeletedCertificatesPager) NextPage(ctx context.Context) (ListDelete
 type ListDeletedCertificatesPageResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
 	Certificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCertificatesResponse) ListDeletedCertificatesPageResponse {
@@ -1749,7 +1644,6 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 	}
 
 	return ListDeletedCertificatesPageResponse{
-		RawResponse:  g.RawResponse,
 		Certificates: certs,
 	}
 }
@@ -1780,9 +1674,6 @@ func (c *CancelCertificateOperationOptions) toGenerated() *generated.KeyVaultCli
 // CancelCertificateOperationResponse contains the response models for the Client.CancelCertificateOperation function
 type CancelCertificateOperationResponse struct {
 	CertificateOperation
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // CancelCertificateOperation cancels a certificate creation operation that is already in progress. This operation requires the certificates/update permission.
@@ -1801,7 +1692,6 @@ func (c *Client) CancelCertificateOperation(ctx context.Context, certName string
 	}
 
 	return CancelCertificateOperationResponse{
-		RawResponse:          resp.RawResponse,
 		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
 	}, nil
 }
@@ -1816,8 +1706,6 @@ func (d *DeleteCertificateOperationOptions) toGenerated() *generated.KeyVaultCli
 // DeleteCertificateOperationResponse contains the response for the Client.DeleteCertificateOperation function.
 type DeleteCertificateOperationResponse struct {
 	CertificateOperation
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // DeleteCertificateOperation deletes the creation operation for a specified certificate that is in the process of being created. The certificate is no
@@ -1835,7 +1723,6 @@ func (c *Client) DeleteCertificateOperation(ctx context.Context, certName string
 	}
 
 	return DeleteCertificateOperationResponse{
-		RawResponse:          resp.RawResponse,
 		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
 	}, nil
 }

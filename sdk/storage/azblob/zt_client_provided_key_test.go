@@ -806,6 +806,7 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 }
 
 func TestPageBlockWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

@@ -8,22 +8,22 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 20:12:20 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Thu, 03 Mar 2022 16:57:59 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 20:12:20 GMT",
-        "ETag": "\u00220x8D9F188A398E599\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "Date": "Thu, 03 Mar 2022 16:57:57 GMT",
+        "ETag": "\u00220x8D9FD36F85BAD2B\u0022",
+        "Last-Modified": "Thu, 03 Mar 2022 16:57:58 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "729cbded-e01e-000a-6c71-23d56a000000",
+        "x-ms-request-id": "4c7dcec4-801e-007b-2e1f-2fcde4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -36,8 +36,8 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Thu, 03 Mar 2022 16:57:59 GMT",
         "x-ms-lease-action": "acquire",
         "x-ms-lease-duration": "60",
         "x-ms-proposed-lease-id": "c820a799-76d7-4ee2-6e15-546f19325c2c",
@@ -47,15 +47,15 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 20:12:20 GMT",
-        "ETag": "\u00220x8D9F188A398E599\u0022",
-        "Last-Modified": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "Date": "Thu, 03 Mar 2022 16:57:58 GMT",
+        "ETag": "\u00220x8D9FD36F85BAD2B\u0022",
+        "Last-Modified": "Thu, 03 Mar 2022 16:57:58 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-lease-id": "c820a799-76d7-4ee2-6e15-546f19325c2c",
-        "x-ms-request-id": "729cbe51-e01e-000a-4571-23d56a000000",
+        "x-ms-request-id": "4c7dcfcd-801e-007b-221f-2fcde4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -67,8 +67,8 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Thu, 03 Mar 2022 16:57:59 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
@@ -76,19 +76,19 @@
       "ResponseHeaders": {
         "Content-Length": "272",
         "Content-Type": "application/xml",
-        "Date": "Wed, 16 Feb 2022 20:12:20 GMT",
+        "Date": "Thu, 03 Mar 2022 16:57:58 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-error-code": "LeaseIdMissing",
-        "x-ms-request-id": "729cbeb0-e01e-000a-1a71-23d56a000000",
+        "x-ms-request-id": "4c7dd173-801e-007b-281f-2fcde4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003ELeaseIdMissing\u003C/Code\u003E\u003CMessage\u003EThere is currently a lease on the container and no lease ID was specified in the request.\n",
-        "RequestId:729cbeb0-e01e-000a-1a71-23d56a000000\n",
-        "Time:2022-02-16T20:12:21.4607203Z\u003C/Message\u003E\u003C/Error\u003E"
+        "RequestId:4c7dd173-801e-007b-281f-2fcde4000000\n",
+        "Time:2022-03-03T16:57:59.2281370Z\u003C/Message\u003E\u003C/Error\u003E"
       ]
     },
     {
@@ -98,8 +98,8 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Thu, 03 Mar 2022 16:58:00 GMT",
         "x-ms-lease-id": "c820a799-76d7-4ee2-6e15-546f19325c2c",
         "x-ms-version": "2019-12-12"
       },
@@ -107,12 +107,12 @@
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "Date": "Thu, 03 Mar 2022 16:57:58 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "729cbf52-e01e-000a-3071-23d56a000000",
+        "x-ms-request-id": "4c7dd29f-801e-007b-2d1f-2fcde4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -124,20 +124,20 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 16 Feb 2022 20:12:22 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Thu, 03 Mar 2022 16:58:00 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 16 Feb 2022 20:12:21 GMT",
+        "Date": "Thu, 03 Mar 2022 16:57:58 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "729cc2a9-e01e-000a-3271-23d56a000000",
+        "x-ms-request-id": "4c7dd3b9-801e-007b-1e1f-2fcde4000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

@@ -71,8 +71,9 @@ func TestAppendBlockWithMD5(t *testing.T) {
 	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(t, containerClient)
 
-	// set up abClient to test
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
 	resp, err := abClient.Create(context.Background(), nil)
 	require.NoError(t, err)
 	require.Equal(t, resp.RawResponse.StatusCode, 201)

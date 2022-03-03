@@ -9,9 +9,11 @@ package azsecrets_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -211,4 +213,27 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func Example_accessRawHTTP() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	var respFromCtx *http.Response
+	ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+
+	_, err = client.GetSecret(ctx, "mySecretName", nil)
+	if err != nil {
+		panic(err)
+	}
+	// Do something with *http.Response
+	fmt.Println(respFromCtx.StatusCode)
 }

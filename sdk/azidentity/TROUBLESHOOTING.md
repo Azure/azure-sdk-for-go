@@ -88,7 +88,6 @@ azlog.SetEvents(azidentity.EventAuthentication)
 
 ## Troubleshoot ClientSecretCredential authentication issues
 
-`AuthenticationFailedException`
 | Error Code | Issue | Mitigation |
 |---|---|---|
 |AADSTS7000215|An invalid client secret was provided.|Ensure the secret provided to the credential constructor is valid. If unsure, create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|

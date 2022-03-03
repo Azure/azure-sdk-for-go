@@ -153,14 +153,15 @@ func ExampleClient_ListCertificates() {
 		panic(err)
 	}
 
-	poller := client.ListCertificates(nil)
-	for poller.NextPage(context.TODO()) {
-		for _, cert := range poller.PageResponse().Certificates {
+	pager := client.ListCertificates(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, cert := range page.Certificates {
 			fmt.Println(*cert.ID)
 		}
-	}
-	if poller.Err() != nil {
-		panic(err)
 	}
 }
 

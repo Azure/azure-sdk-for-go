@@ -47,7 +47,7 @@ func (p *KeyVaultClientGetCertificateIssuersPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -56,7 +56,7 @@ func (p *KeyVaultClientGetCertificateIssuersPager) NextPage(ctx context.Context)
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getCertificateIssuersHandleResponse(resp)
+	result, err := p.client.GetCertificateIssuersHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,7 +101,7 @@ func (p *KeyVaultClientGetCertificateVersionsPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -110,7 +110,7 @@ func (p *KeyVaultClientGetCertificateVersionsPager) NextPage(ctx context.Context
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getCertificateVersionsHandleResponse(resp)
+	result, err := p.client.GetCertificateVersionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -155,7 +155,7 @@ func (p *KeyVaultClientGetCertificatesPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -164,7 +164,7 @@ func (p *KeyVaultClientGetCertificatesPager) NextPage(ctx context.Context) bool 
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getCertificatesHandleResponse(resp)
+	result, err := p.client.GetCertificatesHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -209,7 +209,7 @@ func (p *KeyVaultClientGetDeletedCertificatesPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -218,7 +218,7 @@ func (p *KeyVaultClientGetDeletedCertificatesPager) NextPage(ctx context.Context
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getDeletedCertificatesHandleResponse(resp)
+	result, err := p.client.GetDeletedCertificatesHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

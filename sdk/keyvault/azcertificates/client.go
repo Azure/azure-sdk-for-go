@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -598,40 +599,68 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 // ListCertificatesPager implements the ListCertificatesPager interface
 type ListCertificatesPager struct {
-	genPager *generated.KeyVaultClientGetCertificatesPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListCertificatesPager) PageResponse() ListCertificatesPage {
-	return listKeysPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListCertificatesPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListCertificatesPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListCertificatesPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListCertificatesPager) NextPage(ctx context.Context) (ListCertificatesPageResponse, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetCertificatesCreateRequest(
+			ctx,
+			l.vaultURL,
+			&generated.KeyVaultClientGetCertificatesOptions{},
+		)
+		if err != nil {
+			return ListCertificatesPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificatesPageResponse{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListCertificatesPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificatesPageResponse{}, err
+		}
+	}
+	if err != nil {
+		return ListCertificatesPageResponse{}, err
+	}
+	result, err := l.genClient.GetCertificatesHandleResponse(resp)
+	if err != nil {
+		return ListCertificatesPageResponse{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listKeysPageFromGenerated(result), nil
 }
 
 // ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method
 type ListCertificatesOptions struct{}
 
-// convert ListCertificatesOptions to generated options
-func (l *ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCertificatesOptions {
-	if l == nil {
-		return &generated.KeyVaultClientGetCertificatesOptions{}
-	}
-
-	return &generated.KeyVaultClientGetCertificatesOptions{}
-}
-
-// ListCertificatesPage contains the current page of results for the Client.ListSecrets operation
-type ListCertificatesPage struct {
+// ListCertificatesPageResponse contains the current page of results for the Client.ListSecrets operation
+type ListCertificatesPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -640,7 +669,7 @@ type ListCertificatesPage struct {
 }
 
 // convert internal Response to ListCertificatesPage
-func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse) ListCertificatesPage {
+func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse) ListCertificatesPageResponse {
 	var vals []*CertificateItem
 
 	for _, v := range i.Value {
@@ -652,7 +681,7 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 		})
 	}
 
-	return ListCertificatesPage{
+	return ListCertificatesPageResponse{
 		RawResponse:  i.RawResponse,
 		Certificates: vals,
 	}
@@ -664,46 +693,80 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 // certificate are not listed in the response. This operation requires the certificates/list permission.
 func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertificatesPager {
 	return ListCertificatesPager{
-		genPager: c.genClient.GetCertificates(c.vaultURL, options.toGenerated()),
+		vaultURL:  c.vaultURL,
+		genClient: c.genClient,
+		nextLink:  nil,
 	}
 }
 
 // ListCertificateVersionsPager is the pager returned by Client.ListCertificateVersions
 type ListCertificateVersionsPager struct {
-	genPager *generated.KeyVaultClientGetCertificateVersionsPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
+	certName  string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (l *ListCertificateVersionsPager) PageResponse() ListCertificateVersionsPage {
-	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListCertificateVersionsPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *ListCertificateVersionsPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) (ListCertificateVersionsPageResponse, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetCertificateVersionsCreateRequest(
+			ctx,
+			l.vaultURL,
+			l.certName,
+			&generated.KeyVaultClientGetCertificateVersionsOptions{},
+		)
+		if err != nil {
+			return ListCertificateVersionsPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificateVersionsPageResponse{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListCertificateVersionsPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListCertificateVersionsPageResponse{}, err
+		}
+	}
+	if err != nil {
+		return ListCertificateVersionsPageResponse{}, err
+	}
+	result, err := l.genClient.GetCertificateVersionsHandleResponse(resp)
+	if err != nil {
+		return ListCertificateVersionsPageResponse{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listCertificateVersionsPageFromGenerated(result), nil
 }
 
 // ListCertificateVersionsOptions contains the options for the ListCertificateVersions operations
-type ListCertificateVersionsOptions struct{}
-
-// convert the public ListCertificateVersionsOptions to the generated version
-func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClientGetCertificateVersionsOptions {
-	if l == nil {
-		return &generated.KeyVaultClientGetCertificateVersionsOptions{}
-	}
-
-	return &generated.KeyVaultClientGetCertificateVersionsOptions{}
+type ListCertificateVersionsOptions struct {
+	// placeholder for future optional parameters.
 }
 
-// ListCertificateVersionsPage contains the current page from a ListCertificateVersionsPager.PageResponse method
-type ListCertificateVersionsPage struct {
+// ListCertificateVersionsPageResponse contains the current page from a ListCertificateVersionsPager.PageResponse method
+type ListCertificateVersionsPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -711,8 +774,8 @@ type ListCertificateVersionsPage struct {
 	RawResponse *http.Response
 }
 
-// create ListKeysPage from generated pager
-func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsPage {
+// create ListCertificatesPage from generated pager
+func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsPageResponse {
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
@@ -723,7 +786,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 		})
 	}
 
-	return ListCertificateVersionsPage{
+	return ListCertificateVersionsPageResponse{
 		RawResponse:  i.RawResponse,
 		Certificates: vals,
 	}
@@ -734,11 +797,10 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 // requires the certificates/list permission.
 func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
 	return ListCertificateVersionsPager{
-		genPager: c.genClient.GetCertificateVersions(
-			c.vaultURL,
-			certificateName,
-			options.toGenerated(),
-		),
+		certName:  certificateName,
+		vaultURL:  c.vaultURL,
+		genClient: c.genClient,
+		nextLink:  nil,
 	}
 }
 
@@ -900,40 +962,70 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 
 // ListPropertiesOfIssuersPager is the pager returned by Client.ListIssuers
 type ListPropertiesOfIssuersPager struct {
-	genPager *generated.KeyVaultClientGetCertificateIssuersPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListPropertiesOfIssuersPager) PageResponse() ListIssuersPropertiesOfIssuersPage {
-	return listIssuersPageFromGenerated(l.genPager.PageResponse())
+// More returns true if there are more pages to return
+func (l *ListPropertiesOfIssuersPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListPropertiesOfIssuersPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) (ListIssuersPropertiesOfIssuersPageResponse, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetCertificateIssuersCreateRequest(
+			ctx,
+			l.vaultURL,
+			&generated.KeyVaultClientGetCertificateIssuersOptions{},
+		)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPageResponse{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListIssuersPropertiesOfIssuersPageResponse{}, err
+		}
+	}
+	if err != nil {
+		return ListIssuersPropertiesOfIssuersPageResponse{}, err
+	}
+	result, err := l.genClient.GetCertificateIssuersHandleResponse(resp)
+	if err != nil {
+		return ListIssuersPropertiesOfIssuersPageResponse{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listIssuersPageFromGenerated(result), nil
 }
 
 // ListPropertiesOfIssuersOptions contains the optional parameters for the Client.ListIssuers method
-type ListPropertiesOfIssuersOptions struct{}
-
-// convert ListIssuersOptions to generated options
-func (l *ListPropertiesOfIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
-	if l == nil {
-		return &generated.KeyVaultClientGetCertificateIssuersOptions{}
-	}
-
-	return &generated.KeyVaultClientGetCertificateIssuersOptions{}
+type ListPropertiesOfIssuersOptions struct {
+	// placeholder for future optional parameters
 }
 
-// ListIssuersPropertiesOfIssuersPage contains the current page of results for the Client.ListSecrets operation
-type ListIssuersPropertiesOfIssuersPage struct {
+// ListIssuersPropertiesOfIssuersPageResponse contains the current page of results for the Client.ListSecrets operation
+type ListIssuersPropertiesOfIssuersPageResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Issuers []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 
@@ -942,14 +1034,14 @@ type ListIssuersPropertiesOfIssuersPage struct {
 }
 
 // convert internal Response to ListPropertiesOfIssuersPage
-func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersPage {
+func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersPageResponse {
 	var vals []*CertificateIssuerItem
 
 	for _, v := range i.Value {
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
 	}
 
-	return ListIssuersPropertiesOfIssuersPage{
+	return ListIssuersPropertiesOfIssuersPageResponse{
 		RawResponse: i.RawResponse,
 		Issuers:     vals,
 	}
@@ -959,7 +1051,9 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) ListPropertiesOfIssuers(options *ListPropertiesOfIssuersOptions) ListPropertiesOfIssuersPager {
 	return ListPropertiesOfIssuersPager{
-		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
+		genClient: c.genClient,
+		vaultURL:  c.vaultURL,
+		nextLink:  nil,
 	}
 }
 
@@ -1569,45 +1663,65 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 
 // ListDeletedCertificatesPager is the pager returned by Client.ListDeletedCertificates
 type ListDeletedCertificatesPager struct {
-	genPager *generated.KeyVaultClientGetDeletedCertificatesPager
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	nextLink  *string
 }
 
-// PageResponse returns the current page of results
-func (l *ListDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPage {
-	resp := l.genPager.PageResponse()
-
-	var vals []*DeletedCertificateItem
-
-	for _, v := range resp.Value {
-		vals = append(vals, &DeletedCertificateItem{
-			RecoveryID:         v.RecoveryID,
-			DeletedDate:        v.DeletedDate,
-			ScheduledPurgeDate: v.ScheduledPurgeDate,
-			Properties:         certificateAttributesFromGenerated(v.Attributes),
-			ID:                 v.ID,
-			Tags:               convertGeneratedMap(v.Tags),
-			X509Thumbprint:     v.X509Thumbprint,
-		})
+// More returns true if there are more pages to return
+func (l *ListDeletedCertificatesPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
 	}
+	return true
+}
 
-	return ListDeletedCertificatesPage{
-		RawResponse:  resp.RawResponse,
-		Certificates: vals,
+// NextPage returns the current page of results
+func (l *ListDeletedCertificatesPager) NextPage(ctx context.Context) (ListDeletedCertificatesPageResponse, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetDeletedCertificatesCreateRequest(
+			ctx,
+			l.vaultURL,
+			&generated.KeyVaultClientGetDeletedCertificatesOptions{},
+		)
+		if err != nil {
+			return ListDeletedCertificatesPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListDeletedCertificatesPageResponse{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListDeletedCertificatesPageResponse{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListDeletedCertificatesPageResponse{}, err
+		}
 	}
+	if err != nil {
+		return ListDeletedCertificatesPageResponse{}, err
+	}
+	result, err := l.genClient.GetDeletedCertificatesHandleResponse(resp)
+	if err != nil {
+		return ListDeletedCertificatesPageResponse{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listDeletedCertsPageFromGenerated(result), nil
 }
 
-// Err returns an error if the last operation resulted in an error.
-func (l *ListDeletedCertificatesPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next page of results.
-func (l *ListDeletedCertificatesPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
-}
-
-// ListDeletedCertificatesPage holds the data for a single page.
-type ListDeletedCertificatesPage struct {
+// ListDeletedCertificatesPageResponse holds the data for a single page.
+type ListDeletedCertificatesPageResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
 	Certificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -1615,25 +1729,44 @@ type ListDeletedCertificatesPage struct {
 	RawResponse *http.Response
 }
 
-// ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates operation.
-type ListDeletedCertificatesOptions struct {
+func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCertificatesResponse) ListDeletedCertificatesPageResponse {
+	var certs []*DeletedCertificateItem
+
+	if len(g.Value) > 0 {
+		certs = make([]*DeletedCertificateItem, len(g.Value))
+
+		for i, c := range g.Value {
+			certs[i] = &DeletedCertificateItem{
+				Properties:         certificateAttributesFromGenerated(c.Attributes),
+				ID:                 c.ID,
+				RecoveryID:         c.RecoveryID,
+				Tags:               convertGeneratedMap(c.Tags),
+				X509Thumbprint:     c.X509Thumbprint,
+				DeletedDate:        c.DeletedDate,
+				ScheduledPurgeDate: c.ScheduledPurgeDate,
+			}
+		}
+	}
+
+	return ListDeletedCertificatesPageResponse{
+		RawResponse:  g.RawResponse,
+		Certificates: certs,
+	}
 }
 
-// Convert publicly exposed options to the generated version.a
-func (l *ListDeletedCertificatesOptions) toGenerated() *generated.KeyVaultClientGetDeletedCertificatesOptions {
-	return &generated.KeyVaultClientGetDeletedCertificatesOptions{}
+// ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates operation.
+type ListDeletedCertificatesOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ListDeletedCertificates retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
 // This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can
 // only be enabled on soft-delete enabled vaults.
 func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions) ListDeletedCertificatesPager {
-	if options == nil {
-		options = &ListDeletedCertificatesOptions{}
-	}
-
 	return ListDeletedCertificatesPager{
-		genPager: c.genClient.GetDeletedCertificates(c.vaultURL, options.toGenerated()),
+		vaultURL:  c.vaultURL,
+		genClient: c.genClient,
+		nextLink:  nil,
 	}
 }
 

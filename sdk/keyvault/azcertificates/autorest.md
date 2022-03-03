@@ -16,6 +16,6 @@ openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.35"
-module-version: 0.1.0
+module-version: 0.2.0
 export-clients: true
 ```

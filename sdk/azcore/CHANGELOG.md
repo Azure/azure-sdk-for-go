@@ -1,6 +1,6 @@
 # Release History
 
-## 0.21.2 (2022-03-03)
+## 0.22.0 (2022-03-03)
 
 ### Features Added
 * Added header `WWW-Authenticate` to the default allow-list of headers for logging.

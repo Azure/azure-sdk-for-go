@@ -89,6 +89,7 @@ const (
 	idHeader          = "x-recording-id"
 	modeHeader        = "x-recording-mode"
 	upstreamURIHeader = "x-recording-upstream-base-uri"
+	purgeHeader       = "x-purge-inmemory-recording"
 )
 
 var (
@@ -206,7 +207,12 @@ func (c *RecordingHTTPClient) stop() error {
 		return errors.New("recording ID was never set. Did you call Start?")
 	}
 
-	req.Header.Set("x-recording-id", c.recID) //recTest)
+	req.Header.Set(idHeader, c.recID) //recTest)
+
+	if c.mode == playbackMode {
+		req.Header.Set(purgeHeader, "true")
+	}
+
 	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)

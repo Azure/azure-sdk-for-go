@@ -36,7 +36,7 @@ func NewDiskEncryptionSetsClientWithBaseURI(baseURI string, subscriptionID strin
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskEncryptionSetName - the name of the disk encryption set that is being created. The name can't be changed
-// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 // maximum name length is 80 characters.
 // diskEncryptionSet - disk encryption set object supplied in the body of the Put disk encryption set
 // operation.
@@ -83,7 +83,7 @@ func (client DiskEncryptionSetsClient) CreateOrUpdatePreparer(ctx context.Contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -130,7 +130,7 @@ func (client DiskEncryptionSetsClient) CreateOrUpdateResponder(resp *http.Respon
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskEncryptionSetName - the name of the disk encryption set that is being created. The name can't be changed
-// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 // maximum name length is 80 characters.
 func (client DiskEncryptionSetsClient) Delete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result DiskEncryptionSetsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -166,7 +166,7 @@ func (client DiskEncryptionSetsClient) DeletePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -210,7 +210,7 @@ func (client DiskEncryptionSetsClient) DeleteResponder(resp *http.Response) (res
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskEncryptionSetName - the name of the disk encryption set that is being created. The name can't be changed
-// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 // maximum name length is 80 characters.
 func (client DiskEncryptionSetsClient) Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result DiskEncryptionSet, err error) {
 	if tracing.IsEnabled() {
@@ -253,7 +253,7 @@ func (client DiskEncryptionSetsClient) GetPreparer(ctx context.Context, resource
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -329,7 +329,7 @@ func (client DiskEncryptionSetsClient) ListPreparer(ctx context.Context) (*http.
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -401,7 +401,7 @@ func (client DiskEncryptionSetsClient) ListComplete(ctx context.Context) (result
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskEncryptionSetName - the name of the disk encryption set that is being created. The name can't be changed
-// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 // maximum name length is 80 characters.
 func (client DiskEncryptionSetsClient) ListAssociatedResources(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result ResourceURIListPage, err error) {
 	if tracing.IsEnabled() {
@@ -449,7 +449,7 @@ func (client DiskEncryptionSetsClient) ListAssociatedResourcesPreparer(ctx conte
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -565,7 +565,7 @@ func (client DiskEncryptionSetsClient) ListByResourceGroupPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -637,7 +637,7 @@ func (client DiskEncryptionSetsClient) ListByResourceGroupComplete(ctx context.C
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskEncryptionSetName - the name of the disk encryption set that is being created. The name can't be changed
-// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+// after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 // maximum name length is 80 characters.
 // diskEncryptionSet - disk encryption set object supplied in the body of the Patch disk encryption set
 // operation.
@@ -675,7 +675,7 @@ func (client DiskEncryptionSetsClient) UpdatePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

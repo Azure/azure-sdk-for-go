@@ -2,33 +2,33 @@
 
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the `azidentity` module, and mitigation steps to resolve these errors.
 
-## Table of Contents
+## Table of contents
 
-- [Handle azidentity Errors](#handle-azidentity-errors)
-  - [Permission Issues](#permission-issues)
-- [Find Relevant Information in Errors](#find-relevant-information-in-errors)
-- [Enable and Configure Logging](#enable-and-configure-logging)
-- [Troubleshoot DefaultAzureCredential Authentication Issues](#troubleshoot-defaultazurecredential-authentication-issues)
-- [Troubleshoot EnvironmentCredential Authentication Issues](#troubleshoot-environmentcredential-authentication-issues)
-- [Troubleshoot ClientSecretCredential Authentication Issues](#troubleshoot-clientsecretcredential-authentication-issues)
-- [Troubleshoot ClientCertificateCredential Authentication Issues](#troubleshoot-clientcertificatecredential-authentication-issues)
-- [Troubleshoot UsernamePasswordCredential Authentication Issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
-- [Troubleshoot ManagedIdentityCredential Authentication Issues](#troubleshoot-managedidentitycredential-authentication-issues)
-  - [Azure Virtual Machine Managed Identity](#azure-virtual-machine-managed-identity)
-  - [Azure App Service and Azure Functions Managed Identity](#azure-app-service-and-azure-functions-managed-identity)
-  - [Azure Kubernetes Service Managed Identity](#azure-kubernetes-service-managed-identity)
-- [Troubleshoot AzureCliCredential Authentication Issues](#troubleshoot-azureclicredential-authentication-issues)
-- [Get Additional Help](#get-additional-help)
+- [Handle azidentity errors](#handle-azidentity-errors)
+  - [Permission issues](#permission-issues)
+- [Find relevant information in errors](#find-relevant-information-in-errors)
+- [Enable and configure logging](#enable-and-configure-logging)
+- [Troubleshoot DefaultAzureCredential authentication issues](#troubleshoot-defaultazurecredential-authentication-issues)
+- [Troubleshoot EnvironmentCredential authentication issues](#troubleshoot-environmentcredential-authentication-issues)
+- [Troubleshoot ClientSecretCredential authentication issues](#troubleshoot-clientsecretcredential-authentication-issues)
+- [Troubleshoot ClientCertificateCredential authentication issues](#troubleshoot-clientcertificatecredential-authentication-issues)
+- [Troubleshoot UsernamePasswordCredential authentication issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
+- [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
+  - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
+  - [Azure App Service and Azure Functions managed identity](#azure-app-service-and-azure-functions-managed-identity)
+  - [Azure Kubernetes Service managed identity](#azure-kubernetes-service-managed-identity)
+- [Troubleshoot AzureCliCredential authentication issues](#troubleshoot-azureclicredential-authentication-issues)
+- [Get additional help](#get-additional-help)
 
-## Handle azidentity Errors
+## Handle azidentity errors
 
 Any service client method that makes a request to the service may return an error due to authentication failure. This is because the credential authenticates on the first call to the service and on any subsequent call that needs to refresh an access token. Authentication errors include a description of the failure and possibly an error message from Azure Active Directory. Depending on the application, these errors may or may not be recoverable.
 
-### Permission Issues
+### Permission issues
 
 Service client errors with a status code of 401 or 403 often indicate that authentication succeeded but the caller doesn't have permission to access the specified API. Check the service documentation to determine which RBAC roles are needed for the request, and ensure the authenticated user or service principal has the appropriate role assignments.
 
-## Find Relevant Information in Errors
+## Find relevant information in errors
 
 Authentication errors can include responses from Azure Active Directory and often contain information helpful in diagnosis. Consider the following error message.
 
@@ -58,7 +58,7 @@ This error contains several pieces of information:
 
 - __Correlation ID and Timestamp__: The correlation ID and timestamp identify the request in server-side logs. This information can be useful to support engineers diagnosing unexpected Azure AD failures.
 
-### Enable and Configure Logging
+### Enable and configure logging
 
 `azidentity` provides the same [logging capabilities](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Diagnostics.md#logging) as the rest of the Azure SDK. The simplest way to see the logs to help debug authentication issues is to print credential logs to the console.
 ```go
@@ -73,20 +73,20 @@ azlog.SetListener(func(event azlog.Event, s string) {
 azlog.SetEvents(azidentity.EventAuthentication)
 ```
 
-## Troubleshoot DefaultAzureCredential Authentication Issues
+## Troubleshoot DefaultAzureCredential authentication issues
 
 | Error |Description| Mitigation |
 |---|---|---|
 |"DefaultAzureCredential failed to acquire a token"|No credential in the `DefaultAzureCredential` chain provided a token|<ul><li>[Enable logging](#enable-and-configure-logging) to get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-visualstudiocredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li></ul>|
 |Error from the client with a status code of 401 or 403|Authentication succeeded but the authorizing Azure service responded with a 401 (Unauthorized), or 403 (Forbidden) status code|<ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>If an unexpected credential is returning a token, check application configuration such as environment variables.</li><li>Ensure the correct role is assigned to the authenticated identity. For example, a service specific role rather than the subscription Owner role.</li></ul>|
 
-## Troubleshoot EnvironmentCredential Authentication Issues
+## Troubleshoot EnvironmentCredential authentication issues
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |Missing or incomplete environment variable configuration|A valid combination of environment variables wasn't set|Ensure the appropriate environment variables are set for the intended authentication method as described in the [module documentation](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#EnvironmentCredential)|
 
-## Troubleshoot ClientSecretCredential Authentication Issues
+## Troubleshoot ClientSecretCredential authentication issues
 
 `AuthenticationFailedException`
 | Error Code | Issue | Mitigation |
@@ -95,20 +95,20 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure Active Directory instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
-## Troubleshoot ClientCertificateCredential Authentication Issues
+## Troubleshoot ClientCertificateCredential authentication issues
 
 | Error Code | Description | Mitigation |
 |---|---|---|
 |AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure Active Directory instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
-## Troubleshoot UsernamePasswordCredential Authentication Issues
+## Troubleshoot UsernamePasswordCredential authentication issues
 
 | Error Code | Issue | Mitigation |
 |---|---|---|
 |AADSTS50126|The provided username or password is invalid.|Ensure the username and password provided to the credential constructor are valid.|
 
-## Troubleshoot ManagedIdentityCredential Authentication Issues
+## Troubleshoot ManagedIdentityCredential authentication issues
 
 `ManagedIdentityCredential` is designed to work on a variety of Azure hosts support managed identity. Configuration and troubleshooting vary from host to host. The below table lists the Azure hosts that can be assigned a managed identity, and are supported by `ManagedIdentityCredential`.
 
@@ -120,7 +120,7 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |Azure Arc|[Configuration](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)||
 |Azure Service Fabric|[Configuration](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)||
 
-### Azure Virtual Machine Managed Identity
+### Azure Virtual Machine managed identity
 
 | Error Message |Description| Mitigation |
 |---|---|---|
@@ -138,7 +138,7 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 ```
 > Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
-### Azure App Service and Azure Functions Managed Identity
+### Azure App Service and Azure Functions managed identity
 
 | Error Message |Description| Mitigation |
 |---|---|---|
@@ -152,7 +152,7 @@ curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-versio
 ```
 > Note that the output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
-### Azure Kubernetes Service Managed Identity
+### Azure Kubernetes Service managed identity
 
 #### Pod Identity
 
@@ -160,7 +160,7 @@ curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-versio
 |---|---|---|
 |"no azure identity found for request clientID"|The application attempted to authenticate before an identity was assigned to its pod|Verify the pod is labeled correctly. This also occurs when a correctly labeled pod authenticates before the identity is ready. To prevent initialization races, configure NMI to set the Retry-After header in its responses as described in [Pod Identity documentation](https://azure.github.io/aad-pod-identity/docs/configure/feature_flags/#set-retry-after-header-in-nmi-response).
 
-## Troubleshoot AzureCliCredential Authentication Issues
+## Troubleshoot AzureCliCredential authentication issues
 
 | Error Message |Description| Mitigation |
 |---|---|---|
@@ -182,6 +182,6 @@ az account get-access-token --output json --resource https://management.core.win
 ```
 >Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
-## Get Additional Help
+## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-go/blob/main/SUPPORT.md) at the root of the repo.

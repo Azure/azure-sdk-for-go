@@ -10,11 +10,9 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
@@ -193,26 +191,4 @@ func ExampleClient_BeginDeleteCertificate() {
 	}
 
 	fmt.Println("Deleted certificate with ID: ", *finalResp.ID)
-}
-func Example_accessRawHTTP() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcertificates.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	var respFromCtx *http.Response
-	ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
-
-	_, err = client.GetCertificate(ctx, "myCertName", nil)
-	if err != nil {
-		panic(err)
-	}
-	// Do something with *http.Response
-	fmt.Println(respFromCtx.StatusCode)
 }

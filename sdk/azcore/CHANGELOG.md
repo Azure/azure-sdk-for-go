@@ -1,6 +1,6 @@
 # Release History
 
-## 0.21.2 (Unreleased)
+## 0.22.0 (2022-03-03)
 
 ### Features Added
 * Added header `WWW-Authenticate` to the default allow-list of headers for logging.
@@ -9,10 +9,6 @@
 
 ### Breaking Changes
 * Moved `WithHTTPHeader` and `WithRetryOptions` from the `policy` package to the `runtime` package.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.21.1 (2022-02-04)
 

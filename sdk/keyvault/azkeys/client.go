@@ -593,7 +593,6 @@ type DeleteKeyPoller struct {
 	client         *generated.KeyVaultClient
 	deleteResponse generated.KeyVaultClientDeleteKeyResponse
 	lastResponse   generated.KeyVaultClientGetDeletedKeyResponse
-	RawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -631,11 +630,10 @@ func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse,
 // Poll is a wait determined by the t parameter.
 func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
 	for {
-		resp, err := s.Poll(ctx)
+		_, err := s.Poll(ctx)
 		if err != nil {
 			return DeleteKeyResponse{}, err
 		}
-		s.RawResponse = resp
 		if s.Done() {
 			break
 		}
@@ -751,12 +749,11 @@ type RecoverDeletedKeyPoller struct {
 	client          *generated.KeyVaultClient
 	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
 	lastResponse    generated.KeyVaultClientGetKeyResponse
-	RawResponse     *http.Response
 }
 
 // Done returns true when the polling operation is completed
 func (p *RecoverDeletedKeyPoller) Done() bool {
-	return p.RawResponse.StatusCode == http.StatusOK
+	return p.lastResponse.RawResponse == nil
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
@@ -780,14 +777,13 @@ func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDel
 // pollUntilDone is the method for the Response.PollUntilDone struct
 func (p *RecoverDeletedKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
-		resp, err := p.Poll(ctx)
+		_, err := p.Poll(ctx)
 		if err != nil {
-			p.RawResponse = resp
+			return RecoverDeletedKeyResponse{}, err
 		}
 		if p.Done() {
 			break
 		}
-		p.RawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
@@ -853,7 +849,6 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
-		RawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedKeyPollerResponse{

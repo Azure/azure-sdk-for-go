@@ -14,22 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func initEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", fakeTenantID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", fakeClientID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func resetEnvironmentVarsForTest() {
 	clearEnvVars("AZURE_TENANT_ID", "AZURE_CLIENT_ID", "AZURE_CLIENT_SECRET", "AZURE_CLIENT_CERTIFICATE_PATH", "AZURE_USERNAME", "AZURE_PASSWORD")
 }

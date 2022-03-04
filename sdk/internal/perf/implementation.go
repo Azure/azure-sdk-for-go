@@ -240,15 +240,31 @@ func runPerfTest(name string, p NewPerfTest) error {
 		go runTest(perfTest, idx, messages, IDs[idx])
 	}
 
+	warmUpStatus := newStatusRunner(time.Now(), warmUpDuration)
+	durationStatus := newStatusRunner(time.Now().Add(time.Duration(warmUpDuration)*time.Second), duration)
+	// Read incoming messages and handle status updates
+
+	wg.Add(1)
+	go func() {
+		warmUpStatus.isWarmup = true
+		warmUpStatus.printUpdates()
+		warmUpStatus.printFinalUpdate()
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		durationStatus.printUpdates()
+		durationStatus.printFinalUpdate()
+		wg.Done()
+	}()
+
 	// Add another goroutine to close the channel after completion
 	go func() {
 		wg.Wait()
 		close(messages)
 	}()
 
-	warmUpStatus := newStatusRunner(time.Now(), warmUpDuration)
-	// status := newStatusRunner(time.Now().Add(time.Duration(warmUpDuration)*time.Second), duration)
-	// Read incoming messages and handle status updates
 	for msg := range messages {
 		if debug {
 			log.Println("Handling message: ", msg)
@@ -259,13 +275,9 @@ func runPerfTest(name string, p NewPerfTest) error {
 		if msg.warmup {
 			warmUpStatus.handleMessage(msg, w)
 		} else {
-			// status.handleMessage(msg, w)
+			durationStatus.handleMessage(msg, w)
 		}
-		// handleMessage(w, msg)
 	}
-
-	// Print before running the cleanup in case cleanup takes a while
-	// printFinalResults(elapsedTimes, perSecondCount, false)
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {

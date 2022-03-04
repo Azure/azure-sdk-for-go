@@ -111,7 +111,7 @@ azlog.SetEvents(azidentity.EventAuthentication)
 
 ## Troubleshoot ManagedIdentityCredential authentication issues
 
-`ManagedIdentityCredential` is designed to work on a variety of Azure hosts support managed identity. Configuration and troubleshooting vary from host to host. The below table lists the Azure hosts that can be assigned a managed identity, and are supported by `ManagedIdentityCredential`.
+`ManagedIdentityCredential` is designed to work on a variety of Azure hosts support managed identity. Configuration and troubleshooting vary from host to host. The below table lists the Azure hosts that can be assigned a managed identity and are supported by `ManagedIdentityCredential`.
 
 |Host Environment| | |
 |---|---|---|
@@ -138,7 +138,7 @@ If you have access to the VM, you can use `curl` to verify the managed identity 
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
 
-> Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
+> This command's output will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ### Azure App Service and Azure Functions managed identity
 
@@ -154,7 +154,7 @@ If you can SSH into the App Service, you can verify managed identity is availabl
 curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-version=2019-08-01" -H "X-IDENTITY-HEADER: $IDENTITY_HEADER"
 ```
 
-> Note that the output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
+> This command's output will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ### Azure Kubernetes Service managed identity
 
@@ -185,7 +185,7 @@ Once you've verified the Azure CLI is using the correct account, you can validat
 az account get-access-token --output json --resource https://management.core.windows.net
 ```
 
->Note that output of this command will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
+> This command's output will contain an access token and SHOULD NOT BE SHARED, to avoid compromising account security.
 
 ## Get additional help
 

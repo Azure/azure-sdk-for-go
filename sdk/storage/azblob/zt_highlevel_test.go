@@ -27,7 +27,7 @@ func generateFile(fileName string, fileSize int) []byte {
 }
 
 func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize, bufferSize, maxBuffers int) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -112,7 +112,7 @@ func TestUploadStreamToBlockBlobEmpty(t *testing.T) {
 }
 
 func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
@@ -278,7 +278,7 @@ func TestUploadAndDownloadFileNonZeroOffsetAndCount(t *testing.T) {
 }
 
 func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	// Set up buffer to upload
 	_, bytesToUpload := generateData(blobSize)
 
@@ -474,7 +474,7 @@ func (m *mockMMF) write(_ string) {
 }
 
 func TestDoBatchTransferWithError(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	ctx := context.Background()
 	mmf := mockMMF{failHandle: require.New(t)}
 	expectedFirstError := errors.New("#3 means trouble")

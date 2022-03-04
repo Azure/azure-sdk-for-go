@@ -9,21 +9,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:45:09 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:50:45 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:45:08 GMT",
-        "ETag": "\u00220x8D9FD352D762A83\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:45:08 GMT",
+        "Date": "Fri, 04 Mar 2022 15:50:44 GMT",
+        "ETag": "\u00220x8D9FDF6BED8FA94\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:50:45 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "273c2645-a01e-0021-6f1e-2fab03000000",
+        "x-ms-request-id": "70fddec9-601e-0063-14df-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -38,7 +38,7 @@
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-copy-action": "abort",
-        "x-ms-date": "Thu, 03 Mar 2022 16:45:09 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:50:46 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
@@ -46,19 +46,19 @@
       "ResponseHeaders": {
         "Content-Length": "424",
         "Content-Type": "application/xml",
-        "Date": "Thu, 03 Mar 2022 16:45:09 GMT",
+        "Date": "Fri, 04 Mar 2022 15:50:44 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-error-code": "InvalidQueryParameterValue",
-        "x-ms-request-id": "273c27c7-a01e-0021-401e-2fab03000000",
+        "x-ms-request-id": "70fde040-601e-0063-69df-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidQueryParameterValue\u003C/Code\u003E\u003CMessage\u003EValue for one of the query parameters specified in the request URI is invalid.\n",
-        "RequestId:273c27c7-a01e-0021-401e-2fab03000000\n",
-        "Time:2022-03-03T16:45:09.0596904Z\u003C/Message\u003E\u003CQueryParameterName\u003Ecopyid\u003C/QueryParameterName\u003E\u003CQueryParameterValue\u003Ecopynotstarted\u003C/QueryParameterValue\u003E\u003CReason\u003Ecopyid needs to be valid Guid.\u003C/Reason\u003E\u003C/Error\u003E"
+        "RequestId:70fde040-601e-0063-69df-2f1283000000\n",
+        "Time:2022-03-04T15:50:45.7817523Z\u003C/Message\u003E\u003CQueryParameterName\u003Ecopyid\u003C/QueryParameterName\u003E\u003CQueryParameterValue\u003Ecopynotstarted\u003C/QueryParameterValue\u003E\u003CReason\u003Ecopyid needs to be valid Guid.\u003C/Reason\u003E\u003C/Error\u003E"
       ]
     },
     {
@@ -69,19 +69,19 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:45:10 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:50:46 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:45:09 GMT",
+        "Date": "Fri, 04 Mar 2022 15:50:45 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "273c2909-a01e-0021-5f1e-2fab03000000",
+        "x-ms-request-id": "70fde198-601e-0063-1cdf-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

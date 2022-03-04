@@ -13,13 +13,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSetBlobTags(t *testing.T) {
-	recording.LiveOnly(t) // Only passes live only
+	// recording.LiveOnly(t) // Only passes live only
 	stop := start(t)
 	defer stop()
 
@@ -63,7 +62,7 @@ func TestSetBlobTags(t *testing.T) {
 }
 
 func TestSetBlobTagsWithVID(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -159,7 +158,7 @@ func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {
 }
 
 func TestStageBlockWithTags(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -225,7 +224,7 @@ func TestStageBlockWithTags(t *testing.T) {
 }
 
 func TestStageBlockFromURLWithTags(t *testing.T) {
-	recording.LiveOnly(t) // StageBlockFromURL fails in recording mode
+	// recording.LiveOnly(t) // StageBlockFromURL fails in recording mode
 	stop := start(t)
 	defer stop()
 
@@ -329,6 +328,7 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 }
 
 func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -445,7 +445,7 @@ func TestGetPropertiesReturnsTagsCount(t *testing.T) {
 }
 
 func TestSetBlobTagForSnapshot(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -479,7 +479,7 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 
 // TODO: Once new pacer is done.
 func TestListBlobReturnsTags(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -525,7 +525,7 @@ func TestListBlobReturnsTags(t *testing.T) {
 }
 
 func TestCreatePageBlobWithTags(t *testing.T) {
-	recording.LiveOnly(t) // bodies do not match
+	// recording.LiveOnly(t) // bodies do not match
 	stop := start(t)
 	defer stop()
 
@@ -601,7 +601,7 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 }
 
 func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
-	recording.LiveOnly(t) // Body does not match
+	// recording.LiveOnly(t) // Body does not match
 	stop := start(t)
 	defer stop()
 
@@ -640,7 +640,7 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 }
 
 func TestCreateAppendBlobWithTags(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

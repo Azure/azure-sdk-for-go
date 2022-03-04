@@ -10,19 +10,19 @@
         "Content-Length": "137",
         "Content-Type": "application/xml",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:46:55 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:52:17 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": "\u003CStorageServiceProperties\u003E\u003CDeleteRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E1\u003C/Days\u003E\u003C/DeleteRetentionPolicy\u003E\u003C/StorageServiceProperties\u003E",
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:46:54 GMT",
+        "Date": "Fri, 04 Mar 2022 15:52:16 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "273e8f3c-a01e-0021-511e-2fab03000000",
+        "x-ms-request-id": "71004dcf-601e-0063-3cdf-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -37,19 +37,19 @@
         "Content-Length": "124",
         "Content-Type": "application/xml",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:46:55 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:52:17 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": "\u003CStorageServiceProperties\u003E\u003CDeleteRetentionPolicy\u003E\u003CEnabled\u003Efalse\u003C/Enabled\u003E\u003C/DeleteRetentionPolicy\u003E\u003C/StorageServiceProperties\u003E",
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:46:54 GMT",
+        "Date": "Fri, 04 Mar 2022 15:52:16 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "273e90a9-a01e-0021-1a1e-2fab03000000",
+        "x-ms-request-id": "710052cb-601e-0063-2edf-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -110,7 +109,7 @@ func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
 
 func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -285,7 +284,7 @@ func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 
 func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -445,7 +444,7 @@ func TestUploadBlobWithMD5WithCPK(t *testing.T) {
 
 func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -544,7 +543,7 @@ func TestAppendBlockWithCPK(t *testing.T) {
 
 func TestAppendBlockWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -600,7 +599,7 @@ func TestAppendBlockWithCPKScope(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithCPK(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -710,7 +709,7 @@ func TestAppendBlockFromURLWithCPK(t *testing.T) {
 
 func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -806,7 +805,7 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 }
 
 func TestPageBlockWithCPK(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -865,7 +864,7 @@ func TestPageBlockWithCPK(t *testing.T) {
 
 func TestPageBlockWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -914,7 +913,7 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 }
 
 func TestPageBlockFromURLWithCPK(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -999,7 +998,7 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 
 func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1074,7 +1073,7 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 }
 
 func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1295,7 +1294,7 @@ func TestGetSetBlobMetadataWithCPK(t *testing.T) {
 
 func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope is not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1383,7 +1382,7 @@ func TestBlobSnapshotWithCPK(t *testing.T) {
 
 func TestBlobSnapshotWithCPKScope(t *testing.T) {
 	//t.Skip("encryption scope is not available")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

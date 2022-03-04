@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -68,7 +67,7 @@ func TestPutGetPages(t *testing.T) {
 }
 
 func TestUploadPagesFromURL(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -138,7 +137,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 }
 
 func TestUploadPagesFromURLWithMD5(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -407,7 +406,7 @@ func TestPageSequenceNumbers(t *testing.T) {
 
 func TestPutPagesWithMD5(t *testing.T) {
 	//t.Skip("AuthenticationFailed")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2384,7 +2383,7 @@ func validateDiffPageRanges(t *testing.T, resp PageList, err error) {
 }
 
 func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2401,7 +2400,7 @@ func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2413,7 +2412,7 @@ func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2436,7 +2435,7 @@ func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2458,7 +2457,7 @@ func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfUnmodifiedSinceTrue(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2481,7 +2480,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfUnmodifiedSinceFalse(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2505,7 +2504,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfMatchTrue(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2528,7 +2527,7 @@ func TestBlobDiffPageRangeIfMatchTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfMatchFalse(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2551,7 +2550,7 @@ func TestBlobDiffPageRangeIfMatchFalse(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -2573,7 +2572,7 @@ func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
 }
 
 func TestBlobDiffPageRangeIfNoneMatchFalse(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

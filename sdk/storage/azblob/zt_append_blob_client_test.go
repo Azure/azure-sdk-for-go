@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -59,7 +58,7 @@ func TestAppendBlock(t *testing.T) {
 
 func TestAppendBlockWithMD5(t *testing.T) {
 	//t.Skip("md5 fails authentication")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -114,7 +113,7 @@ func TestAppendBlockWithMD5(t *testing.T) {
 }
 
 func TestAppendBlockFromURL(t *testing.T) {
-	recording.LiveOnly(t) // Live only because of random data and random name
+	// recording.LiveOnly(t) // Live only because of random data and random name
 	stop := start(t)
 	defer stop()
 
@@ -210,7 +209,7 @@ func TestAppendBlockFromURL(t *testing.T) {
 
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	//t.Skip("md5 fails authentication")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

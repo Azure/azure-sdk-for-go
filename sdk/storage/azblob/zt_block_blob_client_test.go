@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -289,7 +288,7 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 }
 
 func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -358,7 +357,7 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 
 func TestStageBlockWithMD5(t *testing.T) {
 	//t.Skip("authentication failed")
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -1138,7 +1137,7 @@ func TestBlobSetTierOnCommit(t *testing.T) {
 }
 
 func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

@@ -9,21 +9,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:10 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:56:46 GMT",
-        "ETag": "\u00220x8D9FD36CDFBA585\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:47 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:09 GMT",
+        "ETag": "\u00220x8D9FDF7802026FD\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:09 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "4c7c9c63-801e-007b-401f-2fcde4000000",
+        "x-ms-request-id": "71060aad-601e-0063-0ee0-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -39,7 +39,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:10 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -48,18 +48,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:47 GMT",
-        "ETag": "\u00220x8D9FD36CE2782C5\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:47 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:10 GMT",
+        "ETag": "\u00220x8D9FDF7804825F9\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:10 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7c9db6-801e-007b-6f1f-2fcde4000000",
+        "x-ms-request-id": "71060ce5-601e-0063-67e0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:47.8393029Z"
+        "x-ms-version-id": "2022-03-04T15:56:10.0607223Z"
       },
       "ResponseBody": null
     },
@@ -74,7 +74,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:10 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -83,18 +83,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:47 GMT",
-        "ETag": "\u00220x8D9FD36CE53BC6E\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:10 GMT",
+        "ETag": "\u00220x8D9FDF7806E45F3\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:10 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7c9eef-801e-007b-7e1f-2fcde4000000",
+        "x-ms-request-id": "71060f0e-601e-0063-32e0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:48.1291374Z"
+        "x-ms-version-id": "2022-03-04T15:56:10.3095795Z"
       },
       "ResponseBody": null
     },
@@ -109,7 +109,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:10 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -118,18 +118,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:47 GMT",
-        "ETag": "\u00220x8D9FD36CE839EFF\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:10 GMT",
+        "ETag": "\u00220x8D9FDF78093A2CB\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:10 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7ca026-801e-007b-181f-2fcde4000000",
+        "x-ms-request-id": "7106114f-601e-0063-80e0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:48.4439565Z"
+        "x-ms-version-id": "2022-03-04T15:56:10.5544395Z"
       },
       "ResponseBody": null
     },
@@ -144,7 +144,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -153,18 +153,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:47 GMT",
-        "ETag": "\u00220x8D9FD36CEB3F6CB\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:10 GMT",
+        "ETag": "\u00220x8D9FDF780BA5EF4\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:10 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7ca18f-801e-007b-691f-2fcde4000000",
+        "x-ms-request-id": "7106133f-601e-0063-2ee0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:48.7597771Z"
+        "x-ms-version-id": "2022-03-04T15:56:10.8082932Z"
       },
       "ResponseBody": null
     },
@@ -179,7 +179,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -188,18 +188,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:48 GMT",
-        "ETag": "\u00220x8D9FD36CEE5D4CC\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:11 GMT",
+        "ETag": "\u00220x8D9FDF780E0A5F3\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7ca2ef-801e-007b-1d1f-2fcde4000000",
+        "x-ms-request-id": "71061542-601e-0063-56e0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:49.0875853Z"
+        "x-ms-version-id": "2022-03-04T15:56:11.0591475Z"
       },
       "ResponseBody": null
     },
@@ -214,7 +214,7 @@
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:50 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "x-ms-meta-foo": "bar",
         "x-ms-version": "2019-12-12"
       },
@@ -223,18 +223,18 @@
       "ResponseHeaders": {
         "Content-Length": "0",
         "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
-        "Date": "Thu, 03 Mar 2022 16:56:48 GMT",
-        "ETag": "\u00220x8D9FD36CF125C7F\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:11 GMT",
+        "ETag": "\u00220x8D9FDF78106ED0C\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:56:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
-        "x-ms-request-id": "4c7ca42f-801e-007b-3b1f-2fcde4000000",
+        "x-ms-request-id": "710617c6-601e-0063-44e0-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:56:49.3784191Z"
+        "x-ms-version-id": "2022-03-04T15:56:11.3100044Z"
       },
       "ResponseBody": null
     },
@@ -247,23 +247,23 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:50 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Thu, 03 Mar 2022 16:56:48 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "4c7ca5a1-801e-007b-0a1f-2fcde4000000",
+        "x-ms-request-id": "71061a1b-601e-0063-16e0-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
-      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://fakestorageaccount.blob.core.windows.net/\u0022 ContainerName=\u0022goclistblobincludemetadata\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata0\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:47.8393029Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:47 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:47 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE2782C5\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata1\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.1291374Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE53BC6E\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata2\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.4439565Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE839EFF\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata3\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.7597771Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CEB3F6CB\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata4\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:49.0875853Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CEE5D4CC\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata5\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:49.3784191Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CF125C7F\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://fakestorageaccount.blob.core.windows.net/\u0022 ContainerName=\u0022goclistblobincludemetadata\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata0\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.0607223Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF7804825F9\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata1\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.3095795Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF7806E45F3\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata2\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.5544395Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF78093A2CB\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata3\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.8082932Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF780BA5EF4\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata4\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:11.0591475Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF780E0A5F3\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata5\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:11.3100044Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF78106ED0C\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
     },
     {
       "RequestUri": "https://fakestorageaccount.blob.core.windows.net/goclistblobincludemetadata?comp=list\u0026delimiter=%2F\u0026include=metadata%2Ctags\u0026restype=container",
@@ -274,23 +274,23 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:51 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:12 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Thu, 03 Mar 2022 16:56:49 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "4c7ca803-801e-007b-241f-2fcde4000000",
+        "x-ms-request-id": "71061e70-601e-0063-1ee0-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
-      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://fakestorageaccount.blob.core.windows.net/\u0022 ContainerName=\u0022goclistblobincludemetadata\u0022\u003E\u003CDelimiter\u003E/\u003C/Delimiter\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata0\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:47.8393029Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:47 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:47 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE2782C5\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata1\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.1291374Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE53BC6E\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata2\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.4439565Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CE839EFF\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata3\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:48.7597771Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:48 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CEB3F6CB\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata4\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:49.0875853Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CEE5D4CC\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata5\u003C/Name\u003E\u003CVersionId\u003E2022-03-03T16:56:49.3784191Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 03 Mar 2022 16:56:49 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FD36CF125C7F\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://fakestorageaccount.blob.core.windows.net/\u0022 ContainerName=\u0022goclistblobincludemetadata\u0022\u003E\u003CDelimiter\u003E/\u003C/Delimiter\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata0\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.0607223Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF7804825F9\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata1\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.3095795Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF7806E45F3\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata2\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.5544395Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF78093A2CB\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata3\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:10.8082932Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:10 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF780BA5EF4\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata4\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:11.0591475Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF780E0A5F3\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestbloblistblobincludemetadata5\u003C/Name\u003E\u003CVersionId\u003E2022-03-04T15:56:11.3100044Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EFri, 04 Mar 2022 15:56:11 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8D9FDF78106ED0C\u003C/Etag\u003E\u003CContent-Length\u003E15\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5\u003EebncwguMQu9sgPmr0GazhA==\u003C/Content-MD5\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003CBlobType\u003EBlockBlob\u003C/BlobType\u003E\u003CAccessTier\u003EHot\u003C/AccessTier\u003E\u003CAccessTierInferred\u003Etrue\u003C/AccessTierInferred\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003CMetadata\u003E\u003Cfoo\u003Ebar\u003C/foo\u003E\u003C/Metadata\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
     },
     {
       "RequestUri": "https://fakestorageaccount.blob.core.windows.net/goclistblobincludemetadata?restype=container",
@@ -300,19 +300,19 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:56:51 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:56:12 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:56:50 GMT",
+        "Date": "Fri, 04 Mar 2022 15:56:12 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "4c7caa8a-801e-007b-6e1f-2fcde4000000",
+        "x-ms-request-id": "710622a4-601e-0063-11e0-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

@@ -9,21 +9,21 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 17:01:50 GMT",
+        "x-ms-date": "Thu, 03 Mar 2022 18:04:40 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 17:01:48 GMT",
+        "Date": "Thu, 03 Mar 2022 18:04:38 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-account-kind": "StorageV2",
         "x-ms-is-hns-enabled": "false",
-        "x-ms-request-id": "4c820b5d-801e-007b-3120-2fcde4000000",
+        "x-ms-request-id": "d96be770-601e-005c-1729-2fda20000000",
         "x-ms-sku-name": "Standard_RAGRS",
         "x-ms-version": "2019-12-12"
       },

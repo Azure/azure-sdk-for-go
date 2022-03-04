@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -258,7 +257,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 }
 
 func TestBlobStartCopyUsingSASSrc(t *testing.T) {
-	recording.LiveOnly(t) // SAS are live only
+	// recording.LiveOnly(t) // SAS are live only
 	stop := start(t)
 	defer stop()
 
@@ -876,7 +875,7 @@ func TestBlobStartCopyDestIfNoneMatchFalse(t *testing.T) {
 }
 
 func TestBlobAbortCopyInProgress(t *testing.T) {
-	recording.LiveOnly(t) // Fails because of random data
+	// recording.LiveOnly(t) // Fails because of random data
 	stop := start(t)
 	defer stop()
 
@@ -3220,7 +3219,7 @@ func TestBlobClientPartsSASQueryTimes(t *testing.T) {
 }
 
 func TestDownloadBlockBlobUnexpectedEOF(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

@@ -1,0 +1,134 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocputpageswithmd5?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "ETag": "\u00220x8D9FDF7B5A1FD82\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c0817eb1-701e-0050-57e0-2f4d28000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocputpageswithmd5/gotestblobputpageswithmd5",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-blob-content-length": "5120",
+        "x-ms-blob-type": "PageBlob",
+        "x-ms-date": "Fri, 04 Mar 2022 15:57:40 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "ETag": "\u00220x8D9FDF7B5C82EE8\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c0818016-701e-0050-07e0-2f4d28000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12",
+        "x-ms-version-id": "2022-03-04T15:57:39.8180584Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocputpageswithmd5/gotestblobputpageswithmd5?comp=page",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "1024",
+        "Content-MD5": "SBhKZ55a1rlS7FIe3mRSGw==",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Fri, 04 Mar 2022 15:57:40 GMT",
+        "x-ms-page-write": "update",
+        "x-ms-range": "bytes=0-1023",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "AlkBz9gWVcnXs0Trq\u002BEbBMXtAaZ\u002BhaaI53dv52UiSI4LfHinKkMcOy8ixN6HhFY5J1NNFApTiX1zbwv4k78FyYi1Q1C1ngeH/gDsRYSOTJ2Pbi77E6/n4foQtioPYFWGs4zDYEgPQH/e/2fVaRKVA8mDpRhanriYSXd4CgZCiPmyM6Qnctl7wlfFuP0G13\u002B6hLOEmPbED5\u002BYizDGVZNzaTSbAmrkgWP6KcmXa8GvWhlyxDnhC\u002B5C6wMhBoT7sf\u002BSNdeCfqSmHRz1zIAHdnrHK/whHJ9kXDNeYehOOnH3J3A/SAy9zDAEzT827D0X49/dkedmuLLaZjH10HJDk7sj/qFUTyG6lpzEchtOsUtb\u002BxbxmQ/c8jIGr8YYXgNG4LUAW8uaLgLUtFjzflACKqcYX7AkROW4grYz/65Mmf33cDe76zdestLBbCpP7R8q4A7BHCl9ZwgQpnWGDLAvAFfJPtemdWfj\u002BobPEUYYqn3iUCzEtMsqkchL376Kgvp\u002BYUVr5hR93sUp6MYTy8bL5SE6fhsJNGl5jXpkNGF0lK\u002Bl8tu/V2DY/FhF//f7iXH85E\u002BaCmn7Y\u002BdkBoztfJnPe0BG4R5o7ocYqwT1prCCyB//4Ki6AGlQApCHGJmTrxjBMUqXvmxqkr1LiGo2i3GdoLMQuhn2bJEjOAdtsRYdRi5l7ScjoGOsui4aigVbIUf41G7HRnYG\u002B74k1/zqlHC0D7D\u002BQ1CsaOarJp4cc\u002BM25z0Eu30GhtBnQMqU9ADRp5bWk/HNnrKGq0Ofjenrs/YFZX\u002BraDWNtK7bZ0VHw3VBAqsHLRy0b73Zvxo2NlhRF2lTXEh3Bj//J4lT1ZNxNh1hENzvX9gRDqv6yKzM7jduUZX6xNyFO\u002BIUTw\u002Bi0CL7Da12LIYp6\u002BV1MkuAMKK5t4orwXOt8WyKhdf01NnIu7mpesc8\u002Bmi5SCtzDLIIUACI\u002BsE4D4A1NsadcS0MLB8LJfn/WdM42x1O4zVGfUQlZNONikZmo4IlGAxsOL0HPNvkDWdKmg2YJUwOel\u002BwjEBCVfLc/ib6xOzhzRSQQviQnS/LLHroxaUKwS82bX8vZk14EOnREcKWAsplfFfffkVTKRuJZgSALf/XvljRROSH3us0WvIwBPqNQPI9r4w0NiASniP5zytdv7OFkb\u002BHPqXArEDjwe9AT1b0vDkZaStiuPnXhoVas88aTu2aZAg4sfNIAn2PWjeWCLMH3471V6aopP4rfuzbHwqBFTIHkUGBTnULb1Mag9R08L/1HmTzExT9uUltTcWqjfVfjPfADAvpiU5t/EqIPJVJo5fDwqctcr/O4FgI36FZhIT3hqprasbz5GwHrYCJC35aft5Y0jeM4ICca8indQ==",
+      "StatusCode": 403,
+      "ResponseHeaders": {
+        "Content-Length": "778",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "x-ms-error-code": "AuthenticationFailed",
+        "x-ms-request-id": "c081818c-701e-0050-4ee0-2f4d28000000"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EAuthenticationFailed\u003C/Code\u003E\u003CMessage\u003EServer failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\n",
+        "RequestId:c081818c-701e-0050-4ee0-2f4d28000000\n",
+        "Time:2022-03-04T15:57:40.0634717Z\u003C/Message\u003E\u003CAuthenticationErrorDetail\u003EThe MAC signature found in the HTTP request \u0027xlretzTxCaDDuYzEWOrmbDLvBlLQYYJgkRfs5L8cSmw=\u0027 is not the same as any computed signature. Server used following string to sign: \u0027PUT\n\n",
+        "\n",
+        "1024\n\n",
+        "application/octet-stream\n\n",
+        "\n\n",
+        "\n\n",
+        "\n",
+        "x-ms-date:Fri, 04 Mar 2022 15:57:40 GMT\n",
+        "x-ms-page-write:update\n",
+        "x-ms-range:bytes=0-1023\n",
+        "x-ms-version:2019-12-12\n",
+        "/fakestorageaccount/gocputpageswithmd5/gotestblobputpageswithmd5\n",
+        "comp:page\u0027.\u003C/AuthenticationErrorDetail\u003E\u003C/Error\u003E"
+      ]
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocputpageswithmd5?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
+        "x-ms-date": "Fri, 04 Mar 2022 15:57:40 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 04 Mar 2022 15:57:39 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c0818336-701e-0050-58e0-2f4d28000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

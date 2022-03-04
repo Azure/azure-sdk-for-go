@@ -9,21 +9,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:43:08 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:48:35 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:43:07 GMT",
-        "ETag": "\u00220x8D9FD34E59012DF\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:43:08 GMT",
+        "Date": "Fri, 04 Mar 2022 15:48:34 GMT",
+        "ETag": "\u00220x8D9FDF6710211AE\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:48:34 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "27399d94-a01e-0021-081d-2fab03000000",
+        "x-ms-request-id": "70fac32b-601e-0063-79df-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null
@@ -38,24 +38,24 @@
         "Content-Length": "0",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
         "x-ms-blob-type": "AppendBlob",
-        "x-ms-date": "Thu, 03 Mar 2022 16:43:09 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:48:35 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:43:07 GMT",
-        "ETag": "\u00220x8D9FD34E5B6B0A2\u0022",
-        "Last-Modified": "Thu, 03 Mar 2022 16:43:08 GMT",
+        "Date": "Fri, 04 Mar 2022 15:48:34 GMT",
+        "ETag": "\u00220x8D9FDF6712AF035\u0022",
+        "Last-Modified": "Fri, 04 Mar 2022 15:48:35 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "27399ec7-a01e-0021-211d-2fab03000000",
+        "x-ms-request-id": "70fac47e-601e-0063-2ddf-2f1283000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2019-12-12",
-        "x-ms-version-id": "2022-03-03T16:43:08.3717794Z"
+        "x-ms-version-id": "2022-03-04T15:48:35.2067388Z"
       },
       "ResponseBody": null
     },
@@ -70,7 +70,7 @@
         "Content-MD5": "Bw\u002BQPjtq1PNagvSCdYfHTw==",
         "Content-Type": "application/octet-stream",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:43:09 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:48:35 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": "Uv38ByGCZU8WP18PmmIdcpVmx00QA3xNe7sEB9HixkmBhVrYaB0NhtHpHgAWeTnLZpTSxCKs0gigByk5SH9pmeudGKRHhARdh/PGfPInRumVr1olNnlRuqL/bNRxxIPxX7kLrbN8WCG22VUmpBqVBGgLTnyLdjobHUnUlVyEhiFjJSU/7HON16nii/khEZwWDwcCRIYVu9oIMT9qjrZo0gv1BZh1kh5milvfLH/EhEWS0lcrzQZo0tbFL1BU4tCDa/hMcXTLdHY2TMPb2Wiw9xcu2FeUuzWLDDtSXaF4b5//CUJ52xlE69ehnQ97usvgJVqlt9RL7ED4TIkrm//UNimwIjvupfT3Q5H0RdFa/UKUBAN09pJLmMv4cT\u002BNli18jQGRksJCJOLK/Mrjph\u002B1hrFDI6a8j5598dkpMz/5k5M76m9bOvbeA3Q2bEcZ5DobBn2JvH8B8fVzmBZZpE/xekxyFaO1OeseWEnGB327VyL1cXoomiZvl2R5gZmOvqicC0s3OXARXoLtb0ElyPpzEeTX3vqSLarneGZn9\u002Bk2zU8kq/ffhmuqVgODZ61hRd4e6PSosJk\u002BvfiIOgrYvpw5eLBIg\u002BVqFWqN5WOvpGfUnexqQOmh0AfwM8KCMGG90Oqln45NpkMBBSINCyloi3NLjqDzypk26EYfENd8luqAp6Zl9gb2pjt/Pf0lZ8GJeeTWDyZobZvy\u002BybJAf81TN4WB\u002B4pSznzK3x4Irpk\u002BEq0PKDG5rkcH9O\u002BiZBDQXnTr0SRo2kBLbktGE/DnRc0/1cWQolTu2hl/PkrDDoXyQKL6ZFOt2ScbJNHgAl50YMDVvKlTD3qsqS0R11jr76PtWmHx39YGFJvGBS\u002BgjNQ6rE5NfMdhEhFF\u002BkkrveK4VHAB1WSWDa3B1iFZQww7CmjcDk0v1CijaECl13tp351hXnqPf5BNqv3UrO4Jx0D6USzyds2a3UEX479adIq5UEZR8tVPXaUJnrvTrzqQGsy1hCL1oWE9X43yqxuM/6qMmOjmUNwJLqcmxRniidPAakQrilfbvv\u002BX1q/RMzeJjtWBmM\u002BK/AAbygpXX05Bp8BojnENlhUw69/a0HWMfkrmo0S9BJXMl//My91drBiBVYwSj4\u002BrhTCjQzqOdKQGlJyDahcoeSzjq8/RMbG74Ni8vVPwA4J1vwlZAhUwV38rKqKLOzOWjq6U6twWxjblLTTOKUUPmNAjYcksM8/rhej95vhBy\u002B2PDXWBCxBYPOO6eKp8/tP\u002BwAZtFTVIrX/oXYEGT\u002B4lmcQp5YHMspSz1PD9SDIibeb9QTPtXx2ASMtWJuszqnW4mPiXCd0HT9sYsu7FdmvvL9/faQasECOOWnC4s3PIzQ4vw==",
@@ -78,22 +78,22 @@
       "ResponseHeaders": {
         "Content-Length": "744",
         "Content-Type": "application/xml",
-        "Date": "Thu, 03 Mar 2022 16:43:07 GMT",
+        "Date": "Fri, 04 Mar 2022 15:48:34 GMT",
         "Server": "Microsoft-HTTPAPI/2.0",
         "x-ms-error-code": "AuthenticationFailed",
-        "x-ms-request-id": "2739a028-a01e-0021-571d-2fab03000000"
+        "x-ms-request-id": "70fac564-601e-0063-01df-2f1283000000"
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EAuthenticationFailed\u003C/Code\u003E\u003CMessage\u003EServer failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\n",
-        "RequestId:2739a028-a01e-0021-571d-2fab03000000\n",
-        "Time:2022-03-03T16:43:08.6154208Z\u003C/Message\u003E\u003CAuthenticationErrorDetail\u003EThe MAC signature found in the HTTP request \u0027X9q\u002B6fi1KY11fS8gfhA4/wHg8iIrSezTG0ue5h1c/i8=\u0027 is not the same as any computed signature. Server used following string to sign: \u0027PUT\n\n",
+        "RequestId:70fac564-601e-0063-01df-2f1283000000\n",
+        "Time:2022-03-04T15:48:35.7234536Z\u003C/Message\u003E\u003CAuthenticationErrorDetail\u003EThe MAC signature found in the HTTP request \u0027FkUvCWdbB4NnDRY43NR2zp2wFOSKiMWbIGOu2R0csE4=\u0027 is not the same as any computed signature. Server used following string to sign: \u0027PUT\n\n",
         "\n",
         "1024\n\n",
         "application/octet-stream\n\n",
         "\n\n",
         "\n\n",
         "\n",
-        "x-ms-date:Thu, 03 Mar 2022 16:43:09 GMT\n",
+        "x-ms-date:Fri, 04 Mar 2022 15:48:35 GMT\n",
         "x-ms-version:2019-12-12\n",
         "/fakestorageaccount/gocappendblockwithmd5/gotestblobappendblockwithmd5\n",
         "comp:appendblock\u0027.\u003C/AuthenticationErrorDetail\u003E\u003C/Error\u003E"
@@ -107,19 +107,19 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.16.7; Windows_NT)",
-        "x-ms-date": "Thu, 03 Mar 2022 16:43:09 GMT",
+        "x-ms-date": "Fri, 04 Mar 2022 15:48:36 GMT",
         "x-ms-version": "2019-12-12"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Thu, 03 Mar 2022 16:43:07 GMT",
+        "Date": "Fri, 04 Mar 2022 15:48:35 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-request-id": "2739a14e-a01e-0021-5e1d-2fab03000000",
+        "x-ms-request-id": "70fac78a-601e-0063-46df-2f1283000000",
         "x-ms-version": "2019-12-12"
       },
       "ResponseBody": null

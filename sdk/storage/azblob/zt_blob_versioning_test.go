@@ -6,7 +6,6 @@ package azblob
 import (
 	"bytes"
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
@@ -16,7 +15,7 @@ import (
 )
 
 func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
-	recording.LiveOnly(t)
+	//recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -374,6 +373,7 @@ func TestDeleteSpecificBlobVersion(t *testing.T) {
 //}
 
 func TestCreateBlockBlobReturnsVID(t *testing.T) {
+	//recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -432,7 +432,7 @@ func TestCreateBlockBlobReturnsVID(t *testing.T) {
 }
 
 func TestPutBlockListReturnsVID(t *testing.T) {
-	recording.LiveOnly(t)
+	//recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 

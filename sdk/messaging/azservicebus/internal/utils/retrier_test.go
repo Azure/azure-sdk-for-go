@@ -363,7 +363,7 @@ func TestRetryLogging(t *testing.T) {
 // retryRE is used to replace the 'retry time' with a consistent string to make
 // unit tests against logging simpler
 // A typical string: "[azsb.Retry] (retry) Attempt 1 sleeping for 1.10233ms"
-var retryRE = regexp.MustCompile(`[\d.]+(µs|ms)`)
+var retryRE = regexp.MustCompile(`[\d.]+(µs|ms|ns)`)
 
 func normalizeRetryLogLines(msgs []string) []string {
 	var newLogs []string

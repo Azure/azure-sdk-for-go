@@ -185,11 +185,16 @@ type GetQueueOptions struct {
 }
 
 // GetQueue gets a queue by name.
+// If the entity does not exist this function will return a nil GetQueueResponse and a nil error.
 func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQueueOptions) (*GetQueueResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
+		if atom.IsFeedEmptyError(err) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
@@ -223,11 +228,16 @@ type GetQueueRuntimePropertiesOptions struct {
 }
 
 // GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
+// If the entity does not exist this function will return a nil GetQueueRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string, options *GetQueueRuntimePropertiesOptions) (*GetQueueRuntimePropertiesResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
+		if atom.IsFeedEmptyError(err) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 

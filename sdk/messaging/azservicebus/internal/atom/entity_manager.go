@@ -419,16 +419,7 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-type feedEmptyError struct{}
-
-func (e feedEmptyError) Error() string {
-	return "entity does not exist"
-}
-
-func IsFeedEmptyError(err error) bool {
-	var feedEmptyError feedEmptyError
-	return errors.As(err, &feedEmptyError)
-}
+var ErrFeedEmpty = errors.New("entity does not exist")
 
 // ptrString takes a string and returns a pointer to that string. For use in literal pointers,
 // ptrString(fmt.Sprintf("..", foo)) -> *string
@@ -458,7 +449,7 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 		feedErr := xml.Unmarshal(bytes, &emptyFeed)
 
 		if feedErr == nil && emptyFeed.Title == "Publicly Listed Services" {
-			return resp, feedEmptyError{}
+			return resp, ErrFeedEmpty
 		}
 
 		return resp, err

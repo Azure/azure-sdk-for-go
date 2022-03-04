@@ -146,7 +146,7 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 
@@ -194,7 +194,7 @@ func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicNam
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 

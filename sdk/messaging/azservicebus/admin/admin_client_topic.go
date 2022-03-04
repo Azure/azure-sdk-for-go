@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -126,7 +127,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 
@@ -170,7 +171,7 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 

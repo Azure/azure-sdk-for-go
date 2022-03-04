@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -191,7 +192,7 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 
@@ -234,7 +235,7 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if atom.IsFeedEmptyError(err) {
+		if errors.Is(err, atom.ErrFeedEmpty) {
 			return nil, nil
 		}
 

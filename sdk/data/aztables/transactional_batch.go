@@ -49,44 +49,6 @@ func PossibleTransactionTypeValues() []TransactionType {
 	}
 }
 
-type oDataErrorMessage struct {
-	Lang  string `json:"lang"`
-	Value string `json:"value"`
-}
-
-type oDataError struct {
-	Code    string            `json:"code"`
-	Message oDataErrorMessage `json:"message"`
-}
-
-type tableTransactionError struct {
-	ODataError        oDataError `json:"odata.error"`
-	FailedEntityIndex int
-}
-
-type transactionError struct {
-	rawResponse *http.Response
-	statusCode  int
-	errorCode   string
-	odataError  oDataError
-}
-
-func (t *transactionError) StatusCode() int {
-	return t.rawResponse.StatusCode
-}
-
-func (t *transactionError) ErrorCode() string {
-	return t.odataError.Code
-}
-
-func (t *transactionError) RawResponse() *http.Response {
-	return t.rawResponse
-}
-
-func (t *transactionError) Error() string {
-	return fmt.Sprintf("Code: %s, Message: %s", t.odataError.Code, t.odataError.Message.Value)
-}
-
 type TransactionAction struct {
 	ActionType TransactionType
 	Entity     []byte
@@ -94,8 +56,6 @@ type TransactionAction struct {
 }
 
 type TransactionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 	// The response for a single table.
 	TransactionResponses []http.Response
 }
@@ -183,7 +143,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 // create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
-	result := TransactionResponse{RawResponse: resp, TransactionResponses: innerResponses}
+	result := TransactionResponse{TransactionResponses: innerResponses}
 
 	bytesBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -192,7 +152,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 	reader := bytes.NewReader(bytesBody)
 	if bytes.IndexByte(bytesBody, '{') == 0 {
 		// This is a failure and the body is json
-		return &TransactionResponse{}, newTableTransactionError(bytesBody, resp)
+		return &TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 
 	outerBoundary := getBoundaryName(bytesBody)
@@ -221,13 +181,9 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 			return &TransactionResponse{}, err
 		}
 		if r.StatusCode >= 400 {
-			errorBody, err := ioutil.ReadAll(r.Body)
 			if err != nil {
 				return &TransactionResponse{}, err
 			} else {
-				retError := newTableTransactionError(errorBody, resp)
-				ret := retError.(*transactionError)
-				ret.statusCode = r.StatusCode
 				return &result, runtime.NewResponseError(resp)
 			}
 		}
@@ -244,19 +200,6 @@ func getBoundaryName(bytesBody []byte) string {
 		end -= 1
 	}
 	return string(bytesBody[2:end])
-}
-
-// newTableTransactionError handles the SubmitTransaction error response.
-func newTableTransactionError(errorBody []byte, resp *http.Response) error {
-	oe := tableTransactionError{}
-	if err := json.Unmarshal(errorBody, &oe); err == nil {
-		return &transactionError{
-			rawResponse: resp,
-			errorCode:   oe.ODataError.Code,
-			odataError:  oe.ODataError,
-		}
-	}
-	return fmt.Errorf("unknown error: %s", string(errorBody))
 }
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.

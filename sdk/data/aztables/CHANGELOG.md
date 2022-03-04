@@ -1,8 +1,6 @@
 # Release History
 
-## 0.5.1 (Unreleased)
-
-### Features Added
+## 0.6.0 (2022-03-08)
 
 ### Breaking Changes
 * Prefixed all `TransactionType` constants with `TransactionType`.
@@ -14,10 +12,7 @@
 * Update `ListEntitiesPager` and `ListTablesPager`.
     * The `More` method checks whether there are more pages to retrieve.
     * The `NextPage(context.Context)` method gets the next page and returns a response and an `error`.
-
-### Bugs Fixed
-
-### Other Changes
+* Removed `RawResponse` from all Response structs
 
 ## 0.5.0 (2022-01-12)
 

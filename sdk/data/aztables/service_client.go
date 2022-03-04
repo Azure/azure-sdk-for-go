@@ -88,7 +88,7 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 	}
 }
 
-// Options for Client.Create and ServiceClient.CreateTable method
+// CreateTableOptions contains optional parameters for Client.Create and ServiceClient.CreateTable
 type CreateTableOptions struct {
 	// placeholder for future optional parameters
 }
@@ -107,7 +107,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	return t.NewClient(name), err
 }
 
-// Options for Client.Delete and ServiceClient.DeleteTable methods
+// DeleteTableOptions contains optional parameters for Client.Delete and ServiceClient.DeleteTable
 type DeleteTableOptions struct {
 	// placeholder for future optional parameters
 }
@@ -116,32 +116,23 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
 }
 
-// Response object from a ServiceClient.DeleteTable or Client.Delete operation
+// DeleteTableResponse contains response fields for ServiceClient.DeleteTable and Client.Delete
 type DeleteTableResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future optional response fields
 }
 
-func deleteTableResponseFromGen(g *generated.TableClientDeleteResponse) DeleteTableResponse {
-	if g == nil {
-		return DeleteTableResponse{}
-	}
-	return DeleteTableResponse{
-		RawResponse: g.RawResponse,
-	}
+func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTableResponse {
+	return DeleteTableResponse{}
 }
 
 // Delete deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
-	if options == nil {
-		options = &DeleteTableOptions{}
-	}
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
-	return deleteTableResponseFromGen(&resp), err
+	return deleteTableResponseFromGen(resp), err
 }
 
-// ListEntitiesOptions contains a group of parameters for the ServiceClient.QueryTables method.
+// ListEntitiesOptions contains optional parameters for ServiceClient.QueryTables
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
@@ -166,11 +157,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPageResponse contains the properties of a single page response from a ListTables operation
+// ListTablesPageResponse contains response fields for ListTablesPager.NextPage
 type ListTablesPageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
 	ContinuationNextTableName *string
 
@@ -189,7 +177,6 @@ func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryRespons
 	}
 
 	return ListTablesPageResponse{
-		RawResponse:               g.RawResponse,
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:             g.ODataMetadata,
 		Tables:                    value,
@@ -296,19 +283,18 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 	}
 }
 
-// GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
+// GetStatisticsOptions contains optional parameters for ServiceClient.GetStatistics
 type GetStatisticsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetStatisticsResponse contains response fields for Client.GetStatistics
 type GetStatisticsResponse struct {
-	RawResponse    *http.Response
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
 func getStatisticsResponseFromGenerated(g *generated.ServiceClientGetStatisticsResponse) GetStatisticsResponse {
 	return GetStatisticsResponse{
-		RawResponse:    g.RawResponse,
 		GeoReplication: fromGeneratedGeoReplication(g.GeoReplication),
 	}
 }
@@ -327,7 +313,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
-// GetPropertiesOptions contains the optional parameters for the Client.GetProperties function
+// GetPropertiesOptions contains optional parameters for Client.GetProperties
 type GetPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -336,10 +322,8 @@ func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetProperti
 	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
+// GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// The set of CORS rules.
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
@@ -359,7 +343,6 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 		cors = append(cors, fromGeneratedCors(c))
 	}
 	return GetPropertiesResponse{
-		RawResponse:   g.RawResponse,
 		Cors:          cors,
 		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
 		Logging:       fromGeneratedLogging(g.Logging),
@@ -378,7 +361,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
-// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
+// SetPropertiesOptions contains optional parameters for Client.SetProperties
 type SetPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -387,15 +370,13 @@ func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetProperti
 	return &generated.ServiceClientSetPropertiesOptions{}
 }
 
+// SetPropertiesResponse contains response fields for Client.SetProperties
 type SetPropertiesResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response fields
 }
 
 func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesResponse) SetPropertiesResponse {
-	return SetPropertiesResponse{
-		RawResponse: g.RawResponse,
-	}
+	return SetPropertiesResponse{}
 }
 
 // SetProperties allows the user to set cors, metrics, and logging rules for the account.

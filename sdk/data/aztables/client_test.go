@@ -36,10 +36,9 @@ func TestCreateTable(t *testing.T) {
 			client, delete := initClientTest(t, service, false)
 			defer delete()
 
-			resp, err := client.Create(ctx, nil)
+			_, err := client.Create(ctx, nil)
 
 			require.NoError(t, err)
-			require.NotNil(t, resp.RawResponse)
 		})
 	}
 }

@@ -284,13 +284,8 @@ func TestBatchErrorHandleResponse(t *testing.T) {
 			})
 
 			// Sending a batch with two entities on the same row returns an error
-			resp, err := client.SubmitTransaction(ctx, batch, nil)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.Error(t, err)
-			if service == "storage" {
-				require.NotNil(t, resp.RawResponse)
-			} else {
-				require.Nil(t, resp.RawResponse)
-			}
 		})
 	}
 }

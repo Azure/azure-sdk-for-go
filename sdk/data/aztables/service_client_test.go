@@ -187,7 +187,6 @@ func TestGetStatistics(t *testing.T) {
 	resp, err := service.GetStatistics(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
-	require.NotNil(t, resp.RawResponse)
 	require.NotNil(t, resp.GeoReplication.LastSyncTime)
 	require.NotNil(t, resp.GeoReplication.Status)
 }

@@ -409,7 +409,9 @@ func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) (ListKeysPage,
 }
 
 // ListPropertiesOfKeysOptions contains the optional parameters for the Client.ListKeys method
-type ListPropertiesOfKeysOptions struct{}
+type ListPropertiesOfKeysOptions struct {
+	// placeholder for future optional parameters
+}
 
 // ListKeysPage contains the current page of results for the Client.ListSecrets operation
 type ListKeysPage struct {
@@ -483,7 +485,9 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 }
 
 // GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method
-type GetDeletedKeyOptions struct{}
+type GetDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert the GetDeletedKeyOptions to the internal representation
 func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeyOptions {
@@ -528,7 +532,9 @@ func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *Get
 }
 
 // PurgeDeletedKeyOptions is the struct for any future options for Client.PurgeDeletedKey.
-type PurgeDeletedKeyOptions struct{}
+type PurgeDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert options to internal options
 func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedKeyOptions {
@@ -536,7 +542,9 @@ func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDel
 }
 
 // PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedKey.
-type PurgeDeletedKeyResponse struct{}
+type PurgeDeletedKeyResponse struct {
+	// placeholder for future response values
+}
 
 // Converts the generated response to the publicly exposed version.
 func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
@@ -579,7 +587,9 @@ func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse
 }
 
 // BeginDeleteKeyOptions contains the optional parameters for the Client.BeginDeleteKey method.
-type BeginDeleteKeyOptions struct{}
+type BeginDeleteKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert public options to generated options struct
 func (b *BeginDeleteKeyOptions) toGenerated() *generated.KeyVaultClientDeleteKeyOptions {
@@ -700,7 +710,9 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 }
 
 // BackupKeyOptions contains the optional parameters for the Client.BackupKey method
-type BackupKeyOptions struct{}
+type BackupKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert Options to generated version
 func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOptions {
@@ -716,7 +728,7 @@ type BackupKeyResponse struct {
 // convert internal reponse to BackupKeyResponse
 func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
 	return BackupKeyResponse{
-		Value:       i.Value,
+		Value: i.Value,
 	}
 }
 
@@ -794,7 +806,9 @@ func (p *RecoverDeletedKeyPoller) pollUntilDone(ctx context.Context, t time.Dura
 }
 
 // BeginRecoverDeletedKeyOptions contains the optional parameters for the Client.BeginRecoverDeletedKey operation
-type BeginRecoverDeletedKeyOptions struct{}
+type BeginRecoverDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // Convert the publicly exposed options object to the generated version
 func (b BeginRecoverDeletedKeyOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedKeyOptions {
@@ -987,7 +1001,9 @@ type ListDeletedKeysPage struct {
 }
 
 // ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys operation.
-type ListDeletedKeysOptions struct{}
+type ListDeletedKeysOptions struct {
+	// placeholder for future optional parameters
+}
 
 // Convert publicly exposed options to the generated version.a
 func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeysOptions {
@@ -1031,7 +1047,9 @@ func (l *ListPropertiesOfKeyVersionsPager) NextPage(ctx context.Context) bool {
 }
 
 // ListPropertiesOfKeyVersionsOptions contains the options for the ListKeyVersions operations
-type ListPropertiesOfKeyVersionsOptions struct{}
+type ListPropertiesOfKeyVersionsOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert the public ListKeyVersionsOptions to the generated version
 func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultClientGetKeyVersionsOptions {
@@ -1082,7 +1100,9 @@ func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListProper
 }
 
 // RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.
-type RestoreKeyBackupOptions struct{}
+type RestoreKeyBackupOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreKeyOptions {
 	return &generated.KeyVaultClientRestoreKeyOptions{}
@@ -1180,7 +1200,9 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 }
 
 // GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
-type GetRandomBytesOptions struct{}
+type GetRandomBytesOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomBytesOptions {
 	return &generated.KeyVaultClientGetRandomBytesOptions{}
@@ -1215,7 +1237,10 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	}, nil
 }
 
-type RotateKeyOptions struct{}
+// RotateKeyOptions contains the optional parameters for the Client.RotateKey function
+type RotateKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOptions {
 	return &generated.KeyVaultClientRotateKeyOptions{}
@@ -1255,7 +1280,9 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 }
 
 // GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
-type GetKeyRotationPolicyOptions struct{}
+type GetKeyRotationPolicyOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetKeyRotationPolicyOptions {
 	return &generated.KeyVaultClientGetKeyRotationPolicyOptions{}

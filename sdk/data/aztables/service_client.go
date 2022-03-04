@@ -278,14 +278,6 @@ func (p *ListTablesPager) More() bool {
 	return true
 }
 
-// NextPageTableName returns the continuation token for the ListTablesPager
-func (p *ListTablesPager) NextPageTableName() string {
-	if p.nextTableName == nil {
-		return ""
-	}
-	return *p.nextTableName
-}
-
 // List queries the existing tables using the specified ListTablesOptions.
 // listOptions can specify the following properties to affect the query results returned:
 //

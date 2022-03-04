@@ -221,24 +221,6 @@ type ListEntitiesPager struct {
 	nextRK      *string
 }
 
-// NextPagePartitionKey returns one of the continuation tokens for the ListEntitiesPager.
-// Use in conjunction with the NewPageRowKey.
-func (p *ListEntitiesPager) NextPagePartitionKey() string {
-	if p.nextPK == nil {
-		return ""
-	}
-	return *p.nextPK
-}
-
-// NextPageRowKey returns one of the continuation tokens for the ListEntitiesPager.
-// Use in conjunction with the NewPagePartitionKey.
-func (p *ListEntitiesPager) NextPageRowKey() string {
-	if p.nextRK == nil {
-		return ""
-	}
-	return *p.nextRK
-}
-
 func (p *ListEntitiesPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {

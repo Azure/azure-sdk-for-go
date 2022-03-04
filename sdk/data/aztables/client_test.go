@@ -408,8 +408,10 @@ func TestContinuationTokens(t *testing.T) {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
 				require.Equal(t, 1, len(resp.Entities))
-				pkContToken = pager.NextPagePartitionKey()
-				rkContToken = pager.NextPageRowKey()
+				require.NotNil(t, resp.ContinuationNextPartitionKey)
+				require.NotNil(t, resp.ContinuationNextRowKey)
+				pkContToken = *resp.ContinuationNextPartitionKey
+				rkContToken = *resp.ContinuationNextRowKey
 				break
 			}
 
@@ -450,8 +452,10 @@ func TestContinuationTokensFilters(t *testing.T) {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
 				require.Equal(t, 1, len(resp.Entities))
-				pkContToken = pager.NextPagePartitionKey()
-				rkContToken = pager.NextPageRowKey()
+				require.NotNil(t, resp.ContinuationNextPartitionKey)
+				require.NotNil(t, resp.ContinuationNextRowKey)
+				pkContToken = *resp.ContinuationNextPartitionKey
+				rkContToken = *resp.ContinuationNextRowKey
 				break
 			}
 

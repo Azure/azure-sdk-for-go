@@ -10,7 +10,7 @@
 
 ### Breaking Changes
 
-- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#TBD)
+- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#17229)
   - GetQueue, GetQueueRuntimeProperties
   - GetTopic, GetTopicRuntimeProperties
   - GetSubscription, GetSubscriptionRuntimeProperties

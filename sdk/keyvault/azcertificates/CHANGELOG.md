@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2022-03-08)
 
 ### Features Added
 
@@ -8,6 +8,7 @@
 * Changed pager APIs for `ListCertificatesPager`, `ListDeletedCertificatesPager`, `ListPropertiesOfIssuersPager`, and `ListCertificateVersionsPager`
     * Use the `More()` method to determine if there are more pages to fetch
     * Use the `NextPage(context.Context)` to fetch the next page of results
+* Removed all `RawResponse *http.Response` fields from response structs.
 
 ### Bugs Fixed
 

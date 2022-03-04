@@ -159,13 +159,14 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: MergeEntity})
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Nil(t, updateErr)
 
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			pager := client.List(listOptions)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
@@ -191,7 +192,7 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: MergeEntity})
+			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Error(t, updateErr)
 		})
 	}
@@ -208,7 +209,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -230,14 +231,15 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
@@ -264,10 +266,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
+			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}
@@ -292,10 +294,11 @@ func TestQuerySimpleEntity(t *testing.T) {
 			list := &ListEntitiesOptions{Filter: &filter}
 			expectedCount := 4
 
-			var resp ListEntitiesPage
+			var resp ListEntitiesPageResponse
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				resp = pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				require.Equal(t, len(resp.Entities), expectedCount)
 			}
 
@@ -332,7 +335,7 @@ func TestQueryComplexEntity(t *testing.T) {
 
 			// Add 5 entities
 			entitiesToCreate := createComplexEntities(5, "partition")
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalledEntity, err := json.Marshal(e)
 				require.NoError(t, err)
 				_, err = client.AddEntity(ctx, marshalledEntity, nil)
@@ -343,10 +346,10 @@ func TestQueryComplexEntity(t *testing.T) {
 			expectedCount := 4
 			options := &ListEntitiesOptions{Filter: &filter}
 
-			var resp ListEntitiesPage
 			pager := client.List(options)
-			for pager.NextPage(ctx) {
-				resp = pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				require.Equal(t, expectedCount, len(resp.Entities))
 
 				for idx, entity := range resp.Entities {
@@ -355,13 +358,13 @@ func TestQueryComplexEntity(t *testing.T) {
 					require.NoError(t, err)
 
 					require.Equal(t, model.PartitionKey, "partition")
-					require.Equal(t, model.RowKey, (*entitiesToCreate)[idx].RowKey)
-					require.Equal(t, model.Integer, (*entitiesToCreate)[idx].Integer)
-					require.Equal(t, model.String, (*entitiesToCreate)[idx].String)
-					require.Equal(t, model.Bool, (*entitiesToCreate)[idx].Bool)
-					require.Equal(t, model.Float, (*entitiesToCreate)[idx].Float)
-					require.Equal(t, model.DateTime, (*entitiesToCreate)[idx].DateTime)
-					require.Equal(t, model.Byte, (*entitiesToCreate)[idx].Byte)
+					require.Equal(t, model.RowKey, (entitiesToCreate)[idx].RowKey)
+					require.Equal(t, model.Integer, (entitiesToCreate)[idx].Integer)
+					require.Equal(t, model.String, (entitiesToCreate)[idx].String)
+					require.Equal(t, model.Bool, (entitiesToCreate)[idx].Bool)
+					require.Equal(t, model.Float, (entitiesToCreate)[idx].Float)
+					require.Equal(t, model.DateTime, (entitiesToCreate)[idx].DateTime)
+					require.Equal(t, model.Byte, (entitiesToCreate)[idx].Byte)
 				}
 			}
 		})
@@ -399,29 +402,32 @@ func TestContinuationTokens(t *testing.T) {
 			require.NoError(t, err)
 
 			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
-			var pkContToken *string
-			var rkContToken *string
-			for pager.NextPage(ctx) {
-				require.Equal(t, 1, len(pager.PageResponse().Entities))
-				pkContToken = pager.NextPagePartitionKey()
-				rkContToken = pager.NextPageRowKey()
+			var pkContToken string
+			var rkContToken string
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				require.Equal(t, 1, len(resp.Entities))
+				require.NotNil(t, resp.ContinuationNextPartitionKey)
+				require.NotNil(t, resp.ContinuationNextRowKey)
+				pkContToken = *resp.ContinuationNextPartitionKey
+				rkContToken = *resp.ContinuationNextRowKey
 				break
 			}
 
-			require.NoError(t, pager.Err())
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: pkContToken,
-				RowKey:       rkContToken,
+				PartitionKey: &pkContToken,
+				RowKey:       &rkContToken,
 			})
 			count := 0
-			for newPager.NextPage(ctx) {
-				count += len(newPager.PageResponse().Entities)
+			for newPager.More() {
+				resp, err := newPager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Entities)
 			}
-
-			require.NoError(t, pager.Err())
 			require.Equal(t, 9, count)
 		})
 	}
@@ -440,30 +446,33 @@ func TestContinuationTokensFilters(t *testing.T) {
 				Top:    to.Int32Ptr(1),
 				Filter: to.StringPtr("Value le 5"),
 			})
-			var pkContToken *string
-			var rkContToken *string
-			for pager.NextPage(ctx) {
-				require.Equal(t, 1, len(pager.PageResponse().Entities))
-				pkContToken = pager.NextPagePartitionKey()
-				rkContToken = pager.NextPageRowKey()
+			var pkContToken string
+			var rkContToken string
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				require.Equal(t, 1, len(resp.Entities))
+				require.NotNil(t, resp.ContinuationNextPartitionKey)
+				require.NotNil(t, resp.ContinuationNextRowKey)
+				pkContToken = *resp.ContinuationNextPartitionKey
+				rkContToken = *resp.ContinuationNextRowKey
 				break
 			}
 
-			require.NoError(t, pager.Err())
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: pkContToken,
-				RowKey:       rkContToken,
+				PartitionKey: &pkContToken,
+				RowKey:       &rkContToken,
 				Filter:       to.StringPtr("Value le 5"),
 			})
 			count := 0
-			for newPager.NextPage(ctx) {
-				count += len(newPager.PageResponse().Entities)
+			for newPager.More() {
+				resp, err := newPager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Entities)
 			}
-
-			require.NoError(t, pager.Err())
 			require.Equal(t, 4, count)
 		})
 	}
@@ -528,9 +537,10 @@ func TestAzurite(t *testing.T) {
 
 	count := 0
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Entities)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		count += len(resp.Entities)
 	}
-	require.NoError(t, pager.Err())
 	require.Equal(t, 1, count)
 }

@@ -413,12 +413,6 @@ type TableResponseProperties struct {
 	TableName *string `json:"TableName,omitempty"`
 }
 
-// TableServiceError - Table Service error.
-type TableServiceError struct {
-	// The error message.
-	Message *string `json:"Message,omitempty"`
-}
-
 // TableServiceProperties - Table Service Properties.
 type TableServiceProperties struct {
 	// The set of CORS rules.

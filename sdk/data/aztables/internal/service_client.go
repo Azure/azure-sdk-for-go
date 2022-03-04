@@ -31,14 +31,13 @@ type ServiceClient struct {
 // version - Specifies the version of the operation to use for this request.
 // options - pass nil to accept the default values.
 func NewServiceClient(endpoint string, version Enum0, options *azcore.ClientOptions) *ServiceClient {
-	cp := azcore.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &azcore.ClientOptions{}
 	}
 	client := &ServiceClient{
 		endpoint: endpoint,
 		version:  version,
-		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &cp),
+		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }

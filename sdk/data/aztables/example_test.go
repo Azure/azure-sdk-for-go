@@ -6,7 +6,9 @@ package aztables_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -98,118 +100,62 @@ func ExampleNewServiceClientWithNoCredential() {
 
 type MyEntity struct {
 	aztables.Entity
-	Price       float32
-	Inventory   int32
-	ProductName string
-	OnSale      bool
+	Value int
 }
 
 func ExampleClient_SubmitTransaction() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
-	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "tableName")
-
-	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", "myAccountName", "tableName")
+	client, err := aztables.NewClient(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
 
 	batch := []aztables.TransactionAction{}
 
-	entity1 := MyEntity{
+	baseEntity := MyEntity{
 		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk001",
+			PartitionKey: "myPartitionKey",
+			RowKey:       "",
 		},
-		Price:       3.99,
-		Inventory:   10,
-		ProductName: "Pens",
-		OnSale:      false,
 	}
-	marshalled, err := json.Marshal(entity1)
-	if err != nil {
-		panic(err)
+	for i := 0; i < 10; i++ {
+		baseEntity.RowKey = fmt.Sprintf("rk-%d", i)
+		baseEntity.Value = i
+		marshalled, err := json.Marshal(baseEntity)
+		if err != nil {
+			panic(err)
+		}
+		batch = append(batch, aztables.TransactionAction{
+			ActionType: aztables.TransactionTypeAdd,
+			Entity:     marshalled,
+		})
 	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.Add,
-		Entity:     marshalled,
-	})
-
-	entity2 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk002",
-		},
-		Price:       19.99,
-		Inventory:   15,
-		ProductName: "Calculators",
-		OnSale:      false,
-	}
-	marshalled, err = json.Marshal(entity2)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.UpdateMerge,
-		Entity:     marshalled,
-	})
-
-	entity3 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk003",
-		},
-		Price:       0.99,
-		Inventory:   150,
-		ProductName: "Pens",
-		OnSale:      true,
-	}
-	marshalled, err = json.Marshal(entity3)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.InsertReplace,
-		Entity:     marshalled,
-	})
-
-	entity4 := MyEntity{
-		Entity: aztables.Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk004",
-		},
-		Price:       3.99,
-		Inventory:   150,
-		ProductName: "100ct Paper Clips",
-		OnSale:      false,
-	}
-	marshalled, err = json.Marshal(entity4)
-	if err != nil {
-		panic(err)
-	}
-	batch = append(batch, aztables.TransactionAction{
-		ActionType: aztables.Delete,
-		Entity:     marshalled,
-	})
 
 	resp, err := client.SubmitTransaction(context.TODO(), batch, nil)
 	if err != nil {
-		panic(err)
-	}
-
-	for _, subResp := range *resp.TransactionResponses {
-		if subResp.StatusCode != http.StatusAccepted {
-			fmt.Println(subResp.Body)
+		var httpErr *azcore.ResponseError
+		if errors.As(err, &httpErr) {
+			body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(body)) // Do some parsing of the body
+		} else {
+			panic(err)
+		}
+	} else {
+		for _, subResp := range resp.TransactionResponses {
+			if subResp.StatusCode != http.StatusAccepted {
+				body, err := ioutil.ReadAll(subResp.Body)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(string(body))
+			}
 		}
 	}
 }
@@ -471,25 +417,25 @@ func ExampleClient_List() {
 	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.TODO()) {
-		response := pager.PageResponse()
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 
 	// To list all entities in a table, provide nil to Query()
 	listPager := client.List(nil)
-	pageCount = 1
-	for listPager.NextPage(context.TODO()) {
-		response := listPager.PageResponse()
+	pageCount = 0
+	for listPager.More() {
+		response, err := listPager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 }
 
@@ -518,15 +464,15 @@ func ExampleServiceClient_ListTables() {
 	pager := service.ListTables(&aztables.ListTablesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.TODO()) {
-		response := pager.PageResponse()
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("There are %d tables in page #%d\n", len(response.Tables), pageCount)
 		for _, table := range response.Tables {
-			fmt.Printf("\tTableName: %s\n", *table.TableName)
+			fmt.Printf("\tTableName: %s\n", *table.Name)
 		}
 		pageCount += 1
-	}
-	if err := pager.Err(); err != nil {
-		panic(err)
 	}
 }

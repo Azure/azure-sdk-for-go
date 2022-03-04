@@ -9,6 +9,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -28,6 +29,7 @@ type Client struct {
 
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -136,12 +138,17 @@ func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (Delet
 type ListEntitiesOptions struct {
 	// OData filter expression.
 	Filter *string
-	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+
+	// Select expression using OData notation. Limits the columns on each record
+	// to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
+
 	// Maximum number of records to return.
 	Top *int32
+
 	// The PartitionKey to start paging from
 	PartitionKey *string
+
 	// The RowKey to start paging from
 	RowKey *string
 }
@@ -159,8 +166,8 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListEntitiesPage is the response envelope for operations that return a list of entities.
-type ListEntitiesPage struct {
+// ListEntitiesPageResponse is the response envelope for operations that return a list of entities.
+type ListEntitiesPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -177,112 +184,67 @@ type ListEntitiesPage struct {
 	Entities [][]byte
 }
 
-// ListEntitiesResponse - The properties for the table entity query response.
-type ListEntitiesResponse struct {
-	// The metadata response of the table.
-	ODataMetadata *string
-
-	// List of table entities stored as byte slices.
-	Entities [][]byte
-}
-
 // transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (ListEntitiesPage, error) {
+func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesPageResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return ListEntitiesPage{}, err
+			return ListEntitiesPageResponse{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
 
-	t := ListEntitiesResponse{
-		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
-		Entities:      marshalledValue,
-	}
-
-	return ListEntitiesPage{
+	return ListEntitiesPageResponse{
 		RawResponse:                  resp.RawResponse,
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
-		ODataMetadata:                t.ODataMetadata,
-		Entities:                     t.Entities,
+		ODataMetadata:                resp.TableEntityQueryResponse.ODataMetadata,
+		Entities:                     marshalledValue,
 	}, nil
 }
 
 // ListEntitiesPager is a Pager for Table entity query results.
 //
-// NextPage should be called first. It fetches the next available page of results from the service.
+// NextPage should be called first, it fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
 // If the result is false, the value of Err() will indicate if an error occurred.
 //
 // PageResponse returns the results from the page most recently fetched from the service.
-type ListEntitiesPager interface {
-	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListEntitiesPage
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-	// Err returns an error if there was an error on the last request
-	Err() error
-	// NextPagePartitionKey returns the PartitionKey for the current page
-	NextPagePartitionKey() *string
-	// NextPageRowKey returns the RowKey for the current page
-	NextPageRowKey() *string
+type ListEntitiesPager struct {
+	tableName   string
+	client      *generated.TableClient
+	current     generated.TableClientQueryEntitiesResponse
+	listOptions *ListEntitiesOptions
+	nextPK      *string
+	nextRK      *string
 }
 
-type tableEntityQueryResponsePager struct {
-	tableClient       *Client
-	current           *ListEntitiesPage
-	tableQueryOptions *generated.TableClientQueryEntitiesOptions
-	listOptions       *ListEntitiesOptions
-	err               error
-}
-
-func (p *tableEntityQueryResponsePager) NextPagePartitionKey() *string {
-	return p.tableQueryOptions.NextPartitionKey
-}
-
-func (p *tableEntityQueryResponsePager) NextPageRowKey() *string {
-	return p.tableQueryOptions.NextRowKey
+func (p *ListEntitiesPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {
+			return false
+		}
+	}
+	return true
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.ContinuationNextPartitionKey == nil && p.current.ContinuationNextRowKey == nil) {
-		return false
-	}
-	var resp generated.TableClientQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(
-		ctx,
-		generated.Enum1Three0,
-		p.tableClient.name,
-		p.tableQueryOptions,
-		p.listOptions.toQueryOptions(),
-	)
-
-	c, err := newListEntitiesPage(&resp)
+func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPageResponse, error) {
+	resp, err := p.client.QueryEntities(ctx, generated.Enum1Three0, p.tableName, &generated.TableClientQueryEntitiesOptions{
+		NextPartitionKey: p.nextPK,
+		NextRowKey:       p.nextRK,
+	}, p.listOptions.toQueryOptions())
 	if err != nil {
-		p.err = nil
+		return ListEntitiesPageResponse{}, err
 	}
-
-	p.current = &c
-	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
-	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && len(resp.TableEntityQueryResponse.Value) > 0
-}
-
-// PageResponse returns the results from the page most recently fetched from the service.
-func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesPage {
-	return *p.current
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *tableEntityQueryResponsePager) Err() error {
-	return p.err
+	p.current = resp
+	p.nextPK = resp.XMSContinuationNextPartitionKey
+	p.nextRK = resp.XMSContinuationNextRowKey
+	return newListEntitiesPage(resp)
 }
 
 // List queries the entities using the specified ListEntitiesOptions.
@@ -302,18 +264,19 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}
-	return &tableEntityQueryResponsePager{
-		tableClient: t,
+	return ListEntitiesPager{
+		client:      t.client,
+		tableName:   t.name,
 		listOptions: listOptions,
-		tableQueryOptions: &generated.TableClientQueryEntitiesOptions{
-			NextPartitionKey: listOptions.PartitionKey,
-			NextRowKey:       listOptions.RowKey,
-		},
+		current:     generated.TableClientQueryEntitiesResponse{},
+		nextPK:      listOptions.PartitionKey,
+		nextRK:      listOptions.RowKey,
 	}
 }
 
 // Options for Client.GetEntity method
 type GetEntityOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
@@ -514,7 +477,7 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntit
 func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
 		options = &UpdateEntityOptions{
-			UpdateMode: MergeEntity,
+			UpdateMode: EntityUpdateModeMerge,
 		}
 	}
 
@@ -536,7 +499,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case MergeEntity:
+	case EntityUpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -547,7 +510,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			&generated.QueryOptions{},
 		)
 		return updateEntityResponseFromMergeGenerated(&resp), err
-	case ReplaceEntity:
+	case EntityUpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -614,7 +577,7 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	if options == nil {
 		options = &InsertEntityOptions{
-			UpdateMode: MergeEntity,
+			UpdateMode: EntityUpdateModeMerge,
 		}
 	}
 	var mapEntity map[string]interface{}
@@ -630,7 +593,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case MergeEntity:
+	case EntityUpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -641,7 +604,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 			&generated.QueryOptions{},
 		)
 		return insertEntityFromGeneratedMerge(&resp), err
-	case ReplaceEntity:
+	case EntityUpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -659,7 +622,9 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	return InsertEntityResponse{}, errInvalidUpdateMode
 }
 
+// GetAccessPolicyOptions provides optional parameters for the Client.GetAccessPolicy methods
 type GetAccessPolicyOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPolicyOptions {

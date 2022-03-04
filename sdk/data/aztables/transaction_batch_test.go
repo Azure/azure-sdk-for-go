@@ -11,7 +11,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -28,24 +27,25 @@ func TestBatchAdd(t *testing.T) {
 			entitiesToCreate := createComplexEntities(10, "partition")
 			var batch []TransactionAction
 
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalled})
+				batch = append(batch, TransactionAction{ActionType: TransactionTypeAdd, Entity: marshalled})
 			}
 
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
 
 			require.NoError(t, err)
-			for i := 0; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 0; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, r.StatusCode, http.StatusNoContent)
 			}
 
 			pager := client.List(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				response := pager.PageResponse()
+			for pager.More() {
+				response, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				count += len(response.Entities)
 			}
 
@@ -68,13 +68,13 @@ func TestBatchInsert(t *testing.T) {
 			entitiesToCreate := createComplexEntities(1, "partition")
 			var batch []TransactionAction
 
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
 				batch = append(
 					batch,
 					TransactionAction{
-						ActionType: InsertMerge,
+						ActionType: TransactionTypeInsertMerge,
 						Entity:     marshalled,
 					},
 				)
@@ -82,15 +82,16 @@ func TestBatchInsert(t *testing.T) {
 
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 1; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 1; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, r.StatusCode, http.StatusNoContent)
 			}
 
 			pager := client.List(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				response := pager.PageResponse()
+			for pager.More() {
+				response, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				count += len(response.Entities)
 			}
 
@@ -112,28 +113,29 @@ func TestBatchMixed(t *testing.T) {
 			entitiesToCreate := createComplexEntities(5, "partition")
 			var batch []TransactionAction
 
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
 				batch = append(batch, TransactionAction{
-					ActionType: Add,
+					ActionType: TransactionTypeAdd,
 					Entity:     marshalled,
 				})
 			}
 
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 0; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
-			var qResp ListEntitiesPage
+			var qResp ListEntitiesPageResponse
 			filter := "RowKey eq '1'"
 			list := &ListEntitiesOptions{Filter: &filter}
 			pager := client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			preMerge := qResp.Entities[0]
 			var unMarshalledPreMerge map[string]interface{}
@@ -147,55 +149,56 @@ func TestBatchMixed(t *testing.T) {
 			mergeProp := "MergeProperty"
 			val := "foo"
 			var mergeEntity = map[string]interface{}{
-				partitionKey: (*entitiesToCreate)[0].PartitionKey,
-				rowKey:       (*entitiesToCreate)[0].RowKey,
+				partitionKey: (entitiesToCreate)[0].PartitionKey,
+				rowKey:       (entitiesToCreate)[0].RowKey,
 				mergeProp:    val,
 			}
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
-			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
+			etag := azcore.ETag((resp.TransactionResponses)[0].Header.Get(etag))
 			batch2 = append(batch2, TransactionAction{
-				ActionType: UpdateMerge,
+				ActionType: TransactionTypeUpdateMerge,
 				Entity:     marshalledMergeEntity,
 				IfMatch:    &etag,
 			})
 
 			// create a delete action for the second added entity
-			marshalledSecondEntity, err := json.Marshal((*entitiesToCreate)[1])
+			marshalledSecondEntity, err := json.Marshal((entitiesToCreate)[1])
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeDelete, Entity: marshalledSecondEntity})
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
 			var replaceProperties = map[string]interface{}{
-				partitionKey: (*entitiesToCreate)[2].PartitionKey,
-				rowKey:       (*entitiesToCreate)[2].RowKey,
+				partitionKey: (entitiesToCreate)[2].PartitionKey,
+				rowKey:       (entitiesToCreate)[2].RowKey,
 				replaceProp:  val,
 			}
 			marshalledThirdEntity, err := json.Marshal(replaceProperties)
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeInsertReplace, Entity: marshalledThirdEntity})
 
 			// Add the remaining 2 entities.
-			marshalled4thEntity, err := json.Marshal((*entitiesToCreate)[3])
+			marshalled4thEntity, err := json.Marshal((entitiesToCreate)[3])
 			require.NoError(t, err)
-			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
+			marshalled5thEntity, err := json.Marshal((entitiesToCreate)[4])
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: UpdateMerge, Entity: marshalled4thEntity})
-			batch2 = append(batch2, TransactionAction{ActionType: InsertMerge, Entity: marshalled5thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeUpdateMerge, Entity: marshalled4thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeInsertMerge, Entity: marshalled5thEntity})
 
 			resp, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
 
-			for i := 0; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 0; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 
 			}
 
 			pager = client.List(list)
-			for pager.NextPage(ctx) {
-				qResp = pager.PageResponse()
+			for pager.More() {
+				qResp, err = pager.NextPage(ctx)
+				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
 			var unMarshaledPostMerge map[string]interface{}
@@ -224,32 +227,70 @@ func TestBatchError(t *testing.T) {
 			// Create the batch.
 			var batch []TransactionAction
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-
 			// Sending an empty batch throws.
-			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
-			require.NotNil(t, err)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
+			require.Error(t, err)
 			require.Equal(t, errEmptyTransaction.Error(), err.Error())
 
 			// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-			marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
+			marshalledFinalEntity, err := json.Marshal((entitiesToCreate)[2])
 			require.NoError(t, err)
 			_, err = client.AddEntity(ctx, marshalledFinalEntity, nil)
 			require.NoError(t, err)
 
 			// Add the entities to the batch
-			for _, e := range *entitiesToCreate {
+			for _, e := range entitiesToCreate {
 				marshalledEntity, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalledEntity})
+				batch = append(batch, TransactionAction{ActionType: TransactionTypeAdd, Entity: marshalledEntity})
 			}
 
 			_, err = client.SubmitTransaction(ctx, batch, nil)
-			require.NotNil(t, err)
-			require.Contains(t, err.Error(), "EntityAlreadyExists")
+			require.Error(t, err)
+		})
+	}
+}
+
+func TestBatchErrorHandleResponse(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, deleteAndStop := initClientTest(t, service, true)
+			defer deleteAndStop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+			require.NoError(t, err)
+
+			entitiesToCreate := createComplexEntities(3, "partition")
+
+			// Create the batch.
+			var batch []TransactionAction
+
+			for _, e := range entitiesToCreate {
+				marshalled, err := json.Marshal(e)
+				require.NoError(t, err)
+				batch = append(batch, TransactionAction{
+					ActionType: TransactionTypeAdd,
+					Entity:     marshalled,
+				})
+			}
+
+			// Add the first entity a second type
+			marshalled, err := json.Marshal(entitiesToCreate[0])
+			require.NoError(t, err)
+			batch = append(batch, TransactionAction{
+				ActionType: TransactionTypeAdd,
+				Entity:     marshalled,
+			})
+
+			// Sending a batch with two entities on the same row returns an error
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
+			require.Error(t, err)
+			if service == "storage" {
+				require.NotNil(t, resp.RawResponse)
+			} else {
+				require.Nil(t, resp.RawResponse)
+			}
 		})
 	}
 }
@@ -274,42 +315,42 @@ func TestBatchComplex(t *testing.T) {
 			marshalled1, err := json.Marshal(edmEntity)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled1,
 			})
 
 			marshalled2, err := json.Marshal(edmEntity2)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled2,
 			})
 
 			marshalled3, err := json.Marshal(edmEntity3)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled3,
 			})
 
 			marshalled4, err := json.Marshal(edmEntity4)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled4,
 			})
 
 			marshalled5, err := json.Marshal(edmEntity5)
 			require.NoError(t, err)
 			batch = append(batch, TransactionAction{
-				ActionType: Add,
+				ActionType: TransactionTypeAdd,
 				Entity:     marshalled5,
 			})
 
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 0; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
@@ -320,28 +361,28 @@ func TestBatchComplex(t *testing.T) {
 			marshalled1, err = json.Marshal(edmEntity)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: InsertMerge,
+				ActionType: TransactionTypeInsertMerge,
 				Entity:     marshalled1,
 			})
 
 			marshalled2, err = json.Marshal(edmEntity2)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: InsertReplace,
+				ActionType: TransactionTypeInsertReplace,
 				Entity:     marshalled2,
 			})
 
 			marshalled3, err = json.Marshal(edmEntity3)
 			require.NoError(t, err)
 			batch2 = append(batch2, TransactionAction{
-				ActionType: Delete,
+				ActionType: TransactionTypeDelete,
 				Entity:     marshalled3,
 			})
 
 			resp, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(*resp.TransactionResponses); i++ {
-				r := (*resp.TransactionResponses)[i]
+			for i := 0; i < len(resp.TransactionResponses); i++ {
+				r := (resp.TransactionResponses)[i]
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 

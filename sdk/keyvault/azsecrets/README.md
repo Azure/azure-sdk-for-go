@@ -252,15 +252,18 @@ azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 You can access the raw `*http.Response` returned by the service using the `runtime.WithCaptureResponse` method and a context passed to any client method.
 
 ```go
-var respFromCtx *http.Response
-ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-_, err = client.GetSecret(ctx, "mySecretName", nil)
-if err != nil {
-    panic(err)
+func GetHTTPResponse() {
+    var respFromCtx *http.Response
+    ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+    _, err = client.GetSecret(ctx, "mySecretName", nil)
+    if err != nil {
+        panic(err)
+    }
+    // Do something with *http.Response
+    fmt.Println(respFromCtx.StatusCode)
 }
-// Do something with *http.Response
-fmt.Println(respFromCtx.StatusCode)
 ```
 
 ###  Additional Documentation

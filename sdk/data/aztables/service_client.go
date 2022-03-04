@@ -114,7 +114,7 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
 }
 
-// Response object from a ServiceClient.DeleteTable or Client.Delete operation
+// DeleteTableResponse contains response fields for ServiceClient.DeleteTable and Client.Delete 
 type DeleteTableResponse struct {
 	// placeholder for future optional response fields
 }
@@ -284,7 +284,7 @@ type GetStatisticsOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// GetStatisticsResponse is the response struct for the Client.GetStatistics fucntion
+// GetStatisticsResponse contains the response for Client.GetStatistics
 type GetStatisticsResponse struct {
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
@@ -318,7 +318,7 @@ func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetProperti
 	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
-// GetPropertiesResponse is the response struct for the Client.GetProperties function
+// GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
 	// The set of CORS rules.
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
@@ -366,7 +366,7 @@ func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetProperti
 	return &generated.ServiceClientSetPropertiesOptions{}
 }
 
-// SetPropertiesResponse contains the response fields for the Client.SetProperties function
+// SetPropertiesResponse contains response fields for Client.SetProperties
 type SetPropertiesResponse struct {
 	// placeholder for future response fields
 }

@@ -102,7 +102,7 @@ func parseURL(serviceURL string) (string, string, error) {
 	return rawServiceURL, tableName, nil
 }
 
-// CreateTableResponse contains the response struct for the Client.Create function
+// CreateTableResponse contains response fields for Client.Create and ServiceClient.CreateTable
 type CreateTableResponse struct {
 	// placeholder for future response fields
 }
@@ -169,7 +169,7 @@ type ListEntitiesPage struct {
 	Entities [][]byte
 }
 
-// ListEntitiesResponse - The properties for the table entity query response.
+// ListEntitiesResponse contains response fields for ListEntitiesPage.NextPage
 type ListEntitiesResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
@@ -312,7 +312,7 @@ func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithP
 	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
 }
 
-// GetEntityResponse is the return type for a GetEntity operation. The individual entities are stored in the Value property
+// GetEntityResponse contains response fields for Client.GetEntity
 type GetEntityResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
@@ -360,7 +360,7 @@ type AddEntityOptions struct {
 	ResponsePreference *ResponseFormat
 }
 
-// AddEntityResponse is the response struct for the Client.AddEntityResponse function
+// AddEntityResponse contains response fields for Client.AddEntityResponse
 type AddEntityResponse struct {
 	ETag azcore.ETag
 }
@@ -406,7 +406,7 @@ func (d *DeleteEntityOptions) toGenerated() *generated.TableClientDeleteEntityOp
 	return &generated.TableClientDeleteEntityOptions{}
 }
 
-// DeleteEntityResponse contains the response struct for the Client.DeleteEntity function.
+// DeleteEntityResponse contains response fields for Client.DeleteEntity
 type DeleteEntityResponse struct {
 	// placeholder for future optional response fields
 }
@@ -455,7 +455,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 	}
 }
 
-// UpdateEntityResponse is the response struct for the Client.UpdateEntity function.
+// UpdateEntityResponse contains response fields for Client.UpdateEntity
 type UpdateEntityResponse struct {
 	ETag azcore.ETag
 }
@@ -558,7 +558,7 @@ type InsertEntityOptions struct {
 	UpdateMode EntityUpdateMode
 }
 
-// InsertEntityResponse contains the response structure for the Client.InsertEntity function
+// InsertEntityResponse contains response fields for Client.InsertEntity
 type InsertEntityResponse struct {
 	ETag azcore.ETag
 }
@@ -654,7 +654,7 @@ func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPo
 	return &generated.TableClientGetAccessPolicyOptions{}
 }
 
-// GetAccessPolicyResponse contains the response fields for the CLient.GetAccessPolicy function.
+// GetAccessPolicyResponse contains response fields for Client.GetAccessPolicy
 type GetAccessPolicyResponse struct {
 	SignedIdentifiers []*SignedIdentifier
 }
@@ -686,7 +686,7 @@ type SetAccessPolicyOptions struct {
 	TableACL []*SignedIdentifier
 }
 
-// SetAccessPolicyResponse contains the response fields for the Client.SetAccessPolicy function
+// SetAccessPolicyResponse contains response fields for Client.SetAccessPolicy
 type SetAccessPolicyResponse struct {
 	// placeholder for future optional parameters
 }

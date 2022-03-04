@@ -142,7 +142,7 @@ func TestSyncTokenParseTokenWithSeqNoReverseOrder(t *testing.T) {
 	require.Equal(t, int64(1), tok2.seqNo)
 }
 
-func TestSyncTokenParseTokenValueContaningEqualSigns(t *testing.T) {
+func TestSyncTokenParseTokenValueContainingEqualSigns(t *testing.T) {
 	tok1, err1 := parseToken("jtqGc1I4=MDoyOA==")
 	require.Empty(t, err1)
 	require.NotEmpty(t, tok1)

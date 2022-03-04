@@ -14,6 +14,7 @@
 * Changed pager APIs for `ListSecretVersionsPager`, `ListDeletedSecretsPager`, and `ListSecretsPager`
     * Use the `More()` method to determine if there are more pages to fetch
     * Use the `NextPage(context.Context)` to fetch the next page of results
+* Removed all `RawResponse *http.Response` fields from response structs.
 
 ## 0.5.0 (2022-02-08)
 

@@ -83,14 +83,10 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 // GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
 	Secret
-
-	// RawResponse contains the underlying HTTP response
-	RawResponse *http.Response
 }
 
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
 	return &GetSecretResponse{
-		RawResponse: i.RawResponse,
 		Secret: Secret{
 			Properties:  secretPropertiesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
@@ -136,15 +132,11 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 // SetSecretResponse is the response struct for the Client.SetSecret operation.
 type SetSecretResponse struct {
 	Secret
-
-	// RawResponse holds the underlying HTTP response
-	RawResponse *http.Response
 }
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
 	return SetSecretResponse{
-		RawResponse: i.RawResponse,
 		Secret: Secret{
 			Properties:  secretPropertiesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
@@ -179,9 +171,6 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 // DeletedSecretResponse contains the response for a Client.DeleteSecret operation.
 type DeleteSecretResponse struct {
 	DeletedSecret
-
-	// RawResponse holds the underlying HTTP response
-	RawResponse *http.Response
 }
 
 func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretResponse) *DeleteSecretResponse {
@@ -209,7 +198,6 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
-		RawResponse: i.RawResponse,
 	}
 }
 
@@ -286,9 +274,6 @@ type DeleteSecretPollerResponse struct {
 
 	// Poller contains an initialized WidgetPoller
 	Poller DeleteSecretPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // BeginDeleteSecret deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
@@ -322,7 +307,6 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 
 	return DeleteSecretPollerResponse{
 		Poller:        s,
-		RawResponse:   resp.RawResponse,
 		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
@@ -339,15 +323,11 @@ func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDelet
 // GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
 type GetDeletedSecretResponse struct {
 	DeletedSecret
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
 	return GetDeletedSecretResponse{
-		RawResponse: i.RawResponse,
 		DeletedSecret: DeletedSecret{
 			Properties:         secretPropertiesFromGenerated(i.Attributes),
 			ContentType:        i.ContentType,
@@ -403,13 +383,10 @@ func (u UpdateSecretPropertiesOptions) toGeneratedProperties() internal.SecretUp
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
 	Secret
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
 	return UpdateSecretPropertiesResponse{
-		RawResponse: i.RawResponse,
 		Secret: Secret{
 			Properties:  secretPropertiesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
@@ -458,16 +435,12 @@ func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecret
 type BackupSecretResponse struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert generated response to the publicly exposed version.
 func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
 	return BackupSecretResponse{
-		RawResponse: i.RawResponse,
-		Value:       i.Value,
+		Value: i.Value,
 	}
 }
 
@@ -498,15 +471,11 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 // RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
 type RestoreSecretBackupResponse struct {
 	Secret
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
 	return RestoreSecretBackupResponse{
-		RawResponse: i.RawResponse,
 		Secret: Secret{
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -553,15 +522,12 @@ func (p *PurgeDeletedSecretOptions) toGenerated() *internal.KeyVaultClientPurgeD
 
 // PurgeDeletedSecretResponse contains the response from method Client.PurgeDeletedSecret.
 type PurgeDeletedSecretResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response fields
 }
 
 // Converts the generated response to the publicly exposed version.
 func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedSecretResponse) PurgeDeletedSecretResponse {
-	return PurgeDeletedSecretResponse{
-		RawResponse: i.RawResponse,
-	}
+	return PurgeDeletedSecretResponse{}
 }
 
 // PurgeDeletedSecret deletes the specified secret. The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
@@ -634,8 +600,6 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 // RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
 	Secret
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // change recover deleted secret reponse to the generated version.
@@ -653,7 +617,6 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 		}
 	}
 	return RecoverDeletedSecretResponse{
-		RawResponse: i.RawResponse,
 		Secret: Secret{
 			Properties:  a,
 			ContentType: i.ContentType,
@@ -673,9 +636,6 @@ type RecoverDeletedSecretPollerResponse struct {
 
 	// Poller contains an initialized RecoverDeletedSecretPoller
 	Poller RecoverDeletedSecretPoller
-
-	// RawResponse cotains the underlying HTTP response
-	RawResponse *http.Response
 }
 
 // BeginRecoverDeletedSecret recovers the deleted secret in the specified vault to the latest version.
@@ -709,7 +669,6 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 	return RecoverDeletedSecretPollerResponse{
 		PollUntilDone: b.pollUntilDone,
 		Poller:        b,
-		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 
@@ -774,9 +733,6 @@ func (l *ListDeletedSecretsPager) NextPage(ctx context.Context) (ListDeletedSecr
 
 // ListDeletedSecretsPageResponse holds the data for a single page.
 type ListDeletedSecretsPageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of deleted secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -795,7 +751,6 @@ func listDeletedSecretsPageFromGenerated(g internal.KeyVaultClientGetDeletedSecr
 	}
 
 	return ListDeletedSecretsPageResponse{
-		RawResponse:    g.RawResponse,
 		NextLink:       g.NextLink,
 		DeletedSecrets: items,
 	}
@@ -985,9 +940,6 @@ type ListSecretsOptions struct {
 
 // ListSecretsPageResponse contains the current page of results for the Client.ListSecrets operation.
 type ListSecretsPageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -1002,9 +954,8 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
 	return ListSecretsPageResponse{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Secrets:     secrets,
+		NextLink: i.NextLink,
+		Secrets:  secrets,
 	}
 }
 

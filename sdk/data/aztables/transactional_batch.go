@@ -225,7 +225,6 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 			if err != nil {
 				return &TransactionResponse{}, err
 			} else {
-				// innerResponses = []http.Response{*r}
 				retError := newTableTransactionError(errorBody, resp)
 				ret := retError.(*transactionError)
 				ret.statusCode = r.StatusCode

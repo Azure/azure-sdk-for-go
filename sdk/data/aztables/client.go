@@ -129,7 +129,7 @@ func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (Delet
 	return t.service.DeleteTable(ctx, t.name, options)
 }
 
-// ListEntitiesOptions contains a group of parameters for the Table.Query method.
+// ListEntitiesOptions contains optional parameters for Table.Query
 type ListEntitiesOptions struct {
 	// OData filter expression.
 	Filter *string
@@ -265,7 +265,7 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	}
 }
 
-// GetEntityOptions contains the optional parameters for Client.GetEntity method
+// GetEntityOptions contains optional parameters for Client.GetEntity
 type GetEntityOptions struct {
 	// placeholder for future optional parameters
 }
@@ -316,7 +316,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	return newGetEntityResponse(resp)
 }
 
-// Options for the Client.AddEntity operation
+// AddEntityOptions contains optional parameters for Client.AddEntity
 type AddEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
 	ResponsePreference *ResponseFormat
@@ -359,7 +359,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	return addEntityResponseFromGenerated(&resp), err
 }
 
-// DeleteEntityOptions contains the optional parameters for the Client.DeleteEntity function.
+// DeleteEntityOptions contains optional parameters for Client.DeleteEntity
 type DeleteEntityOptions struct {
 	IfMatch *azcore.ETag
 }
@@ -391,7 +391,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
-// UpdateEntityOptions contains the optional parameters for the Client.UpdateEntity function
+// UpdateEntityOptions contains optional parameters for Client.UpdateEntity
 type UpdateEntityOptions struct {
 	IfMatch    *azcore.ETag
 	UpdateMode EntityUpdateMode
@@ -510,7 +510,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	return UpdateEntityResponse{}, errInvalidUpdateMode
 }
 
-// InsertEntityOptions contains the optional parameters for the Client.InsertEntity function
+// InsertEntityOptions contains optional parameters for Client.InsertEntity
 type InsertEntityOptions struct {
 	// ETag is the optional etag for the Table
 	ETag azcore.ETag
@@ -607,7 +607,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	return InsertEntityResponse{}, errInvalidUpdateMode
 }
 
-// GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy function
+// GetAccessPolicyOptions contains optional parameters for Client.GetAccessPolicy
 type GetAccessPolicyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -643,7 +643,7 @@ func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOp
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
-// SetAccessPolicyOptions contains the optional parameters for the Client.SetAccessPolicy function
+// SetAccessPolicyOptions contains optional parameters for Client.SetAccessPolicy
 type SetAccessPolicyOptions struct {
 	TableACL []*SignedIdentifier
 }

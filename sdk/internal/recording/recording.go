@@ -188,7 +188,6 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		return err
 	}
 	recId := resp.Header.Get(IDHeader)
-	log.Printf("test name: %s\t recording ID: %s\n", t.Name(), recId)
 	if recId == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()

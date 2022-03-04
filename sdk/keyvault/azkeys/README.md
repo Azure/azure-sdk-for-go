@@ -392,6 +392,24 @@ log.SetClassifications(log.Request, log.Response)
 > CAUTION: logs from credentials contain sensitive information.
 > These logs must be protected to avoid compromising account security.
 
+### Accessing `http.Response`
+You can access the raw `*http.Response` returned by the service using the `runtime.WithCaptureResponse` method and a context passed to any client method.
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+
+func GetHTTPResponse() {
+    var respFromCtx *http.Response
+    ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+    _, err = client.GetKey(ctx, "myKeyName", nil)
+    if err != nil {
+        panic(err)
+    }
+    // Do something with *http.Response
+    fmt.Println(respFromCtx.StatusCode)
+}
+```
+
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][reference_docs].
 

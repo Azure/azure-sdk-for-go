@@ -13,9 +13,9 @@ import (
 	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/devigned/tab"
 )
 
 // Client provides methods to create Sender and Receiver
@@ -317,7 +317,7 @@ func (client *Client) Close(ctx context.Context) error {
 
 	for _, link := range links {
 		if err := link.Close(ctx); err != nil {
-			tab.For(ctx).Error(err)
+			log.Writef(internal.EventConn, "Failed to close links (error might be cached): %s", err.Error())
 			lastError = err
 		}
 	}

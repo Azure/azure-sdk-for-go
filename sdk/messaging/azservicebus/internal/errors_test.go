@@ -192,6 +192,7 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 		fakeNetError{temp: true},
 		fakeNetError{timeout: true},
 		fakeNetError{temp: false, timeout: false},
+		errors.New("*frames.PerformTransfer: didn't find channel 10 in sessionsByRemoteChannel"),
 	}
 
 	for i, err := range connErrors {

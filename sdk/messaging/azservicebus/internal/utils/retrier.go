@@ -5,6 +5,7 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"math"
 	"math/rand"
 	"time"
@@ -71,7 +72,11 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 
 		if err != nil {
 			if isFatalFn(err) {
-				log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+					log.Writef(EventRetry, "(%s) Attempt %d was cancelled, stopping: %s", name, i, err.Error())
+				} else {
+					log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+				}
 				return err
 			} else {
 				log.Writef(EventRetry, "(%s) Attempt %d returned retryable error: %s", name, i, err.Error())

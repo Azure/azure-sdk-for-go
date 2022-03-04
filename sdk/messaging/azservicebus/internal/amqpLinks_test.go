@@ -7,12 +7,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"sync"
 	"testing"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -224,7 +222,7 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 
 	createLinksCalled := 0
 
-	enableLogging()
+	test.EnableStdoutLogging()
 
 	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 		createLinksCalled++
@@ -442,14 +440,6 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 	})
 }
 
-func addLoggerForTest(logMessages *[]string) func() {
-	azlog.SetListener(func(e azlog.Event, s string) {
-		*logMessages = append(*logMessages, fmt.Sprintf("[%s] %s", e, s))
-	})
-
-	return func() { azlog.SetListener(nil) }
-}
-
 func TestAMQPLinksRetriesUnit(t *testing.T) {
 	tests := []struct {
 		Err         error
@@ -492,7 +482,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			var attempts []int32
 
 			var logMessages []string
-			removeLogging := addLoggerForTest(&logMessages)
+			removeLogging := test.CaptureLogsForTest(&logMessages)
 			defer removeLogging()
 
 			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
@@ -514,6 +504,54 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestAMQPLinks_Logging(t *testing.T) {
+	t.Run("link", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return nil, receiver, nil
+		})
+
+		var messages []string
+
+		cleanup := test.CaptureLogsForTest(&messages)
+		defer cleanup()
+
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.DetachError{})
+		require.NoError(t, err)
+
+		require.Equal(t, []string{
+			"[azsb.Conn] Recovering link for error link detached, reason: *Error(nil)",
+			"[azsb.Conn] Recovering link only",
+			"[azsb.Conn] Recovered links",
+		}, messages)
+	})
+
+	t.Run("connection", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return nil, receiver, nil
+		})
+
+		var messages []string
+
+		cleanup := test.CaptureLogsForTest(&messages)
+		defer cleanup()
+
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+		require.NoError(t, err)
+
+		require.Equal(t, []string{
+			"[azsb.Conn] Recovering link for error amqp: connection closed",
+			"[azsb.Conn] Recovering connection (and links)",
+			"[azsb.Conn] recreating link: c: true, current:{0 0}, old:{0 0}", "[azsb.Conn] Recovered connection and links",
+		}, messages)
+	})
 }
 
 func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
@@ -543,10 +581,4 @@ func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSende
 	}
 
 	return sender, receiver, nil
-}
-
-func enableLogging() {
-	azlog.SetListener(func(e azlog.Event, s string) {
-		log.Printf("%s %s", e, s)
-	})
 }

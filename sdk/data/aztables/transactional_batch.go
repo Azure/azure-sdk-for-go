@@ -82,8 +82,6 @@ type TransactionAction struct {
 }
 
 type TransactionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 	// The response for a single table.
 	TransactionResponses *[]http.Response
 	// ContentType contains the information returned from the Content-Type header response.
@@ -173,7 +171,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 // create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
-	result := TransactionResponse{RawResponse: resp, TransactionResponses: &innerResponses}
+	result := TransactionResponse{TransactionResponses: &innerResponses}
 
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = val

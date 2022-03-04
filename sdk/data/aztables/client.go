@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"net/http"
 	"net/url"
 	"strings"
 	"time"
@@ -103,17 +102,13 @@ func parseURL(serviceURL string) (string, string, error) {
 	return rawServiceURL, tableName, nil
 }
 
+// CreateTableResponse contains the response struct for the Client.Create function
 type CreateTableResponse struct {
-	RawResponse *http.Response
+	// placeholder for future response fields
 }
 
 func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTableResponse {
-	if g == nil {
-		return CreateTableResponse{}
-	}
-	return CreateTableResponse{
-		RawResponse: g.RawResponse,
-	}
+	return CreateTableResponse{}
 }
 
 // Create creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
@@ -161,9 +156,6 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 
 // ListEntitiesPage is the response envelope for operations that return a list of entities.
 type ListEntitiesPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// ContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	ContinuationNextPartitionKey *string
 
@@ -203,7 +195,6 @@ func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (List
 	}
 
 	return ListEntitiesPage{
-		RawResponse:                  resp.RawResponse,
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                t.ODataMetadata,
@@ -312,8 +303,9 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	}
 }
 
-// Options for Client.GetEntity method
+// GetEntityOptions contains the optional parameters for Client.GetEntity method
 type GetEntityOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
@@ -324,9 +316,6 @@ func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithP
 type GetEntityResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// The properties of the table entity.
 	Value []byte
@@ -344,9 +333,8 @@ func newGetEntityResponse(g generated.TableClientQueryEntityWithPartitionAndRowK
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return GetEntityResponse{
-		ETag:        ETag,
-		RawResponse: g.RawResponse,
-		Value:       marshalledValue,
+		ETag:  ETag,
+		Value: marshalledValue,
 	}, nil
 }
 
@@ -372,9 +360,9 @@ type AddEntityOptions struct {
 	ResponsePreference *ResponseFormat
 }
 
+// AddEntityResponse is the response struct for the Client.AddEntityResponse function
 type AddEntityResponse struct {
-	RawResponse *http.Response
-	ETag        azcore.ETag
+	ETag azcore.ETag
 }
 
 func addEntityResponseFromGenerated(g *generated.TableClientInsertEntityResponse) AddEntityResponse {
@@ -387,8 +375,7 @@ func addEntityResponseFromGenerated(g *generated.TableClientInsertEntityResponse
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return AddEntityResponse{
-		RawResponse: g.RawResponse,
-		ETag:        ETag,
+		ETag: ETag,
 	}
 }
 
@@ -410,6 +397,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	return addEntityResponseFromGenerated(&resp), err
 }
 
+// DeleteEntityOptions contains the optional parameters for the Client.DeleteEntity function.
 type DeleteEntityOptions struct {
 	IfMatch *azcore.ETag
 }
@@ -418,17 +406,13 @@ func (d *DeleteEntityOptions) toGenerated() *generated.TableClientDeleteEntityOp
 	return &generated.TableClientDeleteEntityOptions{}
 }
 
+// DeleteEntityResponse contains the response struct for the Client.DeleteEntity function.
 type DeleteEntityResponse struct {
-	RawResponse *http.Response
+	// placeholder for future optional response fields
 }
 
 func deleteEntityResponseFromGenerated(g *generated.TableClientDeleteEntityResponse) DeleteEntityResponse {
-	if g == nil {
-		return DeleteEntityResponse{}
-	}
-	return DeleteEntityResponse{
-		RawResponse: g.RawResponse,
-	}
+	return DeleteEntityResponse{}
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table. If the service returns a non-successful HTTP
@@ -445,6 +429,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
+// UpdateEntityOptions contains the optional parameters for the Client.UpdateEntity function
 type UpdateEntityOptions struct {
 	IfMatch    *azcore.ETag
 	UpdateMode EntityUpdateMode
@@ -470,9 +455,9 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 	}
 }
 
+// UpdateEntityResponse is the response struct for the Client.UpdateEntity function.
 type UpdateEntityResponse struct {
-	RawResponse *http.Response
-	ETag        azcore.ETag
+	ETag azcore.ETag
 }
 
 func updateEntityResponseFromMergeGenerated(g *generated.TableClientMergeEntityResponse) UpdateEntityResponse {
@@ -485,8 +470,7 @@ func updateEntityResponseFromMergeGenerated(g *generated.TableClientMergeEntityR
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return UpdateEntityResponse{
-		RawResponse: g.RawResponse,
-		ETag:        ETag,
+		ETag: ETag,
 	}
 }
 
@@ -500,8 +484,7 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntit
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return UpdateEntityResponse{
-		RawResponse: g.RawResponse,
-		ETag:        ETag,
+		ETag: ETag,
 	}
 }
 
@@ -565,14 +548,19 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	return UpdateEntityResponse{}, errInvalidUpdateMode
 }
 
+// InsertEntityOptions contains the optional parameters for the Client.InsertEntity function
 type InsertEntityOptions struct {
-	ETag       azcore.ETag
+	// ETag is the optional etag for the Table
+	ETag azcore.ETag
+
+	// UpdateMode is the desired mode for the Update. Use ReplaceEntity to replace fields on
+	// the entity, use MergeEntity to merge fields of the entity.
 	UpdateMode EntityUpdateMode
 }
 
+// InsertEntityResponse contains the response structure for the Client.InsertEntity function
 type InsertEntityResponse struct {
-	RawResponse *http.Response
-	ETag        azcore.ETag
+	ETag azcore.ETag
 }
 
 func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse) InsertEntityResponse {
@@ -585,8 +573,7 @@ func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse)
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return InsertEntityResponse{
-		RawResponse: g.RawResponse,
-		ETag:        ETag,
+		ETag: ETag,
 	}
 }
 
@@ -600,8 +587,7 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 		ETag = azcore.ETag(*g.ETag)
 	}
 	return InsertEntityResponse{
-		RawResponse: g.RawResponse,
-		ETag:        ETag,
+		ETag: ETag,
 	}
 }
 
@@ -659,15 +645,17 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	return InsertEntityResponse{}, errInvalidUpdateMode
 }
 
+// GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy function
 type GetAccessPolicyOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPolicyOptions {
 	return &generated.TableClientGetAccessPolicyOptions{}
 }
 
+// GetAccessPolicyResponse contains the response fields for the CLient.GetAccessPolicy function.
 type GetAccessPolicyResponse struct {
-	RawResponse       *http.Response
 	SignedIdentifiers []*SignedIdentifier
 }
 
@@ -681,7 +669,6 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolic
 		sis = append(sis, fromGeneratedSignedIdentifier(s))
 	}
 	return GetAccessPolicyResponse{
-		RawResponse:       g.RawResponse,
 		SignedIdentifiers: sis,
 	}
 }
@@ -694,22 +681,20 @@ func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOp
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
+// SetAccessPolicyOptions contains the optional parameters for the Client.SetAccessPolicy function
 type SetAccessPolicyOptions struct {
 	TableACL []*SignedIdentifier
 }
 
+// SetAccessPolicyResponse contains the response fields for the Client.SetAccessPolicy function
 type SetAccessPolicyResponse struct {
-	RawResponse *http.Response
+	// placeholder for future optional parameters
 }
 
 func setAccessPolicyResponseFromGenerated(g *generated.TableClientSetAccessPolicyResponse) SetAccessPolicyResponse {
-	if g == nil {
-		return SetAccessPolicyResponse{}
-	}
-	return SetAccessPolicyResponse{
-		RawResponse: g.RawResponse,
-	}
+	return SetAccessPolicyResponse{}
 }
+
 func (s *SetAccessPolicyOptions) toGenerated() *generated.TableClientSetAccessPolicyOptions {
 	var sis []*generated.SignedIdentifier
 	for _, t := range s.TableACL {

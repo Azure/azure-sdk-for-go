@@ -109,14 +109,14 @@ func ExampleClient_ListSecrets() {
 	}
 
 	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.TODO()) {
-		for _, v := range pager.PageResponse().Secrets {
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, v := range page.Secrets {
 			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
 		}
-	}
-
-	if pager.Err() != nil {
-		panic(pager.Err())
 	}
 }
 

@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/CreateOrUpdateASimpleGalleryWithSharingProfile.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateACommunityGallery.json
 func ExampleGalleriesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate() {
 			Properties: &armcompute.GalleryProperties{
 				Description: to.StringPtr("<description>"),
 				SharingProfile: &armcompute.SharingProfile{
-					Permissions: armcompute.GallerySharingPermissionTypes("Groups").ToPtr(),
+					CommunityGalleryInfo: map[string]interface{}{
+						"eula":             "eula",
+						"publicNamePrefix": "PirPublic",
+						"publisherContact": "pir@microsoft.com",
+						"publisherUri":     "uri",
+					},
+					Permissions: armcompute.GallerySharingPermissionTypes("Community").ToPtr(),
 				},
 			},
 		},
@@ -50,7 +56,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.GalleriesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/UpdateASimpleGallery.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGallery.json
 func ExampleGalleriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +83,7 @@ func ExampleGalleriesClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.GalleriesClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryWithSelectPermissions.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetACommunityGallery.json
 func ExampleGalleriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,14 +94,16 @@ func ExampleGalleriesClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<gallery-name>",
-		&armcompute.GalleriesClientGetOptions{Select: armcompute.SelectPermissions("Permissions").ToPtr()})
+		&armcompute.GalleriesClientGetOptions{Select: nil,
+			Expand: nil,
+		})
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Response result: %#v\n", res.GalleriesClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/DeleteAGallery.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/DeleteAGallery.json
 func ExampleGalleriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +124,7 @@ func ExampleGalleriesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/ListGalleriesInAResourceGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleriesInAResourceGroup.json
 func ExampleGalleriesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +148,7 @@ func ExampleGalleriesClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/ListGalleriesInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleriesInASubscription.json
 func ExampleGalleriesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

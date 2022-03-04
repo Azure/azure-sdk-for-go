@@ -1,14 +1,19 @@
 # Release History
 
-## 0.5.1 (Unreleased)
-
-### Features Added
+## 0.6.0 (2022-03-08)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Changes `Attributes` to `Properties`
+* Changes `Secret.KID` to `Secret.KeyID`
+* Changes `DeletedSecretBundle` to `DeletedSecret`
+* Changes `DeletedDate` to `DeletedOn`, `Created` to `CreatedOn`, and `Updated` to `UpdatedOn`
+* Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
+* Changes `Item` to `SecretItem`
+* Pollers and pagers are structs instead of interfaces
+* Prefixed all `DeletionRecoveryLevel` constants with "DeletionRecoveryLevel"
+* Changed pager APIs for `ListSecretVersionsPager`, `ListDeletedSecretsPager`, and `ListSecretsPager`
+    * Use the `More()` method to determine if there are more pages to fetch
+    * Use the `NextPage(context.Context)` to fetch the next page of results
 
 ## 0.5.0 (2022-02-08)
 

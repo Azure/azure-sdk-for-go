@@ -297,7 +297,8 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	pl := pipeline.NewPipeline(srv, pipeline.PolicyFunc(includeResponsePolicy), NewRetryPolicy(testRetryOptions()))
-	ctxWithResp := IncludeResponse(context.Background())
+	var respFromCtx *http.Response
+	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
 	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -310,7 +311,6 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	respFromCtx := ResponseFromContext(ctxWithResp)
 	if respFromCtx != resp {
 		t.Fatal("response from context doesn't match returned response")
 	}

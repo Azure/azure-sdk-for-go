@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAProximityPlacementGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateAProximityPlacementGroup.json
 func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ProximityPlacementGroupsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/PatchAProximityPlacementGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/PatchAProximityPlacementGroup.json
 func ExampleProximityPlacementGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleProximityPlacementGroupsClient_Update() {
 	log.Printf("Response result: %#v\n", res.ProximityPlacementGroupsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/DeleteAProximityPlacementGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DeleteAProximityPlacementGroup.json
 func ExampleProximityPlacementGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleProximityPlacementGroupsClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetAProximityPlacementGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetAProximityPlacementGroup.json
 func ExampleProximityPlacementGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	log.Printf("Response result: %#v\n", res.ProximityPlacementGroupsClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListProximityPlacementGroupsInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListProximityPlacementGroupsInASubscription.json
 func ExampleProximityPlacementGroupsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleProximityPlacementGroupsClient_ListBySubscription() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListProximityPlacementGroupsInAResourceGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListProximityPlacementGroupsInAResourceGroup.json
 func ExampleProximityPlacementGroupsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

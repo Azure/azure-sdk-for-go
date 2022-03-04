@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/CreateOrUpdateASimpleGalleryImage.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImage.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.GalleryImagesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/UpdateASimpleGalleryImage.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGalleryImage.json
 func ExampleGalleryImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleGalleryImagesClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.GalleryImagesClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryImage.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImage.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleGalleryImagesClient_Get() {
 	log.Printf("Response result: %#v\n", res.GalleryImagesClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/DeleteAGalleryImage.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/DeleteAGalleryImage.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/ListGalleryImagesInAGallery.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ListGalleryImagesInAGallery.json
 func ExampleGalleryImagesClient_ListByGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

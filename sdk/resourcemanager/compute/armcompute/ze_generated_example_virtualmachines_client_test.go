@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListVirtualMachinesInASubscriptionByLocation.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListVirtualMachinesInASubscriptionByLocation.json
 func ExampleVirtualMachinesClient_ListByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,34 @@ func ExampleVirtualMachinesClient_ListByLocation() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateALinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Capture_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginCapture() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginCapture(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		armcompute.VirtualMachineCaptureParameters{
+			DestinationContainerName: to.StringPtr("<destination-container-name>"),
+			OverwriteVhds:            to.BoolPtr(true),
+			VhdPrefix:                to.StringPtr("<vhd-prefix>"),
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientCaptureResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateALinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +136,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/UpdateVMDetachDataDiskUsingToBeDetachedProperty.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/UpdateVMDetachDataDiskUsingToBeDetachedProperty.json
 func ExampleVirtualMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +208,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ForceDeleteVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ForceDeleteVirtualMachine.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +229,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachine.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +247,7 @@ func ExampleVirtualMachinesClient_Get() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetVirtualMachineInstanceView.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineInstanceView.json
 func ExampleVirtualMachinesClient_InstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +265,49 @@ func ExampleVirtualMachinesClient_InstanceView() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientInstanceViewResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GeneralizeVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginConvertToManagedDisks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginConvertToManagedDisks(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Deallocate_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginDeallocate(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		&armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: to.BoolPtr(true)})
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GeneralizeVirtualMachine.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +324,56 @@ func ExampleVirtualMachinesClient_Generalize() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListAvailableVmSizes_VirtualMachines.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_List_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_List() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	pager := client.List("<resource-group-name>",
+		&armcompute.VirtualMachinesClientListOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ListAll_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_ListAll() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	pager := client.ListAll(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: to.StringPtr("<status-only>"),
+		Filter: to.StringPtr("<filter>"),
+	})
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListAvailableVmSizes_VirtualMachines.json
 func ExampleVirtualMachinesClient_ListAvailableSizes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +391,28 @@ func ExampleVirtualMachinesClient_ListAvailableSizes() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientListAvailableSizesResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ReapplyVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PowerOff_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPowerOff() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginPowerOff(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		&armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: to.BoolPtr(true)})
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ReapplyVirtualMachine.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +433,70 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ReimageVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Restart_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginRestart(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginStart(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Redeploy_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRedeploy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginRedeploy(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ReimageVirtualMachine.json
 func ExampleVirtualMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +520,7 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/RetrieveBootDiagnosticsDataVirtualMachine.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RetrieveBootDiagnosticsDataVirtualMachine.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +538,28 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientRetrieveBootDiagnosticsDataResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/SimulateEvictionOfVM.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPerformMaintenance() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginPerformMaintenance(ctx,
+		"<resource-group-name>",
+		"<vm-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SimulateEvictionOfVM.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +576,7 @@ func ExampleVirtualMachinesClient_SimulateEviction() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/VirtualMachineAssessPatches.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineAssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +598,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientAssessPatchesResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/VirtualMachineInstallPatches.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineInstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +630,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	log.Printf("Response result: %#v\n", res.VirtualMachinesClientInstallPatchesResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/runCommands/VirtualMachineRunCommand.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

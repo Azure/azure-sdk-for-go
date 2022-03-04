@@ -10,7 +10,7 @@ package generated
 
 const (
 	ModuleName    = "generated"
-	ModuleVersion = "v0.1.1"
+	ModuleVersion = "v0.2.0"
 )
 
 // ActionType - The type of the action.

@@ -1,10 +1,13 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 0.2.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Changed pager APIs for `ListCertificatesPager`, `ListDeletedCertificatesPager`, `ListPropertiesOfIssuersPager`, and `ListCertificateVersionsPager`
+    * Use the `More()` method to determine if there are more pages to fetch
+    * Use the `NextPage(context.Context)` to fetch the next page of results
 
 ### Bugs Fixed
 

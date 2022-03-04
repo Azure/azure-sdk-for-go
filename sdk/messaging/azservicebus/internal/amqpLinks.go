@@ -47,6 +47,10 @@ type AMQPLinks interface {
 	// are called. All functions will return `ErrLinksClosed`
 	Close(ctx context.Context, permanent bool) error
 
+	// CloseIfNeeded closes the links or connection if the error is recoverable.
+	// Use this if you don't want to recreate the connection/links at this point.
+	CloseIfNeeded(ctx context.Context, err error) recoveryKind
+
 	// ClosedPermanently is true if AMQPLinks.Close(ctx, true) has been called.
 	ClosedPermanently() bool
 }
@@ -132,7 +136,7 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 
 	if closedPermanently {
 		span.AddAttributes(tab.StringAttribute("outcome", "was_closed_permanently"))
-		return ErrNonRetriable{Message: "Link has been closed permanently"}
+		return NewErrNonRetriable("link was closed by user")
 	}
 
 	// cheap check before we do the lock
@@ -255,7 +259,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	l.mu.RUnlock()
 
 	if closedPermanently {
-		return nil, ErrNonRetriable{}
+		return nil, NewErrNonRetriable("link was closed by user")
 	}
 
 	if sender != nil || receiver != nil {
@@ -285,6 +289,8 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
 	var lastID LinkID
 
+	didQuickRetry := false
+
 	return utils.Retry(ctx, name, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
@@ -297,7 +303,36 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 		}
 
 		lastID = linksWithVersion.ID
-		return fn(ctx, linksWithVersion, args)
+
+		if err := fn(ctx, linksWithVersion, args); err != nil {
+			if args.I == 0 && !didQuickRetry && IsDetachError(err) {
+				// go-amqp will asynchronously handle detaches. This means errors that you get
+				// back from Send(), for instance, can actually be from much earlier in time
+				// depending on the last time you called into Send().
+				//
+				// This means we'll sometimes do an unneeded sleep after a failed retry when
+				// it would have just immediately worked. To counteract that we'll do a one-time
+				// quick attempt to recreate link immediately if we see a detach error. This might
+				// waste a bit of time attempting to do the creation, but since it's just link creation
+				// it should be fairly fast.
+				//
+				// So when we've received a detach is:
+				//   0th attempt
+				//   extra immediate 0th attempt (if last error was detach)
+				//   (actual retries)
+				//
+				// Whereas normally you'd do (for non-detach errors):
+				//   0th attempt
+				//   (actual retries)
+				log.Writef(EventConn, "Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error())
+				didQuickRetry = true
+				args.ResetAttempts()
+			}
+
+			return err
+		}
+
+		return nil
 	}, IsFatalSBError, o)
 }
 
@@ -324,6 +359,36 @@ func (l *AMQPLinksImpl) Close(ctx context.Context, permanent bool) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	return l.closeWithoutLocking(ctx, permanent)
+}
+
+// CloseIfNeeded closes the links or connection if the error is recoverable.
+// Use this if you want to make it so the _next_ call on your Sender/Receiver
+// eats the cost of recovery, instead of doing it immediately. This is useful
+// if you're trying to exit out of a function quickly but still need to react
+// to a returned error.
+func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
+	rk := GetRecoveryKind(err)
+
+	switch rk {
+	case RecoveryKindLink:
+		_ = l.closeWithoutLocking(ctx, false)
+		return rk
+	case RecoveryKindConn:
+		_ = l.ns.Close(ctx)
+		_ = l.closeWithoutLocking(ctx, false)
+		return rk
+	case RecoveryKindFatal:
+		// it's not entirely clear what the right cleanup would be here, so we leave that up to the
+		// calling application.
+		return rk
+	case RecoveryKindNone:
+		return rk
+	default:
+		panic(fmt.Sprintf("Unhandled recovery kind %s for error %s", rk, err.Error()))
+	}
 }
 
 // initWithoutLocking will create a new link, unconditionally.

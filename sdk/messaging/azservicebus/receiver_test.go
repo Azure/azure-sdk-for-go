@@ -102,24 +102,19 @@ func TestReceiverDrainHasError(t *testing.T) {
 	require.NoError(t, err)
 
 	// close the link _just_ before the drain credit to simulate connection loss.
-	addStub(t, receiver, &StubAMQPReceiver{
+	stubReceiver := &StubAMQPReceiver{
 		stubDrainCredit: func(inner internal.AMQPReceiverCloser, ctx context.Context) error {
 			require.NoError(t, inner.Close(context.Background()))
 			return inner.DrainCredit(ctx)
 		},
-	})
+	}
+
+	addStub(t, receiver, stubReceiver)
 
 	// there's only one message, requesting more messages will time out.
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	messages, err := receiver.ReceiveMessages(ctx, 1+1, nil)
+	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, nil)
 	require.NoError(t, err)
-
-	require.EqualValues(t,
-		[]string{"hello"},
-		getSortedBodies(messages))
-
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 }
 
 func TestReceiverAbandon(t *testing.T) {
@@ -383,7 +378,7 @@ func TestReceiverPeek(t *testing.T) {
 	require.Empty(t, noMessagesExpected)
 }
 
-func TestReceiverDetach(t *testing.T) {
+func TestReceiverDetachWithPeekLock(t *testing.T) {
 	// NOTE: uncomment this to see some of the background reconnects
 	// azlog.SetListener(func(e azlog.Event, s string) {
 	// 	log.Printf("%s %s", e, s)
@@ -415,9 +410,21 @@ func TestReceiverDetach(t *testing.T) {
 	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
 	require.NoError(t, err)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, []string{"hello world"}, getSortedBodies(messages))
+	var messages []*ReceivedMessage
+
+	for i := 0; i < 5; i++ {
+		// depending on how long it takes to rehydrate our links we might
+		// have to call multiple times.
+		tmpMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		if len(tmpMessages) == 1 {
+			messages = tmpMessages
+			break
+		}
+	}
+
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
 
 	// force a detach to happen
 	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
@@ -431,10 +438,70 @@ func TestReceiverDetach(t *testing.T) {
 	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
 	require.NoError(t, err)
 
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
-
 	// and last, check that the queue is properly empty
 	peekedMessages, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, peekedMessages)
+}
+
+func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+
+	require.NoError(t, err)
+
+	// make sure the receiver link and connection are live.
+	_, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	var messages []*ReceivedMessage
+
+	for i := 0; i < 5; i++ {
+		// depending on how long it takes to rehydrate our links we might
+		// have to call multiple times.
+		tmpMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		if len(tmpMessages) == 1 {
+			// NOTE: in ReceiveAndDelete mode we return any messages we've received, even in the face of connection
+			// errors
+			messages = tmpMessages
+			break
+		}
+	}
+
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, peekedMessages)
 }
@@ -537,26 +604,6 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
 	require.EqualError(t, err, "receive deferred messages failed")
 	require.Nil(t, messages)
-}
-
-func TestReceiverCancellationUnitTests(t *testing.T) {
-	r := &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			Receiver: &internal.FakeAMQPReceiver{
-				ReceiveResults: make(chan struct {
-					M *amqp.Message
-					E error
-				}),
-			},
-		},
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-
-	msgs, err := r.ReceiveMessages(ctx, 95, nil)
-	require.Empty(t, msgs)
-	require.NoError(t, err)
 }
 
 type receivedMessageSlice []*ReceivedMessage

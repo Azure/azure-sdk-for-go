@@ -18,7 +18,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/VMScaleSetExtensionRollingUpgrade.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginCancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineScaleSetRollingUpgradesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginCancel(ctx,
+		"<resource-group-name>",
+		"<vm-scale-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetRollingUpgrades_StartOSUpgrade_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartOSUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineScaleSetRollingUpgradesClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginStartOSUpgrade(ctx,
+		"<resource-group-name>",
+		"<vm-scale-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VMScaleSetExtensionRollingUpgrade.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartExtensionUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,4 +79,22 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartExtensionUpgra
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetRollingUpgrades_GetLatest_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewVirtualMachineScaleSetRollingUpgradesClient("<subscription-id>", cred, nil)
+	res, err := client.GetLatest(ctx,
+		"<resource-group-name>",
+		"<vm-scale-set-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.VirtualMachineScaleSetRollingUpgradesClientGetLatestResult)
 }

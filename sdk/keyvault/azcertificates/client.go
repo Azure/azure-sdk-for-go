@@ -239,7 +239,9 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 }
 
 // GetCertificateOperationOptions contains the optional parameters for the Client.GetCertificateOperation method.
-type GetCertificateOperationOptions struct{}
+type GetCertificateOperationOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (g *GetCertificateOperationOptions) toGenerated() *generated.KeyVaultClientGetCertificateOperationOptions {
 	return &generated.KeyVaultClientGetCertificateOperationOptions{}
@@ -273,7 +275,9 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certName string, o
 }
 
 // BeginDeleteCertificateOptions contains the optional parameters for the Client.BeginDeleteCertificate method.
-type BeginDeleteCertificateOptions struct{}
+type BeginDeleteCertificateOptions struct {
+	// placeholder for future optional parameters.
+}
 
 // convert public options to generated options struct
 func (b *BeginDeleteCertificateOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateOptions {
@@ -409,14 +413,18 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 }
 
 // Optional parameters for the Client.PurgeDeletedCertificateOptions function
-type PurgeDeletedCertificateOptions struct{}
+type PurgeDeletedCertificateOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (p *PurgeDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedCertificateOptions {
 	return &generated.KeyVaultClientPurgeDeletedCertificateOptions{}
 }
 
 // PurgeDeletedCertificateResponse contains the response from method Client.PurgeDeletedCertificate.
-type PurgeDeletedCertificateResponse struct{}
+type PurgeDeletedCertificateResponse struct {
+	// placeholder for future reponse fields
+}
 
 // PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
@@ -430,7 +438,9 @@ func (c *Client) PurgeDeletedCertificate(ctx context.Context, certName string, o
 }
 
 // Optional parameters for the Client.GetDeletedCertificate function
-type GetDeletedCertificateOptions struct{}
+type GetDeletedCertificateOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (g *GetDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientGetDeletedCertificateOptions {
 	return &generated.KeyVaultClientGetDeletedCertificateOptions{}
@@ -468,7 +478,9 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 }
 
 // Optional parameters for the Client.BackupCertificateOptions function
-type BackupCertificateOptions struct{}
+type BackupCertificateOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (b *BackupCertificateOptions) toGenerated() *generated.KeyVaultClientBackupCertificateOptions {
 	return &generated.KeyVaultClientBackupCertificateOptions{}
@@ -616,7 +628,9 @@ func (l *ListCertificatesPager) NextPage(ctx context.Context) (ListCertificatesP
 }
 
 // ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method
-type ListCertificatesOptions struct{}
+type ListCertificatesOptions struct {
+	// placeholder for future optional parameters.
+}
 
 // ListCertificatesPageResponse contains the current page of results for the Client.ListSecrets operation
 type ListCertificatesPageResponse struct {
@@ -856,7 +870,9 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 }
 
 // GetIssuerOptions contains the optional parameters for the Client.GetIssuer function
-type GetIssuerOptions struct{}
+type GetIssuerOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuerOptions {
 	return &generated.KeyVaultClientGetCertificateIssuerOptions{}
@@ -999,7 +1015,9 @@ func (c *Client) ListPropertiesOfIssuers(options *ListPropertiesOfIssuersOptions
 }
 
 // DeleteIssuerOptions contains the optional parameters for the Client.DeleteIssuer function
-type DeleteIssuerOptions struct{}
+type DeleteIssuerOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateIssuerOptions {
 	return &generated.KeyVaultClientDeleteCertificateIssuerOptions{}
@@ -1158,7 +1176,9 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 }
 
 // SetContactsOptions contains the optional parameters for the Client.CreateContacts function
-type SetContactsOptions struct{}
+type SetContactsOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (s *SetContactsOptions) toGenerated() *generated.KeyVaultClientSetCertificateContactsOptions {
 	return &generated.KeyVaultClientSetCertificateContactsOptions{}
@@ -1191,7 +1211,9 @@ func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *Se
 }
 
 // GetContactsOptions contains the optional parameters for the Client.GetContacts function
-type GetContactsOptions struct{}
+type GetContactsOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (g *GetContactsOptions) toGenerated() *generated.KeyVaultClientGetCertificateContactsOptions {
 	return &generated.KeyVaultClientGetCertificateContactsOptions{}
@@ -1219,7 +1241,9 @@ func (c *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (
 }
 
 // DeleteContactsOptions contains the optional parameters for the Client.DeleteContacts function
-type DeleteContactsOptions struct{}
+type DeleteContactsOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (d *DeleteContactsOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateContactsOptions {
 	return &generated.KeyVaultClientDeleteCertificateContactsOptions{}
@@ -1246,7 +1270,9 @@ func (c *Client) DeleteContacts(ctx context.Context, options *DeleteContactsOpti
 }
 
 // UpdateCertificatePolicyOptions contains the optional parameters for the Client.UpdateCertificatePolicy method.
-type UpdateCertificatePolicyOptions struct{}
+type UpdateCertificatePolicyOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (u *UpdateCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientUpdateCertificatePolicyOptions {
 	return &generated.KeyVaultClientUpdateCertificatePolicyOptions{}
@@ -1277,7 +1303,9 @@ func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, p
 }
 
 // GetCertificatePolicyOptions contains the optional parameters for the method Client.GetCertificatePolicy.
-type GetCertificatePolicyOptions struct{}
+type GetCertificatePolicyOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (g *GetCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientGetCertificatePolicyOptions {
 	return &generated.KeyVaultClientGetCertificatePolicyOptions{}
@@ -1408,7 +1436,9 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 }
 
 // RestoreCertificateBackupOptions contains the optional parameters for the Client.RestoreCertificateBackup method
-type RestoreCertificateBackupOptions struct{}
+type RestoreCertificateBackupOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClientRestoreCertificateOptions {
 	return &generated.KeyVaultClientRestoreCertificateOptions{}
@@ -1449,7 +1479,9 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 }
 
 // BeginRecoverDeletedCertificateOptions contains the optional parameters for the Client.BeginRecoverDeletedCertificate function
-type BeginRecoverDeletedCertificateOptions struct{}
+type BeginRecoverDeletedCertificateOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (b *BeginRecoverDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedCertificateOptions {
 	return &generated.KeyVaultClientRecoverDeletedCertificateOptions{}
@@ -1665,7 +1697,9 @@ func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions
 }
 
 // CancelCertificateOperationOptions contains the optional parameters for the Client.CancelCertificateOperation function
-type CancelCertificateOperationOptions struct{}
+type CancelCertificateOperationOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (c *CancelCertificateOperationOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOperationOptions {
 	return &generated.KeyVaultClientUpdateCertificateOperationOptions{}
@@ -1697,7 +1731,9 @@ func (c *Client) CancelCertificateOperation(ctx context.Context, certName string
 }
 
 // DeleteCertificateOperationsOptions contains the optional parameters for the Client.DeleteCertificateOperation function.
-type DeleteCertificateOperationOptions struct{}
+type DeleteCertificateOperationOptions struct {
+	// placeholder for future optional parameters.
+}
 
 func (d *DeleteCertificateOperationOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateOperationOptions {
 	return &generated.KeyVaultClientDeleteCertificateOperationOptions{}

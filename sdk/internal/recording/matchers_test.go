@@ -60,8 +60,8 @@ func TestSetBodilessMatcher(t *testing.T) {
 	err = Stop(t, nil)
 	require.NoError(t, err)
 
-	err = ResetProxy(nil)
-	require.NoError(t, err)
+	// err = ResetProxy(nil)
+	// require.NoError(t, err)
 }
 
 func TestSetBodilessMatcherNilTest(t *testing.T) {
@@ -110,8 +110,8 @@ func TestSetBodilessMatcherNilTest(t *testing.T) {
 	err = Stop(t, nil)
 	require.NoError(t, err)
 
-	err = ResetProxy(nil)
-	require.NoError(t, err)
+	// err = ResetProxy(nil)
+	// require.NoError(t, err)
 }
 
 func TestSetDefaultMatcher(t *testing.T) {
@@ -161,8 +161,8 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err = Stop(t, nil)
 	require.NoError(t, err)
 
-	err = ResetProxy(nil)
-	require.NoError(t, err)
+	// err = ResetProxy(nil)
+	// require.NoError(t, err)
 }
 
 func TestAddDefaults(t *testing.T) {

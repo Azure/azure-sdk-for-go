@@ -19,7 +19,7 @@ import (
 )
 
 func reset(t *testing.T) {
-	err := ResetProxy(nil)
+	err := ResetProxy(&RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 }
 
@@ -45,15 +45,12 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 func TestUriSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	srvURL := "http://host.docker.internal:8080/"
 
-	err = AddURISanitizer("https://replacement.com/", srvURL, nil)
+	err = AddURISanitizer("https://replacement.com/", srvURL, &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -93,10 +90,7 @@ func TestUriSanitizer(t *testing.T) {
 func TestHeaderRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -114,14 +108,14 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
 
-	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", nil)
+	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
-	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", nil)
+	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	// This is the only failing one
-	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
+	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account", TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -152,10 +146,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 func TestBodyKeySanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -178,7 +169,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", nil)
+	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -207,10 +198,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 func TestBodyRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -233,9 +221,9 @@ func TestBodyRegexSanitizer(t *testing.T) {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	err = AddBodyRegexSanitizer("Sanitized", "Value", nil)
+	err = AddBodyRegexSanitizer("Sanitized", "Value", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
-	err = AddBodyRegexSanitizer("Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
+	err = AddBodyRegexSanitizer("Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account", TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -265,10 +253,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 func TestRemoveHeaderSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -285,7 +270,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegexRemove", "https://fakeaccount.table.core.windows.net")
 
-	err = AddRemoveHeaderSanitizer([]string{"ComplexRegexRemove", "FakeStorageLocation"}, nil)
+	err = AddRemoveHeaderSanitizer([]string{"ComplexRegexRemove", "FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -314,10 +299,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 func TestContinuationSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -341,7 +323,7 @@ func TestContinuationSanitizer(t *testing.T) {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	err = AddContinuationSanitizer("Location", "Sanitized", true, nil)
+	err = AddContinuationSanitizer("Location", "Sanitized", true, &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -379,10 +361,7 @@ func TestContinuationSanitizer(t *testing.T) {
 func TestGeneralRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -397,7 +376,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IDHeader, GetRecordingId(t))
 
-	err = AddGeneralRegexSanitizer("Sanitized", "Value", nil)
+	err = AddGeneralRegexSanitizer("Sanitized", "Value", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	_, err = client.Do(req)
@@ -425,10 +404,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 func TestOAuthResponseSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -443,7 +419,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IDHeader, GetRecordingId(t))
 
-	err = AddOAuthResponseSanitizer(nil)
+	err = AddOAuthResponseSanitizer(&RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	_, err = client.Do(req)
@@ -469,10 +445,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -485,7 +458,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IDHeader, GetRecordingId(t))
 
-	err = AddURISubscriptionIDSanitizer("", nil)
+	err = AddURISubscriptionIDSanitizer("", &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -514,10 +487,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 func TestResetSanitizers(t *testing.T) {
 	defer reset(t)
 
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
-	err = Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
@@ -565,14 +535,11 @@ func TestResetSanitizers(t *testing.T) {
 }
 
 func TestSingleTestSanitizer(t *testing.T) {
-	err := ResetProxy(nil)
-	require.NoError(t, err)
-
 	// The first iteration, add a sanitizer for just that test. The
 	// second iteration, verify that the sanitizer was not applied.
 	for i := 0; i < 2; i++ {
 		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
-			err = Start(t, packagePath, nil)
+			err := Start(t, packagePath, nil)
 			require.NoError(t, err)
 
 			if i == 0 {
@@ -619,4 +586,30 @@ func TestSingleTestSanitizer(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRestartProxySingleTest(t *testing.T) {
+	// The first iteration, add a sanitizer for all scenarios, do not call stop.
+	// The second iteration, add a sanitizer for just one scenario,
+	// reset just the test instance.
+	var firstTestInst *testing.T
+	for i := 0; i < 2; i++ {
+		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
+			err := Start(t, packagePath, nil)
+			require.NoError(t, err)
+
+			if i == 0 {
+				firstTestInst = t
+			} else {
+				err = AddGeneralRegexSanitizer("specific", "sample", &RecordingOptions{TestInstance: t})
+				require.NoError(t, err)
+
+				err = ResetProxy(&RecordingOptions{TestInstance: t})
+				require.NoError(t, err)
+				Stop(t, nil)
+			}
+		})
+	}
+	err := Stop(firstTestInst, nil)
+	require.NoError(t, err)
 }

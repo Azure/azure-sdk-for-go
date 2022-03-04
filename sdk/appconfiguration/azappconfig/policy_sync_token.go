@@ -38,48 +38,28 @@ func parseToken(tok string) (syncToken, error) {
 	val := ""
 	var seq int64
 
-	{
-		pos := 0
-		nm := ""
-		vl := ""
+	for _, kv := range strings.Split(tok, ";") {
+		if kv == "" {
+			continue
+		}
 
-		last := len(tok) - 1
-		for i, ch := range []rune(tok) {
-			if nm == "" && ch == '=' {
-				nm = tok[0:i]
-				pos = i + 1
-				continue
+		eq := strings.Index(kv, "=")
+		if eq == -1 || eq == len(kv)-1 {
+			continue
+		}
+
+		n := strings.TrimSpace(kv[:eq])
+		v := kv[eq+1:]
+
+		if n == "sn" {
+			sn, err := strconv.ParseInt(v, 0, 64)
+			if err != nil {
+				return syncToken{}, err
 			}
-
-			if ch == ';' || i == last {
-				frag := tok[pos:(i - pos)]
-				if i == last {
-					frag = frag[:len(frag)-1]
-				}
-
-				if nm == "" {
-					nm = frag
-				} else {
-					vl = frag
-				}
-
-				nm = strings.TrimSpace(nm)
-
-				if nm == "sn" {
-					sn, err := strconv.ParseInt(vl, 0, 64)
-					if err != nil {
-						return syncToken{}, err
-					}
-					seq = sn
-				} else if id == "" {
-					id = nm
-					val = vl
-				}
-
-				nm = ""
-				vl = ""
-				pos = i + 1
-			}
+			seq = sn
+		} else {
+			id = n
+			val = v
 		}
 	}
 

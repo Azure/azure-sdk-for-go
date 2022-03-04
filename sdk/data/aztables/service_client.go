@@ -6,6 +6,8 @@ package aztables
 import (
 	"context"
 	"errors"
+	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
@@ -114,7 +116,7 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
 }
 
-// DeleteTableResponse contains response fields for ServiceClient.DeleteTable and Client.Delete 
+// DeleteTableResponse contains response fields for ServiceClient.DeleteTable and Client.Delete
 type DeleteTableResponse struct {
 	// placeholder for future optional response fields
 }
@@ -134,8 +136,10 @@ func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *D
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
+
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
+
 	// Maximum number of records to return.
 	Top *int32
 }
@@ -153,25 +157,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPager is a Pager for Table List operations
-//
-// NextPage should be called first. It fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListTablesPager interface {
-	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListTablesPage
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-	// Err returns an error if there was an error on the last request
-	Err() error
-}
-
-// ListTablesPage contains the properties of a single page response from a ListTables operation
-type ListTablesPage struct {
+// ListTablesPageResponse contains the properties of a single page response from a ListTables operation
+type ListTablesPageResponse struct {
 	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
 	ContinuationNextTableName *string
 
@@ -179,86 +166,103 @@ type ListTablesPage struct {
 	ODataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Tables []*ResponseProperties `json:"value,omitempty"`
+	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
-	if g == nil {
-		return nil
-	}
-
-	var value []*ResponseProperties
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPageResponse {
+	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return &ListTablesPage{
+	return ListTablesPageResponse{
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:             g.ODataMetadata,
 		Tables:                    value,
 	}
 }
 
-// ResponseProperties contains the properties for a single Table
-type ResponseProperties struct {
+// TableProperties contains the properties for a single Table
+type TableProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`
 
-	// The id of the table.
+	// The ID of the table.
 	ODataID *string `json:"odata.id,omitempty"`
 
 	// The odata type of the table.
 	ODataType *string `json:"odata.type,omitempty"`
 
 	// The name of the table.
-	TableName *string `json:"TableName,omitempty"`
+	Name *string `json:"TableName,omitempty"`
 }
 
 // Convets a generated TableResponseProperties to a ResponseProperties
-func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *TableProperties {
 	if g == nil {
 		return nil
 	}
 
-	return &ResponseProperties{
-		TableName:     g.TableName,
+	return &TableProperties{
+		Name:          g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,
 		ODataType:     g.ODataType,
 	}
 }
 
-type tableQueryResponsePager struct {
+// ListTablesPager is a Pager for Table List operations
+//
+// Call NextPage first to fetch the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on the Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
+//
+// PageResponse returns the results from the page most recently fetched from the service.
+type ListTablesPager struct {
 	client            *generated.TableClient
-	current           *generated.TableClientQueryResponse
+	current           generated.TableClientQueryResponse
 	tableQueryOptions *generated.TableClientQueryOptions
 	listOptions       *ListTablesOptions
-	err               error
+	nextTableName     *string
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
-		return false
+func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse, error) {
+	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
+		NextTableName: p.nextTableName,
+	}, p.listOptions.toQueryOptions())
+	if err != nil {
+		return ListTablesPageResponse{}, err
 	}
-	var resp generated.TableClientQueryResponse
-	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
-	p.current = &resp
-	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
-	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
+	resp, err := p.client.Pl.Do(req)
+	if err != nil {
+		return ListTablesPageResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ListTablesPageResponse{}, runtime.NewResponseError(resp)
+	}
+
+	result, err := p.client.QueryHandleResponse(resp)
+	if err != nil {
+		return ListTablesPageResponse{}, err
+	}
+	p.current = result
+	p.nextTableName = p.current.XMSContinuationNextTableName
+	return fromGeneratedTableQueryResponseEnvelope(p.current), nil
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
-	return *fromGeneratedTableQueryResponseEnvelope(p.current)
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *tableQueryResponsePager) Err() error {
-	return p.err
+// More returns true if there are more pages to retrieve
+func (p *ListTablesPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.XMSContinuationNextTableName == nil || len(*p.current.XMSContinuationNextTableName) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
 // List queries the existing tables using the specified ListTablesOptions.
@@ -272,16 +276,16 @@ func (p *tableQueryResponsePager) Err() error {
 //
 // List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
-	return &tableQueryResponsePager{
+	return ListTablesPager{
 		client:            t.client,
+		tableQueryOptions: &generated.TableClientQueryOptions{},
 		listOptions:       listOptions,
-		tableQueryOptions: new(generated.TableClientQueryOptions),
 	}
 }
 
 // GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
 type GetStatisticsOptions struct {
-	// placeholder for future optional parameters.
+	// placeholder for future optional parameters
 }
 
 // GetStatisticsResponse contains the response for Client.GetStatistics
@@ -357,7 +361,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
-// SetPropertiesOptions contains the optional parameters for the Client.SetProperties function
+// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
 type SetPropertiesOptions struct {
 	// placeholder for future optional parameters
 }

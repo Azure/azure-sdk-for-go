@@ -44,6 +44,14 @@ func (c ResponseFormat) ToPtr() *ResponseFormat {
 type EntityUpdateMode string
 
 const (
-	ReplaceEntity EntityUpdateMode = "replace"
-	MergeEntity   EntityUpdateMode = "merge"
+	EntityUpdateModeReplace EntityUpdateMode = "replace"
+	EntityUpdateModeMerge   EntityUpdateMode = "merge"
 )
+
+// PossibleEntityUpdateModeValues returns the possible values for the EntityUpdateMode const type.
+func PossibleEntityUpdateModeValues() []EntityUpdateMode {
+	return []EntityUpdateMode{
+		EntityUpdateModeMerge,
+		EntityUpdateModeReplace,
+	}
+}

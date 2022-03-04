@@ -29,50 +29,24 @@ import (
 type TransactionType string
 
 const (
-	Add           TransactionType = "add"
-	UpdateMerge   TransactionType = "updatemerge"
-	UpdateReplace TransactionType = "updatereplace"
-	Delete        TransactionType = "delete"
-	InsertMerge   TransactionType = "insertmerge"
-	InsertReplace TransactionType = "insertreplace"
+	TransactionTypeAdd           TransactionType = "add"
+	TransactionTypeUpdateMerge   TransactionType = "updatemerge"
+	TransactionTypeUpdateReplace TransactionType = "updatereplace"
+	TransactionTypeDelete        TransactionType = "delete"
+	TransactionTypeInsertMerge   TransactionType = "insertmerge"
+	TransactionTypeInsertReplace TransactionType = "insertreplace"
 )
 
-type oDataErrorMessage struct {
-	Lang  string `json:"lang"`
-	Value string `json:"value"`
-}
-
-type oDataError struct {
-	Code    string            `json:"code"`
-	Message oDataErrorMessage `json:"message"`
-}
-
-type tableTransactionError struct {
-	ODataError        oDataError `json:"odata.error"`
-	FailedEntityIndex int
-}
-
-type transactionError struct {
-	rawResponse *http.Response
-	statusCode  int
-	errorCode   string
-	odataError  oDataError
-}
-
-func (t *transactionError) StatusCode() int {
-	return t.rawResponse.StatusCode
-}
-
-func (t *transactionError) ErrorCode() string {
-	return t.odataError.Code
-}
-
-func (t *transactionError) RawResponse() *http.Response {
-	return t.rawResponse
-}
-
-func (t *transactionError) Error() string {
-	return fmt.Sprintf("Code: %s, Message: %s", t.odataError.Code, t.odataError.Message.Value)
+// PossibleTransactionTypeValues returns the possible values for the TransactionType const type.
+func PossibleTransactionTypeValues() []TransactionType {
+	return []TransactionType{
+		TransactionTypeAdd,
+		TransactionTypeUpdateMerge,
+		TransactionTypeUpdateReplace,
+		TransactionTypeDelete,
+		TransactionTypeInsertMerge,
+		TransactionTypeInsertReplace,
+	}
 }
 
 type TransactionAction struct {
@@ -83,9 +57,7 @@ type TransactionAction struct {
 
 type TransactionResponse struct {
 	// The response for a single table.
-	TransactionResponses *[]http.Response
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType string
+	TransactionResponses []http.Response
 }
 
 type SubmitTransactionOptions struct {
@@ -171,11 +143,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 // create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
-	result := TransactionResponse{TransactionResponses: &innerResponses}
-
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = val
-	}
+	result := TransactionResponse{TransactionResponses: innerResponses}
 
 	bytesBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -184,7 +152,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 	reader := bytes.NewReader(bytesBody)
 	if bytes.IndexByte(bytesBody, '{') == 0 {
 		// This is a failure and the body is json
-		return &TransactionResponse{}, newTableTransactionError(bytesBody, resp)
+		return &TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 
 	outerBoundary := getBoundaryName(bytesBody)
@@ -213,14 +181,9 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 			return &TransactionResponse{}, err
 		}
 		if r.StatusCode >= 400 {
-			errorBody, err := ioutil.ReadAll(r.Body)
 			if err != nil {
 				return &TransactionResponse{}, err
 			} else {
-				innerResponses = []http.Response{*r}
-				retError := newTableTransactionError(errorBody, resp)
-				ret := retError.(*transactionError)
-				ret.statusCode = r.StatusCode
 				return &result, runtime.NewResponseError(resp)
 			}
 		}
@@ -237,19 +200,6 @@ func getBoundaryName(bytesBody []byte) string {
 		end -= 1
 	}
 	return string(bytesBody[2:end])
-}
-
-// newTableTransactionError handles the SubmitTransaction error response.
-func newTableTransactionError(errorBody []byte, resp *http.Response) error {
-	oe := tableTransactionError{}
-	if err := json.Unmarshal(errorBody, &oe); err == nil {
-		return &transactionError{
-			rawResponse: resp,
-			errorCode:   oe.ODataError.Code,
-			odataError:  oe.ODataError,
-		}
-	}
-	return fmt.Errorf("unknown error: %s", string(errorBody))
 }
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.
@@ -300,7 +250,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	}
 
 	switch transactionAction.ActionType {
-	case Delete:
+	case TransactionTypeDelete:
 		ifMatch := string(azcore.ETagAny)
 		if transactionAction.IfMatch != nil {
 			ifMatch = string(*transactionAction.IfMatch)
@@ -318,7 +268,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-	case Add:
+	case TransactionTypeAdd:
 		req, err = t.client.InsertEntityCreateRequest(
 			ctx,
 			generated.Enum1Three0,
@@ -332,9 +282,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-	case UpdateMerge:
+	case TransactionTypeUpdateMerge:
 		fallthrough
-	case InsertMerge:
+	case TransactionTypeInsertMerge:
 		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
@@ -354,9 +304,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if isCosmosEndpoint(t.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
-	case UpdateReplace:
+	case TransactionTypeUpdateReplace:
 		fallthrough
-	case InsertReplace:
+	case TransactionTypeInsertReplace:
 		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))

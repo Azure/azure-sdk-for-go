@@ -111,13 +111,13 @@ func createComplexEntity(i int, pk string) complexTestEntity {
 	}
 }
 
-func createComplexEntities(count int, pk string) *[]complexTestEntity {
+func createComplexEntities(count int, pk string) []complexTestEntity {
 	result := make([]complexTestEntity, count)
 
 	for i := 1; i <= count; i++ {
 		result[i-1] = createComplexEntity(i, pk)
 	}
-	return &result
+	return result
 }
 
 func createEdmEntity(count int, pk string) EDMEntity {

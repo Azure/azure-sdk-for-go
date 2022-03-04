@@ -5,6 +5,15 @@
 ### Features Added
 
 ### Breaking Changes
+* Prefixed all `TransactionType` constants with `TransactionType`.
+* Prefixed all `EntityUpdateMode` constants with `EntityUpdateMode`.
+* Changed the `SharedKeyCredential.ComputeHMACSHA256` method to a private method.
+* Changed the `ListTablesPager` and `ListEntitiesPager` to structs.
+* Renamed the `ResponseProperties` type to `TableProperties`.
+* Removing `ContentType` from the `TransactionResponse` struct.
+* Update `ListEntitiesPager` and `ListTablesPager`.
+    * The `More` method checks whether there are more pages to retrieve.
+    * The `NextPage(context.Context)` method gets the next page and returns a response and an `error`.
 
 ### Bugs Fixed
 

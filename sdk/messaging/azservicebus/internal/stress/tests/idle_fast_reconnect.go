@@ -89,7 +89,6 @@ func IdleFastReconnect(remainingArgs []string) {
 	})
 
 	if err != nil {
-		log.Printf("%#v", err)
 		panic(err)
 	}
 
@@ -99,11 +98,14 @@ func IdleFastReconnect(remainingArgs []string) {
 	_, err = receiver.ReceiveMessages(ctx, 1, nil)
 
 	if err != nil {
-		log.Printf("%#v", err)
 		panic(err)
 	}
 
 	messages, err = receiver.ReceiveMessages(ctx, 1, nil)
+
+	if err != nil {
+		panic(err)
+	}
 
 	if len(messages) != 1 {
 		panic("no messages received")

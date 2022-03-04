@@ -46,7 +46,7 @@ type Setting struct {
 	IsReadOnly *bool
 }
 
-func configurationSettingFromGenerated(kv generated.KeyValue) Setting {
+func settingFromGenerated(kv generated.KeyValue) Setting {
 	return Setting{
 		Key:          kv.Key,
 		Value:        kv.Value,

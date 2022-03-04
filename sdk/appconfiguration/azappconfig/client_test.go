@@ -22,7 +22,7 @@ func TestClient(t *testing.T) {
 	require.Empty(t, err)
 	require.NotEmpty(t, client)
 
-	addResp, err2 := client.AddConfigurationSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
+	addResp, err2 := client.AddSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
 	require.Empty(t, err2)
 	require.NotEmpty(t, addResp)
 	require.NotEmpty(t, addResp.Key)
@@ -32,7 +32,7 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *addResp.Label)
 	require.Equal(t, value, *addResp.Value)
 
-	getResp, err3 := client.GetConfigurationSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
+	getResp, err3 := client.GetSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
 	require.Empty(t, err3)
 	require.NotEmpty(t, getResp)
 	require.NotEmpty(t, getResp.Key)
@@ -43,7 +43,7 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *getResp.Value)
 
 	value = "value2"
-	setResp, err4 := client.SetConfigurationSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
+	setResp, err4 := client.SetSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
 	require.Empty(t, err4)
 	require.NotEmpty(t, setResp)
 	require.NotEmpty(t, setResp.Key)
@@ -78,7 +78,7 @@ func TestClient(t *testing.T) {
 	require.False(t, *roResp2.IsReadOnly)
 
 	any := "*"
-	revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
+	revPgr := client.NewListRevisionsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, revPgr)
 	revHasPage := revPgr.NextPage(context.TODO())
 	require.True(t, revHasPage)
@@ -88,7 +88,7 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *revResp.Settings[0].Label)
 	require.Equal(t, value, *revResp.Settings[0].Value)
 
-	delResp, err7 := client.DeleteConfigurationSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
+	delResp, err7 := client.DeleteSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
 	require.Empty(t, err7)
 	require.NotEmpty(t, delResp)
 	require.NotEmpty(t, delResp.Key)

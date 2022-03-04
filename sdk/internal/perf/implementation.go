@@ -69,8 +69,12 @@ func runTest(p PerfTest, index int, c chan runResult, ID string) {
 		warmUpLastPrint := 1.0
 		warmUpPerSecondCount := make([]int, 0)
 		warmupCount := 0
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second * time.Duration(warmUpDuration))
+		defer cancel()
+
 		for time.Since(warmUpStart).Seconds() < float64(warmUpDuration) {
-			err := p.Run(context.Background())
+			err := p.Run(ctx)
 			if err != nil {
 				c <- runResult{err: err}
 			}
@@ -109,8 +113,12 @@ func runTest(p PerfTest, index int, c chan runResult, ID string) {
 	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second * time.Duration(duration))
+	defer cancel()
+
 	for time.Since(timeStart).Seconds() < float64(duration) {
-		err := p.Run(context.Background())
+		err := p.Run(ctx)
 		if err != nil {
 			c <- runResult{err: err}
 		}

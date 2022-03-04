@@ -66,9 +66,11 @@ func TestRandomStream_Seek(t *testing.T) {
 	s := r.(*randomStream)
 	require.Equal(t, s.position, int64(0))
 
-	s.Seek(1, io.SeekCurrent)
+	_, err = s.Seek(1, io.SeekCurrent)
+	require.NoError(t, err)
 	require.Equal(t, s.position, int64(1))
 
-	s.Seek(0, io.SeekEnd)
+	_, err = s.Seek(0, io.SeekEnd)
+	require.NoError(t, err)
 	require.Equal(t, s.position, int64(1024))
 }

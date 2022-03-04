@@ -606,7 +606,8 @@ func TestRestartProxySingleTest(t *testing.T) {
 
 				err = ResetProxy(&RecordingOptions{TestInstance: t})
 				require.NoError(t, err)
-				Stop(t, nil)
+				err = Stop(t, nil)
+				require.NoError(t, err)
 			}
 		})
 	}

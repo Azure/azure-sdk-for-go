@@ -56,7 +56,7 @@ func getDefaultScope(endpoint string) (string, error) {
 }
 
 // NewClient returns a pointer to a Client object affinitized to an endpointUrl.
-func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (Client, error) {
+func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -65,7 +65,7 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 
 	tokenScope, err := getDefaultScope(endpointUrl)
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
 
 	syncTokenPolicy := newSyncTokenPolicy()
@@ -76,14 +76,14 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return Client{
+	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (Client, error) {
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -92,7 +92,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 	endpoint, credential, secret, err := parseConnectionString(connectionString)
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
 
 	syncTokenPolicy := newSyncTokenPolicy()
@@ -103,7 +103,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return Client{
+	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil
@@ -123,16 +123,16 @@ func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcor
 	}
 }
 
-// AddSettingResult contains the response from AddSetting method.
-type AddSettingResult struct {
+// AddSettingResponse contains the response from AddSetting method.
+type AddSettingResponse struct {
 	Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse) AddSettingResult {
-	return AddSettingResult{
+func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse) AddSettingResponse {
+	return AddSettingResponse{
 		Setting:   settingFromGenerated(g.KeyValue),
 		SyncToken: g.SyncToken,
 	}
@@ -140,29 +140,30 @@ func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse
 
 // AddSettingOptions contains the optional parameters for the AddSetting method.
 type AddSettingOptions struct {
+	// placeholder for future options
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
-func (c *Client) AddSetting(ctx context.Context, setting Setting, options *AddSettingOptions) (AddSettingResult, error) {
+func (c *Client) AddSetting(ctx context.Context, setting Setting, options *AddSettingOptions) (AddSettingResponse, error) {
 	etagAny := azcore.ETagAny
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
 	if err != nil {
-		return AddSettingResult{}, err
+		return AddSettingResponse{}, err
 	}
 
-	return (AddSettingResult)(fromGeneratedAdd(resp)), nil
+	return (AddSettingResponse)(fromGeneratedAdd(resp)), nil
 }
 
-// DeleteSettingResult contains the response from DeleteSetting method.
-type DeleteSettingResult struct {
+// DeleteSettingResponse contains the response from DeleteSetting method.
+type DeleteSettingResponse struct {
 	Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-func fromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) DeleteSettingResult {
-	return DeleteSettingResult{
+func fromGeneratedDelete(g generated.AzureAppConfigurationClientDeleteKeyValueResponse) DeleteSettingResponse {
+	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(g.KeyValue),
 		SyncToken: g.SyncToken,
 	}
@@ -184,7 +185,7 @@ func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.Azur
 }
 
 // DeleteSetting deletes a configuration setting from the configuration store.
-func (c *Client) DeleteSetting(ctx context.Context, setting Setting, options *DeleteSettingOptions) (DeleteSettingResult, error) {
+func (c *Client) DeleteSetting(ctx context.Context, setting Setting, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -192,14 +193,14 @@ func (c *Client) DeleteSetting(ctx context.Context, setting Setting, options *De
 
 	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
-		return DeleteSettingResult{}, err
+		return DeleteSettingResponse{}, err
 	}
 
 	return fromGeneratedDelete(resp), nil
 }
 
-// GetSettingResult contains the configuration setting retrieved by GetSetting method.
-type GetSettingResult struct {
+// GetSettingResponse contains the configuration setting retrieved by GetSetting method.
+type GetSettingResponse struct {
 	Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
@@ -209,7 +210,7 @@ type GetSettingResult struct {
 	LastModified *time.Time
 }
 
-func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse) GetSettingResult {
+func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse) GetSettingResponse {
 	var t *time.Time
 	if g.LastModified != nil {
 		if tt, err := time.Parse(timeFormat, *g.LastModified); err == nil {
@@ -217,7 +218,7 @@ func fromGeneratedGet(g generated.AzureAppConfigurationClientGetKeyValueResponse
 		}
 	}
 
-	return GetSettingResult{
+	return GetSettingResponse{
 		Setting:      settingFromGenerated(g.KeyValue),
 		SyncToken:    g.SyncToken,
 		LastModified: t,
@@ -250,7 +251,7 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 }
 
 // GetSetting retrieves an existing configuration setting from the configuration store.
-func (c *Client) GetSetting(ctx context.Context, setting Setting, options *GetSettingOptions) (GetSettingResult, error) {
+func (c *Client) GetSetting(ctx context.Context, setting Setting, options *GetSettingOptions) (GetSettingResponse, error) {
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time
 	if options != nil {
@@ -263,29 +264,29 @@ func (c *Client) GetSetting(ctx context.Context, setting Setting, options *GetSe
 
 	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
-		return GetSettingResult{}, err
+		return GetSettingResponse{}, err
 	}
 
 	return fromGeneratedGet(resp), nil
 }
 
-// SetReadOnlyResult contains the response from SetReadOnly method.
-type SetReadOnlyResult struct {
+// SetReadOnlyResponse contains the response from SetReadOnly method.
+type SetReadOnlyResponse struct {
 	Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-func fromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) SetReadOnlyResult {
-	return SetReadOnlyResult{
+func fromGeneratedPutLock(g generated.AzureAppConfigurationClientPutLockResponse) SetReadOnlyResponse {
+	return SetReadOnlyResponse{
 		Setting:   settingFromGenerated(g.KeyValue),
 		SyncToken: g.SyncToken,
 	}
 }
 
-func fromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) SetReadOnlyResult {
-	return SetReadOnlyResult{
+func fromGeneratedDeleteLock(g generated.AzureAppConfigurationClientDeleteLockResponse) SetReadOnlyResponse {
+	return SetReadOnlyResponse{
 		Setting:   settingFromGenerated(g.KeyValue),
 		SyncToken: g.SyncToken,
 	}
@@ -314,7 +315,7 @@ func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.
 }
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
-func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResult, error) {
+func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -335,19 +336,19 @@ func (c *Client) SetReadOnly(ctx context.Context, setting Setting, isReadOnly bo
 		}
 	}
 
-	return SetReadOnlyResult{}, err
+	return SetReadOnlyResponse{}, err
 }
 
-// SetSettingResult contains the response from SetSetting method.
-type SetSettingResult struct {
+// SetSettingResponse contains the response from SetSetting method.
+type SetSettingResponse struct {
 	Setting
 
 	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
 	SyncToken *string
 }
 
-func fromGeneratedSet(g generated.AzureAppConfigurationClientPutKeyValueResponse) SetSettingResult {
-	return SetSettingResult{
+func fromGeneratedSet(g generated.AzureAppConfigurationClientPutKeyValueResponse) SetSettingResponse {
+	return SetSettingResponse{
 		Setting:   settingFromGenerated(g.KeyValue),
 		SyncToken: g.SyncToken,
 	}
@@ -362,7 +363,7 @@ type SetSettingOptions struct {
 }
 
 // SetSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
-func (c *Client) SetSetting(ctx context.Context, setting Setting, options *SetSettingOptions) (SetSettingResult, error) {
+func (c *Client) SetSetting(ctx context.Context, setting Setting, options *SetSettingOptions) (SetSettingResponse, error) {
 	var ifMatch *azcore.ETag
 	if options != nil && options.OnlyIfUnchanged {
 		ifMatch = setting.ETag
@@ -370,10 +371,10 @@ func (c *Client) SetSetting(ctx context.Context, setting Setting, options *SetSe
 
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
 	if err != nil {
-		return SetSettingResult{}, err
+		return SetSettingResponse{}, err
 	}
 
-	return (SetSettingResult)(fromGeneratedSet(resp)), nil
+	return (SetSettingResponse)(fromGeneratedSet(resp)), nil
 }
 
 // ListRevisionsPage contains the configuration settings returned by ListRevisionsPager.
@@ -434,10 +435,10 @@ func (p listRevisionsPager) NextPage(ctx context.Context) bool {
 
 // ListRevisionsOptions contains the optional parameters for the ListRevisions method.
 type ListRevisionsOptions struct {
+	// placeholder for future options
 }
 
-// NewListRevisionsPager retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
-func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) ListRevisionsPager {
-	_ = options
+// ListRevisions retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
+func (c *Client) ListRevisions(selector SettingSelector, options *ListRevisionsOptions) ListRevisionsPager {
 	return listRevisionsPager{genPager: c.appConfigClient.GetRevisions(selector.toGenerated())}
 }

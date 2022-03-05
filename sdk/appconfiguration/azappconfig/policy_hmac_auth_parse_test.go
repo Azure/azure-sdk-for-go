@@ -14,7 +14,7 @@ import (
 
 func TestHmacAuthParseConnectionString(t *testing.T) {
 	ep, id, sc, err := parseConnectionString("Endpoint=xX;Id=yY;Secret=ZmZm")
-	require.Empty(t, err)
+	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
 	require.Equal(t, "yY", id)
 
@@ -26,7 +26,7 @@ func TestHmacAuthParseConnectionString(t *testing.T) {
 
 func TestHmacAuthParseConnectionStringMixedOrder(t *testing.T) {
 	ep, id, sc, err := parseConnectionString("Id=yY;Secret=ZmZm;Endpoint=xX")
-	require.Empty(t, err)
+	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
 	require.Equal(t, "yY", id)
 
@@ -38,7 +38,7 @@ func TestHmacAuthParseConnectionStringMixedOrder(t *testing.T) {
 
 func TestHmacAuthParseConnectionStringExtraProperties(t *testing.T) {
 	ep, id, sc, err := parseConnectionString("A=aA;Endpoint=xX;B=bB;Id=yY;C=cC;Secret=ZmZm;D=dD;")
-	require.Empty(t, err)
+	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
 	require.Equal(t, "yY", id)
 
@@ -50,30 +50,30 @@ func TestHmacAuthParseConnectionStringExtraProperties(t *testing.T) {
 
 func TestHmacAuthParseConnectionStringMissingEndoint(t *testing.T) {
 	_, _, _, err := parseConnectionString("Id=yY;Secret=ZmZm")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }
 
 func TestHmacAuthParseConnectionStringMissingId(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Secret=ZmZm")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }
 
 func TestHmacAuthParseConnectionStringMissingSecret(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Id=yY")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }
 
 func TestHmacAuthParseConnectionStringDuplicateEndoint(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Endpoint=xX;Id=yY;Secret=ZmZm")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }
 
 func TestHmacAuthParseConnectionStringDuplicateId(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Id=yY;Id=yY;Secret=ZmZm")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }
 
 func TestHmacAuthParseConnectionStringDuplicateSecret(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Id=yY;Secret=ZmZm;Secret=zZ")
-	require.NotEmpty(t, err)
+	require.Error(t, err)
 }

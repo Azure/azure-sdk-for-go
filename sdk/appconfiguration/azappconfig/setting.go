@@ -36,7 +36,7 @@ type Setting struct {
 
 	// A dictionary of tags used to assign additional properties to a configuration setting.
 	// These can be used to indicate how a configuration setting may be applied.
-	Tags map[string]*string
+	Tags map[string]string
 
 	// The last time a modifying operation was performed on the given configuration setting.
 	LastModified *time.Time
@@ -47,19 +47,31 @@ type Setting struct {
 }
 
 func settingFromGenerated(kv generated.KeyValue) Setting {
+	var tags map[string]string
+	for k, v := range kv.Tags {
+		if v != nil {
+			tags[k] = *v
+		}
+	}
+
 	return Setting{
 		Key:          kv.Key,
 		Value:        kv.Value,
 		Label:        kv.Label,
 		ContentType:  kv.ContentType,
 		ETag:         (*azcore.ETag)(kv.Etag),
-		Tags:         kv.Tags,
+		Tags:         tags,
 		LastModified: kv.LastModified,
 		IsReadOnly:   kv.Locked,
 	}
 }
 
 func (cs Setting) toGenerated() *generated.KeyValue {
+	var tags map[string]*string
+	for k, v := range cs.Tags {
+		tags[k] = &v
+	}
+
 	return &generated.KeyValue{
 		ContentType:  cs.ContentType,
 		Etag:         (*string)(cs.ETag),
@@ -67,7 +79,7 @@ func (cs Setting) toGenerated() *generated.KeyValue {
 		Label:        cs.Label,
 		LastModified: cs.LastModified,
 		Locked:       cs.IsReadOnly,
-		Tags:         cs.Tags,
+		Tags:         tags,
 		Value:        cs.Value,
 	}
 }

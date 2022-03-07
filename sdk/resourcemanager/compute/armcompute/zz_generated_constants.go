@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 type AccessLevel string
@@ -263,6 +263,30 @@ func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 
 // ToPtr returns a *ConsistencyModeTypes pointing to the current value.
 func (c ConsistencyModeTypes) ToPtr() *ConsistencyModeTypes {
+	return &c
+}
+
+// DataAccessAuthMode - Additional authentication requirements when exporting or uploading to a disk or snapshot.
+type DataAccessAuthMode string
+
+const (
+	// DataAccessAuthModeAzureActiveDirectory - When export/upload URL is used, the system checks if the user has an identity
+	// in Azure Active Directory and has necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
+	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = "AzureActiveDirectory"
+	// DataAccessAuthModeNone - No additional authentication would be performed when accessing export/upload URL.
+	DataAccessAuthModeNone DataAccessAuthMode = "None"
+)
+
+// PossibleDataAccessAuthModeValues returns the possible values for the DataAccessAuthMode const type.
+func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
+	return []DataAccessAuthMode{
+		DataAccessAuthModeAzureActiveDirectory,
+		DataAccessAuthModeNone,
+	}
+}
+
+// ToPtr returns a *DataAccessAuthMode pointing to the current value.
+func (c DataAccessAuthMode) ToPtr() *DataAccessAuthMode {
 	return &c
 }
 

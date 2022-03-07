@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromADifferentSubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromADifferentSubscription.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.SnapshotsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateASnapshotWithAcceleratedNetwork.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateASnapshotWithAcceleratedNetwork.json
 func ExampleSnapshotsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleSnapshotsClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.SnapshotsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetInformationAboutASnapshot.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutASnapshot.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSnapshotsClient_Get() {
 	log.Printf("Response result: %#v\n", res.SnapshotsClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/DeleteASnapshot.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteASnapshot.json
 func ExampleSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListSnapshotsInAResourceGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListSnapshotsInAResourceGroup.json
 func ExampleSnapshotsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleSnapshotsClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListSnapshotsInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListSnapshotsInASubscription.json
 func ExampleSnapshotsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleSnapshotsClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/BeginGetAccessSnapshot.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/BeginGetAccessSnapshot.json
 func ExampleSnapshotsClient_BeginGrantAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleSnapshotsClient_BeginGrantAccess() {
 	log.Printf("Response result: %#v\n", res.SnapshotsClientGrantAccessResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/EndGetAccessSnapshot.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/EndGetAccessSnapshot.json
 func ExampleSnapshotsClient_BeginRevokeAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

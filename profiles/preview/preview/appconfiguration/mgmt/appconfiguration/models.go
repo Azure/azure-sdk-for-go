@@ -12,7 +12,7 @@ package appconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-10-01-preview/appconfiguration"
 )
 
 const (
@@ -33,6 +33,13 @@ const (
 	ConnectionStatusDisconnected ConnectionStatus = original.ConnectionStatusDisconnected
 	ConnectionStatusPending      ConnectionStatus = original.ConnectionStatusPending
 	ConnectionStatusRejected     ConnectionStatus = original.ConnectionStatusRejected
+)
+
+type CreateMode = original.CreateMode
+
+const (
+	CreateModeDefault CreateMode = original.CreateModeDefault
+	CreateModeRecover CreateMode = original.CreateModeRecover
 )
 
 type CreatedByType = original.CreatedByType
@@ -88,7 +95,13 @@ type ConfigurationStoreUpdateParameters = original.ConfigurationStoreUpdateParam
 type ConfigurationStoresClient = original.ConfigurationStoresClient
 type ConfigurationStoresCreateFuture = original.ConfigurationStoresCreateFuture
 type ConfigurationStoresDeleteFuture = original.ConfigurationStoresDeleteFuture
+type ConfigurationStoresPurgeDeletedFuture = original.ConfigurationStoresPurgeDeletedFuture
 type ConfigurationStoresUpdateFuture = original.ConfigurationStoresUpdateFuture
+type DeletedConfigurationStore = original.DeletedConfigurationStore
+type DeletedConfigurationStoreListResult = original.DeletedConfigurationStoreListResult
+type DeletedConfigurationStoreListResultIterator = original.DeletedConfigurationStoreListResultIterator
+type DeletedConfigurationStoreListResultPage = original.DeletedConfigurationStoreListResultPage
+type DeletedConfigurationStoreProperties = original.DeletedConfigurationStoreProperties
 type EncryptionProperties = original.EncryptionProperties
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetails = original.ErrorDetails
@@ -160,6 +173,12 @@ func NewConfigurationStoresClient(subscriptionID string) ConfigurationStoresClie
 func NewConfigurationStoresClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationStoresClient {
 	return original.NewConfigurationStoresClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDeletedConfigurationStoreListResultIterator(page DeletedConfigurationStoreListResultPage) DeletedConfigurationStoreListResultIterator {
+	return original.NewDeletedConfigurationStoreListResultIterator(page)
+}
+func NewDeletedConfigurationStoreListResultPage(cur DeletedConfigurationStoreListResult, getNextPage func(context.Context, DeletedConfigurationStoreListResult) (DeletedConfigurationStoreListResult, error)) DeletedConfigurationStoreListResultPage {
+	return original.NewDeletedConfigurationStoreListResultPage(cur, getNextPage)
+}
 func NewKeyValueListResultIterator(page KeyValueListResultPage) KeyValueListResultIterator {
 	return original.NewKeyValueListResultIterator(page)
 }
@@ -216,6 +235,9 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 }
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
+}
+func PossibleCreateModeValues() []CreateMode {
+	return original.PossibleCreateModeValues()
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()

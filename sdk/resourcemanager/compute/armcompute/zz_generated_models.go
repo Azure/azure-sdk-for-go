@@ -2627,6 +2627,9 @@ type DiskProperties struct {
 	// Percentage complete for the background copy when a resource is created via the CopyStart operation.
 	CompletionPercent *float32 `json:"completionPercent,omitempty"`
 
+	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
+	DataAccessAuthMode *DataAccessAuthMode `json:"dataAccessAuthMode,omitempty"`
+
 	// ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
 
@@ -2719,6 +2722,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "burstingEnabled", d.BurstingEnabled)
 	populate(objectMap, "completionPercent", d.CompletionPercent)
 	populate(objectMap, "creationData", d.CreationData)
+	populate(objectMap, "dataAccessAuthMode", d.DataAccessAuthMode)
 	populate(objectMap, "diskAccessId", d.DiskAccessID)
 	populate(objectMap, "diskIOPSReadOnly", d.DiskIOPSReadOnly)
 	populate(objectMap, "diskIOPSReadWrite", d.DiskIOPSReadWrite)
@@ -2764,6 +2768,9 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "creationData":
 			err = unpopulate(val, &d.CreationData)
+			delete(rawMsg, key)
+		case "dataAccessAuthMode":
+			err = unpopulate(val, &d.DataAccessAuthMode)
 			delete(rawMsg, key)
 		case "diskAccessId":
 			err = unpopulate(val, &d.DiskAccessID)
@@ -2949,7 +2956,7 @@ type DiskRestorePointProperties struct {
 	// Purchase plan information for the the image from which the OS disk was created.
 	PurchasePlan *DiskPurchasePlan `json:"purchasePlan,omitempty"`
 
-	// List of supported capabilities (like accelerated networking) for the image from which the OS disk was created.
+	// List of supported capabilities for the image from which the OS disk was created.
 	SupportedCapabilities *SupportedCapabilities `json:"supportedCapabilities,omitempty"`
 
 	// Indicates the OS on a disk supports hibernation.
@@ -3112,6 +3119,9 @@ type DiskUpdateProperties struct {
 	// Does not apply to Ultra disks.
 	BurstingEnabled *bool `json:"burstingEnabled,omitempty"`
 
+	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
+	DataAccessAuthMode *DataAccessAuthMode `json:"dataAccessAuthMode,omitempty"`
+
 	// ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
 
@@ -3158,7 +3168,7 @@ type DiskUpdateProperties struct {
 	// Purchase plan information to be added on the OS disk
 	PurchasePlan *DiskPurchasePlan `json:"purchasePlan,omitempty"`
 
-	// List of supported capabilities (like accelerated networking) to be added on the OS disk.
+	// List of supported capabilities to be added on the OS disk.
 	SupportedCapabilities *SupportedCapabilities `json:"supportedCapabilities,omitempty"`
 
 	// Indicates the OS on a disk supports hibernation.
@@ -8214,6 +8224,9 @@ type SnapshotProperties struct {
 	// Percentage complete for the background copy when a resource is created via the CopyStart operation.
 	CompletionPercent *float32 `json:"completionPercent,omitempty"`
 
+	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
+	DataAccessAuthMode *DataAccessAuthMode `json:"dataAccessAuthMode,omitempty"`
+
 	// ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
 
@@ -8250,8 +8263,7 @@ type SnapshotProperties struct {
 	// Contains the security related information for the resource.
 	SecurityProfile *DiskSecurityProfile `json:"securityProfile,omitempty"`
 
-	// List of supported capabilities (like Accelerated Networking) for the image from which the source disk from the snapshot
-	// was originally created.
+	// List of supported capabilities for the image from which the source disk from the snapshot was originally created.
 	SupportedCapabilities *SupportedCapabilities `json:"supportedCapabilities,omitempty"`
 
 	// Indicates the OS on a snapshot supports hibernation.
@@ -8278,6 +8290,7 @@ func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "completionPercent", s.CompletionPercent)
 	populate(objectMap, "creationData", s.CreationData)
+	populate(objectMap, "dataAccessAuthMode", s.DataAccessAuthMode)
 	populate(objectMap, "diskAccessId", s.DiskAccessID)
 	populate(objectMap, "diskSizeBytes", s.DiskSizeBytes)
 	populate(objectMap, "diskSizeGB", s.DiskSizeGB)
@@ -8313,6 +8326,9 @@ func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "creationData":
 			err = unpopulate(val, &s.CreationData)
+			delete(rawMsg, key)
+		case "dataAccessAuthMode":
+			err = unpopulate(val, &s.DataAccessAuthMode)
 			delete(rawMsg, key)
 		case "diskAccessId":
 			err = unpopulate(val, &s.DiskAccessID)
@@ -8412,6 +8428,9 @@ func (s SnapshotUpdate) MarshalJSON() ([]byte, error) {
 
 // SnapshotUpdateProperties - Snapshot resource update properties.
 type SnapshotUpdateProperties struct {
+	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
+	DataAccessAuthMode *DataAccessAuthMode `json:"dataAccessAuthMode,omitempty"`
+
 	// ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
 
@@ -8435,7 +8454,7 @@ type SnapshotUpdateProperties struct {
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
-	// List of supported capabilities (like accelerated networking) for the image from which the OS disk was created.
+	// List of supported capabilities for the image from which the OS disk was created.
 	SupportedCapabilities *SupportedCapabilities `json:"supportedCapabilities,omitempty"`
 
 	// Indicates the OS on a snapshot supports hibernation.
@@ -8559,11 +8578,13 @@ type SubResourceWithColocationStatus struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// SupportedCapabilities - List of supported capabilities (like accelerated networking) persisted on the disk resource for
-// VM use.
+// SupportedCapabilities - List of supported capabilities persisted on the disk resource for VM use.
 type SupportedCapabilities struct {
 	// True if the image from which the OS disk is created supports accelerated networking.
 	AcceleratedNetwork *bool `json:"acceleratedNetwork,omitempty"`
+
+	// CPU architecture supported by an OS disk.
+	Architecture *Architecture `json:"architecture,omitempty"`
 }
 
 // TargetRegion - Describes the target region information.

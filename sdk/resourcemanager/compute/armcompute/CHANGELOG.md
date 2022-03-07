@@ -1,5 +1,19 @@
 # Release History
 
+## 0.5.0 (2022-03-07)
+### Features Added
+
+- New const `DataAccessAuthModeAzureActiveDirectory`
+- New const `DataAccessAuthModeNone`
+- New function `PossibleDataAccessAuthModeValues() []DataAccessAuthMode`
+- New function `DataAccessAuthMode.ToPtr() *DataAccessAuthMode`
+- New field `DataAccessAuthMode` in struct `SnapshotProperties`
+- New field `DataAccessAuthMode` in struct `DiskProperties`
+- New field `Architecture` in struct `SupportedCapabilities`
+- New field `DataAccessAuthMode` in struct `SnapshotUpdateProperties`
+- New field `DataAccessAuthMode` in struct `DiskUpdateProperties`
+
+
 ## 0.4.0 (2022-03-02)
 ### Breaking Changes
 

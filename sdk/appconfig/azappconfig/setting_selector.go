@@ -9,7 +9,7 @@ package azappconfig
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig/internal/generated"
 )
 
 // Fields to retrieve from a configuration setting.

@@ -66,37 +66,6 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 	return request.Next()
 }
 
-func signRequest(id string, secret string, req *http.Request) error {
-	method := req.Method
-	host := req.URL.Host
-	pathAndQuery := req.URL.Path
-	if req.URL.RawQuery != "" {
-		pathAndQuery = pathAndQuery + "?" + req.URL.RawQuery
-	}
-
-	content, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		return err
-	}
-	req.Body = ioutil.NopCloser(bytes.NewBuffer(content))
-
-	key, err := base64.StdEncoding.DecodeString(secret)
-	if err != nil {
-		return err
-	}
-
-	timestamp := time.Now().UTC().Format(http.TimeFormat)
-	contentHash := getContentHashBase64(content)
-	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(method), pathAndQuery, timestamp, host, contentHash)
-	signature := getHmac(stringToSign, key)
-
-	req.Header.Set("x-ms-content-sha256", contentHash)
-	req.Header.Set("x-ms-date", timestamp)
-	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+id+", SignedHeaders=x-ms-date;host;x-ms-content-sha256, Signature="+signature)
-
-	return nil
-}
-
 func getContentHashBase64(content []byte) string {
 	hasher := sha256.New()
 	hasher.Write(content)

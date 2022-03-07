@@ -12,33 +12,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-var clientID = flag.String("clientID", "", "optional client ID of a user assigned identity. Mutually exclusive with resID.")
-var printToken = flag.Bool("printToken", false, "print the acquired token")
-var resID = flag.String("resID", "", "optional resource ID of a user assigned identity. Mutually exclusive with clientID.")
-var scope = flag.String("scope", "https://management.core.windows.net//.default", "optional scope for access token")
+var c = flag.String("c", "", "optional client ID of a user assigned identity. Mutually exclusive with r.")
+var p = flag.Bool("p", false, "print the acquired token")
+var r = flag.String("r", "", "optional resource ID of a user assigned identity. Mutually exclusive with c.")
+var s = flag.String("s", "https://management.core.windows.net//.default", "optional scope for access token")
 
 func main() {
 	flag.Parse()
 	opts := &azidentity.ManagedIdentityCredentialOptions{}
-	if *clientID != "" {
-		if *resID != "" {
-			panic(`"clientID" and "resID" are mutually exclusive`)
+	if *c != "" {
+		if *r != "" {
+			panic(`"c" and "r" are mutually exclusive`)
 		}
-		opts.ID = azidentity.ClientID(*clientID)
-	} else if *resID != "" {
-		opts.ID = azidentity.ResourceID(*resID)
+		opts.ID = azidentity.ClientID(*c)
+	} else if *r != "" {
+		opts.ID = azidentity.ResourceID(*r)
 	}
 	cred, err := azidentity.NewManagedIdentityCredential(opts)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Calling GetToken()...")
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{*scope}})
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{*s}})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Success! Token received.")
-	if *printToken {
+	if *p {
 		fmt.Println(tk.Token)
 	}
 }

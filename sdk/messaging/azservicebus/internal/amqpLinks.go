@@ -126,6 +126,8 @@ func (links *AMQPLinksImpl) ManagementPath() string {
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
 func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision LinkID) error {
+	log.Writef(EventConn, "Recovering link only")
+
 	ctx, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
 	defer span.End()
 
@@ -212,7 +214,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 }
 
 func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkID) error {
-	tab.For(ctx).Info("Connection is dead, recovering")
+	log.Writef(EventConn, "Recovering connection (and links)")
 
 	links.mu.Lock()
 	defer links.mu.Unlock()

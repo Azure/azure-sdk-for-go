@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-11-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-12-01/compute"
 )
 
 const (
@@ -105,6 +105,13 @@ const (
 	ConsistencyModeTypesApplicationConsistent ConsistencyModeTypes = original.ConsistencyModeTypesApplicationConsistent
 	ConsistencyModeTypesCrashConsistent       ConsistencyModeTypes = original.ConsistencyModeTypesCrashConsistent
 	ConsistencyModeTypesFileSystemConsistent  ConsistencyModeTypes = original.ConsistencyModeTypesFileSystemConsistent
+)
+
+type DataAccessAuthMode = original.DataAccessAuthMode
+
+const (
+	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = original.DataAccessAuthModeAzureActiveDirectory
+	DataAccessAuthModeNone                 DataAccessAuthMode = original.DataAccessAuthModeNone
 )
 
 type DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypes
@@ -2338,6 +2345,9 @@ func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType
 }
 func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 	return original.PossibleConsistencyModeTypesValues()
+}
+func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
+	return original.PossibleDataAccessAuthModeValues()
 }
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 	return original.PossibleDedicatedHostLicenseTypesValues()

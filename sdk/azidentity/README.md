@@ -205,7 +205,7 @@ azlog.SetListener(func(event azlog.Event, s string) {
 })
 
 // include only azidentity credential logs
-azlog.SetEvents(azidentity.EventCredential)
+azlog.SetEvents(azidentity.EventAuthentication)
 ```
 
 Credentials log basic information only, such as `GetToken` success or failure and errors. These log entries don't contain authentication secrets but may contain sensitive information.

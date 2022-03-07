@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -120,11 +121,16 @@ type GetTopicOptions struct {
 }
 
 // GetTopic gets a topic by name.
+// If the entity does not exist this function will return a nil GetTopicResponse and a nil error.
 func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
@@ -159,11 +165,16 @@ type GetTopicRuntimePropertiesOptions struct {
 }
 
 // GetTopicRuntimeProperties gets runtime properties of a topic, like the SizeInBytes, or SubscriptionCount.
+// If the entity does not exist this function will return a nil GetTopicRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string, options *GetTopicRuntimePropertiesOptions) (*GetTopicRuntimePropertiesResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 

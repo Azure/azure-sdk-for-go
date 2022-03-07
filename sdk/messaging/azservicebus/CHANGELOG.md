@@ -8,6 +8,13 @@
 - Quicker reattach for idle links. (#17205)
 - Quick exit on receiver reconnects to avoid potentially returning duplicate messages. (#17157)
 
+### Breaking Changes
+
+- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#17229)
+  - GetQueue, GetQueueRuntimeProperties
+  - GetTopic, GetTopicRuntimeProperties
+  - GetSubscription, GetSubscriptionRuntimeProperties
+
 ### Other Changes
 
 ## 0.3.5 (2022-02-10)

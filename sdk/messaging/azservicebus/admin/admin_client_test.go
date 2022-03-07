@@ -765,10 +765,13 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
+	queue, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queue)
+
+	runtimeProps, err := testData.Client.GetQueueRuntimeProperties(ctx, "not-found-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, runtimeProps)
 
 	var re *azcore.ResponseError
 
@@ -805,10 +808,13 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
+	resp, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, resp)
+
+	resprt, err := testData.Client.GetTopicRuntimeProperties(ctx, "not-found-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, resprt)
 
 	var asResponseErr *azcore.ResponseError
 
@@ -837,6 +843,53 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
+}
+
+// TestAdminClient_NotFound makes sure that the "GET as LIST" behavior maps to nil when we are trying
+// to get an entity by name and it is not found.
+func TestAdminClient_NotFound(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	queue, err := adminClient.GetQueue(context.Background(), "non-existent-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queue)
+
+	queuert, err := adminClient.GetQueueRuntimeProperties(context.Background(), "non-existent-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queuert)
+
+	topic, err := adminClient.GetTopic(context.Background(), "non-existent-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, topic)
+
+	topicrt, err := adminClient.GetTopicRuntimeProperties(context.Background(), "non-existent-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, topicrt)
+
+	sub, err := adminClient.GetSubscription(context.Background(), "non-existent-topic", "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, sub)
+
+	subrt, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), "non-existent-topic", "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, subrt)
+
+	nanoSeconds := time.Now().UnixNano()
+	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	require.NoError(t, err)
+
+	defer deleteTopic(t, adminClient, topicName)
+
+	sub, err = adminClient.GetSubscription(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, sub)
+
+	subrt, err = adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, subrt)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

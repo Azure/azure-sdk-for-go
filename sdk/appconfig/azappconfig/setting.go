@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig/internal/generated"
 )
 
 // Setting is a setting, defined by a unique combination of a Key and Label.

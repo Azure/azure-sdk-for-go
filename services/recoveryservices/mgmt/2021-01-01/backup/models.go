@@ -20,88 +20,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-01-01/backup"
 
-// AADProperties ...
-type AADProperties struct {
-	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
-	TenantID                 *string `json:"tenantId,omitempty"`
-	Authority                *string `json:"authority,omitempty"`
-	Audience                 *string `json:"audience,omitempty"`
-	ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
-}
-
-// AADPropertiesResource ...
-type AADPropertiesResource struct {
-	autorest.Response `json:"-"`
-	// Properties - AADPropertiesResource properties
-	Properties *AADProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AADPropertiesResource.
-func (apr AADPropertiesResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if apr.Properties != nil {
-		objectMap["properties"] = apr.Properties
-	}
-	if apr.Location != nil {
-		objectMap["location"] = apr.Location
-	}
-	if apr.Tags != nil {
-		objectMap["tags"] = apr.Tags
-	}
-	if apr.ETag != nil {
-		objectMap["eTag"] = apr.ETag
-	}
-	return json.Marshal(objectMap)
-}
-
-// AzureBackupGoalFeatureSupportRequest azure backup goal feature specific request.
-type AzureBackupGoalFeatureSupportRequest struct {
-	// FeatureType - Possible values include: 'FeatureTypeFeatureSupportRequest', 'FeatureTypeAzureBackupGoals', 'FeatureTypeAzureVMResourceBackup'
-	FeatureType FeatureType `json:"featureType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureBackupGoalFeatureSupportRequest.
-func (abgfsr AzureBackupGoalFeatureSupportRequest) MarshalJSON() ([]byte, error) {
-	abgfsr.FeatureType = FeatureTypeAzureBackupGoals
-	objectMap := make(map[string]interface{})
-	if abgfsr.FeatureType != "" {
-		objectMap["featureType"] = abgfsr.FeatureType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureBackupGoalFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureBackupGoalFeatureSupportRequest.
-func (abgfsr AzureBackupGoalFeatureSupportRequest) AsAzureBackupGoalFeatureSupportRequest() (*AzureBackupGoalFeatureSupportRequest, bool) {
-	return &abgfsr, true
-}
-
-// AsAzureVMResourceFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureBackupGoalFeatureSupportRequest.
-func (abgfsr AzureBackupGoalFeatureSupportRequest) AsAzureVMResourceFeatureSupportRequest() (*AzureVMResourceFeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureBackupGoalFeatureSupportRequest.
-func (abgfsr AzureBackupGoalFeatureSupportRequest) AsFeatureSupportRequest() (*FeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsBasicFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureBackupGoalFeatureSupportRequest.
-func (abgfsr AzureBackupGoalFeatureSupportRequest) AsBasicFeatureSupportRequest() (BasicFeatureSupportRequest, bool) {
-	return &abgfsr, true
-}
-
 // AzureBackupServerContainer azureBackupServer (DPMVenus) workload-specific protection container.
 type AzureBackupServerContainer struct {
 	// CanReRegister - Specifies whether the container is re-registrable.
@@ -547,8 +465,6 @@ type AzureFileshareProtectedItem struct {
 	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// HealthStatus - backups running status for this backup item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
-	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
@@ -603,9 +519,6 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if afpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = afpi.ExtendedInfo
-	}
-	if afpi.HealthStatus != "" {
-		objectMap["healthStatus"] = afpi.HealthStatus
 	}
 	if afpi.BackupManagementType != "" {
 		objectMap["backupManagementType"] = afpi.BackupManagementType
@@ -954,13 +867,13 @@ func (afspir AzureFileShareProvisionILRRequest) AsBasicILRRequest() (BasicILRReq
 
 // AzureFileShareRecoveryPoint azure File Share workload specific backup copy.
 type AzureFileShareRecoveryPoint struct {
-	// RecoveryPointType - READ-ONLY; Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
+	// RecoveryPointType - Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
-	// RecoveryPointTime - READ-ONLY; Time at which this backup copy was created.
+	// RecoveryPointTime - Time at which this backup copy was created.
 	RecoveryPointTime *date.Time `json:"recoveryPointTime,omitempty"`
-	// FileShareSnapshotURI - READ-ONLY; Contains Url to the snapshot of fileshare, if applicable
+	// FileShareSnapshotURI - Contains Url to the snapshot of fileshare, if applicable
 	FileShareSnapshotURI *string `json:"fileShareSnapshotUri,omitempty"`
-	// RecoveryPointSizeInGB - READ-ONLY; Contains recovery point size
+	// RecoveryPointSizeInGB - Contains recovery point size
 	RecoveryPointSizeInGB *int32 `json:"recoveryPointSizeInGB,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRecoveryPointObjectTypeRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeGenericRecoveryPoint', 'ObjectTypeBasicRecoveryPointObjectTypeIaasVMRecoveryPoint'
 	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
@@ -970,6 +883,18 @@ type AzureFileShareRecoveryPoint struct {
 func (afsrp AzureFileShareRecoveryPoint) MarshalJSON() ([]byte, error) {
 	afsrp.ObjectType = ObjectTypeBasicRecoveryPointObjectTypeAzureFileShareRecoveryPoint
 	objectMap := make(map[string]interface{})
+	if afsrp.RecoveryPointType != nil {
+		objectMap["recoveryPointType"] = afsrp.RecoveryPointType
+	}
+	if afsrp.RecoveryPointTime != nil {
+		objectMap["recoveryPointTime"] = afsrp.RecoveryPointTime
+	}
+	if afsrp.FileShareSnapshotURI != nil {
+		objectMap["fileShareSnapshotUri"] = afsrp.FileShareSnapshotURI
+	}
+	if afsrp.RecoveryPointSizeInGB != nil {
+		objectMap["recoveryPointSizeInGB"] = afsrp.RecoveryPointSizeInGB
+	}
 	if afsrp.ObjectType != "" {
 		objectMap["objectType"] = afsrp.ObjectType
 	}
@@ -2795,222 +2720,6 @@ func (aispp *AzureIaaSVMProtectionPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BasicAzureRecoveryServiceVaultProtectionIntent azure Recovery Services Vault specific protection intent item.
-type BasicAzureRecoveryServiceVaultProtectionIntent interface {
-	AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool)
-	AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool)
-	AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool)
-	AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool)
-}
-
-// AzureRecoveryServiceVaultProtectionIntent azure Recovery Services Vault specific protection intent item.
-type AzureRecoveryServiceVaultProtectionIntent struct {
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// ItemID - ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectionIntentItemType - Possible values include: 'ProtectionIntentItemTypeProtectionIntent', 'ProtectionIntentItemTypeRecoveryServiceVaultItem', 'ProtectionIntentItemTypeAzureResourceItem', 'ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent', 'ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent'
-	ProtectionIntentItemType ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
-}
-
-func unmarshalBasicAzureRecoveryServiceVaultProtectionIntent(body []byte) (BasicAzureRecoveryServiceVaultProtectionIntent, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent):
-		var awapi AzureWorkloadAutoProtectionIntent
-		err := json.Unmarshal(body, &awapi)
-		return awapi, err
-	case string(ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent):
-		var awsapi AzureWorkloadSQLAutoProtectionIntent
-		err := json.Unmarshal(body, &awsapi)
-		return awsapi, err
-	default:
-		var arsvpi AzureRecoveryServiceVaultProtectionIntent
-		err := json.Unmarshal(body, &arsvpi)
-		return arsvpi, err
-	}
-}
-func unmarshalBasicAzureRecoveryServiceVaultProtectionIntentArray(body []byte) ([]BasicAzureRecoveryServiceVaultProtectionIntent, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	arsvpiArray := make([]BasicAzureRecoveryServiceVaultProtectionIntent, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		arsvpi, err := unmarshalBasicAzureRecoveryServiceVaultProtectionIntent(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		arsvpiArray[index] = arsvpi
-	}
-	return arsvpiArray, nil
-}
-
-// MarshalJSON is the custom marshaler for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) MarshalJSON() ([]byte, error) {
-	arsvpi.ProtectionIntentItemType = ProtectionIntentItemTypeRecoveryServiceVaultItem
-	objectMap := make(map[string]interface{})
-	if arsvpi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = arsvpi.BackupManagementType
-	}
-	if arsvpi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = arsvpi.SourceResourceID
-	}
-	if arsvpi.ItemID != nil {
-		objectMap["itemId"] = arsvpi.ItemID
-	}
-	if arsvpi.PolicyID != nil {
-		objectMap["policyId"] = arsvpi.PolicyID
-	}
-	if arsvpi.ProtectionState != "" {
-		objectMap["protectionState"] = arsvpi.ProtectionState
-	}
-	if arsvpi.ProtectionIntentItemType != "" {
-		objectMap["protectionIntentItemType"] = arsvpi.ProtectionIntentItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool) {
-	return &arsvpi, true
-}
-
-// AsBasicAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool) {
-	return &arsvpi, true
-}
-
-// AsAzureResourceProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadSQLAutoProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsProtectionIntent() (*ProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicProtectionIntent is the BasicProtectionIntent implementation for AzureRecoveryServiceVaultProtectionIntent.
-func (arsvpi AzureRecoveryServiceVaultProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, bool) {
-	return &arsvpi, true
-}
-
-// AzureResourceProtectionIntent iaaS VM specific backup protection intent item.
-type AzureResourceProtectionIntent struct {
-	// FriendlyName - Friendly name of the VM represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// ItemID - ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectionIntentItemType - Possible values include: 'ProtectionIntentItemTypeProtectionIntent', 'ProtectionIntentItemTypeRecoveryServiceVaultItem', 'ProtectionIntentItemTypeAzureResourceItem', 'ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent', 'ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent'
-	ProtectionIntentItemType ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) MarshalJSON() ([]byte, error) {
-	arpi.ProtectionIntentItemType = ProtectionIntentItemTypeAzureResourceItem
-	objectMap := make(map[string]interface{})
-	if arpi.FriendlyName != nil {
-		objectMap["friendlyName"] = arpi.FriendlyName
-	}
-	if arpi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = arpi.BackupManagementType
-	}
-	if arpi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = arpi.SourceResourceID
-	}
-	if arpi.ItemID != nil {
-		objectMap["itemId"] = arpi.ItemID
-	}
-	if arpi.PolicyID != nil {
-		objectMap["policyId"] = arpi.PolicyID
-	}
-	if arpi.ProtectionState != "" {
-		objectMap["protectionState"] = arpi.ProtectionState
-	}
-	if arpi.ProtectionIntentItemType != "" {
-		objectMap["protectionIntentItemType"] = arpi.ProtectionIntentItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureResourceProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool) {
-	return &arpi, true
-}
-
-// AsAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadSQLAutoProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsProtectionIntent() (*ProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicProtectionIntent is the BasicProtectionIntent implementation for AzureResourceProtectionIntent.
-func (arpi AzureResourceProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, bool) {
-	return &arpi, true
-}
-
 // AzureSQLAGWorkloadContainerProtectionContainer container for SQL workloads under SQL Availability Group.
 type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	// SourceResourceID - ARM ID of the virtual machine represented by this Azure Workload Container
@@ -4130,59 +3839,6 @@ func (avacpc AzureVMAppContainerProtectionContainer) AsProtectionContainer() (*P
 // AsBasicProtectionContainer is the BasicProtectionContainer implementation for AzureVMAppContainerProtectionContainer.
 func (avacpc AzureVMAppContainerProtectionContainer) AsBasicProtectionContainer() (BasicProtectionContainer, bool) {
 	return &avacpc, true
-}
-
-// AzureVMResourceFeatureSupportRequest azureResource(IaaS VM) Specific feature support request
-type AzureVMResourceFeatureSupportRequest struct {
-	// VMSize - Size of the resource: VM size(A/D series etc) in case of IaasVM
-	VMSize *string `json:"vmSize,omitempty"`
-	// VMSku - SKUs (Premium/Managed etc) in case of IaasVM
-	VMSku *string `json:"vmSku,omitempty"`
-	// FeatureType - Possible values include: 'FeatureTypeFeatureSupportRequest', 'FeatureTypeAzureBackupGoals', 'FeatureTypeAzureVMResourceBackup'
-	FeatureType FeatureType `json:"featureType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureVMResourceFeatureSupportRequest.
-func (avrfsr AzureVMResourceFeatureSupportRequest) MarshalJSON() ([]byte, error) {
-	avrfsr.FeatureType = FeatureTypeAzureVMResourceBackup
-	objectMap := make(map[string]interface{})
-	if avrfsr.VMSize != nil {
-		objectMap["vmSize"] = avrfsr.VMSize
-	}
-	if avrfsr.VMSku != nil {
-		objectMap["vmSku"] = avrfsr.VMSku
-	}
-	if avrfsr.FeatureType != "" {
-		objectMap["featureType"] = avrfsr.FeatureType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureBackupGoalFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureVMResourceFeatureSupportRequest.
-func (avrfsr AzureVMResourceFeatureSupportRequest) AsAzureBackupGoalFeatureSupportRequest() (*AzureBackupGoalFeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsAzureVMResourceFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureVMResourceFeatureSupportRequest.
-func (avrfsr AzureVMResourceFeatureSupportRequest) AsAzureVMResourceFeatureSupportRequest() (*AzureVMResourceFeatureSupportRequest, bool) {
-	return &avrfsr, true
-}
-
-// AsFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureVMResourceFeatureSupportRequest.
-func (avrfsr AzureVMResourceFeatureSupportRequest) AsFeatureSupportRequest() (*FeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsBasicFeatureSupportRequest is the BasicFeatureSupportRequest implementation for AzureVMResourceFeatureSupportRequest.
-func (avrfsr AzureVMResourceFeatureSupportRequest) AsBasicFeatureSupportRequest() (BasicFeatureSupportRequest, bool) {
-	return &avrfsr, true
-}
-
-// AzureVMResourceFeatureSupportResponse response for feature support requests for Azure IaasVm
-type AzureVMResourceFeatureSupportResponse struct {
-	autorest.Response `json:"-"`
-	// SupportStatus - Support status of feature. Possible values include: 'SupportStatusInvalid', 'SupportStatusSupported', 'SupportStatusDefaultOFF', 'SupportStatusDefaultON', 'SupportStatusNotSupported'
-	SupportStatus SupportStatus `json:"supportStatus,omitempty"`
 }
 
 // BasicAzureVMWorkloadItem azure VM workload-specific workload item.
@@ -7231,134 +6887,10 @@ func (avwsiwi AzureVMWorkloadSQLInstanceWorkloadItem) AsBasicWorkloadItem() (Bas
 	return &avwsiwi, true
 }
 
-// BasicAzureWorkloadAutoProtectionIntent azure Recovery Services Vault specific protection intent item.
-type BasicAzureWorkloadAutoProtectionIntent interface {
-	AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool)
-	AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool)
-}
-
-// AzureWorkloadAutoProtectionIntent azure Recovery Services Vault specific protection intent item.
-type AzureWorkloadAutoProtectionIntent struct {
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// ItemID - ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectionIntentItemType - Possible values include: 'ProtectionIntentItemTypeProtectionIntent', 'ProtectionIntentItemTypeRecoveryServiceVaultItem', 'ProtectionIntentItemTypeAzureResourceItem', 'ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent', 'ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent'
-	ProtectionIntentItemType ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
-}
-
-func unmarshalBasicAzureWorkloadAutoProtectionIntent(body []byte) (BasicAzureWorkloadAutoProtectionIntent, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent):
-		var awsapi AzureWorkloadSQLAutoProtectionIntent
-		err := json.Unmarshal(body, &awsapi)
-		return awsapi, err
-	default:
-		var awapi AzureWorkloadAutoProtectionIntent
-		err := json.Unmarshal(body, &awapi)
-		return awapi, err
-	}
-}
-func unmarshalBasicAzureWorkloadAutoProtectionIntentArray(body []byte) ([]BasicAzureWorkloadAutoProtectionIntent, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	awapiArray := make([]BasicAzureWorkloadAutoProtectionIntent, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		awapi, err := unmarshalBasicAzureWorkloadAutoProtectionIntent(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		awapiArray[index] = awapi
-	}
-	return awapiArray, nil
-}
-
-// MarshalJSON is the custom marshaler for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) MarshalJSON() ([]byte, error) {
-	awapi.ProtectionIntentItemType = ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent
-	objectMap := make(map[string]interface{})
-	if awapi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = awapi.BackupManagementType
-	}
-	if awapi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = awapi.SourceResourceID
-	}
-	if awapi.ItemID != nil {
-		objectMap["itemId"] = awapi.ItemID
-	}
-	if awapi.PolicyID != nil {
-		objectMap["policyId"] = awapi.PolicyID
-	}
-	if awapi.ProtectionState != "" {
-		objectMap["protectionState"] = awapi.ProtectionState
-	}
-	if awapi.ProtectionIntentItemType != "" {
-		objectMap["protectionIntentItemType"] = awapi.ProtectionIntentItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool) {
-	return &awapi, true
-}
-
-// AsAzureResourceProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool) {
-	return &awapi, true
-}
-
-// AsBasicAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool) {
-	return &awapi, true
-}
-
-// AsAzureWorkloadSQLAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsProtectionIntent() (*ProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadAutoProtectionIntent.
-func (awapi AzureWorkloadAutoProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, bool) {
-	return &awapi, true
-}
-
 // AzureWorkloadBackupRequest azureWorkload workload-specific backup request.
 type AzureWorkloadBackupRequest struct {
-	// BackupType - Type of backup, viz. Full, Differential, Log or CopyOnlyFull. Possible values include: 'TypeEnumInvalid', 'TypeEnumFull', 'TypeEnumDifferential', 'TypeEnumLog', 'TypeEnumCopyOnlyFull', 'TypeEnumIncremental'
-	BackupType TypeEnum `json:"backupType,omitempty"`
+	// BackupType - Type of backup, viz. Full, Differential, Log or CopyOnlyFull. Possible values include: 'TypeInvalid', 'TypeFull', 'TypeDifferential', 'TypeLog', 'TypeCopyOnlyFull', 'TypeIncremental'
+	BackupType Type `json:"backupType,omitempty"`
 	// EnableCompression - Bool for Compression setting
 	EnableCompression *bool `json:"enableCompression,omitempty"`
 	// RecoveryPointExpiryTimeInUTC - Backup copy will expire after the time specified (UTC).
@@ -7788,9 +7320,9 @@ type BasicAzureWorkloadPointInTimeRecoveryPoint interface {
 type AzureWorkloadPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
 	TimeRanges *[]PointInTimeRange `json:"timeRanges,omitempty"`
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -7843,6 +7375,12 @@ func (awpitrp AzureWorkloadPointInTimeRecoveryPoint) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]interface{})
 	if awpitrp.TimeRanges != nil {
 		objectMap["timeRanges"] = awpitrp.TimeRanges
+	}
+	if awpitrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awpitrp.RecoveryPointTimeInUTC
+	}
+	if awpitrp.Type != "" {
+		objectMap["type"] = awpitrp.Type
 	}
 	if awpitrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awpitrp.RecoveryPointTierDetails
@@ -7941,9 +7479,6 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -7969,9 +7504,6 @@ func (awpitrr AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, err
 	}
 	if awpitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awpitrr.RecoveryMode
-	}
-	if awpitrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awpitrr.TargetVirtualMachineID
 	}
 	if awpitrr.ObjectType != "" {
 		objectMap["objectType"] = awpitrr.ObjectType
@@ -8099,9 +7631,9 @@ type BasicAzureWorkloadRecoveryPoint interface {
 // AzureWorkloadRecoveryPoint workload specific recovery point, specifically encapsulates full/diff recovery
 // point
 type AzureWorkloadRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -8168,6 +7700,12 @@ func unmarshalBasicAzureWorkloadRecoveryPointArray(body []byte) ([]BasicAzureWor
 func (awrp AzureWorkloadRecoveryPoint) MarshalJSON() ([]byte, error) {
 	awrp.ObjectType = ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadRecoveryPoint
 	objectMap := make(map[string]interface{})
+	if awrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awrp.RecoveryPointTimeInUTC
+	}
+	if awrp.Type != "" {
+		objectMap["type"] = awrp.Type
+	}
 	if awrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awrp.RecoveryPointTierDetails
 	}
@@ -8280,9 +7818,6 @@ type AzureWorkloadRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -8374,9 +7909,6 @@ func (awrr AzureWorkloadRestoreRequest) MarshalJSON() ([]byte, error) {
 	}
 	if awrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awrr.RecoveryMode
-	}
-	if awrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awrr.TargetVirtualMachineID
 	}
 	if awrr.ObjectType != "" {
 		objectMap["objectType"] = awrr.ObjectType
@@ -8493,9 +8025,9 @@ func (awrr AzureWorkloadRestoreRequest) AsBasicRestoreRequest() (BasicRestoreReq
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
 	TimeRanges *[]PointInTimeRange `json:"timeRanges,omitempty"`
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -8511,6 +8043,12 @@ func (awshpitrp AzureWorkloadSAPHanaPointInTimeRecoveryPoint) MarshalJSON() ([]b
 	objectMap := make(map[string]interface{})
 	if awshpitrp.TimeRanges != nil {
 		objectMap["timeRanges"] = awshpitrp.TimeRanges
+	}
+	if awshpitrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awshpitrp.RecoveryPointTimeInUTC
+	}
+	if awshpitrp.Type != "" {
+		objectMap["type"] = awshpitrp.Type
 	}
 	if awshpitrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awshpitrp.RecoveryPointTierDetails
@@ -8616,9 +8154,6 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -8681,9 +8216,6 @@ func (awshpitrr AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]
 	}
 	if awshpitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshpitrr.RecoveryMode
-	}
-	if awshpitrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awshpitrr.TargetVirtualMachineID
 	}
 	if awshpitrr.ObjectType != "" {
 		objectMap["objectType"] = awshpitrr.ObjectType
@@ -8813,9 +8345,6 @@ type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -8844,9 +8373,6 @@ func (awshpitrwrr AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) Ma
 	}
 	if awshpitrwrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshpitrwrr.RecoveryMode
-	}
-	if awshpitrwrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awshpitrwrr.TargetVirtualMachineID
 	}
 	if awshpitrwrr.ObjectType != "" {
 		objectMap["objectType"] = awshpitrwrr.ObjectType
@@ -8962,9 +8488,9 @@ func (awshpitrwrr AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) As
 // AzureWorkloadSAPHanaRecoveryPoint sAPHana specific recoverypoint, specifically encapsulates full/diff
 // recoverypoints
 type AzureWorkloadSAPHanaRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -8978,6 +8504,12 @@ type AzureWorkloadSAPHanaRecoveryPoint struct {
 func (awshrp AzureWorkloadSAPHanaRecoveryPoint) MarshalJSON() ([]byte, error) {
 	awshrp.ObjectType = ObjectTypeBasicRecoveryPointObjectTypeAzureWorkloadSAPHanaRecoveryPoint
 	objectMap := make(map[string]interface{})
+	if awshrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awshrp.RecoveryPointTimeInUTC
+	}
+	if awshrp.Type != "" {
+		objectMap["type"] = awshrp.Type
+	}
 	if awshrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awshrp.RecoveryPointTierDetails
 	}
@@ -9081,9 +8613,6 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9151,9 +8680,6 @@ func (awshrr AzureWorkloadSAPHanaRestoreRequest) MarshalJSON() ([]byte, error) {
 	}
 	if awshrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshrr.RecoveryMode
-	}
-	if awshrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awshrr.TargetVirtualMachineID
 	}
 	if awshrr.ObjectType != "" {
 		objectMap["objectType"] = awshrr.ObjectType
@@ -9281,9 +8807,6 @@ type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9309,9 +8832,6 @@ func (awshrwrr AzureWorkloadSAPHanaRestoreWithRehydrateRequest) MarshalJSON() ([
 	}
 	if awshrwrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshrwrr.RecoveryMode
-	}
-	if awshrwrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awshrwrr.TargetVirtualMachineID
 	}
 	if awshrwrr.ObjectType != "" {
 		objectMap["objectType"] = awshrwrr.ObjectType
@@ -9424,92 +8944,6 @@ func (awshrwrr AzureWorkloadSAPHanaRestoreWithRehydrateRequest) AsBasicRestoreRe
 	return &awshrwrr, true
 }
 
-// AzureWorkloadSQLAutoProtectionIntent azure Workload SQL Auto Protection intent item.
-type AzureWorkloadSQLAutoProtectionIntent struct {
-	// WorkloadItemType - Workload item type of the item for which intent is to be set. Possible values include: 'WorkloadItemTypeInvalid', 'WorkloadItemTypeSQLInstance', 'WorkloadItemTypeSQLDataBase', 'WorkloadItemTypeSAPHanaSystem', 'WorkloadItemTypeSAPHanaDatabase', 'WorkloadItemTypeSAPAseSystem', 'WorkloadItemTypeSAPAseDatabase'
-	WorkloadItemType WorkloadItemType `json:"workloadItemType,omitempty"`
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// ItemID - ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectionIntentItemType - Possible values include: 'ProtectionIntentItemTypeProtectionIntent', 'ProtectionIntentItemTypeRecoveryServiceVaultItem', 'ProtectionIntentItemTypeAzureResourceItem', 'ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent', 'ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent'
-	ProtectionIntentItemType ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) MarshalJSON() ([]byte, error) {
-	awsapi.ProtectionIntentItemType = ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent
-	objectMap := make(map[string]interface{})
-	if awsapi.WorkloadItemType != "" {
-		objectMap["workloadItemType"] = awsapi.WorkloadItemType
-	}
-	if awsapi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = awsapi.BackupManagementType
-	}
-	if awsapi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = awsapi.SourceResourceID
-	}
-	if awsapi.ItemID != nil {
-		objectMap["itemId"] = awsapi.ItemID
-	}
-	if awsapi.PolicyID != nil {
-		objectMap["policyId"] = awsapi.PolicyID
-	}
-	if awsapi.ProtectionState != "" {
-		objectMap["protectionState"] = awsapi.ProtectionState
-	}
-	if awsapi.ProtectionIntentItemType != "" {
-		objectMap["protectionIntentItemType"] = awsapi.ProtectionIntentItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool) {
-	return &awsapi, true
-}
-
-// AsAzureResourceProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool) {
-	return &awsapi, true
-}
-
-// AsAzureWorkloadSQLAutoProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool) {
-	return &awsapi, true
-}
-
-// AsProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsProtectionIntent() (*ProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicProtectionIntent is the BasicProtectionIntent implementation for AzureWorkloadSQLAutoProtectionIntent.
-func (awsapi AzureWorkloadSQLAutoProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, bool) {
-	return &awsapi, true
-}
-
 // AzureWorkloadSQLPointInTimeRecoveryPoint recovery point specific to PointInTime
 type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
@@ -9518,9 +8952,9 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	// When a specific recovery point is accessed using GetRecoveryPoint
 	// Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -9539,6 +8973,12 @@ func (awspitrp AzureWorkloadSQLPointInTimeRecoveryPoint) MarshalJSON() ([]byte, 
 	}
 	if awspitrp.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = awspitrp.ExtendedInfo
+	}
+	if awspitrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awspitrp.RecoveryPointTimeInUTC
+	}
+	if awspitrp.Type != "" {
+		objectMap["type"] = awspitrp.Type
 	}
 	if awspitrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awspitrp.RecoveryPointTierDetails
@@ -9650,9 +9090,6 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9724,9 +9161,6 @@ func (awspitrr AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte,
 	}
 	if awspitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awspitrr.RecoveryMode
-	}
-	if awspitrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awspitrr.TargetVirtualMachineID
 	}
 	if awspitrr.ObjectType != "" {
 		objectMap["objectType"] = awspitrr.ObjectType
@@ -9862,9 +9296,6 @@ type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9902,9 +9333,6 @@ func (awspitrwrr AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) Marshal
 	}
 	if awspitrwrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awspitrwrr.RecoveryMode
-	}
-	if awspitrwrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awspitrwrr.TargetVirtualMachineID
 	}
 	if awspitrwrr.ObjectType != "" {
 		objectMap["objectType"] = awspitrwrr.ObjectType
@@ -10031,9 +9459,9 @@ type AzureWorkloadSQLRecoveryPoint struct {
 	// When a specific recovery point is accessed using GetRecoveryPoint
 	// Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
+	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential', 'RestorePointTypeIncremental'
 	Type RestorePointType `json:"type,omitempty"`
 	// RecoveryPointTierDetails - Recovery point tier information.
 	RecoveryPointTierDetails *[]RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
@@ -10086,6 +9514,12 @@ func (awsrp AzureWorkloadSQLRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if awsrp.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = awsrp.ExtendedInfo
+	}
+	if awsrp.RecoveryPointTimeInUTC != nil {
+		objectMap["recoveryPointTimeInUTC"] = awsrp.RecoveryPointTimeInUTC
+	}
+	if awsrp.Type != "" {
+		objectMap["type"] = awsrp.Type
 	}
 	if awsrp.RecoveryPointTierDetails != nil {
 		objectMap["recoveryPointTierDetails"] = awsrp.RecoveryPointTierDetails
@@ -10171,16 +9605,10 @@ func (awsrp AzureWorkloadSQLRecoveryPoint) AsBasicRecoveryPoint() (BasicRecovery
 
 // AzureWorkloadSQLRecoveryPointExtendedInfo extended info class details
 type AzureWorkloadSQLRecoveryPointExtendedInfo struct {
-	// DataDirectoryTimeInUTC - READ-ONLY; UTC time at which data directory info was captured
+	// DataDirectoryTimeInUTC - UTC time at which data directory info was captured
 	DataDirectoryTimeInUTC *date.Time `json:"dataDirectoryTimeInUTC,omitempty"`
-	// DataDirectoryPaths - READ-ONLY; List of data directory paths during restore operation.
+	// DataDirectoryPaths - List of data directory paths during restore operation.
 	DataDirectoryPaths *[]SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureWorkloadSQLRecoveryPointExtendedInfo.
-func (awsrpei AzureWorkloadSQLRecoveryPointExtendedInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // BasicAzureWorkloadSQLRestoreRequest azureWorkload SQL -specific restore. Specifically for full/diff restore
@@ -10210,9 +9638,6 @@ type AzureWorkloadSQLRestoreRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -10289,9 +9714,6 @@ func (awsrr AzureWorkloadSQLRestoreRequest) MarshalJSON() ([]byte, error) {
 	}
 	if awsrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awsrr.RecoveryMode
-	}
-	if awsrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awsrr.TargetVirtualMachineID
 	}
 	if awsrr.ObjectType != "" {
 		objectMap["objectType"] = awsrr.ObjectType
@@ -10425,9 +9847,6 @@ type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
 	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
 	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
-	// TargetVirtualMachineID - This is the complete ARM Id of the target VM
-	// For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -10462,9 +9881,6 @@ func (awsrwrr AzureWorkloadSQLRestoreWithRehydrateRequest) MarshalJSON() ([]byte
 	}
 	if awsrwrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awsrwrr.RecoveryMode
-	}
-	if awsrwrr.TargetVirtualMachineID != nil {
-		objectMap["targetVirtualMachineId"] = awsrwrr.TargetVirtualMachineID
 	}
 	if awsrwrr.ObjectType != "" {
 		objectMap["objectType"] = awsrwrr.ObjectType
@@ -10587,12 +10003,6 @@ type BEKDetails struct {
 	SecretData *string `json:"secretData,omitempty"`
 }
 
-// BMSAADPropertiesQueryObject filters to list backup items.
-type BMSAADPropertiesQueryObject struct {
-	// BackupManagementType - Backup management type for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-}
-
 // BMSBackupEngineQueryObject query parameters to fetch list of backup engines.
 type BMSBackupEngineQueryObject struct {
 	// Expand - attribute to add extended info
@@ -10607,12 +10017,6 @@ type BMSBackupEnginesQueryObject struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// Expand - Attribute to add extended info.
 	Expand *string `json:"expand,omitempty"`
-}
-
-// BMSBackupSummariesQueryObject query parameters to fetch backup summaries.
-type BMSBackupSummariesQueryObject struct {
-	// Type - Backup management type for this container. Possible values include: 'TypeInvalid', 'TypeBackupProtectedItemCountSummary', 'TypeBackupProtectionContainerCountSummary'
-	Type Type `json:"type,omitempty"`
 }
 
 // BMSContainerQueryObject the query filters that can be used with the list containers API.
@@ -10759,214 +10163,6 @@ type BMSWorkloadItemQueryObject struct {
 	ProtectionStatus ProtectionStatus `json:"protectionStatus,omitempty"`
 }
 
-// ClientDiscoveryDisplay localized display information of an operation.
-type ClientDiscoveryDisplay struct {
-	// Provider - Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
-	// Resource - ResourceType for which this Operation can be performed.
-	Resource *string `json:"resource,omitempty"`
-	// Operation - Operations Name itself.
-	Operation *string `json:"operation,omitempty"`
-	// Description - Description of the operation having details of what operation is about.
-	Description *string `json:"description,omitempty"`
-}
-
-// ClientDiscoveryForLogSpecification class to represent shoebox log specification in json client
-// discovery.
-type ClientDiscoveryForLogSpecification struct {
-	// Name - Name for shoebox log specification.
-	Name *string `json:"name,omitempty"`
-	// DisplayName - Localized display name
-	DisplayName *string `json:"displayName,omitempty"`
-	// BlobDuration - blob duration of shoebox log specification
-	BlobDuration *string `json:"blobDuration,omitempty"`
-}
-
-// ClientDiscoveryForProperties class to represent shoebox properties in json client discovery.
-type ClientDiscoveryForProperties struct {
-	// ServiceSpecification - Operation properties.
-	ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
-}
-
-// ClientDiscoveryForServiceSpecification class to represent shoebox service specification in json client
-// discovery.
-type ClientDiscoveryForServiceSpecification struct {
-	// LogSpecifications - List of log specifications of this operation.
-	LogSpecifications *[]ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
-}
-
-// ClientDiscoveryResponse operations List response which contains list of available APIs.
-type ClientDiscoveryResponse struct {
-	autorest.Response `json:"-"`
-	// Value - List of available operations.
-	Value *[]ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
-	// NextLink - Link to the next chunk of Response.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ClientDiscoveryResponseIterator provides access to a complete listing of
-// ClientDiscoveryValueForSingleAPI values.
-type ClientDiscoveryResponseIterator struct {
-	i    int
-	page ClientDiscoveryResponsePage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ClientDiscoveryResponseIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClientDiscoveryResponseIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *ClientDiscoveryResponseIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ClientDiscoveryResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ClientDiscoveryResponseIterator) Response() ClientDiscoveryResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ClientDiscoveryResponseIterator) Value() ClientDiscoveryValueForSingleAPI {
-	if !iter.page.NotDone() {
-		return ClientDiscoveryValueForSingleAPI{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the ClientDiscoveryResponseIterator type.
-func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
-	return ClientDiscoveryResponseIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (cdr ClientDiscoveryResponse) IsEmpty() bool {
-	return cdr.Value == nil || len(*cdr.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (cdr ClientDiscoveryResponse) hasNextLink() bool {
-	return cdr.NextLink != nil && len(*cdr.NextLink) != 0
-}
-
-// clientDiscoveryResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (cdr ClientDiscoveryResponse) clientDiscoveryResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if !cdr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(cdr.NextLink)))
-}
-
-// ClientDiscoveryResponsePage contains a page of ClientDiscoveryValueForSingleAPI values.
-type ClientDiscoveryResponsePage struct {
-	fn  func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)
-	cdr ClientDiscoveryResponse
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ClientDiscoveryResponsePage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClientDiscoveryResponsePage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.cdr)
-		if err != nil {
-			return err
-		}
-		page.cdr = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *ClientDiscoveryResponsePage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ClientDiscoveryResponsePage) NotDone() bool {
-	return !page.cdr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ClientDiscoveryResponsePage) Response() ClientDiscoveryResponse {
-	return page.cdr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingleAPI {
-	if page.cdr.IsEmpty() {
-		return nil
-	}
-	return *page.cdr.Value
-}
-
-// Creates a new instance of the ClientDiscoveryResponsePage type.
-func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
-	return ClientDiscoveryResponsePage{
-		fn:  getNextPage,
-		cdr: cur,
-	}
-}
-
-// ClientDiscoveryValueForSingleAPI available operation details.
-type ClientDiscoveryValueForSingleAPI struct {
-	// Name - Name of the Operation.
-	Name *string `json:"name,omitempty"`
-	// Display - Contains the localized display information for this particular operation
-	Display *ClientDiscoveryDisplay `json:"display,omitempty"`
-	// Origin - The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
-	Origin *string `json:"origin,omitempty"`
-	// Properties - ShoeBox properties for the given operation.
-	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
-}
-
 // ClientScriptForConnect client script details for file / folder restore.
 type ClientScriptForConnect struct {
 	// ScriptContent - File content of the client script for file / folder restore.
@@ -11018,473 +10214,6 @@ type ContainerIdentityInfo struct {
 	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
 	// Audience - Protection container identity - Audience
 	Audience *string `json:"audience,omitempty"`
-}
-
-// CrossRegionRestoreRequest ...
-type CrossRegionRestoreRequest struct {
-	// CrossRegionRestoreAccessDetails - Access details for cross region restore
-	CrossRegionRestoreAccessDetails BasicCrrAccessToken `json:"crossRegionRestoreAccessDetails,omitempty"`
-	// RestoreRequest - Request object for triggering restore
-	RestoreRequest BasicRestoreRequest `json:"restoreRequest,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for CrossRegionRestoreRequest struct.
-func (crrr *CrossRegionRestoreRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "crossRegionRestoreAccessDetails":
-			if v != nil {
-				crossRegionRestoreAccessDetails, err := unmarshalBasicCrrAccessToken(*v)
-				if err != nil {
-					return err
-				}
-				crrr.CrossRegionRestoreAccessDetails = crossRegionRestoreAccessDetails
-			}
-		case "restoreRequest":
-			if v != nil {
-				restoreRequest, err := unmarshalBasicRestoreRequest(*v)
-				if err != nil {
-					return err
-				}
-				crrr.RestoreRequest = restoreRequest
-			}
-		}
-	}
-
-	return nil
-}
-
-// CrossRegionRestoreRequestResource ...
-type CrossRegionRestoreRequestResource struct {
-	// Properties - CrossRegionRestoreRequestResource properties
-	Properties *CrossRegionRestoreRequest `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CrossRegionRestoreRequestResource.
-func (crrrr CrossRegionRestoreRequestResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if crrrr.Properties != nil {
-		objectMap["properties"] = crrrr.Properties
-	}
-	if crrrr.Location != nil {
-		objectMap["location"] = crrrr.Location
-	}
-	if crrrr.Tags != nil {
-		objectMap["tags"] = crrrr.Tags
-	}
-	if crrrr.ETag != nil {
-		objectMap["eTag"] = crrrr.ETag
-	}
-	return json.Marshal(objectMap)
-}
-
-// CrossRegionRestoreTriggerFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type CrossRegionRestoreTriggerFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(CrossRegionRestoreClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *CrossRegionRestoreTriggerFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for CrossRegionRestoreTriggerFuture.Result.
-func (future *CrossRegionRestoreTriggerFuture) result(client CrossRegionRestoreClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreTriggerFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("backup.CrossRegionRestoreTriggerFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// BasicCrrAccessToken ...
-type BasicCrrAccessToken interface {
-	AsWorkloadCrrAccessToken() (*WorkloadCrrAccessToken, bool)
-	AsCrrAccessToken() (*CrrAccessToken, bool)
-}
-
-// CrrAccessToken ...
-type CrrAccessToken struct {
-	// AccessTokenString - Access token used for authentication
-	AccessTokenString *string `json:"accessTokenString,omitempty"`
-	// SubscriptionID - Subscription Id of the source vault
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// ResourceGroupName - Resource Group name of the source vault
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// ResourceName - Resource Name of the source vault
-	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceID - Resource Id of the source vault
-	ResourceID *string `json:"resourceId,omitempty"`
-	// ProtectionContainerID - Protected item container id
-	ProtectionContainerID *int64 `json:"protectionContainerId,omitempty"`
-	// RecoveryPointID - Recovery Point Id
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-	// RecoveryPointTime - Recovery Point Time
-	RecoveryPointTime *string `json:"recoveryPointTime,omitempty"`
-	// ContainerName - Container Unique name
-	ContainerName *string `json:"containerName,omitempty"`
-	// ContainerType - Container Type
-	ContainerType *string `json:"containerType,omitempty"`
-	// BackupManagementType - Backup Management Type
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
-	// DatasourceType - Datasource Type
-	DatasourceType *string `json:"datasourceType,omitempty"`
-	// DatasourceName - Datasource Friendly Name
-	DatasourceName *string `json:"datasourceName,omitempty"`
-	// DatasourceID - Datasource Id
-	DatasourceID *string `json:"datasourceId,omitempty"`
-	// DatasourceContainerName - Datasource Container Unique Name
-	DatasourceContainerName *string `json:"datasourceContainerName,omitempty"`
-	// CoordinatorServiceStampID - CoordinatorServiceStampId to be used by BCM in restore call
-	CoordinatorServiceStampID *string `json:"coordinatorServiceStampId,omitempty"`
-	// CoordinatorServiceStampURI - CoordinatorServiceStampUri to be used by BCM in restore call
-	CoordinatorServiceStampURI *string `json:"coordinatorServiceStampUri,omitempty"`
-	// ProtectionServiceStampID - ProtectionServiceStampId to be used by BCM in restore call
-	ProtectionServiceStampID *string `json:"protectionServiceStampId,omitempty"`
-	// ProtectionServiceStampURI - ProtectionServiceStampUri to be used by BCM in restore call
-	ProtectionServiceStampURI *string `json:"protectionServiceStampUri,omitempty"`
-	// TokenExtendedInformation - Extended Information about the token like FileSpec etc.
-	TokenExtendedInformation *string `json:"tokenExtendedInformation,omitempty"`
-	// RpTierInformation - Recovery point Tier Information
-	RpTierInformation map[string]*string `json:"rpTierInformation"`
-	// RpOriginalSAOption - Recovery point information: Original SA option
-	RpOriginalSAOption *bool `json:"rpOriginalSAOption,omitempty"`
-	// RpIsManagedVirtualMachine - Recovery point information: Managed virtual machine
-	RpIsManagedVirtualMachine *bool `json:"rpIsManagedVirtualMachine,omitempty"`
-	// RpVMSizeDescription - Recovery point information: VM size description
-	RpVMSizeDescription *string `json:"rpVMSizeDescription,omitempty"`
-	// BMSActiveRegion - Active region name of BMS Stamp
-	BMSActiveRegion *string `json:"bMSActiveRegion,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken', 'ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken'
-	ObjectType ObjectTypeBasicCrrAccessToken `json:"objectType,omitempty"`
-}
-
-func unmarshalBasicCrrAccessToken(body []byte) (BasicCrrAccessToken, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["objectType"] {
-	case string(ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken):
-		var wcat WorkloadCrrAccessToken
-		err := json.Unmarshal(body, &wcat)
-		return wcat, err
-	default:
-		var cat CrrAccessToken
-		err := json.Unmarshal(body, &cat)
-		return cat, err
-	}
-}
-func unmarshalBasicCrrAccessTokenArray(body []byte) ([]BasicCrrAccessToken, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	catArray := make([]BasicCrrAccessToken, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		cat, err := unmarshalBasicCrrAccessToken(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		catArray[index] = cat
-	}
-	return catArray, nil
-}
-
-// MarshalJSON is the custom marshaler for CrrAccessToken.
-func (cat CrrAccessToken) MarshalJSON() ([]byte, error) {
-	cat.ObjectType = ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken
-	objectMap := make(map[string]interface{})
-	if cat.AccessTokenString != nil {
-		objectMap["accessTokenString"] = cat.AccessTokenString
-	}
-	if cat.SubscriptionID != nil {
-		objectMap["subscriptionId"] = cat.SubscriptionID
-	}
-	if cat.ResourceGroupName != nil {
-		objectMap["resourceGroupName"] = cat.ResourceGroupName
-	}
-	if cat.ResourceName != nil {
-		objectMap["resourceName"] = cat.ResourceName
-	}
-	if cat.ResourceID != nil {
-		objectMap["resourceId"] = cat.ResourceID
-	}
-	if cat.ProtectionContainerID != nil {
-		objectMap["protectionContainerId"] = cat.ProtectionContainerID
-	}
-	if cat.RecoveryPointID != nil {
-		objectMap["recoveryPointId"] = cat.RecoveryPointID
-	}
-	if cat.RecoveryPointTime != nil {
-		objectMap["recoveryPointTime"] = cat.RecoveryPointTime
-	}
-	if cat.ContainerName != nil {
-		objectMap["containerName"] = cat.ContainerName
-	}
-	if cat.ContainerType != nil {
-		objectMap["containerType"] = cat.ContainerType
-	}
-	if cat.BackupManagementType != nil {
-		objectMap["backupManagementType"] = cat.BackupManagementType
-	}
-	if cat.DatasourceType != nil {
-		objectMap["datasourceType"] = cat.DatasourceType
-	}
-	if cat.DatasourceName != nil {
-		objectMap["datasourceName"] = cat.DatasourceName
-	}
-	if cat.DatasourceID != nil {
-		objectMap["datasourceId"] = cat.DatasourceID
-	}
-	if cat.DatasourceContainerName != nil {
-		objectMap["datasourceContainerName"] = cat.DatasourceContainerName
-	}
-	if cat.CoordinatorServiceStampID != nil {
-		objectMap["coordinatorServiceStampId"] = cat.CoordinatorServiceStampID
-	}
-	if cat.CoordinatorServiceStampURI != nil {
-		objectMap["coordinatorServiceStampUri"] = cat.CoordinatorServiceStampURI
-	}
-	if cat.ProtectionServiceStampID != nil {
-		objectMap["protectionServiceStampId"] = cat.ProtectionServiceStampID
-	}
-	if cat.ProtectionServiceStampURI != nil {
-		objectMap["protectionServiceStampUri"] = cat.ProtectionServiceStampURI
-	}
-	if cat.TokenExtendedInformation != nil {
-		objectMap["tokenExtendedInformation"] = cat.TokenExtendedInformation
-	}
-	if cat.RpTierInformation != nil {
-		objectMap["rpTierInformation"] = cat.RpTierInformation
-	}
-	if cat.RpOriginalSAOption != nil {
-		objectMap["rpOriginalSAOption"] = cat.RpOriginalSAOption
-	}
-	if cat.RpIsManagedVirtualMachine != nil {
-		objectMap["rpIsManagedVirtualMachine"] = cat.RpIsManagedVirtualMachine
-	}
-	if cat.RpVMSizeDescription != nil {
-		objectMap["rpVMSizeDescription"] = cat.RpVMSizeDescription
-	}
-	if cat.BMSActiveRegion != nil {
-		objectMap["bMSActiveRegion"] = cat.BMSActiveRegion
-	}
-	if cat.ObjectType != "" {
-		objectMap["objectType"] = cat.ObjectType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsWorkloadCrrAccessToken is the BasicCrrAccessToken implementation for CrrAccessToken.
-func (cat CrrAccessToken) AsWorkloadCrrAccessToken() (*WorkloadCrrAccessToken, bool) {
-	return nil, false
-}
-
-// AsCrrAccessToken is the BasicCrrAccessToken implementation for CrrAccessToken.
-func (cat CrrAccessToken) AsCrrAccessToken() (*CrrAccessToken, bool) {
-	return &cat, true
-}
-
-// AsBasicCrrAccessToken is the BasicCrrAccessToken implementation for CrrAccessToken.
-func (cat CrrAccessToken) AsBasicCrrAccessToken() (BasicCrrAccessToken, bool) {
-	return &cat, true
-}
-
-// CrrAccessTokenResource ...
-type CrrAccessTokenResource struct {
-	autorest.Response `json:"-"`
-	// Properties - CrrAccessTokenResource properties
-	Properties BasicCrrAccessToken `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CrrAccessTokenResource.
-func (catr CrrAccessTokenResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["properties"] = catr.Properties
-	if catr.Location != nil {
-		objectMap["location"] = catr.Location
-	}
-	if catr.Tags != nil {
-		objectMap["tags"] = catr.Tags
-	}
-	if catr.ETag != nil {
-		objectMap["eTag"] = catr.ETag
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CrrAccessTokenResource struct.
-func (catr *CrrAccessTokenResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				properties, err := unmarshalBasicCrrAccessToken(*v)
-				if err != nil {
-					return err
-				}
-				catr.Properties = properties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				catr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				catr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				catr.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				catr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				catr.Tags = tags
-			}
-		case "eTag":
-			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
-				if err != nil {
-					return err
-				}
-				catr.ETag = &eTag
-			}
-		}
-	}
-
-	return nil
-}
-
-// CrrJobRequest request object for fetching CRR jobs.
-type CrrJobRequest struct {
-	// ResourceID - Entire ARM resource id of the resource
-	ResourceID *string `json:"resourceId,omitempty"`
-	// JobName - Job Name of the job to be fetched
-	JobName *string `json:"jobName,omitempty"`
-}
-
-// CrrJobRequestResource request object for fetching CRR jobs.
-type CrrJobRequestResource struct {
-	// Properties - CrrJobRequestResource properties
-	Properties *CrrJobRequest `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CrrJobRequestResource.
-func (cjrr CrrJobRequestResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cjrr.Properties != nil {
-		objectMap["properties"] = cjrr.Properties
-	}
-	if cjrr.Location != nil {
-		objectMap["location"] = cjrr.Location
-	}
-	if cjrr.Tags != nil {
-		objectMap["tags"] = cjrr.Tags
-	}
-	if cjrr.ETag != nil {
-		objectMap["eTag"] = cjrr.ETag
-	}
-	return json.Marshal(objectMap)
 }
 
 // DailyRetentionFormat daily retention format.
@@ -12821,90 +11550,6 @@ type ExtendedProperties struct {
 	DiskExclusionProperties *DiskExclusionProperties `json:"diskExclusionProperties,omitempty"`
 }
 
-// BasicFeatureSupportRequest base class for feature request
-type BasicFeatureSupportRequest interface {
-	AsAzureBackupGoalFeatureSupportRequest() (*AzureBackupGoalFeatureSupportRequest, bool)
-	AsAzureVMResourceFeatureSupportRequest() (*AzureVMResourceFeatureSupportRequest, bool)
-	AsFeatureSupportRequest() (*FeatureSupportRequest, bool)
-}
-
-// FeatureSupportRequest base class for feature request
-type FeatureSupportRequest struct {
-	// FeatureType - Possible values include: 'FeatureTypeFeatureSupportRequest', 'FeatureTypeAzureBackupGoals', 'FeatureTypeAzureVMResourceBackup'
-	FeatureType FeatureType `json:"featureType,omitempty"`
-}
-
-func unmarshalBasicFeatureSupportRequest(body []byte) (BasicFeatureSupportRequest, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["featureType"] {
-	case string(FeatureTypeAzureBackupGoals):
-		var abgfsr AzureBackupGoalFeatureSupportRequest
-		err := json.Unmarshal(body, &abgfsr)
-		return abgfsr, err
-	case string(FeatureTypeAzureVMResourceBackup):
-		var avrfsr AzureVMResourceFeatureSupportRequest
-		err := json.Unmarshal(body, &avrfsr)
-		return avrfsr, err
-	default:
-		var fsr FeatureSupportRequest
-		err := json.Unmarshal(body, &fsr)
-		return fsr, err
-	}
-}
-func unmarshalBasicFeatureSupportRequestArray(body []byte) ([]BasicFeatureSupportRequest, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	fsrArray := make([]BasicFeatureSupportRequest, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		fsr, err := unmarshalBasicFeatureSupportRequest(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fsrArray[index] = fsr
-	}
-	return fsrArray, nil
-}
-
-// MarshalJSON is the custom marshaler for FeatureSupportRequest.
-func (fsr FeatureSupportRequest) MarshalJSON() ([]byte, error) {
-	fsr.FeatureType = FeatureTypeFeatureSupportRequest
-	objectMap := make(map[string]interface{})
-	if fsr.FeatureType != "" {
-		objectMap["featureType"] = fsr.FeatureType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureBackupGoalFeatureSupportRequest is the BasicFeatureSupportRequest implementation for FeatureSupportRequest.
-func (fsr FeatureSupportRequest) AsAzureBackupGoalFeatureSupportRequest() (*AzureBackupGoalFeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsAzureVMResourceFeatureSupportRequest is the BasicFeatureSupportRequest implementation for FeatureSupportRequest.
-func (fsr FeatureSupportRequest) AsAzureVMResourceFeatureSupportRequest() (*AzureVMResourceFeatureSupportRequest, bool) {
-	return nil, false
-}
-
-// AsFeatureSupportRequest is the BasicFeatureSupportRequest implementation for FeatureSupportRequest.
-func (fsr FeatureSupportRequest) AsFeatureSupportRequest() (*FeatureSupportRequest, bool) {
-	return &fsr, true
-}
-
-// AsBasicFeatureSupportRequest is the BasicFeatureSupportRequest implementation for FeatureSupportRequest.
-func (fsr FeatureSupportRequest) AsBasicFeatureSupportRequest() (BasicFeatureSupportRequest, bool) {
-	return &fsr, true
-}
-
 // GenericContainer base class for generic container of backup items
 type GenericContainer struct {
 	// FabricName - Name of the container's fabric
@@ -13892,15 +12537,15 @@ func (ispi IaaSVMProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloa
 
 // IaasVMRecoveryPoint iaaS VM workload specific backup copy.
 type IaasVMRecoveryPoint struct {
-	// RecoveryPointType - READ-ONLY; Type of the backup copy.
+	// RecoveryPointType - Type of the backup copy.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
-	// RecoveryPointTime - READ-ONLY; Time at which this backup copy was created.
+	// RecoveryPointTime - Time at which this backup copy was created.
 	RecoveryPointTime *date.Time `json:"recoveryPointTime,omitempty"`
-	// RecoveryPointAdditionalInfo - READ-ONLY; Additional information associated with this backup copy.
+	// RecoveryPointAdditionalInfo - Additional information associated with this backup copy.
 	RecoveryPointAdditionalInfo *string `json:"recoveryPointAdditionalInfo,omitempty"`
-	// SourceVMStorageType - READ-ONLY; Storage type of the VM whose backup copy is created.
+	// SourceVMStorageType - Storage type of the VM whose backup copy is created.
 	SourceVMStorageType *string `json:"sourceVMStorageType,omitempty"`
-	// IsSourceVMEncrypted - READ-ONLY; Identifies whether the VM was encrypted when the backup copy is created.
+	// IsSourceVMEncrypted - Identifies whether the VM was encrypted when the backup copy is created.
 	IsSourceVMEncrypted *bool `json:"isSourceVMEncrypted,omitempty"`
 	// KeyAndSecret - Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
 	KeyAndSecret *KeyAndSecretDetails `json:"keyAndSecret,omitempty"`
@@ -13930,6 +12575,21 @@ type IaasVMRecoveryPoint struct {
 func (ivrp IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	ivrp.ObjectType = ObjectTypeBasicRecoveryPointObjectTypeIaasVMRecoveryPoint
 	objectMap := make(map[string]interface{})
+	if ivrp.RecoveryPointType != nil {
+		objectMap["recoveryPointType"] = ivrp.RecoveryPointType
+	}
+	if ivrp.RecoveryPointTime != nil {
+		objectMap["recoveryPointTime"] = ivrp.RecoveryPointTime
+	}
+	if ivrp.RecoveryPointAdditionalInfo != nil {
+		objectMap["recoveryPointAdditionalInfo"] = ivrp.RecoveryPointAdditionalInfo
+	}
+	if ivrp.SourceVMStorageType != nil {
+		objectMap["sourceVMStorageType"] = ivrp.SourceVMStorageType
+	}
+	if ivrp.IsSourceVMEncrypted != nil {
+		objectMap["isSourceVMEncrypted"] = ivrp.IsSourceVMEncrypted
+	}
 	if ivrp.KeyAndSecret != nil {
 		objectMap["keyAndSecret"] = ivrp.KeyAndSecret
 	}
@@ -16076,29 +14736,6 @@ func (mpp *MabProtectionPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ManagementUsage backup management usages of a vault.
-type ManagementUsage struct {
-	// Unit - Unit of the usage. Possible values include: 'UsagesUnitCount', 'UsagesUnitBytes', 'UsagesUnitSeconds', 'UsagesUnitPercent', 'UsagesUnitCountPerSecond', 'UsagesUnitBytesPerSecond'
-	Unit UsagesUnit `json:"unit,omitempty"`
-	// QuotaPeriod - Quota period of usage.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// NextResetTime - Next reset time of usage.
-	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
-	// CurrentValue - Current value of usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
-	// Limit - Limit of usage.
-	Limit *int64 `json:"limit,omitempty"`
-	// Name - Name of usage.
-	Name *NameInfo `json:"name,omitempty"`
-}
-
-// ManagementUsageList backup management usage for vault.
-type ManagementUsageList struct {
-	autorest.Response `json:"-"`
-	// Value - The list of backup management usages for the given vault.
-	Value *[]ManagementUsage `json:"value,omitempty"`
-}
-
 // MonthlyRetentionSchedule monthly retention schedule.
 type MonthlyRetentionSchedule struct {
 	// RetentionScheduleFormatType - Retention schedule format type for monthly retention policy. Possible values include: 'RetentionScheduleFormatInvalid', 'RetentionScheduleFormatDaily', 'RetentionScheduleFormatWeekly'
@@ -16158,14 +14795,6 @@ type MoveRPAcrossTiersRequest struct {
 	SourceTierType RecoveryPointTierType `json:"sourceTierType,omitempty"`
 	// TargetTierType - Target tier where RP needs to be moved. Possible values include: 'RecoveryPointTierTypeInvalid', 'RecoveryPointTierTypeInstantRP', 'RecoveryPointTierTypeHardenedRP', 'RecoveryPointTierTypeArchivedRP'
 	TargetTierType RecoveryPointTierType `json:"targetTierType,omitempty"`
-}
-
-// NameInfo the name of usage.
-type NameInfo struct {
-	// Value - Value of usage.
-	Value *string `json:"value,omitempty"`
-	// LocalizedValue - Localized value of usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // NewErrorResponse the resource management error response.
@@ -16493,13 +15122,12 @@ type BasicOperationStatusExtendedInfo interface {
 	AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool)
 	AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool)
 	AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool)
-	AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool)
 	AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool)
 }
 
 // OperationStatusExtendedInfo base class for additional information of operation status.
 type OperationStatusExtendedInfo struct {
-	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16523,10 +15151,6 @@ func unmarshalBasicOperationStatusExtendedInfo(body []byte) (BasicOperationStatu
 		var ospiei OperationStatusProvisionILRExtendedInfo
 		err := json.Unmarshal(body, &ospiei)
 		return ospiei, err
-	case string(ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo):
-		var osrpei OperationStatusRecoveryPointExtendedInfo
-		err := json.Unmarshal(body, &osrpei)
-		return osrpei, err
 	default:
 		var osei OperationStatusExtendedInfo
 		err := json.Unmarshal(body, &osei)
@@ -16577,11 +15201,6 @@ func (osei OperationStatusExtendedInfo) AsOperationStatusProvisionILRExtendedInf
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
-func (osei OperationStatusExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
 func (osei OperationStatusExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return &osei, true
@@ -16596,7 +15215,7 @@ func (osei OperationStatusExtendedInfo) AsBasicOperationStatusExtendedInfo() (Ba
 type OperationStatusJobExtendedInfo struct {
 	// JobID - ID of the job created for this protected item.
 	JobID *string `json:"jobId,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16628,11 +15247,6 @@ func (osjei OperationStatusJobExtendedInfo) AsOperationStatusProvisionILRExtende
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
-func (osjei OperationStatusJobExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
 func (osjei OperationStatusJobExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16649,7 +15263,7 @@ type OperationStatusJobsExtendedInfo struct {
 	JobIds *[]string `json:"jobIds,omitempty"`
 	// FailedJobsError - Stores all the failed jobs along with the corresponding error codes.
 	FailedJobsError map[string]*string `json:"failedJobsError"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16684,11 +15298,6 @@ func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusProvisionILRExtend
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
-func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
 func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16703,7 +15312,7 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for file / folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16735,11 +15344,6 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusProvision
 	return &ospiei, true
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
-func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16748,101 +15352,6 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedI
 // AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
 	return &ospiei, true
-}
-
-// OperationStatusRecoveryPointExtendedInfo operation status extended info for Updated Recovery Point.
-type OperationStatusRecoveryPointExtendedInfo struct {
-	// UpdatedRecoveryPoint - Recovery Point info with updated source snapshot URI
-	UpdatedRecoveryPoint BasicRecoveryPoint `json:"updatedRecoveryPoint,omitempty"`
-	// DeletedBackupItemVersion - In case the share is in soft-deleted state, populate this field with deleted backup item
-	DeletedBackupItemVersion *string `json:"deletedBackupItemVersion,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo'
-	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) MarshalJSON() ([]byte, error) {
-	osrpei.ObjectType = ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo
-	objectMap := make(map[string]interface{})
-	objectMap["updatedRecoveryPoint"] = osrpei.UpdatedRecoveryPoint
-	if osrpei.DeletedBackupItemVersion != nil {
-		objectMap["deletedBackupItemVersion"] = osrpei.DeletedBackupItemVersion
-	}
-	if osrpei.ObjectType != "" {
-		objectMap["objectType"] = osrpei.ObjectType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsOperationStatusJobExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusJobsExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusProvisionILRExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return &osrpei, true
-}
-
-// AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
-	return &osrpei, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for OperationStatusRecoveryPointExtendedInfo struct.
-func (osrpei *OperationStatusRecoveryPointExtendedInfo) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "updatedRecoveryPoint":
-			if v != nil {
-				updatedRecoveryPoint, err := unmarshalBasicRecoveryPoint(*v)
-				if err != nil {
-					return err
-				}
-				osrpei.UpdatedRecoveryPoint = updatedRecoveryPoint
-			}
-		case "deletedBackupItemVersion":
-			if v != nil {
-				var deletedBackupItemVersion string
-				err = json.Unmarshal(*v, &deletedBackupItemVersion)
-				if err != nil {
-					return err
-				}
-				osrpei.DeletedBackupItemVersion = &deletedBackupItemVersion
-			}
-		case "objectType":
-			if v != nil {
-				var objectType ObjectTypeBasicOperationStatusExtendedInfo
-				err = json.Unmarshal(*v, &objectType)
-				if err != nil {
-					return err
-				}
-				osrpei.ObjectType = objectType
-			}
-		}
-	}
-
-	return nil
 }
 
 // OperationWorkerResponse this is the base class for operation result responses.
@@ -16937,41 +15446,6 @@ func (pdmr PrepareDataMoveResponse) AsVaultStorageConfigOperationResultResponse(
 // AsBasicVaultStorageConfigOperationResultResponse is the BasicVaultStorageConfigOperationResultResponse implementation for PrepareDataMoveResponse.
 func (pdmr PrepareDataMoveResponse) AsBasicVaultStorageConfigOperationResultResponse() (BasicVaultStorageConfigOperationResultResponse, bool) {
 	return &pdmr, true
-}
-
-// PreValidateEnableBackupRequest contract to validate if backup can be enabled on the given resource in a
-// given vault and given configuration.
-// It will validate followings
-// 1. Vault capacity
-// 2. VM is already protected
-// 3. Any VM related configuration passed in properties.
-type PreValidateEnableBackupRequest struct {
-	// ResourceType - ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
-	ResourceType DataSourceType `json:"resourceType,omitempty"`
-	// ResourceID - ARM Virtual Machine Id
-	ResourceID *string `json:"resourceId,omitempty"`
-	// VaultID - ARM id of the Recovery Services Vault
-	VaultID *string `json:"vaultId,omitempty"`
-	// Properties - Configuration of VM if any needs to be validated like OS type etc
-	Properties *string `json:"properties,omitempty"`
-}
-
-// PreValidateEnableBackupResponse response contract for enable backup validation request
-type PreValidateEnableBackupResponse struct {
-	autorest.Response `json:"-"`
-	// Status - Validation Status. Possible values include: 'ValidationStatusInvalid', 'ValidationStatusSucceeded', 'ValidationStatusFailed'
-	Status ValidationStatus `json:"status,omitempty"`
-	// ErrorCode - Response error code
-	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - Response error message
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// Recommendation - Recommended action for user
-	Recommendation *string `json:"recommendation,omitempty"`
-	// ContainerName - Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
-	// for portal
-	ContainerName *string `json:"containerName,omitempty"`
-	// ProtectedItemName - Specifies the product specific ds name. E.g. vm;iaasvmcontainer;rgname;vmname. This is required for portal
-	ProtectedItemName *string `json:"protectedItemName,omitempty"`
 }
 
 // PrivateEndpoint the Private Endpoint network resource that is linked to the Private Endpoint connection
@@ -18543,431 +17017,6 @@ func NewProtectionContainerResourceListPage(cur ProtectionContainerResourceList,
 	}
 }
 
-// BasicProtectionIntent base class for backup ProtectionIntent.
-type BasicProtectionIntent interface {
-	AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool)
-	AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool)
-	AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool)
-	AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool)
-	AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool)
-	AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool)
-	AsProtectionIntent() (*ProtectionIntent, bool)
-}
-
-// ProtectionIntent base class for backup ProtectionIntent.
-type ProtectionIntent struct {
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// ItemID - ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectionIntentItemType - Possible values include: 'ProtectionIntentItemTypeProtectionIntent', 'ProtectionIntentItemTypeRecoveryServiceVaultItem', 'ProtectionIntentItemTypeAzureResourceItem', 'ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent', 'ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent'
-	ProtectionIntentItemType ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
-}
-
-func unmarshalBasicProtectionIntent(body []byte) (BasicProtectionIntent, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
-		var arsvpi AzureRecoveryServiceVaultProtectionIntent
-		err := json.Unmarshal(body, &arsvpi)
-		return arsvpi, err
-	case string(ProtectionIntentItemTypeAzureResourceItem):
-		var arpi AzureResourceProtectionIntent
-		err := json.Unmarshal(body, &arpi)
-		return arpi, err
-	case string(ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent):
-		var awapi AzureWorkloadAutoProtectionIntent
-		err := json.Unmarshal(body, &awapi)
-		return awapi, err
-	case string(ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent):
-		var awsapi AzureWorkloadSQLAutoProtectionIntent
-		err := json.Unmarshal(body, &awsapi)
-		return awsapi, err
-	default:
-		var pi ProtectionIntent
-		err := json.Unmarshal(body, &pi)
-		return pi, err
-	}
-}
-func unmarshalBasicProtectionIntentArray(body []byte) ([]BasicProtectionIntent, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	piArray := make([]BasicProtectionIntent, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		pi, err := unmarshalBasicProtectionIntent(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		piArray[index] = pi
-	}
-	return piArray, nil
-}
-
-// MarshalJSON is the custom marshaler for ProtectionIntent.
-func (pi ProtectionIntent) MarshalJSON() ([]byte, error) {
-	pi.ProtectionIntentItemType = ProtectionIntentItemTypeProtectionIntent
-	objectMap := make(map[string]interface{})
-	if pi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = pi.BackupManagementType
-	}
-	if pi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = pi.SourceResourceID
-	}
-	if pi.ItemID != nil {
-		objectMap["itemId"] = pi.ItemID
-	}
-	if pi.PolicyID != nil {
-		objectMap["policyId"] = pi.PolicyID
-	}
-	if pi.ProtectionState != "" {
-		objectMap["protectionState"] = pi.ProtectionState
-	}
-	if pi.ProtectionIntentItemType != "" {
-		objectMap["protectionIntentItemType"] = pi.ProtectionIntentItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsAzureRecoveryServiceVaultProtectionIntent() (*AzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureRecoveryServiceVaultProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsBasicAzureRecoveryServiceVaultProtectionIntent() (BasicAzureRecoveryServiceVaultProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureResourceProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsAzureResourceProtectionIntent() (*AzureResourceProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsAzureWorkloadAutoProtectionIntent() (*AzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsBasicAzureWorkloadAutoProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsBasicAzureWorkloadAutoProtectionIntent() (BasicAzureWorkloadAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsAzureWorkloadSQLAutoProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsAzureWorkloadSQLAutoProtectionIntent() (*AzureWorkloadSQLAutoProtectionIntent, bool) {
-	return nil, false
-}
-
-// AsProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsProtectionIntent() (*ProtectionIntent, bool) {
-	return &pi, true
-}
-
-// AsBasicProtectionIntent is the BasicProtectionIntent implementation for ProtectionIntent.
-func (pi ProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, bool) {
-	return &pi, true
-}
-
-// ProtectionIntentQueryObject filters to list protection intent.
-type ProtectionIntentQueryObject struct {
-	// BackupManagementType - Backup management type for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// ItemType - Type of workload this item represents. Possible values include: 'IntentItemTypeInvalid', 'IntentItemTypeSQLInstance', 'IntentItemTypeSQLAvailabilityGroupContainer'
-	ItemType IntentItemType `json:"itemType,omitempty"`
-	// ParentName - Parent name of the intent
-	ParentName *string `json:"parentName,omitempty"`
-	// ItemName - Item name of the intent
-	ItemName *string `json:"itemName,omitempty"`
-}
-
-// ProtectionIntentResource base class for backup ProtectionIntent.
-type ProtectionIntentResource struct {
-	autorest.Response `json:"-"`
-	// Properties - ProtectionIntentResource properties
-	Properties BasicProtectionIntent `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ProtectionIntentResource.
-func (pir ProtectionIntentResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["properties"] = pir.Properties
-	if pir.Location != nil {
-		objectMap["location"] = pir.Location
-	}
-	if pir.Tags != nil {
-		objectMap["tags"] = pir.Tags
-	}
-	if pir.ETag != nil {
-		objectMap["eTag"] = pir.ETag
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ProtectionIntentResource struct.
-func (pir *ProtectionIntentResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				properties, err := unmarshalBasicProtectionIntent(*v)
-				if err != nil {
-					return err
-				}
-				pir.Properties = properties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				pir.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				pir.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				pir.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				pir.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				pir.Tags = tags
-			}
-		case "eTag":
-			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
-				if err != nil {
-					return err
-				}
-				pir.ETag = &eTag
-			}
-		}
-	}
-
-	return nil
-}
-
-// ProtectionIntentResourceList list of ProtectionIntent resources
-type ProtectionIntentResourceList struct {
-	autorest.Response `json:"-"`
-	// Value - List of resources.
-	Value *[]ProtectionIntentResource `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ProtectionIntentResourceListIterator provides access to a complete listing of ProtectionIntentResource
-// values.
-type ProtectionIntentResourceListIterator struct {
-	i    int
-	page ProtectionIntentResourceListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ProtectionIntentResourceListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentResourceListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *ProtectionIntentResourceListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ProtectionIntentResourceListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ProtectionIntentResourceListIterator) Response() ProtectionIntentResourceList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ProtectionIntentResourceListIterator) Value() ProtectionIntentResource {
-	if !iter.page.NotDone() {
-		return ProtectionIntentResource{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the ProtectionIntentResourceListIterator type.
-func NewProtectionIntentResourceListIterator(page ProtectionIntentResourceListPage) ProtectionIntentResourceListIterator {
-	return ProtectionIntentResourceListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (pirl ProtectionIntentResourceList) IsEmpty() bool {
-	return pirl.Value == nil || len(*pirl.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (pirl ProtectionIntentResourceList) hasNextLink() bool {
-	return pirl.NextLink != nil && len(*pirl.NextLink) != 0
-}
-
-// protectionIntentResourceListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (pirl ProtectionIntentResourceList) protectionIntentResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if !pirl.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(pirl.NextLink)))
-}
-
-// ProtectionIntentResourceListPage contains a page of ProtectionIntentResource values.
-type ProtectionIntentResourceListPage struct {
-	fn   func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)
-	pirl ProtectionIntentResourceList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ProtectionIntentResourceListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentResourceListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.pirl)
-		if err != nil {
-			return err
-		}
-		page.pirl = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *ProtectionIntentResourceListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ProtectionIntentResourceListPage) NotDone() bool {
-	return !page.pirl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ProtectionIntentResourceListPage) Response() ProtectionIntentResourceList {
-	return page.pirl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ProtectionIntentResourceListPage) Values() []ProtectionIntentResource {
-	if page.pirl.IsEmpty() {
-		return nil
-	}
-	return *page.pirl.Value
-}
-
-// Creates a new instance of the ProtectionIntentResourceListPage type.
-func NewProtectionIntentResourceListPage(cur ProtectionIntentResourceList, getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
-	return ProtectionIntentResourceListPage{
-		fn:   getNextPage,
-		pirl: cur,
-	}
-}
-
 // ProtectionPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ProtectionPoliciesDeleteFuture struct {
@@ -20151,55 +18200,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceConfig the resource storage details.
-type ResourceConfig struct {
-	// StorageModelType - Storage type. Possible values include: 'StorageTypeInvalid', 'StorageTypeGeoRedundant', 'StorageTypeLocallyRedundant', 'StorageTypeZoneRedundant', 'StorageTypeReadAccessGeoZoneRedundant'
-	StorageModelType StorageType `json:"storageModelType,omitempty"`
-	// StorageType - Storage type. Possible values include: 'StorageTypeInvalid', 'StorageTypeGeoRedundant', 'StorageTypeLocallyRedundant', 'StorageTypeZoneRedundant', 'StorageTypeReadAccessGeoZoneRedundant'
-	StorageType StorageType `json:"storageType,omitempty"`
-	// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked. Possible values include: 'StorageTypeStateInvalid', 'StorageTypeStateLocked', 'StorageTypeStateUnlocked'
-	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
-	// CrossRegionRestoreFlag - Opt in details of Cross Region Restore feature.
-	CrossRegionRestoreFlag *bool `json:"crossRegionRestoreFlag,omitempty"`
-}
-
-// ResourceConfigResource the resource storage details.
-type ResourceConfigResource struct {
-	autorest.Response `json:"-"`
-	// Properties - BackupResourceConfigResource properties
-	Properties *ResourceConfig `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceConfigResource.
-func (rcr ResourceConfigResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rcr.Properties != nil {
-		objectMap["properties"] = rcr.Properties
-	}
-	if rcr.Location != nil {
-		objectMap["location"] = rcr.Location
-	}
-	if rcr.Tags != nil {
-		objectMap["tags"] = rcr.Tags
-	}
-	if rcr.ETag != nil {
-		objectMap["eTag"] = rcr.ETag
-	}
-	return json.Marshal(objectMap)
-}
-
 // ResourceEncryptionConfig ...
 type ResourceEncryptionConfig struct {
 	// EncryptionAtRestType - Encryption At Rest Type. Possible values include: 'EncryptionAtRestTypeInvalid', 'EncryptionAtRestTypeMicrosoftManaged', 'EncryptionAtRestTypeCustomerManaged'
@@ -21038,39 +19038,6 @@ type SQLDataDirectoryMapping struct {
 	TargetPath *string `json:"targetPath,omitempty"`
 }
 
-// StatusRequest backupStatus request.
-type StatusRequest struct {
-	// ResourceType - Container Type - VM, SQLPaaS, DPM, AzureFileShare. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
-	ResourceType DataSourceType `json:"resourceType,omitempty"`
-	// ResourceID - Entire ARM resource id of the resource
-	ResourceID *string `json:"resourceId,omitempty"`
-	// PoLogicalName - Protectable Item Logical Name
-	PoLogicalName *string `json:"poLogicalName,omitempty"`
-}
-
-// StatusResponse backupStatus response.
-type StatusResponse struct {
-	autorest.Response `json:"-"`
-	// ProtectionStatus - Specifies whether the container is registered or not. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionStatus ProtectionStatus `json:"protectionStatus,omitempty"`
-	// VaultID - Specifies the arm resource id of the vault
-	VaultID *string `json:"vaultId,omitempty"`
-	// FabricName - Specifies the fabric name - Azure or AD. Possible values include: 'FabricNameInvalid', 'FabricNameAzure'
-	FabricName FabricName `json:"fabricName,omitempty"`
-	// ContainerName - Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
-	ContainerName *string `json:"containerName,omitempty"`
-	// ProtectedItemName - Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
-	ProtectedItemName *string `json:"protectedItemName,omitempty"`
-	// ErrorCode - ErrorCode in case of intent failed
-	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - ErrorMessage in case of intent failed.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// PolicyName - Specifies the policy name which is used for protection
-	PolicyName *string `json:"policyName,omitempty"`
-	// RegistrationStatus - Container registration status
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
-}
-
 // SubProtectionPolicy sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
 	// PolicyType - Type of backup policy type. Possible values include: 'PolicyTypeInvalid', 'PolicyTypeFull', 'PolicyTypeDifferential', 'PolicyTypeLog', 'PolicyTypeCopyOnlyFull', 'PolicyTypeIncremental'
@@ -21709,201 +19676,6 @@ type WeeklyRetentionSchedule struct {
 	RetentionTimes *[]date.Time `json:"retentionTimes,omitempty"`
 	// RetentionDuration - Retention duration of retention Policy.
 	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
-}
-
-// WorkloadCrrAccessToken ...
-type WorkloadCrrAccessToken struct {
-	ProtectableObjectUniqueName                 *string `json:"protectableObjectUniqueName,omitempty"`
-	ProtectableObjectFriendlyName               *string `json:"protectableObjectFriendlyName,omitempty"`
-	ProtectableObjectWorkloadType               *string `json:"protectableObjectWorkloadType,omitempty"`
-	ProtectableObjectProtectionState            *string `json:"protectableObjectProtectionState,omitempty"`
-	ProtectableObjectContainerHostOsName        *string `json:"protectableObjectContainerHostOsName,omitempty"`
-	ProtectableObjectParentLogicalContainerName *string `json:"protectableObjectParentLogicalContainerName,omitempty"`
-	// ContainerID - Container Id
-	ContainerID *string `json:"containerId,omitempty"`
-	// PolicyName - Policy Name
-	PolicyName *string `json:"policyName,omitempty"`
-	// PolicyID - Policy Id
-	PolicyID *string `json:"policyId,omitempty"`
-	// AccessTokenString - Access token used for authentication
-	AccessTokenString *string `json:"accessTokenString,omitempty"`
-	// SubscriptionID - Subscription Id of the source vault
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// ResourceGroupName - Resource Group name of the source vault
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// ResourceName - Resource Name of the source vault
-	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceID - Resource Id of the source vault
-	ResourceID *string `json:"resourceId,omitempty"`
-	// ProtectionContainerID - Protected item container id
-	ProtectionContainerID *int64 `json:"protectionContainerId,omitempty"`
-	// RecoveryPointID - Recovery Point Id
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-	// RecoveryPointTime - Recovery Point Time
-	RecoveryPointTime *string `json:"recoveryPointTime,omitempty"`
-	// ContainerName - Container Unique name
-	ContainerName *string `json:"containerName,omitempty"`
-	// ContainerType - Container Type
-	ContainerType *string `json:"containerType,omitempty"`
-	// BackupManagementType - Backup Management Type
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
-	// DatasourceType - Datasource Type
-	DatasourceType *string `json:"datasourceType,omitempty"`
-	// DatasourceName - Datasource Friendly Name
-	DatasourceName *string `json:"datasourceName,omitempty"`
-	// DatasourceID - Datasource Id
-	DatasourceID *string `json:"datasourceId,omitempty"`
-	// DatasourceContainerName - Datasource Container Unique Name
-	DatasourceContainerName *string `json:"datasourceContainerName,omitempty"`
-	// CoordinatorServiceStampID - CoordinatorServiceStampId to be used by BCM in restore call
-	CoordinatorServiceStampID *string `json:"coordinatorServiceStampId,omitempty"`
-	// CoordinatorServiceStampURI - CoordinatorServiceStampUri to be used by BCM in restore call
-	CoordinatorServiceStampURI *string `json:"coordinatorServiceStampUri,omitempty"`
-	// ProtectionServiceStampID - ProtectionServiceStampId to be used by BCM in restore call
-	ProtectionServiceStampID *string `json:"protectionServiceStampId,omitempty"`
-	// ProtectionServiceStampURI - ProtectionServiceStampUri to be used by BCM in restore call
-	ProtectionServiceStampURI *string `json:"protectionServiceStampUri,omitempty"`
-	// TokenExtendedInformation - Extended Information about the token like FileSpec etc.
-	TokenExtendedInformation *string `json:"tokenExtendedInformation,omitempty"`
-	// RpTierInformation - Recovery point Tier Information
-	RpTierInformation map[string]*string `json:"rpTierInformation"`
-	// RpOriginalSAOption - Recovery point information: Original SA option
-	RpOriginalSAOption *bool `json:"rpOriginalSAOption,omitempty"`
-	// RpIsManagedVirtualMachine - Recovery point information: Managed virtual machine
-	RpIsManagedVirtualMachine *bool `json:"rpIsManagedVirtualMachine,omitempty"`
-	// RpVMSizeDescription - Recovery point information: VM size description
-	RpVMSizeDescription *string `json:"rpVMSizeDescription,omitempty"`
-	// BMSActiveRegion - Active region name of BMS Stamp
-	BMSActiveRegion *string `json:"bMSActiveRegion,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken', 'ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken'
-	ObjectType ObjectTypeBasicCrrAccessToken `json:"objectType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for WorkloadCrrAccessToken.
-func (wcat WorkloadCrrAccessToken) MarshalJSON() ([]byte, error) {
-	wcat.ObjectType = ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken
-	objectMap := make(map[string]interface{})
-	if wcat.ProtectableObjectUniqueName != nil {
-		objectMap["protectableObjectUniqueName"] = wcat.ProtectableObjectUniqueName
-	}
-	if wcat.ProtectableObjectFriendlyName != nil {
-		objectMap["protectableObjectFriendlyName"] = wcat.ProtectableObjectFriendlyName
-	}
-	if wcat.ProtectableObjectWorkloadType != nil {
-		objectMap["protectableObjectWorkloadType"] = wcat.ProtectableObjectWorkloadType
-	}
-	if wcat.ProtectableObjectProtectionState != nil {
-		objectMap["protectableObjectProtectionState"] = wcat.ProtectableObjectProtectionState
-	}
-	if wcat.ProtectableObjectContainerHostOsName != nil {
-		objectMap["protectableObjectContainerHostOsName"] = wcat.ProtectableObjectContainerHostOsName
-	}
-	if wcat.ProtectableObjectParentLogicalContainerName != nil {
-		objectMap["protectableObjectParentLogicalContainerName"] = wcat.ProtectableObjectParentLogicalContainerName
-	}
-	if wcat.ContainerID != nil {
-		objectMap["containerId"] = wcat.ContainerID
-	}
-	if wcat.PolicyName != nil {
-		objectMap["policyName"] = wcat.PolicyName
-	}
-	if wcat.PolicyID != nil {
-		objectMap["policyId"] = wcat.PolicyID
-	}
-	if wcat.AccessTokenString != nil {
-		objectMap["accessTokenString"] = wcat.AccessTokenString
-	}
-	if wcat.SubscriptionID != nil {
-		objectMap["subscriptionId"] = wcat.SubscriptionID
-	}
-	if wcat.ResourceGroupName != nil {
-		objectMap["resourceGroupName"] = wcat.ResourceGroupName
-	}
-	if wcat.ResourceName != nil {
-		objectMap["resourceName"] = wcat.ResourceName
-	}
-	if wcat.ResourceID != nil {
-		objectMap["resourceId"] = wcat.ResourceID
-	}
-	if wcat.ProtectionContainerID != nil {
-		objectMap["protectionContainerId"] = wcat.ProtectionContainerID
-	}
-	if wcat.RecoveryPointID != nil {
-		objectMap["recoveryPointId"] = wcat.RecoveryPointID
-	}
-	if wcat.RecoveryPointTime != nil {
-		objectMap["recoveryPointTime"] = wcat.RecoveryPointTime
-	}
-	if wcat.ContainerName != nil {
-		objectMap["containerName"] = wcat.ContainerName
-	}
-	if wcat.ContainerType != nil {
-		objectMap["containerType"] = wcat.ContainerType
-	}
-	if wcat.BackupManagementType != nil {
-		objectMap["backupManagementType"] = wcat.BackupManagementType
-	}
-	if wcat.DatasourceType != nil {
-		objectMap["datasourceType"] = wcat.DatasourceType
-	}
-	if wcat.DatasourceName != nil {
-		objectMap["datasourceName"] = wcat.DatasourceName
-	}
-	if wcat.DatasourceID != nil {
-		objectMap["datasourceId"] = wcat.DatasourceID
-	}
-	if wcat.DatasourceContainerName != nil {
-		objectMap["datasourceContainerName"] = wcat.DatasourceContainerName
-	}
-	if wcat.CoordinatorServiceStampID != nil {
-		objectMap["coordinatorServiceStampId"] = wcat.CoordinatorServiceStampID
-	}
-	if wcat.CoordinatorServiceStampURI != nil {
-		objectMap["coordinatorServiceStampUri"] = wcat.CoordinatorServiceStampURI
-	}
-	if wcat.ProtectionServiceStampID != nil {
-		objectMap["protectionServiceStampId"] = wcat.ProtectionServiceStampID
-	}
-	if wcat.ProtectionServiceStampURI != nil {
-		objectMap["protectionServiceStampUri"] = wcat.ProtectionServiceStampURI
-	}
-	if wcat.TokenExtendedInformation != nil {
-		objectMap["tokenExtendedInformation"] = wcat.TokenExtendedInformation
-	}
-	if wcat.RpTierInformation != nil {
-		objectMap["rpTierInformation"] = wcat.RpTierInformation
-	}
-	if wcat.RpOriginalSAOption != nil {
-		objectMap["rpOriginalSAOption"] = wcat.RpOriginalSAOption
-	}
-	if wcat.RpIsManagedVirtualMachine != nil {
-		objectMap["rpIsManagedVirtualMachine"] = wcat.RpIsManagedVirtualMachine
-	}
-	if wcat.RpVMSizeDescription != nil {
-		objectMap["rpVMSizeDescription"] = wcat.RpVMSizeDescription
-	}
-	if wcat.BMSActiveRegion != nil {
-		objectMap["bMSActiveRegion"] = wcat.BMSActiveRegion
-	}
-	if wcat.ObjectType != "" {
-		objectMap["objectType"] = wcat.ObjectType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsWorkloadCrrAccessToken is the BasicCrrAccessToken implementation for WorkloadCrrAccessToken.
-func (wcat WorkloadCrrAccessToken) AsWorkloadCrrAccessToken() (*WorkloadCrrAccessToken, bool) {
-	return &wcat, true
-}
-
-// AsCrrAccessToken is the BasicCrrAccessToken implementation for WorkloadCrrAccessToken.
-func (wcat WorkloadCrrAccessToken) AsCrrAccessToken() (*CrrAccessToken, bool) {
-	return nil, false
-}
-
-// AsBasicCrrAccessToken is the BasicCrrAccessToken implementation for WorkloadCrrAccessToken.
-func (wcat WorkloadCrrAccessToken) AsBasicCrrAccessToken() (BasicCrrAccessToken, bool) {
-	return &wcat, true
 }
 
 // WorkloadInquiryDetails details of an inquired protectable item.

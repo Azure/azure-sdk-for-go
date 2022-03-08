@@ -137,7 +137,6 @@ var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationRe
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
-	GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters backup.AADPropertiesResource) (result backup.CrrAccessTokenResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
 	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListIterator, err error)
 }
@@ -374,78 +373,3 @@ type ResourceGuardProxyClientAPI interface {
 }
 
 var _ ResourceGuardProxyClientAPI = (*backup.ResourceGuardProxyClient)(nil)
-
-// UsageSummariesCRRClientAPI contains the set of methods on the UsageSummariesCRRClient type.
-type UsageSummariesCRRClientAPI interface {
-	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ManagementUsageList, err error)
-}
-
-var _ UsageSummariesCRRClientAPI = (*backup.UsageSummariesCRRClient)(nil)
-
-// AadPropertiesClientAPI contains the set of methods on the AadPropertiesClient type.
-type AadPropertiesClientAPI interface {
-	Get(ctx context.Context, azureRegion string, filter string) (result backup.AADPropertiesResource, err error)
-}
-
-var _ AadPropertiesClientAPI = (*backup.AadPropertiesClient)(nil)
-
-// CrossRegionRestoreClientAPI contains the set of methods on the CrossRegionRestoreClient type.
-type CrossRegionRestoreClientAPI interface {
-	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequest) (result backup.CrossRegionRestoreTriggerFuture, err error)
-}
-
-var _ CrossRegionRestoreClientAPI = (*backup.CrossRegionRestoreClient)(nil)
-
-// CrrJobDetailsClientAPI contains the set of methods on the CrrJobDetailsClient type.
-type CrrJobDetailsClientAPI interface {
-	Get(ctx context.Context, azureRegion string, parameters backup.CrrJobRequest) (result backup.JobResource, err error)
-}
-
-var _ CrrJobDetailsClientAPI = (*backup.CrrJobDetailsClient)(nil)
-
-// CrrJobsClientAPI contains the set of methods on the CrrJobsClient type.
-type CrrJobsClientAPI interface {
-	List(ctx context.Context, azureRegion string, parameters backup.CrrJobRequest, filter string, skipToken string) (result backup.JobResourceListPage, err error)
-	ListComplete(ctx context.Context, azureRegion string, parameters backup.CrrJobRequest, filter string, skipToken string) (result backup.JobResourceListIterator, err error)
-}
-
-var _ CrrJobsClientAPI = (*backup.CrrJobsClient)(nil)
-
-// CrrOperationResultsClientAPI contains the set of methods on the CrrOperationResultsClient type.
-type CrrOperationResultsClientAPI interface {
-	Get(ctx context.Context, azureRegion string, operationID string) (result autorest.Response, err error)
-}
-
-var _ CrrOperationResultsClientAPI = (*backup.CrrOperationResultsClient)(nil)
-
-// CrrOperationStatusClientAPI contains the set of methods on the CrrOperationStatusClient type.
-type CrrOperationStatusClientAPI interface {
-	Get(ctx context.Context, azureRegion string, operationID string) (result backup.OperationStatus, err error)
-}
-
-var _ CrrOperationStatusClientAPI = (*backup.CrrOperationStatusClient)(nil)
-
-// ResourceStorageConfigsClientAPI contains the set of methods on the ResourceStorageConfigsClient type.
-type ResourceStorageConfigsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceConfigResource, err error)
-	Patch(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceConfigResource) (result autorest.Response, err error)
-	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceConfigResource) (result backup.ResourceConfigResource, err error)
-}
-
-var _ ResourceStorageConfigsClientAPI = (*backup.ResourceStorageConfigsClient)(nil)
-
-// RecoveryPointsCrrClientAPI contains the set of methods on the RecoveryPointsCrrClient type.
-type RecoveryPointsCrrClientAPI interface {
-	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
-	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListIterator, err error)
-}
-
-var _ RecoveryPointsCrrClientAPI = (*backup.RecoveryPointsCrrClient)(nil)
-
-// ProtectedItemsCrrClientAPI contains the set of methods on the ProtectedItemsCrrClient type.
-type ProtectedItemsCrrClientAPI interface {
-	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
-	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListIterator, err error)
-}
-
-var _ ProtectedItemsCrrClientAPI = (*backup.ProtectedItemsCrrClient)(nil)

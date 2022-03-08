@@ -90,11 +90,6 @@ if err != nil {
 client := armresources.NewResourceGroupsClient("subscription ID", cred, nil)
 ```
 
-See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
-
-#### Specify a user-assigned managed identity for `DefaultAzureCredential`
-
-To configure `DefaultAzureCredential` to authenticate a user-assigned managed identity, set the `AZURE_CLIENT_ID` environment variable to the identity's client ID.
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
@@ -103,7 +98,7 @@ To configure `DefaultAzureCredential` to authenticate a user-assigned managed id
 The following example demonstrates creating a credential, which will attempt to authenticate using managed identity. It will fall back to authenticating via the Azure CLI when a managed identity is unavailable.
 
 ```go
-managedId, err := azidentity.NewManagedIdentityCredential(nil)
+managed, err := azidentity.NewManagedIdentityCredential(nil)
 if err != nil {
   // handle error
 }
@@ -111,7 +106,7 @@ azCLI, err := azidentity.NewAzureCLICredential(nil)
 if err != nil {
   // handle error
 }
-chain, err := azidentity.NewChainedTokenCredential([]azcore.TokenCredential{managedID, azCLI})
+chain, err := azidentity.NewChainedTokenCredential([]azcore.TokenCredential{managed, azCLI})
 if err != nil {
   // handle error
 }

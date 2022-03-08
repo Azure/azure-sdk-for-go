@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"time"
 
@@ -135,7 +134,7 @@ func ExampleClient_SubmitTransaction() {
 		})
 	}
 
-	resp, err := client.SubmitTransaction(context.TODO(), batch, nil)
+	_, err = client.SubmitTransaction(context.TODO(), batch, nil)
 	if err != nil {
 		var httpErr *azcore.ResponseError
 		if errors.As(err, &httpErr) {
@@ -146,16 +145,6 @@ func ExampleClient_SubmitTransaction() {
 			fmt.Println(string(body)) // Do some parsing of the body
 		} else {
 			panic(err)
-		}
-	} else {
-		for _, subResp := range resp.TransactionResponses {
-			if subResp.StatusCode != http.StatusAccepted {
-				body, err := ioutil.ReadAll(subResp.Body)
-				if err != nil {
-					panic(err)
-				}
-				fmt.Println(string(body))
-			}
 		}
 	}
 }

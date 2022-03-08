@@ -15,10 +15,16 @@ import (
 )
 
 func TestClient(t *testing.T) {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		// TODO: Need CI to deploy test-resources.json
+		t.Skip("Skipping client test")
+	}
+
 	key := "key"
 	label := "label"
 	value := "value"
-	client, err := NewClientFromConnectionString(os.Getenv("APPCONFIGURATION_CONNECTION_STRING"), nil)
+	client, err := NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, client)
 

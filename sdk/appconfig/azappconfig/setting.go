@@ -47,7 +47,7 @@ type Setting struct {
 }
 
 func settingFromGenerated(kv generated.KeyValue) Setting {
-	var tags map[string]string
+	tags := make(map[string]string)
 	for k, v := range kv.Tags {
 		if v != nil {
 			tags[k] = *v
@@ -67,7 +67,7 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 }
 
 func (cs Setting) toGenerated() *generated.KeyValue {
-	var tags map[string]*string
+	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
 		tags[k] = &v
 	}

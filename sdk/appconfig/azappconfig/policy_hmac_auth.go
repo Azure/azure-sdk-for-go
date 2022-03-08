@@ -68,13 +68,13 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 
 func getContentHashBase64(content []byte) string {
 	hasher := sha256.New()
-	hasher.Write(content)
+	_, _ = hasher.Write(content)
 	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
 }
 
 func getHmac(content string, key []byte) string {
 	hmac := hmac.New(sha256.New, key)
-	hmac.Write([]byte(content))
+	_, _ = hmac.Write([]byte(content))
 	return base64.StdEncoding.EncodeToString(hmac.Sum(nil))
 }
 

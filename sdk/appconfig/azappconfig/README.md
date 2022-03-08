@@ -196,7 +196,7 @@ func ExampleSetConfigurationSettingReadOnly() {
     // Set configuration setting read only
     key := "key"
     label := "label"
-    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label, true, nil)
+    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label}, true, nil)
     if err != nil {
         panic(err)
     }
@@ -206,7 +206,7 @@ func ExampleSetConfigurationSettingReadOnly() {
     fmt.Println(*resp.IsReadOnly)
 
     // Remove read only status
-    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label, false, nil)
+    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label}, false, nil)
     if err != nil {
         panic(err)
     }
@@ -235,7 +235,7 @@ func ExampleListRevisions() {
     }
 
     any := "*"
-    revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
+    revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: azappconfig.AllSettingFields()}, nil)
     for revPgr.NextPage(context.TODO()) {
         resp := revPgr.PageResponse()
 

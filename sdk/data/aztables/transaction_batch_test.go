@@ -6,10 +6,8 @@ package aztables
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -33,13 +31,8 @@ func TestBatchAdd(t *testing.T) {
 				batch = append(batch, TransactionAction{ActionType: TransactionTypeAdd, Entity: marshalled})
 			}
 
-			resp, err := client.SubmitTransaction(ctx, batch, nil)
-
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, r.StatusCode, http.StatusNoContent)
-			}
 
 			pager := client.List(nil)
 			count := 0
@@ -80,12 +73,8 @@ func TestBatchInsert(t *testing.T) {
 				)
 			}
 
-			resp, err := client.SubmitTransaction(ctx, batch, nil)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 1; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, r.StatusCode, http.StatusNoContent)
-			}
 
 			pager := client.List(nil)
 			count := 0
@@ -122,12 +111,8 @@ func TestBatchMixed(t *testing.T) {
 				})
 			}
 
-			resp, err := client.SubmitTransaction(ctx, batch, nil)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, http.StatusNoContent, r.StatusCode)
-			}
 
 			var qResp ListEntitiesPageResponse
 			filter := "RowKey eq '1'"
@@ -155,11 +140,9 @@ func TestBatchMixed(t *testing.T) {
 			}
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
-			etag := azcore.ETag((resp.TransactionResponses)[0].Header.Get(etag))
 			batch2 = append(batch2, TransactionAction{
 				ActionType: TransactionTypeUpdateMerge,
 				Entity:     marshalledMergeEntity,
-				IfMatch:    &etag,
 			})
 
 			// create a delete action for the second added entity
@@ -186,14 +169,8 @@ func TestBatchMixed(t *testing.T) {
 			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeUpdateMerge, Entity: marshalled4thEntity})
 			batch2 = append(batch2, TransactionAction{ActionType: TransactionTypeInsertMerge, Entity: marshalled5thEntity})
 
-			resp, err = client.SubmitTransaction(ctx, batch2, nil)
+			_, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
-
-			for i := 0; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, http.StatusNoContent, r.StatusCode)
-
-			}
 
 			pager = client.List(list)
 			for pager.More() {
@@ -342,12 +319,8 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled5,
 			})
 
-			resp, err := client.SubmitTransaction(ctx, batch, nil)
+			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, http.StatusNoContent, r.StatusCode)
-			}
 
 			var batch2 []TransactionAction
 			edmEntity.Properties["Bool"] = false
@@ -374,12 +347,8 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled3,
 			})
 
-			resp, err = client.SubmitTransaction(ctx, batch2, nil)
+			_, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
-			for i := 0; i < len(resp.TransactionResponses); i++ {
-				r := (resp.TransactionResponses)[i]
-				require.Equal(t, http.StatusNoContent, r.StatusCode)
-			}
 
 			received, err := client.GetEntity(ctx, edmEntity.PartitionKey, edmEntity.RowKey, nil)
 			require.NoError(t, err)

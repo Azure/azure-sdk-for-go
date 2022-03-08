@@ -66,7 +66,8 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	newCon := &connection{u: blobURL, p: c.client.con.p}
 
 	return BlobClient{
-		client: &blobClient{newCon, nil},
+		sharedKey: c.sharedKey,
+		client:    &blobClient{newCon, nil},
 	}
 }
 

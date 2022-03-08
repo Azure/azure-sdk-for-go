@@ -1,5 +1,15 @@
 # Release History
 
+## 0.3.7 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.3.6 (2022-03-08)
 
 ### Bugs Fixed
@@ -14,8 +24,6 @@
   - GetQueue, GetQueueRuntimeProperties
   - GetTopic, GetTopicRuntimeProperties
   - GetSubscription, GetSubscriptionRuntimeProperties
-
-### Other Changes
 
 ## 0.3.5 (2022-02-10)
 

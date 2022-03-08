@@ -15,7 +15,6 @@ const (
 	timestamp                     = "Timestamp"
 	partitionKey                  = "PartitionKey"
 	rowKey                        = "RowKey"
-	etag                          = "ETag"
 )
 
 // ResponseFormat determines what is returned from a service request

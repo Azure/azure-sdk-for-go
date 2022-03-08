@@ -4,11 +4,15 @@
 
 ### Features Added
 * Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.
+* Added `cloud` package with a new API for cloud configuration
 
 ### Breaking Changes
 * Removed the `Poller` type-alias to the internal poller implementation.
 * Added `Ptr[T any]` and `SliceOfPtrs[T any]` in the `to` package and removed all non-generic implementations.
 * `NullValue` and `IsNullValue` now take a generic type parameter instead of an interface func parameter.
+* Replaced `arm.Endpoint` with `cloud` API
+  * Removed the `endpoint` parameter from `NewRPRegistrationPolicy()`
+  * `arm/runtime.NewPipeline()` and `.NewRPRegistrationPolicy()` now return an `error`
 
 ### Bugs Fixed
 

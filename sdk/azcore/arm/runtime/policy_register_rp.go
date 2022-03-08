@@ -12,12 +12,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 	"time"
 
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -53,20 +51,15 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // registered. See https://aka.ms/rps-not-found for more information.
 // This method panics when the RegistrationOptions.Cloud field is set with a Configuration object
 // that's missing Azure Resource Manager settings. A future version will return an error instead.
-func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
+func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}
-	scope := shared.EndpointToScope(endpoint)
-	// TODO: use getConfiguration(), return an error instead of panicking
-	if c := o.ClientOptions.Cloud; !reflect.ValueOf(c).IsZero() {
-		if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Audience != "" {
-			scope = conf.Audience + "/.default"
-		} else {
-			panic("provided Cloud field is missing Azure Resource Manager configuration")
-		}
+	conf, err := getConfiguration(&o.ClientOptions)
+	if err != nil {
+		return nil, err
 	}
-	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{scope}})
+	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{conf.Audience + "/.default"}})
 	p := &rpRegistrationPolicy{
 		endpoint: endpoint,
 		pipeline: runtime.NewPipeline(shared.Module, shared.Version, runtime.PipelineOptions{PerRetry: []pipeline.Policy{authPolicy}}, &o.ClientOptions),
@@ -74,7 +67,7 @@ func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *ar
 	}
 	// init the copy
 	setDefaults(&p.options)
-	return p
+	return p, nil
 }
 
 type rpRegistrationPolicy struct {

@@ -56,9 +56,12 @@ const rpRegisteredResp = `{
 
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
-func newTestRPRegistrationPipeline(srv *mock.Server) pipeline.Pipeline {
+func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server) pipeline.Pipeline {
 	opts := testRPRegistrationOptions(srv)
-	rp := NewRPRegistrationPolicy(srv.URL(), mockCredential{}, testRPRegistrationOptions(srv))
+	rp, err := NewRPRegistrationPolicy(srv.URL(), mockCredential{}, testRPRegistrationOptions(srv))
+	if err != nil {
+		t.Fatal(err)
+	}
 	return runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, &opts.ClientOptions)
 }
 
@@ -85,7 +88,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -125,7 +128,7 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	defer close()
 	// response indicates no RP registration is required, policy does nothing
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -164,7 +167,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	defer close()
 	// test getting a 409 but not due to registration required
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(failedResp)))
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -195,7 +198,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	// polling responses to Register() and Get(), in progress but slow
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -239,7 +242,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		// polling response, successful registration
 		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	}
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -287,7 +290,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
 	opts := armpolicy.RegistrationOptions{}
 	opts.Transport = srv
-	pl := newTestRPRegistrationPipeline(srv)
+	pl := newTestRPRegistrationPipeline(t, srv)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -340,7 +343,11 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []pipeline.Policy{NewRPRegistrationPolicy(srv.URL(), mockCredential{}, ops)}}, nil)
+	rp, err := NewRPRegistrationPolicy(srv.URL(), mockCredential{}, ops)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []pipeline.Policy{rp}}, nil)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -399,7 +406,10 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 	}}
 	opts := azpolicy.ClientOptions{Cloud: conf, Transport: srv}
-	rp := NewRPRegistrationPolicy(srv.URL(), cred, &armpolicy.RegistrationOptions{ClientOptions: opts})
+	rp, err := NewRPRegistrationPolicy(srv.URL(), cred, &armpolicy.RegistrationOptions{ClientOptions: opts})
+	if err != nil {
+		t.Fatal(err)
+	}
 	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, &azpolicy.ClientOptions{Transport: srv})
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL()+requestEndpoint)
 	if err != nil {

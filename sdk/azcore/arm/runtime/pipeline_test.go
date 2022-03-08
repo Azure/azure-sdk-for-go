@@ -32,7 +32,10 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	if err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -60,7 +63,10 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	if err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -93,7 +99,10 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -138,7 +147,10 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -178,7 +190,10 @@ func TestPipelineAudience(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		pl := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
+		pl, err := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
+		if err != nil {
+			t.Fatal(err)
+		}
 		_, err = pl.Do(req)
 		if err != nil {
 			t.Fatal(err)

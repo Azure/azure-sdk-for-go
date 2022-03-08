@@ -23,23 +23,16 @@ import (
 // The telemetry policy, when enabled, will use the specified module and version info.
 // This method panics when the ClientOptions.Cloud field is set with a Configuration object
 // that's missing Azure Resource Manager settings. A future version will return an error instead.
-func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) pipeline.Pipeline {
+func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (pipeline.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
 	conf, err := getConfiguration(&options.ClientOptions)
 	if err != nil {
-		// TODO: return the error
-		panic(err)
-	}
-	scope := conf.Audience + "/.default"
-	ep := conf.Endpoint
-	if options.Endpoint != "" {
-		scope = shared.EndpointToScope(string(options.Endpoint))
-		ep = string(options.Endpoint)
+		return pipeline.Pipeline{}, err
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
-		Scopes:           []string{scope},
+		Scopes:           []string{conf.Audience + "/.default"},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
 	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)
@@ -47,12 +40,15 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
-		regPolicy := NewRPRegistrationPolicy(ep, cred, &regRPOpts)
+		regPolicy, err := NewRPRegistrationPolicy(conf.Endpoint, cred, &regRPOpts)
+		if err != nil {
+			return pipeline.Pipeline{}, err
+		}
 		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions)
+	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
 }
 
 func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, error) {

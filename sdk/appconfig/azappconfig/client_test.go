@@ -17,7 +17,8 @@ import (
 func TestClient(t *testing.T) {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
 	if connectionString == "" {
-		// TODO: Need CI to deploy test-resources.json
+		// This test does run as live test, when the azure template is deployed,
+		// and then the corresponding environment variable is set.
 		t.Skip("Skipping client test")
 	}
 

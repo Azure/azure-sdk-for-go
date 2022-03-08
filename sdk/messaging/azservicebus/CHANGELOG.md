@@ -15,8 +15,6 @@
   - GetTopic, GetTopicRuntimeProperties
   - GetSubscription, GetSubscriptionRuntimeProperties
 
-### Other Changes
-
 ## 0.3.5 (2022-02-10)
 
 ### Bugs Fixed

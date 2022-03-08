@@ -10,20 +10,19 @@ package generated
 
 import (
 	"context"
-	"net/http"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // AzureAppConfigurationClientGetKeyValuesPager provides operations for iterating over paged responses.
 type AzureAppConfigurationClientGetKeyValuesPager struct {
-	client    *AzureAppConfigurationClient
-	current   AzureAppConfigurationClientGetKeyValuesResponse
-	err       error
+	client *AzureAppConfigurationClient
+	current AzureAppConfigurationClientGetKeyValuesResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureAppConfigurationClientGetKeyValuesResponse) (*policy.Request, error)
+	advancer func(context.Context, AzureAppConfigurationClientGetKeyValuesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -73,11 +72,11 @@ func (p *AzureAppConfigurationClientGetKeyValuesPager) PageResponse() AzureAppCo
 
 // AzureAppConfigurationClientGetKeysPager provides operations for iterating over paged responses.
 type AzureAppConfigurationClientGetKeysPager struct {
-	client    *AzureAppConfigurationClient
-	current   AzureAppConfigurationClientGetKeysResponse
-	err       error
+	client *AzureAppConfigurationClient
+	current AzureAppConfigurationClientGetKeysResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureAppConfigurationClientGetKeysResponse) (*policy.Request, error)
+	advancer func(context.Context, AzureAppConfigurationClientGetKeysResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -127,11 +126,11 @@ func (p *AzureAppConfigurationClientGetKeysPager) PageResponse() AzureAppConfigu
 
 // AzureAppConfigurationClientGetLabelsPager provides operations for iterating over paged responses.
 type AzureAppConfigurationClientGetLabelsPager struct {
-	client    *AzureAppConfigurationClient
-	current   AzureAppConfigurationClientGetLabelsResponse
-	err       error
+	client *AzureAppConfigurationClient
+	current AzureAppConfigurationClientGetLabelsResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureAppConfigurationClientGetLabelsResponse) (*policy.Request, error)
+	advancer func(context.Context, AzureAppConfigurationClientGetLabelsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -181,11 +180,11 @@ func (p *AzureAppConfigurationClientGetLabelsPager) PageResponse() AzureAppConfi
 
 // AzureAppConfigurationClientGetRevisionsPager provides operations for iterating over paged responses.
 type AzureAppConfigurationClientGetRevisionsPager struct {
-	client    *AzureAppConfigurationClient
-	current   AzureAppConfigurationClientGetRevisionsResponse
-	err       error
+	client *AzureAppConfigurationClient
+	current AzureAppConfigurationClientGetRevisionsResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureAppConfigurationClientGetRevisionsResponse) (*policy.Request, error)
+	advancer func(context.Context, AzureAppConfigurationClientGetRevisionsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -232,3 +231,4 @@ func (p *AzureAppConfigurationClientGetRevisionsPager) NextPage(ctx context.Cont
 func (p *AzureAppConfigurationClientGetRevisionsPager) PageResponse() AzureAppConfigurationClientGetRevisionsResponse {
 	return p.current
 }
+

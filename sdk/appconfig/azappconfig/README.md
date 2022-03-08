@@ -92,6 +92,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleAddConfigurationSetting() {
@@ -102,10 +103,7 @@ func ExampleAddConfigurationSetting() {
     }
 
     // Create configuration setting
-    key := "key"
-    label := "label"
-    value := "value"
-    resp, err := client.AddSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
+    resp, err := client.AddSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label"), Value: to.StringPtr("value")}, nil)
     if err != nil {
         panic(err)
     }
@@ -123,6 +121,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleGetConfigurationSetting() {
@@ -133,9 +132,7 @@ func ExampleGetConfigurationSetting() {
     }
 
     // Get configuration setting
-    key := "key"
-    label := "label"
-    resp, err := client.GetSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
+    resp, err := client.GetSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, nil)
     if err != nil {
         panic(err)
     }
@@ -153,6 +150,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleSetConfigurationSetting() {
@@ -163,10 +161,7 @@ func ExampleSetConfigurationSetting() {
     }
 
     // Set configuration setting
-    key := "key"
-    label := "label"
-    value := "new_value"
-    resp, err := client.SetSetting(context.TODO(), Setting{Key: &key, Label: &label, Value: &value}, nil)
+    resp, err := client.SetSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label"), Value: to.StringPtr("new_value")}, nil)
     if err != nil {
         panic(err)
     }
@@ -184,6 +179,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleSetConfigurationSettingReadOnly() {
@@ -194,9 +190,7 @@ func ExampleSetConfigurationSettingReadOnly() {
     }
 
     // Set configuration setting read only
-    key := "key"
-    label := "label"
-    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label}, true, nil)
+    resp, err := client.SetReadOnly(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, true, nil)
     if err != nil {
         panic(err)
     }
@@ -206,7 +200,7 @@ func ExampleSetConfigurationSettingReadOnly() {
     fmt.Println(*resp.IsReadOnly)
 
     // Remove read only status
-    resp, err := client.SetReadOnly(context.TODO(), Setting{Key: &key, Label: &label}, false, nil)
+    resp, err := client.SetReadOnly(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, false, nil)
     if err != nil {
         panic(err)
     }
@@ -225,6 +219,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleListRevisions() {
@@ -234,8 +229,7 @@ func ExampleListRevisions() {
         panic(err)
     }
 
-    any := "*"
-    revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: azappconfig.AllSettingFields()}, nil)
+    revPgr := client.ListRevisions(azappconfig.SettingSelector{KeyFilter: to.StringPtr("*"), LabelFilter: to.StringPtr("*"), Fields: azappconfig.AllSettingFields()}, nil)
     for revPgr.NextPage(context.TODO()) {
         resp := revPgr.PageResponse()
 
@@ -257,6 +251,7 @@ import (
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleDeleteConfigurationSetting() {
@@ -267,9 +262,7 @@ func ExampleDeleteConfigurationSetting() {
     }
 
     // Delete configuration setting
-    key := "key"
-    label := "label"
-    resp, err := client.DeleteSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
+    resp, err := client.DeleteSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, nil)
     if err != nil {
         panic(err)
     }

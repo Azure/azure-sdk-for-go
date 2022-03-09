@@ -89,8 +89,4 @@ func StopRecording(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
-	err = recording.ResetProxy(nil)
-	if err != nil {
-		t.Fatalf("Failed to reset test proxy: %v", err)
-	}
 }

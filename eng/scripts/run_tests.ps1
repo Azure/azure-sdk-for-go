@@ -2,13 +2,13 @@
 
 Param(
     [string] $serviceDirectory,
-    [string] $runTime
+    [string] $testTimeout
 )
 
 Push-Location sdk/$serviceDirectory
-Write-Host "##[command] Executing 'go test -timeout $runTime -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
-go test -timeout $runTime -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }

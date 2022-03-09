@@ -14,7 +14,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig
 ### Prerequisites
 * An [Azure subscription][azure_sub]
 * Go version 1.16 or higher
-* A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-app-config"` with your own, unique
+* An App Configuration store. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-app-config"` with your own, unique
 names):
 
   (Optional) if you want a new resource group to hold the Azure App Configuration:
@@ -48,7 +48,7 @@ names):
 This document demonstrates using the connection string. However, [Client][appconfig_client_src] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credentials.
 
 #### Create a client
-Constructing the client requires your vault's connection string, which you can get from the Azure Portal.
+Constructing the client requires your App Configuration connection string, which you can get from the Azure Portal.
 ```Bash
 export APPCONFIGURATION_CONNECTION_STRING="Endpoint=https://my-app-config.azconfig.io;Id=...;Secret=..."
 ```

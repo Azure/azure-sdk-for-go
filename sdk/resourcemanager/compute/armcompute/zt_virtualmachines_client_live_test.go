@@ -8,38 +8,58 @@ package armcompute_test
 
 import (
 	"context"
+	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
+	"github.com/stretchr/testify/suite"
 )
 
+type VirtualMachinesClientTestSuite struct {
+	suite.Suite
+
+	ctx               context.Context
+	cred              azcore.TokenCredential
+	options           *arm.ClientOptions
+	location          string
+	resourceGroupName string
+	subscriptionID    string
+}
+
+func (testsuite *VirtualMachinesClientTestSuite) SetupSuite() {
+	testsuite.ctx = context.Background()
+	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
+	testsuite.subscriptionID = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/compute/armcompute/testdata")
+	testsuite.resourceGroupName = *testutil.CreateResourceGroup(testsuite.T(), testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location).Name
+}
+
+func (testsuite *VirtualMachinesClientTestSuite) TearDownSuite() {
+	testutil.DeleteResourceGroup(testsuite.T(), testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+	testutil.StopRecording(testsuite.T())
+}
+
 func TestVirtualMachinesClient(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	suite.Run(t, new(VirtualMachinesClientTestSuite))
+}
 
-	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	ctx := context.Background()
-
-	// create resource group
-	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "deleteVM", "westus")
-	rgName := *rg.Name
-	defer clean()
-
+func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	// create virtual network
-	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID, cred, opt)
-	vnName, err := createRandomName(t, "network")
-	require.NoError(t, err)
+	vnClient := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vnName := "go-test-network"
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Location: to.StringPtr("westus2"),
+			Location: to.StringPtr(testsuite.location),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -50,31 +70,30 @@ func TestVirtualMachinesClient(t *testing.T) {
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var vnResp armnetwork.VirtualNetworksClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = vnPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = vnPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if vnPoller.Poller.Done() {
-				vnResp, err = vnPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				vnResp, err = vnPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		vnResp, err = vnPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		vnResp, err = vnPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *vnResp.Name, vnName)
+	testsuite.Require().Equal(*vnResp.Name, vnName)
 
 	// create subnet
-	subClient := armnetwork.NewSubnetsClient(subscriptionID, cred, opt)
-	subName, err := createRandomName(t, "subnet")
-	require.NoError(t, err)
+	subClient := armnetwork.NewSubnetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	subName := "go-test-subnet"
 	subPoller, err := subClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		vnName,
 		subName,
 		armnetwork.Subnet{
@@ -84,68 +103,70 @@ func TestVirtualMachinesClient(t *testing.T) {
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var subResp armnetwork.SubnetsClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = subPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = subPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if subPoller.Poller.Done() {
-				subResp, err = subPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				subResp, err = subPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		subResp, err = subPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		subResp, err = subPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *subResp.Name, subName)
+	subnetID := *subResp.ID
+	testsuite.Require().Equal(*subResp.Name, subName)
 
 	// create public ip address
-	ipClient := armnetwork.NewPublicIPAddressesClient(subscriptionID, cred, opt)
-	ipName, err := createRandomName(t, "ip")
-	require.NoError(t, err)
+	ipClient := armnetwork.NewPublicIPAddressesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	ipName := "go-test-ip"
+	testsuite.Require().NoError(err)
 	ipPoller, err := ipClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		ipName,
 		armnetwork.PublicIPAddress{
-			Location: to.StringPtr("westus2"),
+			Location: to.StringPtr(testsuite.location),
 			Properties: &armnetwork.PublicIPAddressPropertiesFormat{
 				PublicIPAllocationMethod: armnetwork.IPAllocationMethodStatic.ToPtr(), // Static or Dynamic
 			},
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var ipResp armnetwork.PublicIPAddressesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = ipPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = ipPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if ipPoller.Poller.Done() {
-				ipResp, err = ipPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				ipResp, err = ipPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		ipResp, err = ipPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		ipResp, err = ipPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *ipResp.Name, ipName)
+	publicIPAddressID := *ipResp.ID
+	testsuite.Require().Equal(*ipResp.Name, ipName)
 
 	// create network security group
-	nsgClient := armnetwork.NewSecurityGroupsClient(subscriptionID, cred, opt)
-	nsgName, err := createRandomName(t, "nsg")
-	require.NoError(t, err)
+	nsgClient := armnetwork.NewSecurityGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	nsgName := "go-test-nsg"
+	testsuite.Require().NoError(err)
 	nsgPoller, err := nsgClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		nsgName,
 		armnetwork.SecurityGroup{
-			Location: to.StringPtr("westus2"),
+			Location: to.StringPtr(testsuite.location),
 			Properties: &armnetwork.SecurityGroupPropertiesFormat{
 				SecurityRules: []*armnetwork.SecurityRule{
 					{
@@ -182,34 +203,35 @@ func TestVirtualMachinesClient(t *testing.T) {
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var nsgResp armnetwork.SecurityGroupsClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = nsgPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = nsgPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if nsgPoller.Poller.Done() {
-				nsgResp, err = nsgPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				nsgResp, err = nsgPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		nsgResp, err = nsgPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		nsgResp, err = nsgPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *nsgResp.Name, nsgName)
+	networkSecurityGroupID := *nsgResp.ID
+	testsuite.Require().Equal(*nsgResp.Name, nsgName)
 
 	// create network interface
-	nicClient := armnetwork.NewInterfacesClient(subscriptionID, cred, opt)
-	nicName, err := createRandomName(t, "nic")
-	require.NoError(t, err)
+	nicClient := armnetwork.NewInterfacesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	nicName := "go-test-nic"
+	testsuite.Require().NoError(err)
 	nicPoller, err := nicClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		nicName,
 		armnetwork.Interface{
-			Location: to.StringPtr("westus2"),
+			Location: to.StringPtr(testsuite.location),
 			Properties: &armnetwork.InterfacePropertiesFormat{
 				//NetworkSecurityGroup:
 				IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
@@ -218,51 +240,52 @@ func TestVirtualMachinesClient(t *testing.T) {
 						Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
 							PrivateIPAllocationMethod: armnetwork.IPAllocationMethodDynamic.ToPtr(),
 							Subnet: &armnetwork.Subnet{
-								ID: to.StringPtr(*subResp.ID),
+								ID: to.StringPtr(subnetID),
 							},
 							PublicIPAddress: &armnetwork.PublicIPAddress{
-								ID: to.StringPtr(*ipResp.ID),
+								ID: to.StringPtr(publicIPAddressID),
 							},
 						},
 					},
 				},
 				NetworkSecurityGroup: &armnetwork.SecurityGroup{
-					ID: to.StringPtr(*nsgResp.ID),
+					ID: to.StringPtr(networkSecurityGroupID),
 				},
 			},
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var nicResp armnetwork.InterfacesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = nicPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = nicPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if nicPoller.Poller.Done() {
-				nicResp, err = nicPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				nicResp, err = nicPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		nicResp, err = nicPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		nicResp, err = nicPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *nicResp.Name, nicName)
+	networkInterfaceID := *nicResp.ID
+	testsuite.Require().Equal(*nicResp.Name, nicName)
 
 	// create virtual machine
-	vmClient := armcompute.NewVirtualMachinesClient(subscriptionID, cred, opt)
-	vmName, err := createRandomName(t, "vm")
-	require.NoError(t, err)
-	diskName, err := createRandomName(t, "disk")
-	require.NoError(t, err)
+	vmClient := armcompute.NewVirtualMachinesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	vmName := "go-test-vm"
+	testsuite.Require().NoError(err)
+	diskName := "go-test-disk"
+	testsuite.Require().NoError(err)
 	vmPoller, err := vmClient.BeginCreateOrUpdate(
-		context.Background(),
-		rgName,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
 		vmName,
 		armcompute.VirtualMachine{
-			Location: to.StringPtr("westus2"),
+			Location: to.StringPtr(testsuite.location),
 			Identity: &armcompute.VirtualMachineIdentity{
 				Type: armcompute.ResourceIdentityTypeNone.ToPtr(),
 			},
@@ -294,7 +317,7 @@ func TestVirtualMachinesClient(t *testing.T) {
 				NetworkProfile: &armcompute.NetworkProfile{
 					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 						{
-							ID: to.StringPtr(*nicResp.ID),
+							ID: to.StringPtr(networkInterfaceID),
 						},
 					},
 				},
@@ -302,29 +325,29 @@ func TestVirtualMachinesClient(t *testing.T) {
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var vmResp armcompute.VirtualMachinesClientCreateOrUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = vmPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = vmPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if vmPoller.Poller.Done() {
-				vmResp, err = vmPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				vmResp, err = vmPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		vmResp, err = vmPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		vmResp, err = vmPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *vmResp.Name, vmName)
+	testsuite.Require().Equal(*vmResp.Name, vmName)
 
 	// virtual machine update
 	updatePoller, err := vmClient.BeginUpdate(
-		context.Background(),
-		rgName,
-		*vmResp.Name,
+		testsuite.ctx,
+		testsuite.resourceGroupName,
+		vmName,
 		armcompute.VirtualMachineUpdate{
 			Tags: map[string]*string{
 				"tag": to.StringPtr("value"),
@@ -332,50 +355,50 @@ func TestVirtualMachinesClient(t *testing.T) {
 		},
 		nil,
 	)
-	require.NoError(t, err)
+	testsuite.Require().NoError(err)
 	var updateResp armcompute.VirtualMachinesClientUpdateResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = updatePoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = updatePoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if updatePoller.Poller.Done() {
-				updateResp, err = updatePoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				updateResp, err = updatePoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		updateResp, err = updatePoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		updateResp, err = updatePoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, *updateResp.Name, *vmResp.Name)
+	testsuite.Require().Equal(*updateResp.Name, vmName)
 
 	// virtual machine get
-	resp, err := vmClient.Get(context.Background(), rgName, *vmResp.Name, nil)
-	require.NoError(t, err)
-	require.Equal(t, *resp.Name, *vmResp.Name)
+	resp, err := vmClient.Get(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
+	testsuite.Require().NoError(err)
+	testsuite.Require().Equal(*resp.Name, vmName)
 
 	// virtual machine list
-	vmList := vmClient.List(rgName, nil)
-	require.Equal(t, vmList.NextPage(context.Background()), true)
+	vmList := vmClient.List(testsuite.resourceGroupName, nil)
+	testsuite.Require().Equal(vmList.NextPage(testsuite.ctx), true)
 
 	// delete virtual machine
-	delPoller, err := vmClient.BeginDelete(context.Background(), rgName, *vmResp.Name, nil)
-	require.NoError(t, err)
+	delPoller, err := vmClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
+	testsuite.Require().NoError(err)
 	var delResp armcompute.VirtualMachinesClientDeleteResponse
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		for {
-			_, err = delPoller.Poller.Poll(ctx)
-			require.NoError(t, err)
+			_, err = delPoller.Poller.Poll(testsuite.ctx)
+			testsuite.Require().NoError(err)
 			if delPoller.Poller.Done() {
-				delResp, err = delPoller.Poller.FinalResponse(ctx)
-				require.NoError(t, err)
+				delResp, err = delPoller.Poller.FinalResponse(testsuite.ctx)
+				testsuite.Require().NoError(err)
 				break
 			}
 		}
 	} else {
-		delResp, err = delPoller.PollUntilDone(ctx, 30*time.Second)
-		require.NoError(t, err)
+		delResp, err = delPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
+		testsuite.Require().NoError(err)
 	}
-	require.Equal(t, delResp.RawResponse.StatusCode, 200)
+	testsuite.Require().Equal(delResp.RawResponse.StatusCode, 200)
 }

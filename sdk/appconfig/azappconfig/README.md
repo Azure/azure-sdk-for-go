@@ -103,10 +103,19 @@ func ExampleAddConfigurationSetting() {
     }
 
     // Create configuration setting
-    resp, err := client.AddSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label"), Value: to.StringPtr("value")}, nil)
+    resp, err := client.AddSetting(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label"),
+            Value: to.StringPtr("value")
+        },
+        nil)
+
     if err != nil {
         panic(err)
     }
+
     fmt.Println(*resp.Key)
     fmt.Println(*resp.Label)
     fmt.Println(*resp.Value)
@@ -132,10 +141,18 @@ func ExampleGetConfigurationSetting() {
     }
 
     // Get configuration setting
-    resp, err := client.GetSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, nil)
+    resp, err := client.GetSetting(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label")
+        },
+        nil)
+
     if err != nil {
         panic(err)
     }
+
     fmt.Println(*resp.Key)
     fmt.Println(*resp.Label)
     fmt.Println(*resp.Value)
@@ -161,10 +178,19 @@ func ExampleSetConfigurationSetting() {
     }
 
     // Set configuration setting
-    resp, err := client.SetSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label"), Value: to.StringPtr("new_value")}, nil)
+    resp, err := client.SetSetting(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label"),
+            Value: to.StringPtr("new_value")
+        },
+        nil)
+
     if err != nil {
         panic(err)
     }
+
     fmt.Println(*resp.Key)
     fmt.Println(*resp.Label)
     fmt.Println(*resp.Value)
@@ -190,20 +216,38 @@ func ExampleSetConfigurationSettingReadOnly() {
     }
 
     // Set configuration setting read only
-    resp, err := client.SetReadOnly(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, true, nil)
+    resp, err := client.SetReadOnly(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label")
+        },
+        true,
+        nil)
+
     if err != nil {
         panic(err)
     }
+
     fmt.Println(*resp.Key)
     fmt.Println(*resp.Label)
     fmt.Println(*resp.Value)
     fmt.Println(*resp.IsReadOnly)
 
     // Remove read only status
-    resp, err := client.SetReadOnly(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, false, nil)
+    resp, err := client.SetReadOnly(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label")
+        },
+        false,
+        nil)
+
     if err != nil {
         panic(err)
     }
+
     fmt.Println(*resp.Key)
     fmt.Println(*resp.Label)
     fmt.Println(*resp.Value)
@@ -229,7 +273,14 @@ func ExampleListRevisions() {
         panic(err)
     }
 
-    revPgr := client.ListRevisions(azappconfig.SettingSelector{KeyFilter: to.StringPtr("*"), LabelFilter: to.StringPtr("*"), Fields: azappconfig.AllSettingFields()}, nil)
+    revPgr := client.ListRevisions(
+        azappconfig.SettingSelector{
+            KeyFilter: to.StringPtr("*"),
+            LabelFilter: to.StringPtr("*"),
+            Fields: azappconfig.AllSettingFields()
+        },
+        nil)
+
     for revPgr.More() {
         if revResp, revErr := revPgr.NextPage(context.TODO()); revErr != nil {
             for _, setting := range revResp.Settings {
@@ -262,7 +313,14 @@ func ExampleDeleteConfigurationSetting() {
     }
 
     // Delete configuration setting
-    resp, err := client.DeleteSetting(context.TODO(), azappconfig.Setting{Key: to.StringPtr("key"), Label: to.StringPtr("label")}, nil)
+    resp, err := client.DeleteSetting(
+        context.TODO(),
+        azappconfig.Setting{
+            Key: to.StringPtr("key"),
+            Label: to.StringPtr("label")
+        },
+        nil)
+
     if err != nil {
         panic(err)
     }

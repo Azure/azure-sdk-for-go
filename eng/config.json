@@ -56,6 +56,10 @@
         {
             "Name": "messaging/internal",
             "CoverageGoal": 0.40
+        },
+        {
+            "Name": "resourcemanager",
+            "CoverageGoal": 0.0
         }
     ]
 }

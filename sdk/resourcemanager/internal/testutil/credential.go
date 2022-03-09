@@ -18,10 +18,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-type FakeCredential struct {
+type fakeCredential struct {
 }
 
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{Token: "FakeToken", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
 }
 
@@ -46,7 +46,7 @@ func GetCredAndClientOptions(t *testing.T) (azcore.TokenCredential, *arm.ClientO
 			t.Fatalf("Failed to create credential: %v", err)
 		}
 	} else {
-		cred = &FakeCredential{}
+		cred = &fakeCredential{}
 	}
 
 	return cred, options

@@ -30,7 +30,7 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	cred, options := GetCredAndClientOptions(t)
 	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	StartRecording(t, pathToPackage)
-	resourceGroup, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
+	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
 	require.Equal(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"), true)
 	DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)

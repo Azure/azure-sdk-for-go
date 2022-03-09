@@ -32,7 +32,7 @@ func (testsuite *ExampleTestSuite) SetupSuite() {
 	testsuite.location = GetEnv("LOCATION", "eastus")
 	testsuite.subscriptionID = GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	StartRecording(testsuite.T(), pathToPackage)
-	resourceGroup, err := CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
+	resourceGroup, _, err := CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
 }

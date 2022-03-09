@@ -27,7 +27,7 @@ func GetEnv(key, fallback string) string {
 	return fallback
 }
 
-func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, location string) (*armresources.ResourceGroup, func(), error) {
+func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, location string) (*armresources.ResourceGroup, func() error, error) {
 	rand.Seed(time.Now().UnixNano())
 	resourceGroupName := fmt.Sprintf("go-sdk-test-%d", rand.Intn(1000))
 	rgClient := armresources.NewResourceGroupsClient(subscriptionId, cred, options)
@@ -38,7 +38,13 @@ func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 	if err != nil {
 		return nil, nil, err
 	}
-	return &resp.ResourceGroup, func() { DeleteResourceGroup(ctx, subscriptionId, cred, options, *resp.Name) }, nil
+	return &resp.ResourceGroup, func() error {
+		err := DeleteResourceGroup(ctx, subscriptionId, cred, options, *resp.Name)
+		if err != nil {
+			return err
+		}
+		return nil
+	}, nil
 }
 
 func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName string) error {

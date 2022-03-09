@@ -808,13 +808,13 @@ func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(t *testing.T, bbClient BlockBlobClient) {
+func validateBlobCommitted(t *testing.T, bbClient *BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	require.NoError(t, err)
 	require.Len(t, resp.BlockList.CommittedBlocks, 1)
 }
 
-func setupPutBlockListTest(t *testing.T, testName string) (ContainerClient, BlockBlobClient, []string) {
+func setupPutBlockListTest(t *testing.T, testName string) (*ContainerClient, *BlockBlobClient, []string) {
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 

@@ -344,7 +344,7 @@ func TestContainerCreateAccessNone(t *testing.T) {
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
 
-func validateContainerDeleted(t *testing.T, containerClient ContainerClient) {
+func validateContainerDeleted(t *testing.T, containerClient *ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	require.Error(t, err)
 
@@ -1167,7 +1167,7 @@ func TestContainerNewBlobURL(t *testing.T) {
 	bbClient := containerClient.NewBlobClient(blobPrefix)
 
 	require.Equal(t, bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	require.IsTypef(t, bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
+	require.IsTypef(t, bbClient, &BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
 func TestContainerNewBlockBlobClient(t *testing.T) {
@@ -1185,7 +1185,7 @@ func TestContainerNewBlockBlobClient(t *testing.T) {
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 
 	require.Equal(t, bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	require.IsTypef(t, bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
+	require.IsTypef(t, bbClient, &BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
 }
 
 func TestListBlobIncludeMetadata(t *testing.T) {

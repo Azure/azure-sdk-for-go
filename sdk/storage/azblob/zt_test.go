@@ -104,19 +104,19 @@ func generateBlobName(testName string) string {
 	return blobPrefix + generateEntityName(testName)
 }
 
-func getContainerClient(containerName string, s ServiceClient) ContainerClient {
+func getContainerClient(containerName string, s *ServiceClient) *ContainerClient {
 	return s.NewContainerClient(containerName)
 }
 
-func getBlockBlobClient(blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+func getBlockBlobClient(blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
 	return containerClient.NewBlockBlobClient(blockBlobName)
 }
 
-func getAppendBlobClient(appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+func getAppendBlobClient(appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
 	return containerClient.NewAppendBlobClient(appendBlobName)
 }
 
-func getPageBlobClient(pageBlobName string, containerClient ContainerClient) PageBlobClient {
+func getPageBlobClient(pageBlobName string, containerClient *ContainerClient) *PageBlobClient {
 	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
@@ -148,7 +148,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func createNewContainer(t *testing.T, containerName string, serviceClient ServiceClient) ContainerClient {
+func createNewContainer(t *testing.T, containerName string, serviceClient *ServiceClient) *ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
@@ -157,13 +157,13 @@ func createNewContainer(t *testing.T, containerName string, serviceClient Servic
 	return containerClient
 }
 
-func deleteContainer(t *testing.T, containerClient ContainerClient) {
+func deleteContainer(t *testing.T, containerClient *ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
 	require.NoError(t, err)
 	require.Equal(t, deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
-func createNewBlockBlob(t *testing.T, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+func createNewBlockBlob(t *testing.T, blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
@@ -174,13 +174,13 @@ func createNewBlockBlob(t *testing.T, blockBlobName string, containerClient Cont
 	return bbClient
 }
 
-func createNewBlobs(t *testing.T, blobNames []string, containerClient ContainerClient) {
+func createNewBlobs(t *testing.T, blobNames []string, containerClient *ContainerClient) {
 	for _, blobName := range blobNames {
 		createNewBlockBlob(t, blobName, containerClient)
 	}
 }
 
-func createNewAppendBlob(t *testing.T, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+func createNewAppendBlob(t *testing.T, appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
 	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
@@ -190,12 +190,11 @@ func createNewAppendBlob(t *testing.T, appendBlobName string, containerClient Co
 	return abClient
 }
 
-func createNewPageBlob(t *testing.T, pageBlobName string, containerClient ContainerClient) PageBlobClient {
+func createNewPageBlob(t *testing.T, pageBlobName string, containerClient *ContainerClient) *PageBlobClient {
 	return createNewPageBlobWithSize(t, pageBlobName, containerClient, PageBlobPageBytes*10)
 }
 
-func createNewPageBlobWithSize(t *testing.T, pageBlobName string,
-	containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
+func createNewPageBlobWithSize(t *testing.T, pageBlobName string, containerClient *ContainerClient, sizeInBytes int64) *PageBlobClient {
 	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
@@ -204,7 +203,7 @@ func createNewPageBlobWithSize(t *testing.T, pageBlobName string,
 	return pbClient
 }
 
-func createNewBlockBlobWithCPK(t *testing.T, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
+func createNewBlockBlobWithCPK(t *testing.T, blockBlobName string, containerClient *ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient *BlockBlobClient) {
 	bbClient = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
@@ -224,8 +223,7 @@ func createNewBlockBlobWithCPK(t *testing.T, blockBlobName string, containerClie
 	return
 }
 
-func createNewPageBlobWithCPK(t *testing.T, pageBlobName string, container ContainerClient,
-	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
+func createNewPageBlobWithCPK(t *testing.T, pageBlobName string, container *ContainerClient, sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient *PageBlobClient) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
 	resp, err := pbClient.Create(ctx, sizeInBytes, &CreatePageBlobOptions{
@@ -260,10 +258,10 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 // those changes not being reflected yet, we will wait 30 seconds and try the test again. If it fails this time for any reason,
 // we fail the test. It is the responsibility of the the testImplFunc to determine which error string indicates the test should be retried.
 // There can only be one such string. All errors that cannot be due to this detail should be asserted and not returned as an error string.
-func runTestRequiringServiceProperties(t *testing.T, bsu ServiceClient, code string,
-	enableServicePropertyFunc func(*testing.T, ServiceClient),
-	testImplFunc func(*testing.T, ServiceClient) error,
-	disableServicePropertyFunc func(*testing.T, ServiceClient)) {
+func runTestRequiringServiceProperties(t *testing.T, bsu *ServiceClient, code string,
+	enableServicePropertyFunc func(*testing.T, *ServiceClient),
+	testImplFunc func(*testing.T, *ServiceClient) error,
+	disableServicePropertyFunc func(*testing.T, *ServiceClient)) {
 
 	enableServicePropertyFunc(t, bsu)
 	defer disableServicePropertyFunc(t, bsu)
@@ -277,7 +275,7 @@ func runTestRequiringServiceProperties(t *testing.T, bsu ServiceClient, code str
 	}
 }
 
-func enableSoftDelete(t *testing.T, serviceClient ServiceClient) {
+func enableSoftDelete(t *testing.T, serviceClient *ServiceClient) {
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
 		DeleteRetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
@@ -287,7 +285,7 @@ func enableSoftDelete(t *testing.T, serviceClient ServiceClient) {
 	require.NoError(t, err)
 }
 
-func disableSoftDelete(t *testing.T, bsu ServiceClient) {
+func disableSoftDelete(t *testing.T, bsu *ServiceClient) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
 	require.NoError(t, err)
 }

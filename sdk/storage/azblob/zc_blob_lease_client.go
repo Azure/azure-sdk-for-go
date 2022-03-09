@@ -16,15 +16,15 @@ type BlobLeaseClient struct {
 	leaseID *string
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
+func (b BlobClient) NewBlobLeaseClient(leaseID *string) (*BlobLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()
 		if err != nil {
-			return BlobLeaseClient{}, err
+			return nil, err
 		}
 		leaseID = to.StringPtr(generatedUuid.String())
 	}
-	return BlobLeaseClient{
+	return &BlobLeaseClient{
 		BlobClient: b,
 		leaseID:    leaseID,
 	}, nil

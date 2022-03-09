@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func waitForCopy(t *testing.T, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
+func waitForCopy(t *testing.T, copyBlobClient *BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()
@@ -334,7 +334,7 @@ func TestBlobStartCopyUsingSASDest(t *testing.T) {
 
 	testName := t.Name()
 
-	var svcClient ServiceClient
+	var svcClient *ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {
@@ -2494,7 +2494,7 @@ func TestBlobSetPropertiesEmptyValue(t *testing.T) {
 	require.Nil(t, resp.ContentType)
 }
 
-func validatePropertiesSet(t *testing.T, bbClient BlockBlobClient, disposition string) {
+func validatePropertiesSet(t *testing.T, bbClient *BlockBlobClient, disposition string) {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, *resp.ContentDisposition, disposition)
@@ -2777,7 +2777,7 @@ func TestBlobSetMetadataInvalidField(t *testing.T) {
 	//_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func validateMetadataSet(t *testing.T, bbClient BlockBlobClient) {
+func validateMetadataSet(t *testing.T, bbClient *BlockBlobClient) {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, resp.Metadata, basicMetadata)
@@ -2999,7 +2999,7 @@ func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func testBlobServiceClientDeleteImpl(_ *testing.T, _ ServiceClient) error {
+func testBlobServiceClientDeleteImpl(_ *testing.T, _ *ServiceClient) error {
 	//containerClient := createNewContainer(t, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(t, containerClient)
 	//bbClient := createNewBlockBlob(t, "goblobserviceclientdeleteimpl", containerClient)

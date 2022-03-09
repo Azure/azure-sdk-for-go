@@ -54,7 +54,7 @@ func TestListContainersBasic(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			require.NoError(t, err)
@@ -115,7 +115,7 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		require.NoError(t, err)
 	}(containerClient, ctx, nil)
@@ -299,7 +299,7 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	var svcClient ServiceClient
+	var svcClient *ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {

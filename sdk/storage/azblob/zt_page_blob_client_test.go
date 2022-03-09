@@ -266,7 +266,7 @@ func TestClearDiffPages(t *testing.T) {
 	require.Nil(t, pageListResp.PageList.PageRange)
 }
 
-func waitForIncrementalCopy(t *testing.T, copyBlobClient PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
+func waitForIncrementalCopy(t *testing.T, copyBlobClient *PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
 	var getPropertiesAndMetadataResult GetBlobPropertiesResponse
 	// Wait for the copy to finish
@@ -622,7 +622,7 @@ func TestBlobCreatePageHTTPHeaders(t *testing.T) {
 	require.EqualValues(t, h, basicHeaders)
 }
 
-func validatePageBlobPut(t *testing.T, pbClient PageBlobClient) {
+func validatePageBlobPut(t *testing.T, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Metadata)
@@ -982,7 +982,7 @@ func TestBlobPutPagesNonExistentBlob(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateUploadPages(t *testing.T, pbClient PageBlobClient) {
+func validateUploadPages(t *testing.T, pbClient *PageBlobClient) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
 	require.NoError(t, err)
@@ -1562,7 +1562,7 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
-func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBlobClient) {
+func setupClearPagesTest(t *testing.T, testName string) (*ContainerClient, *PageBlobClient) {
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -1583,7 +1583,7 @@ func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBl
 	return containerClient, pbClient
 }
 
-func validateClearPagesTest(t *testing.T, pbClient PageBlobClient) {
+func validateClearPagesTest(t *testing.T, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	require.NoError(t, err)
 	pageListResp := resp.PageList.PageRange
@@ -2013,7 +2013,7 @@ func TestBlobClearPagesIfSequenceNumberEqualNegOne(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeInvalidInput)
 }
 
-func setupGetPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient, pbClient PageBlobClient) {
+func setupGetPageRangesTest(t *testing.T, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient) {
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -2339,7 +2339,7 @@ func TestBlobGetPageRangesIfNoneMatchFalse(t *testing.T) {
 	require.Error(t, err)
 }
 
-func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
+func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient, snapshot string) {
 	svcClient, err := createServiceClient(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -2655,7 +2655,7 @@ func TestBlobResizeInvalidSizeMisaligned(t *testing.T) {
 	require.Error(t, err)
 }
 
-func validateResize(t *testing.T, pbClient PageBlobClient) {
+func validateResize(t *testing.T, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, *resp.ContentLength, int64(PageBlobPageBytes))
@@ -2978,7 +2978,7 @@ func TestBlobSetSequenceNumberSequenceNumberInvalid(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
-func validateSequenceNumberSet(t *testing.T, pbClient PageBlobClient) {
+func validateSequenceNumberSet(t *testing.T, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, *resp.BlobSequenceNumber, int64(1))

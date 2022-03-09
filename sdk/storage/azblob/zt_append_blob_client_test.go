@@ -411,7 +411,7 @@ func TestBlobCreateAppendHTTPHeaders(t *testing.T) {
 	require.EqualValues(t, h, basicHeaders)
 }
 
-func validateAppendBlobPut(t *testing.T, abClient AppendBlobClient) {
+func validateAppendBlobPut(t *testing.T, abClient *AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Metadata)
@@ -761,7 +761,7 @@ func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(t *testing.T, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(t *testing.T, abClient *AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, *resp.ContentLength, int64(expectedSize))

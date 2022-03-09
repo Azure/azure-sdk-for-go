@@ -16,15 +16,15 @@ type ContainerLeaseClient struct {
 	leaseID *string
 }
 
-func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (ContainerLeaseClient, error) {
+func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (*ContainerLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()
 		if err != nil {
-			return ContainerLeaseClient{}, err
+			return nil, err
 		}
 		leaseID = to.StringPtr(generatedUuid.String())
 	}
-	return ContainerLeaseClient{
+	return &ContainerLeaseClient{
 		ContainerClient: c,
 		leaseID:         leaseID,
 	}, nil

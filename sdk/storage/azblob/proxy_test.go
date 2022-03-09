@@ -88,13 +88,13 @@ func start(t *testing.T) func() {
 	}
 }
 
-func createServiceClient(t *testing.T, accountType testAccountType) (ServiceClient, error) {
+func createServiceClient(t *testing.T, accountType testAccountType) (*ServiceClient, error) {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	cred, err := getCredential(accountType)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName())
@@ -103,7 +103,7 @@ func createServiceClient(t *testing.T, accountType testAccountType) (ServiceClie
 	})
 }
 
-func createServiceClientFromConnectionString(t *testing.T, accountType testAccountType) (ServiceClient, error) {
+func createServiceClientFromConnectionString(t *testing.T, accountType testAccountType) (*ServiceClient, error) {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -121,7 +121,7 @@ func createServiceClientFromConnectionString(t *testing.T, accountType testAccou
 		accountName = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_NAME", "secondaryfakestorageaccount")
 		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", fakeaccountkey)
 	default:
-		return ServiceClient{}, fmt.Errorf("invalid test account type: %s", accountType)
+		return nil, fmt.Errorf("invalid test account type: %s", accountType)
 	}
 
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/", accountName, accountKey)

@@ -24,10 +24,10 @@ type PageBlobClient struct {
 
 // NewPageBlobClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (PageBlobClient, error) {
+func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*PageBlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return PageBlobClient{
+	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
@@ -35,9 +35,9 @@ func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *Cli
 
 // NewPageBlobClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
-func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (PageBlobClient, error) {
+func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*PageBlobClient, error) {
 	con := newConnection(blobURL, nil, options.getConnectionOptions())
-	return PageBlobClient{
+	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
@@ -45,10 +45,10 @@ func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (
 
 // NewPageBlobClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (PageBlobClient, error) {
+func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*PageBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return PageBlobClient{
+	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
@@ -56,12 +56,12 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
+func (pb PageBlobClient) WithSnapshot(snapshot string) *PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.Snapshot = snapshot
 
 	con := &connection{p.URL(), pb.client.con.p}
-	return PageBlobClient{
+	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
@@ -69,12 +69,12 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the version returning a URL to the base blob.
-func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
+func (pb PageBlobClient) WithVersionID(versionID string) *PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.VersionID = versionID
 
 	con := &connection{p.URL(), pb.client.con.p}
-	return PageBlobClient{
+	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}

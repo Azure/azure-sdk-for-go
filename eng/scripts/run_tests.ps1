@@ -1,13 +1,14 @@
 #Requires -Version 7.0
 
 Param(
-    [string] $serviceDirectory
+    [string] $serviceDirectory,
+    [string] $runTime
 )
 
 Push-Location sdk/$serviceDirectory
-Write-Host "##[command] Executing 'go test -run "^Test" -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+Write-Host "##[command] Executing 'go test -timeout $runTime s -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
-go test -run "^Test" -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+go test -timeout $runTime s -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }

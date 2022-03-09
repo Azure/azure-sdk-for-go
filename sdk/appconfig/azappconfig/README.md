@@ -230,14 +230,14 @@ func ExampleListRevisions() {
     }
 
     revPgr := client.ListRevisions(azappconfig.SettingSelector{KeyFilter: to.StringPtr("*"), LabelFilter: to.StringPtr("*"), Fields: azappconfig.AllSettingFields()}, nil)
-    for revPgr.NextPage(context.TODO()) {
-        resp := revPgr.PageResponse()
-
-        for _, setting := range revResp.Settings {
-            fmt.Println(*setting.Key)
-            fmt.Println(*setting.Label)
-            fmt.Println(*setting.Value)
-            fmt.Println(*setting.IsReadOnly)
+    for revPgr.More() {
+        if revResp, revErr := revPgr.NextPage(context.TODO()); revErr != nil {
+            for _, setting := range revResp.Settings {
+                fmt.Println(*setting.Key)
+                fmt.Println(*setting.Label)
+                fmt.Println(*setting.Value)
+                fmt.Println(*setting.IsReadOnly)
+            }
         }
     }
 }

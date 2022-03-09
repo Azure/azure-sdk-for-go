@@ -47,7 +47,7 @@ func (p *AzureAppConfigurationClientGetKeyValuesPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,7 +101,7 @@ func (p *AzureAppConfigurationClientGetKeysPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -155,7 +155,7 @@ func (p *AzureAppConfigurationClientGetLabelsPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -209,7 +209,7 @@ func (p *AzureAppConfigurationClientGetRevisionsPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -218,7 +218,7 @@ func (p *AzureAppConfigurationClientGetRevisionsPager) NextPage(ctx context.Cont
 		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getRevisionsHandleResponse(resp)
+	result, err := p.client.GetRevisionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false

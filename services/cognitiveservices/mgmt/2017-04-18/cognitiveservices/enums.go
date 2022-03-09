@@ -10,210 +10,210 @@ package cognitiveservices
 type IdentityType string
 
 const (
-	// None ...
-	None IdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned IdentityType = "SystemAssigned"
-	// UserAssigned ...
-	UserAssigned IdentityType = "UserAssigned"
+	// IdentityTypeNone ...
+	IdentityTypeNone IdentityType = "None"
+	// IdentityTypeSystemAssigned ...
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	// IdentityTypeUserAssigned ...
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{None, SystemAssigned, UserAssigned}
+	return []IdentityType{IdentityTypeNone, IdentityTypeSystemAssigned, IdentityTypeUserAssigned}
 }
 
 // KeyName enumerates the values for key name.
 type KeyName string
 
 const (
-	// Key1 ...
-	Key1 KeyName = "Key1"
-	// Key2 ...
-	Key2 KeyName = "Key2"
+	// KeyNameKey1 ...
+	KeyNameKey1 KeyName = "Key1"
+	// KeyNameKey2 ...
+	KeyNameKey2 KeyName = "Key2"
 )
 
 // PossibleKeyNameValues returns an array of possible values for the KeyName const type.
 func PossibleKeyNameValues() []KeyName {
-	return []KeyName{Key1, Key2}
+	return []KeyName{KeyNameKey1, KeyNameKey2}
 }
 
 // KeySource enumerates the values for key source.
 type KeySource string
 
 const (
-	// MicrosoftCognitiveServices ...
-	MicrosoftCognitiveServices KeySource = "Microsoft.CognitiveServices"
-	// MicrosoftKeyVault ...
-	MicrosoftKeyVault KeySource = "Microsoft.KeyVault"
+	// KeySourceMicrosoftCognitiveServices ...
+	KeySourceMicrosoftCognitiveServices KeySource = "Microsoft.CognitiveServices"
+	// KeySourceMicrosoftKeyVault ...
+	KeySourceMicrosoftKeyVault KeySource = "Microsoft.KeyVault"
 )
 
 // PossibleKeySourceValues returns an array of possible values for the KeySource const type.
 func PossibleKeySourceValues() []KeySource {
-	return []KeySource{MicrosoftCognitiveServices, MicrosoftKeyVault}
+	return []KeySource{KeySourceMicrosoftCognitiveServices, KeySourceMicrosoftKeyVault}
 }
 
 // NetworkRuleAction enumerates the values for network rule action.
 type NetworkRuleAction string
 
 const (
-	// Allow ...
-	Allow NetworkRuleAction = "Allow"
-	// Deny ...
-	Deny NetworkRuleAction = "Deny"
+	// NetworkRuleActionAllow ...
+	NetworkRuleActionAllow NetworkRuleAction = "Allow"
+	// NetworkRuleActionDeny ...
+	NetworkRuleActionDeny NetworkRuleAction = "Deny"
 )
 
 // PossibleNetworkRuleActionValues returns an array of possible values for the NetworkRuleAction const type.
 func PossibleNetworkRuleActionValues() []NetworkRuleAction {
-	return []NetworkRuleAction{Allow, Deny}
+	return []NetworkRuleAction{NetworkRuleActionAllow, NetworkRuleActionDeny}
 }
 
 // PrivateEndpointServiceConnectionStatus enumerates the values for private endpoint service connection status.
 type PrivateEndpointServiceConnectionStatus string
 
 const (
-	// Approved ...
-	Approved PrivateEndpointServiceConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PrivateEndpointServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateEndpointServiceConnectionStatus = "Rejected"
+	// PrivateEndpointServiceConnectionStatusApproved ...
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	// PrivateEndpointServiceConnectionStatusDisconnected ...
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
+	// PrivateEndpointServiceConnectionStatusPending ...
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	// PrivateEndpointServiceConnectionStatusRejected ...
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns an array of possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{Approved, Disconnected, Pending, Rejected}
+	return []PrivateEndpointServiceConnectionStatus{PrivateEndpointServiceConnectionStatusApproved, PrivateEndpointServiceConnectionStatusDisconnected, PrivateEndpointServiceConnectionStatusPending, PrivateEndpointServiceConnectionStatusRejected}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
 const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Moving ...
-	Moving ProvisioningState = "Moving"
-	// ResolvingDNS ...
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateMoving ...
+	ProvisioningStateMoving ProvisioningState = "Moving"
+	// ProvisioningStateResolvingDNS ...
+	ProvisioningStateResolvingDNS ProvisioningState = "ResolvingDNS"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Moving, ResolvingDNS, Succeeded}
+	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateMoving, ProvisioningStateResolvingDNS, ProvisioningStateSucceeded}
 }
 
 // PublicNetworkAccess enumerates the values for public network access.
 type PublicNetworkAccess string
 
 const (
-	// Disabled ...
-	Disabled PublicNetworkAccess = "Disabled"
-	// Enabled ...
-	Enabled PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessDisabled ...
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled ...
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{Disabled, Enabled}
+	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
 }
 
 // QuotaUsageStatus enumerates the values for quota usage status.
 type QuotaUsageStatus string
 
 const (
-	// Blocked ...
-	Blocked QuotaUsageStatus = "Blocked"
-	// Included ...
-	Included QuotaUsageStatus = "Included"
-	// InOverage ...
-	InOverage QuotaUsageStatus = "InOverage"
-	// Unknown ...
-	Unknown QuotaUsageStatus = "Unknown"
+	// QuotaUsageStatusBlocked ...
+	QuotaUsageStatusBlocked QuotaUsageStatus = "Blocked"
+	// QuotaUsageStatusIncluded ...
+	QuotaUsageStatusIncluded QuotaUsageStatus = "Included"
+	// QuotaUsageStatusInOverage ...
+	QuotaUsageStatusInOverage QuotaUsageStatus = "InOverage"
+	// QuotaUsageStatusUnknown ...
+	QuotaUsageStatusUnknown QuotaUsageStatus = "Unknown"
 )
 
 // PossibleQuotaUsageStatusValues returns an array of possible values for the QuotaUsageStatus const type.
 func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
-	return []QuotaUsageStatus{Blocked, Included, InOverage, Unknown}
+	return []QuotaUsageStatus{QuotaUsageStatusBlocked, QuotaUsageStatusIncluded, QuotaUsageStatusInOverage, QuotaUsageStatusUnknown}
 }
 
 // ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
 type ResourceSkuRestrictionsReasonCode string
 
 const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
+	// ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ...
+	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
+	// ResourceSkuRestrictionsReasonCodeQuotaID ...
+	ResourceSkuRestrictionsReasonCodeQuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
 )
 
 // PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
 func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
+	return []ResourceSkuRestrictionsReasonCode{ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription, ResourceSkuRestrictionsReasonCodeQuotaID}
 }
 
 // ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
 type ResourceSkuRestrictionsType string
 
 const (
-	// Location ...
-	Location ResourceSkuRestrictionsType = "Location"
-	// Zone ...
-	Zone ResourceSkuRestrictionsType = "Zone"
+	// ResourceSkuRestrictionsTypeLocation ...
+	ResourceSkuRestrictionsTypeLocation ResourceSkuRestrictionsType = "Location"
+	// ResourceSkuRestrictionsTypeZone ...
+	ResourceSkuRestrictionsTypeZone ResourceSkuRestrictionsType = "Zone"
 )
 
 // PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return []ResourceSkuRestrictionsType{Location, Zone}
+	return []ResourceSkuRestrictionsType{ResourceSkuRestrictionsTypeLocation, ResourceSkuRestrictionsTypeZone}
 }
 
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
 const (
-	// Enterprise ...
-	Enterprise SkuTier = "Enterprise"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
+	// SkuTierEnterprise ...
+	SkuTierEnterprise SkuTier = "Enterprise"
+	// SkuTierFree ...
+	SkuTierFree SkuTier = "Free"
+	// SkuTierPremium ...
+	SkuTierPremium SkuTier = "Premium"
+	// SkuTierStandard ...
+	SkuTierStandard SkuTier = "Standard"
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Enterprise, Free, Premium, Standard}
+	return []SkuTier{SkuTierEnterprise, SkuTierFree, SkuTierPremium, SkuTierStandard}
 }
 
 // UnitType enumerates the values for unit type.
 type UnitType string
 
 const (
-	// Bytes ...
-	Bytes UnitType = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UnitType = "BytesPerSecond"
-	// Count ...
-	Count UnitType = "Count"
-	// CountPerSecond ...
-	CountPerSecond UnitType = "CountPerSecond"
-	// Milliseconds ...
-	Milliseconds UnitType = "Milliseconds"
-	// Percent ...
-	Percent UnitType = "Percent"
-	// Seconds ...
-	Seconds UnitType = "Seconds"
+	// UnitTypeBytes ...
+	UnitTypeBytes UnitType = "Bytes"
+	// UnitTypeBytesPerSecond ...
+	UnitTypeBytesPerSecond UnitType = "BytesPerSecond"
+	// UnitTypeCount ...
+	UnitTypeCount UnitType = "Count"
+	// UnitTypeCountPerSecond ...
+	UnitTypeCountPerSecond UnitType = "CountPerSecond"
+	// UnitTypeMilliseconds ...
+	UnitTypeMilliseconds UnitType = "Milliseconds"
+	// UnitTypePercent ...
+	UnitTypePercent UnitType = "Percent"
+	// UnitTypeSeconds ...
+	UnitTypeSeconds UnitType = "Seconds"
 )
 
 // PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
 func PossibleUnitTypeValues() []UnitType {
-	return []UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
+	return []UnitType{UnitTypeBytes, UnitTypeBytesPerSecond, UnitTypeCount, UnitTypeCountPerSecond, UnitTypeMilliseconds, UnitTypePercent, UnitTypeSeconds}
 }

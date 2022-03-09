@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.6.0 (2022-03-08)
+
+### Breaking Changes
+* Prefixed all `TransactionType` constants with `TransactionType`.
+* Prefixed all `EntityUpdateMode` constants with `EntityUpdateMode`.
+* Changed the `SharedKeyCredential.ComputeHMACSHA256` method to a private method.
+* Changed the `ListTablesPager` and `ListEntitiesPager` to structs.
+* Renamed the `ResponseProperties` type to `TableProperties`.
+* Removing `ContentType` from the `TransactionResponse` struct.
+* Update `ListEntitiesPager` and `ListTablesPager`.
+    * The `More` method checks whether there are more pages to retrieve.
+    * The `NextPage(context.Context)` method gets the next page and returns a response and an `error`.
+* Removed `RawResponse` from all Response structs
+* `TransactionResponse` is an empty struct
 
 ## 0.5.0 (2022-01-12)
 

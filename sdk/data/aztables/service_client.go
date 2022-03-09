@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
@@ -25,6 +26,7 @@ type ServiceClient struct {
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
@@ -38,6 +40,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 
 // NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
 // Call this method when serviceURL contains a SAS token.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	con := generated.NewConnection(serviceURL, conOptions)
@@ -49,6 +52,7 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
@@ -84,15 +88,17 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 	}
 }
 
-// Options for Client.Create and ServiceClient.CreateTable method
+// CreateTableOptions contains optional parameters for Client.Create and ServiceClient.CreateTable
 type CreateTableOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 	return &generated.TableClientCreateOptions{}
 }
 
-// Create creates a table with the specified name.
+// Create creates a table with the specified name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
@@ -101,43 +107,39 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	return t.NewClient(name), err
 }
 
-// Options for Client.Delete and ServiceClient.DeleteTable methods
+// DeleteTableOptions contains optional parameters for Client.Delete and ServiceClient.DeleteTable
 type DeleteTableOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
 	return &generated.TableClientDeleteOptions{}
 }
 
-// Response object from a ServiceClient.DeleteTable or Client.Delete operation
+// DeleteTableResponse contains response fields for ServiceClient.DeleteTable and Client.Delete
 type DeleteTableResponse struct {
-	RawResponse *http.Response
+	// placeholder for future optional response fields
 }
 
-func deleteTableResponseFromGen(g *generated.TableClientDeleteResponse) DeleteTableResponse {
-	if g == nil {
-		return DeleteTableResponse{}
-	}
-	return DeleteTableResponse{
-		RawResponse: g.RawResponse,
-	}
+func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTableResponse {
+	return DeleteTableResponse{}
 }
 
-// Delete deletes a table by name.
+// Delete deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
-	if options == nil {
-		options = &DeleteTableOptions{}
-	}
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
-	return deleteTableResponseFromGen(&resp), err
+	return deleteTableResponseFromGen(resp), err
 }
 
-// ListEntitiesOptions contains a group of parameters for the ServiceClient.QueryTables method.
+// ListEntitiesOptions contains optional parameters for ServiceClient.QueryTables
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
+
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
+
 	// Maximum number of records to return.
 	Top *int32
 }
@@ -155,28 +157,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPager is a Pager for Table List operations
-//
-// NextPage should be called first. It fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListTablesPager interface {
-	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListTablesPage
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-	// Err returns an error if there was an error on the last request
-	Err() error
-}
-
-// ListTablesPage contains the properties of a single page response from a ListTables operation
-type ListTablesPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
+// ListTablesPageResponse contains response fields for ListTablesPager.NextPage
+type ListTablesPageResponse struct {
 	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
 	ContinuationNextTableName *string
 
@@ -184,87 +166,103 @@ type ListTablesPage struct {
 	ODataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Tables []*ResponseProperties `json:"value,omitempty"`
+	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
-	if g == nil {
-		return nil
-	}
-
-	var value []*ResponseProperties
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPageResponse {
+	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return &ListTablesPage{
-		RawResponse:               g.RawResponse,
+	return ListTablesPageResponse{
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:             g.ODataMetadata,
 		Tables:                    value,
 	}
 }
 
-// ResponseProperties contains the properties for a single Table
-type ResponseProperties struct {
+// TableProperties contains the properties for a single Table
+type TableProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`
 
-	// The id of the table.
+	// The ID of the table.
 	ODataID *string `json:"odata.id,omitempty"`
 
 	// The odata type of the table.
 	ODataType *string `json:"odata.type,omitempty"`
 
 	// The name of the table.
-	TableName *string `json:"TableName,omitempty"`
+	Name *string `json:"TableName,omitempty"`
 }
 
 // Convets a generated TableResponseProperties to a ResponseProperties
-func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *TableProperties {
 	if g == nil {
 		return nil
 	}
 
-	return &ResponseProperties{
-		TableName:     g.TableName,
+	return &TableProperties{
+		Name:          g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,
 		ODataType:     g.ODataType,
 	}
 }
 
-type tableQueryResponsePager struct {
+// ListTablesPager is a Pager for Table List operations
+//
+// Call NextPage first to fetch the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on the Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
+//
+// PageResponse returns the results from the page most recently fetched from the service.
+type ListTablesPager struct {
 	client            *generated.TableClient
-	current           *generated.TableClientQueryResponse
+	current           generated.TableClientQueryResponse
 	tableQueryOptions *generated.TableClientQueryOptions
 	listOptions       *ListTablesOptions
-	err               error
+	nextTableName     *string
 }
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
-		return false
+func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse, error) {
+	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
+		NextTableName: p.nextTableName,
+	}, p.listOptions.toQueryOptions())
+	if err != nil {
+		return ListTablesPageResponse{}, err
 	}
-	var resp generated.TableClientQueryResponse
-	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
-	p.current = &resp
-	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
-	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
+	resp, err := p.client.Pl.Do(req)
+	if err != nil {
+		return ListTablesPageResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ListTablesPageResponse{}, runtime.NewResponseError(resp)
+	}
+
+	result, err := p.client.QueryHandleResponse(resp)
+	if err != nil {
+		return ListTablesPageResponse{}, err
+	}
+	p.current = result
+	p.nextTableName = p.current.XMSContinuationNextTableName
+	return fromGeneratedTableQueryResponseEnvelope(p.current), nil
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
-	return *fromGeneratedTableQueryResponseEnvelope(p.current)
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (p *tableQueryResponsePager) Err() error {
-	return p.err
+// More returns true if there are more pages to retrieve
+func (p *ListTablesPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.XMSContinuationNextTableName == nil || len(*p.current.XMSContinuationNextTableName) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
 // List queries the existing tables using the specified ListTablesOptions.
@@ -276,27 +274,27 @@ func (p *tableQueryResponsePager) Err() error {
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results.
+// List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
-	return &tableQueryResponsePager{
+	return ListTablesPager{
 		client:            t.client,
+		tableQueryOptions: &generated.TableClientQueryOptions{},
 		listOptions:       listOptions,
-		tableQueryOptions: new(generated.TableClientQueryOptions),
 	}
 }
 
-// GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
+// GetStatisticsOptions contains optional parameters for ServiceClient.GetStatistics
 type GetStatisticsOptions struct {
+	// placeholder for future optional parameters
 }
 
+// GetStatisticsResponse contains response fields for Client.GetStatistics
 type GetStatisticsResponse struct {
-	RawResponse    *http.Response
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
 func getStatisticsResponseFromGenerated(g *generated.ServiceClientGetStatisticsResponse) GetStatisticsResponse {
 	return GetStatisticsResponse{
-		RawResponse:    g.RawResponse,
 		GeoReplication: fromGeneratedGeoReplication(g.GeoReplication),
 	}
 }
@@ -305,7 +303,8 @@ func (g *GetStatisticsOptions) toGenerated() *generated.ServiceClientGetStatisti
 	return &generated.ServiceClientGetStatisticsOptions{}
 }
 
-// GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
+// GetStatistics retrieves all the statistics for an account with Geo-redundancy established. If the service returns a non-successful
+// HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
@@ -314,15 +313,17 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
+// GetPropertiesOptions contains optional parameters for Client.GetProperties
 type GetPropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
 func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
 	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
+// GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
-	RawResponse *http.Response
 	// The set of CORS rules.
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
@@ -342,7 +343,6 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 		cors = append(cors, fromGeneratedCors(c))
 	}
 	return GetPropertiesResponse{
-		RawResponse:   g.RawResponse,
 		Cors:          cors,
 		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
 		Logging:       fromGeneratedLogging(g.Logging),
@@ -351,6 +351,8 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
+// If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
@@ -359,23 +361,25 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
-type SetPropertiesOptions struct{}
+// SetPropertiesOptions contains optional parameters for Client.SetProperties
+type SetPropertiesOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetPropertiesOptions {
 	return &generated.ServiceClientSetPropertiesOptions{}
 }
 
+// SetPropertiesResponse contains response fields for Client.SetProperties
 type SetPropertiesResponse struct {
-	RawResponse *http.Response
+	// placeholder for future response fields
 }
 
 func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesResponse) SetPropertiesResponse {
-	return SetPropertiesResponse{
-		RawResponse: g.RawResponse,
-	}
+	return SetPropertiesResponse{}
 }
 
-// SetProperties allows the user to set cors , metrics, and logging rules for the account.
+// SetProperties allows the user to set cors, metrics, and logging rules for the account.
 //
 // Cors: A slice of CorsRules.
 //
@@ -383,7 +387,9 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesR
 //
 // HoursMetrics: A summary of request statistics grouped in minute aggregates for tables
 //
-// Logging: Azure Analytics logging settings
+// Logging: Azure Analytics logging settings. If the service returns a non-successful HTTP
+// status code, the function returns an *azcore.ResponseError type.
+// Specify nil for options if you want to use the default options.
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}

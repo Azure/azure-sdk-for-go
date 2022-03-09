@@ -8,26 +8,27 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync/atomic"
+	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/stretchr/testify/require"
 )
 
 const finalFileName = "final"
 
-//nolint
 type fakeBlockWriter struct {
 	path       string
 	block      int32
 	errOnBlock int32
 }
 
-//nolint
 func newFakeBlockWriter() *fakeBlockWriter {
 	generatedUuid, _ := uuid.New()
 	f := &fakeBlockWriter{
@@ -43,7 +44,6 @@ func newFakeBlockWriter() *fakeBlockWriter {
 	return f
 }
 
-//nolint
 func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
@@ -67,7 +67,6 @@ func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.
 	return BlockBlobStageBlockResponse{}, nil
 }
 
-//nolint
 func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
@@ -95,7 +94,6 @@ func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []st
 	return BlockBlobCommitBlockListResponse{}, nil
 }
 
-//nolint
 func (f *fakeBlockWriter) cleanup() {
 	err := os.RemoveAll(f.path)
 	if err != nil {
@@ -103,12 +101,10 @@ func (f *fakeBlockWriter) cleanup() {
 	}
 }
 
-//nolint
 func (f *fakeBlockWriter) final() string {
 	return filepath.Join(f.path, finalFileName)
 }
 
-//nolint
 func createSrcFile(size int) (string, error) {
 	generatedUuid, err := uuid.New()
 	if err != nil {
@@ -134,7 +130,6 @@ func createSrcFile(size int) (string, error) {
 	return p, nil
 }
 
-//nolint
 func fileMD5(p string) string {
 	f, err := os.Open(p)
 	if err != nil {
@@ -153,9 +148,7 @@ func fileMD5(p string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestGetErr() {
-	s.T().Parallel()
+func TestGetErr(t *testing.T) {
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -189,15 +182,11 @@ func (s *azblobUnrecordedTestSuite) TestGetErr() {
 		}
 
 		got := c.getErr()
-		if test.want != got {
-			s.T().Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
-		}
+		require.Equal(t, test.want, got)
 	}
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
-	s.T().Parallel()
+func TestCopyFromReader(t *testing.T) {
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -312,10 +301,10 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		_, err = copyFromReader(test.ctx, from, br, test.o)
 		switch {
 		case err == nil && test.err:
-			s.T().Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
+			t.Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
 			continue
 		case err != nil && !test.err:
-			s.T().Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
+			t.Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
 			continue
 		case err != nil:
 			continue
@@ -324,8 +313,6 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		want := fileMD5(p)
 		got := fileMD5(br.final())
 
-		if got != want {
-			s.T().Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
-		}
+		require.Equal(t, got, want)
 	}
 }

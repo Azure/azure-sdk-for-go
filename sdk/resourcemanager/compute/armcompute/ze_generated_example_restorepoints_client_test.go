@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateARestorePoint.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CopyRestorePointBetweenRegions.json
 func ExampleRestorePointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,10 +33,9 @@ func ExampleRestorePointsClient_BeginCreate() {
 		"<restore-point-name>",
 		armcompute.RestorePoint{
 			Properties: &armcompute.RestorePointProperties{
-				ExcludeDisks: []*armcompute.APIEntityReference{
-					{
-						ID: to.StringPtr("<id>"),
-					}},
+				SourceRestorePoint: &armcompute.APIEntityReference{
+					ID: to.StringPtr("<id>"),
+				},
 			},
 		},
 		nil)
@@ -49,7 +48,29 @@ func ExampleRestorePointsClient_BeginCreate() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetRestorePoint.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RestorePoints_Delete_MaximumSet_Gen.json
+func ExampleRestorePointsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewRestorePointsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginDelete(ctx,
+		"<resource-group-name>",
+		"<restore-point-collection-name>",
+		"<restore-point-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetRestorePoint.json
 func ExampleRestorePointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +82,7 @@ func ExampleRestorePointsClient_Get() {
 		"<resource-group-name>",
 		"<restore-point-collection-name>",
 		"<restore-point-name>",
-		nil)
+		&armcompute.RestorePointsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}

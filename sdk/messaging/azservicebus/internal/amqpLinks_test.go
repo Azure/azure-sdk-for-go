@@ -5,12 +5,12 @@ package internal
 
 import (
 	"context"
-	"log"
+	"errors"
+	"fmt"
 	"sync"
 	"testing"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -222,7 +222,7 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 
 	createLinksCalled := 0
 
-	enableLogging()
+	test.EnableStdoutLogging()
 
 	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 		createLinksCalled++
@@ -265,7 +265,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 
 	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
-		return &amqp.DetachError{}
+		return amqp.ErrConnClosed
 	}, utils.RetryOptions{
 		MaxRetries: 2,
 		// note: omitting MaxRetries just to give a sanity check that
@@ -274,8 +274,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	})
 
-	var detachErr *amqp.DetachError
-	require.ErrorAs(t, err, &detachErr)
+	require.ErrorIs(t, err, amqp.ErrConnClosed)
 	require.EqualValues(t, 3, createLinksCalled)
 }
 
@@ -361,6 +360,200 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	require.EqualValues(t, 2, clientRev)
 }
 
+func TestAMQPLinksCloseIfNeeded(t *testing.T) {
+	t.Run("fatal", func(t *testing.T) {
+		for _, fatalErr := range []error{NewErrNonRetriable(""), context.Canceled, context.DeadlineExceeded} {
+			receiver := &FakeAMQPReceiver{}
+			sender := &FakeAMQPSender{}
+			ns := &FakeNS{}
+
+			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			})
+
+			_, err := links.Get(context.Background())
+			require.NoError(t, err)
+
+			rk := links.CloseIfNeeded(context.Background(), fatalErr)
+			require.Equal(t, RecoveryKindFatal, rk)
+			require.Equal(t, 0, receiver.Closed)
+			require.Equal(t, 0, sender.Closed)
+			require.Equal(t, 0, ns.CloseCalled)
+		}
+	})
+
+	t.Run("link", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), amqp.ErrLinkClosed)
+		require.Equal(t, RecoveryKindLink, rk)
+		require.Equal(t, 1, receiver.Closed)
+		require.Equal(t, 1, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+	})
+
+	t.Run("conn", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), amqp.ErrConnClosed)
+		require.Equal(t, RecoveryKindConn, rk)
+		require.Equal(t, 1, receiver.Closed)
+		require.Equal(t, 1, sender.Closed)
+		require.Equal(t, 1, ns.CloseCalled)
+	})
+
+	t.Run("none", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		sender := &FakeAMQPSender{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return sender, receiver, nil
+		})
+
+		_, err := links.Get(context.Background())
+		require.NoError(t, err)
+
+		rk := links.CloseIfNeeded(context.Background(), nil)
+		require.Equal(t, RecoveryKindNone, rk)
+		require.Equal(t, 0, receiver.Closed)
+		require.Equal(t, 0, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+	})
+}
+
+func TestAMQPLinksRetriesUnit(t *testing.T) {
+	tests := []struct {
+		Err         error
+		Attempts    []int32
+		ExpectReset bool
+	}{
+		// nothing goes wrong, only need the one attempt
+		{Err: nil, Attempts: []int32{0}},
+
+		// connection related or unknown failures happen, all attempts exhausted
+		{Err: amqp.ErrConnClosed, Attempts: []int32{0, 1, 2, 3}},
+		{Err: errors.New("unknown error"), Attempts: []int32{0, 1, 2, 3}},
+
+		// fatal errors don't retry at all.
+		{Err: NewErrNonRetriable("non retriable error"), Attempts: []int32{0}},
+
+		// detach error happens - we have slightly special behavior here in that we do a quick
+		// retry for attempt '0', to avoid sleeping if the error was stale. This mostly happens
+		// in situations like sending, where you might have long times in between sends and your
+		// link is closed due to idling.
+		{Err: &amqp.DetachError{}, Attempts: []int32{0, 0, 1, 2, 3}, ExpectReset: true},
+	}
+
+	for _, testData := range tests {
+		var testName string = ""
+
+		if testData.Err != nil {
+			testName = testData.Err.Error()
+		}
+
+		t.Run(testName, func(t *testing.T) {
+			receiver := &FakeAMQPReceiver{}
+			sender := &FakeAMQPSender{}
+			ns := &FakeNS{}
+
+			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			})
+
+			var attempts []int32
+
+			var logMessages []string
+			removeLogging := test.CaptureLogsForTest(&logMessages)
+			defer removeLogging()
+
+			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+				attempts = append(attempts, args.I)
+				return testData.Err
+			}, utils.RetryOptions{
+				RetryDelay: time.Millisecond,
+			})
+
+			require.Equal(t, testData.Err, err)
+			require.Equal(t, testData.Attempts, attempts)
+
+			if testData.ExpectReset {
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
+			} else {
+				for _, msg := range logMessages {
+					require.NotContains(t, msg, "Link was previously detached")
+				}
+			}
+		})
+	}
+}
+
+func TestAMQPLinks_Logging(t *testing.T) {
+	t.Run("link", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return nil, receiver, nil
+		})
+
+		var messages []string
+
+		cleanup := test.CaptureLogsForTest(&messages)
+		defer cleanup()
+
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.DetachError{})
+		require.NoError(t, err)
+
+		require.Equal(t, []string{
+			"[azsb.Conn] Recovering link for error link detached, reason: *Error(nil)",
+			"[azsb.Conn] Recovering link only",
+			"[azsb.Conn] Recovered links",
+		}, messages)
+	})
+
+	t.Run("connection", func(t *testing.T) {
+		receiver := &FakeAMQPReceiver{}
+		ns := &FakeNS{}
+
+		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return nil, receiver, nil
+		})
+
+		var messages []string
+
+		cleanup := test.CaptureLogsForTest(&messages)
+		defer cleanup()
+
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+		require.NoError(t, err)
+
+		require.Equal(t, []string{
+			"[azsb.Conn] Recovering link for error amqp: connection closed",
+			"[azsb.Conn] Recovering connection (and links)",
+			"[azsb.Conn] recreating link: c: true, current:{0 0}, old:{0 0}", "[azsb.Conn] Recovered connection and links",
+		}, messages)
+	})
+}
+
 func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 	receiveMode := amqp.ModeSecond
 
@@ -388,10 +581,4 @@ func newLinksForAMQPLinksTest(entityPath string, session AMQPSession) (AMQPSende
 	}
 
 	return sender, receiver, nil
-}
-
-func enableLogging() {
-	azlog.SetListener(func(e azlog.Event, s string) {
-		log.Printf("%s %s", e, s)
-	})
 }

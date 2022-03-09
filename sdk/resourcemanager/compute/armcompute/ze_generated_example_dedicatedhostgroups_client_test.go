@@ -12,12 +12,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateADedicatedHostGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateADedicatedHostGroup.json
 func ExampleDedicatedHostGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +49,73 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.DedicatedHostGroupsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetADedicatedHostGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Update_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewDedicatedHostGroupsClient("<subscription-id>", cred, nil)
+	res, err := client.Update(ctx,
+		"<resource-group-name>",
+		"<host-group-name>",
+		armcompute.DedicatedHostGroupUpdate{
+			Tags: map[string]*string{
+				"key9921": to.StringPtr("aaaaaaaaaa"),
+			},
+			Properties: &armcompute.DedicatedHostGroupProperties{
+				InstanceView: &armcompute.DedicatedHostGroupInstanceView{
+					Hosts: []*armcompute.DedicatedHostInstanceViewWithName{
+						{
+							AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
+								AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
+									{
+										Count:  to.Float64Ptr(26),
+										VMSize: to.StringPtr("<vmsize>"),
+									}},
+							},
+							Statuses: []*armcompute.InstanceViewStatus{
+								{
+									Code:          to.StringPtr("<code>"),
+									DisplayStatus: to.StringPtr("<display-status>"),
+									Level:         armcompute.StatusLevelTypesInfo.ToPtr(),
+									Message:       to.StringPtr("<message>"),
+									Time:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+								}},
+						}},
+				},
+				PlatformFaultDomainCount:  to.Int32Ptr(3),
+				SupportAutomaticPlacement: to.BoolPtr(true),
+			},
+			Zones: []*string{
+				to.StringPtr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.DedicatedHostGroupsClientUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Delete_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewDedicatedHostGroupsClient("<subscription-id>", cred, nil)
+	_, err = client.Delete(ctx,
+		"<resource-group-name>",
+		"<host-group-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetADedicatedHostGroup.json
 func ExampleDedicatedHostGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,4 +131,51 @@ func ExampleDedicatedHostGroupsClient_Get() {
 		log.Fatal(err)
 	}
 	log.Printf("Response result: %#v\n", res.DedicatedHostGroupsClientGetResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_ListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewDedicatedHostGroupsClient("<subscription-id>", cred, nil)
+	pager := client.ListByResourceGroup("<resource-group-name>",
+		nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListBySubscription_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_ListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewDedicatedHostGroupsClient("<subscription-id>", cred, nil)
+	pager := client.ListBySubscription(nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
 }

@@ -78,44 +78,80 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 	}
 }
 
-// KeyCurveName - Elliptic curve name. For valid values, see KeyCurveName.
-type KeyCurveName string
+// PossibleDeletionRecoveryLevelValues provides a slice of all possible DeletionRecoveryLevels
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return []DeletionRecoveryLevel{
+		DeletionRecoveryLevelCustomizedRecoverable,
+		DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription,
+		DeletionRecoveryLevelCustomizedRecoverablePurgeable,
+		DeletionRecoveryLevelPurgeable,
+		DeletionRecoveryLevelRecoverable,
+		DeletionRecoveryLevelRecoverableProtectedSubscription,
+		DeletionRecoveryLevelRecoverablePurgeable,
+	}
+}
+
+// CurveName - Elliptic curve name. For valid values, see PossibleCurveNameValues.
+type CurveName string
 
 const (
-	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	KeyCurveNameP256 KeyCurveName = "P-256"
+	// CurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	CurveNameP256 CurveName = "P-256"
 
-	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	KeyCurveNameP256K KeyCurveName = "P-256K"
+	// CurveNameP256K - The SECG SECP256K1 elliptic curve.
+	CurveNameP256K CurveName = "P-256K"
 
-	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	KeyCurveNameP384 KeyCurveName = "P-384"
+	// CurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	CurveNameP384 CurveName = "P-384"
 
-	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	KeyCurveNameP521 KeyCurveName = "P-521"
+	// CurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	CurveNameP521 CurveName = "P-521"
 )
 
-// ToPtr returns a *KeyCurveName pointing to the current value.
-func (c KeyCurveName) ToPtr() *KeyCurveName {
+// ToPtr returns a *CurveName pointing to the current value.
+func (c CurveName) ToPtr() *CurveName {
 	return &c
 }
 
-// KeyOperation - JSON web key operations. For more information, see KeyOperation.
-type KeyOperation string
+// PossibleCurveNameValues provides a slice of all possible CurveNames
+func PossibleCurveNameValues() []CurveName {
+	return []CurveName{
+		CurveNameP256,
+		CurveNameP256K,
+		CurveNameP384,
+		CurveNameP521,
+	}
+}
+
+// Operation - JSON web key operations. For more information, see Operation.
+type Operation string
 
 const (
-	KeyOperationDecrypt   KeyOperation = "decrypt"
-	KeyOperationEncrypt   KeyOperation = "encrypt"
-	KeyOperationImport    KeyOperation = "import"
-	KeyOperationSign      KeyOperation = "sign"
-	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
-	KeyOperationVerify    KeyOperation = "verify"
-	KeyOperationWrapKey   KeyOperation = "wrapKey"
+	OperationDecrypt   Operation = "decrypt"
+	OperationEncrypt   Operation = "encrypt"
+	OperationImport    Operation = "import"
+	OperationSign      Operation = "sign"
+	OperationUnwrapKey Operation = "unwrapKey"
+	OperationVerify    Operation = "verify"
+	OperationWrapKey   Operation = "wrapKey"
 )
 
 // ToPtr returns a *KeyOperation pointing to the current value.
-func (c KeyOperation) ToPtr() *KeyOperation {
+func (c Operation) ToPtr() *Operation {
 	return &c
+}
+
+// PossibleOperationValues provides a slice of all possible Operations
+func PossibleOperationValues() []Operation {
+	return []Operation{
+		OperationDecrypt,
+		OperationEncrypt,
+		OperationImport,
+		OperationSign,
+		OperationUnwrapKey,
+		OperationVerify,
+		OperationWrapKey,
+	}
 }
 
 // ActionType - The type of the action.
@@ -133,16 +169,77 @@ func (c ActionType) ToPtr() *ActionType {
 	return &c
 }
 
-// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type KeyEncryptionAlgorithm string
+// PossibleActionTypeValues provides a slice of all possible ActionTypes
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeRotate,
+		ActionTypeNotify,
+	}
+}
+
+// ExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type ExportEncryptionAlgorithm string
 
 const (
-	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	ExportEncryptionAlgorithmCKMRSAAESKEYWRAP ExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP256 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP384 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
 
-// ToPtr returns a *KeyEncryptionAlgorithm pointing to the current value.
-func (c KeyEncryptionAlgorithm) ToPtr() *KeyEncryptionAlgorithm {
+// ToPtr returns a *ExportEncryptionAlgorithm pointing to the current value.
+func (c ExportEncryptionAlgorithm) ToPtr() *ExportEncryptionAlgorithm {
 	return &c
+}
+
+// PossibleExportEncryptionAlgorithmValues provides a slice of all possible ExportEncryptionAlgorithms
+func PossibleExportEncryptionAlgorithmValues() []ExportEncryptionAlgorithm {
+	return []ExportEncryptionAlgorithm{
+		ExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP256,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP384,
+	}
+}
+
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type KeyType string
+
+const (
+	// EC - Elliptic Curve.
+	KeyTypeEC KeyType = "EC"
+
+	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
+	KeyTypeECHSM KeyType = "EC-HSM"
+
+	// Oct - Octet sequence (used to represent symmetric keys)
+	KeyTypeOct KeyType = "oct"
+
+	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
+	KeyTypeOctHSM KeyType = "oct-HSM"
+
+	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
+	KeyTypeRSA KeyType = "RSA"
+
+	// RSAHSM - RSA with a private key which is not exportable from the HSM.
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
+)
+
+func (k KeyType) ToPtr() *KeyType {
+	return &k
+}
+
+// PossibleKeyTypeValues provides a slice of all possible KeyTypes
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeOct,
+		KeyTypeOctHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
+	}
+}
+
+// convert KeyType to *generated.JSONWebKeyType
+func (j KeyType) toGenerated() *generated.JSONWebKeyType {
+	return generated.JSONWebKeyType(j).ToPtr()
 }

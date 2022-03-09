@@ -5,6 +5,7 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"math"
 	"math/rand"
 	"time"
@@ -16,6 +17,9 @@ import (
 const EventRetry = "azsb.Retry"
 
 type RetryFnArgs struct {
+	// I is the iteration of the retry "loop" and starts at 0.
+	// The 0th iteration is the first call, and doesn't count as a retry.
+	// The last try will equal RetryOptions.MaxRetries
 	I int32
 	// LastErr is the returned error from the previous loop.
 	// If you have potentially expensive
@@ -24,11 +28,8 @@ type RetryFnArgs struct {
 	resetAttempts bool
 }
 
-// ResetAttempts causes the current retry attempt number to be reset
-// in time for the next recovery (should we fail).
-// NOTE: Use of this should be pretty rare, it's really only needed when you have
-// a situation like Receiver.ReceiveMessages() that can recovery but intentionally
-// does not return.
+// ResetAttempts resets all Retry() attempts, starting back
+// at iteration 0.
 func (rf *RetryFnArgs) ResetAttempts() {
 	rf.resetAttempts = true
 }
@@ -60,12 +61,22 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 
 		if args.resetAttempts {
 			log.Writef(EventRetry, "(%s) Resetting attempts", name)
-			i = int32(0)
+
+			// it looks weird, but we're doing -1 here because the post-increment
+			// will set it back to 0, which is what we want - go back to the 0th
+			// iteration so we don't sleep before the attempt.
+			//
+			// You'll use this when you want to get another "fast" retry attempt.
+			i = int32(-1)
 		}
 
 		if err != nil {
 			if isFatalFn(err) {
-				log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+					log.Writef(EventRetry, "(%s) Attempt %d was cancelled, stopping: %s", name, i, err.Error())
+				} else {
+					log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+				}
 				return err
 			} else {
 				log.Writef(EventRetry, "(%s) Attempt %d returned retryable error: %s", name, i, err.Error())

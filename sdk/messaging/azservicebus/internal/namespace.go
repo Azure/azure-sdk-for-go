@@ -69,6 +69,7 @@ type NamespaceForAMQPLinks interface {
 	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, error)
 	GetEntityAudience(entityPath string) string
 	Recover(ctx context.Context, clientRevision uint64) (bool, error)
+	Close(ctx context.Context) error
 }
 
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string

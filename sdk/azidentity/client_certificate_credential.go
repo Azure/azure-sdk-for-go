@@ -63,7 +63,6 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		logCredentialError(credNameCert, err)
 		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
@@ -100,7 +99,6 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(credNameCert, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}
 	logGetTokenSuccess(c, opts)

@@ -10,7 +10,7 @@ package armservicefabric
 
 const (
 	moduleName    = "armservicefabric"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AddOnFeatures - Available cluster add-on features
@@ -191,6 +191,26 @@ func (c ClusterUpgradeCadence) ToPtr() *ClusterUpgradeCadence {
 	return &c
 }
 
+type ClusterVersionsEnvironment string
+
+const (
+	ClusterVersionsEnvironmentLinux   ClusterVersionsEnvironment = "Linux"
+	ClusterVersionsEnvironmentWindows ClusterVersionsEnvironment = "Windows"
+)
+
+// PossibleClusterVersionsEnvironmentValues returns the possible values for the ClusterVersionsEnvironment const type.
+func PossibleClusterVersionsEnvironmentValues() []ClusterVersionsEnvironment {
+	return []ClusterVersionsEnvironment{
+		ClusterVersionsEnvironmentLinux,
+		ClusterVersionsEnvironmentWindows,
+	}
+}
+
+// ToPtr returns a *ClusterVersionsEnvironment pointing to the current value.
+func (c ClusterVersionsEnvironment) ToPtr() *ClusterVersionsEnvironment {
+	return &c
+}
+
 // DurabilityLevel - The durability level of the node type. Learn about DurabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
 // * Bronze - No privileges. This is the default.
 // * Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
@@ -215,26 +235,6 @@ func PossibleDurabilityLevelValues() []DurabilityLevel {
 
 // ToPtr returns a *DurabilityLevel pointing to the current value.
 func (c DurabilityLevel) ToPtr() *DurabilityLevel {
-	return &c
-}
-
-type Enum14 string
-
-const (
-	Enum14Linux   Enum14 = "Linux"
-	Enum14Windows Enum14 = "Windows"
-)
-
-// PossibleEnum14Values returns the possible values for the Enum14 const type.
-func PossibleEnum14Values() []Enum14 {
-	return []Enum14{
-		Enum14Linux,
-		Enum14Windows,
-	}
-}
-
-// ToPtr returns a *Enum14 pointing to the current value.
-func (c Enum14) ToPtr() *Enum14 {
 	return &c
 }
 

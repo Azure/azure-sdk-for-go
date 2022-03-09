@@ -3,6 +3,7 @@
 ## 0.9.2 (Unreleased)
 
 ### Features Added
+* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
 
 ### Breaking Changes
 

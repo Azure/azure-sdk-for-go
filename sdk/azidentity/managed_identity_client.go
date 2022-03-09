@@ -140,7 +140,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	c.pipeline = runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
 
 	if log.Should(EventAuthentication) {
-		log.Writef(EventAuthentication, "Azure Identity => Managed Identity Credential will use %s managed identity", env)
+		log.Writef(EventAuthentication, "Managed Identity Credential will use %s managed identity", env)
 	}
 
 	return &c, nil

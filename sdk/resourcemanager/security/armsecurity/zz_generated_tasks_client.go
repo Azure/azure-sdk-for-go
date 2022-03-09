@@ -323,7 +323,7 @@ func (client *TasksClient) listByResourceGroupHandleResponse(resp *http.Response
 // taskUpdateActionType - Type of the action to do on the task
 // options - TasksClientUpdateResourceGroupLevelTaskStateOptions contains the optional parameters for the TasksClient.UpdateResourceGroupLevelTaskState
 // method.
-func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum16, options *TasksClientUpdateResourceGroupLevelTaskStateOptions) (TasksClientUpdateResourceGroupLevelTaskStateResponse, error) {
+func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateResourceGroupLevelTaskStateOptions) (TasksClientUpdateResourceGroupLevelTaskStateResponse, error) {
 	req, err := client.updateResourceGroupLevelTaskStateCreateRequest(ctx, resourceGroupName, taskName, taskUpdateActionType, options)
 	if err != nil {
 		return TasksClientUpdateResourceGroupLevelTaskStateResponse{}, err
@@ -339,7 +339,7 @@ func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context
 }
 
 // updateResourceGroupLevelTaskStateCreateRequest creates the UpdateResourceGroupLevelTaskState request.
-func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum16, options *TasksClientUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +378,7 @@ func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx co
 // taskUpdateActionType - Type of the action to do on the task
 // options - TasksClientUpdateSubscriptionLevelTaskStateOptions contains the optional parameters for the TasksClient.UpdateSubscriptionLevelTaskState
 // method.
-func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context, taskName string, taskUpdateActionType Enum16, options *TasksClientUpdateSubscriptionLevelTaskStateOptions) (TasksClientUpdateSubscriptionLevelTaskStateResponse, error) {
+func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateSubscriptionLevelTaskStateOptions) (TasksClientUpdateSubscriptionLevelTaskStateResponse, error) {
 	req, err := client.updateSubscriptionLevelTaskStateCreateRequest(ctx, taskName, taskUpdateActionType, options)
 	if err != nil {
 		return TasksClientUpdateSubscriptionLevelTaskStateResponse{}, err
@@ -394,7 +394,7 @@ func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context,
 }
 
 // updateSubscriptionLevelTaskStateCreateRequest creates the UpdateSubscriptionLevelTaskState request.
-func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType Enum16, options *TasksClientUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

@@ -17,7 +17,54 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAnSshPublicKey.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_ListBySubscription_MaximumSet_Gen.json
+func ExampleSSHPublicKeysClient_ListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewSSHPublicKeysClient("<subscription-id>", cred, nil)
+	pager := client.ListBySubscription(nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleSSHPublicKeysClient_ListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewSSHPublicKeysClient("<subscription-id>", cred, nil)
+	pager := client.ListByResourceGroup("<resource-group-name>",
+		nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnSshPublicKey.json
 func ExampleSSHPublicKeysClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +88,50 @@ func ExampleSSHPublicKeysClient_Create() {
 	log.Printf("Response result: %#v\n", res.SSHPublicKeysClientCreateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetAnSshPublicKey.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Update_MaximumSet_Gen.json
+func ExampleSSHPublicKeysClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewSSHPublicKeysClient("<subscription-id>", cred, nil)
+	res, err := client.Update(ctx,
+		"<resource-group-name>",
+		"<ssh-public-key-name>",
+		armcompute.SSHPublicKeyUpdateResource{
+			Tags: map[string]*string{
+				"key2854": to.StringPtr("a"),
+			},
+			Properties: &armcompute.SSHPublicKeyResourceProperties{
+				PublicKey: to.StringPtr("<public-key>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.SSHPublicKeysClientUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Delete_MaximumSet_Gen.json
+func ExampleSSHPublicKeysClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewSSHPublicKeysClient("<subscription-id>", cred, nil)
+	_, err = client.Delete(ctx,
+		"<resource-group-name>",
+		"<ssh-public-key-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetAnSshPublicKey.json
 func ExampleSSHPublicKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +149,7 @@ func ExampleSSHPublicKeysClient_Get() {
 	log.Printf("Response result: %#v\n", res.SSHPublicKeysClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GenerateSshKeyPair.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GenerateSshKeyPair.json
 func ExampleSSHPublicKeysClient_GenerateKeyPair() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

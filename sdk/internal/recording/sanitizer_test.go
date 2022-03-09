@@ -711,3 +711,60 @@ func TestResetSanitizers(t *testing.T) {
 
 	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 }
+
+func TestSingleTestSanitizer(t *testing.T) {
+	err := ResetProxy(nil)
+	require.NoError(t, err)
+
+	// The first iteration, add a sanitizer for just that test. The
+	// second iteration, verify that the sanitizer was not applied.
+	for i := 0; i < 2; i++ {
+		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
+			err = Start(t, packagePath, nil)
+			require.NoError(t, err)
+
+			if i == 0 {
+				// The first time we'll set a per-test sanitizer
+				// Add a sanitizer
+				err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
+				require.NoError(t, err)
+			}
+
+			srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
+			client, err := GetHTTPClient(t)
+			require.NoError(t, err)
+
+			req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+			require.NoError(t, err)
+
+			req.Header.Set(UpstreamURIHeader, srvURL)
+			req.Header.Set(ModeHeader, GetRecordMode())
+			req.Header.Set(IDHeader, GetRecordingId(t))
+			req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
+
+			_, err = client.Do(req)
+			require.NoError(t, err)
+
+			err = Stop(t, nil)
+			require.NoError(t, err)
+
+			// Read the file
+			jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+			require.NoError(t, err)
+			defer jsonFile.Close()
+
+			var data RecordingFileStruct
+			byteValue, err := ioutil.ReadAll(jsonFile)
+			require.NoError(t, err)
+			err = json.Unmarshal(byteValue, &data)
+			require.NoError(t, err)
+
+			if i == 0 {
+				require.NotContains(t, data.Entries[0].RequestHeaders, "fakestoragelocation")
+			} else {
+				require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+			}
+		})
+	}
+}

@@ -5,10 +5,12 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
@@ -138,11 +140,22 @@ type GetSubscriptionOptions struct {
 }
 
 // GetSubscription gets a subscription by name.
+// If the entity does not exist this function will return a nil GetSubscriptionResponse and a nil error.
 func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionOptions) (*GetSubscriptionResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
+		var respError *azcore.ResponseError
+
+		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
@@ -175,11 +188,22 @@ type GetSubscriptionRuntimePropertiesOptions struct {
 }
 
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
+// If the entity does not exist this function will return a nil GetSubscriptionRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionRuntimePropertiesOptions) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
+		var respError *azcore.ResponseError
+
+		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 

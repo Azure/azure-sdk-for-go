@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateACapacityReservation.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateACapacityReservation.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,75 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.CapacityReservationsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetACapacityReservation.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservations_Update_MaximumSet_Gen.json
+func ExampleCapacityReservationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginUpdate(ctx,
+		"<resource-group-name>",
+		"<capacity-reservation-group-name>",
+		"<capacity-reservation-name>",
+		armcompute.CapacityReservationUpdate{
+			Tags: map[string]*string{
+				"key4974": to.StringPtr("aaaaaaaaaaaaaaaa"),
+			},
+			Properties: &armcompute.CapacityReservationProperties{
+				InstanceView: &armcompute.CapacityReservationInstanceView{
+					Statuses: []*armcompute.InstanceViewStatus{
+						{
+							Code:          to.StringPtr("<code>"),
+							DisplayStatus: to.StringPtr("<display-status>"),
+							Level:         armcompute.StatusLevelTypesInfo.ToPtr(),
+							Message:       to.StringPtr("<message>"),
+							Time:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+						}},
+					UtilizationInfo: &armcompute.CapacityReservationUtilization{},
+				},
+			},
+			SKU: &armcompute.SKU{
+				Name:     to.StringPtr("<name>"),
+				Capacity: to.Int64Ptr(7),
+				Tier:     to.StringPtr("<tier>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.CapacityReservationsClientUpdateResult)
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservations_Delete_MaximumSet_Gen.json
+func ExampleCapacityReservationsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginDelete(ctx,
+		"<resource-group-name>",
+		"<capacity-reservation-group-name>",
+		"<capacity-reservation-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetACapacityReservation.json
 func ExampleCapacityReservationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +141,7 @@ func ExampleCapacityReservationsClient_Get() {
 	log.Printf("Response result: %#v\n", res.CapacityReservationsClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListCapacityReservationsInReservationGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListCapacityReservationsInReservationGroup.json
 func ExampleCapacityReservationsClient_ListByCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

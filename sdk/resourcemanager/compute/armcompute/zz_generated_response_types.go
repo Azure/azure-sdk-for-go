@@ -1399,6 +1399,52 @@ type DedicatedHostsClientListByHostGroupResult struct {
 	DedicatedHostListResult
 }
 
+// DedicatedHostsClientRestartPollerResponse contains the response from method DedicatedHostsClient.Restart.
+type DedicatedHostsClientRestartPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *DedicatedHostsClientRestartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DedicatedHostsClientRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostsClientRestartResponse, error) {
+	respType := DedicatedHostsClientRestartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a DedicatedHostsClientRestartPollerResponse from the provided client and resume token.
+func (l *DedicatedHostsClientRestartPollerResponse) Resume(ctx context.Context, client *DedicatedHostsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DedicatedHostsClient.Restart", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &DedicatedHostsClientRestartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// DedicatedHostsClientRestartResponse contains the response from method DedicatedHostsClient.Restart.
+type DedicatedHostsClientRestartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // DedicatedHostsClientUpdatePollerResponse contains the response from method DedicatedHostsClient.Update.
 type DedicatedHostsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.

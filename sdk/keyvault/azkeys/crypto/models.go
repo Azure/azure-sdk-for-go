@@ -18,7 +18,7 @@ type KeyOperationResult struct {
 	IV []byte `json:"iv,omitempty" azure:"ro"`
 
 	// READ-ONLY; Key identifier
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
+	ID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	Result []byte `json:"value,omitempty" azure:"ro"`

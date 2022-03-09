@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.6 (Unreleased)
+## 0.3.7 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,22 @@
 
 ### Bugs Fixed
 
-- Fix connection recovery in situations where network errors bubble up from go-amqp (#17048)
-
 ### Other Changes
+
+## 0.3.6 (2022-03-08)
+
+### Bugs Fixed
+
+- Fix connection recovery in situations where network errors bubble up from go-amqp. (#17048)
+- Quicker reattach for idle links. (#17205)
+- Quick exit on receiver reconnects to avoid potentially returning duplicate messages. (#17157)
+
+### Breaking Changes
+
+- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#17229)
+  - GetQueue, GetQueueRuntimeProperties
+  - GetTopic, GetTopicRuntimeProperties
+  - GetSubscription, GetSubscriptionRuntimeProperties
 
 ## 0.3.5 (2022-02-10)
 

@@ -419,32 +419,7 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-type feedEmptyError struct {
-	response *http.Response
-}
-
-func (e feedEmptyError) RawResponse() *http.Response {
-	return e.response
-}
-func (e feedEmptyError) Error() string {
-	return "entity does not exist"
-}
-
-func NotFound(err error) (bool, *http.Response) {
-	var feedEmptyError feedEmptyError
-
-	if errors.As(err, &feedEmptyError) {
-		return true, feedEmptyError.RawResponse()
-	}
-
-	return false, nil
-}
-
-func isEmptyFeed(b []byte) bool {
-	var emptyFeed QueueFeed
-	feedErr := xml.Unmarshal(b, &emptyFeed)
-	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
-}
+var ErrFeedEmpty = errors.New("entity does not exist")
 
 // ptrString takes a string and returns a pointer to that string. For use in literal pointers,
 // ptrString(fmt.Sprintf("..", foo)) -> *string
@@ -452,6 +427,9 @@ func ptrString(toPtr string) *string {
 	return &toPtr
 }
 
+// deserializeBody deserializes the body of the response into the type specified by respObj
+// (similar to xml.Unmarshal, which this func is calling).
+// If an empty feed is found, it returns nil.
 func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, error) {
 	bytes, err := ioutil.ReadAll(resp.Body)
 
@@ -460,10 +438,18 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 	}
 
 	if err := xml.Unmarshal(bytes, respObj); err != nil {
-		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
-		// check:
-		if isEmptyFeed(bytes) {
-			return nil, feedEmptyError{response: resp}
+		// In ATOM when you request a specific entity (queue, topic, sub) you typically get an
+		// <Entry>. However, if the entity is not found, instead of getting a 404 you actually
+		// get a <Feed> XML object that is empty and an HTTP status code of 200.
+		//
+		// So the combination of "can't deserialize object" and "it's an empty feed" are enough
+		// for us to note that we weren't expecting a feed (ie, GET /queue) and that the feed
+		// itself is the special "empty feed".
+		var emptyFeed QueueFeed
+		feedErr := xml.Unmarshal(bytes, &emptyFeed)
+
+		if feedErr == nil && emptyFeed.Title == "Publicly Listed Services" {
+			return resp, ErrFeedEmpty
 		}
 
 		return resp, err

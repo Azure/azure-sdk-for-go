@@ -12,7 +12,7 @@ package resourcehealth
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
+	original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2020-05-01/resourcehealth"
 )
 
 const (
@@ -22,32 +22,25 @@ const (
 type AvailabilityStateValues = original.AvailabilityStateValues
 
 const (
-	Available   AvailabilityStateValues = original.Available
-	Unavailable AvailabilityStateValues = original.Unavailable
-	Unknown     AvailabilityStateValues = original.Unknown
+	AvailabilityStateValuesAvailable   AvailabilityStateValues = original.AvailabilityStateValuesAvailable
+	AvailabilityStateValuesDegraded    AvailabilityStateValues = original.AvailabilityStateValuesDegraded
+	AvailabilityStateValuesUnavailable AvailabilityStateValues = original.AvailabilityStateValuesUnavailable
+	AvailabilityStateValuesUnknown     AvailabilityStateValues = original.AvailabilityStateValuesUnknown
 )
 
 type ReasonChronicityTypes = original.ReasonChronicityTypes
 
 const (
-	Persistent ReasonChronicityTypes = original.Persistent
-	Transient  ReasonChronicityTypes = original.Transient
+	ReasonChronicityTypesPersistent ReasonChronicityTypes = original.ReasonChronicityTypesPersistent
+	ReasonChronicityTypesTransient  ReasonChronicityTypes = original.ReasonChronicityTypesTransient
 )
 
-type SeverityValues = original.SeverityValues
+type ReasonTypeValues = original.ReasonTypeValues
 
 const (
-	Error       SeverityValues = original.Error
-	Information SeverityValues = original.Information
-	Warning     SeverityValues = original.Warning
-)
-
-type StageValues = original.StageValues
-
-const (
-	Active   StageValues = original.Active
-	Archived StageValues = original.Archived
-	Resolve  StageValues = original.Resolve
+	ReasonTypeValuesPlanned       ReasonTypeValues = original.ReasonTypeValuesPlanned
+	ReasonTypeValuesUnplanned     ReasonTypeValues = original.ReasonTypeValuesUnplanned
+	ReasonTypeValuesUserInitiated ReasonTypeValues = original.ReasonTypeValuesUserInitiated
 )
 
 type AvailabilityStatus = original.AvailabilityStatus
@@ -55,21 +48,15 @@ type AvailabilityStatusListResult = original.AvailabilityStatusListResult
 type AvailabilityStatusListResultIterator = original.AvailabilityStatusListResultIterator
 type AvailabilityStatusListResultPage = original.AvailabilityStatusListResultPage
 type AvailabilityStatusProperties = original.AvailabilityStatusProperties
-type AvailabilityStatusPropertiesRecentlyResolvedState = original.AvailabilityStatusPropertiesRecentlyResolvedState
+type AvailabilityStatusPropertiesRecentlyResolved = original.AvailabilityStatusPropertiesRecentlyResolved
 type AvailabilityStatusesClient = original.AvailabilityStatusesClient
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
-type ChildAvailabilityStatusesClient = original.ChildAvailabilityStatusesClient
-type ChildResourcesClient = original.ChildResourcesClient
-type EmergingIssue = original.EmergingIssue
-type EmergingIssueImpact = original.EmergingIssueImpact
-type EmergingIssueListResult = original.EmergingIssueListResult
-type EmergingIssueListResultIterator = original.EmergingIssueListResultIterator
-type EmergingIssueListResultPage = original.EmergingIssueListResultPage
-type EmergingIssuesClient = original.EmergingIssuesClient
-type EmergingIssuesGetResult = original.EmergingIssuesGetResult
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
 type ImpactedRegion = original.ImpactedRegion
+type ImpactedResourceStatus = original.ImpactedResourceStatus
+type ImpactedResourceStatusProperties = original.ImpactedResourceStatusProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -80,7 +67,6 @@ type Resource = original.Resource
 type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
-type StatusActiveEvent = original.StatusActiveEvent
 type StatusBanner = original.StatusBanner
 type TrackedResource = original.TrackedResource
 
@@ -99,30 +85,6 @@ func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesCl
 func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
 	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewChildAvailabilityStatusesClient(subscriptionID string) ChildAvailabilityStatusesClient {
-	return original.NewChildAvailabilityStatusesClient(subscriptionID)
-}
-func NewChildAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) ChildAvailabilityStatusesClient {
-	return original.NewChildAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
-	return original.NewChildResourcesClient(subscriptionID)
-}
-func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
-	return original.NewChildResourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEmergingIssueListResultIterator(page EmergingIssueListResultPage) EmergingIssueListResultIterator {
-	return original.NewEmergingIssueListResultIterator(page)
-}
-func NewEmergingIssueListResultPage(cur EmergingIssueListResult, getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
-	return original.NewEmergingIssueListResultPage(cur, getNextPage)
-}
-func NewEmergingIssuesClient(subscriptionID string) EmergingIssuesClient {
-	return original.NewEmergingIssuesClient(subscriptionID)
-}
-func NewEmergingIssuesClientWithBaseURI(baseURI string, subscriptionID string) EmergingIssuesClient {
-	return original.NewEmergingIssuesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -138,11 +100,8 @@ func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return original.PossibleReasonChronicityTypesValues()
 }
-func PossibleSeverityValuesValues() []SeverityValues {
-	return original.PossibleSeverityValuesValues()
-}
-func PossibleStageValuesValues() []StageValues {
-	return original.PossibleStageValuesValues()
+func PossibleReasonTypeValuesValues() []ReasonTypeValues {
+	return original.PossibleReasonTypeValuesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

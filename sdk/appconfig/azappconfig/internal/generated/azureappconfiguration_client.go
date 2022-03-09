@@ -22,9 +22,9 @@ import (
 // AzureAppConfigurationClient contains the methods for the AzureAppConfiguration group.
 // Don't use this type directly, use NewAzureAppConfigurationClient() instead.
 type AzureAppConfigurationClient struct {
-	endpoint string
+	endpoint  string
 	syncToken *string
-	Pl runtime.Pipeline
+	Pl        runtime.Pipeline
 }
 
 // NewAzureAppConfigurationClient creates a new instance of AzureAppConfigurationClient with the specified values.
@@ -33,9 +33,9 @@ type AzureAppConfigurationClient struct {
 // pl - the pipeline used for sending requests and handling responses.
 func NewAzureAppConfigurationClient(endpoint string, syncToken *string, pl runtime.Pipeline) *AzureAppConfigurationClient {
 	client := &AzureAppConfigurationClient{
-		endpoint: endpoint,
+		endpoint:  endpoint,
 		syncToken: syncToken,
-		Pl: pl,
+		Pl:        pl,
 	}
 	return client
 }
@@ -542,7 +542,7 @@ func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeyValues
 // method.
-func (client *AzureAppConfigurationClient) GetKeyValues(options *AzureAppConfigurationClientGetKeyValuesOptions) (*AzureAppConfigurationClientGetKeyValuesPager) {
+func (client *AzureAppConfigurationClient) GetKeyValues(options *AzureAppConfigurationClientGetKeyValuesOptions) *AzureAppConfigurationClientGetKeyValuesPager {
 	return &AzureAppConfigurationClientGetKeyValuesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -602,7 +602,7 @@ func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeys
 // method.
-func (client *AzureAppConfigurationClient) GetKeys(options *AzureAppConfigurationClientGetKeysOptions) (*AzureAppConfigurationClientGetKeysPager) {
+func (client *AzureAppConfigurationClient) GetKeys(options *AzureAppConfigurationClientGetKeysOptions) *AzureAppConfigurationClientGetKeysPager {
 	return &AzureAppConfigurationClientGetKeysPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -656,7 +656,7 @@ func (client *AzureAppConfigurationClient) getKeysHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetLabelsOptions contains the optional parameters for the AzureAppConfigurationClient.GetLabels
 // method.
-func (client *AzureAppConfigurationClient) GetLabels(options *AzureAppConfigurationClientGetLabelsOptions) (*AzureAppConfigurationClientGetLabelsPager) {
+func (client *AzureAppConfigurationClient) GetLabels(options *AzureAppConfigurationClientGetLabelsOptions) *AzureAppConfigurationClientGetLabelsPager {
 	return &AzureAppConfigurationClientGetLabelsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -713,7 +713,7 @@ func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.GetRevisions
 // method.
-func (client *AzureAppConfigurationClient) GetRevisions(options *AzureAppConfigurationClientGetRevisionsOptions) (*AzureAppConfigurationClientGetRevisionsPager) {
+func (client *AzureAppConfigurationClient) GetRevisions(options *AzureAppConfigurationClientGetRevisionsOptions) *AzureAppConfigurationClientGetRevisionsPager {
 	return &AzureAppConfigurationClientGetRevisionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -901,4 +901,3 @@ func (client *AzureAppConfigurationClient) putLockHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
-

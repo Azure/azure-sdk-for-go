@@ -224,4 +224,3 @@ type AzureAppConfigurationClientPutLockResult struct {
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
-

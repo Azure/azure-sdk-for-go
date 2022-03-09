@@ -238,16 +238,16 @@ func (k KeyListResult) MarshalJSON() ([]byte, error) {
 }
 
 type KeyValue struct {
-	ContentType *string `json:"content_type,omitempty"`
-	Etag *string `json:"etag,omitempty"`
-	Key *string `json:"key,omitempty"`
-	Label *string `json:"label,omitempty"`
+	ContentType  *string    `json:"content_type,omitempty"`
+	Etag         *string    `json:"etag,omitempty"`
+	Key          *string    `json:"key,omitempty"`
+	Label        *string    `json:"label,omitempty"`
 	LastModified *time.Time `json:"last_modified,omitempty"`
-	Locked *bool `json:"locked,omitempty"`
+	Locked       *bool      `json:"locked,omitempty"`
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Tags  map[string]*string `json:"tags,omitempty"`
+	Value *string            `json:"value,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyValue.
@@ -274,29 +274,29 @@ func (k *KeyValue) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "content_type":
-				err = unpopulate(val, &k.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.ContentType)
+			delete(rawMsg, key)
 		case "etag":
-				err = unpopulate(val, &k.Etag)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Etag)
+			delete(rawMsg, key)
 		case "key":
-				err = unpopulate(val, &k.Key)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Key)
+			delete(rawMsg, key)
 		case "label":
-				err = unpopulate(val, &k.Label)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Label)
+			delete(rawMsg, key)
 		case "last_modified":
-				err = unpopulateTimeRFC3339(val, &k.LastModified)
-				delete(rawMsg, key)
+			err = unpopulateTimeRFC3339(val, &k.LastModified)
+			delete(rawMsg, key)
 		case "locked":
-				err = unpopulate(val, &k.Locked)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Locked)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &k.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Tags)
+			delete(rawMsg, key)
 		case "value":
-				err = unpopulate(val, &k.Value)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Value)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -360,4 +360,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

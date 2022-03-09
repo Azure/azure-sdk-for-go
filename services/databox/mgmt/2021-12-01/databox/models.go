@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2021-12-01/databox"
 
 // AccountCopyLogDetails copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
@@ -28,7 +28,7 @@ type AccountCopyLogDetails struct {
 	CopyLogLink *string `json:"copyLogLink,omitempty"`
 	// CopyVerboseLogLink - READ-ONLY; Link for copy verbose logs. This will be set only when LogCollectionLevel is set to Verbose.
 	CopyVerboseLogLink *string `json:"copyVerboseLogLink,omitempty"`
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxCustomerDisk', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
@@ -45,6 +45,11 @@ func (acld AccountCopyLogDetails) MarshalJSON() ([]byte, error) {
 // AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for AccountCopyLogDetails.
 func (acld AccountCopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
 	return &acld, true
+}
+
+// AsCustomerDiskCopyLogDetails is the BasicCopyLogDetails implementation for AccountCopyLogDetails.
+func (acld AccountCopyLogDetails) AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool) {
+	return nil, false
 }
 
 // AsDiskCopyLogDetails is the BasicCopyLogDetails implementation for AccountCopyLogDetails.
@@ -85,12 +90,13 @@ func (acd AccountCredentialDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AdditionalErrorInfo additional error info.
+// AdditionalErrorInfo this class represents additional info which Resource Providers pass when an error
+// occurs.
 type AdditionalErrorInfo struct {
-	// Type - Additional error type.
-	Type *string `json:"type,omitempty"`
-	// Info - Additional error info.
+	// Info - Additional information of the type of error.
 	Info interface{} `json:"info,omitempty"`
+	// Type - Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
+	Type *string `json:"type,omitempty"`
 }
 
 // AddressValidationOutput output of the address validation api.
@@ -433,18 +439,18 @@ type CancellationReason struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-// CloudError cloud error.
+// CloudError provides additional information about an http error response.
 type CloudError struct {
-	// Code - Cloud error code.
-	Code *string `json:"code,omitempty"`
-	// Message - Cloud error message.
-	Message *string `json:"message,omitempty"`
-	// Target - Cloud error target.
-	Target *string `json:"target,omitempty"`
-	// Details - READ-ONLY; Cloud error details.
-	Details *[]CloudError `json:"details,omitempty"`
-	// AdditionalInfo - READ-ONLY; Cloud error additional info.
+	// AdditionalInfo - READ-ONLY; Gets or sets additional error info.
 	AdditionalInfo *[]AdditionalErrorInfo `json:"additionalInfo,omitempty"`
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Details - READ-ONLY; Gets or sets details for the error.
+	Details *[]CloudError `json:"details,omitempty"`
+	// Message - The error message parsed from the body of the http error response.
+	Message *string `json:"message,omitempty"`
+	// Target - Gets or sets the target of the error.
+	Target *string `json:"target,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CloudError.
@@ -481,6 +487,7 @@ type ContactDetails struct {
 // BasicCopyLogDetails details for log generated during copy.
 type BasicCopyLogDetails interface {
 	AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool)
+	AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool)
 	AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool)
 	AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool)
 	AsCopyLogDetails() (*CopyLogDetails, bool)
@@ -488,7 +495,7 @@ type BasicCopyLogDetails interface {
 
 // CopyLogDetails details for log generated during copy.
 type CopyLogDetails struct {
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxCustomerDisk', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
@@ -504,6 +511,10 @@ func unmarshalBasicCopyLogDetails(body []byte) (BasicCopyLogDetails, error) {
 		var acld AccountCopyLogDetails
 		err := json.Unmarshal(body, &acld)
 		return acld, err
+	case string(CopyLogDetailsTypeDataBoxCustomerDisk):
+		var cdcld CustomerDiskCopyLogDetails
+		err := json.Unmarshal(body, &cdcld)
+		return cdcld, err
 	case string(CopyLogDetailsTypeDataBoxDisk):
 		var dcld DiskCopyLogDetails
 		err := json.Unmarshal(body, &dcld)
@@ -549,6 +560,11 @@ func (cld CopyLogDetails) MarshalJSON() ([]byte, error) {
 
 // AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for CopyLogDetails.
 func (cld CopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsCustomerDiskCopyLogDetails is the BasicCopyLogDetails implementation for CopyLogDetails.
+func (cld CopyLogDetails) AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool) {
 	return nil, false
 }
 
@@ -684,7 +700,7 @@ func (cjv *CreateJobValidations) UnmarshalJSON(body []byte) error {
 // CreateOrderLimitForSubscriptionValidationRequest request to validate create order limit for current
 // subscription.
 type CreateOrderLimitForSubscriptionValidationRequest struct {
-	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	DeviceType SkuName `json:"deviceType,omitempty"`
 	// ValidationType - Possible values include: 'ValidationTypeValidationInputRequest', 'ValidationTypeValidateCreateOrderLimit', 'ValidationTypeValidateDataTransferDetails', 'ValidationTypeValidatePreferences', 'ValidationTypeValidateSkuAvailability', 'ValidationTypeValidateSubscriptionIsAllowedToCreateJob', 'ValidationTypeValidateAddress'
 	ValidationType ValidationType `json:"validationType,omitempty"`
@@ -804,6 +820,508 @@ func (colfsvrp CreateOrderLimitForSubscriptionValidationResponseProperties) AsBa
 	return &colfsvrp, true
 }
 
+// CustomerDiskCopyLogDetails copy Log Details for customer disk
+type CustomerDiskCopyLogDetails struct {
+	// SerialNumber - READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty"`
+	// ErrorLogLink - READ-ONLY; Link for copy error logs.
+	ErrorLogLink *string `json:"errorLogLink,omitempty"`
+	// VerboseLogLink - READ-ONLY; Link for copy verbose logs.
+	VerboseLogLink *string `json:"verboseLogLink,omitempty"`
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxCustomerDisk', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) MarshalJSON() ([]byte, error) {
+	cdcld.CopyLogDetailsType = CopyLogDetailsTypeDataBoxCustomerDisk
+	objectMap := make(map[string]interface{})
+	if cdcld.CopyLogDetailsType != "" {
+		objectMap["copyLogDetailsType"] = cdcld.CopyLogDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsCustomerDiskCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool) {
+	return &cdcld, true
+}
+
+// AsDiskCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsHeavyAccountCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsCopyLogDetails() (*CopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsBasicCopyLogDetails is the BasicCopyLogDetails implementation for CustomerDiskCopyLogDetails.
+func (cdcld CustomerDiskCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, bool) {
+	return &cdcld, true
+}
+
+// CustomerDiskCopyProgress dataBox CustomerDisk Copy Progress
+type CustomerDiskCopyProgress struct {
+	// SerialNumber - READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty"`
+	// CopyStatus - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned', 'HardwareError', 'DeviceFormatted', 'DeviceMetadataModified', 'StorageAccountNotAccessible', 'UnsupportedData', 'DriveNotReceived', 'UnsupportedDrive', 'OtherServiceError', 'OtherUserError', 'DriveNotDetected', 'DriveCorrupted', 'MetadataFilesModifiedOrRemoved'
+	CopyStatus CopyStatus `json:"copyStatus,omitempty"`
+	// StorageAccountName - READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// TransferType - READ-ONLY; Transfer type of data. Possible values include: 'ImportToAzure', 'ExportFromAzure'
+	TransferType TransferType `json:"transferType,omitempty"`
+	// DataAccountType - READ-ONLY; Data Account Type. Possible values include: 'StorageAccount', 'ManagedDisk'
+	DataAccountType DataAccountType `json:"dataAccountType,omitempty"`
+	// AccountID - READ-ONLY; Id of the account where the data needs to be uploaded.
+	AccountID *string `json:"accountId,omitempty"`
+	// BytesProcessed - READ-ONLY; To indicate bytes transferred.
+	BytesProcessed *int64 `json:"bytesProcessed,omitempty"`
+	// TotalBytesToProcess - READ-ONLY; Total amount of data to be processed by the job.
+	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
+	// FilesProcessed - READ-ONLY; Number of files processed
+	FilesProcessed *int64 `json:"filesProcessed,omitempty"`
+	// TotalFilesToProcess - READ-ONLY; Total files to process
+	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty"`
+	// InvalidFilesProcessed - READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty"`
+	// InvalidFileBytesUploaded - READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty"`
+	// RenamedContainerCount - READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
+	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty"`
+	// FilesErroredOut - READ-ONLY; Number of files which could not be copied
+	FilesErroredOut *int64 `json:"filesErroredOut,omitempty"`
+	// DirectoriesErroredOut - READ-ONLY; To indicate directories errored out in the job.
+	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty"`
+	// InvalidDirectoriesProcessed - READ-ONLY; To indicate directories renamed
+	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty"`
+	// IsEnumerationInProgress - READ-ONLY; To indicate if enumeration of data is in progress.
+	// Until this is true, the TotalBytesToProcess may not be valid.
+	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerDiskCopyProgress.
+func (cdcp CustomerDiskCopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// CustomerDiskJobDetails customer disk job details.
+type CustomerDiskJobDetails struct {
+	// ImportDiskDetailsCollection - Contains the map of disk serial number to the disk details for import jobs.
+	ImportDiskDetailsCollection map[string]*ImportDiskDetails `json:"importDiskDetailsCollection"`
+	// ExportDiskDetailsCollection - READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
+	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection"`
+	// CopyProgress - READ-ONLY; Copy progress per disk.
+	CopyProgress *[]CustomerDiskCopyProgress `json:"copyProgress,omitempty"`
+	// DeliverToDcPackageDetails - READ-ONLY; Delivery package shipping details.
+	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty"`
+	// ReturnToCustomerPackageDetails - Return package shipping details.
+	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
+	// EnableManifestBackup - Flag to indicate if disk manifest should be backed-up in the Storage Account.
+	EnableManifestBackup *bool `json:"enableManifestBackup,omitempty"`
+	// JobStages - READ-ONLY; List of stages that run in the job.
+	JobStages *[]JobStages `json:"jobStages,omitempty"`
+	// ContactDetails - Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	// ShippingAddress - Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	// DeliveryPackage - READ-ONLY; Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
+	// ReturnPackage - READ-ONLY; Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
+	// DataImportDetails - Details of the data to be imported into azure.
+	DataImportDetails *[]DataImportDetails `json:"dataImportDetails,omitempty"`
+	// DataExportDetails - Details of the data to be exported from azure.
+	DataExportDetails *[]DataExportDetails `json:"dataExportDetails,omitempty"`
+	// Preferences - Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+	// CopyLogDetails - READ-ONLY; List of copy log details.
+	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+	// ReverseShipmentLabelSasKey - READ-ONLY; Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
+	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
+	// KeyEncryptionKey - Details about which key encryption type is being used.
+	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
+	// DatacenterAddress - READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress BasicDatacenterAddressResponse `json:"datacenterAddress,omitempty"`
+	// DataCenterCode - READ-ONLY; DataCenter code. Possible values include: 'DataCenterCodeInvalid', 'DataCenterCodeBY2', 'DataCenterCodeBY1', 'DataCenterCodeORK70', 'DataCenterCodeAM2', 'DataCenterCodeAMS20', 'DataCenterCodeBY21', 'DataCenterCodeBY24', 'DataCenterCodeMWH01', 'DataCenterCodeAMS06', 'DataCenterCodeSSE90', 'DataCenterCodeSYD03', 'DataCenterCodeSYD23', 'DataCenterCodeCBR20', 'DataCenterCodeYTO20', 'DataCenterCodeCWL20', 'DataCenterCodeLON24', 'DataCenterCodeBOM01', 'DataCenterCodeBL20', 'DataCenterCodeBL7', 'DataCenterCodeSEL20', 'DataCenterCodeTYO01', 'DataCenterCodeBN1', 'DataCenterCodeSN5', 'DataCenterCodeCYS04', 'DataCenterCodeTYO22', 'DataCenterCodeYTO21', 'DataCenterCodeYQB20', 'DataCenterCodeFRA22', 'DataCenterCodeMAA01', 'DataCenterCodeCPQ02', 'DataCenterCodeCPQ20', 'DataCenterCodeSIN20', 'DataCenterCodeHKG20', 'DataCenterCodeSG2', 'DataCenterCodeMEL23', 'DataCenterCodeSEL21', 'DataCenterCodeOSA20', 'DataCenterCodeSHA03', 'DataCenterCodeBJB', 'DataCenterCodeJNB22', 'DataCenterCodeJNB21', 'DataCenterCodeMNZ21', 'DataCenterCodeSN8', 'DataCenterCodeAUH20', 'DataCenterCodeZRH20', 'DataCenterCodePUS20', 'DataCenterCodeAdHoc', 'DataCenterCodeCH1', 'DataCenterCodeDSM05', 'DataCenterCodeDUB07', 'DataCenterCodePNQ01', 'DataCenterCodeSVG20', 'DataCenterCodeOSA02', 'DataCenterCodeOSA22', 'DataCenterCodePAR22', 'DataCenterCodeBN7', 'DataCenterCodeSN6', 'DataCenterCodeBJS20'
+	DataCenterCode DataCenterCode `json:"dataCenterCode,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxCustomerDisk', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) MarshalJSON() ([]byte, error) {
+	cdjd.JobDetailsType = JobDetailsTypeDataBoxCustomerDisk
+	objectMap := make(map[string]interface{})
+	if cdjd.ImportDiskDetailsCollection != nil {
+		objectMap["importDiskDetailsCollection"] = cdjd.ImportDiskDetailsCollection
+	}
+	if cdjd.ReturnToCustomerPackageDetails != nil {
+		objectMap["returnToCustomerPackageDetails"] = cdjd.ReturnToCustomerPackageDetails
+	}
+	if cdjd.EnableManifestBackup != nil {
+		objectMap["enableManifestBackup"] = cdjd.EnableManifestBackup
+	}
+	if cdjd.ContactDetails != nil {
+		objectMap["contactDetails"] = cdjd.ContactDetails
+	}
+	if cdjd.ShippingAddress != nil {
+		objectMap["shippingAddress"] = cdjd.ShippingAddress
+	}
+	if cdjd.DataImportDetails != nil {
+		objectMap["dataImportDetails"] = cdjd.DataImportDetails
+	}
+	if cdjd.DataExportDetails != nil {
+		objectMap["dataExportDetails"] = cdjd.DataExportDetails
+	}
+	if cdjd.Preferences != nil {
+		objectMap["preferences"] = cdjd.Preferences
+	}
+	if cdjd.KeyEncryptionKey != nil {
+		objectMap["keyEncryptionKey"] = cdjd.KeyEncryptionKey
+	}
+	if cdjd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = cdjd.ExpectedDataSizeInTeraBytes
+	}
+	if cdjd.JobDetailsType != "" {
+		objectMap["jobDetailsType"] = cdjd.JobDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobDetails is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool) {
+	return &cdjd, true
+}
+
+// AsDiskJobDetails is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsDiskJobDetails() (*DiskJobDetails, bool) {
+	return nil, false
+}
+
+// AsHeavyJobDetails is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsHeavyJobDetails() (*HeavyJobDetails, bool) {
+	return nil, false
+}
+
+// AsJobDetailsType is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsJobDetailsType() (*JobDetailsType, bool) {
+	return nil, false
+}
+
+// AsJobDetails is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsJobDetails() (*JobDetails, bool) {
+	return nil, false
+}
+
+// AsBasicJobDetails is the BasicJobDetails implementation for CustomerDiskJobDetails.
+func (cdjd CustomerDiskJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
+	return &cdjd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomerDiskJobDetails struct.
+func (cdjd *CustomerDiskJobDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "importDiskDetailsCollection":
+			if v != nil {
+				var importDiskDetailsCollection map[string]*ImportDiskDetails
+				err = json.Unmarshal(*v, &importDiskDetailsCollection)
+				if err != nil {
+					return err
+				}
+				cdjd.ImportDiskDetailsCollection = importDiskDetailsCollection
+			}
+		case "exportDiskDetailsCollection":
+			if v != nil {
+				var exportDiskDetailsCollection map[string]*ExportDiskDetails
+				err = json.Unmarshal(*v, &exportDiskDetailsCollection)
+				if err != nil {
+					return err
+				}
+				cdjd.ExportDiskDetailsCollection = exportDiskDetailsCollection
+			}
+		case "copyProgress":
+			if v != nil {
+				var copyProgress []CustomerDiskCopyProgress
+				err = json.Unmarshal(*v, &copyProgress)
+				if err != nil {
+					return err
+				}
+				cdjd.CopyProgress = &copyProgress
+			}
+		case "deliverToDcPackageDetails":
+			if v != nil {
+				var deliverToDcPackageDetails PackageCarrierInfo
+				err = json.Unmarshal(*v, &deliverToDcPackageDetails)
+				if err != nil {
+					return err
+				}
+				cdjd.DeliverToDcPackageDetails = &deliverToDcPackageDetails
+			}
+		case "returnToCustomerPackageDetails":
+			if v != nil {
+				var returnToCustomerPackageDetails PackageCarrierDetails
+				err = json.Unmarshal(*v, &returnToCustomerPackageDetails)
+				if err != nil {
+					return err
+				}
+				cdjd.ReturnToCustomerPackageDetails = &returnToCustomerPackageDetails
+			}
+		case "enableManifestBackup":
+			if v != nil {
+				var enableManifestBackup bool
+				err = json.Unmarshal(*v, &enableManifestBackup)
+				if err != nil {
+					return err
+				}
+				cdjd.EnableManifestBackup = &enableManifestBackup
+			}
+		case "jobStages":
+			if v != nil {
+				var jobStages []JobStages
+				err = json.Unmarshal(*v, &jobStages)
+				if err != nil {
+					return err
+				}
+				cdjd.JobStages = &jobStages
+			}
+		case "contactDetails":
+			if v != nil {
+				var contactDetails ContactDetails
+				err = json.Unmarshal(*v, &contactDetails)
+				if err != nil {
+					return err
+				}
+				cdjd.ContactDetails = &contactDetails
+			}
+		case "shippingAddress":
+			if v != nil {
+				var shippingAddress ShippingAddress
+				err = json.Unmarshal(*v, &shippingAddress)
+				if err != nil {
+					return err
+				}
+				cdjd.ShippingAddress = &shippingAddress
+			}
+		case "deliveryPackage":
+			if v != nil {
+				var deliveryPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &deliveryPackage)
+				if err != nil {
+					return err
+				}
+				cdjd.DeliveryPackage = &deliveryPackage
+			}
+		case "returnPackage":
+			if v != nil {
+				var returnPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &returnPackage)
+				if err != nil {
+					return err
+				}
+				cdjd.ReturnPackage = &returnPackage
+			}
+		case "dataImportDetails":
+			if v != nil {
+				var dataImportDetails []DataImportDetails
+				err = json.Unmarshal(*v, &dataImportDetails)
+				if err != nil {
+					return err
+				}
+				cdjd.DataImportDetails = &dataImportDetails
+			}
+		case "dataExportDetails":
+			if v != nil {
+				var dataExportDetails []DataExportDetails
+				err = json.Unmarshal(*v, &dataExportDetails)
+				if err != nil {
+					return err
+				}
+				cdjd.DataExportDetails = &dataExportDetails
+			}
+		case "preferences":
+			if v != nil {
+				var preferences Preferences
+				err = json.Unmarshal(*v, &preferences)
+				if err != nil {
+					return err
+				}
+				cdjd.Preferences = &preferences
+			}
+		case "copyLogDetails":
+			if v != nil {
+				copyLogDetails, err := unmarshalBasicCopyLogDetailsArray(*v)
+				if err != nil {
+					return err
+				}
+				cdjd.CopyLogDetails = &copyLogDetails
+			}
+		case "reverseShipmentLabelSasKey":
+			if v != nil {
+				var reverseShipmentLabelSasKey string
+				err = json.Unmarshal(*v, &reverseShipmentLabelSasKey)
+				if err != nil {
+					return err
+				}
+				cdjd.ReverseShipmentLabelSasKey = &reverseShipmentLabelSasKey
+			}
+		case "chainOfCustodySasKey":
+			if v != nil {
+				var chainOfCustodySasKey string
+				err = json.Unmarshal(*v, &chainOfCustodySasKey)
+				if err != nil {
+					return err
+				}
+				cdjd.ChainOfCustodySasKey = &chainOfCustodySasKey
+			}
+		case "keyEncryptionKey":
+			if v != nil {
+				var keyEncryptionKey KeyEncryptionKey
+				err = json.Unmarshal(*v, &keyEncryptionKey)
+				if err != nil {
+					return err
+				}
+				cdjd.KeyEncryptionKey = &keyEncryptionKey
+			}
+		case "expectedDataSizeInTeraBytes":
+			if v != nil {
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
+				if err != nil {
+					return err
+				}
+				cdjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				cdjd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				cdjd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
+		case "datacenterAddress":
+			if v != nil {
+				datacenterAddress, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				cdjd.DatacenterAddress = datacenterAddress
+			}
+		case "dataCenterCode":
+			if v != nil {
+				var dataCenterCode DataCenterCode
+				err = json.Unmarshal(*v, &dataCenterCode)
+				if err != nil {
+					return err
+				}
+				cdjd.DataCenterCode = dataCenterCode
+			}
+		case "jobDetailsType":
+			if v != nil {
+				var jobDetailsType JobDetailsTypeEnum
+				err = json.Unmarshal(*v, &jobDetailsType)
+				if err != nil {
+					return err
+				}
+				cdjd.JobDetailsType = jobDetailsType
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomerDiskJobSecrets the secrets related to customer disk job.
+type CustomerDiskJobSecrets struct {
+	// DiskSecrets - READ-ONLY; Contains the list of secrets object for that device.
+	DiskSecrets *[]DiskSecret `json:"diskSecrets,omitempty"`
+	// CarrierAccountNumber - READ-ONLY; Carrier Account Number of the customer
+	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty"`
+	// DcAccessSecurityCode - READ-ONLY; Dc Access Security Code for Customer Managed Shipping
+	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty"`
+	// Error - READ-ONLY; Error while fetching the secrets.
+	Error *CloudError `json:"error,omitempty"`
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxCustomerDisk', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) MarshalJSON() ([]byte, error) {
+	cdjs.JobSecretsType = JobSecretsTypeDataBoxCustomerDisk
+	objectMap := make(map[string]interface{})
+	if cdjs.JobSecretsType != "" {
+		objectMap["jobSecretsType"] = cdjs.JobSecretsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobSecrets is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool) {
+	return &cdjs, true
+}
+
+// AsDiskJobSecrets is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
+	return nil, false
+}
+
+// AsHeavyJobSecrets is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsHeavyJobSecrets() (*HeavyJobSecrets, bool) {
+	return nil, false
+}
+
+// AsJobSecretsType is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsJobSecretsType() (*JobSecretsType, bool) {
+	return nil, false
+}
+
+// AsJobSecrets is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsJobSecrets() (*JobSecrets, bool) {
+	return nil, false
+}
+
+// AsBasicJobSecrets is the BasicJobSecrets implementation for CustomerDiskJobSecrets.
+func (cdjs CustomerDiskJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
+	return &cdjs, true
+}
+
 // BasicDataAccountDetails account details of the data to be transferred
 type BasicDataAccountDetails interface {
 	AsManagedDiskDetails() (*ManagedDiskDetails, bool)
@@ -893,6 +1411,210 @@ func (dad DataAccountDetails) AsBasicDataAccountDetails() (BasicDataAccountDetai
 	return &dad, true
 }
 
+// DatacenterAddressInstructionResponse datacenter instruction for given storage location.
+type DatacenterAddressInstructionResponse struct {
+	// CommunicationInstruction - READ-ONLY; Data center communication instruction
+	CommunicationInstruction *string `json:"communicationInstruction,omitempty"`
+	// SupportedCarriersForReturnShipment - READ-ONLY; List of supported carriers for return shipment.
+	SupportedCarriersForReturnShipment *[]string `json:"supportedCarriersForReturnShipment,omitempty"`
+	// DataCenterAzureLocation - READ-ONLY; Azure Location where the Data Center serves primarily.
+	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty"`
+	// DatacenterAddressType - Possible values include: 'DatacenterAddressTypeDatacenterAddressResponse', 'DatacenterAddressTypeDatacenterAddressInstruction', 'DatacenterAddressTypeDatacenterAddressLocation'
+	DatacenterAddressType DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatacenterAddressInstructionResponse.
+func (dair DatacenterAddressInstructionResponse) MarshalJSON() ([]byte, error) {
+	dair.DatacenterAddressType = DatacenterAddressTypeDatacenterAddressInstruction
+	objectMap := make(map[string]interface{})
+	if dair.DatacenterAddressType != "" {
+		objectMap["datacenterAddressType"] = dair.DatacenterAddressType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatacenterAddressInstructionResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressInstructionResponse.
+func (dair DatacenterAddressInstructionResponse) AsDatacenterAddressInstructionResponse() (*DatacenterAddressInstructionResponse, bool) {
+	return &dair, true
+}
+
+// AsDatacenterAddressLocationResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressInstructionResponse.
+func (dair DatacenterAddressInstructionResponse) AsDatacenterAddressLocationResponse() (*DatacenterAddressLocationResponse, bool) {
+	return nil, false
+}
+
+// AsDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressInstructionResponse.
+func (dair DatacenterAddressInstructionResponse) AsDatacenterAddressResponse() (*DatacenterAddressResponse, bool) {
+	return nil, false
+}
+
+// AsBasicDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressInstructionResponse.
+func (dair DatacenterAddressInstructionResponse) AsBasicDatacenterAddressResponse() (BasicDatacenterAddressResponse, bool) {
+	return &dair, true
+}
+
+// DatacenterAddressLocationResponse datacenter address for given storage location.
+type DatacenterAddressLocationResponse struct {
+	// ContactPersonName - READ-ONLY; Contact person name
+	ContactPersonName *string `json:"contactPersonName,omitempty"`
+	// Company - READ-ONLY; Company name
+	Company *string `json:"company,omitempty"`
+	// Street1 - READ-ONLY; Street address line 1
+	Street1 *string `json:"street1,omitempty"`
+	// Street2 - READ-ONLY; Street address line 2
+	Street2 *string `json:"street2,omitempty"`
+	// Street3 - READ-ONLY; Street address line 3
+	Street3 *string `json:"street3,omitempty"`
+	// City - READ-ONLY; City name
+	City *string `json:"city,omitempty"`
+	// State - READ-ONLY; name of the state
+	State *string `json:"state,omitempty"`
+	// Zip - READ-ONLY; Zip code
+	Zip *string `json:"zip,omitempty"`
+	// Country - READ-ONLY; name of the country
+	Country *string `json:"country,omitempty"`
+	// Phone - READ-ONLY; Phone number
+	Phone *string `json:"phone,omitempty"`
+	// PhoneExtension - READ-ONLY; Phone extension
+	PhoneExtension *string `json:"phoneExtension,omitempty"`
+	// AddressType - READ-ONLY; Address type
+	AddressType *string `json:"addressType,omitempty"`
+	// AdditionalShippingInformation - READ-ONLY; Special instruction for shipping
+	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty"`
+	// SupportedCarriersForReturnShipment - READ-ONLY; List of supported carriers for return shipment.
+	SupportedCarriersForReturnShipment *[]string `json:"supportedCarriersForReturnShipment,omitempty"`
+	// DataCenterAzureLocation - READ-ONLY; Azure Location where the Data Center serves primarily.
+	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty"`
+	// DatacenterAddressType - Possible values include: 'DatacenterAddressTypeDatacenterAddressResponse', 'DatacenterAddressTypeDatacenterAddressInstruction', 'DatacenterAddressTypeDatacenterAddressLocation'
+	DatacenterAddressType DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatacenterAddressLocationResponse.
+func (dalr DatacenterAddressLocationResponse) MarshalJSON() ([]byte, error) {
+	dalr.DatacenterAddressType = DatacenterAddressTypeDatacenterAddressLocation
+	objectMap := make(map[string]interface{})
+	if dalr.DatacenterAddressType != "" {
+		objectMap["datacenterAddressType"] = dalr.DatacenterAddressType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatacenterAddressInstructionResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressLocationResponse.
+func (dalr DatacenterAddressLocationResponse) AsDatacenterAddressInstructionResponse() (*DatacenterAddressInstructionResponse, bool) {
+	return nil, false
+}
+
+// AsDatacenterAddressLocationResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressLocationResponse.
+func (dalr DatacenterAddressLocationResponse) AsDatacenterAddressLocationResponse() (*DatacenterAddressLocationResponse, bool) {
+	return &dalr, true
+}
+
+// AsDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressLocationResponse.
+func (dalr DatacenterAddressLocationResponse) AsDatacenterAddressResponse() (*DatacenterAddressResponse, bool) {
+	return nil, false
+}
+
+// AsBasicDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressLocationResponse.
+func (dalr DatacenterAddressLocationResponse) AsBasicDatacenterAddressResponse() (BasicDatacenterAddressResponse, bool) {
+	return &dalr, true
+}
+
+// DatacenterAddressRequest request body to get the datacenter address.
+type DatacenterAddressRequest struct {
+	// StorageLocation - Storage location. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+	StorageLocation *string `json:"storageLocation,omitempty"`
+	// SkuName - Sku Name for which the data center address requested. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
+	SkuName SkuName `json:"skuName,omitempty"`
+}
+
+// BasicDatacenterAddressResponse datacenter address for given storage location.
+type BasicDatacenterAddressResponse interface {
+	AsDatacenterAddressInstructionResponse() (*DatacenterAddressInstructionResponse, bool)
+	AsDatacenterAddressLocationResponse() (*DatacenterAddressLocationResponse, bool)
+	AsDatacenterAddressResponse() (*DatacenterAddressResponse, bool)
+}
+
+// DatacenterAddressResponse datacenter address for given storage location.
+type DatacenterAddressResponse struct {
+	// SupportedCarriersForReturnShipment - READ-ONLY; List of supported carriers for return shipment.
+	SupportedCarriersForReturnShipment *[]string `json:"supportedCarriersForReturnShipment,omitempty"`
+	// DataCenterAzureLocation - READ-ONLY; Azure Location where the Data Center serves primarily.
+	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty"`
+	// DatacenterAddressType - Possible values include: 'DatacenterAddressTypeDatacenterAddressResponse', 'DatacenterAddressTypeDatacenterAddressInstruction', 'DatacenterAddressTypeDatacenterAddressLocation'
+	DatacenterAddressType DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+}
+
+func unmarshalBasicDatacenterAddressResponse(body []byte) (BasicDatacenterAddressResponse, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["datacenterAddressType"] {
+	case string(DatacenterAddressTypeDatacenterAddressInstruction):
+		var dair DatacenterAddressInstructionResponse
+		err := json.Unmarshal(body, &dair)
+		return dair, err
+	case string(DatacenterAddressTypeDatacenterAddressLocation):
+		var dalr DatacenterAddressLocationResponse
+		err := json.Unmarshal(body, &dalr)
+		return dalr, err
+	default:
+		var dar DatacenterAddressResponse
+		err := json.Unmarshal(body, &dar)
+		return dar, err
+	}
+}
+func unmarshalBasicDatacenterAddressResponseArray(body []byte) ([]BasicDatacenterAddressResponse, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	darArray := make([]BasicDatacenterAddressResponse, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		dar, err := unmarshalBasicDatacenterAddressResponse(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		darArray[index] = dar
+	}
+	return darArray, nil
+}
+
+// MarshalJSON is the custom marshaler for DatacenterAddressResponse.
+func (dar DatacenterAddressResponse) MarshalJSON() ([]byte, error) {
+	dar.DatacenterAddressType = DatacenterAddressTypeDatacenterAddressResponse
+	objectMap := make(map[string]interface{})
+	if dar.DatacenterAddressType != "" {
+		objectMap["datacenterAddressType"] = dar.DatacenterAddressType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatacenterAddressInstructionResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressResponse.
+func (dar DatacenterAddressResponse) AsDatacenterAddressInstructionResponse() (*DatacenterAddressInstructionResponse, bool) {
+	return nil, false
+}
+
+// AsDatacenterAddressLocationResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressResponse.
+func (dar DatacenterAddressResponse) AsDatacenterAddressLocationResponse() (*DatacenterAddressLocationResponse, bool) {
+	return nil, false
+}
+
+// AsDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressResponse.
+func (dar DatacenterAddressResponse) AsDatacenterAddressResponse() (*DatacenterAddressResponse, bool) {
+	return &dar, true
+}
+
+// AsBasicDatacenterAddressResponse is the BasicDatacenterAddressResponse implementation for DatacenterAddressResponse.
+func (dar DatacenterAddressResponse) AsBasicDatacenterAddressResponse() (BasicDatacenterAddressResponse, bool) {
+	return &dar, true
+}
+
 // DataExportDetails details of the data to be used for exporting data from azure.
 type DataExportDetails struct {
 	// TransferConfiguration - Configuration for the data transfer.
@@ -948,6 +1670,8 @@ func (ded *DataExportDetails) UnmarshalJSON(body []byte) error {
 type DataImportDetails struct {
 	// AccountDetails - Account details of the data to be transferred
 	AccountDetails BasicDataAccountDetails `json:"accountDetails,omitempty"`
+	// LogCollectionLevel - Level of the logs to be collected. Possible values include: 'Error', 'Verbose'
+	LogCollectionLevel LogCollectionLevel `json:"logCollectionLevel,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataImportDetails struct.
@@ -966,6 +1690,15 @@ func (did *DataImportDetails) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				did.AccountDetails = accountDetails
+			}
+		case "logCollectionLevel":
+			if v != nil {
+				var logCollectionLevel LogCollectionLevel
+				err = json.Unmarshal(*v, &logCollectionLevel)
+				if err != nil {
+					return err
+				}
+				did.LogCollectionLevel = logCollectionLevel
 			}
 		}
 	}
@@ -993,7 +1726,7 @@ type DataTransferDetailsValidationRequest struct {
 	DataExportDetails *[]DataExportDetails `json:"dataExportDetails,omitempty"`
 	// DataImportDetails - List of DataTransfer details to be used to import data to azure.
 	DataImportDetails *[]DataImportDetails `json:"dataImportDetails,omitempty"`
-	// DeviceType - Device type. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// DeviceType - Device type. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	DeviceType SkuName `json:"deviceType,omitempty"`
 	// TransferType - Type of the transfer. Possible values include: 'ImportToAzure', 'ExportFromAzure'
 	TransferType TransferType `json:"transferType,omitempty"`
@@ -1145,7 +1878,7 @@ type DiskCopyLogDetails struct {
 	ErrorLogLink *string `json:"errorLogLink,omitempty"`
 	// VerboseLogLink - READ-ONLY; Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty"`
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxCustomerDisk', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
@@ -1161,6 +1894,11 @@ func (dcld DiskCopyLogDetails) MarshalJSON() ([]byte, error) {
 
 // AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for DiskCopyLogDetails.
 func (dcld DiskCopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsCustomerDiskCopyLogDetails is the BasicCopyLogDetails implementation for DiskCopyLogDetails.
+func (dcld DiskCopyLogDetails) AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool) {
 	return nil, false
 }
 
@@ -1192,12 +1930,96 @@ type DiskCopyProgress struct {
 	BytesCopied *int64 `json:"bytesCopied,omitempty"`
 	// PercentComplete - READ-ONLY; Indicates the percentage completed for the copy of the disk.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// Status - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned', 'HardwareError', 'DeviceFormatted', 'DeviceMetadataModified', 'StorageAccountNotAccessible', 'UnsupportedData'
+	// Status - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned', 'HardwareError', 'DeviceFormatted', 'DeviceMetadataModified', 'StorageAccountNotAccessible', 'UnsupportedData', 'DriveNotReceived', 'UnsupportedDrive', 'OtherServiceError', 'OtherUserError', 'DriveNotDetected', 'DriveCorrupted', 'MetadataFilesModifiedOrRemoved'
 	Status CopyStatus `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskCopyProgress.
 func (dcp DiskCopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DiskGranularCopyLogDetails granular Copy Log Details for customer disk
+type DiskGranularCopyLogDetails struct {
+	// SerialNumber - READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty"`
+	// AccountName - READ-ONLY; Account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// ErrorLogLink - READ-ONLY; Link for copy error logs.
+	ErrorLogLink *string `json:"errorLogLink,omitempty"`
+	// VerboseLogLink - READ-ONLY; Link for copy verbose logs.
+	VerboseLogLink *string `json:"verboseLogLink,omitempty"`
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeGranularCopyLogDetails', 'CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeDataBoxCustomerDisk'
+	CopyLogDetailsType CopyLogDetailsTypeBasicGranularCopyLogDetails `json:"copyLogDetailsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskGranularCopyLogDetails.
+func (dgcld DiskGranularCopyLogDetails) MarshalJSON() ([]byte, error) {
+	dgcld.CopyLogDetailsType = CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeDataBoxCustomerDisk
+	objectMap := make(map[string]interface{})
+	if dgcld.CopyLogDetailsType != "" {
+		objectMap["copyLogDetailsType"] = dgcld.CopyLogDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for DiskGranularCopyLogDetails.
+func (dgcld DiskGranularCopyLogDetails) AsDiskGranularCopyLogDetails() (*DiskGranularCopyLogDetails, bool) {
+	return &dgcld, true
+}
+
+// AsGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for DiskGranularCopyLogDetails.
+func (dgcld DiskGranularCopyLogDetails) AsGranularCopyLogDetails() (*GranularCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsBasicGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for DiskGranularCopyLogDetails.
+func (dgcld DiskGranularCopyLogDetails) AsBasicGranularCopyLogDetails() (BasicGranularCopyLogDetails, bool) {
+	return &dgcld, true
+}
+
+// DiskGranularCopyProgress dataBox Disk Granular Copy Progress
+type DiskGranularCopyProgress struct {
+	// SerialNumber - READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty"`
+	// CopyStatus - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned', 'HardwareError', 'DeviceFormatted', 'DeviceMetadataModified', 'StorageAccountNotAccessible', 'UnsupportedData', 'DriveNotReceived', 'UnsupportedDrive', 'OtherServiceError', 'OtherUserError', 'DriveNotDetected', 'DriveCorrupted', 'MetadataFilesModifiedOrRemoved'
+	CopyStatus CopyStatus `json:"copyStatus,omitempty"`
+	// StorageAccountName - READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// TransferType - READ-ONLY; Transfer type of data. Possible values include: 'ImportToAzure', 'ExportFromAzure'
+	TransferType TransferType `json:"transferType,omitempty"`
+	// DataAccountType - READ-ONLY; Data Account Type. Possible values include: 'StorageAccount', 'ManagedDisk'
+	DataAccountType DataAccountType `json:"dataAccountType,omitempty"`
+	// AccountID - READ-ONLY; Id of the account where the data needs to be uploaded.
+	AccountID *string `json:"accountId,omitempty"`
+	// BytesProcessed - READ-ONLY; To indicate bytes transferred.
+	BytesProcessed *int64 `json:"bytesProcessed,omitempty"`
+	// TotalBytesToProcess - READ-ONLY; Total amount of data to be processed by the job.
+	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
+	// FilesProcessed - READ-ONLY; Number of files processed
+	FilesProcessed *int64 `json:"filesProcessed,omitempty"`
+	// TotalFilesToProcess - READ-ONLY; Total files to process
+	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty"`
+	// InvalidFilesProcessed - READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty"`
+	// InvalidFileBytesUploaded - READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty"`
+	// RenamedContainerCount - READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
+	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty"`
+	// FilesErroredOut - READ-ONLY; Number of files which could not be copied
+	FilesErroredOut *int64 `json:"filesErroredOut,omitempty"`
+	// DirectoriesErroredOut - READ-ONLY; To indicate directories errored out in the job.
+	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty"`
+	// InvalidDirectoriesProcessed - READ-ONLY; To indicate directories renamed
+	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty"`
+	// IsEnumerationInProgress - READ-ONLY; To indicate if enumeration of data is in progress.
+	// Until this is true, the TotalBytesToProcess may not be valid.
+	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskGranularCopyProgress.
+func (dgcp DiskGranularCopyProgress) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -1208,6 +2030,8 @@ type DiskJobDetails struct {
 	PreferredDisks map[string]*int32 `json:"preferredDisks"`
 	// CopyProgress - READ-ONLY; Copy progress per disk.
 	CopyProgress *[]DiskCopyProgress `json:"copyProgress,omitempty"`
+	// GranularCopyProgress - READ-ONLY; Copy progress per disk.
+	GranularCopyProgress *[]DiskGranularCopyProgress `json:"granularCopyProgress,omitempty"`
 	// DisksAndSizeDetails - READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks are shipped to the customer.
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails"`
 	// Passkey - User entered passkey for DataBox Disk job.
@@ -1238,7 +2062,15 @@ type DiskJobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
+	// DatacenterAddress - READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress BasicDatacenterAddressResponse `json:"datacenterAddress,omitempty"`
+	// DataCenterCode - READ-ONLY; DataCenter code. Possible values include: 'DataCenterCodeInvalid', 'DataCenterCodeBY2', 'DataCenterCodeBY1', 'DataCenterCodeORK70', 'DataCenterCodeAM2', 'DataCenterCodeAMS20', 'DataCenterCodeBY21', 'DataCenterCodeBY24', 'DataCenterCodeMWH01', 'DataCenterCodeAMS06', 'DataCenterCodeSSE90', 'DataCenterCodeSYD03', 'DataCenterCodeSYD23', 'DataCenterCodeCBR20', 'DataCenterCodeYTO20', 'DataCenterCodeCWL20', 'DataCenterCodeLON24', 'DataCenterCodeBOM01', 'DataCenterCodeBL20', 'DataCenterCodeBL7', 'DataCenterCodeSEL20', 'DataCenterCodeTYO01', 'DataCenterCodeBN1', 'DataCenterCodeSN5', 'DataCenterCodeCYS04', 'DataCenterCodeTYO22', 'DataCenterCodeYTO21', 'DataCenterCodeYQB20', 'DataCenterCodeFRA22', 'DataCenterCodeMAA01', 'DataCenterCodeCPQ02', 'DataCenterCodeCPQ20', 'DataCenterCodeSIN20', 'DataCenterCodeHKG20', 'DataCenterCodeSG2', 'DataCenterCodeMEL23', 'DataCenterCodeSEL21', 'DataCenterCodeOSA20', 'DataCenterCodeSHA03', 'DataCenterCodeBJB', 'DataCenterCodeJNB22', 'DataCenterCodeJNB21', 'DataCenterCodeMNZ21', 'DataCenterCodeSN8', 'DataCenterCodeAUH20', 'DataCenterCodeZRH20', 'DataCenterCodePUS20', 'DataCenterCodeAdHoc', 'DataCenterCodeCH1', 'DataCenterCodeDSM05', 'DataCenterCodeDUB07', 'DataCenterCodePNQ01', 'DataCenterCodeSVG20', 'DataCenterCodeOSA02', 'DataCenterCodeOSA22', 'DataCenterCodePAR22', 'DataCenterCodeBN7', 'DataCenterCodeSN6', 'DataCenterCodeBJS20'
+	DataCenterCode DataCenterCode `json:"dataCenterCode,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxCustomerDisk', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
 
@@ -1277,6 +2109,11 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 		objectMap["jobDetailsType"] = djd.JobDetailsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobDetails is the BasicJobDetails implementation for DiskJobDetails.
+func (djd DiskJobDetails) AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool) {
+	return nil, false
 }
 
 // AsDiskJobDetails is the BasicJobDetails implementation for DiskJobDetails.
@@ -1330,6 +2167,15 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				djd.CopyProgress = &copyProgress
+			}
+		case "granularCopyProgress":
+			if v != nil {
+				var granularCopyProgress []DiskGranularCopyProgress
+				err = json.Unmarshal(*v, &granularCopyProgress)
+				if err != nil {
+					return err
+				}
+				djd.GranularCopyProgress = &granularCopyProgress
 			}
 		case "disksAndSizeDetails":
 			if v != nil {
@@ -1465,6 +2311,41 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				djd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				djd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				djd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
+		case "datacenterAddress":
+			if v != nil {
+				datacenterAddress, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				djd.DatacenterAddress = datacenterAddress
+			}
+		case "dataCenterCode":
+			if v != nil {
+				var dataCenterCode DataCenterCode
+				err = json.Unmarshal(*v, &dataCenterCode)
+				if err != nil {
+					return err
+				}
+				djd.DataCenterCode = dataCenterCode
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -1492,7 +2373,7 @@ type DiskJobSecrets struct {
 	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty"`
 	// Error - READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxCustomerDisk', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
 }
 
@@ -1504,6 +2385,11 @@ func (djs DiskJobSecrets) MarshalJSON() ([]byte, error) {
 		objectMap["jobSecretsType"] = djs.JobSecretsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
+func (djs DiskJobSecrets) AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool) {
+	return nil, false
 }
 
 // AsDiskJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
@@ -1615,12 +2501,143 @@ type ErrorDetail struct {
 	Target  *string    `json:"target,omitempty"`
 }
 
+// ExportDiskDetails export disk details
+type ExportDiskDetails struct {
+	// ManifestFile - READ-ONLY; The relative path of the manifest file on the disk.
+	ManifestFile *string `json:"manifestFile,omitempty"`
+	// ManifestHash - READ-ONLY; The Base16-encoded MD5 hash of the manifest file on the disk.
+	ManifestHash *string `json:"manifestHash,omitempty"`
+	// BackupManifestCloudPath - READ-ONLY; Path to backed up manifest, only returned if enableManifestBackup is true.
+	BackupManifestCloudPath *string `json:"backupManifestCloudPath,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExportDiskDetails.
+func (edd ExportDiskDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FilterFileDetails details of the filter files to be used for data transfer.
 type FilterFileDetails struct {
 	// FilterFileType - Type of the filter file. Possible values include: 'AzureBlob', 'AzureFile'
 	FilterFileType FilterFileType `json:"filterFileType,omitempty"`
 	// FilterFilePath - Path of the file that contains the details of all items to transfer.
 	FilterFilePath *string `json:"filterFilePath,omitempty"`
+}
+
+// BasicGranularCopyLogDetails granular Details for log generated during copy.
+type BasicGranularCopyLogDetails interface {
+	AsDiskGranularCopyLogDetails() (*DiskGranularCopyLogDetails, bool)
+	AsGranularCopyLogDetails() (*GranularCopyLogDetails, bool)
+}
+
+// GranularCopyLogDetails granular Details for log generated during copy.
+type GranularCopyLogDetails struct {
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeGranularCopyLogDetails', 'CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeDataBoxCustomerDisk'
+	CopyLogDetailsType CopyLogDetailsTypeBasicGranularCopyLogDetails `json:"copyLogDetailsType,omitempty"`
+}
+
+func unmarshalBasicGranularCopyLogDetails(body []byte) (BasicGranularCopyLogDetails, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["copyLogDetailsType"] {
+	case string(CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeDataBoxCustomerDisk):
+		var dgcld DiskGranularCopyLogDetails
+		err := json.Unmarshal(body, &dgcld)
+		return dgcld, err
+	default:
+		var gcld GranularCopyLogDetails
+		err := json.Unmarshal(body, &gcld)
+		return gcld, err
+	}
+}
+func unmarshalBasicGranularCopyLogDetailsArray(body []byte) ([]BasicGranularCopyLogDetails, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	gcldArray := make([]BasicGranularCopyLogDetails, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		gcld, err := unmarshalBasicGranularCopyLogDetails(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		gcldArray[index] = gcld
+	}
+	return gcldArray, nil
+}
+
+// MarshalJSON is the custom marshaler for GranularCopyLogDetails.
+func (gcld GranularCopyLogDetails) MarshalJSON() ([]byte, error) {
+	gcld.CopyLogDetailsType = CopyLogDetailsTypeBasicGranularCopyLogDetailsCopyLogDetailsTypeGranularCopyLogDetails
+	objectMap := make(map[string]interface{})
+	if gcld.CopyLogDetailsType != "" {
+		objectMap["copyLogDetailsType"] = gcld.CopyLogDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for GranularCopyLogDetails.
+func (gcld GranularCopyLogDetails) AsDiskGranularCopyLogDetails() (*DiskGranularCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for GranularCopyLogDetails.
+func (gcld GranularCopyLogDetails) AsGranularCopyLogDetails() (*GranularCopyLogDetails, bool) {
+	return &gcld, true
+}
+
+// AsBasicGranularCopyLogDetails is the BasicGranularCopyLogDetails implementation for GranularCopyLogDetails.
+func (gcld GranularCopyLogDetails) AsBasicGranularCopyLogDetails() (BasicGranularCopyLogDetails, bool) {
+	return &gcld, true
+}
+
+// GranularCopyProgress granular Copy progress.
+type GranularCopyProgress struct {
+	// StorageAccountName - READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// TransferType - READ-ONLY; Transfer type of data. Possible values include: 'ImportToAzure', 'ExportFromAzure'
+	TransferType TransferType `json:"transferType,omitempty"`
+	// DataAccountType - READ-ONLY; Data Account Type. Possible values include: 'StorageAccount', 'ManagedDisk'
+	DataAccountType DataAccountType `json:"dataAccountType,omitempty"`
+	// AccountID - READ-ONLY; Id of the account where the data needs to be uploaded.
+	AccountID *string `json:"accountId,omitempty"`
+	// BytesProcessed - READ-ONLY; To indicate bytes transferred.
+	BytesProcessed *int64 `json:"bytesProcessed,omitempty"`
+	// TotalBytesToProcess - READ-ONLY; Total amount of data to be processed by the job.
+	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
+	// FilesProcessed - READ-ONLY; Number of files processed
+	FilesProcessed *int64 `json:"filesProcessed,omitempty"`
+	// TotalFilesToProcess - READ-ONLY; Total files to process
+	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty"`
+	// InvalidFilesProcessed - READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty"`
+	// InvalidFileBytesUploaded - READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty"`
+	// RenamedContainerCount - READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
+	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty"`
+	// FilesErroredOut - READ-ONLY; Number of files which could not be copied
+	FilesErroredOut *int64 `json:"filesErroredOut,omitempty"`
+	// DirectoriesErroredOut - READ-ONLY; To indicate directories errored out in the job.
+	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty"`
+	// InvalidDirectoriesProcessed - READ-ONLY; To indicate directories renamed
+	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty"`
+	// IsEnumerationInProgress - READ-ONLY; To indicate if enumeration of data is in progress.
+	// Until this is true, the TotalBytesToProcess may not be valid.
+	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GranularCopyProgress.
+func (gcp GranularCopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HeavyAccountCopyLogDetails copy log details for a storage account for Databox heavy
@@ -1631,7 +2648,7 @@ type HeavyAccountCopyLogDetails struct {
 	CopyLogLink *[]string `json:"copyLogLink,omitempty"`
 	// CopyVerboseLogLink - READ-ONLY; Link for copy verbose logs. This will be set only when the LogCollectionLevel is set to verbose.
 	CopyVerboseLogLink *[]string `json:"copyVerboseLogLink,omitempty"`
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxCustomerDisk', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
@@ -1647,6 +2664,11 @@ func (hacld HeavyAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
 
 // AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
 func (hacld HeavyAccountCopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsCustomerDiskCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsCustomerDiskCopyLogDetails() (*CustomerDiskCopyLogDetails, bool) {
 	return nil, false
 }
 
@@ -1702,7 +2724,15 @@ type HeavyJobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
+	// DatacenterAddress - READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress BasicDatacenterAddressResponse `json:"datacenterAddress,omitempty"`
+	// DataCenterCode - READ-ONLY; DataCenter code. Possible values include: 'DataCenterCodeInvalid', 'DataCenterCodeBY2', 'DataCenterCodeBY1', 'DataCenterCodeORK70', 'DataCenterCodeAM2', 'DataCenterCodeAMS20', 'DataCenterCodeBY21', 'DataCenterCodeBY24', 'DataCenterCodeMWH01', 'DataCenterCodeAMS06', 'DataCenterCodeSSE90', 'DataCenterCodeSYD03', 'DataCenterCodeSYD23', 'DataCenterCodeCBR20', 'DataCenterCodeYTO20', 'DataCenterCodeCWL20', 'DataCenterCodeLON24', 'DataCenterCodeBOM01', 'DataCenterCodeBL20', 'DataCenterCodeBL7', 'DataCenterCodeSEL20', 'DataCenterCodeTYO01', 'DataCenterCodeBN1', 'DataCenterCodeSN5', 'DataCenterCodeCYS04', 'DataCenterCodeTYO22', 'DataCenterCodeYTO21', 'DataCenterCodeYQB20', 'DataCenterCodeFRA22', 'DataCenterCodeMAA01', 'DataCenterCodeCPQ02', 'DataCenterCodeCPQ20', 'DataCenterCodeSIN20', 'DataCenterCodeHKG20', 'DataCenterCodeSG2', 'DataCenterCodeMEL23', 'DataCenterCodeSEL21', 'DataCenterCodeOSA20', 'DataCenterCodeSHA03', 'DataCenterCodeBJB', 'DataCenterCodeJNB22', 'DataCenterCodeJNB21', 'DataCenterCodeMNZ21', 'DataCenterCodeSN8', 'DataCenterCodeAUH20', 'DataCenterCodeZRH20', 'DataCenterCodePUS20', 'DataCenterCodeAdHoc', 'DataCenterCodeCH1', 'DataCenterCodeDSM05', 'DataCenterCodeDUB07', 'DataCenterCodePNQ01', 'DataCenterCodeSVG20', 'DataCenterCodeOSA02', 'DataCenterCodeOSA22', 'DataCenterCodePAR22', 'DataCenterCodeBN7', 'DataCenterCodeSN6', 'DataCenterCodeBJS20'
+	DataCenterCode DataCenterCode `json:"dataCenterCode,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxCustomerDisk', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
 
@@ -1738,6 +2768,11 @@ func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
 		objectMap["jobDetailsType"] = hjd.JobDetailsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool) {
+	return nil, false
 }
 
 // AsDiskJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
@@ -1908,6 +2943,41 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				hjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				hjd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				hjd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
+		case "datacenterAddress":
+			if v != nil {
+				datacenterAddress, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				hjd.DatacenterAddress = datacenterAddress
+			}
+		case "dataCenterCode":
+			if v != nil {
+				var dataCenterCode DataCenterCode
+				err = json.Unmarshal(*v, &dataCenterCode)
+				if err != nil {
+					return err
+				}
+				hjd.DataCenterCode = dataCenterCode
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -1931,7 +3001,7 @@ type HeavyJobSecrets struct {
 	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty"`
 	// Error - READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxCustomerDisk', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
 }
 
@@ -1943,6 +3013,11 @@ func (hjs HeavyJobSecrets) MarshalJSON() ([]byte, error) {
 		objectMap["jobSecretsType"] = hjs.JobSecretsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool) {
+	return nil, false
 }
 
 // AsDiskJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
@@ -2049,6 +3124,33 @@ type IdentityProperties struct {
 	UserAssigned *UserAssignedProperties `json:"userAssigned,omitempty"`
 }
 
+// ImportDiskDetails import disk details
+type ImportDiskDetails struct {
+	// ManifestFile - The relative path of the manifest file on the disk.
+	ManifestFile *string `json:"manifestFile,omitempty"`
+	// ManifestHash - The Base16-encoded MD5 hash of the manifest file on the disk.
+	ManifestHash *string `json:"manifestHash,omitempty"`
+	// BitLockerKey - BitLocker key used to encrypt the disk.
+	BitLockerKey *string `json:"bitLockerKey,omitempty"`
+	// BackupManifestCloudPath - READ-ONLY; Path to backed up manifest, only returned if enableManifestBackup is true.
+	BackupManifestCloudPath *string `json:"backupManifestCloudPath,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImportDiskDetails.
+func (idd ImportDiskDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idd.ManifestFile != nil {
+		objectMap["manifestFile"] = idd.ManifestFile
+	}
+	if idd.ManifestHash != nil {
+		objectMap["manifestHash"] = idd.ManifestHash
+	}
+	if idd.BitLockerKey != nil {
+		objectMap["bitLockerKey"] = idd.BitLockerKey
+	}
+	return json.Marshal(objectMap)
+}
+
 // JobDeliveryInfo additional delivery info.
 type JobDeliveryInfo struct {
 	// ScheduledDateTime - Scheduled date time.
@@ -2057,6 +3159,7 @@ type JobDeliveryInfo struct {
 
 // BasicJobDetails job details.
 type BasicJobDetails interface {
+	AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool)
 	AsDiskJobDetails() (*DiskJobDetails, bool)
 	AsHeavyJobDetails() (*HeavyJobDetails, bool)
 	AsJobDetailsType() (*JobDetailsType, bool)
@@ -2091,7 +3194,15 @@ type JobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
+	// DatacenterAddress - READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress BasicDatacenterAddressResponse `json:"datacenterAddress,omitempty"`
+	// DataCenterCode - READ-ONLY; DataCenter code. Possible values include: 'DataCenterCodeInvalid', 'DataCenterCodeBY2', 'DataCenterCodeBY1', 'DataCenterCodeORK70', 'DataCenterCodeAM2', 'DataCenterCodeAMS20', 'DataCenterCodeBY21', 'DataCenterCodeBY24', 'DataCenterCodeMWH01', 'DataCenterCodeAMS06', 'DataCenterCodeSSE90', 'DataCenterCodeSYD03', 'DataCenterCodeSYD23', 'DataCenterCodeCBR20', 'DataCenterCodeYTO20', 'DataCenterCodeCWL20', 'DataCenterCodeLON24', 'DataCenterCodeBOM01', 'DataCenterCodeBL20', 'DataCenterCodeBL7', 'DataCenterCodeSEL20', 'DataCenterCodeTYO01', 'DataCenterCodeBN1', 'DataCenterCodeSN5', 'DataCenterCodeCYS04', 'DataCenterCodeTYO22', 'DataCenterCodeYTO21', 'DataCenterCodeYQB20', 'DataCenterCodeFRA22', 'DataCenterCodeMAA01', 'DataCenterCodeCPQ02', 'DataCenterCodeCPQ20', 'DataCenterCodeSIN20', 'DataCenterCodeHKG20', 'DataCenterCodeSG2', 'DataCenterCodeMEL23', 'DataCenterCodeSEL21', 'DataCenterCodeOSA20', 'DataCenterCodeSHA03', 'DataCenterCodeBJB', 'DataCenterCodeJNB22', 'DataCenterCodeJNB21', 'DataCenterCodeMNZ21', 'DataCenterCodeSN8', 'DataCenterCodeAUH20', 'DataCenterCodeZRH20', 'DataCenterCodePUS20', 'DataCenterCodeAdHoc', 'DataCenterCodeCH1', 'DataCenterCodeDSM05', 'DataCenterCodeDUB07', 'DataCenterCodePNQ01', 'DataCenterCodeSVG20', 'DataCenterCodeOSA02', 'DataCenterCodeOSA22', 'DataCenterCodePAR22', 'DataCenterCodeBN7', 'DataCenterCodeSN6', 'DataCenterCodeBJS20'
+	DataCenterCode DataCenterCode `json:"dataCenterCode,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxCustomerDisk', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
 
@@ -2103,6 +3214,10 @@ func unmarshalBasicJobDetails(body []byte) (BasicJobDetails, error) {
 	}
 
 	switch m["jobDetailsType"] {
+	case string(JobDetailsTypeDataBoxCustomerDisk):
+		var cdjd CustomerDiskJobDetails
+		err := json.Unmarshal(body, &cdjd)
+		return cdjd, err
 	case string(JobDetailsTypeDataBoxDisk):
 		var djd DiskJobDetails
 		err := json.Unmarshal(body, &djd)
@@ -2169,6 +3284,11 @@ func (jd JobDetails) MarshalJSON() ([]byte, error) {
 		objectMap["jobDetailsType"] = jd.JobDetailsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobDetails is the BasicJobDetails implementation for JobDetails.
+func (jd JobDetails) AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool) {
+	return nil, false
 }
 
 // AsDiskJobDetails is the BasicJobDetails implementation for JobDetails.
@@ -2321,6 +3441,41 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 				}
 				jd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				jd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				jd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
+		case "datacenterAddress":
+			if v != nil {
+				datacenterAddress, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				jd.DatacenterAddress = datacenterAddress
+			}
+		case "dataCenterCode":
+			if v != nil {
+				var dataCenterCode DataCenterCode
+				err = json.Unmarshal(*v, &dataCenterCode)
+				if err != nil {
+					return err
+				}
+				jd.DataCenterCode = dataCenterCode
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -2368,7 +3523,15 @@ type JobDetailsType struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
+	// DatacenterAddress - READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress BasicDatacenterAddressResponse `json:"datacenterAddress,omitempty"`
+	// DataCenterCode - READ-ONLY; DataCenter code. Possible values include: 'DataCenterCodeInvalid', 'DataCenterCodeBY2', 'DataCenterCodeBY1', 'DataCenterCodeORK70', 'DataCenterCodeAM2', 'DataCenterCodeAMS20', 'DataCenterCodeBY21', 'DataCenterCodeBY24', 'DataCenterCodeMWH01', 'DataCenterCodeAMS06', 'DataCenterCodeSSE90', 'DataCenterCodeSYD03', 'DataCenterCodeSYD23', 'DataCenterCodeCBR20', 'DataCenterCodeYTO20', 'DataCenterCodeCWL20', 'DataCenterCodeLON24', 'DataCenterCodeBOM01', 'DataCenterCodeBL20', 'DataCenterCodeBL7', 'DataCenterCodeSEL20', 'DataCenterCodeTYO01', 'DataCenterCodeBN1', 'DataCenterCodeSN5', 'DataCenterCodeCYS04', 'DataCenterCodeTYO22', 'DataCenterCodeYTO21', 'DataCenterCodeYQB20', 'DataCenterCodeFRA22', 'DataCenterCodeMAA01', 'DataCenterCodeCPQ02', 'DataCenterCodeCPQ20', 'DataCenterCodeSIN20', 'DataCenterCodeHKG20', 'DataCenterCodeSG2', 'DataCenterCodeMEL23', 'DataCenterCodeSEL21', 'DataCenterCodeOSA20', 'DataCenterCodeSHA03', 'DataCenterCodeBJB', 'DataCenterCodeJNB22', 'DataCenterCodeJNB21', 'DataCenterCodeMNZ21', 'DataCenterCodeSN8', 'DataCenterCodeAUH20', 'DataCenterCodeZRH20', 'DataCenterCodePUS20', 'DataCenterCodeAdHoc', 'DataCenterCodeCH1', 'DataCenterCodeDSM05', 'DataCenterCodeDUB07', 'DataCenterCodePNQ01', 'DataCenterCodeSVG20', 'DataCenterCodeOSA02', 'DataCenterCodeOSA22', 'DataCenterCodePAR22', 'DataCenterCodeBN7', 'DataCenterCodeSN6', 'DataCenterCodeBJS20'
+	DataCenterCode DataCenterCode `json:"dataCenterCode,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxCustomerDisk', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
 
@@ -2404,6 +3567,11 @@ func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
 		objectMap["jobDetailsType"] = jdt.JobDetailsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobDetails is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsCustomerDiskJobDetails() (*CustomerDiskJobDetails, bool) {
+	return nil, false
 }
 
 // AsDiskJobDetails is the BasicJobDetails implementation for JobDetailsType.
@@ -2574,6 +3742,41 @@ func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
 				}
 				jdt.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				jdt.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				jdt.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
+		case "datacenterAddress":
+			if v != nil {
+				datacenterAddress, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				jdt.DatacenterAddress = datacenterAddress
+			}
+		case "dataCenterCode":
+			if v != nil {
+				var dataCenterCode DataCenterCode
+				err = json.Unmarshal(*v, &dataCenterCode)
+				if err != nil {
+					return err
+				}
+				jdt.DataCenterCode = dataCenterCode
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -2601,7 +3804,7 @@ type JobProperties struct {
 	IsShippingAddressEditable *bool `json:"isShippingAddressEditable,omitempty"`
 	// IsPrepareToShipEnabled - READ-ONLY; Is Prepare To Ship Enabled on this job
 	IsPrepareToShipEnabled *bool `json:"isPrepareToShipEnabled,omitempty"`
-	// Status - READ-ONLY; Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCompletedWithWarnings', 'StageNameReadyToDispatchFromAzureDC', 'StageNameReadyToReceiveAtAzureDC'
+	// Status - READ-ONLY; Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCompletedWithWarnings', 'StageNameReadyToDispatchFromAzureDC', 'StageNameReadyToReceiveAtAzureDC', 'StageNameCreated', 'StageNameShippedToAzureDC', 'StageNameAwaitingShipmentDetails', 'StageNamePreparingToShipFromAzureDC', 'StageNameShippedToCustomer'
 	Status StageName `json:"status,omitempty"`
 	// StartTime - READ-ONLY; Time at which the job was started in UTC ISO 8601 format.
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -3212,6 +4415,7 @@ func (future *JobsDeleteFuture) result(client JobsClient) (ar autorest.Response,
 
 // BasicJobSecrets the base class for the secrets
 type BasicJobSecrets interface {
+	AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool)
 	AsDiskJobSecrets() (*DiskJobSecrets, bool)
 	AsHeavyJobSecrets() (*HeavyJobSecrets, bool)
 	AsJobSecretsType() (*JobSecretsType, bool)
@@ -3224,7 +4428,7 @@ type JobSecrets struct {
 	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty"`
 	// Error - READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxCustomerDisk', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
 }
 
@@ -3236,6 +4440,10 @@ func unmarshalBasicJobSecrets(body []byte) (BasicJobSecrets, error) {
 	}
 
 	switch m["jobSecretsType"] {
+	case string(JobSecretsTypeDataBoxCustomerDisk):
+		var cdjs CustomerDiskJobSecrets
+		err := json.Unmarshal(body, &cdjs)
+		return cdjs, err
 	case string(JobSecretsTypeDataBoxDisk):
 		var djs DiskJobSecrets
 		err := json.Unmarshal(body, &djs)
@@ -3283,6 +4491,11 @@ func (js JobSecrets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsCustomerDiskJobSecrets is the BasicJobSecrets implementation for JobSecrets.
+func (js JobSecrets) AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool) {
+	return nil, false
+}
+
 // AsDiskJobSecrets is the BasicJobSecrets implementation for JobSecrets.
 func (js JobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
 	return nil, false
@@ -3316,7 +4529,7 @@ type JobSecretsType struct {
 	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty"`
 	// Error - READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxCustomerDisk', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
 }
 
@@ -3331,6 +4544,11 @@ func (jst JobSecretsType) MarshalJSON() ([]byte, error) {
 		objectMap["jobSecretsType"] = jst.JobSecretsType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsCustomerDiskJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsCustomerDiskJobSecrets() (*CustomerDiskJobSecrets, bool) {
+	return nil, false
 }
 
 // AsDiskJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
@@ -3360,11 +4578,11 @@ func (jst JobSecretsType) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // JobStages job stages.
 type JobStages struct {
-	// StageName - READ-ONLY; Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCompletedWithWarnings', 'StageNameReadyToDispatchFromAzureDC', 'StageNameReadyToReceiveAtAzureDC'
+	// StageName - READ-ONLY; Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCompletedWithWarnings', 'StageNameReadyToDispatchFromAzureDC', 'StageNameReadyToReceiveAtAzureDC', 'StageNameCreated', 'StageNameShippedToAzureDC', 'StageNameAwaitingShipmentDetails', 'StageNamePreparingToShipFromAzureDC', 'StageNameShippedToCustomer'
 	StageName StageName `json:"stageName,omitempty"`
 	// DisplayName - READ-ONLY; Display name of the job stage.
 	DisplayName *string `json:"displayName,omitempty"`
-	// StageStatus - READ-ONLY; Status of the job stage. Possible values include: 'StageStatusNone', 'StageStatusInProgress', 'StageStatusSucceeded', 'StageStatusFailed', 'StageStatusCancelled', 'StageStatusCancelling', 'StageStatusSucceededWithErrors', 'StageStatusWaitingForCustomerAction', 'StageStatusSucceededWithWarnings'
+	// StageStatus - READ-ONLY; Status of the job stage. Possible values include: 'StageStatusNone', 'StageStatusInProgress', 'StageStatusSucceeded', 'StageStatusFailed', 'StageStatusCancelled', 'StageStatusCancelling', 'StageStatusSucceededWithErrors', 'StageStatusWaitingForCustomerAction', 'StageStatusSucceededWithWarnings', 'StageStatusWaitingForCustomerActionForKek', 'StageStatusWaitingForCustomerActionForCleanUp', 'StageStatusCustomerActionPerformedForCleanUp', 'StageStatusCustomerActionPerformed'
 	StageStatus StageStatus `json:"stageStatus,omitempty"`
 	// StageTime - READ-ONLY; Time for the job stage in UTC ISO 8601 format.
 	StageTime *date.Time `json:"stageTime,omitempty"`
@@ -3432,6 +4650,17 @@ type KeyEncryptionKey struct {
 	KekVaultResourceID *string `json:"kekVaultResourceID,omitempty"`
 }
 
+// LastMitigationActionOnJob last Mitigation Action Performed On Job
+type LastMitigationActionOnJob struct {
+	// ActionDateTimeInUtc - Action performed date time
+	ActionDateTimeInUtc *date.Time `json:"actionDateTimeInUtc,omitempty"`
+	// IsPerformedByCustomer - Action performed by customer,
+	// possibility is that mitigation might happen by customer or service or by ops
+	IsPerformedByCustomer *bool `json:"isPerformedByCustomer,omitempty"`
+	// CustomerResolution - Resolution code provided by customer. Possible values include: 'CustomerResolutionCodeNone', 'CustomerResolutionCodeMoveToCleanUpDevice', 'CustomerResolutionCodeResume', 'CustomerResolutionCodeRestart', 'CustomerResolutionCodeReachOutToOperation'
+	CustomerResolution CustomerResolutionCode `json:"customerResolution,omitempty"`
+}
+
 // ManagedDiskDetails details of the managed disks.
 type ManagedDiskDetails struct {
 	// ResourceGroupID - Resource Group Id of the compute disks.
@@ -3483,9 +4712,21 @@ func (mdd ManagedDiskDetails) AsBasicDataAccountDetails() (BasicDataAccountDetai
 	return &mdd, true
 }
 
+// MarkDevicesShippedRequest the request body to provide the delivery package details of job
+type MarkDevicesShippedRequest struct {
+	// DeliverToDcPackageDetails - Delivery package details
+	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty"`
+}
+
+// MitigateJobRequest the Mitigate Job captured from request body for Mitigate API
+type MitigateJobRequest struct {
+	// CustomerResolutionCode - Resolution code for the job. Possible values include: 'CustomerResolutionCodeNone', 'CustomerResolutionCodeMoveToCleanUpDevice', 'CustomerResolutionCodeResume', 'CustomerResolutionCodeRestart', 'CustomerResolutionCodeReachOutToOperation'
+	CustomerResolutionCode CustomerResolutionCode `json:"customerResolutionCode,omitempty"`
+}
+
 // NotificationPreference notification preference for a job stage.
 type NotificationPreference struct {
-	// StageName - Name of the stage. Possible values include: 'DevicePrepared', 'Dispatched', 'Delivered', 'PickedUp', 'AtAzureDC', 'DataCopy'
+	// StageName - Name of the stage. Possible values include: 'DevicePrepared', 'Dispatched', 'Delivered', 'PickedUp', 'AtAzureDC', 'DataCopy', 'Created', 'ShippedToCustomer'
 	StageName NotificationStageName `json:"stageName,omitempty"`
 	// SendNotification - Notification is required or not.
 	SendNotification *bool `json:"sendNotification,omitempty"`
@@ -3694,14 +4935,32 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 	}
 }
 
-// PackageShippingDetails shipping details.
+// PackageCarrierDetails package carrier details.
+type PackageCarrierDetails struct {
+	// CarrierAccountNumber - Carrier Account Number of customer for customer disk.
+	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty"`
+	// CarrierName - Name of the carrier.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// TrackingID - Tracking Id of shipment.
+	TrackingID *string `json:"trackingId,omitempty"`
+}
+
+// PackageCarrierInfo package carrier info
+type PackageCarrierInfo struct {
+	// CarrierName - Name of the carrier.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// TrackingID - Tracking Id of shipment.
+	TrackingID *string `json:"trackingId,omitempty"`
+}
+
+// PackageShippingDetails package shipping details
 type PackageShippingDetails struct {
+	// TrackingURL - READ-ONLY; Url where shipment can be tracked.
+	TrackingURL *string `json:"trackingUrl,omitempty"`
 	// CarrierName - READ-ONLY; Name of the carrier.
 	CarrierName *string `json:"carrierName,omitempty"`
 	// TrackingID - READ-ONLY; Tracking Id of shipment.
 	TrackingID *string `json:"trackingId,omitempty"`
-	// TrackingURL - READ-ONLY; Url where shipment can be tracked.
-	TrackingURL *string `json:"trackingUrl,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PackageShippingDetails.
@@ -3718,13 +4977,15 @@ type Preferences struct {
 	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
 	// EncryptionPreferences - Preferences related to the Encryption.
 	EncryptionPreferences *EncryptionPreferences `json:"encryptionPreferences,omitempty"`
+	// StorageAccountAccessTierPreferences - Preferences related to the Access Tier of storage accounts.
+	StorageAccountAccessTierPreferences *[]StorageAccountAccessTier `json:"storageAccountAccessTierPreferences,omitempty"`
 }
 
 // PreferencesValidationRequest request to validate preference of transport and data center.
 type PreferencesValidationRequest struct {
 	// Preference - Preference of transport and data center.
 	Preference *Preferences `json:"preference,omitempty"`
-	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	DeviceType SkuName `json:"deviceType,omitempty"`
 	// ValidationType - Possible values include: 'ValidationTypeValidationInputRequest', 'ValidationTypeValidateCreateOrderLimit', 'ValidationTypeValidateDataTransferDetails', 'ValidationTypeValidatePreferences', 'ValidationTypeValidateSkuAvailability', 'ValidationTypeValidateSubscriptionIsAllowedToCreateJob', 'ValidationTypeValidateAddress'
 	ValidationType ValidationType `json:"validationType,omitempty"`
@@ -3853,6 +5114,8 @@ type RegionConfigurationRequest struct {
 	ScheduleAvailabilityRequest BasicScheduleAvailabilityRequest `json:"scheduleAvailabilityRequest,omitempty"`
 	// TransportAvailabilityRequest - Request body to get the transport availability for given sku.
 	TransportAvailabilityRequest *TransportAvailabilityRequest `json:"transportAvailabilityRequest,omitempty"`
+	// DatacenterAddressRequest - Request body to get the datacenter address for given sku.
+	DatacenterAddressRequest *DatacenterAddressRequest `json:"datacenterAddressRequest,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for RegionConfigurationRequest struct.
@@ -3881,6 +5144,15 @@ func (rcr *RegionConfigurationRequest) UnmarshalJSON(body []byte) error {
 				}
 				rcr.TransportAvailabilityRequest = &transportAvailabilityRequest
 			}
+		case "datacenterAddressRequest":
+			if v != nil {
+				var datacenterAddressRequest DatacenterAddressRequest
+				err = json.Unmarshal(*v, &datacenterAddressRequest)
+				if err != nil {
+					return err
+				}
+				rcr.DatacenterAddressRequest = &datacenterAddressRequest
+			}
 		}
 	}
 
@@ -3894,12 +5166,55 @@ type RegionConfigurationResponse struct {
 	ScheduleAvailabilityResponse *ScheduleAvailabilityResponse `json:"scheduleAvailabilityResponse,omitempty"`
 	// TransportAvailabilityResponse - READ-ONLY; Transport options available for given sku in a region.
 	TransportAvailabilityResponse *TransportAvailabilityResponse `json:"transportAvailabilityResponse,omitempty"`
+	// DatacenterAddressResponse - READ-ONLY; Datacenter address for given sku in a region.
+	DatacenterAddressResponse BasicDatacenterAddressResponse `json:"datacenterAddressResponse,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegionConfigurationResponse.
 func (rcr RegionConfigurationResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegionConfigurationResponse struct.
+func (rcr *RegionConfigurationResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "scheduleAvailabilityResponse":
+			if v != nil {
+				var scheduleAvailabilityResponse ScheduleAvailabilityResponse
+				err = json.Unmarshal(*v, &scheduleAvailabilityResponse)
+				if err != nil {
+					return err
+				}
+				rcr.ScheduleAvailabilityResponse = &scheduleAvailabilityResponse
+			}
+		case "transportAvailabilityResponse":
+			if v != nil {
+				var transportAvailabilityResponse TransportAvailabilityResponse
+				err = json.Unmarshal(*v, &transportAvailabilityResponse)
+				if err != nil {
+					return err
+				}
+				rcr.TransportAvailabilityResponse = &transportAvailabilityResponse
+			}
+		case "datacenterAddressResponse":
+			if v != nil {
+				datacenterAddressResponse, err := unmarshalBasicDatacenterAddressResponse(*v)
+				if err != nil {
+					return err
+				}
+				rcr.DatacenterAddressResponse = datacenterAddressResponse
+			}
+		}
+	}
+
+	return nil
 }
 
 // Resource model of the Resource.
@@ -4215,7 +5530,7 @@ type ShippingAddress struct {
 
 // Sku the Sku.
 type Sku struct {
-	// Name - The sku name. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// Name - The sku name. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	Name SkuName `json:"name,omitempty"`
 	// DisplayName - The display name of the sku.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4225,7 +5540,7 @@ type Sku struct {
 
 // SkuAvailabilityValidationRequest request to validate sku availability.
 type SkuAvailabilityValidationRequest struct {
-	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	DeviceType SkuName `json:"deviceType,omitempty"`
 	// TransferType - Type of the transfer. Possible values include: 'ImportToAzure', 'ExportFromAzure'
 	TransferType TransferType `json:"transferType,omitempty"`
@@ -4717,7 +6032,7 @@ func (tad TransportAvailabilityDetails) MarshalJSON() ([]byte, error) {
 
 // TransportAvailabilityRequest request body to get the transport availability for given sku.
 type TransportAvailabilityRequest struct {
-	// SkuName - Type of the device. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// SkuName - Type of the device. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	SkuName SkuName `json:"skuName,omitempty"`
 }
 
@@ -4802,6 +6117,8 @@ type UpdateJobDetails struct {
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
 	// KeyEncryptionKey - Key encryption key for the job.
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	// ReturnToCustomerPackageDetails - Return package details of job.
+	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
 }
 
 // UpdateJobProperties job Properties for update
@@ -4834,7 +6151,7 @@ type UserAssignedProperties struct {
 type ValidateAddress struct {
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy', 'DataBoxCustomerDisk'
 	DeviceType SkuName `json:"deviceType,omitempty"`
 	// TransportPreferences - Preferences related to the shipment logistics of the sku.
 	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`

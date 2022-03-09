@@ -90,7 +90,7 @@ func (client JobsClient) BookShipmentPickUpPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -180,7 +180,7 @@ func (client JobsClient) CancelPreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -263,7 +263,7 @@ func (client JobsClient) CreatePreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -357,7 +357,7 @@ func (client JobsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -452,7 +452,7 @@ func (client JobsClient) GetPreparer(ctx context.Context, resourceGroupName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -533,7 +533,7 @@ func (client JobsClient) ListPreparer(ctx context.Context, skipToken string) (*h
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -653,7 +653,7 @@ func (client JobsClient) ListByResourceGroupPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -778,7 +778,7 @@ func (client JobsClient) ListCredentialsPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -806,6 +806,95 @@ func (client JobsClient) ListCredentialsResponder(resp *http.Response) (result U
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// MarkDevicesShipped request to mark devices for a given job as shipped
+// Parameters:
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// resourceGroupName - the Resource Group Name
+// markDevicesShippedRequest - mark Devices Shipped Request
+func (client JobsClient) MarkDevicesShipped(ctx context.Context, jobName string, resourceGroupName string, markDevicesShippedRequest MarkDevicesShippedRequest) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/JobsClient.MarkDevicesShipped")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: jobName,
+			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "jobName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\.]+$`, Chain: nil}}},
+		{TargetValue: markDevicesShippedRequest,
+			Constraints: []validation.Constraint{{Target: "markDevicesShippedRequest.DeliverToDcPackageDetails", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("databox.JobsClient", "MarkDevicesShipped", err.Error())
+	}
+
+	req, err := client.MarkDevicesShippedPreparer(ctx, jobName, resourceGroupName, markDevicesShippedRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "MarkDevicesShipped", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.MarkDevicesShippedSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "MarkDevicesShipped", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.MarkDevicesShippedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "MarkDevicesShipped", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// MarkDevicesShippedPreparer prepares the MarkDevicesShipped request.
+func (client JobsClient) MarkDevicesShippedPreparer(ctx context.Context, jobName string, resourceGroupName string, markDevicesShippedRequest MarkDevicesShippedRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"jobName":           autorest.Encode("path", jobName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/markDevicesShipped", pathParameters),
+		autorest.WithJSON(markDevicesShippedRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// MarkDevicesShippedSender sends the MarkDevicesShipped request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) MarkDevicesShippedSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// MarkDevicesShippedResponder handles the response to the MarkDevicesShipped request. The method always
+// closes the http.Response Body.
+func (client JobsClient) MarkDevicesShippedResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 
@@ -859,7 +948,7 @@ func (client JobsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01"
+	const APIVersion = "2021-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -10,10 +10,9 @@ package generated
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AzureAppConfigurationClientCheckKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeyValue

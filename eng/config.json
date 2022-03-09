@@ -1,6 +1,10 @@
 {
     "Packages": [
         {
+            "Name": "azappconfig",
+            "CoverageGoal": 0.20
+        },
+        {
             "Name": "azblob",
             "CoverageGoal": 0.45
         },

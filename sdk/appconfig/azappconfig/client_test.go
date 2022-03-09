@@ -15,10 +15,17 @@ import (
 )
 
 func TestClient(t *testing.T) {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		// This test does run as live test, when the azure template is deployed,
+		// and then the corresponding environment variable is set.
+		t.Skip("Skipping client test")
+	}
+
 	key := "key"
 	label := "label"
 	value := "value"
-	client, err := NewClientFromConnectionString(os.Getenv("APPCONFIGURATION_CONNECTION_STRING"), nil)
+	client, err := NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, client)
 
@@ -80,16 +87,16 @@ func TestClient(t *testing.T) {
 	any := "*"
 	revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, revPgr)
-	revHasPage := revPgr.NextPage(context.TODO())
-	require.True(t, revHasPage)
-	revResp := revPgr.PageResponse()
+	hasMore := revPgr.More()
+	require.True(t, hasMore)
+	revResp, err7 := revPgr.NextPage(context.TODO())
+	require.NoError(t, err7)
 	require.NotEmpty(t, revResp)
 	require.Equal(t, key, *revResp.Settings[0].Key)
 	require.Equal(t, label, *revResp.Settings[0].Label)
-	require.Equal(t, value, *revResp.Settings[0].Value)
 
-	delResp, err7 := client.DeleteSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
-	require.NoError(t, err7)
+	delResp, err8 := client.DeleteSetting(context.TODO(), Setting{Key: &key, Label: &label}, nil)
+	require.NoError(t, err8)
 	require.NotEmpty(t, delResp)
 	require.NotNil(t, delResp.Key)
 	require.NotNil(t, delResp.Label)

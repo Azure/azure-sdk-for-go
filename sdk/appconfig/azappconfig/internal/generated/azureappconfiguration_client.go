@@ -12,12 +12,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AzureAppConfigurationClient contains the methods for the AzureAppConfiguration group.
@@ -25,7 +24,7 @@ import (
 type AzureAppConfigurationClient struct {
 	endpoint  string
 	syncToken *string
-	pl        runtime.Pipeline
+	Pl        runtime.Pipeline
 }
 
 // NewAzureAppConfigurationClient creates a new instance of AzureAppConfigurationClient with the specified values.
@@ -36,7 +35,7 @@ func NewAzureAppConfigurationClient(endpoint string, syncToken *string, pl runti
 	client := &AzureAppConfigurationClient{
 		endpoint:  endpoint,
 		syncToken: syncToken,
-		pl:        pl,
+		Pl:        pl,
 	}
 	return client
 }
@@ -51,7 +50,7 @@ func (client *AzureAppConfigurationClient) CheckKeyValue(ctx context.Context, ke
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValueResponse{}, err
 	}
@@ -120,7 +119,7 @@ func (client *AzureAppConfigurationClient) CheckKeyValues(ctx context.Context, o
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValuesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValuesResponse{}, err
 	}
@@ -179,7 +178,7 @@ func (client *AzureAppConfigurationClient) CheckKeys(ctx context.Context, option
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeysResponse{}, err
 	}
@@ -232,7 +231,7 @@ func (client *AzureAppConfigurationClient) CheckLabels(ctx context.Context, opti
 	if err != nil {
 		return AzureAppConfigurationClientCheckLabelsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckLabelsResponse{}, err
 	}
@@ -288,7 +287,7 @@ func (client *AzureAppConfigurationClient) CheckRevisions(ctx context.Context, o
 	if err != nil {
 		return AzureAppConfigurationClientCheckRevisionsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckRevisionsResponse{}, err
 	}
@@ -348,7 +347,7 @@ func (client *AzureAppConfigurationClient) DeleteKeyValue(ctx context.Context, k
 	if err != nil {
 		return AzureAppConfigurationClientDeleteKeyValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientDeleteKeyValueResponse{}, err
 	}
@@ -410,7 +409,7 @@ func (client *AzureAppConfigurationClient) DeleteLock(ctx context.Context, key s
 	if err != nil {
 		return AzureAppConfigurationClientDeleteLockResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientDeleteLockResponse{}, err
 	}
@@ -475,7 +474,7 @@ func (client *AzureAppConfigurationClient) GetKeyValue(ctx context.Context, key 
 	if err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
 	}
@@ -718,7 +717,7 @@ func (client *AzureAppConfigurationClient) GetRevisions(options *AzureAppConfigu
 	return &AzureAppConfigurationClientGetRevisionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getRevisionsCreateRequest(ctx, options)
+			return client.GetRevisionsCreateRequest(ctx, options)
 		},
 		advancer: func(ctx context.Context, resp AzureAppConfigurationClientGetRevisionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyValueListResult.NextLink)
@@ -726,8 +725,8 @@ func (client *AzureAppConfigurationClient) GetRevisions(options *AzureAppConfigu
 	}
 }
 
-// getRevisionsCreateRequest creates the GetRevisions request.
-func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
+// GetRevisionsCreateRequest creates the GetRevisions request.
+func (client *AzureAppConfigurationClient) GetRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/revisions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -758,8 +757,8 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 	return req, nil
 }
 
-// getRevisionsHandleResponse handles the GetRevisions response.
-func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
+// GetRevisionsHandleResponse handles the GetRevisions response.
+func (client *AzureAppConfigurationClient) GetRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
 	result := AzureAppConfigurationClientGetRevisionsResponse{RawResponse: resp}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
@@ -780,7 +779,7 @@ func (client *AzureAppConfigurationClient) PutKeyValue(ctx context.Context, key 
 	if err != nil {
 		return AzureAppConfigurationClientPutKeyValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientPutKeyValueResponse{}, err
 	}
@@ -848,7 +847,7 @@ func (client *AzureAppConfigurationClient) PutLock(ctx context.Context, key stri
 	if err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.Pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
 	}

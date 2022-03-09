@@ -89,7 +89,7 @@ func MustCreateStressContext(testName string) *StressContext {
 		Nano:             testRunID, // the same for now
 		ConnectionString: cs,
 		TelemetryClient:  telemetryClient,
-		statsPrinter:     newStatsPrinter(ctx, testName, 5*time.Second, telemetryClient),
+		statsPrinter:     newStatsPrinter(ctx, testName, time.Minute, telemetryClient),
 		logMessages:      logMessages,
 		Context:          ctx,
 		cancel:           cancel,
@@ -107,7 +107,6 @@ func (sc *StressContext) Start(entityName string, attributes map[string]string) 
 	}
 
 	log.Printf("Start: %#v", startEvent.Properties)
-
 	sc.Track(startEvent)
 }
 

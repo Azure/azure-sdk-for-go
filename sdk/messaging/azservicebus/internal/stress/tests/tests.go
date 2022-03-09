@@ -41,6 +41,7 @@ func Run(remainingArgs []string) {
 		"rapidOpenClose":           RapidOpenCloseTest,
 		"receiveCancellation":      ReceiveCancellation,
 		"idleFastReconnect":        IdleFastReconnect,
+		"mostlyIdleReceiver":       MostlyIdleReceiver,
 	}
 
 	if len(remainingArgs) == 0 {

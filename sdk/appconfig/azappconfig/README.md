@@ -97,7 +97,7 @@ import (
 
 func ExampleAddConfigurationSetting() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }
@@ -135,7 +135,7 @@ import (
 
 func ExampleGetConfigurationSetting() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }
@@ -172,7 +172,7 @@ import (
 
 func ExampleSetConfigurationSetting() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }
@@ -210,7 +210,7 @@ import (
 
 func ExampleSetConfigurationSettingReadOnly() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }
@@ -268,7 +268,7 @@ import (
 
 func ExampleListRevisions() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }
@@ -282,7 +282,7 @@ func ExampleListRevisions() {
         nil)
 
     for revPgr.More() {
-        if revResp, revErr := revPgr.NextPage(context.TODO()); revErr != nil {
+        if revResp, revErr := revPgr.NextPage(context.TODO()); revErr == nil {
             for _, setting := range revResp.Settings {
                 fmt.Println(*setting.Key)
                 fmt.Println(*setting.Label)
@@ -307,7 +307,7 @@ import (
 
 func ExampleDeleteConfigurationSetting() {
     connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
-    client, err = azappconfig.NewClientFromConnectionString(connectionString, nil)
+    client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
     if err != nil {
         panic(err)
     }

@@ -572,7 +572,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 			// - TypeCodeDecimal32
 			// - TypeCodeDecimal64
 			// - TypeCodeDecimal128
-			// - TypeCodeChar  (although note below that a 'char' does work, although it's not a TypecodeChar value)
+			// - TypeCodeChar  (although note below that a 'character' does work, although it's not a TypecodeChar value)
 			// https://github.com/Azure/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
 			"timestamp": expectedTime,
 
@@ -590,7 +590,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 			"float64": float64(400.1),
 
 			"string": "hello world",
-			// these aren't "true" chars in the amqp sense - they end up being in32's.
+			// these aren't "true" chars in the amqp sense - they end up being int32's
 			"char":  'g',
 			"char2": '❤',
 

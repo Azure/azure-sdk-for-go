@@ -1415,3 +1415,129 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	_, err = snapshotURL.Delete(ctx, nil)
 	_assert.Nil(err)
 }
+
+func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKKey() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	_assert.NoError(err)
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	// Set up test blob
+	blobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	// Create some data to test the upload stream
+	blobContentReader, blobData := generateData(blobSize)
+
+	// Perform UploadStreamToBlockBlob
+	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
+		UploadStreamToBlockBlobOptions{
+			BufferSize:  bufferSize,
+			MaxBuffers:  maxBuffers,
+			Metadata:    basicMetadata,
+			BlobTagsMap: basicBlobTagsMap,
+			HTTPHeaders: &basicHeaders,
+			CpkInfo:     &testCPKByValue,
+		})
+
+	// Assert that upload was successful
+	_assert.Equal(err, nil)
+	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := blobClient.GetProperties(ctx, &GetBlobPropertiesOptions{CpkInfo: &testCPKByValue})
+	_assert.NoError(err)
+	_assert.EqualValues(getPropertiesResp.Metadata, basicMetadata)
+	_assert.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	_assert.Equal(getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+
+	getTagsResp, err := blobClient.GetTags(ctx, nil)
+	_assert.NoError(err)
+	_assert.Len(getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		_assert.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := blobClient.Download(ctx, &DownloadBlobOptions{CpkInfo: &testCPKByValue})
+	_assert.NoError(err)
+
+	// Assert that the content is correct
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	_assert.NoError(err)
+	_assert.Equal(len(actualBlobData), blobSize)
+	_assert.EqualValues(actualBlobData, blobData)
+}
+
+func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	_assert.NoError(err)
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	// Set up test blob
+	blobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	// Create some data to test the upload stream
+	blobContentReader, blobData := generateData(blobSize)
+
+	// Perform UploadStreamToBlockBlob
+	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
+		UploadStreamToBlockBlobOptions{
+			BufferSize:   bufferSize,
+			MaxBuffers:   maxBuffers,
+			Metadata:     basicMetadata,
+			BlobTagsMap:  basicBlobTagsMap,
+			HTTPHeaders:  &basicHeaders,
+			CpkScopeInfo: &testCPKByScope,
+		})
+
+	// Assert that upload was successful
+	_assert.Equal(err, nil)
+	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := blobClient.GetProperties(ctx, nil)
+	_assert.NoError(err)
+	_assert.EqualValues(getPropertiesResp.Metadata, basicMetadata)
+	_assert.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	_assert.Equal(getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+
+	getTagsResp, err := blobClient.GetTags(ctx, nil)
+	_assert.NoError(err)
+	_assert.Len(getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		_assert.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := blobClient.Download(ctx, &DownloadBlobOptions{CpkScopeInfo: &testCPKByScope})
+	_assert.NoError(err)
+
+	// Assert that the content is correct
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	_assert.NoError(err)
+	_assert.Equal(len(actualBlobData), blobSize)
+	_assert.EqualValues(actualBlobData, blobData)
+}

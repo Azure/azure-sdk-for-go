@@ -587,11 +587,26 @@ func (u *UploadStreamToBlockBlobOptions) defaults() error {
 	return nil
 }
 func (u *UploadStreamToBlockBlobOptions) getStageBlockOptions() *StageBlockOptions {
-	return &StageBlockOptions{}
+	leaseAccessConditions, _ := u.BlobAccessConditions.pointers()
+	return &StageBlockOptions{
+		CpkInfo:               u.CpkInfo,
+		CpkScopeInfo:          u.CpkScopeInfo,
+		LeaseAccessConditions: leaseAccessConditions,
+	}
 }
 
 func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBlockListOptions {
-	return &CommitBlockListOptions{}
+	options := &CommitBlockListOptions{
+		BlobTagsMap:          u.BlobTagsMap,
+		Metadata:             u.Metadata,
+		Tier:                 u.AccessTier,
+		BlobHTTPHeaders:      u.HTTPHeaders,
+		CpkInfo:              u.CpkInfo,
+		CpkScopeInfo:         u.CpkScopeInfo,
+		BlobAccessConditions: u.BlobAccessConditions,
+	}
+
+	return options
 }
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.

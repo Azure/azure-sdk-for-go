@@ -4,41 +4,40 @@
 package azblob
 
 import (
+	"github.com/stretchr/testify/assert"
 	"strconv"
-	"testing"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/require"
 )
 
-func TestSetEmptyAccessPolicy(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestSetAccessPolicy(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -63,39 +62,50 @@ func TestSetAccessPolicy(t *testing.T) {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestSetMultipleAccessPolicies(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	id := "empty"
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-		ID: to.StringPtr("empty"),
+		ID: &id,
 	})
 
+	permission2 := "r"
+	id2 := "partial"
+
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-		ID: to.StringPtr("partial"),
+		ID: &id2,
 		AccessPolicy: &AccessPolicy{
-			Permission: to.StringPtr("r"),
+			Permission: &permission2,
 		},
 	})
 
+	id3 := "full"
+	permission3 := "r"
+	start := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+	expiry := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-		ID: to.StringPtr("full"),
+		ID: &id3,
 		AccessPolicy: &AccessPolicy{
-			Start:      to.TimePtr(time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)),
-			Expiry:     to.TimePtr(time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)),
-			Permission: to.StringPtr("f"),
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission3,
 		},
 	})
 
@@ -106,29 +116,32 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	// Make a Get to assert two access policies
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Len(t, resp.SignedIdentifiers, 3)
+	_assert.Nil(err)
+	_assert.Len(resp.SignedIdentifiers, 3)
 }
 
-func TestSetNullAccessPolicy(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	id := "null"
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-		ID: to.StringPtr("null"),
+		ID: &id,
 	})
 
 	param := SetAccessPolicyOptions{
@@ -138,29 +151,29 @@ func TestSetNullAccessPolicy(t *testing.T) {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, len(resp.SignedIdentifiers), 1)
+	_assert.Nil(err)
+	_assert.Equal(len(resp.SignedIdentifiers), 1)
 }
 
-func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// Define the policies
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	expiry := start.Add(5 * time.Minute)
 	expiry2 := start.Add(time.Minute)
 	readWrite := AccessPolicyPermission{Read: true, Write: true}.String()
@@ -189,21 +202,22 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, resp.SignedIdentifiers, permissions)
+	_assert.Nil(err)
+	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -212,26 +226,60 @@ func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 		Access: &access,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
-	require.NoError(t, err)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	defer deleteContainer(_assert, containerClient)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
-	require.NoError(t, err)
-	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeBlob)
+	_assert.Nil(err)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
-func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
-	stop := start(t)
-	defer stop()
+//func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
+//	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
+//	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
+//	svcClient := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, svcClient)
+//	defer deleteContainer(_assert, containerClient)
+//	_, blobName := createNewBlockBlob(c, containerClient)
+//
+//	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
+//	_, err := containerClient.SetAccessPolicy(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_assert.Nil(err)
+//	bsu2, err := NewServiceClient(svcClient.URL(), azcore.AnonymousCredential(), nil)
+//	_assert.Nil(err)
+//
+//	containerClient2 := bsu2.NewContainerClient(containerName)
+//	blobURL2 := containerClient2.NewBlockBlobClient(blobName)
+//
+//	// Get permissions via the original container URL so the request succeeds
+//	resp, err := containerClient.GetAccessPolicy(ctx, nil)
+//	_assert(resp.BlobPublicAccess, chk.IsNil)
+//	_assert.Nil(err)
+//
+//	// If we cannot access a blob's data, we will also not be able to enumerate blobs
+//	p := containerClient2.ListBlobsFlat(nil)
+//	p.NextPage(ctx)
+//	err = p.Err() // grab the next page
+//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+//
+//	_, err = blobURL2.Download(ctx, nil)
+//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+//}
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -240,25 +288,25 @@ func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeBlob)
+	_assert.Nil(err)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
-func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -267,29 +315,86 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeContainer)
+	_assert.Nil(err)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeContainer)
 }
 
-func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
-	stop := start(t)
-	defer stop()
+////// TODO: After Pacer is ready
+////func (s *azblobTestSuite) TestContainerSetPermissionsACLSinglePolicy() {
+////	svcClient := getServiceClient()
+////	credential, err := getGenericCredential("")
+////	if err != nil {
+////		c.Fatal("Invalid credential")
+////	}
+////	containerClient, containerName := createNewContainer(c, svcClient)
+////	defer deleteContainer(_assert, containerClient)
+////	_, blobName := createNewBlockBlob(c, containerClient)
+////
+////	start := time.Now().UTC().Add(-15 * time.Second)
+////	expiry := start.Add(5 * time.Minute).UTC()
+////	listOnly := AccessPolicyPermission{List: true}.String()
+////	id := "0000"
+////	permissions := []SignedIdentifier{{
+////		ID: &id,
+////		AccessPolicy: &AccessPolicy{
+////			Start:      &start,
+////			Expiry:     &expiry,
+////			Permission: &listOnly,
+////		},
+////	}}
+////
+////	setAccessPolicyOptions := SetAccessPolicyOptions{
+////		ContainerAcquireLeaseOptions: ContainerAcquireLeaseOptions{
+////			ContainerACL: permissions,
+////		},
+////	}
+////	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+////	_assert.Nil(err)
+////
+////	serviceSASValues := BlobSASSignatureValues{Identifier: "0000", ContainerName: containerName}
+////	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
+////	if err != nil {
+////		s.T().Fatal(err)
+////	}
+////
+////	sasURL := svcClient.URL()
+////	sasURL.RawQuery = queryParams.Encode()
+////	sasPipeline := (NewAnonymousCredential(), PipelineOptions{})
+////	sasBlobServiceURL := NewServiceURL(sasURL, sasPipeline)
+////
+////	// Verifies that the SAS can access the resource
+////	sasContainer := sasBlobServiceURL.NewContainerClient(containerName)
+////	resp, err := sasContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	_assert.Nil(err)
+////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
+////
+////	// Verifies that successful sas access is not just because it's public
+////	anonymousBlobService := NewServiceURL(svcClient.URL(), sasPipeline)
+////	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
+////	_, err = anonymousContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+////}
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	permissions := make([]*SignedIdentifier, 6)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 6; i++ {
@@ -312,28 +417,28 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
-	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
 }
 
-func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	permissions := make([]*SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
@@ -356,11 +461,11 @@ func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, resp.SignedIdentifiers, permissions)
+	_assert.Nil(err)
+	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 
 	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
 	newId := "0004"
@@ -372,31 +477,31 @@ func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Len(t, resp.SignedIdentifiers, 1)
-	require.EqualValues(t, resp.SignedIdentifiers, permissions)
+	_assert.Nil(err)
+	_assert.Len(resp.SignedIdentifiers, 1)
+	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
@@ -419,12 +524,12 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Len(t, resp.SignedIdentifiers, len(permissions))
-	require.EqualValues(t, resp.SignedIdentifiers, permissions)
+	_assert.Nil(err)
+	_assert.Len(resp.SignedIdentifiers, len(permissions))
+	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 
 	setAccessPolicyOptions = SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
@@ -433,31 +538,31 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Nil(t, resp.SignedIdentifiers)
+	_assert.Nil(err)
+	_assert.Nil(resp.SignedIdentifiers)
 }
 
-func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// Swap start and expiry
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
@@ -480,45 +585,45 @@ func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsNilPolicySlice() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
-
+func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
-	defer deleteContainer(t, containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	id := ""
 	for i := 0; i < 65; i++ {
 		id += "a"
 	}
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	require.NoError(t, err)
+	_assert.Nil(err)
 	start := expiry.Add(5 * time.Minute).UTC()
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
@@ -541,26 +646,27 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
-	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
 }
 
-func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -570,28 +676,29 @@ func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Nil(t, resp.BlobPublicAccess)
+	_assert.Nil(err)
+	_assert.Nil(resp.BlobPublicAccess)
 }
 
-func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -601,26 +708,27 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -630,28 +738,29 @@ func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	require.NoError(t, err)
-	require.Nil(t, resp.BlobPublicAccess)
+	_assert.Nil(err)
+	_assert.Nil(resp.BlobPublicAccess)
 }
 
-func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(_assert, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -661,7 +770,7 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }

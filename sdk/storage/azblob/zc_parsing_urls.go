@@ -11,6 +11,7 @@ import (
 
 const (
 	snapshot           = "snapshot"
+	versionId          = "versionid"
 	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 )
 
@@ -56,8 +57,11 @@ func isIPEndpointStyle(host string) bool {
 
 // NewBlobURLParts parses a URL initializing BlobURLParts' fields including any SAS-related & snapshot query parameters. Any other
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
-func NewBlobURLParts(u string) BlobURLParts {
-	uri, _ := url.Parse(u)
+func NewBlobURLParts(u string) (BlobURLParts, error) {
+	uri, err := url.Parse(u)
+	if err != nil {
+		return BlobURLParts{}, err
+	}
 
 	up := BlobURLParts{
 		Scheme: uri.Scheme,
@@ -73,6 +77,7 @@ func NewBlobURLParts(u string) BlobURLParts {
 		if isIPEndpointStyle(up.Host) {
 			if accountEndIndex := strings.Index(path, "/"); accountEndIndex == -1 { // Slash not found; path has account name & no container name or blob
 				up.IPEndpointStyleInfo.AccountName = path
+				path = "" // No ContainerName present in the URL so path should be empty
 			} else {
 				up.IPEndpointStyleInfo.AccountName = path[:accountEndIndex] // The account name is the part between the slashes
 				path = path[accountEndIndex+1:]                             // path refers to portion after the account name now (container & blob names)
@@ -97,9 +102,18 @@ func NewBlobURLParts(u string) BlobURLParts {
 		// If we recognized the query parameter, remove it from the map
 		delete(paramsMap, snapshot)
 	}
+
+	up.VersionID = "" // Assume no versionID
+	if versionIDs, ok := caseInsensitiveValues(paramsMap).Get(versionId); ok {
+		up.VersionID = versionIDs[0]
+		// If we recognized the query parameter, remove it from the map
+		delete(paramsMap, versionId)   // delete "versionid" from paramsMap
+		delete(paramsMap, "versionId") // delete "versionId" from paramsMap
+	}
+
 	up.SAS = newSASQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
-	return up
+	return up, nil
 }
 
 type caseInsensitiveValues url.Values // map[string][]string
@@ -133,6 +147,14 @@ func (up BlobURLParts) URL() string {
 	//If no snapshot is initially provided, fill it in from the SAS query properties to help the user
 	if up.Snapshot == "" && !up.SAS.snapshotTime.IsZero() {
 		up.Snapshot = up.SAS.snapshotTime.Format(SnapshotTimeFormat)
+	}
+
+	// Concatenate blob version id query parameter (if it exists)
+	if up.VersionID != "" {
+		if len(rawQuery) > 0 {
+			rawQuery += "&"
+		}
+		rawQuery += versionId + "=" + up.VersionID
 	}
 
 	// Concatenate blob snapshot query parameter (if it exists)

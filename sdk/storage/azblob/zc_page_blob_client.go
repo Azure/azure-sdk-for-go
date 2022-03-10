@@ -57,7 +57,7 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
-	p := NewBlobURLParts(pb.URL())
+	p, _ := NewBlobURLParts(pb.URL())
 	p.Snapshot = snapshot
 
 	con := &connection{p.URL(), pb.client.con.p}
@@ -70,7 +70,7 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the version returning a URL to the base blob.
 func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
-	p := NewBlobURLParts(pb.URL())
+	p, _ := NewBlobURLParts(pb.URL())
 	p.VersionID = versionID
 
 	con := &connection{p.URL(), pb.client.con.p}

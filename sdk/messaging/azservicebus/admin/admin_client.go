@@ -59,6 +59,7 @@ func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCrede
 	return &Client{em: em}, nil
 }
 
+// NamespaceProperties are the properties associated with a given namespace
 type NamespaceProperties struct {
 	CreatedTime  time.Time
 	ModifiedTime time.Time
@@ -68,15 +69,18 @@ type NamespaceProperties struct {
 	Name           string
 }
 
+// GetNamespacePropertiesResult contains the result of Client.GetNamespaceProperties
 type GetNamespacePropertiesResult struct {
 	NamespaceProperties
 }
 
+// GetNamespacePropertiesResponse contains the response fields of Client.GetNamespaceProperties method
 type GetNamespacePropertiesResponse struct {
 	GetNamespacePropertiesResult
 	RawResponse *http.Response
 }
 
+// GetNamespacePropertiesOptions contains the optional parameters of Client.GetNamespaceProperties
 type GetNamespacePropertiesOptions struct {
 	// For future expansion
 }

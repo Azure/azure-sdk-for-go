@@ -91,10 +91,12 @@ type SubscriptionRuntimeProperties struct {
 	UpdatedAt time.Time
 }
 
+// CreateSubscriptionResult contains the result for Client.CreateSubscription
 type CreateSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// CreateSubscriptionResponse contains response fields for Client.CreateSubscription
 type CreateSubscriptionResponse struct {
 	// Value is the result of the request.
 	CreateSubscriptionResult
@@ -102,6 +104,7 @@ type CreateSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// CreateSubscriptionOptions contains optional parameters for Client.CreateSubscription
 type CreateSubscriptionOptions struct {
 	// For future expansion
 }
@@ -122,10 +125,12 @@ func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subs
 	}, nil
 }
 
+// GetSubscriptionResult contains the result for Client.GetSubscription
 type GetSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// GetSubscriptionResponse contains response fields for Client.GetSubscription
 type GetSubscriptionResponse struct {
 	GetSubscriptionResult
 
@@ -133,6 +138,7 @@ type GetSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// GetSubscriptionOptions contains optional parameters for Client.GetSubscription
 type GetSubscriptionOptions struct {
 	// For future expansion
 }
@@ -160,16 +166,19 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	}, nil
 }
 
+// GetSubscriptionRuntimePropertiesResult contains the result for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesResult struct {
 	SubscriptionRuntimeProperties
 }
 
+// GetSubscriptionRuntimePropertiesResponse contains response fields for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesResponse struct {
 	GetSubscriptionRuntimePropertiesResult
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response
 }
 
+// GetSubscriptionRuntimePropertiesOptions contains optional parameters for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesOptions struct {
 	// For future expansion
 }
@@ -203,6 +212,7 @@ type ListSubscriptionsOptions struct {
 	MaxPageSize int32
 }
 
+// SubscriptionPropertiesItem contains a single item for SubscriptionPager.PageResponse
 type SubscriptionPropertiesItem struct {
 	SubscriptionProperties
 
@@ -210,6 +220,7 @@ type SubscriptionPropertiesItem struct {
 	SubscriptionName string
 }
 
+// ListSubscriptionsResponse contains the response fields for SubscriptionPager.PageResponse
 type ListSubscriptionsResponse struct {
 	// Value is the result of the request.
 	Items []*SubscriptionPropertiesItem
@@ -293,6 +304,7 @@ type ListSubscriptionsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
+// SubscriptionRuntimePropertiesItem contains the data from a SubscriptionRuntimePropertiesPager.PageResponse method
 type SubscriptionRuntimePropertiesItem struct {
 	SubscriptionRuntimeProperties
 
@@ -300,6 +312,7 @@ type SubscriptionRuntimePropertiesItem struct {
 	SubscriptionName string
 }
 
+// ListSubscriptionsRuntimePropertiesResponse contains the response fields for SubscriptionRuntimePropertiesPager.PageResponse
 type ListSubscriptionsRuntimePropertiesResponse struct {
 	// Value is the result of the request.
 	Items []*SubscriptionRuntimePropertiesItem
@@ -376,10 +389,12 @@ func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *
 	}
 }
 
+// UpdateSubscriptionResult contains the result of Client.UpdateSubscription
 type UpdateSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// UpdateSubscriptionResponse contains the response fields for Client.UpdateSubscription
 type UpdateSubscriptionResponse struct {
 	UpdateSubscriptionResult
 
@@ -387,6 +402,7 @@ type UpdateSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// UpdateSubscriptionOptions contains the optional parameters for Client.UpdateSubscription
 type UpdateSubscriptionOptions struct {
 	// For future expansion
 }
@@ -407,10 +423,12 @@ func (ac *Client) UpdateSubscription(ctx context.Context, topicName string, subs
 	}, nil
 }
 
+// DeleteSubscriptionOptions contains optional parameters for Client.DeleteSubscription
 type DeleteSubscriptionOptions struct {
 	// For future expansion
 }
 
+// DeleteSubscriptionResponse contains response fields for Client.DeleteSubscription
 type DeleteSubscriptionResponse struct {
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response

@@ -107,14 +107,17 @@ type QueueRuntimeProperties struct {
 	TransferMessageCount int32
 }
 
+// CreateQueueOptions contains the optional parameters for Client.CreateQueue
 type CreateQueueOptions struct {
 	// for future expansion
 }
 
+// CreateQueueResult contains the result of Client.CreateQueue
 type CreateQueueResult struct {
 	QueueProperties
 }
 
+// CreateQueueResponse contains the response fields for Client.CreateQueue
 type CreateQueueResponse struct {
 	CreateQueueResult
 
@@ -138,10 +141,12 @@ func (ac *Client) CreateQueue(ctx context.Context, queueName string, properties 
 	}, nil
 }
 
+// UpdateQueueResult contains the result for Client.UpdateQueue
 type UpdateQueueResult struct {
 	QueueProperties
 }
 
+// UpdateQueueResponse contains the response fields for Client.UpdateQueue
 type UpdateQueueResponse struct {
 	UpdateQueueResult
 
@@ -149,6 +154,7 @@ type UpdateQueueResponse struct {
 	RawResponse *http.Response
 }
 
+// UpdateQueueOptions contains optional parameters for Client.UpdateQueue
 type UpdateQueueOptions struct {
 	// for future expansion
 }
@@ -169,10 +175,12 @@ func (ac *Client) UpdateQueue(ctx context.Context, queueName string, properties 
 	}, err
 }
 
+// GetQueueResult contains the result for Client.GetQueue
 type GetQueueResult struct {
 	QueueProperties
 }
 
+// GetQueueResponse contains the response fields for Client.GetQueue
 type GetQueueResponse struct {
 	GetQueueResult
 
@@ -180,6 +188,7 @@ type GetQueueResponse struct {
 	RawResponse *http.Response
 }
 
+// GetQueueOptions contains the optional parameters for Client.GetQueue
 type GetQueueOptions struct {
 	// For future expansion
 }
@@ -207,10 +216,12 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	}, nil
 }
 
+// GetQueueRuntimePropertiesResult contains the result for Client.GetQueueRuntimeProperties
 type GetQueueRuntimePropertiesResult struct {
 	QueueRuntimeProperties
 }
 
+// GetQueueRuntimePropertiesResponse contains response fields for Client.GetQueueRuntimeProperties
 type GetQueueRuntimePropertiesResponse struct {
 	GetQueueRuntimePropertiesResult
 
@@ -218,6 +229,7 @@ type GetQueueRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
+// GetQueueRuntimePropertiesOptions contains optional parameters for client.GetQueueRuntimeProperties
 type GetQueueRuntimePropertiesOptions struct {
 	// For future expansion
 }
@@ -245,10 +257,12 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 	}, nil
 }
 
+// DeleteQueueResponse contains response fields for Client.DeleteQueue
 type DeleteQueueResponse struct {
 	RawResponse *http.Response
 }
 
+// DeleteQueueOptions contains optional parameters for Client.DeleteQueue
 type DeleteQueueOptions struct {
 	// for future expansion
 }
@@ -266,15 +280,18 @@ type ListQueuesOptions struct {
 	MaxPageSize int32
 }
 
+// ListQueuesResult contains the result for QueuePager.PageResponse
 type ListQueuesResult struct {
 	Items []*QueueItem
 }
 
+// ListQueuesResponse contains the response fields for QueuePager.PageResponse
 type ListQueuesResponse struct {
 	ListQueuesResult
 	RawResponse *http.Response
 }
 
+// QueueItem contains the data from the Client.ListQueues pager
 type QueueItem struct {
 	QueueName string
 	QueueProperties
@@ -299,11 +316,13 @@ type ListQueuesRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
+// ListQueuesRuntimePropertiesResponse contains the page response for QueueRuntimePropertiesPager.PageResponse
 type ListQueuesRuntimePropertiesResponse struct {
 	Items       []*QueueRuntimePropertiesItem
 	RawResponse *http.Response
 }
 
+// QueueRuntimePropertiesItem contains a single item in the page response for QueueRuntimePropertiesPager.PageResponse
 type QueueRuntimePropertiesItem struct {
 	QueueName string
 	QueueRuntimeProperties

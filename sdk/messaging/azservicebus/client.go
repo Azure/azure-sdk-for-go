@@ -149,7 +149,7 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	return client, err
 }
 
-// NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
+// NewReceiverForQueue creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
@@ -166,7 +166,7 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 	return receiver, nil
 }
 
-// NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
+// NewReceiverForSubscription creates a Receiver for a subscription. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
@@ -183,6 +183,7 @@ func (client *Client) NewReceiverForSubscription(topicName string, subscriptionN
 	return receiver, nil
 }
 
+// NewSenderOptions contains optional parameters for Client.NewSender
 type NewSenderOptions struct {
 	// For future expansion
 }

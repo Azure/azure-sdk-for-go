@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 )
 
@@ -27,7 +26,7 @@ func GetEnv(key, fallback string) string {
 	return fallback
 }
 
-func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, location string) (*armresources.ResourceGroup, func() error, error) {
+func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, location string) (*armresources.ResourceGroup, func() (armresources.ResourceGroupsClientDeletePollerResponse, error), error) {
 	rand.Seed(time.Now().UnixNano())
 	resourceGroupName := fmt.Sprintf("go-sdk-test-%d", rand.Intn(1000))
 	rgClient := armresources.NewResourceGroupsClient(subscriptionId, cred, options)
@@ -38,39 +37,12 @@ func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 	if err != nil {
 		return nil, nil, err
 	}
-	return &resp.ResourceGroup, func() error {
-		err := DeleteResourceGroup(ctx, subscriptionId, cred, options, *resp.Name)
-		if err != nil {
-			return err
-		}
-		return nil
+	return &resp.ResourceGroup, func() (armresources.ResourceGroupsClientDeletePollerResponse, error) {
+		return DeleteResourceGroup(ctx, subscriptionId, cred, options, *resp.Name)
 	}, nil
 }
 
-func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName string) error {
+func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName string) (armresources.ResourceGroupsClientDeletePollerResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(subscriptionId, cred, options)
-	poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
-	if err != nil {
-		return err
-	}
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = poller.Poller.Poll(ctx)
-			if err != nil {
-				return err
-			}
-			if poller.Poller.Done() {
-				_, err = poller.Poller.FinalResponse(ctx)
-				if err != nil {
-					return err
-				}
-				break
-			}
-		}
-	} else {
-		if _, err = poller.PollUntilDone(ctx, 10*time.Second); err != nil {
-			return err
-		}
-	}
-	return nil
+	return rgClient.BeginDelete(ctx, resourceGroupName, nil)
 }

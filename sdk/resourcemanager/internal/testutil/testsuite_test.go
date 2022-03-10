@@ -38,7 +38,7 @@ func (testsuite *ExampleTestSuite) SetupSuite() {
 }
 
 func (testsuite *ExampleTestSuite) TearDownSuite() {
-	err := DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+	_, err := DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	StopRecording(testsuite.T())
 }

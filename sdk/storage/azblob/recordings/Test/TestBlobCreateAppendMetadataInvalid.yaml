@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:17:04 GMT
+      - Thu, 10 Mar 2022 14:49:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:17:04 GMT
+      - Thu, 10 Mar 2022 14:49:16 GMT
       Etag:
-      - '"0x8D9EA0175CECCF6"'
+      - '"0x8DA02A526C4CC87"'
       Last-Modified:
-      - Mon, 07 Feb 2022 06:17:04 GMT
+      - Thu, 10 Mar 2022 14:49:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8d81cc6d-b01e-004f-14ea-1bfe2c000000
+      - d6ebcc9f-201e-0062-608e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -46,9 +46,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:17:04 GMT
+      - Thu, 10 Mar 2022 14:49:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
@@ -59,11 +59,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:17:04 GMT
+      - Thu, 10 Mar 2022 14:49:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8d81cd18-b01e-004f-2cea-1bfe2c000000
+      - d6ebcd3f-201e-0062-768e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -10,11 +10,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:15 GMT
       X-Ms-Meta-Foo:
       - bar
       X-Ms-Version:
@@ -27,15 +27,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:21:53 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Etag:
-      - '"0x8D9EA02229B5067"'
+      - '"0x8DA02A5F99B9E48"'
       Last-Modified:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8d84f7f9-b01e-004f-5eeb-1bfe2c000000
+      - d6f4fc32-201e-0062-1c8e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -50,9 +50,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetmetadataempty?comp=metadata&restype=container
@@ -63,15 +63,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Etag:
-      - '"0x8D9EA0222C0E438"'
+      - '"0x8DA02A5F9C40EE9"'
       Last-Modified:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8d84f90d-b01e-004f-4eeb-1bfe2c000000
+      - d6f4fde0-201e-0062-1e8e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -86,9 +86,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetmetadataempty?restype=container
@@ -99,11 +99,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Etag:
-      - '"0x8D9EA0222C0E438"'
+      - '"0x8DA02A5F9C40EE9"'
       Last-Modified:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
@@ -121,7 +121,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 8d84fa03-b01e-004f-29eb-1bfe2c000000
+      - d6f5001e-201e-0062-348e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -136,9 +136,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.16.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
       X-Ms-Date:
-      - Mon, 07 Feb 2022 06:21:55 GMT
+      - Thu, 10 Mar 2022 14:55:16 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetmetadataempty?restype=container
@@ -149,11 +149,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 07 Feb 2022 06:21:54 GMT
+      - Thu, 10 Mar 2022 14:55:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8d84fa9d-b01e-004f-30eb-1bfe2c000000
+      - d6f5022b-201e-0062-208e-344d5f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

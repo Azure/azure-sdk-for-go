@@ -65,6 +65,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: TestRunTime
+    type: string
+    default: '600s'
 
 
 stages:
@@ -113,7 +116,7 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(vm.image)
           GoVersion: $(go.version)
-          TestProxy: true # Do we need this conditional if it's always true? @benbp
+          TestProxy: true
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v62.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/mysql/mgmt/2021-05-01/mysqlflexibleservers/CHANGELOG.md) |
+
 ## `v62.1.0`
 
 ### New Packages

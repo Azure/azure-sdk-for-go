@@ -59,7 +59,7 @@ func (b BlobClient) URL() string {
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
-	p := NewBlobURLParts(b.URL())
+	p, _ := NewBlobURLParts(b.URL())
 	p.Snapshot = snapshot
 	return BlobClient{
 		client: &blobClient{
@@ -72,7 +72,7 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (b BlobClient) WithVersionID(versionID string) BlockBlobClient {
-	p := NewBlobURLParts(b.URL())
+	p, _ := NewBlobURLParts(b.URL())
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: b.client.con.p}
 	return BlockBlobClient{
@@ -224,7 +224,7 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-	urlParts := NewBlobURLParts(b.URL())
+	urlParts, _ := NewBlobURLParts(b.URL())
 
 	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
 

@@ -5,60 +5,64 @@ package azblob
 
 import (
 	"context"
-	"testing"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
+//var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
 var proposedLeaseIDs = []*string{to.StringPtr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.StringPtr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-func TestContainerAcquireLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestContainerAcquireLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerClient.Delete(ctx, nil)
-	require.NotNil(t, err)
+	_assert.NotNil(err)
 
 	leaseID := containerLeaseClient.leaseID
 	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
@@ -66,150 +70,170 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 			LeaseID: leaseID,
 		},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerReleaseLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestContainerReleaseLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerClient.Delete(ctx, nil)
-	require.NotNil(t, err)
+	_assert.NotNil(err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = containerClient.Delete(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerRenewLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestContainerRenewLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestContainerChangeLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestContainerChangeLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
-	require.NoError(t, err)
-	require.EqualValues(t, changeLeaseResp.LeaseID, proposedLeaseIDs[1])
-	require.EqualValues(t, containerLeaseClient.leaseID, proposedLeaseIDs[1])
+	_assert.Nil(err)
+	_assert.EqualValues(changeLeaseResp.LeaseID, proposedLeaseIDs[1])
+	_assert.EqualValues(containerLeaseClient.leaseID, proposedLeaseIDs[1])
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestBlobAcquireLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestBlobAcquireLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestDeleteBlobWithoutLeaseId(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
 	leaseID := blobLeaseClient.leaseID
 	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
@@ -219,101 +243,110 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 			},
 		},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestBlobReleaseLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestBlobReleaseLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	require.NotNil(t, err)
+	_assert.NotNil(err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestBlobRenewLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobRenewLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }
 
-func TestBlobChangeLease(t *testing.T) {
-	stop := start(t)
-	defer stop()
+func (s *azblobTestSuite) TestBlobChangeLease() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
 
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+	_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	require.NoError(t, err)
-	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	require.Equal(t, *acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
+	_assert.Nil(err)
+	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	_assert.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
 	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &ChangeLeaseBlobOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
-	require.NoError(t, err)
-	require.Equal(t, *changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
+	_assert.Nil(err)
+	_assert.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 }

@@ -48,7 +48,7 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
-	p := NewBlobURLParts(ab.URL())
+	p, _ := NewBlobURLParts(ab.URL())
 	p.Snapshot = snapshot
 	con := &connection{u: p.URL(), p: ab.client.con.p}
 
@@ -61,7 +61,7 @@ func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
-	p := NewBlobURLParts(ab.URL())
+	p, _ := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: ab.client.con.p}
 

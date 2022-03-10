@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -185,18 +186,23 @@ type GetQueueOptions struct {
 }
 
 // GetQueue gets a queue by name.
+// If the entity does not exist this function will return a nil GetQueueResponse and a nil error.
 func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQueueOptions) (*GetQueueResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
 	props, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetQueueResponse{
@@ -223,18 +229,23 @@ type GetQueueRuntimePropertiesOptions struct {
 }
 
 // GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
+// If the entity does not exist this function will return a nil GetQueueRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string, options *GetQueueRuntimePropertiesOptions) (*GetQueueRuntimePropertiesResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
 	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetQueueRuntimePropertiesResponse{
@@ -349,7 +360,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	newProps, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, nil, atom.NewResponseError(err, resp)
+		return nil, nil, err
 	}
 
 	return newProps, resp, nil
@@ -395,7 +406,7 @@ func (p *QueuePager) getNextPage(ctx context.Context) (*ListQueuesResponse, erro
 		props, err := newQueueProperties(&env.Content.QueueDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &QueueItem{

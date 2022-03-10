@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-10-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice"
 )
 
 const (
@@ -71,6 +71,13 @@ type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+)
+
+type Format = original.Format
+
+const (
+	FormatAzure Format = original.FormatAzure
+	FormatExec  Format = original.FormatExec
 )
 
 type GPUInstanceProfile = original.GPUInstanceProfile
@@ -685,6 +692,9 @@ func PossibleExpanderValues() []Expander {
 }
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleFormatValues() []Format {
+	return original.PossibleFormatValues()
 }
 func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 	return original.PossibleGPUInstanceProfileValues()

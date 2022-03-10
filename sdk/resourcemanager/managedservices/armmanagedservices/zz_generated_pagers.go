@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// MarketplaceRegistrationDefinitionsListPager provides operations for iterating over paged responses.
-type MarketplaceRegistrationDefinitionsListPager struct {
+// MarketplaceRegistrationDefinitionsClientListPager provides operations for iterating over paged responses.
+type MarketplaceRegistrationDefinitionsClientListPager struct {
 	client    *MarketplaceRegistrationDefinitionsClient
-	current   MarketplaceRegistrationDefinitionsListResponse
+	current   MarketplaceRegistrationDefinitionsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, MarketplaceRegistrationDefinitionsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, MarketplaceRegistrationDefinitionsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *MarketplaceRegistrationDefinitionsListPager) Err() error {
+func (p *MarketplaceRegistrationDefinitionsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *MarketplaceRegistrationDefinitionsListPager) NextPage(ctx context.Context) bool {
+func (p *MarketplaceRegistrationDefinitionsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *MarketplaceRegistrationDefinitionsListPager) NextPage(ctx context.Conte
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *MarketplaceRegistrationDefinitionsListPager) NextPage(ctx context.Conte
 	return true
 }
 
-// PageResponse returns the current MarketplaceRegistrationDefinitionsListResponse page.
-func (p *MarketplaceRegistrationDefinitionsListPager) PageResponse() MarketplaceRegistrationDefinitionsListResponse {
+// PageResponse returns the current MarketplaceRegistrationDefinitionsClientListResponse page.
+func (p *MarketplaceRegistrationDefinitionsClientListPager) PageResponse() MarketplaceRegistrationDefinitionsClientListResponse {
 	return p.current
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeListPager provides operations for iterating over paged responses.
-type MarketplaceRegistrationDefinitionsWithoutScopeListPager struct {
+// MarketplaceRegistrationDefinitionsWithoutScopeClientListPager provides operations for iterating over paged responses.
+type MarketplaceRegistrationDefinitionsWithoutScopeClientListPager struct {
 	client    *MarketplaceRegistrationDefinitionsWithoutScopeClient
-	current   MarketplaceRegistrationDefinitionsWithoutScopeListResponse
+	current   MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, MarketplaceRegistrationDefinitionsWithoutScopeListResponse) (*policy.Request, error)
+	advancer  func(context.Context, MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *MarketplaceRegistrationDefinitionsWithoutScopeListPager) Err() error {
+func (p *MarketplaceRegistrationDefinitionsWithoutScopeClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *MarketplaceRegistrationDefinitionsWithoutScopeListPager) NextPage(ctx context.Context) bool {
+func (p *MarketplaceRegistrationDefinitionsWithoutScopeClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *MarketplaceRegistrationDefinitionsWithoutScopeListPager) NextPage(ctx c
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *MarketplaceRegistrationDefinitionsWithoutScopeListPager) NextPage(ctx c
 	return true
 }
 
-// PageResponse returns the current MarketplaceRegistrationDefinitionsWithoutScopeListResponse page.
-func (p *MarketplaceRegistrationDefinitionsWithoutScopeListPager) PageResponse() MarketplaceRegistrationDefinitionsWithoutScopeListResponse {
+// PageResponse returns the current MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse page.
+func (p *MarketplaceRegistrationDefinitionsWithoutScopeClientListPager) PageResponse() MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse {
 	return p.current
 }
 
-// RegistrationAssignmentsListPager provides operations for iterating over paged responses.
-type RegistrationAssignmentsListPager struct {
+// RegistrationAssignmentsClientListPager provides operations for iterating over paged responses.
+type RegistrationAssignmentsClientListPager struct {
 	client    *RegistrationAssignmentsClient
-	current   RegistrationAssignmentsListResponse
+	current   RegistrationAssignmentsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RegistrationAssignmentsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, RegistrationAssignmentsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RegistrationAssignmentsListPager) Err() error {
+func (p *RegistrationAssignmentsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RegistrationAssignmentsListPager) NextPage(ctx context.Context) bool {
+func (p *RegistrationAssignmentsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *RegistrationAssignmentsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *RegistrationAssignmentsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RegistrationAssignmentsListResponse page.
-func (p *RegistrationAssignmentsListPager) PageResponse() RegistrationAssignmentsListResponse {
+// PageResponse returns the current RegistrationAssignmentsClientListResponse page.
+func (p *RegistrationAssignmentsClientListPager) PageResponse() RegistrationAssignmentsClientListResponse {
 	return p.current
 }
 
-// RegistrationDefinitionsListPager provides operations for iterating over paged responses.
-type RegistrationDefinitionsListPager struct {
+// RegistrationDefinitionsClientListPager provides operations for iterating over paged responses.
+type RegistrationDefinitionsClientListPager struct {
 	client    *RegistrationDefinitionsClient
-	current   RegistrationDefinitionsListResponse
+	current   RegistrationDefinitionsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RegistrationDefinitionsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, RegistrationDefinitionsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RegistrationDefinitionsListPager) Err() error {
+func (p *RegistrationDefinitionsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RegistrationDefinitionsListPager) NextPage(ctx context.Context) bool {
+func (p *RegistrationDefinitionsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *RegistrationDefinitionsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *RegistrationDefinitionsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RegistrationDefinitionsListResponse page.
-func (p *RegistrationDefinitionsListPager) PageResponse() RegistrationDefinitionsListResponse {
+// PageResponse returns the current RegistrationDefinitionsClientListResponse page.
+func (p *RegistrationDefinitionsClientListPager) PageResponse() RegistrationDefinitionsClientListResponse {
 	return p.current
 }

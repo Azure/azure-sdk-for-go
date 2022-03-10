@@ -10,11 +10,14 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -58,30 +61,30 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
-		kvClient: generated.NewKeyVaultClient(conn),
+		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
 }
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
+	Curve *CurveName `json:"crv,omitempty"`
 
-	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	// The properties of a key managed by the key vault service.
+	Properties *Properties  `json:"attributes,omitempty"`
+	Operations []*Operation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	KeySize *int32 `json:"key_size,omitempty"`
+	Size *int32 `json:"key_size,omitempty"`
 
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -92,13 +95,16 @@ func (c *CreateKeyOptions) toGenerated() *generated.KeyVaultClientCreateKeyOptio
 // convert CreateKeyOptions to generated.KeyCreateParameters
 func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	var attribs *generated.KeyAttributes
-	if c.KeyAttributes != nil {
-		attribs = c.KeyAttributes.toGenerated()
+	if c.Properties != nil {
+		attribs = c.Properties.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
-	for _, o := range c.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	var ops []*generated.JSONWebKeyOperation
+	if c.Operations != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(c.Operations))
+		for i, o := range c.Operations {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyCreateParameters{
@@ -106,35 +112,31 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		Curve:          (*generated.JSONWebKeyCurveName)(c.Curve),
 		KeyAttributes:  attribs,
 		KeyOps:         ops,
-		KeySize:        c.KeySize,
+		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
 // KeyVaultClientCreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type CreateKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	return CreateKeyResponse{
-		RawResponse: g.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(g.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
 }
 
-// CreateKey - The create key operation can be used to create any key type in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// CreateKey can be used to create any key type in Azure Key Vault.  If the named key already exists,
+// Azure Key Vault creates a new version of the key. It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, options *CreateKeyOptions) (CreateKeyResponse, error) {
 	if options == nil {
 		options = &CreateKeyOptions{}
@@ -150,14 +152,14 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
+	CurveName *CurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
-	HardwareProtected bool
+	HardwareProtected *bool
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
@@ -165,40 +167,39 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	return generated.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
 		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
-		Tags:  c.Tags,
+		Tags:  convertToGeneratedMap(c.Tags),
 	}
 }
 
 // CreateECKeyResponse contains the response from method Client.CreateECKey.
 type CreateECKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	return CreateECKeyResponse{
-		RawResponse: g.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(g.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
 }
 
-// CreateKey - The create key operation can be used to create a new elliptic key curve in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// CreateECKey can be used to create a new elliptic key curve in Azure Key Vault. If the
+// named key already exists, Azure Key Vault creates a new version of the key.
+// EC keys can be created in Standard or Premium SKU vaults, ECHSM can be created in Premium SKU vaults or Managed HSMs.
+// It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
-	keyType := EC
+	keyType := KeyTypeEC
 
-	if options != nil && options.HardwareProtected {
-		keyType = ECHSM
-	} else if options == nil {
+	if options == nil {
 		options = &CreateECKeyOptions{}
+	}
+	if options.HardwareProtected != nil && *options.HardwareProtected {
+		keyType = KeyTypeECHSM
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
@@ -209,122 +210,136 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 	return createECKeyResponseFromGenerated(resp), nil
 }
 
-// CreateOCTKeyOptions contains the optional parameters for the Client.CreateOCTKey method
-type CreateOCTKeyOptions struct {
+// CreateOctKeyOptions contains the optional parameters for the Client.CreateOCTKey method
+type CreateOctKeyOptions struct {
 	// Hardware Protected OCT Key
-	HardwareProtected bool
+	HardwareProtected *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	KeySize *int32 `json:"key_size,omitempty"`
+	Size *int32 `json:"key_size,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
-func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
-		KeySize: c.KeySize,
-		Tags:    c.Tags,
+		KeySize: c.Size,
+		Tags:    convertToGeneratedMap(c.Tags),
 	}
 }
 
-// CreateOCTKeyResponse contains the response from method Client.CreateOCTKey.
-type CreateOCTKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
+type CreateOctKeyResponse struct {
+	Key
 }
 
 // convert generated response to CreateOCTKeyResponse
-func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
-	return CreateOCTKeyResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+func createOctKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
+	return CreateOctKeyResponse{
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
 }
 
-// CreateKey - The create key operation can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create permission.
-func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
-	keyType := Oct
+// CreateOctKey can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates a new version of the key.
+// An oct-HSM key can only be created with a Managed HSM vault.
+// It requires the keys/create permission. Pass nil to use the default options.
+func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateOctKeyOptions) (CreateOctKeyResponse, error) {
+	keyType := KeyTypeOctHSM
 
-	if options != nil && options.HardwareProtected {
-		keyType = OctHSM
+	if options != nil && options.HardwareProtected != nil && !*options.HardwareProtected {
+		keyType = KeyTypeOct
 	} else if options == nil {
-		options = &CreateOCTKeyOptions{}
+		options = &CreateOctKeyOptions{}
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
-		return CreateOCTKeyResponse{}, err
+		return CreateOctKeyResponse{}, err
 	}
 
-	return createOCTKeyResponseFromGenerated(resp), nil
+	return createOctKeyResponseFromGenerated(resp), nil
 }
 
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
 type CreateRSAKeyOptions struct {
 	// Hardware Protected OCT Key
-	HardwareProtected bool
+	HardwareProtected *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	KeySize *int32 `json:"key_size,omitempty"`
+	Size *int32 `json:"key_size,omitempty"`
 
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// The attributes of a key managed by the key vault service.
+	Properties *Properties  `json:"attributes,omitempty"`
+	Operations []*Operation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
+	var keyOps []*generated.JSONWebKeyOperation
+	if c.Operations != nil {
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.Operations))
+		for i, k := range c.Operations {
+			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
+		}
+	}
 	return generated.KeyCreateParameters{
 		Kty:            k.toGenerated(),
-		KeySize:        c.KeySize,
+		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
+		KeyAttributes:  c.Properties.toGenerated(),
+		KeyOps:         keyOps,
+		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
 }
 
 // CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
 type CreateRSAKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	return CreateRSAKeyResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
 }
 
-// CreateKey - The create key operation can be used to create a new RSA key in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// CreateRSAKey can be used to create a new RSA key in Azure Key Vault. If the named key already
+// exists, Azure Key Vault creates a new version of the key. RSA keys can be created in Standard or
+// Premium SKU vaults, RSAHSM can be created in Premium SKU vaults or Managed HSMs.
+// It requires the keys/create permission. Pass nil to use the default options.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
-	keyType := RSA
+	keyType := KeyTypeRSA
 
-	if options != nil && options.HardwareProtected {
-		keyType = RSAHSM
-	} else if options == nil {
+	if options == nil {
 		options = &CreateRSAKeyOptions{}
+	}
+	if options.HardwareProtected != nil && *options.HardwareProtected {
+		keyType = KeyTypeRSAHSM
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
@@ -335,48 +350,67 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
-// ListKeysPager is a Pager for the Client.ListSecrets operation
-type ListKeysPager interface {
-	// PageResponse returns the current ListKeysPage
-	PageResponse() ListKeysPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
+// ListPropertiesOfKeysPager implements the ListKeysPager interface
+type ListPropertiesOfKeysPager struct {
+	vaultURL  string
+	genClient *generated.KeyVaultClient
+	current   generated.KeyVaultClientGetKeysResponse
+	nextLink  *string
 }
 
-// listKeysPager implements the ListKeysPager interface
-type listKeysPager struct {
-	genPager generated.KeyVaultClientGetKeysPager
+// More returns true if there are more pages to return
+func (l *ListPropertiesOfKeysPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *listKeysPager) PageResponse() ListKeysPage {
-	return listKeysPageFromGenerated(l.genPager.PageResponse())
+// NextPage fetches the next available page of results from the service.
+func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) (ListKeysPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetKeysCreateRequest(ctx, l.vaultURL, &generated.KeyVaultClientGetKeysOptions{})
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListKeysPage{}, err
+		}
+	}
+	if err != nil {
+		return ListKeysPage{}, err
+	}
+	result, err := l.genClient.GetKeysHandleResponse(resp)
+	if err != nil {
+		return ListKeysPage{}, err
+	}
+
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return listKeysPageFromGenerated(result), nil
+
 }
 
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *listKeysPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
-func (l *listKeysPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
-}
-
-// ListKeysOptions contains the optional parameters for the Client.ListKeys method
-type ListKeysOptions struct {
-	MaxResults *int32
-}
-
-// convert ListKeysOptions to generated options
-func (l ListKeysOptions) toGenerated() *generated.KeyVaultClientGetKeysOptions {
-	return &generated.KeyVaultClientGetKeysOptions{Maxresults: l.MaxResults}
+// ListPropertiesOfKeysOptions contains the optional parameters for the Client.ListKeys method
+type ListPropertiesOfKeysOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ListKeysPage contains the current page of results for the Client.ListSecrets operation
@@ -386,8 +420,6 @@ type ListKeysPage struct {
 
 	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
 	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal Response to ListKeysPage
@@ -397,24 +429,20 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 		keys = append(keys, keyItemFromGenerated(k))
 	}
 	return ListKeysPage{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Keys:        keys,
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }
 
-// ListKeys retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
+// ListPropertiesOfKeys retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListKeys(options *ListKeysOptions) ListKeysPager {
-	if options == nil {
-		options = &ListKeysOptions{}
-	}
-	p := c.kvClient.GetKeys(c.vaultUrl, options.toGenerated())
-
-	return &listKeysPager{
-		genPager: *p,
+func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *ListPropertiesOfKeysPager {
+	return &ListPropertiesOfKeysPager{
+		vaultURL:  c.vaultUrl,
+		genClient: c.kvClient,
+		current:   generated.KeyVaultClientGetKeysResponse{},
 	}
 }
 
@@ -425,26 +453,24 @@ type GetKeyOptions struct {
 
 // GetKeyResponse contains the response for the Client.GetResponse method
 type GetKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	return GetKeyResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
 }
 
-// GetKey - The get key operation is applicable to all key types. If the requested key is symmetric, then
+// GetKey is used to retrieve the content for any single Key. If the requested key is symmetric, then
 // no key material is released in the response. This operation requires the keys/get permission.
+// Pass nil to use the default options.
 func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOptions) (GetKeyResponse, error) {
 	if options == nil {
 		options = &GetKeyOptions{}
@@ -459,7 +485,9 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 }
 
 // GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method
-type GetDeletedKeyOptions struct{}
+type GetDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert the GetDeletedKeyOptions to the internal representation
 func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeyOptions {
@@ -468,32 +496,28 @@ func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedK
 
 // GetDeletedKeyResponse contains the response from a Client.GetDeletedKey
 type GetDeletedKeyResponse struct {
-	DeletedKeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	DeletedKey
 }
 
 // convert generated response to GetDeletedKeyResponse
 func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
 	return GetDeletedKeyResponse{
-		RawResponse: i.RawResponse,
-		DeletedKeyBundle: DeletedKeyBundle{
-			KeyBundle: KeyBundle{
-				Attributes: keyAttributesFromGenerated(i.Attributes),
-				Key:        jsonWebKeyFromGenerated(i.Key),
-				Tags:       i.Tags,
-				Managed:    i.Managed,
-			},
+		DeletedKey: DeletedKey{
+			Properties:         keyPropertiesFromGenerated(i.Attributes),
+			Key:                jsonWebKeyFromGenerated(i.Key),
+			Tags:               convertGeneratedMap(i.Tags),
+			Managed:            i.Managed,
 			RecoveryID:         i.RecoveryID,
-			DeletedDate:        i.DeletedDate,
+			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 	}
 }
 
-// GetDeletedKey - The Get Deleted Key operation is applicable for soft-delete enabled vaults.
-// While the operation can be invoked on any vault, it will return an error if invoked on a non
-// soft-delete enabled vault. This operation requires the keys/get permission.
+// GetDeletedKey is used to retrieve information about a deleted key. This operation is only
+// applicable for soft-delete enabled vaults. While the operation can be invoked on any vault,
+// it will return an error if invoked on a non soft-delete enabled vault. This operation requires
+// the keys/get permission. Pass nil to use the default options.
 func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
 	if options == nil {
 		options = &GetDeletedKeyOptions{}
@@ -508,7 +532,9 @@ func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *Get
 }
 
 // PurgeDeletedKeyOptions is the struct for any future options for Client.PurgeDeletedKey.
-type PurgeDeletedKeyOptions struct{}
+type PurgeDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert options to internal options
 func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedKeyOptions {
@@ -517,19 +543,17 @@ func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDel
 
 // PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedKey.
 type PurgeDeletedKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // Converts the generated response to the publicly exposed version.
 func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
-	return PurgeDeletedKeyResponse{
-		RawResponse: i.RawResponse,
-	}
+	return PurgeDeletedKeyResponse{}
 }
 
 // PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
 // This operation can only be enabled on a soft-delete enabled vault. This operation requires the key/purge permission.
+// Pass nil to use the default options.
 func (c *Client) PurgeDeletedKey(ctx context.Context, keyName string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedKeyOptions{}
@@ -540,9 +564,7 @@ func (c *Client) PurgeDeletedKey(ctx context.Context, keyName string, options *P
 
 // DeletedKeyResponse contains the response for a Client.BeginDeleteKey operation.
 type DeleteKeyResponse struct {
-	DeletedKeyBundle
-	// RawResponse holds the underlying HTTP response
-	RawResponse *http.Response
+	DeletedKey
 }
 
 // convert interal response to DeleteKeyResponse
@@ -551,51 +573,48 @@ func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse
 		return nil
 	}
 	return &DeleteKeyResponse{
-		RawResponse: i.RawResponse,
+		DeletedKey: DeletedKey{
+			Properties:         keyPropertiesFromGenerated(i.Attributes),
+			Key:                jsonWebKeyFromGenerated(i.Key),
+			RecoveryID:         i.RecoveryID,
+			ReleasePolicy:      keyReleasePolicyFromGenerated(i.ReleasePolicy),
+			Tags:               convertGeneratedMap(i.Tags),
+			DeletedOn:          i.DeletedDate,
+			Managed:            i.Managed,
+			ScheduledPurgeDate: i.ScheduledPurgeDate,
+		},
 	}
 }
 
 // BeginDeleteKeyOptions contains the optional parameters for the Client.BeginDeleteKey method.
-type BeginDeleteKeyOptions struct{}
+type BeginDeleteKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert public options to generated options struct
 func (b *BeginDeleteKeyOptions) toGenerated() *generated.KeyVaultClientDeleteKeyOptions {
 	return &generated.KeyVaultClientDeleteKeyOptions{}
 }
 
-// DeleteKeyPoller is the interface for the Client.DeleteKey operation.
-type DeleteKeyPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (DeleteKeyResponse, error)
-}
-
 // The poller returned by the Client.StartDeleteKey operation
-type startDeleteKeyPoller struct {
+type DeleteKeyPoller struct {
 	keyName        string // This is the key to Poll for in GetDeletedKey
 	vaultUrl       string
 	client         *generated.KeyVaultClient
 	deleteResponse generated.KeyVaultClientDeleteKeyResponse
 	lastResponse   generated.KeyVaultClientGetDeletedKeyResponse
-	RawResponse    *http.Response
+	rawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
-func (s *startDeleteKeyPoller) Done() bool {
+func (s *DeleteKeyPoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (s *DeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedKey(ctx, s.vaultUrl, s.keyName, nil)
 	if err == nil {
 		// Service recognizes DeletedKey, operation is done
@@ -603,9 +622,9 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		return resp.RawResponse, nil
 	}
 
-	var httpResponseErr azcore.HTTPResponse
+	var httpResponseErr *azcore.ResponseError
 	if errors.As(err, &httpResponseErr) {
-		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+		if httpResponseErr.StatusCode == http.StatusNotFound {
 			// This is the expected result
 			return s.deleteResponse.RawResponse, nil
 		}
@@ -614,25 +633,37 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (s *startDeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
+func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
 	return *deleteKeyResponseFromGenerated(&s.deleteResponse), nil
 }
 
 // pollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
+func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
 			return DeleteKeyResponse{}, err
 		}
-		s.RawResponse = resp
+		s.rawResponse = resp
 		if s.Done() {
 			break
 		}
 		time.Sleep(t)
 	}
-	return DeleteKeyResponse{}, nil
+
+	return DeleteKeyResponse{
+		DeletedKey: DeletedKey{
+			RecoveryID:         s.deleteResponse.RecoveryID,
+			DeletedOn:          s.deleteResponse.DeletedDate,
+			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
+			Tags:               convertGeneratedMap(s.deleteResponse.Tags),
+			Managed:            s.deleteResponse.Managed,
+			ReleasePolicy:      keyReleasePolicyFromGenerated(s.deleteResponse.ReleasePolicy),
+			Properties:         keyPropertiesFromGenerated(s.deleteResponse.Attributes),
+			Key:                jsonWebKeyFromGenerated(s.deleteResponse.Key),
+		},
+	}, nil
 }
 
 // DeleteKeyPollerResponse contains the response from the Client.BeginDeleteKey method
@@ -641,15 +672,12 @@ type DeleteKeyPollerResponse struct {
 	PollUntilDone func(context.Context, time.Duration) (DeleteKeyResponse, error)
 
 	// Poller contains an initialized WidgetPoller
-	Poller DeleteKeyPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Poller *DeleteKeyPoller
 }
 
 // BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
 // requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
-// response PollUntilDone function can be used to poll until completion.
+// PollUntilDone function can be used to poll until completion. Pass nil to use the default options.
 func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *BeginDeleteKeyOptions) (DeleteKeyPollerResponse, error) {
 	if options == nil {
 		options = &BeginDeleteKeyOptions{}
@@ -660,14 +688,14 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	}
 
 	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return DeleteKeyPollerResponse{}, err
 		}
 	}
 
-	s := &startDeleteKeyPoller{
+	s := &DeleteKeyPoller{
 		vaultUrl:       c.vaultUrl,
 		keyName:        keyName,
 		client:         c.kvClient,
@@ -677,13 +705,14 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 
 	return DeleteKeyPollerResponse{
 		Poller:        s,
-		RawResponse:   resp.RawResponse,
 		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
 
 // BackupKeyOptions contains the optional parameters for the Client.BackupKey method
-type BackupKeyOptions struct{}
+type BackupKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // convert Options to generated version
 func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOptions {
@@ -694,20 +723,16 @@ func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOption
 type BackupKeyResponse struct {
 	// READ-ONLY; The backup blob containing the backed up key.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // convert internal reponse to BackupKeyResponse
 func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
 	return BackupKeyResponse{
-		RawResponse: i.RawResponse,
-		Value:       i.Value,
+		Value: i.Value,
 	}
 }
 
-// BackupKey - The Key Backup operation exports a key from Azure Key Vault in a protected form.
+// BackupKey exports a key from Azure Key Vault in a protected form.
 // Note that this operation does NOT return key material in a form that can be used outside the
 // Azure Key Vault system, the returned key material is either protected to a Azure Key Vault
 // HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to GENERATE
@@ -717,6 +742,7 @@ func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse)
 // can be performed within geographical boundaries only; meaning that a BACKUP from one geographical
 // area cannot be restored to another geographical area. For example, a backup from the US
 // geographical area cannot be restored in an EU geographical area. This operation requires the key/backup permission.
+// Pass nil to use the default options.
 func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupKeyOptions) (BackupKeyResponse, error) {
 	if options == nil {
 		options = &BackupKeyOptions{}
@@ -730,71 +756,59 @@ func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupK
 	return backupKeyResponseFromGenerated(resp), nil
 }
 
-// RecoverDeletedKeyPoller is the interface for the Client.RecoverDeletedKey operation
-type RecoverDeletedKeyPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (RecoverDeletedKeyResponse, error)
-}
-
-// beginRecoverPoller implements the RecoverDeletedKeyPoller interface
-type beginRecoverPoller struct {
+// RecoverDeletedKeyPoller implements the RecoverDeletedKeyPoller interface
+type RecoverDeletedKeyPoller struct {
 	keyName         string
 	vaultUrl        string
 	client          *generated.KeyVaultClient
 	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
 	lastResponse    generated.KeyVaultClientGetKeyResponse
-	RawResponse     *http.Response
+	rawResponse     *http.Response
 }
 
 // Done returns true when the polling operation is completed
-func (b *beginRecoverPoller) Done() bool {
-	return b.RawResponse.StatusCode == http.StatusOK
+func (p *RecoverDeletedKeyPoller) Done() bool {
+	return p.rawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
-	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
-	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+func (p *RecoverDeletedKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := p.client.GetKey(ctx, p.vaultUrl, p.keyName, "", nil)
+	p.lastResponse = resp
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedKeyResponse, error) {
-	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDeletedKeyResponse, error) {
+	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
 // pollUntilDone is the method for the Response.PollUntilDone struct
-func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
+func (p *RecoverDeletedKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
-		resp, err := b.Poll(ctx)
+		resp, err := p.Poll(ctx)
 		if err != nil {
-			b.RawResponse = resp
+			p.rawResponse = resp
 		}
-		if b.Done() {
+		if p.Done() {
 			break
 		}
-		b.RawResponse = resp
+		p.rawResponse = resp
 		time.Sleep(t)
 	}
-	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
 // BeginRecoverDeletedKeyOptions contains the optional parameters for the Client.BeginRecoverDeletedKey operation
-type BeginRecoverDeletedKeyOptions struct{}
+type BeginRecoverDeletedKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 // Convert the publicly exposed options object to the generated version
 func (b BeginRecoverDeletedKeyOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedKeyOptions {
@@ -803,19 +817,16 @@ func (b BeginRecoverDeletedKeyOptions) toGenerated() *generated.KeyVaultClientRe
 
 // RecoverDeletedKeyResponse is the response object for the Client.RecoverDeletedKey operation.
 type RecoverDeletedKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // change recover deleted key reponse to the generated version.
 func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
 	return RecoverDeletedKeyResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -827,14 +838,12 @@ type RecoverDeletedKeyPollerResponse struct {
 	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedKeyResponse, error)
 
 	// Poller contains an initialized RecoverDeletedKeyPoller
-	Poller RecoverDeletedKeyPoller
-
-	// RawResponse cotains the underlying HTTP response
-	RawResponse *http.Response
+	Poller *RecoverDeletedKeyPoller
 }
 
 // BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
-// This operation can only be performed on a soft-delete enabled vault. This operation requires the keys/recover permission.
+// This operation can only be performed on a soft-delete enabled vault. This operation requires
+// the keys/recover permission. Pass nil to use the default options.
 func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, options *BeginRecoverDeletedKeyOptions) (RecoverDeletedKeyPollerResponse, error) {
 	if options == nil {
 		options = &BeginRecoverDeletedKeyOptions{}
@@ -845,26 +854,25 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	}
 
 	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return RecoverDeletedKeyPollerResponse{}, err
 		}
 	}
 
-	b := &beginRecoverPoller{
+	b := &RecoverDeletedKeyPoller{
 		lastResponse:    getResp,
 		keyName:         keyName,
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
-		RawResponse:     getResp.RawResponse,
+		rawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedKeyPollerResponse{
 		PollUntilDone: b.pollUntilDone,
 		Poller:        b,
-		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 
@@ -874,31 +882,38 @@ type UpdateKeyPropertiesOptions struct {
 	Version string
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	// Json web key operations. For more information on possible key operations, see KeyOperation.
+	Ops []*Operation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the options to generated.KeyUpdateParameters struct
 func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateParameters {
 	var attribs *generated.KeyAttributes
-	if u.KeyAttributes != nil {
-		attribs = u.KeyAttributes.toGenerated()
+	if u.Properties != nil {
+		attribs = u.Properties.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
-	for _, o := range u.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	var ops []*generated.JSONWebKeyOperation
+	if u.Ops != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(u.Ops))
+		for i, o := range u.Ops {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
-		Tags:          u.Tags,
+		ReleasePolicy: u.ReleasePolicy.toGenerated(),
+		Tags:          convertToGeneratedMap(u.Tags),
 	}
 }
 
@@ -909,26 +924,24 @@ func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *generated.KeyVaultClie
 
 // UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
 type UpdateKeyPropertiesResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // convert the internal response to UpdateKeyPropertiesResponse
 func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
 	return UpdateKeyPropertiesResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
 }
 
-// UpdateKey - In order to perform this operation, the key must already exist in the Key Vault.
-// Note: The cryptographic material of a key itself cannot be changed. This operation requires the keys/update permission.
+// UpdateKey updates the parameters of a key, but cannot be used to update the cryptographic material
+// of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
+// This operation requires the keys/update permission. Pass nil to use the default options.
 func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateKeyPropertiesOptions{}
@@ -948,25 +961,13 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, option
 	return updateKeyPropertiesFromGenerated(resp), nil
 }
 
-// ListDeletedKeys is the interface for the Client.ListDeletedKeys operation
-type ListDeletedKeysPager interface {
-	// PageResponse returns the current ListDeletedKeysPage
-	PageResponse() ListDeletedKeysPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listDeletedKeysPager is the pager returned by Client.ListDeletedKeys
-type listDeletedKeysPager struct {
+// ListDeletedKeysPager is the pager returned by Client.ListDeletedKeys
+type ListDeletedKeysPager struct {
 	genPager *generated.KeyVaultClientGetDeletedKeysPager
 }
 
 // PageResponse returns the current page of results
-func (l *listDeletedKeysPager) PageResponse() ListDeletedKeysPage {
+func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	resp := l.genPager.PageResponse()
 
 	var values []*DeletedKeyItem
@@ -975,27 +976,23 @@ func (l *listDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	}
 
 	return ListDeletedKeysPage{
-		RawResponse: resp.RawResponse,
 		NextLink:    resp.NextLink,
 		DeletedKeys: values,
 	}
 }
 
 // Err returns an error if the last operation resulted in an error.
-func (l *listDeletedKeysPager) Err() error {
+func (l *ListDeletedKeysPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next page of results.
-func (l *listDeletedKeysPager) NextPage(ctx context.Context) bool {
+func (l *ListDeletedKeysPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
 // ListDeletedKeysPage holds the data for a single page.
 type ListDeletedKeysPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of deleted keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -1005,84 +1002,65 @@ type ListDeletedKeysPage struct {
 
 // ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys operation.
 type ListDeletedKeysOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
+	// placeholder for future optional parameters
 }
 
 // Convert publicly exposed options to the generated version.a
 func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeysOptions {
-	return &generated.KeyVaultClientGetDeletedKeysOptions{
-		Maxresults: l.MaxResults,
-	}
+	return &generated.KeyVaultClientGetDeletedKeysOptions{}
 }
 
-// ListDeletedKeys lists all versions of the specified key. The full key identifier and attributes are provided
-// in the response. No values are returned for the keys. This operation requires the keys/list permission.
-func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) ListDeletedKeysPager {
+// ListDeletedKeys retrieves a list of the public part of deleted keys. This operation includes deletion-specific information.
+// The ListDeleted operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
+// an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
+// If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
+func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *ListDeletedKeysPager {
 	if options == nil {
 		options = &ListDeletedKeysOptions{}
 	}
 
-	return &listDeletedKeysPager{
+	return &ListDeletedKeysPager{
 		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
 	}
 }
 
-// ListKeyVersionsPager is a Pager for Client.ListKeyVersions results
-type ListKeyVersionsPager interface {
-	// PageResponse returns the current ListKeyVersionsPage
-	PageResponse() ListKeyVersionsPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listKeyVersionsPager implements the ListKeyVersionsPager interface
-type listKeyVersionsPager struct {
+// ListPropertiesOfKeyVersionsPager is the pager for the Client.ListPropertiesOfKeyVersions
+type ListPropertiesOfKeyVersionsPager struct {
 	genPager *generated.KeyVaultClientGetKeyVersionsPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-func (l *listKeyVersionsPager) PageResponse() ListKeyVersionsPage {
+func (l *ListPropertiesOfKeyVersionsPager) PageResponse() ListPropertiesOfKeyVersionsPage {
 	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *listKeyVersionsPager) Err() error {
+func (l *ListPropertiesOfKeyVersionsPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listKeyVersionsPager) NextPage(ctx context.Context) bool {
+func (l *ListPropertiesOfKeyVersionsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
-// ListKeyVersionsOptions contains the options for the ListKeyVersions operations
-type ListKeyVersionsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
+// ListPropertiesOfKeyVersionsOptions contains the options for the ListKeyVersions operations
+type ListPropertiesOfKeyVersionsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // convert the public ListKeyVersionsOptions to the generated version
-func (l *ListKeyVersionsOptions) toGenerated() *generated.KeyVaultClientGetKeyVersionsOptions {
+func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultClientGetKeyVersionsOptions {
 	if l == nil {
 		return &generated.KeyVaultClientGetKeyVersionsOptions{}
 	}
-	return &generated.KeyVaultClientGetKeyVersionsOptions{
-		Maxresults: l.MaxResults,
-	}
+	return &generated.KeyVaultClientGetKeyVersionsOptions{}
 }
 
-// ListKeyVersionsPage contains the current page from a ListKeyVersionsPager.PageResponse method
-type ListKeyVersionsPage struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
+// ListPropertiesOfKeyVersionsPage contains the current page from a ListKeyVersionsPager.PageResponse method
+type ListPropertiesOfKeyVersionsPage struct {
 	// READ-ONLY; The URL to get the next set of keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -1091,29 +1069,28 @@ type ListKeyVersionsPage struct {
 }
 
 // create ListKeysPage from generated pager
-func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsResponse) ListKeyVersionsPage {
+func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsResponse) ListPropertiesOfKeyVersionsPage {
 	var keys []KeyItem
 	for _, s := range i.Value {
 		if s != nil {
 			keys = append(keys, *keyItemFromGenerated(s))
 		}
 	}
-	return ListKeyVersionsPage{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Keys:        keys,
+	return ListPropertiesOfKeyVersionsPage{
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }
 
-// ListKeyVersions lists all versions of the specified key. The full key identifer and
+// ListPropertiesOfKeyVersions lists all versions of the specified key. The full key identifer and
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
-func (c *Client) ListKeyVersions(keyName string, options *ListKeyVersionsOptions) ListKeyVersionsPager {
+func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *ListPropertiesOfKeyVersionsPager {
 	if options == nil {
-		options = &ListKeyVersionsOptions{}
+		options = &ListPropertiesOfKeyVersionsOptions{}
 	}
 
-	return &listKeyVersionsPager{
+	return &ListPropertiesOfKeyVersionsPager{
 		genPager: c.kvClient.GetKeyVersions(
 			c.vaultUrl,
 			keyName,
@@ -1123,7 +1100,9 @@ func (c *Client) ListKeyVersions(keyName string, options *ListKeyVersionsOptions
 }
 
 // RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.
-type RestoreKeyBackupOptions struct{}
+type RestoreKeyBackupOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreKeyOptions {
 	return &generated.KeyVaultClientRestoreKeyOptions{}
@@ -1131,19 +1110,16 @@ func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreK
 
 // RestoreKeyBackupResponse contains the response object for the Client.RestoreKeyBackup operation.
 type RestoreKeyBackupResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // converts the generated response to the publicly exposed version.
 func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
 	return RestoreKeyBackupResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1151,6 +1127,7 @@ func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyR
 
 // RestoreKeyBackup restores a backed up key, and all its versions, to a vault. This operation requires the keys/restore permission.
 // The backup parameter is a blob of the key to restore, this can be received from the Client.BackupKey function.
+// Pass nil to use the default options.
 func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options *RestoreKeyBackupOptions) (RestoreKeyBackupResponse, error) {
 	if options == nil {
 		options = &RestoreKeyBackupOptions{}
@@ -1170,48 +1147,45 @@ type ImportKeyOptions struct {
 	Hsm *bool `json:"Hsm,omitempty"`
 
 	// The key management attributes.
-	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
 	var attribs *generated.KeyAttributes
-	if i.KeyAttributes != nil {
-		attribs = i.KeyAttributes.toGenerated()
+	if i.Properties != nil {
+		attribs = i.Properties.toGenerated()
 	}
 	return generated.KeyImportParameters{
 		Key:           key.toGenerated(),
 		Hsm:           i.Hsm,
 		KeyAttributes: attribs,
-		Tags:          i.Tags,
+		Tags:          convertToGeneratedMap(i.Tags),
 	}
 }
 
 // ImportKeyResponse contains the response of the Client.ImportKey method
 type ImportKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
 // convert the generated response to the ImportKeyResponse
 func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
 	return ImportKeyResponse{
-		RawResponse: i.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+		Key: Key{
+			Properties: keyPropertiesFromGenerated(i.Attributes),
+			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
 }
 
-// ImportKey - The import key operation may be used to import any key type into an Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates a new version of the key. This operation
-// requires the  keys/import permission.
+// ImportKey may be used to import any key type into an Azure Key Vault. If the named key already exists,
+// Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
+// Pass nil to use the default options.
 func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, options *ImportKeyOptions) (ImportKeyResponse, error) {
 	if options == nil {
 		options = &ImportKeyOptions{}
@@ -1226,7 +1200,9 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 }
 
 // GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
-type GetRandomBytesOptions struct{}
+type GetRandomBytesOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomBytesOptions {
 	return &generated.KeyVaultClientGetRandomBytesOptions{}
@@ -1236,13 +1212,10 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 type GetRandomBytesResponse struct {
 	// The bytes encoded as a base64url string.
 	Value []byte `json:"value,omitempty"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // GetRandomBytes gets the requested number of bytes containing random values from a managed HSM.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns the *KeyVaultError error type. Pass nil to use the default options.
 func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
 	if options == nil {
 		options = &GetRandomBytesOptions{}
@@ -1260,23 +1233,26 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	}
 
 	return GetRandomBytesResponse{
-		Value:       resp.Value,
-		RawResponse: resp.RawResponse,
+		Value: resp.Value,
 	}, nil
 }
 
-type RotateKeyOptions struct{}
+// RotateKeyOptions contains the optional parameters for the Client.RotateKey function
+type RotateKeyOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOptions {
 	return &generated.KeyVaultClientRotateKeyOptions{}
 }
 
 type RotateKeyResponse struct {
-	KeyBundle
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Key
 }
 
+// RotateKey will rotate the key based on the key policy. It requires the keys/rotate permission.
+// The system will generate a new version in the specified key.
+// Pass nil to use the default options.
 func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
 	if options == nil {
 		options = &RotateKeyOptions{}
@@ -1293,19 +1269,20 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 	}
 
 	return RotateKeyResponse{
-		RawResponse: resp.RawResponse,
-		KeyBundle: KeyBundle{
-			Attributes:    keyAttributesFromGenerated(resp.Attributes),
-			Key:           jsonWebKeyFromGenerated(resp.Key),
+		Key: Key{
+			Properties:    keyPropertiesFromGenerated(resp.Attributes),
+			JSONWebKey:    jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			Tags:          resp.Tags,
+			Tags:          convertGeneratedMap(resp.Tags),
 			Managed:       resp.Managed,
 		},
 	}, nil
 }
 
 // GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
-type GetKeyRotationPolicyOptions struct{}
+type GetKeyRotationPolicyOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetKeyRotationPolicyOptions {
 	return &generated.KeyVaultClientGetKeyRotationPolicyOptions{}
@@ -1313,9 +1290,7 @@ func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetK
 
 // GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
 type GetKeyRotationPolicyResponse struct {
-	KeyRotationPolicy
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	RotationPolicy
 }
 
 func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
@@ -1323,17 +1298,16 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	for _, a := range i.LifetimeActions {
 		acts = append(acts, lifetimeActionsFromGenerated(a))
 	}
-	var attribs *KeyRotationPolicyAttributes
+	var attribs *RotationPolicyAttributes
 	if i.Attributes != nil {
-		attribs = &KeyRotationPolicyAttributes{
+		attribs = &RotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			Created:    i.Attributes.Created,
-			Updated:    i.Attributes.Updated,
+			CreatedOn:  i.Attributes.Created,
+			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
 	return GetKeyRotationPolicyResponse{
-		RawResponse: i.RawResponse,
-		KeyRotationPolicy: KeyRotationPolicy{
+		RotationPolicy: RotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,
 			Attributes:      attribs,
@@ -1342,7 +1316,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 }
 
 // The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation requires
-// the keys/get permission.
+// the keys/get permission. Pass nil to use the default options.
 func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &GetKeyRotationPolicyOptions{}
@@ -1366,7 +1340,7 @@ type ReleaseKeyOptions struct {
 	Version string
 
 	// The encryption algorithm to use to protected the exported key material
-	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
+	Enc *ExportEncryptionAlgorithm `json:"enc,omitempty"`
 
 	// A client provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`
@@ -1374,13 +1348,12 @@ type ReleaseKeyOptions struct {
 
 // ReleaseKeyResponse contains the response of Client.ReleaseKey
 type ReleaseKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; A signed object containing the released key.
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
+// ReleaseKey is applicable to all key types. The target key must be marked exportable. This operation requires the keys/release permission.
+// Pass nil to use the default options.
 func (c *Client) ReleaseKey(ctx context.Context, name string, target string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
 	if options == nil {
 		options = &ReleaseKeyOptions{}
@@ -1392,9 +1365,9 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
-			Target: &target,
-			Enc:    (*generated.KeyEncryptionAlgorithm)(options.Enc),
-			Nonce:  options.Nonce,
+			TargetAttestationToken: &target,
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},
 	)
@@ -1404,15 +1377,14 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 	}
 
 	return ReleaseKeyResponse{
-		RawResponse: resp.RawResponse,
-		Value:       resp.Value,
+		Value: resp.Value,
 	}, err
 }
 
 // UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyOptions struct {
 	// The key rotation policy attributes.
-	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+	Attributes *RotationPolicyAttributes `json:"attributes,omitempty"`
 
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
 	// one for notify. Notification time would be
@@ -1423,21 +1395,20 @@ type UpdateKeyRotationPolicyOptions struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolicy {
+func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.RotationPolicy {
 	var attribs *generated.KeyRotationPolicyAttributes
 	if u.Attributes != nil {
 		attribs = u.Attributes.toGenerated()
 	}
 	var la []*generated.LifetimeActions
-	for _, l := range u.LifetimeActions {
-		if l == nil {
-			la = append(la, nil)
-		} else {
-			la = append(la, l.toGenerated())
+	if la != nil {
+		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
+		for i, l := range u.LifetimeActions {
+			la[i] = l.toGenerated()
 		}
 	}
 
-	return generated.KeyRotationPolicy{
+	return generated.RotationPolicy{
 		ID:              u.ID,
 		LifetimeActions: la,
 		Attributes:      attribs,
@@ -1446,9 +1417,7 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolic
 
 // UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyResponse struct {
-	KeyRotationPolicy
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	RotationPolicy
 }
 
 func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
@@ -1456,17 +1425,16 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	for _, a := range i.LifetimeActions {
 		acts = append(acts, lifetimeActionsFromGenerated(a))
 	}
-	var attribs *KeyRotationPolicyAttributes
+	var attribs *RotationPolicyAttributes
 	if i.Attributes != nil {
-		attribs = &KeyRotationPolicyAttributes{
+		attribs = &RotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			Created:    i.Attributes.Created,
-			Updated:    i.Attributes.Updated,
+			CreatedOn:  i.Attributes.Created,
+			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
 	return UpdateKeyRotationPolicyResponse{
-		RawResponse: i.RawResponse,
-		KeyRotationPolicy: KeyRotationPolicy{
+		RotationPolicy: RotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,
 			Attributes:      attribs,
@@ -1474,6 +1442,9 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	}
 }
 
+// UpdateKeyRotationPolicy sets specified members in the key policy.
+// This operation requires the keys/update permission.
+// Pass nil to use the default options.
 func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &UpdateKeyRotationPolicyOptions{}

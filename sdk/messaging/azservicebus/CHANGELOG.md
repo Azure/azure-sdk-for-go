@@ -1,16 +1,60 @@
 # Release History
 
-## 0.3.3 (Unreleased)
+## 0.3.7 (Unreleased)
 
 ### Features Added
-
-- Support the pass-through of an Application ID when constructing an Azure Service Bus Client.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.6 (2022-03-08)
+
+### Bugs Fixed
+
+- Fix connection recovery in situations where network errors bubble up from go-amqp. (#17048)
+- Quicker reattach for idle links. (#17205)
+- Quick exit on receiver reconnects to avoid potentially returning duplicate messages. (#17157)
+
+### Breaking Changes
+
+- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#17229)
+  - GetQueue, GetQueueRuntimeProperties
+  - GetTopic, GetTopicRuntimeProperties
+  - GetSubscription, GetSubscriptionRuntimeProperties
+
+## 0.3.5 (2022-02-10)
+
+### Bugs Fixed
+
+- Fix panic() when go-amqp was returning an incorrect error on drain failures. (#17036)
+
+## 0.3.4 (2022-02-08)
+
+### Features Added
+
+- Allow RetryOptions to be configured in the options for azservicebus.Client as well and admin.Client(#16831)
+- Add in the MessageState property to the ReceivedMessage. (#16985)
+
+### Bugs Fixed
+
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)
+- Multiple fixes to address connection/link recovery (#16831)
+- Fixing panic() when the links haven't been initialized (early cancellation) (#16941)
+- Handle 500 as a retryable code (no recovery needed) (#16925)
+
+## 0.3.3 (2022-01-12)
+
+### Features Added
+
+- Support the pass-through of an Application ID when constructing an Azure Service Bus Client. PR#16558 (thanks halspang!)
+
+### Bugs Fixed 
+
+- Fixing connection/link recovery in Sender.SendMessages() and Sender.SendMessageBatch(). PR#16790
+- Fixing bug in the management link which could cause it to panic during recovery. PR#16790
 
 ## 0.3.2 (2021-12-08)
 

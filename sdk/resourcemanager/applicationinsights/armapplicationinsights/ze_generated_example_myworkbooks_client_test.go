@@ -26,17 +26,21 @@ func ExampleMyWorkbooksClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		armapplicationinsights.CategoryTypeWorkbook,
-		&armapplicationinsights.MyWorkbooksListByResourceGroupOptions{Tags: []string{},
+		armapplicationinsights.CategoryType("workbook"),
+		&armapplicationinsights.MyWorkbooksClientListByResourceGroupOptions{Tags: []string{},
 			SourceID:        nil,
 			CanFetchContent: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MyWorkbook.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,16 +53,20 @@ func ExampleMyWorkbooksClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(armapplicationinsights.CategoryTypeWorkbook,
-		&armapplicationinsights.MyWorkbooksListBySubscriptionOptions{Tags: []string{},
+	pager := client.ListBySubscription(armapplicationinsights.CategoryType("workbook"),
+		&armapplicationinsights.MyWorkbooksClientListBySubscriptionOptions{Tags: []string{},
 			CanFetchContent: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MyWorkbook.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -78,7 +86,7 @@ func ExampleMyWorkbooksClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MyWorkbook.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MyWorkbooksClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookDelete.json
@@ -110,16 +118,14 @@ func ExampleMyWorkbooksClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armapplicationinsights.MyWorkbook{
-			MyWorkbookResource: armapplicationinsights.MyWorkbookResource{
-				Name:     to.StringPtr("<name>"),
-				ID:       to.StringPtr("<id>"),
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"0": to.StringPtr("TagSample01"),
-					"1": to.StringPtr("TagSample02"),
-				},
+			Name:     to.StringPtr("<name>"),
+			ID:       to.StringPtr("<id>"),
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"0": to.StringPtr("TagSample01"),
+				"1": to.StringPtr("TagSample02"),
 			},
-			Kind: armapplicationinsights.KindUser.ToPtr(),
+			Kind: armapplicationinsights.Kind("user").ToPtr(),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
 				Category:       to.StringPtr("<category>"),
 				DisplayName:    to.StringPtr("<display-name>"),
@@ -127,11 +133,11 @@ func ExampleMyWorkbooksClient_CreateOrUpdate() {
 				SourceID:       to.StringPtr("<source-id>"),
 			},
 		},
-		&armapplicationinsights.MyWorkbooksCreateOrUpdateOptions{SourceID: nil})
+		&armapplicationinsights.MyWorkbooksClientCreateOrUpdateOptions{SourceID: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MyWorkbook.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MyWorkbooksClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookUpdate.json
@@ -142,31 +148,27 @@ func ExampleMyWorkbooksClient_Update() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
-	res, err := client.Update(ctx,
+	_, err = client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armapplicationinsights.MyWorkbook{
-			MyWorkbookResource: armapplicationinsights.MyWorkbookResource{
-				Name:     to.StringPtr("<name>"),
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"0": to.StringPtr("TagSample01"),
-					"1": to.StringPtr("TagSample02"),
-				},
+			Name:     to.StringPtr("<name>"),
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"0": to.StringPtr("TagSample01"),
+				"1": to.StringPtr("TagSample02"),
 			},
-			Kind: armapplicationinsights.KindUser.ToPtr(),
+			Kind: armapplicationinsights.Kind("user").ToPtr(),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
 				Category:       to.StringPtr("<category>"),
 				DisplayName:    to.StringPtr("<display-name>"),
 				SerializedData: to.StringPtr("<serialized-data>"),
 				SourceID:       to.StringPtr("<source-id>"),
-				StorageURI:     to.StringPtr("<storage-uri>"),
 				Version:        to.StringPtr("<version>"),
 			},
 		},
-		&armapplicationinsights.MyWorkbooksUpdateOptions{SourceID: nil})
+		&armapplicationinsights.MyWorkbooksClientUpdateOptions{SourceID: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MyWorkbook.ID: %s\n", *res.ID)
 }

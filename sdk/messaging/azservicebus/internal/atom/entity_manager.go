@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"strings"
@@ -19,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/devigned/tab"
@@ -44,6 +46,7 @@ type (
 		Host          string
 		mwStack       []MiddlewareFunc
 		version       string
+		retryOptions  utils.RetryOptions
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -52,7 +55,8 @@ type (
 		ServiceBusSchema       *string `xml:"xmlns,attr,omitempty"`
 	}
 
-	managementError struct {
+	// example: <Error><Code>401</Code><Detail>Manage,EntityRead claims required for this operation.</Detail></Error>
+	ManagementError struct {
 		XMLName xml.Name `xml:"Error"`
 		Code    int      `xml:"Code"`
 		Detail  string   `xml:"Detail"`
@@ -145,7 +149,7 @@ const (
 	Unknown EntityStatus = "Unknown"
 )
 
-func (m *managementError) String() string {
+func (m *ManagementError) String() string {
 	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
 }
 
@@ -179,7 +183,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 }
 
 // NewEntityManager creates an entity manager using a TokenCredential.
-func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string) (EntityManager, error) {
+func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string, retryOptions utils.RetryOptions) (EntityManager, error) {
 	return &entityManager{
 		Host:          fmt.Sprintf("https://%s/", ns),
 		version:       version,
@@ -190,6 +194,7 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 			addAuthorization(sbauth.NewTokenProvider(tokenCredential)),
 			applyTracing(version),
 		},
+		retryOptions: retryOptions,
 	}, nil
 }
 
@@ -238,61 +243,90 @@ func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...Mi
 }
 
 func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
-	defer span.End()
+	var finalResp *http.Response
 
-	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
+	err := utils.Retry(ctx, fmt.Sprintf("%s %s", method, entityPath), func(ctx context.Context, args *utils.RetryFnArgs) error {
+		ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
+		defer span.End()
+
+		req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
+		if err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
+
+		final := func(_ RestHandler) RestHandler {
+			return func(reqCtx context.Context, request *http.Request) (*http.Response, error) {
+				client := &http.Client{
+					Timeout: 60 * time.Second,
+				}
+				request = request.WithContext(reqCtx)
+				return client.Do(request)
+			}
+		}
+
+		mwStack := []MiddlewareFunc{final}
+		sl := len(em.mwStack) - 1
+		for i := sl; i >= 0; i-- {
+			mwStack = append(mwStack, em.mwStack[i])
+		}
+
+		for i := len(mw) - 1; i >= 0; i-- {
+			mwStack = append(mwStack, mw[i])
+		}
+
+		var h RestHandler
+		for _, mw := range mwStack {
+			h = mw(h)
+		}
+
+		resp, err := h(ctx, req)
+
+		if err == nil {
+			if resp.StatusCode >= http.StatusBadRequest {
+				return NewResponseError(resp)
+			}
+
+			finalResp = resp
+			return nil
+		}
+
+		if resp != nil {
+			return NewResponseError(resp)
+		}
+
+		return err
+	}, isFatalHTTPError, em.retryOptions)
+
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
-	final := func(_ RestHandler) RestHandler {
-		return func(reqCtx context.Context, request *http.Request) (*http.Response, error) {
-			client := &http.Client{
-				Timeout: 60 * time.Second,
-			}
-			request = request.WithContext(reqCtx)
-			return client.Do(request)
+	return finalResp, nil
+}
+
+func isFatalHTTPError(err error) bool {
+	var netErr net.Error
+
+	if errors.As(err, &netErr) {
+		return false
+	}
+
+	var respErr *azcore.ResponseError
+
+	// TODO: this is very much temporary. We need to move this over to the azcore HTTP stack.
+	if errors.As(err, &respErr) {
+		if respErr.StatusCode == http.StatusRequestTimeout || // 408
+			respErr.StatusCode == http.StatusTooManyRequests || // 429
+			respErr.StatusCode == http.StatusInternalServerError || // 500
+			respErr.StatusCode == http.StatusBadGateway || // 502
+			respErr.StatusCode == http.StatusServiceUnavailable || // 503
+			respErr.StatusCode == http.StatusGatewayTimeout { // 504	)
+			return false
 		}
 	}
 
-	mwStack := []MiddlewareFunc{final}
-	sl := len(em.mwStack) - 1
-	for i := sl; i >= 0; i-- {
-		mwStack = append(mwStack, em.mwStack[i])
-	}
-
-	for i := len(mw) - 1; i >= 0; i-- {
-		mwStack = append(mwStack, mw[i])
-	}
-
-	var h RestHandler
-	for _, mw := range mwStack {
-		h = mw(h)
-	}
-
-	resp, err := h(ctx, req)
-
-	if err == nil {
-		if resp.StatusCode >= http.StatusBadRequest {
-			bytes, err := ioutil.ReadAll(resp.Body)
-
-			if err == nil {
-				err = FormatManagementError(bytes, err)
-			}
-
-			return nil, NewResponseError(err, resp)
-		}
-
-		return resp, nil
-	}
-
-	if resp != nil {
-		return nil, NewResponseError(err, resp)
-	}
-
-	return nil, err
+	return true
 }
 
 // Use adds middleware to the middleware mwStack
@@ -306,7 +340,7 @@ func (em *entityManager) TokenProvider() auth.TokenProvider {
 }
 
 func FormatManagementError(body []byte, origErr error) error {
-	var mgmtError managementError
+	var mgmtError ManagementError
 	unmarshalErr := xml.Unmarshal(body, &mgmtError)
 	if unmarshalErr != nil {
 		return origErr
@@ -385,49 +419,7 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-type feedEmptyError struct {
-	azcore.HTTPResponse
-	response *http.Response
-}
-
-func (e feedEmptyError) RawResponse() *http.Response {
-	return e.response
-}
-func (e feedEmptyError) Error() string {
-	return "entity does not exist"
-}
-
-func NotFound(err error) (bool, *http.Response) {
-	var feedEmptyError feedEmptyError
-
-	if errors.As(err, &feedEmptyError) {
-		return true, feedEmptyError.RawResponse()
-	}
-
-	var httpResponse azcore.HTTPResponse
-
-	if errors.As(err, &httpResponse) {
-		return httpResponse.RawResponse().StatusCode == 404, httpResponse.RawResponse()
-	}
-
-	return false, nil
-}
-
-func AsHTTPResponse(err error) *http.Response {
-	var httpResponse azcore.HTTPResponse
-
-	if errors.As(err, &httpResponse) {
-		return httpResponse.RawResponse()
-	}
-
-	return nil
-}
-
-func isEmptyFeed(b []byte) bool {
-	var emptyFeed QueueFeed
-	feedErr := xml.Unmarshal(b, &emptyFeed)
-	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
-}
+var ErrFeedEmpty = errors.New("entity does not exist")
 
 // ptrString takes a string and returns a pointer to that string. For use in literal pointers,
 // ptrString(fmt.Sprintf("..", foo)) -> *string
@@ -435,6 +427,9 @@ func ptrString(toPtr string) *string {
 	return &toPtr
 }
 
+// deserializeBody deserializes the body of the response into the type specified by respObj
+// (similar to xml.Unmarshal, which this func is calling).
+// If an empty feed is found, it returns nil.
 func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, error) {
 	bytes, err := ioutil.ReadAll(resp.Body)
 
@@ -443,10 +438,18 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 	}
 
 	if err := xml.Unmarshal(bytes, respObj); err != nil {
-		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
-		// check:
-		if isEmptyFeed(bytes) {
-			return nil, feedEmptyError{response: resp}
+		// In ATOM when you request a specific entity (queue, topic, sub) you typically get an
+		// <Entry>. However, if the entity is not found, instead of getting a 404 you actually
+		// get a <Feed> XML object that is empty and an HTTP status code of 200.
+		//
+		// So the combination of "can't deserialize object" and "it's an empty feed" are enough
+		// for us to note that we weren't expecting a feed (ie, GET /queue) and that the feed
+		// itself is the special "empty feed".
+		var emptyFeed QueueFeed
+		feedErr := xml.Unmarshal(bytes, &emptyFeed)
+
+		if feedErr == nil && emptyFeed.Title == "Publicly Listed Services" {
+			return resp, ErrFeedEmpty
 		}
 
 		return resp, err

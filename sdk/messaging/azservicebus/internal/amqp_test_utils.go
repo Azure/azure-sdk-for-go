@@ -7,17 +7,19 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
 	claimNegotiated int
 	recovered       uint64
 	clientRevisions []uint64
-	MgmtClient      MgmtClient
-	RPCLink         *rpc.Link
+	RPCLink         RPCLink
 	Session         AMQPSessionCloser
 	AMQPLinks       *FakeAMQPLinks
+
+	CloseCalled int
 }
 
 type FakeAMQPSender struct {
@@ -30,22 +32,20 @@ type FakeAMQPSession struct {
 	closed int
 }
 
-type fakeMgmtClient struct {
-	MgmtClient
-	closed int
-}
-
 type FakeAMQPLinks struct {
 	AMQPLinks
 
-	Closed int
+	Closed              int
+	CloseIfNeededCalled int
 
 	// values to be returned for each `Get` call
-	Revision uint64
+	Revision LinkID
 	Receiver AMQPReceiver
 	Sender   AMQPSender
-	Mgmt     MgmtClient
-	Err      error
+	RPC      RPCLink
+
+	// Err is the error returned as part of Get()
+	Err error
 
 	permanently bool
 }
@@ -53,12 +53,81 @@ type FakeAMQPLinks struct {
 type FakeAMQPReceiver struct {
 	AMQPReceiver
 	Closed int
-	Drain  int
+
+	DrainCalled     int
+	DrainCreditImpl func(ctx context.Context) error
+
+	IssueCreditErr   error
+	RequestedCredits uint32
+
+	PrefetchedCalled int
+	ReceiveCalled    int
+
+	ReceiveResults []struct {
+		M *amqp.Message
+		E error
+	}
+
+	PrefetchResults []struct {
+		M *amqp.Message
+		E error
+	}
+}
+
+func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
+	r.RequestedCredits += credit
+
+	if r.IssueCreditErr != nil {
+		return r.IssueCreditErr
+	}
+
+	return nil
 }
 
 func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
-	r.Drain++
-	return nil
+	r.DrainCalled++
+
+	if r.DrainCreditImpl != nil {
+		return r.DrainCreditImpl(ctx)
+	}
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
+}
+
+// Receive returns the next result from ReceiveResults or, if the ReceiveResults
+// is empty, will block on ctx.Done().
+func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
+	r.ReceiveCalled++
+
+	if len(r.ReceiveResults) == 0 {
+		<-ctx.Done()
+		return nil, ctx.Err()
+	}
+
+	res := r.ReceiveResults[0]
+	r.ReceiveResults = r.ReceiveResults[1:]
+
+	return res.M, res.E
+}
+
+// Prefetched will return the next reuslt from PrefetchedResults or, if the PrefetchedResults
+// is empty will return nil, nil.
+func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
+	r.PrefetchedCalled++
+
+	if len(r.PrefetchResults) == 0 {
+		return nil, nil
+	}
+
+	res := r.PrefetchResults[0]
+	r.ReceiveResults = r.PrefetchResults[1:]
+
+	return res.M, res.E
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -66,8 +135,28 @@ func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
-	return l.Sender, l.Receiver, l.Mgmt, l.Revision, l.Err
+func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+		return &LinksWithID{
+			Sender:   l.Sender,
+			Receiver: l.Receiver,
+			RPC:      l.RPC,
+			ID:       l.Revision,
+		}, l.Err
+	}
+}
+
+func (l *FakeAMQPLinks) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
+	lwr, err := l.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return fn(ctx, lwr, &utils.RetryFnArgs{})
 }
 
 func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
@@ -77,6 +166,11 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 
 	l.Closed++
 	return nil
+}
+
+func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+	l.CloseIfNeededCalled++
+	return GetRecoveryKind(err)
 }
 
 func (l *FakeAMQPLinks) ClosedPermanently() bool {
@@ -90,11 +184,6 @@ func (s *FakeAMQPSender) Close(ctx context.Context) error {
 
 func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	s.closed++
-	return nil
-}
-
-func (m *fakeMgmtClient) Close(ctx context.Context) error {
-	m.closed++
 	return nil
 }
 
@@ -117,26 +206,21 @@ func (ns *FakeNS) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64
 	return ns.Session, ns.recovered + 100, nil
 }
 
-func (ns *FakeNS) NewMgmtClient(ctx context.Context, links AMQPLinks) (MgmtClient, error) {
-	return ns.MgmtClient, nil
-}
-
-func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error) {
+func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (RPCLink, error) {
 	return ns.RPCLink, nil
 }
 
-func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) error {
+func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, error) {
 	ns.clientRevisions = append(ns.clientRevisions, clientRevision)
 	ns.recovered++
+	return true, nil
+}
+
+func (ns *FakeNS) Close(ctx context.Context) error {
+	ns.CloseCalled++
 	return nil
 }
 
 func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
 	return ns.AMQPLinks
-}
-
-type createLinkResponse struct {
-	sender   AMQPSenderCloser
-	receiver AMQPReceiverCloser
-	err      error
 }

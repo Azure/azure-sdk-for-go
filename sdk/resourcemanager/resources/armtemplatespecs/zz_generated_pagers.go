@@ -16,23 +16,131 @@ import (
 	"reflect"
 )
 
-// TemplateSpecVersionsListPager provides operations for iterating over paged responses.
-type TemplateSpecVersionsListPager struct {
-	client    *TemplateSpecVersionsClient
-	current   TemplateSpecVersionsListResponse
+// ClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ClientListByResourceGroupPager struct {
+	client    *Client
+	current   ClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, TemplateSpecVersionsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *TemplateSpecVersionsListPager) Err() error {
+func (p *ClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *TemplateSpecVersionsListPager) NextPage(ctx context.Context) bool {
+func (p *ClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ListResult.NextLink == nil || len(*p.current.ListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ClientListByResourceGroupResponse page.
+func (p *ClientListByResourceGroupPager) PageResponse() ClientListByResourceGroupResponse {
+	return p.current
+}
+
+// ClientListBySubscriptionPager provides operations for iterating over paged responses.
+type ClientListBySubscriptionPager struct {
+	client    *Client
+	current   ClientListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ClientListBySubscriptionResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *ClientListBySubscriptionPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ListResult.NextLink == nil || len(*p.current.ListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ClientListBySubscriptionResponse page.
+func (p *ClientListBySubscriptionPager) PageResponse() ClientListBySubscriptionResponse {
+	return p.current
+}
+
+// TemplateSpecVersionsClientListPager provides operations for iterating over paged responses.
+type TemplateSpecVersionsClientListPager struct {
+	client    *TemplateSpecVersionsClient
+	current   TemplateSpecVersionsClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, TemplateSpecVersionsClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *TemplateSpecVersionsClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *TemplateSpecVersionsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +161,7 @@ func (p *TemplateSpecVersionsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,115 +173,7 @@ func (p *TemplateSpecVersionsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current TemplateSpecVersionsListResponse page.
-func (p *TemplateSpecVersionsListPager) PageResponse() TemplateSpecVersionsListResponse {
-	return p.current
-}
-
-// TemplateSpecsListByResourceGroupPager provides operations for iterating over paged responses.
-type TemplateSpecsListByResourceGroupPager struct {
-	client    *TemplateSpecsClient
-	current   TemplateSpecsListByResourceGroupResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, TemplateSpecsListByResourceGroupResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *TemplateSpecsListByResourceGroupPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *TemplateSpecsListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TemplateSpecsListResult.NextLink == nil || len(*p.current.TemplateSpecsListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
-		return false
-	}
-	result, err := p.client.listByResourceGroupHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current TemplateSpecsListByResourceGroupResponse page.
-func (p *TemplateSpecsListByResourceGroupPager) PageResponse() TemplateSpecsListByResourceGroupResponse {
-	return p.current
-}
-
-// TemplateSpecsListBySubscriptionPager provides operations for iterating over paged responses.
-type TemplateSpecsListBySubscriptionPager struct {
-	client    *TemplateSpecsClient
-	current   TemplateSpecsListBySubscriptionResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, TemplateSpecsListBySubscriptionResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *TemplateSpecsListBySubscriptionPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *TemplateSpecsListBySubscriptionPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TemplateSpecsListResult.NextLink == nil || len(*p.current.TemplateSpecsListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
-		return false
-	}
-	result, err := p.client.listBySubscriptionHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current TemplateSpecsListBySubscriptionResponse page.
-func (p *TemplateSpecsListBySubscriptionPager) PageResponse() TemplateSpecsListBySubscriptionResponse {
+// PageResponse returns the current TemplateSpecVersionsClientListResponse page.
+func (p *TemplateSpecVersionsClientListPager) PageResponse() TemplateSpecVersionsClientListResponse {
 	return p.current
 }

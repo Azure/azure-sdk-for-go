@@ -25,10 +25,11 @@ func ExampleMetricDefinitionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricDefinitionsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
-		&armmonitor.MetricDefinitionsListOptions{Metricnamespace: to.StringPtr("<metricnamespace>")})
+		&armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.StringPtr("<metricnamespace>")})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricDefinitionsClientListResult)
 }

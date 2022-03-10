@@ -1,6 +1,6 @@
 # Release History
 
-## 0.12.1 (Unreleased)
+## 0.13.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.13.2 (2022-03-08)
+
+### Bugs Fixed
+* Prevented a data race in `DefaultAzureCredential` and `ChainedTokenCredential`
+  ([#17144](https://github.com/Azure/azure-sdk-for-go/issues/17144))
+
+### Other Changes
+* Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01
+  ([#17086](https://github.com/Azure/azure-sdk-for-go/pull/17086))
+
+## 0.13.1 (2022-02-08)
+
+### Features Added
+* `EnvironmentCredential` supports certificate SNI authentication when
+  `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` is "true".
+  ([#16851](https://github.com/Azure/azure-sdk-for-go/pull/16851))
+
+### Bugs Fixed
+* `ManagedIdentityCredential.GetToken()` now returns an error when configured for
+   a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
+   ([#16946](https://github.com/Azure/azure-sdk-for-go/pull/16946))
+
+### Other Changes
+* `NewDefaultAzureCredential()` logs non-fatal errors. These errors are also included in the
+  error returned by `DefaultAzureCredential.GetToken()` when it's unable to acquire a token
+  from any source. ([#15923](https://github.com/Azure/azure-sdk-for-go/issues/15923))
+
+## 0.13.0 (2022-01-11)
+
+### Breaking Changes
+* Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
+* Unexported `CredentialUnavailableError`
+* Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
+  * If `ChainedTokenCredentialOptions.RetrySources` is true, `ChainedTokenCredential` will continue to try all of the originally provided credentials each time the `GetToken` method is called.
+  * `ChainedTokenCredential.successfulCredential` will contain a reference to the last successful credential.
+  * `DefaultAzureCredenial` will also re-use the first successful credential on subsequent calls to `GetToken`.
+  * `DefaultAzureCredential.chain.successfulCredential` will also contain a reference to the last successful credential.
+
+### Other Changes
+* `ManagedIdentityCredential` no longer probes IMDS before requesting a token
+  from it. Also, an error response from IMDS no longer disables a credential
+  instance. Following an error, a credential instance will continue to send
+  requests to IMDS as necessary.
+* Adopted MSAL for user and service principal authentication
+* Updated `azcore` requirement to 0.21.0
 
 ## 0.12.0 (2021-11-02)
 ### Breaking Changes

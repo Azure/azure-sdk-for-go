@@ -31,12 +31,12 @@ func ExampleRestorableTimeRangesClient_Find() {
 		"<backup-instance-name>",
 		armdataprotection.AzureBackupFindRestorableTimeRangesRequest{
 			EndTime:             to.StringPtr("<end-time>"),
-			SourceDataStoreType: armdataprotection.RestoreSourceDataStoreTypeOperationalStore.ToPtr(),
+			SourceDataStoreType: armdataprotection.RestoreSourceDataStoreType("OperationalStore").ToPtr(),
 			StartTime:           to.StringPtr("<start-time>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureBackupFindRestorableTimeRangesResponseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RestorableTimeRangesClientFindResult)
 }

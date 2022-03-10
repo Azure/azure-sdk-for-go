@@ -11,7 +11,6 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // SecretsClient contains the methods for the Secrets group.
 // Don't use this type directly, use NewSecretsClient() instead.
 type SecretsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSecretsClient creates a new instance of SecretsClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecretsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &SecretsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SecretsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreate - Creates a new Secret within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsBeginCreateOptions) (SecretsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// secretName - Name of the Secret under the profile.
+// secret - The Secret properties.
+// options - SecretsClientBeginCreateOptions contains the optional parameters for the SecretsClient.BeginCreate method.
+func (client *SecretsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (SecretsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, profileName, secretName, secret, options)
 	if err != nil {
-		return SecretsCreatePollerResponse{}, err
+		return SecretsClientCreatePollerResponse{}, err
 	}
-	result := SecretsCreatePollerResponse{
+	result := SecretsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SecretsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("SecretsClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SecretsCreatePollerResponse{}, err
+		return SecretsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &SecretsCreatePoller{
+	result.Poller = &SecretsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new Secret within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) create(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SecretsClient) create(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, secretName, secret, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *SecretsClient) create(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsBeginCreateOptions) (*policy.Request, error) {
+func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,53 +111,45 @@ func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, secret)
 }
 
-// createHandleError handles the Create error response.
-func (client *SecretsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes an existing Secret within profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsBeginDeleteOptions) (SecretsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// secretName - Name of the Secret under the profile.
+// options - SecretsClientBeginDeleteOptions contains the optional parameters for the SecretsClient.BeginDelete method.
+func (client *SecretsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (SecretsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, secretName, options)
 	if err != nil {
-		return SecretsDeletePollerResponse{}, err
+		return SecretsClientDeletePollerResponse{}, err
 	}
-	result := SecretsDeletePollerResponse{
+	result := SecretsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SecretsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SecretsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SecretsDeletePollerResponse{}, err
+		return SecretsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SecretsDeletePoller{
+	result.Poller = &SecretsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing Secret within profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, secretName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,49 +183,41 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SecretsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an existing Secret within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsGetOptions) (SecretsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// secretName - Name of the Secret under the profile.
+// options - SecretsClientGetOptions contains the optional parameters for the SecretsClient.Get method.
+func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientGetOptions) (SecretsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, secretName, options)
 	if err != nil {
-		return SecretsGetResponse{}, err
+		return SecretsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecretsGetResponse{}, err
+		return SecretsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SecretsGetResponse{}, client.getHandleError(resp)
+		return SecretsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsGetOptions) (*policy.Request, error) {
+func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,55 +235,46 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsGetResponse, error) {
-	result := SecretsGetResponse{RawResponse: resp}
+func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClientGetResponse, error) {
+	result := SecretsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
-		return SecretsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SecretsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SecretsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProfile - Lists existing AzureFrontDoor secrets.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) ListByProfile(resourceGroupName string, profileName string, options *SecretsListByProfileOptions) *SecretsListByProfilePager {
-	return &SecretsListByProfilePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// options - SecretsClientListByProfileOptions contains the optional parameters for the SecretsClient.ListByProfile method.
+func (client *SecretsClient) ListByProfile(resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) *SecretsClientListByProfilePager {
+	return &SecretsClientListByProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp SecretsListByProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecretsClientListByProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *SecretsListByProfileOptions) (*policy.Request, error) {
+func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,115 +288,22 @@ func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *SecretsClient) listByProfileHandleResponse(resp *http.Response) (SecretsListByProfileResponse, error) {
-	result := SecretsListByProfileResponse{RawResponse: resp}
+func (client *SecretsClient) listByProfileHandleResponse(resp *http.Response) (SecretsClientListByProfileResponse, error) {
+	result := SecretsClientListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return SecretsListByProfileResponse{}, runtime.NewResponseError(err, resp)
+		return SecretsClientListByProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// listByProfileHandleError handles the ListByProfile error response.
-func (client *SecretsClient) listByProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpdate - Updates an existing Secret within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, secretName string, secretProperties SecretProperties, options *SecretsBeginUpdateOptions) (SecretsUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, profileName, secretName, secretProperties, options)
-	if err != nil {
-		return SecretsUpdatePollerResponse{}, err
-	}
-	result := SecretsUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecretsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return SecretsUpdatePollerResponse{}, err
-	}
-	result.Poller = &SecretsUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// Update - Updates an existing Secret within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecretsClient) update(ctx context.Context, resourceGroupName string, profileName string, secretName string, secretProperties SecretProperties, options *SecretsBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, secretName, secretProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
-	}
-	return resp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secretProperties SecretProperties, options *SecretsBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if secretName == "" {
-		return nil, errors.New("parameter secretName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{secretName}", url.PathEscape(secretName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, secretProperties)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SecretsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

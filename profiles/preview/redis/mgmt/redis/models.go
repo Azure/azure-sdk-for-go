@@ -12,7 +12,7 @@ package redis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
+	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2021-06-01/redis"
 )
 
 const (
@@ -38,6 +38,15 @@ type KeyType = original.KeyType
 const (
 	KeyTypePrimary   KeyType = original.KeyTypePrimary
 	KeyTypeSecondary KeyType = original.KeyTypeSecondary
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -120,11 +129,13 @@ const (
 )
 
 type AccessKeys = original.AccessKeys
+type AsyncOperationStatusClient = original.AsyncOperationStatusClient
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type Client = original.Client
 type CommonProperties = original.CommonProperties
+type CommonPropertiesRedisConfiguration = original.CommonPropertiesRedisConfiguration
 type CreateFuture = original.CreateFuture
 type CreateParameters = original.CreateParameters
 type CreateProperties = original.CreateProperties
@@ -158,6 +169,7 @@ type LinkedServerWithPropertiesListPage = original.LinkedServerWithPropertiesLis
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
+type ManagedServiceIdentity = original.ManagedServiceIdentity
 type NotificationListResponse = original.NotificationListResponse
 type NotificationListResponseIterator = original.NotificationListResponseIterator
 type NotificationListResponsePage = original.NotificationListResponsePage
@@ -166,6 +178,8 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationStatus = original.OperationStatus
+type OperationStatusResult = original.OperationStatusResult
 type OperationsClient = original.OperationsClient
 type PatchSchedule = original.PatchSchedule
 type PatchScheduleListResult = original.PatchScheduleListResult
@@ -196,9 +210,16 @@ type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
 type UpgradeNotification = original.UpgradeNotification
+type UserAssignedIdentity = original.UserAssignedIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAsyncOperationStatusClient(subscriptionID string) AsyncOperationStatusClient {
+	return original.NewAsyncOperationStatusClient(subscriptionID)
+}
+func NewAsyncOperationStatusClientWithBaseURI(baseURI string, subscriptionID string) AsyncOperationStatusClient {
+	return original.NewAsyncOperationStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
@@ -286,6 +307,9 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
 }
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()

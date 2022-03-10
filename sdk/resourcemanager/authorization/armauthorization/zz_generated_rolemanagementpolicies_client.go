@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,58 @@ import (
 // RoleManagementPoliciesClient contains the methods for the RoleManagementPolicies group.
 // Don't use this type directly, use NewRoleManagementPoliciesClient() instead.
 type RoleManagementPoliciesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRoleManagementPoliciesClient creates a new instance of RoleManagementPoliciesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRoleManagementPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleManagementPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RoleManagementPoliciesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RoleManagementPoliciesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Delete a role management policy
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPoliciesClient) Delete(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesDeleteOptions) (RoleManagementPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy to upsert.
+// roleManagementPolicyName - The name (guid) of the role management policy to upsert.
+// options - RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
+// method.
+func (client *RoleManagementPoliciesClient) Delete(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientDeleteOptions) (RoleManagementPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleManagementPolicyName, options)
 	if err != nil {
-		return RoleManagementPoliciesDeleteResponse{}, err
+		return RoleManagementPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPoliciesDeleteResponse{}, err
+		return RoleManagementPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RoleManagementPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return RoleManagementPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RoleManagementPoliciesDeleteResponse{RawResponse: resp}, nil
+	return RoleManagementPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,45 +86,36 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RoleManagementPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the specified role management policy for a resource scope
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPoliciesClient) Get(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesGetOptions) (RoleManagementPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy.
+// roleManagementPolicyName - The name (guid) of the role management policy to get.
+// options - RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get
+// method.
+func (client *RoleManagementPoliciesClient) Get(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientGetOptions) (RoleManagementPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleManagementPolicyName, options)
 	if err != nil {
-		return RoleManagementPoliciesGetResponse{}, err
+		return RoleManagementPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPoliciesGetResponse{}, err
+		return RoleManagementPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleManagementPoliciesGetResponse{}, client.getHandleError(resp)
+		return RoleManagementPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesGetOptions) (*policy.Request, error) {
+func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,46 +127,36 @@ func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Response) (RoleManagementPoliciesGetResponse, error) {
-	result := RoleManagementPoliciesGetResponse{RawResponse: resp}
+func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Response) (RoleManagementPoliciesClientGetResponse, error) {
+	result := RoleManagementPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicy); err != nil {
-		return RoleManagementPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RoleManagementPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForScope - Gets role management policies for a resource scope.
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPoliciesClient) ListForScope(scope string, options *RoleManagementPoliciesListForScopeOptions) *RoleManagementPoliciesListForScopePager {
-	return &RoleManagementPoliciesListForScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy.
+// options - RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.ListForScope
+// method.
+func (client *RoleManagementPoliciesClient) ListForScope(scope string, options *RoleManagementPoliciesClientListForScopeOptions) *RoleManagementPoliciesClientListForScopePager {
+	return &RoleManagementPoliciesClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp RoleManagementPoliciesListForScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleManagementPoliciesClientListForScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleManagementPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPoliciesListForScopeOptions) (*policy.Request, error) {
+func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPoliciesClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,53 +168,45 @@ func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx contex
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPoliciesListForScopeResponse, error) {
-	result := RoleManagementPoliciesListForScopeResponse{RawResponse: resp}
+func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPoliciesClientListForScopeResponse, error) {
+	result := RoleManagementPoliciesClientListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyListResult); err != nil {
-		return RoleManagementPoliciesListForScopeResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPoliciesClientListForScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// listForScopeHandleError handles the ListForScope error response.
-func (client *RoleManagementPoliciesClient) listForScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a role management policy
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPoliciesClient) Update(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesUpdateOptions) (RoleManagementPoliciesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy to upsert.
+// roleManagementPolicyName - The name (guid) of the role management policy to upsert.
+// parameters - Parameters for the role management policy.
+// options - RoleManagementPoliciesClientUpdateOptions contains the optional parameters for the RoleManagementPoliciesClient.Update
+// method.
+func (client *RoleManagementPoliciesClient) Update(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesClientUpdateOptions) (RoleManagementPoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, scope, roleManagementPolicyName, parameters, options)
 	if err != nil {
-		return RoleManagementPoliciesUpdateResponse{}, err
+		return RoleManagementPoliciesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPoliciesUpdateResponse{}, err
+		return RoleManagementPoliciesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleManagementPoliciesUpdateResponse{}, client.updateHandleError(resp)
+		return RoleManagementPoliciesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesUpdateOptions) (*policy.Request, error) {
+func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -236,23 +218,10 @@ func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RoleManagementPoliciesClient) updateHandleResponse(resp *http.Response) (RoleManagementPoliciesUpdateResponse, error) {
-	result := RoleManagementPoliciesUpdateResponse{RawResponse: resp}
+func (client *RoleManagementPoliciesClient) updateHandleResponse(resp *http.Response) (RoleManagementPoliciesClientUpdateResponse, error) {
+	result := RoleManagementPoliciesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicy); err != nil {
-		return RoleManagementPoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPoliciesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *RoleManagementPoliciesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

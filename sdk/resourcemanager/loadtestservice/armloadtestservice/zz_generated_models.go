@@ -53,19 +53,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // LoadTestProperties - LoadTest resource properties.
@@ -82,20 +74,42 @@ type LoadTestProperties struct {
 
 // LoadTestResource - LoadTest details
 type LoadTestResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The type of identity used for the resource.
 	Identity *SystemAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Load Test resource properties
 	Properties *LoadTestProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LoadTestResource.
 func (l LoadTestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", l.ID)
 	populate(objectMap, "identity", l.Identity)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "name", l.Name)
 	populate(objectMap, "properties", l.Properties)
+	populate(objectMap, "systemData", l.SystemData)
+	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -143,33 +157,34 @@ type LoadTestResourcePatchRequestBodyProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// LoadTestsBeginDeleteOptions contains the optional parameters for the LoadTests.BeginDelete method.
-type LoadTestsBeginDeleteOptions struct {
+// LoadTestsClientBeginDeleteOptions contains the optional parameters for the LoadTestsClient.BeginDelete method.
+type LoadTestsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsCreateOrUpdateOptions contains the optional parameters for the LoadTests.CreateOrUpdate method.
-type LoadTestsCreateOrUpdateOptions struct {
+// LoadTestsClientCreateOrUpdateOptions contains the optional parameters for the LoadTestsClient.CreateOrUpdate method.
+type LoadTestsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsGetOptions contains the optional parameters for the LoadTests.Get method.
-type LoadTestsGetOptions struct {
+// LoadTestsClientGetOptions contains the optional parameters for the LoadTestsClient.Get method.
+type LoadTestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsListByResourceGroupOptions contains the optional parameters for the LoadTests.ListByResourceGroup method.
-type LoadTestsListByResourceGroupOptions struct {
+// LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.ListByResourceGroup
+// method.
+type LoadTestsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsListBySubscriptionOptions contains the optional parameters for the LoadTests.ListBySubscription method.
-type LoadTestsListBySubscriptionOptions struct {
+// LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.ListBySubscription method.
+type LoadTestsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsUpdateOptions contains the optional parameters for the LoadTests.Update method.
-type LoadTestsUpdateOptions struct {
+// LoadTestsClientUpdateOptions contains the optional parameters for the LoadTestsClient.Update method.
+type LoadTestsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -181,13 +196,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -196,18 +214,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -224,8 +245,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -244,26 +265,13 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
-}
-
 // SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
 type SystemAssignedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (either system assigned, or none).
 	Type *SystemAssignedServiceIdentityType `json:"type,omitempty"`
 
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -338,27 +346,38 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

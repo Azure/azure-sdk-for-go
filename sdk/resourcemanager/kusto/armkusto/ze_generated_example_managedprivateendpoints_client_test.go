@@ -27,7 +27,7 @@ func ExampleManagedPrivateEndpointsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.ManagedPrivateEndpointsCheckNameRequest{
@@ -38,6 +38,7 @@ func ExampleManagedPrivateEndpointsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsList.json
@@ -48,13 +49,14 @@ func ExampleManagedPrivateEndpointsClient_List() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientListResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsGet.json
@@ -73,7 +75,7 @@ func ExampleManagedPrivateEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedPrivateEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsCreateOrUpdate.json
@@ -103,7 +105,7 @@ func ExampleManagedPrivateEndpointsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedPrivateEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsUpdate.json
@@ -133,7 +135,7 @@ func ExampleManagedPrivateEndpointsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedPrivateEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsDelete.json

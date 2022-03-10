@@ -24,42 +24,55 @@ import (
 // RecoverableManagedDatabasesClient contains the methods for the RecoverableManagedDatabases group.
 // Don't use this type directly, use NewRecoverableManagedDatabasesClient() instead.
 type RecoverableManagedDatabasesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRecoverableManagedDatabasesClient creates a new instance of RecoverableManagedDatabasesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecoverableManagedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoverableManagedDatabasesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecoverableManagedDatabasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecoverableManagedDatabasesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a recoverable managed database.
-// If the operation fails it returns a generic error.
-func (client *RecoverableManagedDatabasesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesGetOptions) (RecoverableManagedDatabasesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - RecoverableManagedDatabasesClientGetOptions contains the optional parameters for the RecoverableManagedDatabasesClient.Get
+// method.
+func (client *RecoverableManagedDatabasesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesClientGetOptions) (RecoverableManagedDatabasesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, recoverableDatabaseName, options)
 	if err != nil {
-		return RecoverableManagedDatabasesGetResponse{}, err
+		return RecoverableManagedDatabasesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecoverableManagedDatabasesGetResponse{}, err
+		return RecoverableManagedDatabasesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecoverableManagedDatabasesGetResponse{}, client.getHandleError(resp)
+		return RecoverableManagedDatabasesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesGetOptions) (*policy.Request, error) {
+func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +90,7 @@ func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,42 +102,35 @@ func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableManagedDatabasesGetResponse, error) {
-	result := RecoverableManagedDatabasesGetResponse{RawResponse: resp}
+func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableManagedDatabasesClientGetResponse, error) {
+	result := RecoverableManagedDatabasesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableManagedDatabase); err != nil {
-		return RecoverableManagedDatabasesGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecoverableManagedDatabasesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecoverableManagedDatabasesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByInstance - Gets a list of recoverable managed databases.
-// If the operation fails it returns a generic error.
-func (client *RecoverableManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) *RecoverableManagedDatabasesListByInstancePager {
-	return &RecoverableManagedDatabasesListByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - RecoverableManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RecoverableManagedDatabasesClient.ListByInstance
+// method.
+func (client *RecoverableManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesClientListByInstanceOptions) *RecoverableManagedDatabasesClientListByInstancePager {
+	return &RecoverableManagedDatabasesClientListByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp RecoverableManagedDatabasesListByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecoverableManagedDatabasesClientListByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoverableManagedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) (*policy.Request, error) {
+func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -138,7 +144,7 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,22 +156,10 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *RecoverableManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RecoverableManagedDatabasesListByInstanceResponse, error) {
-	result := RecoverableManagedDatabasesListByInstanceResponse{RawResponse: resp}
+func (client *RecoverableManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RecoverableManagedDatabasesClientListByInstanceResponse, error) {
+	result := RecoverableManagedDatabasesClientListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableManagedDatabaseListResult); err != nil {
-		return RecoverableManagedDatabasesListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return RecoverableManagedDatabasesClientListByInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *RecoverableManagedDatabasesClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

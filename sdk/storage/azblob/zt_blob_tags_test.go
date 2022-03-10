@@ -200,7 +200,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	contentData, err := ioutil.ReadAll(contentResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
@@ -261,7 +261,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	uploadDate := uploadSrcResp.Date
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
@@ -328,7 +328,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 }
@@ -369,7 +369,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -401,7 +401,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 	_assert.Equal(*downloadResp.TagCount, int64(1))

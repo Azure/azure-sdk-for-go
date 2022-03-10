@@ -24,39 +24,49 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets the current usage information as well as limits for AML resources for given subscription and location.
-// If the operation fails it returns a generic error.
-func (client *UsagesClient) List(location string, options *UsagesListOptions) *UsagesListPager {
-	return &UsagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for which resource usage is queried.
+// options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+func (client *UsagesClient) List(location string, options *UsagesClientListOptions) *UsagesClientListPager {
+	return &UsagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UsagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListUsagesResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesListOptions) (*policy.Request, error) {
+func (client *UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -66,7 +76,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,22 +88,10 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 }
 
 // listHandleResponse handles the List response.
-func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesListResponse, error) {
-	result := UsagesListResponse{RawResponse: resp}
+func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
+	result := UsagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListUsagesResult); err != nil {
-		return UsagesListResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *UsagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

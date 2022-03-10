@@ -24,9 +24,9 @@ func ExampleDimensionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewDimensionsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<scope>",
-		&armcostmanagement.DimensionsListOptions{Filter: nil,
+		&armcostmanagement.DimensionsClientListOptions{Filter: nil,
 			Expand:    nil,
 			Skiptoken: nil,
 			Top:       nil,
@@ -34,6 +34,7 @@ func ExampleDimensionsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DimensionsClientListResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountsDimensions.json
@@ -44,10 +45,10 @@ func ExampleDimensionsClient_ByExternalCloudProviderType() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewDimensionsClient(cred, nil)
-	_, err = client.ByExternalCloudProviderType(ctx,
-		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
+	res, err := client.ByExternalCloudProviderType(ctx,
+		armcostmanagement.ExternalCloudProviderType("externalBillingAccounts"),
 		"<external-cloud-provider-id>",
-		&armcostmanagement.DimensionsByExternalCloudProviderTypeOptions{Filter: nil,
+		&armcostmanagement.DimensionsClientByExternalCloudProviderTypeOptions{Filter: nil,
 			Expand:    nil,
 			Skiptoken: nil,
 			Top:       nil,
@@ -55,4 +56,5 @@ func ExampleDimensionsClient_ByExternalCloudProviderType() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DimensionsClientByExternalCloudProviderTypeResult)
 }

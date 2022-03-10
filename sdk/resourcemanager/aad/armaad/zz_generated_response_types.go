@@ -10,68 +10,68 @@ package armaad
 
 import "net/http"
 
-// DiagnosticSettingsCategoryListResponse contains the response from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResponse struct {
-	DiagnosticSettingsCategoryListResult
+// DiagnosticSettingsCategoryClientListResponse contains the response from method DiagnosticSettingsCategoryClient.List.
+type DiagnosticSettingsCategoryClientListResponse struct {
+	DiagnosticSettingsCategoryClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticSettingsCategoryListResult contains the result from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResult struct {
+// DiagnosticSettingsCategoryClientListResult contains the result from method DiagnosticSettingsCategoryClient.List.
+type DiagnosticSettingsCategoryClientListResult struct {
 	DiagnosticSettingsCategoryResourceCollection
 }
 
-// DiagnosticSettingsCreateOrUpdateResponse contains the response from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResponse struct {
-	DiagnosticSettingsCreateOrUpdateResult
+// DiagnosticSettingsClientCreateOrUpdateResponse contains the response from method DiagnosticSettingsClient.CreateOrUpdate.
+type DiagnosticSettingsClientCreateOrUpdateResponse struct {
+	DiagnosticSettingsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticSettingsCreateOrUpdateResult contains the result from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResult struct {
+// DiagnosticSettingsClientCreateOrUpdateResult contains the result from method DiagnosticSettingsClient.CreateOrUpdate.
+type DiagnosticSettingsClientCreateOrUpdateResult struct {
 	DiagnosticSettingsResource
 }
 
-// DiagnosticSettingsDeleteResponse contains the response from method DiagnosticSettings.Delete.
-type DiagnosticSettingsDeleteResponse struct {
+// DiagnosticSettingsClientDeleteResponse contains the response from method DiagnosticSettingsClient.Delete.
+type DiagnosticSettingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticSettingsGetResponse contains the response from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResponse struct {
-	DiagnosticSettingsGetResult
+// DiagnosticSettingsClientGetResponse contains the response from method DiagnosticSettingsClient.Get.
+type DiagnosticSettingsClientGetResponse struct {
+	DiagnosticSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticSettingsGetResult contains the result from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResult struct {
+// DiagnosticSettingsClientGetResult contains the result from method DiagnosticSettingsClient.Get.
+type DiagnosticSettingsClientGetResult struct {
 	DiagnosticSettingsResource
 }
 
-// DiagnosticSettingsListResponse contains the response from method DiagnosticSettings.List.
-type DiagnosticSettingsListResponse struct {
-	DiagnosticSettingsListResult
+// DiagnosticSettingsClientListResponse contains the response from method DiagnosticSettingsClient.List.
+type DiagnosticSettingsClientListResponse struct {
+	DiagnosticSettingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticSettingsListResult contains the result from method DiagnosticSettings.List.
-type DiagnosticSettingsListResult struct {
+// DiagnosticSettingsClientListResult contains the result from method DiagnosticSettingsClient.List.
+type DiagnosticSettingsClientListResult struct {
 	DiagnosticSettingsResourceCollection
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsDiscoveryCollection
 }

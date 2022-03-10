@@ -30,13 +30,17 @@ func ExampleJobsClient_ListByJobDefinition() {
 		"<job-definition-name>",
 		"<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByJobDefinitionOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.JobsClientListByJobDefinitionOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,11 +59,11 @@ func ExampleJobsClient_Get() {
 		"<job-id>",
 		"<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobsGetOptions{Expand: nil})
+		&armhybriddatamanager.JobsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Job.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Cancel-POST-example-111.json
@@ -121,13 +125,17 @@ func ExampleJobsClient_ListByDataService() {
 	pager := client.ListByDataService("<data-service-name>",
 		"<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByDataServiceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.JobsClientListByDataServiceOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -142,13 +150,17 @@ func ExampleJobsClient_ListByDataManager() {
 	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
 	pager := client.ListByDataManager("<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByDataManagerOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.JobsClientListByDataManagerOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

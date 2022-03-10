@@ -24,7 +24,7 @@ func ExampleLivePipelineOperationStatusesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewLivePipelineOperationStatusesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<live-pipeline-name>",
@@ -33,4 +33,5 @@ func ExampleLivePipelineOperationStatusesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LivePipelineOperationStatusesClientGetResult)
 }

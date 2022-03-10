@@ -28,44 +28,6 @@ func unmarshalAuthenticationClassification(rawMsg json.RawMessage) (Authenticati
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAuthenticationClassificationArray(rawMsg json.RawMessage) ([]AuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AuthenticationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAuthenticationClassificationMap(rawMsg json.RawMessage) (map[string]AuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AuthenticationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalHealthCheckStepAttributesClassification(rawMsg json.RawMessage) (HealthCheckStepAttributesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -82,44 +44,6 @@ func unmarshalHealthCheckStepAttributesClassification(rawMsg json.RawMessage) (H
 		b = &HealthCheckStepAttributes{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalHealthCheckStepAttributesClassificationArray(rawMsg json.RawMessage) ([]HealthCheckStepAttributesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]HealthCheckStepAttributesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalHealthCheckStepAttributesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalHealthCheckStepAttributesClassificationMap(rawMsg json.RawMessage) (map[string]HealthCheckStepAttributesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]HealthCheckStepAttributesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalHealthCheckStepAttributesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalRestRequestAuthenticationClassification(rawMsg json.RawMessage) (RestRequestAuthenticationClassification, error) {
@@ -142,44 +66,6 @@ func unmarshalRestRequestAuthenticationClassification(rawMsg json.RawMessage) (R
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRestRequestAuthenticationClassificationArray(rawMsg json.RawMessage) ([]RestRequestAuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RestRequestAuthenticationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRestRequestAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalRestRequestAuthenticationClassificationMap(rawMsg json.RawMessage) (map[string]RestRequestAuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RestRequestAuthenticationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRestRequestAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalStepPropertiesClassification(rawMsg json.RawMessage) (StepPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -198,42 +84,4 @@ func unmarshalStepPropertiesClassification(rawMsg json.RawMessage) (StepProperti
 		b = &StepProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalStepPropertiesClassificationArray(rawMsg json.RawMessage) ([]StepPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]StepPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalStepPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalStepPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]StepPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]StepPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalStepPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

@@ -11,7 +11,6 @@ package armhdinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // ApplicationsClient contains the methods for the Applications group.
 // Don't use this type directly, use NewApplicationsClient() instead.
 type ApplicationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates applications for the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOptions) (ApplicationsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// applicationName - The constant value for the application name.
+// parameters - The application create request.
+// options - ApplicationsClientBeginCreateOptions contains the optional parameters for the ApplicationsClient.BeginCreate
+// method.
+func (client *ApplicationsClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOptions) (ApplicationsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
 	if err != nil {
-		return ApplicationsCreatePollerResponse{}, err
+		return ApplicationsClientCreatePollerResponse{}, err
 	}
-	result := ApplicationsCreatePollerResponse{
+	result := ApplicationsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationsClient.Create", "location", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ApplicationsClient.Create", "location", resp, client.pl)
 	if err != nil {
-		return ApplicationsCreatePollerResponse{}, err
+		return ApplicationsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ApplicationsCreatePoller{
+	result.Poller = &ApplicationsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates applications for the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *ApplicationsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +112,7 @@ func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +123,34 @@ func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *ApplicationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified application on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsBeginDeleteOptions) (ApplicationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// applicationName - The constant value for the application name.
+// options - ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete
+// method.
+func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (ApplicationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, applicationName, options)
 	if err != nil {
-		return ApplicationsDeletePollerResponse{}, err
+		return ApplicationsClientDeletePollerResponse{}, err
 	}
-	result := ApplicationsDeletePollerResponse{
+	result := ApplicationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ApplicationsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return ApplicationsDeletePollerResponse{}, err
+		return ApplicationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ApplicationsDeletePoller{
+	result.Poller = &ApplicationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified application on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +160,13 @@ func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +184,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +195,29 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets properties of the specified application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsGetOptions) (ApplicationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// applicationName - The constant value for the application name.
+// options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
+func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientGetOptions) (ApplicationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, applicationName, options)
 	if err != nil {
-		return ApplicationsGetResponse{}, err
+		return ApplicationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationsGetResponse{}, err
+		return ApplicationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationsGetResponse{}, client.getHandleError(resp)
+		return ApplicationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsGetOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +235,7 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +247,39 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (ApplicationsGetResponse, error) {
-	result := ApplicationsGetResponse{RawResponse: resp}
+func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (ApplicationsClientGetResponse, error) {
+	result := ApplicationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
-		return ApplicationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAzureAsyncOperationStatus - Gets the async operation status.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, operationID string, options *ApplicationsGetAzureAsyncOperationStatusOptions) (ApplicationsGetAzureAsyncOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// applicationName - The constant value for the application name.
+// operationID - The long running operation id.
+// options - ApplicationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ApplicationsClient.GetAzureAsyncOperationStatus
+// method.
+func (client *ApplicationsClient) GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, operationID string, options *ApplicationsClientGetAzureAsyncOperationStatusOptions) (ApplicationsClientGetAzureAsyncOperationStatusResponse, error) {
 	req, err := client.getAzureAsyncOperationStatusCreateRequest(ctx, resourceGroupName, clusterName, applicationName, operationID, options)
 	if err != nil {
-		return ApplicationsGetAzureAsyncOperationStatusResponse{}, err
+		return ApplicationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationsGetAzureAsyncOperationStatusResponse{}, err
+		return ApplicationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationsGetAzureAsyncOperationStatusResponse{}, client.getAzureAsyncOperationStatusHandleError(resp)
+		return ApplicationsClientGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAzureAsyncOperationStatusHandleResponse(resp)
 }
 
 // getAzureAsyncOperationStatusCreateRequest creates the GetAzureAsyncOperationStatus request.
-func (client *ApplicationsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, operationID string, options *ApplicationsGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, operationID string, options *ApplicationsClientGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/applications/{applicationName}/azureasyncoperations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -311,7 +301,7 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusCreateRequest(ctx 
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,43 +313,34 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusCreateRequest(ctx 
 }
 
 // getAzureAsyncOperationStatusHandleResponse handles the GetAzureAsyncOperationStatus response.
-func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (ApplicationsGetAzureAsyncOperationStatusResponse, error) {
-	result := ApplicationsGetAzureAsyncOperationStatusResponse{RawResponse: resp}
+func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (ApplicationsClientGetAzureAsyncOperationStatusResponse, error) {
+	result := ApplicationsClientGetAzureAsyncOperationStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
-		return ApplicationsGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getAzureAsyncOperationStatusHandleError handles the GetAzureAsyncOperationStatus error response.
-func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByCluster - Lists all of the applications for the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) ListByCluster(resourceGroupName string, clusterName string, options *ApplicationsListByClusterOptions) *ApplicationsListByClusterPager {
-	return &ApplicationsListByClusterPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ApplicationsClientListByClusterOptions contains the optional parameters for the ApplicationsClient.ListByCluster
+// method.
+func (client *ApplicationsClient) ListByCluster(resourceGroupName string, clusterName string, options *ApplicationsClientListByClusterOptions) *ApplicationsClientListByClusterPager {
+	return &ApplicationsClientListByClusterPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationsListByClusterResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationsClientListByClusterResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationListResult.NextLink)
 		},
 	}
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *ApplicationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationsListByClusterOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationsClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -373,7 +354,7 @@ func (client *ApplicationsClient) listByClusterCreateRequest(ctx context.Context
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,23 +366,10 @@ func (client *ApplicationsClient) listByClusterCreateRequest(ctx context.Context
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *ApplicationsClient) listByClusterHandleResponse(resp *http.Response) (ApplicationsListByClusterResponse, error) {
-	result := ApplicationsListByClusterResponse{RawResponse: resp}
+func (client *ApplicationsClient) listByClusterHandleResponse(resp *http.Response) (ApplicationsClientListByClusterResponse, error) {
+	result := ApplicationsClientListByClusterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationListResult); err != nil {
-		return ApplicationsListByClusterResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// listByClusterHandleError handles the ListByCluster error response.
-func (client *ApplicationsClient) listByClusterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

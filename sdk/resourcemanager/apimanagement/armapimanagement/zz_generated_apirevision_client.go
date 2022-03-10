@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,39 +25,53 @@ import (
 // APIRevisionClient contains the methods for the APIRevision group.
 // Don't use this type directly, use NewAPIRevisionClient() instead.
 type APIRevisionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIRevisionClient creates a new instance of APIRevisionClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIRevisionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &APIRevisionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &APIRevisionClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByService - Lists all revisions of an API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIRevisionClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIRevisionListByServiceOptions) *APIRevisionListByServicePager {
-	return &APIRevisionListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// options - APIRevisionClientListByServiceOptions contains the optional parameters for the APIRevisionClient.ListByService
+// method.
+func (client *APIRevisionClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) *APIRevisionClientListByServicePager {
+	return &APIRevisionClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APIRevisionListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp APIRevisionClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIRevisionCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIRevisionListByServiceOptions) (*policy.Request, error) {
+func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/revisions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -76,7 +89,7 @@ func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,23 +110,10 @@ func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context,
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *APIRevisionClient) listByServiceHandleResponse(resp *http.Response) (APIRevisionListByServiceResponse, error) {
-	result := APIRevisionListByServiceResponse{RawResponse: resp}
+func (client *APIRevisionClient) listByServiceHandleResponse(resp *http.Response) (APIRevisionClientListByServiceResponse, error) {
+	result := APIRevisionClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIRevisionCollection); err != nil {
-		return APIRevisionListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return APIRevisionClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *APIRevisionClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

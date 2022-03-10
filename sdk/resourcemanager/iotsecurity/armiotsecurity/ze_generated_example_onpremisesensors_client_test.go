@@ -25,11 +25,12 @@ func ExampleOnPremiseSensorsClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OnPremiseSensorsClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/OnPremiseSensors/Get.json
@@ -46,7 +47,7 @@ func ExampleOnPremiseSensorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OnPremiseSensor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OnPremiseSensorsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/OnPremiseSensors/Put.json
@@ -63,7 +64,7 @@ func ExampleOnPremiseSensorsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OnPremiseSensor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OnPremiseSensorsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/OnPremiseSensors/Delete.json

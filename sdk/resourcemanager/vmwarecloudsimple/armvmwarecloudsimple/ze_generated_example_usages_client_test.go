@@ -25,10 +25,17 @@ func ExampleUsagesClient_List() {
 	ctx := context.Background()
 	client := armvmwarecloudsimple.NewUsagesClient("<subscription-id>", cred, nil)
 	pager := client.List("<region-id>",
-		&armvmwarecloudsimple.UsagesListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armvmwarecloudsimple.UsagesClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

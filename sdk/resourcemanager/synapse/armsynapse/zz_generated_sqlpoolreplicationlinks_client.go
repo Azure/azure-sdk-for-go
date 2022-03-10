@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // SQLPoolReplicationLinksClient contains the methods for the SQLPoolReplicationLinks group.
 // Don't use this type directly, use NewSQLPoolReplicationLinksClient() instead.
 type SQLPoolReplicationLinksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolReplicationLinksClient creates a new instance of SQLPoolReplicationLinksClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolReplicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolReplicationLinksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolReplicationLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolReplicationLinksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetByName - Get SQL pool replication link by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolReplicationLinksClient) GetByName(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, linkID string, options *SQLPoolReplicationLinksGetByNameOptions) (SQLPoolReplicationLinksGetByNameResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// linkID - The ID of the replication link.
+// options - SQLPoolReplicationLinksClientGetByNameOptions contains the optional parameters for the SQLPoolReplicationLinksClient.GetByName
+// method.
+func (client *SQLPoolReplicationLinksClient) GetByName(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, linkID string, options *SQLPoolReplicationLinksClientGetByNameOptions) (SQLPoolReplicationLinksClientGetByNameResponse, error) {
 	req, err := client.getByNameCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, linkID, options)
 	if err != nil {
-		return SQLPoolReplicationLinksGetByNameResponse{}, err
+		return SQLPoolReplicationLinksClientGetByNameResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolReplicationLinksGetByNameResponse{}, err
+		return SQLPoolReplicationLinksClientGetByNameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolReplicationLinksGetByNameResponse{}, client.getByNameHandleError(resp)
+		return SQLPoolReplicationLinksClientGetByNameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByNameHandleResponse(resp)
 }
 
 // getByNameCreateRequest creates the GetByName request.
-func (client *SQLPoolReplicationLinksClient) getByNameCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, linkID string, options *SQLPoolReplicationLinksGetByNameOptions) (*policy.Request, error) {
+func (client *SQLPoolReplicationLinksClient) getByNameCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, linkID string, options *SQLPoolReplicationLinksClientGetByNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks/{linkId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *SQLPoolReplicationLinksClient) getByNameCreateRequest(ctx context.
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +107,35 @@ func (client *SQLPoolReplicationLinksClient) getByNameCreateRequest(ctx context.
 }
 
 // getByNameHandleResponse handles the GetByName response.
-func (client *SQLPoolReplicationLinksClient) getByNameHandleResponse(resp *http.Response) (SQLPoolReplicationLinksGetByNameResponse, error) {
-	result := SQLPoolReplicationLinksGetByNameResponse{RawResponse: resp}
+func (client *SQLPoolReplicationLinksClient) getByNameHandleResponse(resp *http.Response) (SQLPoolReplicationLinksClientGetByNameResponse, error) {
+	result := SQLPoolReplicationLinksClientGetByNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLink); err != nil {
-		return SQLPoolReplicationLinksGetByNameResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolReplicationLinksClientGetByNameResponse{}, err
 	}
 	return result, nil
 }
 
-// getByNameHandleError handles the GetByName error response.
-func (client *SQLPoolReplicationLinksClient) getByNameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists a Sql pool's replication links.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolReplicationLinksClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolReplicationLinksListOptions) *SQLPoolReplicationLinksListPager {
-	return &SQLPoolReplicationLinksListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolReplicationLinksClientListOptions contains the optional parameters for the SQLPoolReplicationLinksClient.List
+// method.
+func (client *SQLPoolReplicationLinksClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolReplicationLinksClientListOptions) *SQLPoolReplicationLinksClientListPager {
+	return &SQLPoolReplicationLinksClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolReplicationLinksListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolReplicationLinksClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationLinkListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolReplicationLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolReplicationLinksListOptions) (*policy.Request, error) {
+func (client *SQLPoolReplicationLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolReplicationLinksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *SQLPoolReplicationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +165,10 @@ func (client *SQLPoolReplicationLinksClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolReplicationLinksClient) listHandleResponse(resp *http.Response) (SQLPoolReplicationLinksListResponse, error) {
-	result := SQLPoolReplicationLinksListResponse{RawResponse: resp}
+func (client *SQLPoolReplicationLinksClient) listHandleResponse(resp *http.Response) (SQLPoolReplicationLinksClientListResponse, error) {
+	result := SQLPoolReplicationLinksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLinkListResult); err != nil {
-		return SQLPoolReplicationLinksListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolReplicationLinksClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolReplicationLinksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -7,6 +7,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -183,6 +185,12 @@ func (c ContainerClient) ListBlobsFlat(listOptions *ContainerListBlobFlatSegment
 		return pager
 	}
 
+	// override the advancer
+	pager.advancer = func(ctx context.Context, response ContainerListBlobFlatSegmentResponse) (*policy.Request, error) {
+		listOptions.Marker = response.NextMarker
+		return c.client.listBlobFlatSegmentCreateRequest(ctx, listOptions)
+	}
+
 	// TODO: Come Here
 	//pager.err = func(response *azcore.Response) error {
 	//	return handleError(c.client.listBlobFlatSegmentHandleError(response))
@@ -206,8 +214,13 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 		return pager
 	}
 
-	// TODO: Come here
-	//p := pager.(*listBlobsHierarchySegmentResponsePager)
+	// override the advancer
+	pager.advancer = func(ctx context.Context, response ContainerListBlobHierarchySegmentResponse) (*policy.Request, error) {
+		listOptions.Marker = response.NextMarker
+		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, listOptions)
+	}
+
+	// todo: come here
 	//p.errorer = func(response *azcore.Response) error {
 	//	return handleError(c.client.listBlobHierarchySegmentHandleError(response))
 	//}
@@ -217,8 +230,8 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-	urlParts := NewBlobURLParts(c.URL())
+func (c ContainerClient) GetSASToken(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+	urlParts, _ := NewBlobURLParts(c.URL())
 
 	// Containers do not have snapshots, nor versions.
 

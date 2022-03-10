@@ -25,7 +25,7 @@ func ExampleKustoPoolChildResourceClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolChildResourceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -37,4 +37,5 @@ func ExampleKustoPoolChildResourceClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolChildResourceClientCheckNameAvailabilityResult)
 }

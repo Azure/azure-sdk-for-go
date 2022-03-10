@@ -29,25 +29,19 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<rule-name>",
 		armmonitor.AlertRuleResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.AlertRule{
 				Name:        to.StringPtr("<name>"),
 				Description: to.StringPtr("<description>"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
-					RuleCondition: armmonitor.RuleCondition{
-						DataSource: &armmonitor.RuleMetricDataSource{
-							RuleDataSource: armmonitor.RuleDataSource{
-								ODataType:   to.StringPtr("<odata-type>"),
-								ResourceURI: to.StringPtr("<resource-uri>"),
-							},
-							MetricName: to.StringPtr("<metric-name>"),
-						},
-						ODataType: to.StringPtr("<odata-type>"),
+					DataSource: &armmonitor.RuleMetricDataSource{
+						ODataType:   to.StringPtr("<odata-type>"),
+						ResourceURI: to.StringPtr("<resource-uri>"),
+						MetricName:  to.StringPtr("<metric-name>"),
 					},
+					ODataType:       to.StringPtr("<odata-type>"),
 					Operator:        armmonitor.ConditionOperatorGreaterThan.ToPtr(),
 					Threshold:       to.Float64Ptr(3),
 					TimeAggregation: armmonitor.TimeAggregationOperatorTotal.ToPtr(),
@@ -60,7 +54,7 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/deleteAlertRule.json
@@ -95,7 +89,7 @@ func ExampleAlertRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/patchAlertRule.json
@@ -115,16 +109,12 @@ func ExampleAlertRulesClient_Update() {
 				Description: to.StringPtr("<description>"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
-					RuleCondition: armmonitor.RuleCondition{
-						DataSource: &armmonitor.RuleMetricDataSource{
-							RuleDataSource: armmonitor.RuleDataSource{
-								ODataType:   to.StringPtr("<odata-type>"),
-								ResourceURI: to.StringPtr("<resource-uri>"),
-							},
-							MetricName: to.StringPtr("<metric-name>"),
-						},
-						ODataType: to.StringPtr("<odata-type>"),
+					DataSource: &armmonitor.RuleMetricDataSource{
+						ODataType:   to.StringPtr("<odata-type>"),
+						ResourceURI: to.StringPtr("<resource-uri>"),
+						MetricName:  to.StringPtr("<metric-name>"),
 					},
+					ODataType:       to.StringPtr("<odata-type>"),
 					Operator:        armmonitor.ConditionOperatorGreaterThan.ToPtr(),
 					Threshold:       to.Float64Ptr(3),
 					TimeAggregation: armmonitor.TimeAggregationOperatorTotal.ToPtr(),
@@ -140,7 +130,7 @@ func ExampleAlertRulesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertRulesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRule.json
@@ -151,12 +141,13 @@ func ExampleAlertRulesClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertRulesClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleBySubscription.json
@@ -167,9 +158,10 @@ func ExampleAlertRulesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertRulesClientListBySubscriptionResult)
 }

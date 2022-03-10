@@ -9,8 +9,8 @@
 package armdataprotection
 
 const (
-	module  = "armdataprotection"
-	version = "v0.1.0"
+	moduleName    = "armdataprotection"
+	moduleVersion = "v0.2.1"
 )
 
 type AbsoluteMarker string

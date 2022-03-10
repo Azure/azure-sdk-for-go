@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,57 @@ import (
 // MdeOnboardingsClient contains the methods for the MdeOnboardings group.
 // Don't use this type directly, use NewMdeOnboardingsClient() instead.
 type MdeOnboardingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMdeOnboardingsClient creates a new instance of MdeOnboardingsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MdeOnboardingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &MdeOnboardingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MdeOnboardingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Get - The default configuration or data needed to onboard the machine to MDE
-// If the operation fails it returns the *CloudError error type.
-func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboardingsGetOptions) (MdeOnboardingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MdeOnboardingsClientGetOptions contains the optional parameters for the MdeOnboardingsClient.Get method.
+func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboardingsClientGetOptions) (MdeOnboardingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return MdeOnboardingsGetResponse{}, err
+		return MdeOnboardingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MdeOnboardingsGetResponse{}, err
+		return MdeOnboardingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MdeOnboardingsGetResponse{}, client.getHandleError(resp)
+		return MdeOnboardingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, options *MdeOnboardingsGetOptions) (*policy.Request, error) {
+func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, options *MdeOnboardingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,52 +86,40 @@ func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, option
 }
 
 // getHandleResponse handles the Get response.
-func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeOnboardingsGetResponse, error) {
-	result := MdeOnboardingsGetResponse{RawResponse: resp}
+func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeOnboardingsClientGetResponse, error) {
+	result := MdeOnboardingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingData); err != nil {
-		return MdeOnboardingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MdeOnboardingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MdeOnboardingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - The configuration or data needed to onboard the machine to MDE
-// If the operation fails it returns the *CloudError error type.
-func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboardingsListOptions) (MdeOnboardingsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MdeOnboardingsClientListOptions contains the optional parameters for the MdeOnboardingsClient.List method.
+func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboardingsClientListOptions) (MdeOnboardingsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return MdeOnboardingsListResponse{}, err
+		return MdeOnboardingsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MdeOnboardingsListResponse{}, err
+		return MdeOnboardingsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MdeOnboardingsListResponse{}, client.listHandleError(resp)
+		return MdeOnboardingsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, options *MdeOnboardingsListOptions) (*policy.Request, error) {
+func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, options *MdeOnboardingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,23 +131,10 @@ func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, optio
 }
 
 // listHandleResponse handles the List response.
-func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response) (MdeOnboardingsListResponse, error) {
-	result := MdeOnboardingsListResponse{RawResponse: resp}
+func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response) (MdeOnboardingsClientListResponse, error) {
+	result := MdeOnboardingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingDataList); err != nil {
-		return MdeOnboardingsListResponse{}, runtime.NewResponseError(err, resp)
+		return MdeOnboardingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MdeOnboardingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

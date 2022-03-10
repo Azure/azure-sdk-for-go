@@ -28,9 +28,16 @@ func ExampleCustomLocationsClient_ListOperations() {
 	ctx := context.Background()
 	client := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
 	pager := client.ListOperations(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -44,12 +51,16 @@ func ExampleCustomLocationsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomLocation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -64,12 +75,16 @@ func ExampleCustomLocationsClient_ListByResourceGroup() {
 	client := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomLocation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -89,7 +104,7 @@ func ExampleCustomLocationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomLocation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomLocationsClientGetResult)
 }
 
 // x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsCreate_Update.json
@@ -104,11 +119,9 @@ func ExampleCustomLocationsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armextendedlocation.CustomLocation{
-			TrackedResource: armextendedlocation.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armextendedlocation.Identity{
-				Type: armextendedlocation.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armextendedlocation.ResourceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Properties: &armextendedlocation.CustomLocationProperties{
 				Authentication: &armextendedlocation.CustomLocationPropertiesAuthentication{
@@ -130,7 +143,7 @@ func ExampleCustomLocationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomLocation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomLocationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsDelete.json
@@ -167,7 +180,7 @@ func ExampleCustomLocationsClient_Update() {
 		"<resource-name>",
 		armextendedlocation.PatchableCustomLocations{
 			Identity: &armextendedlocation.Identity{
-				Type: armextendedlocation.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armextendedlocation.ResourceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Properties: &armextendedlocation.CustomLocationProperties{
 				ClusterExtensionIDs: []*string{
@@ -183,7 +196,7 @@ func ExampleCustomLocationsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomLocation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomLocationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListEnabledResourceTypes.json
@@ -197,12 +210,16 @@ func ExampleCustomLocationsClient_ListEnabledResourceTypes() {
 	pager := client.ListEnabledResourceTypes("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("EnabledResourceType.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

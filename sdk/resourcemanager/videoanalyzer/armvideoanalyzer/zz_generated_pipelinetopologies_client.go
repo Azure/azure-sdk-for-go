@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,45 +25,59 @@ import (
 // PipelineTopologiesClient contains the methods for the PipelineTopologies group.
 // Don't use this type directly, use NewPipelineTopologiesClient() instead.
 type PipelineTopologiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPipelineTopologiesClient creates a new instance of PipelineTopologiesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPipelineTopologiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelineTopologiesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &PipelineTopologiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PipelineTopologiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates a new pipeline topology or updates an existing one, with the given name. A pipeline topology describes the processing steps
-// to be applied when processing content for a particular outcome. The
-// topology should be defined according to the scenario to be achieved and can be reused across many pipeline instances which share the same processing
-// characteristics.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PipelineTopologiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopology, options *PipelineTopologiesCreateOrUpdateOptions) (PipelineTopologiesCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates a new pipeline topology or updates an existing one, with the given name. A pipeline topology describes
+// the processing steps to be applied when processing content for a particular outcome. The
+// topology should be defined according to the scenario to be achieved and can be reused across many pipeline instances which
+// share the same processing characteristics.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// pipelineTopologyName - Pipeline topology unique identifier.
+// parameters - The request parameters
+// options - PipelineTopologiesClientCreateOrUpdateOptions contains the optional parameters for the PipelineTopologiesClient.CreateOrUpdate
+// method.
+func (client *PipelineTopologiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopology, options *PipelineTopologiesClientCreateOrUpdateOptions) (PipelineTopologiesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, pipelineTopologyName, parameters, options)
 	if err != nil {
-		return PipelineTopologiesCreateOrUpdateResponse{}, err
+		return PipelineTopologiesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelineTopologiesCreateOrUpdateResponse{}, err
+		return PipelineTopologiesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PipelineTopologiesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PipelineTopologiesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopology, options *PipelineTopologiesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopology, options *PipelineTopologiesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter pipelineTopologyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineTopologyName}", url.PathEscape(pipelineTopologyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +107,39 @@ func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PipelineTopologiesClient) createOrUpdateHandleResponse(resp *http.Response) (PipelineTopologiesCreateOrUpdateResponse, error) {
-	result := PipelineTopologiesCreateOrUpdateResponse{RawResponse: resp}
+func (client *PipelineTopologiesClient) createOrUpdateHandleResponse(resp *http.Response) (PipelineTopologiesClientCreateOrUpdateResponse, error) {
+	result := PipelineTopologiesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
-		return PipelineTopologiesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PipelineTopologiesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PipelineTopologiesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Deletes a pipeline topology with the given name. This method should be called after all instances of the topology have been stopped and deleted.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PipelineTopologiesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesDeleteOptions) (PipelineTopologiesDeleteResponse, error) {
+// Delete - Deletes a pipeline topology with the given name. This method should be called after all instances of the topology
+// have been stopped and deleted.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// pipelineTopologyName - Pipeline topology unique identifier.
+// options - PipelineTopologiesClientDeleteOptions contains the optional parameters for the PipelineTopologiesClient.Delete
+// method.
+func (client *PipelineTopologiesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesClientDeleteOptions) (PipelineTopologiesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, pipelineTopologyName, options)
 	if err != nil {
-		return PipelineTopologiesDeleteResponse{}, err
+		return PipelineTopologiesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelineTopologiesDeleteResponse{}, err
+		return PipelineTopologiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PipelineTopologiesDeleteResponse{}, client.deleteHandleError(resp)
+		return PipelineTopologiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelineTopologiesDeleteResponse{RawResponse: resp}, nil
+	return PipelineTopologiesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PipelineTopologiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesDeleteOptions) (*policy.Request, error) {
+func (client *PipelineTopologiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -151,7 +157,7 @@ func (client *PipelineTopologiesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter pipelineTopologyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineTopologyName}", url.PathEscape(pipelineTopologyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,39 +168,30 @@ func (client *PipelineTopologiesClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PipelineTopologiesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Retrieves a specific pipeline topology by name. If a topology with that name has been previously created, the call will return the JSON representation
-// of that topology.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PipelineTopologiesClient) Get(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesGetOptions) (PipelineTopologiesGetResponse, error) {
+// Get - Retrieves a specific pipeline topology by name. If a topology with that name has been previously created, the call
+// will return the JSON representation of that topology.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// pipelineTopologyName - Pipeline topology unique identifier.
+// options - PipelineTopologiesClientGetOptions contains the optional parameters for the PipelineTopologiesClient.Get method.
+func (client *PipelineTopologiesClient) Get(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesClientGetOptions) (PipelineTopologiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, pipelineTopologyName, options)
 	if err != nil {
-		return PipelineTopologiesGetResponse{}, err
+		return PipelineTopologiesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelineTopologiesGetResponse{}, err
+		return PipelineTopologiesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PipelineTopologiesGetResponse{}, client.getHandleError(resp)
+		return PipelineTopologiesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesGetOptions) (*policy.Request, error) {
+func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, options *PipelineTopologiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -212,7 +209,7 @@ func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter pipelineTopologyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineTopologyName}", url.PathEscape(pipelineTopologyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,43 +221,33 @@ func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (PipelineTopologiesGetResponse, error) {
-	result := PipelineTopologiesGetResponse{RawResponse: resp}
+func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (PipelineTopologiesClientGetResponse, error) {
+	result := PipelineTopologiesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
-		return PipelineTopologiesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PipelineTopologiesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PipelineTopologiesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Retrieves a list of pipeline topologies that have been added to the account, if any, along with their JSON representation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PipelineTopologiesClient) List(resourceGroupName string, accountName string, options *PipelineTopologiesListOptions) *PipelineTopologiesListPager {
-	return &PipelineTopologiesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// options - PipelineTopologiesClientListOptions contains the optional parameters for the PipelineTopologiesClient.List method.
+func (client *PipelineTopologiesClient) List(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *PipelineTopologiesClientListPager {
+	return &PipelineTopologiesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp PipelineTopologiesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PipelineTopologiesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineTopologyCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PipelineTopologiesListOptions) (*policy.Request, error) {
+func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/pipelineTopologies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -274,7 +261,7 @@ func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,48 +279,41 @@ func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *PipelineTopologiesClient) listHandleResponse(resp *http.Response) (PipelineTopologiesListResponse, error) {
-	result := PipelineTopologiesListResponse{RawResponse: resp}
+func (client *PipelineTopologiesClient) listHandleResponse(resp *http.Response) (PipelineTopologiesClientListResponse, error) {
+	result := PipelineTopologiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopologyCollection); err != nil {
-		return PipelineTopologiesListResponse{}, runtime.NewResponseError(err, resp)
+		return PipelineTopologiesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PipelineTopologiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates an existing pipeline topology with the given name. If the associated live pipelines or pipeline jobs are in active or processing state,
-// respectively, then only the description can be updated.
+// Update - Updates an existing pipeline topology with the given name. If the associated live pipelines or pipeline jobs are
+// in active or processing state, respectively, then only the description can be updated.
 // Else, the properties that can be updated include: description, parameter declarations, sources, processors, and sinks.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PipelineTopologiesClient) Update(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopologyUpdate, options *PipelineTopologiesUpdateOptions) (PipelineTopologiesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// pipelineTopologyName - Pipeline topology unique identifier.
+// parameters - The request parameters
+// options - PipelineTopologiesClientUpdateOptions contains the optional parameters for the PipelineTopologiesClient.Update
+// method.
+func (client *PipelineTopologiesClient) Update(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopologyUpdate, options *PipelineTopologiesClientUpdateOptions) (PipelineTopologiesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, pipelineTopologyName, parameters, options)
 	if err != nil {
-		return PipelineTopologiesUpdateResponse{}, err
+		return PipelineTopologiesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelineTopologiesUpdateResponse{}, err
+		return PipelineTopologiesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PipelineTopologiesUpdateResponse{}, client.updateHandleError(resp)
+		return PipelineTopologiesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopologyUpdate, options *PipelineTopologiesUpdateOptions) (*policy.Request, error) {
+func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, pipelineTopologyName string, parameters PipelineTopologyUpdate, options *PipelineTopologiesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -351,7 +331,7 @@ func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter pipelineTopologyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineTopologyName}", url.PathEscape(pipelineTopologyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,23 +343,10 @@ func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PipelineTopologiesClient) updateHandleResponse(resp *http.Response) (PipelineTopologiesUpdateResponse, error) {
-	result := PipelineTopologiesUpdateResponse{RawResponse: resp}
+func (client *PipelineTopologiesClient) updateHandleResponse(resp *http.Response) (PipelineTopologiesClientUpdateResponse, error) {
+	result := PipelineTopologiesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
-		return PipelineTopologiesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PipelineTopologiesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PipelineTopologiesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

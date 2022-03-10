@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // AuthorizationsClient contains the methods for the Authorizations group.
 // Don't use this type directly, use NewAuthorizationsClient() instead.
 type AuthorizationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAuthorizationsClient creates a new instance of AuthorizationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AuthorizationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AuthorizationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AuthorizationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update an ExpressRoute Circuit Authorization in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsBeginCreateOrUpdateOptions) (AuthorizationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// authorizationName - Name of the ExpressRoute Circuit Authorization in the private cloud
+// authorization - An ExpressRoute Circuit Authorization
+// options - AuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AuthorizationsClient.BeginCreateOrUpdate
+// method.
+func (client *AuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsClientBeginCreateOrUpdateOptions) (AuthorizationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, authorizationName, authorization, options)
 	if err != nil {
-		return AuthorizationsCreateOrUpdatePollerResponse{}, err
+		return AuthorizationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AuthorizationsCreateOrUpdatePollerResponse{
+	result := AuthorizationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AuthorizationsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AuthorizationsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AuthorizationsCreateOrUpdatePollerResponse{}, err
+		return AuthorizationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AuthorizationsCreateOrUpdatePoller{
+	result.Poller = &AuthorizationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update an ExpressRoute Circuit Authorization in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, authorizationName, authorization, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *AuthorizationsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter authorizationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationName}", url.PathEscape(authorizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, authorization)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AuthorizationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete an ExpressRoute Circuit Authorization in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsBeginDeleteOptions) (AuthorizationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// authorizationName - Name of the ExpressRoute Circuit Authorization in the private cloud
+// options - AuthorizationsClientBeginDeleteOptions contains the optional parameters for the AuthorizationsClient.BeginDelete
+// method.
+func (client *AuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientBeginDeleteOptions) (AuthorizationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, authorizationName, options)
 	if err != nil {
-		return AuthorizationsDeletePollerResponse{}, err
+		return AuthorizationsClientDeletePollerResponse{}, err
 	}
-	result := AuthorizationsDeletePollerResponse{
+	result := AuthorizationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AuthorizationsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AuthorizationsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AuthorizationsDeletePollerResponse{}, err
+		return AuthorizationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AuthorizationsDeletePoller{
+	result.Poller = &AuthorizationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete an ExpressRoute Circuit Authorization in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, authorizationName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *AuthorizationsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AuthorizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AuthorizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *AuthorizationsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter authorizationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationName}", url.PathEscape(authorizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *AuthorizationsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AuthorizationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an ExpressRoute Circuit Authorization by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsGetOptions) (AuthorizationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// authorizationName - Name of the ExpressRoute Circuit Authorization in the private cloud
+// options - AuthorizationsClientGetOptions contains the optional parameters for the AuthorizationsClient.Get method.
+func (client *AuthorizationsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientGetOptions) (AuthorizationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, authorizationName, options)
 	if err != nil {
-		return AuthorizationsGetResponse{}, err
+		return AuthorizationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AuthorizationsGetResponse{}, err
+		return AuthorizationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AuthorizationsGetResponse{}, client.getHandleError(resp)
+		return AuthorizationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AuthorizationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsGetOptions) (*policy.Request, error) {
+func (client *AuthorizationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +234,7 @@ func (client *AuthorizationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter authorizationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationName}", url.PathEscape(authorizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +246,33 @@ func (client *AuthorizationsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AuthorizationsClient) getHandleResponse(resp *http.Response) (AuthorizationsGetResponse, error) {
-	result := AuthorizationsGetResponse{RawResponse: resp}
+func (client *AuthorizationsClient) getHandleResponse(resp *http.Response) (AuthorizationsClientGetResponse, error) {
+	result := AuthorizationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteAuthorization); err != nil {
-		return AuthorizationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AuthorizationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AuthorizationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List ExpressRoute Circuit Authorizations in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AuthorizationsClient) List(resourceGroupName string, privateCloudName string, options *AuthorizationsListOptions) *AuthorizationsListPager {
-	return &AuthorizationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.List method.
+func (client *AuthorizationsClient) List(resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) *AuthorizationsClientListPager {
+	return &AuthorizationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp AuthorizationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AuthorizationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteAuthorizationList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *AuthorizationsListOptions) (*policy.Request, error) {
+func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +286,7 @@ func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +298,10 @@ func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AuthorizationsClient) listHandleResponse(resp *http.Response) (AuthorizationsListResponse, error) {
-	result := AuthorizationsListResponse{RawResponse: resp}
+func (client *AuthorizationsClient) listHandleResponse(resp *http.Response) (AuthorizationsClientListResponse, error) {
+	result := AuthorizationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteAuthorizationList); err != nil {
-		return AuthorizationsListResponse{}, runtime.NewResponseError(err, resp)
+		return AuthorizationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AuthorizationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -30,22 +30,16 @@ func ExampleSecretValueClient_Create() {
 		"<secret-resource-name>",
 		"<secret-value-resource-name>",
 		armservicefabricmesh.SecretValueResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Resource: armservicefabricmesh.Resource{
-					Name: to.StringPtr("<name>"),
-				},
-			},
+			Name: to.StringPtr("<name>"),
 			Properties: &armservicefabricmesh.SecretValueResourceProperties{
-				SecretValueProperties: armservicefabricmesh.SecretValueProperties{
-					Value: to.StringPtr("<value>"),
-				},
+				Value: to.StringPtr("<value>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SecretValueResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SecretValueClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/secrets/values/get.json
@@ -64,7 +58,7 @@ func ExampleSecretValueClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SecretValueResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SecretValueClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/secrets/values/delete.json
@@ -96,12 +90,16 @@ func ExampleSecretValueClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<secret-resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SecretValueResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -114,7 +112,7 @@ func ExampleSecretValueClient_ListValue() {
 	}
 	ctx := context.Background()
 	client := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
-	_, err = client.ListValue(ctx,
+	res, err := client.ListValue(ctx,
 		"<resource-group-name>",
 		"<secret-resource-name>",
 		"<secret-value-resource-name>",
@@ -122,4 +120,5 @@ func ExampleSecretValueClient_ListValue() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SecretValueClientListValueResult)
 }

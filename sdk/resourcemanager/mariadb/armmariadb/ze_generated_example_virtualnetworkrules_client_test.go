@@ -35,7 +35,7 @@ func ExampleVirtualNetworkRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualNetworkRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualNetworkRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/VirtualNetworkRulesCreateOrUpdate.json
@@ -64,7 +64,7 @@ func ExampleVirtualNetworkRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualNetworkRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualNetworkRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/VirtualNetworkRulesDelete.json
@@ -100,12 +100,16 @@ func ExampleVirtualNetworkRulesClient_ListByServer() {
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VirtualNetworkRule.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

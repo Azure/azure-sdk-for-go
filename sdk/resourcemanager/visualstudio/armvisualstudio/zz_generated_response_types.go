@@ -15,142 +15,142 @@ import (
 	"time"
 )
 
-// AccountsCheckNameAvailabilityResponse contains the response from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResponse struct {
-	AccountsCheckNameAvailabilityResult
+// AccountsClientCheckNameAvailabilityResponse contains the response from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResponse struct {
+	AccountsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCheckNameAvailabilityResult contains the result from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResult struct {
+// AccountsClientCheckNameAvailabilityResult contains the result from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// AccountsCreateOrUpdateResponse contains the response from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResponse struct {
-	AccountsCreateOrUpdateResult
+// AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.CreateOrUpdate.
+type AccountsClientCreateOrUpdateResponse struct {
+	AccountsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCreateOrUpdateResult contains the result from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResult struct {
+// AccountsClientCreateOrUpdateResult contains the result from method AccountsClient.CreateOrUpdate.
+type AccountsClientCreateOrUpdateResult struct {
 	AccountResource
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	AccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
+// AccountsClientGetResult contains the result from method AccountsClient.Get.
+type AccountsClientGetResult struct {
 	AccountResource
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	AccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
+// AccountsClientListByResourceGroupResult contains the result from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResult struct {
 	AccountResourceListResult
 }
 
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
+// AccountsClientUpdateResult contains the result from method AccountsClient.Update.
+type AccountsClientUpdateResult struct {
 	AccountResource
 }
 
-// ExtensionsCreateResponse contains the response from method Extensions.Create.
-type ExtensionsCreateResponse struct {
-	ExtensionsCreateResult
+// ExtensionsClientCreateResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreateResponse struct {
+	ExtensionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsCreateResult contains the result from method Extensions.Create.
-type ExtensionsCreateResult struct {
+// ExtensionsClientCreateResult contains the result from method ExtensionsClient.Create.
+type ExtensionsClientCreateResult struct {
 	ExtensionResource
 }
 
-// ExtensionsDeleteResponse contains the response from method Extensions.Delete.
-type ExtensionsDeleteResponse struct {
+// ExtensionsClientDeleteResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResponse contains the response from method Extensions.Get.
-type ExtensionsGetResponse struct {
-	ExtensionsGetResult
+// ExtensionsClientGetResponse contains the response from method ExtensionsClient.Get.
+type ExtensionsClientGetResponse struct {
+	ExtensionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResult contains the result from method Extensions.Get.
-type ExtensionsGetResult struct {
+// ExtensionsClientGetResult contains the result from method ExtensionsClient.Get.
+type ExtensionsClientGetResult struct {
 	ExtensionResource
 }
 
-// ExtensionsListByAccountResponse contains the response from method Extensions.ListByAccount.
-type ExtensionsListByAccountResponse struct {
-	ExtensionsListByAccountResult
+// ExtensionsClientListByAccountResponse contains the response from method ExtensionsClient.ListByAccount.
+type ExtensionsClientListByAccountResponse struct {
+	ExtensionsClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsListByAccountResult contains the result from method Extensions.ListByAccount.
-type ExtensionsListByAccountResult struct {
+// ExtensionsClientListByAccountResult contains the result from method ExtensionsClient.ListByAccount.
+type ExtensionsClientListByAccountResult struct {
 	ExtensionResourceListResult
 }
 
-// ExtensionsUpdateResponse contains the response from method Extensions.Update.
-type ExtensionsUpdateResponse struct {
-	ExtensionsUpdateResult
+// ExtensionsClientUpdateResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResponse struct {
+	ExtensionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsUpdateResult contains the result from method Extensions.Update.
-type ExtensionsUpdateResult struct {
+// ExtensionsClientUpdateResult contains the result from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResult struct {
 	ExtensionResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// ProjectsCreatePollerResponse contains the response from method Projects.Create.
-type ProjectsCreatePollerResponse struct {
+// ProjectsClientCreatePollerResponse contains the response from method ProjectsClient.Create.
+type ProjectsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ProjectsCreatePoller
+	Poller *ProjectsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -159,8 +159,8 @@ type ProjectsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ProjectsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProjectsCreateResponse, error) {
-	respType := ProjectsCreateResponse{}
+func (l ProjectsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProjectsClientCreateResponse, error) {
+	respType := ProjectsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProjectResource)
 	if err != nil {
 		return respType, err
@@ -169,13 +169,13 @@ func (l ProjectsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ProjectsCreatePollerResponse from the provided client and resume token.
-func (l *ProjectsCreatePollerResponse) Resume(ctx context.Context, client *ProjectsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ProjectsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ProjectsClientCreatePollerResponse from the provided client and resume token.
+func (l *ProjectsClientCreatePollerResponse) Resume(ctx context.Context, client *ProjectsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProjectsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ProjectsCreatePoller{
+	poller := &ProjectsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -187,62 +187,62 @@ func (l *ProjectsCreatePollerResponse) Resume(ctx context.Context, client *Proje
 	return nil
 }
 
-// ProjectsCreateResponse contains the response from method Projects.Create.
-type ProjectsCreateResponse struct {
-	ProjectsCreateResult
+// ProjectsClientCreateResponse contains the response from method ProjectsClient.Create.
+type ProjectsClientCreateResponse struct {
+	ProjectsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProjectsCreateResult contains the result from method Projects.Create.
-type ProjectsCreateResult struct {
+// ProjectsClientCreateResult contains the result from method ProjectsClient.Create.
+type ProjectsClientCreateResult struct {
 	ProjectResource
 }
 
-// ProjectsGetJobStatusResponse contains the response from method Projects.GetJobStatus.
-type ProjectsGetJobStatusResponse struct {
-	ProjectsGetJobStatusResult
+// ProjectsClientGetJobStatusResponse contains the response from method ProjectsClient.GetJobStatus.
+type ProjectsClientGetJobStatusResponse struct {
+	ProjectsClientGetJobStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProjectsGetJobStatusResult contains the result from method Projects.GetJobStatus.
-type ProjectsGetJobStatusResult struct {
+// ProjectsClientGetJobStatusResult contains the result from method ProjectsClient.GetJobStatus.
+type ProjectsClientGetJobStatusResult struct {
 	ProjectResource
 }
 
-// ProjectsGetResponse contains the response from method Projects.Get.
-type ProjectsGetResponse struct {
-	ProjectsGetResult
+// ProjectsClientGetResponse contains the response from method ProjectsClient.Get.
+type ProjectsClientGetResponse struct {
+	ProjectsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProjectsGetResult contains the result from method Projects.Get.
-type ProjectsGetResult struct {
+// ProjectsClientGetResult contains the result from method ProjectsClient.Get.
+type ProjectsClientGetResult struct {
 	ProjectResource
 }
 
-// ProjectsListByResourceGroupResponse contains the response from method Projects.ListByResourceGroup.
-type ProjectsListByResourceGroupResponse struct {
-	ProjectsListByResourceGroupResult
+// ProjectsClientListByResourceGroupResponse contains the response from method ProjectsClient.ListByResourceGroup.
+type ProjectsClientListByResourceGroupResponse struct {
+	ProjectsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProjectsListByResourceGroupResult contains the result from method Projects.ListByResourceGroup.
-type ProjectsListByResourceGroupResult struct {
+// ProjectsClientListByResourceGroupResult contains the result from method ProjectsClient.ListByResourceGroup.
+type ProjectsClientListByResourceGroupResult struct {
 	ProjectResourceListResult
 }
 
-// ProjectsUpdateResponse contains the response from method Projects.Update.
-type ProjectsUpdateResponse struct {
-	ProjectsUpdateResult
+// ProjectsClientUpdateResponse contains the response from method ProjectsClient.Update.
+type ProjectsClientUpdateResponse struct {
+	ProjectsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProjectsUpdateResult contains the result from method Projects.Update.
-type ProjectsUpdateResult struct {
+// ProjectsClientUpdateResult contains the result from method ProjectsClient.Update.
+type ProjectsClientUpdateResult struct {
 	ProjectResource
 }

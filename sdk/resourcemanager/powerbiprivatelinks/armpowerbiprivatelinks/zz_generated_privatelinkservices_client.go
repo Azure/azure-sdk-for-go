@@ -11,7 +11,6 @@ package armpowerbiprivatelinks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,55 @@ import (
 // PrivateLinkServicesClient contains the methods for the PrivateLinkServices group.
 // Don't use this type directly, use NewPrivateLinkServicesClient() instead.
 type PrivateLinkServicesClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	subscriptionID    string
 	resourceGroupName string
+	pl                runtime.Pipeline
 }
 
 // NewPrivateLinkServicesClient creates a new instance of PrivateLinkServicesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// resourceGroupName - The name of the resource group.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkServicesClient(subscriptionID string, resourceGroupName string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkServicesClient{subscriptionID: subscriptionID, resourceGroupName: resourceGroupName, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkServicesClient{
+		subscriptionID:    subscriptionID,
+		resourceGroupName: resourceGroupName,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByResourceGroup - Gets all the private link resources for the given resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkServicesClient) ListByResourceGroup(ctx context.Context, options *PrivateLinkServicesListByResourceGroupOptions) (PrivateLinkServicesListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateLinkServicesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesClient.ListByResourceGroup
+// method.
+func (client *PrivateLinkServicesClient) ListByResourceGroup(ctx context.Context, options *PrivateLinkServicesClientListByResourceGroupOptions) (PrivateLinkServicesClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, options)
 	if err != nil {
-		return PrivateLinkServicesListByResourceGroupResponse{}, err
+		return PrivateLinkServicesClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkServicesListByResourceGroupResponse{}, err
+		return PrivateLinkServicesClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkServicesListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return PrivateLinkServicesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PrivateLinkServicesClient) listByResourceGroupCreateRequest(ctx context.Context, options *PrivateLinkServicesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesClient) listByResourceGroupCreateRequest(ctx context.Context, options *PrivateLinkServicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *PrivateLinkServicesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *PrivateLinkServicesClient) listByResourceGroupCreateRequest(ctx co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PrivateLinkServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesListByResourceGroupResponse, error) {
-	result := PrivateLinkServicesListByResourceGroupResponse{RawResponse: resp}
+func (client *PrivateLinkServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesClientListByResourceGroupResponse, error) {
+	result := PrivateLinkServicesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantResourceArray); err != nil {
-		return PrivateLinkServicesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkServicesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PrivateLinkServicesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -17,15 +17,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CheckServiceProviderAvailability.json
-func ExamplePeeringManagementClient_CheckServiceProviderAvailability() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CheckServiceProviderAvailability.json
+func ExampleManagementClient_CheckServiceProviderAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringManagementClient("<subscription-id>", cred, nil)
-	_, err = client.CheckServiceProviderAvailability(ctx,
+	client := armpeering.NewManagementClient("<subscription-id>", cred, nil)
+	res, err := client.CheckServiceProviderAvailability(ctx,
 		armpeering.CheckServiceProviderAvailabilityInput{
 			PeeringServiceLocation: to.StringPtr("<peering-service-location>"),
 			PeeringServiceProvider: to.StringPtr("<peering-service-provider>"),
@@ -34,4 +34,5 @@ func ExamplePeeringManagementClient_CheckServiceProviderAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagementClientCheckServiceProviderAvailabilityResult)
 }

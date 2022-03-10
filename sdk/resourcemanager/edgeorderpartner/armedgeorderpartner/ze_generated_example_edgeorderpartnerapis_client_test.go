@@ -20,29 +20,36 @@ import (
 )
 
 // x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ListOperationsPartner.json
-func ExampleEdgeOrderPartnerAPISClient_ListOperationsPartner() {
+func ExampleAPISClient_ListOperationsPartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewEdgeOrderPartnerAPISClient("<subscription-id>", cred, nil)
+	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	pager := client.ListOperationsPartner(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageInventoryMetadata.json
-func ExampleEdgeOrderPartnerAPISClient_BeginManageInventoryMetadata() {
+func ExampleAPISClient_BeginManageInventoryMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewEdgeOrderPartnerAPISClient("<subscription-id>", cred, nil)
+	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginManageInventoryMetadata(ctx,
 		"<family-identifier>",
 		"<location>",
@@ -64,13 +71,13 @@ func ExampleEdgeOrderPartnerAPISClient_BeginManageInventoryMetadata() {
 }
 
 // x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageLink.json
-func ExampleEdgeOrderPartnerAPISClient_ManageLink() {
+func ExampleAPISClient_ManageLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewEdgeOrderPartnerAPISClient("<subscription-id>", cred, nil)
+	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	_, err = client.ManageLink(ctx,
 		"<family-identifier>",
 		"<location>",
@@ -87,21 +94,28 @@ func ExampleEdgeOrderPartnerAPISClient_ManageLink() {
 }
 
 // x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/SearchInventories.json
-func ExampleEdgeOrderPartnerAPISClient_SearchInventories() {
+func ExampleAPISClient_SearchInventories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewEdgeOrderPartnerAPISClient("<subscription-id>", cred, nil)
+	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
 	pager := client.SearchInventories(armedgeorderpartner.SearchInventoriesRequest{
 		FamilyIdentifier: to.StringPtr("<family-identifier>"),
 		SerialNumber:     to.StringPtr("<serial-number>"),
 	},
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

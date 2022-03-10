@@ -47,16 +47,16 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.getDeletedSecretsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getDeletedSecretsHandleResponse(resp)
+	result, err := p.client.GetDeletedSecretsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,16 +101,16 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.getSecretVersionsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretVersionsHandleResponse(resp)
+	result, err := p.client.GetSecretVersionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -155,16 +155,16 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.getSecretsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
-	result, err := p.client.getSecretsHandleResponse(resp)
+	result, err := p.client.GetSecretsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -175,113 +175,5 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) bool {
 
 // PageResponse returns the current KeyVaultClientGetSecretsResponse page.
 func (p *KeyVaultClientGetSecretsPager) PageResponse() KeyVaultClientGetSecretsResponse {
-	return p.current
-}
-
-// RoleAssignmentsListForScopePager provides operations for iterating over paged responses.
-type RoleAssignmentsListForScopePager struct {
-	client    *RoleAssignmentsClient
-	current   RoleAssignmentsListForScopeResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RoleAssignmentsListForScopeResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *RoleAssignmentsListForScopePager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *RoleAssignmentsListForScopePager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.RoleAssignmentListResult.NextLink == nil || len(*p.current.RoleAssignmentListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.con.Pipeline().Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listForScopeHandleError(resp)
-		return false
-	}
-	result, err := p.client.listForScopeHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current RoleAssignmentsListForScopeResponse page.
-func (p *RoleAssignmentsListForScopePager) PageResponse() RoleAssignmentsListForScopeResponse {
-	return p.current
-}
-
-// RoleDefinitionsListPager provides operations for iterating over paged responses.
-type RoleDefinitionsListPager struct {
-	client    *RoleDefinitionsClient
-	current   RoleDefinitionsListResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RoleDefinitionsListResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *RoleDefinitionsListPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *RoleDefinitionsListPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.RoleDefinitionListResult.NextLink == nil || len(*p.current.RoleDefinitionListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.con.Pipeline().Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current RoleDefinitionsListResponse page.
-func (p *RoleDefinitionsListPager) PageResponse() RoleDefinitionsListResponse {
 	return p.current
 }

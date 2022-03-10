@@ -25,14 +25,15 @@ func ExampleAzureReservationAPIClient_GetCatalog() {
 	}
 	ctx := context.Background()
 	client := armreservations.NewAzureReservationAPIClient(cred, nil)
-	_, err = client.GetCatalog(ctx,
+	res, err := client.GetCatalog(ctx,
 		"<subscription-id>",
-		&armreservations.AzureReservationAPIGetCatalogOptions{ReservedResourceType: to.StringPtr("<reserved-resource-type>"),
+		&armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.StringPtr("<reserved-resource-type>"),
 			Location: to.StringPtr("<location>"),
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AzureReservationAPIClientGetCatalogResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetAppliedReservations.json
@@ -49,5 +50,5 @@ func ExampleAzureReservationAPIClient_GetAppliedReservationList() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AppliedReservations.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AzureReservationAPIClientGetAppliedReservationListResult)
 }

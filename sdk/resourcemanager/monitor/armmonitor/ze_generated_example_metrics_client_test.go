@@ -25,9 +25,9 @@ func ExampleMetricsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
-		&armmonitor.MetricsListOptions{Timespan: to.StringPtr("<timespan>"),
+		&armmonitor.MetricsClientListOptions{Timespan: to.StringPtr("<timespan>"),
 			Interval:        to.StringPtr("<interval>"),
 			Metricnames:     nil,
 			Aggregation:     to.StringPtr("<aggregation>"),
@@ -40,4 +40,5 @@ func ExampleMetricsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricsClientListResult)
 }

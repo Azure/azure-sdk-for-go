@@ -15,146 +15,10 @@ import (
 	"time"
 )
 
-// BlobContainersClearLegalHoldResponse contains the response from method BlobContainers.ClearLegalHold.
-type BlobContainersClearLegalHoldResponse struct {
-	BlobContainersClearLegalHoldResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersClearLegalHoldResult contains the result from method BlobContainers.ClearLegalHold.
-type BlobContainersClearLegalHoldResult struct {
-	LegalHold
-}
-
-// BlobContainersCreateOrUpdateImmutabilityPolicyResponse contains the response from method BlobContainers.CreateOrUpdateImmutabilityPolicy.
-type BlobContainersCreateOrUpdateImmutabilityPolicyResponse struct {
-	BlobContainersCreateOrUpdateImmutabilityPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersCreateOrUpdateImmutabilityPolicyResult contains the result from method BlobContainers.CreateOrUpdateImmutabilityPolicy.
-type BlobContainersCreateOrUpdateImmutabilityPolicyResult struct {
-	ImmutabilityPolicy
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// BlobContainersCreateResponse contains the response from method BlobContainers.Create.
-type BlobContainersCreateResponse struct {
-	BlobContainersCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersCreateResult contains the result from method BlobContainers.Create.
-type BlobContainersCreateResult struct {
-	BlobContainer
-}
-
-// BlobContainersDeleteImmutabilityPolicyResponse contains the response from method BlobContainers.DeleteImmutabilityPolicy.
-type BlobContainersDeleteImmutabilityPolicyResponse struct {
-	BlobContainersDeleteImmutabilityPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersDeleteImmutabilityPolicyResult contains the result from method BlobContainers.DeleteImmutabilityPolicy.
-type BlobContainersDeleteImmutabilityPolicyResult struct {
-	ImmutabilityPolicy
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// BlobContainersDeleteResponse contains the response from method BlobContainers.Delete.
-type BlobContainersDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersExtendImmutabilityPolicyResponse contains the response from method BlobContainers.ExtendImmutabilityPolicy.
-type BlobContainersExtendImmutabilityPolicyResponse struct {
-	BlobContainersExtendImmutabilityPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersExtendImmutabilityPolicyResult contains the result from method BlobContainers.ExtendImmutabilityPolicy.
-type BlobContainersExtendImmutabilityPolicyResult struct {
-	ImmutabilityPolicy
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// BlobContainersGetImmutabilityPolicyResponse contains the response from method BlobContainers.GetImmutabilityPolicy.
-type BlobContainersGetImmutabilityPolicyResponse struct {
-	BlobContainersGetImmutabilityPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersGetImmutabilityPolicyResult contains the result from method BlobContainers.GetImmutabilityPolicy.
-type BlobContainersGetImmutabilityPolicyResult struct {
-	ImmutabilityPolicy
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// BlobContainersGetResponse contains the response from method BlobContainers.Get.
-type BlobContainersGetResponse struct {
-	BlobContainersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersGetResult contains the result from method BlobContainers.Get.
-type BlobContainersGetResult struct {
-	BlobContainer
-}
-
-// BlobContainersLeaseResponse contains the response from method BlobContainers.Lease.
-type BlobContainersLeaseResponse struct {
-	BlobContainersLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersLeaseResult contains the result from method BlobContainers.Lease.
-type BlobContainersLeaseResult struct {
-	LeaseContainerResponse
-}
-
-// BlobContainersListResponse contains the response from method BlobContainers.List.
-type BlobContainersListResponse struct {
-	BlobContainersListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersListResult contains the result from method BlobContainers.List.
-type BlobContainersListResult struct {
-	ListContainerItems
-}
-
-// BlobContainersLockImmutabilityPolicyResponse contains the response from method BlobContainers.LockImmutabilityPolicy.
-type BlobContainersLockImmutabilityPolicyResponse struct {
-	BlobContainersLockImmutabilityPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersLockImmutabilityPolicyResult contains the result from method BlobContainers.LockImmutabilityPolicy.
-type BlobContainersLockImmutabilityPolicyResult struct {
-	ImmutabilityPolicy
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// BlobContainersObjectLevelWormPollerResponse contains the response from method BlobContainers.ObjectLevelWorm.
-type BlobContainersObjectLevelWormPollerResponse struct {
+// AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse contains the response from method AccountsClient.AbortHierarchicalNamespaceMigration.
+type AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BlobContainersObjectLevelWormPoller
+	Poller *AccountsClientAbortHierarchicalNamespaceMigrationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -163,8 +27,8 @@ type BlobContainersObjectLevelWormPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BlobContainersObjectLevelWormPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BlobContainersObjectLevelWormResponse, error) {
-	respType := BlobContainersObjectLevelWormResponse{}
+func (l AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientAbortHierarchicalNamespaceMigrationResponse, error) {
+	respType := AccountsClientAbortHierarchicalNamespaceMigrationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -173,13 +37,14 @@ func (l BlobContainersObjectLevelWormPollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a BlobContainersObjectLevelWormPollerResponse from the provided client and resume token.
-func (l *BlobContainersObjectLevelWormPollerResponse) Resume(ctx context.Context, client *BlobContainersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BlobContainersClient.ObjectLevelWorm", token, client.pl, client.objectLevelWormHandleError)
+// Resume rehydrates a AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse from the provided client and resume
+// token.
+func (l *AccountsClientAbortHierarchicalNamespaceMigrationPollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.AbortHierarchicalNamespaceMigration", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BlobContainersObjectLevelWormPoller{
+	poller := &AccountsClientAbortHierarchicalNamespaceMigrationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -191,598 +56,28 @@ func (l *BlobContainersObjectLevelWormPollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// BlobContainersObjectLevelWormResponse contains the response from method BlobContainers.ObjectLevelWorm.
-type BlobContainersObjectLevelWormResponse struct {
+// AccountsClientAbortHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.AbortHierarchicalNamespaceMigration.
+type AccountsClientAbortHierarchicalNamespaceMigrationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlobContainersSetLegalHoldResponse contains the response from method BlobContainers.SetLegalHold.
-type BlobContainersSetLegalHoldResponse struct {
-	BlobContainersSetLegalHoldResult
+// AccountsClientCheckNameAvailabilityResponse contains the response from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResponse struct {
+	AccountsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlobContainersSetLegalHoldResult contains the result from method BlobContainers.SetLegalHold.
-type BlobContainersSetLegalHoldResult struct {
-	LegalHold
-}
-
-// BlobContainersUpdateResponse contains the response from method BlobContainers.Update.
-type BlobContainersUpdateResponse struct {
-	BlobContainersUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobContainersUpdateResult contains the result from method BlobContainers.Update.
-type BlobContainersUpdateResult struct {
-	BlobContainer
-}
-
-// BlobInventoryPoliciesCreateOrUpdateResponse contains the response from method BlobInventoryPolicies.CreateOrUpdate.
-type BlobInventoryPoliciesCreateOrUpdateResponse struct {
-	BlobInventoryPoliciesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobInventoryPoliciesCreateOrUpdateResult contains the result from method BlobInventoryPolicies.CreateOrUpdate.
-type BlobInventoryPoliciesCreateOrUpdateResult struct {
-	BlobInventoryPolicy
-}
-
-// BlobInventoryPoliciesDeleteResponse contains the response from method BlobInventoryPolicies.Delete.
-type BlobInventoryPoliciesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobInventoryPoliciesGetResponse contains the response from method BlobInventoryPolicies.Get.
-type BlobInventoryPoliciesGetResponse struct {
-	BlobInventoryPoliciesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobInventoryPoliciesGetResult contains the result from method BlobInventoryPolicies.Get.
-type BlobInventoryPoliciesGetResult struct {
-	BlobInventoryPolicy
-}
-
-// BlobInventoryPoliciesListResponse contains the response from method BlobInventoryPolicies.List.
-type BlobInventoryPoliciesListResponse struct {
-	BlobInventoryPoliciesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobInventoryPoliciesListResult contains the result from method BlobInventoryPolicies.List.
-type BlobInventoryPoliciesListResult struct {
-	ListBlobInventoryPolicy
-}
-
-// BlobServicesGetServicePropertiesResponse contains the response from method BlobServices.GetServiceProperties.
-type BlobServicesGetServicePropertiesResponse struct {
-	BlobServicesGetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobServicesGetServicePropertiesResult contains the result from method BlobServices.GetServiceProperties.
-type BlobServicesGetServicePropertiesResult struct {
-	BlobServiceProperties
-}
-
-// BlobServicesListResponse contains the response from method BlobServices.List.
-type BlobServicesListResponse struct {
-	BlobServicesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobServicesListResult contains the result from method BlobServices.List.
-type BlobServicesListResult struct {
-	BlobServiceItems
-}
-
-// BlobServicesSetServicePropertiesResponse contains the response from method BlobServices.SetServiceProperties.
-type BlobServicesSetServicePropertiesResponse struct {
-	BlobServicesSetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BlobServicesSetServicePropertiesResult contains the result from method BlobServices.SetServiceProperties.
-type BlobServicesSetServicePropertiesResult struct {
-	BlobServiceProperties
-}
-
-// DeletedAccountsGetResponse contains the response from method DeletedAccounts.Get.
-type DeletedAccountsGetResponse struct {
-	DeletedAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeletedAccountsGetResult contains the result from method DeletedAccounts.Get.
-type DeletedAccountsGetResult struct {
-	DeletedAccount
-}
-
-// DeletedAccountsListResponse contains the response from method DeletedAccounts.List.
-type DeletedAccountsListResponse struct {
-	DeletedAccountsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeletedAccountsListResult contains the result from method DeletedAccounts.List.
-type DeletedAccountsListResult struct {
-	DeletedAccountListResult
-}
-
-// EncryptionScopesGetResponse contains the response from method EncryptionScopes.Get.
-type EncryptionScopesGetResponse struct {
-	EncryptionScopesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EncryptionScopesGetResult contains the result from method EncryptionScopes.Get.
-type EncryptionScopesGetResult struct {
-	EncryptionScope
-}
-
-// EncryptionScopesListResponse contains the response from method EncryptionScopes.List.
-type EncryptionScopesListResponse struct {
-	EncryptionScopesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EncryptionScopesListResult contains the result from method EncryptionScopes.List.
-type EncryptionScopesListResult struct {
-	EncryptionScopeListResult
-}
-
-// EncryptionScopesPatchResponse contains the response from method EncryptionScopes.Patch.
-type EncryptionScopesPatchResponse struct {
-	EncryptionScopesPatchResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EncryptionScopesPatchResult contains the result from method EncryptionScopes.Patch.
-type EncryptionScopesPatchResult struct {
-	EncryptionScope
-}
-
-// EncryptionScopesPutResponse contains the response from method EncryptionScopes.Put.
-type EncryptionScopesPutResponse struct {
-	EncryptionScopesPutResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EncryptionScopesPutResult contains the result from method EncryptionScopes.Put.
-type EncryptionScopesPutResult struct {
-	EncryptionScope
-}
-
-// FileServicesGetServicePropertiesResponse contains the response from method FileServices.GetServiceProperties.
-type FileServicesGetServicePropertiesResponse struct {
-	FileServicesGetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileServicesGetServicePropertiesResult contains the result from method FileServices.GetServiceProperties.
-type FileServicesGetServicePropertiesResult struct {
-	FileServiceProperties
-}
-
-// FileServicesListResponse contains the response from method FileServices.List.
-type FileServicesListResponse struct {
-	FileServicesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileServicesListResult contains the result from method FileServices.List.
-type FileServicesListResult struct {
-	FileServiceItems
-}
-
-// FileServicesSetServicePropertiesResponse contains the response from method FileServices.SetServiceProperties.
-type FileServicesSetServicePropertiesResponse struct {
-	FileServicesSetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileServicesSetServicePropertiesResult contains the result from method FileServices.SetServiceProperties.
-type FileServicesSetServicePropertiesResult struct {
-	FileServiceProperties
-}
-
-// FileSharesCreateResponse contains the response from method FileShares.Create.
-type FileSharesCreateResponse struct {
-	FileSharesCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesCreateResult contains the result from method FileShares.Create.
-type FileSharesCreateResult struct {
-	FileShare
-}
-
-// FileSharesDeleteResponse contains the response from method FileShares.Delete.
-type FileSharesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesGetResponse contains the response from method FileShares.Get.
-type FileSharesGetResponse struct {
-	FileSharesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesGetResult contains the result from method FileShares.Get.
-type FileSharesGetResult struct {
-	FileShare
-}
-
-// FileSharesLeaseResponse contains the response from method FileShares.Lease.
-type FileSharesLeaseResponse struct {
-	FileSharesLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesLeaseResult contains the result from method FileShares.Lease.
-type FileSharesLeaseResult struct {
-	LeaseShareResponse
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// FileSharesListResponse contains the response from method FileShares.List.
-type FileSharesListResponse struct {
-	FileSharesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesListResult contains the result from method FileShares.List.
-type FileSharesListResult struct {
-	FileShareItems
-}
-
-// FileSharesRestoreResponse contains the response from method FileShares.Restore.
-type FileSharesRestoreResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesUpdateResponse contains the response from method FileShares.Update.
-type FileSharesUpdateResponse struct {
-	FileSharesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FileSharesUpdateResult contains the result from method FileShares.Update.
-type FileSharesUpdateResult struct {
-	FileShare
-}
-
-// ManagementPoliciesCreateOrUpdateResponse contains the response from method ManagementPolicies.CreateOrUpdate.
-type ManagementPoliciesCreateOrUpdateResponse struct {
-	ManagementPoliciesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementPoliciesCreateOrUpdateResult contains the result from method ManagementPolicies.CreateOrUpdate.
-type ManagementPoliciesCreateOrUpdateResult struct {
-	ManagementPolicy
-}
-
-// ManagementPoliciesDeleteResponse contains the response from method ManagementPolicies.Delete.
-type ManagementPoliciesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementPoliciesGetResponse contains the response from method ManagementPolicies.Get.
-type ManagementPoliciesGetResponse struct {
-	ManagementPoliciesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementPoliciesGetResult contains the result from method ManagementPolicies.Get.
-type ManagementPoliciesGetResult struct {
-	ManagementPolicy
-}
-
-// ObjectReplicationPoliciesCreateOrUpdateResponse contains the response from method ObjectReplicationPolicies.CreateOrUpdate.
-type ObjectReplicationPoliciesCreateOrUpdateResponse struct {
-	ObjectReplicationPoliciesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectReplicationPoliciesCreateOrUpdateResult contains the result from method ObjectReplicationPolicies.CreateOrUpdate.
-type ObjectReplicationPoliciesCreateOrUpdateResult struct {
-	ObjectReplicationPolicy
-}
-
-// ObjectReplicationPoliciesDeleteResponse contains the response from method ObjectReplicationPolicies.Delete.
-type ObjectReplicationPoliciesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectReplicationPoliciesGetResponse contains the response from method ObjectReplicationPolicies.Get.
-type ObjectReplicationPoliciesGetResponse struct {
-	ObjectReplicationPoliciesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectReplicationPoliciesGetResult contains the result from method ObjectReplicationPolicies.Get.
-type ObjectReplicationPoliciesGetResult struct {
-	ObjectReplicationPolicy
-}
-
-// ObjectReplicationPoliciesListResponse contains the response from method ObjectReplicationPolicies.List.
-type ObjectReplicationPoliciesListResponse struct {
-	ObjectReplicationPoliciesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectReplicationPoliciesListResult contains the result from method ObjectReplicationPolicies.List.
-type ObjectReplicationPoliciesListResult struct {
-	ObjectReplicationPolicies
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
-	PrivateEndpointConnection
-}
-
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
-	PrivateEndpointConnectionListResult
-}
-
-// PrivateEndpointConnectionsPutResponse contains the response from method PrivateEndpointConnections.Put.
-type PrivateEndpointConnectionsPutResponse struct {
-	PrivateEndpointConnectionsPutResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsPutResult contains the result from method PrivateEndpointConnections.Put.
-type PrivateEndpointConnectionsPutResult struct {
-	PrivateEndpointConnection
-}
-
-// PrivateLinkResourcesListByStorageAccountResponse contains the response from method PrivateLinkResources.ListByStorageAccount.
-type PrivateLinkResourcesListByStorageAccountResponse struct {
-	PrivateLinkResourcesListByStorageAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByStorageAccountResult contains the result from method PrivateLinkResources.ListByStorageAccount.
-type PrivateLinkResourcesListByStorageAccountResult struct {
-	PrivateLinkResourceListResult
-}
-
-// QueueCreateResponse contains the response from method Queue.Create.
-type QueueCreateResponse struct {
-	QueueCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueCreateResult contains the result from method Queue.Create.
-type QueueCreateResult struct {
-	StorageQueue
-}
-
-// QueueDeleteResponse contains the response from method Queue.Delete.
-type QueueDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueGetResponse contains the response from method Queue.Get.
-type QueueGetResponse struct {
-	QueueGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueGetResult contains the result from method Queue.Get.
-type QueueGetResult struct {
-	StorageQueue
-}
-
-// QueueListResponse contains the response from method Queue.List.
-type QueueListResponse struct {
-	QueueListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueListResult contains the result from method Queue.List.
-type QueueListResult struct {
-	ListQueueResource
-}
-
-// QueueServicesGetServicePropertiesResponse contains the response from method QueueServices.GetServiceProperties.
-type QueueServicesGetServicePropertiesResponse struct {
-	QueueServicesGetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueServicesGetServicePropertiesResult contains the result from method QueueServices.GetServiceProperties.
-type QueueServicesGetServicePropertiesResult struct {
-	QueueServiceProperties
-}
-
-// QueueServicesListResponse contains the response from method QueueServices.List.
-type QueueServicesListResponse struct {
-	QueueServicesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueServicesListResult contains the result from method QueueServices.List.
-type QueueServicesListResult struct {
-	ListQueueServices
-}
-
-// QueueServicesSetServicePropertiesResponse contains the response from method QueueServices.SetServiceProperties.
-type QueueServicesSetServicePropertiesResponse struct {
-	QueueServicesSetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueServicesSetServicePropertiesResult contains the result from method QueueServices.SetServiceProperties.
-type QueueServicesSetServicePropertiesResult struct {
-	QueueServiceProperties
-}
-
-// QueueUpdateResponse contains the response from method Queue.Update.
-type QueueUpdateResponse struct {
-	QueueUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QueueUpdateResult contains the result from method Queue.Update.
-type QueueUpdateResult struct {
-	StorageQueue
-}
-
-// SKUsListResponse contains the response from method SKUs.List.
-type SKUsListResponse struct {
-	SKUsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SKUsListResult contains the result from method SKUs.List.
-type SKUsListResult struct {
-	StorageSKUListResult
-}
-
-// StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse contains the response from method StorageAccounts.AbortHierarchicalNamespaceMigration.
-type StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *StorageAccountsAbortHierarchicalNamespaceMigrationPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsAbortHierarchicalNamespaceMigrationResponse, error) {
-	respType := StorageAccountsAbortHierarchicalNamespaceMigrationResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse from the provided client and resume token.
-func (l *StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse) Resume(ctx context.Context, client *StorageAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageAccountsClient.AbortHierarchicalNamespaceMigration", token, client.pl, client.abortHierarchicalNamespaceMigrationHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &StorageAccountsAbortHierarchicalNamespaceMigrationPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// StorageAccountsAbortHierarchicalNamespaceMigrationResponse contains the response from method StorageAccounts.AbortHierarchicalNamespaceMigration.
-type StorageAccountsAbortHierarchicalNamespaceMigrationResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageAccountsCheckNameAvailabilityResponse contains the response from method StorageAccounts.CheckNameAvailability.
-type StorageAccountsCheckNameAvailabilityResponse struct {
-	StorageAccountsCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageAccountsCheckNameAvailabilityResult contains the result from method StorageAccounts.CheckNameAvailability.
-type StorageAccountsCheckNameAvailabilityResult struct {
+// AccountsClientCheckNameAvailabilityResult contains the result from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// StorageAccountsCreatePollerResponse contains the response from method StorageAccounts.Create.
-type StorageAccountsCreatePollerResponse struct {
+// AccountsClientCreatePollerResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StorageAccountsCreatePoller
+	Poller *AccountsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -791,9 +86,9 @@ type StorageAccountsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageAccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsCreateResponse, error) {
-	respType := StorageAccountsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageAccount)
+func (l AccountsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientCreateResponse, error) {
+	respType := AccountsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
 	}
@@ -801,13 +96,13 @@ func (l StorageAccountsCreatePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a StorageAccountsCreatePollerResponse from the provided client and resume token.
-func (l *StorageAccountsCreatePollerResponse) Resume(ctx context.Context, client *StorageAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageAccountsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a AccountsClientCreatePollerResponse from the provided client and resume token.
+func (l *AccountsClientCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StorageAccountsCreatePoller{
+	poller := &AccountsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -819,28 +114,28 @@ func (l *StorageAccountsCreatePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// StorageAccountsCreateResponse contains the response from method StorageAccounts.Create.
-type StorageAccountsCreateResponse struct {
-	StorageAccountsCreateResult
+// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreateResponse struct {
+	AccountsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsCreateResult contains the result from method StorageAccounts.Create.
-type StorageAccountsCreateResult struct {
-	StorageAccount
+// AccountsClientCreateResult contains the result from method AccountsClient.Create.
+type AccountsClientCreateResult struct {
+	Account
 }
 
-// StorageAccountsDeleteResponse contains the response from method StorageAccounts.Delete.
-type StorageAccountsDeleteResponse struct {
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsFailoverPollerResponse contains the response from method StorageAccounts.Failover.
-type StorageAccountsFailoverPollerResponse struct {
+// AccountsClientFailoverPollerResponse contains the response from method AccountsClient.Failover.
+type AccountsClientFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StorageAccountsFailoverPoller
+	Poller *AccountsClientFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -849,8 +144,8 @@ type StorageAccountsFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageAccountsFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsFailoverResponse, error) {
-	respType := StorageAccountsFailoverResponse{}
+func (l AccountsClientFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientFailoverResponse, error) {
+	respType := AccountsClientFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -859,13 +154,13 @@ func (l StorageAccountsFailoverPollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a StorageAccountsFailoverPollerResponse from the provided client and resume token.
-func (l *StorageAccountsFailoverPollerResponse) Resume(ctx context.Context, client *StorageAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageAccountsClient.Failover", token, client.pl, client.failoverHandleError)
+// Resume rehydrates a AccountsClientFailoverPollerResponse from the provided client and resume token.
+func (l *AccountsClientFailoverPollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Failover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StorageAccountsFailoverPoller{
+	poller := &AccountsClientFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -877,28 +172,28 @@ func (l *StorageAccountsFailoverPollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// StorageAccountsFailoverResponse contains the response from method StorageAccounts.Failover.
-type StorageAccountsFailoverResponse struct {
+// AccountsClientFailoverResponse contains the response from method AccountsClient.Failover.
+type AccountsClientFailoverResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsGetPropertiesResponse contains the response from method StorageAccounts.GetProperties.
-type StorageAccountsGetPropertiesResponse struct {
-	StorageAccountsGetPropertiesResult
+// AccountsClientGetPropertiesResponse contains the response from method AccountsClient.GetProperties.
+type AccountsClientGetPropertiesResponse struct {
+	AccountsClientGetPropertiesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsGetPropertiesResult contains the result from method StorageAccounts.GetProperties.
-type StorageAccountsGetPropertiesResult struct {
-	StorageAccount
+// AccountsClientGetPropertiesResult contains the result from method AccountsClient.GetProperties.
+type AccountsClientGetPropertiesResult struct {
+	Account
 }
 
-// StorageAccountsHierarchicalNamespaceMigrationPollerResponse contains the response from method StorageAccounts.HierarchicalNamespaceMigration.
-type StorageAccountsHierarchicalNamespaceMigrationPollerResponse struct {
+// AccountsClientHierarchicalNamespaceMigrationPollerResponse contains the response from method AccountsClient.HierarchicalNamespaceMigration.
+type AccountsClientHierarchicalNamespaceMigrationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StorageAccountsHierarchicalNamespaceMigrationPoller
+	Poller *AccountsClientHierarchicalNamespaceMigrationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -907,8 +202,8 @@ type StorageAccountsHierarchicalNamespaceMigrationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageAccountsHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsHierarchicalNamespaceMigrationResponse, error) {
-	respType := StorageAccountsHierarchicalNamespaceMigrationResponse{}
+func (l AccountsClientHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientHierarchicalNamespaceMigrationResponse, error) {
+	respType := AccountsClientHierarchicalNamespaceMigrationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -917,13 +212,13 @@ func (l StorageAccountsHierarchicalNamespaceMigrationPollerResponse) PollUntilDo
 	return respType, nil
 }
 
-// Resume rehydrates a StorageAccountsHierarchicalNamespaceMigrationPollerResponse from the provided client and resume token.
-func (l *StorageAccountsHierarchicalNamespaceMigrationPollerResponse) Resume(ctx context.Context, client *StorageAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageAccountsClient.HierarchicalNamespaceMigration", token, client.pl, client.hierarchicalNamespaceMigrationHandleError)
+// Resume rehydrates a AccountsClientHierarchicalNamespaceMigrationPollerResponse from the provided client and resume token.
+func (l *AccountsClientHierarchicalNamespaceMigrationPollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.HierarchicalNamespaceMigration", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StorageAccountsHierarchicalNamespaceMigrationPoller{
+	poller := &AccountsClientHierarchicalNamespaceMigrationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -935,88 +230,88 @@ func (l *StorageAccountsHierarchicalNamespaceMigrationPollerResponse) Resume(ctx
 	return nil
 }
 
-// StorageAccountsHierarchicalNamespaceMigrationResponse contains the response from method StorageAccounts.HierarchicalNamespaceMigration.
-type StorageAccountsHierarchicalNamespaceMigrationResponse struct {
+// AccountsClientHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.HierarchicalNamespaceMigration.
+type AccountsClientHierarchicalNamespaceMigrationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListAccountSASResponse contains the response from method StorageAccounts.ListAccountSAS.
-type StorageAccountsListAccountSASResponse struct {
-	StorageAccountsListAccountSASResult
+// AccountsClientListAccountSASResponse contains the response from method AccountsClient.ListAccountSAS.
+type AccountsClientListAccountSASResponse struct {
+	AccountsClientListAccountSASResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListAccountSASResult contains the result from method StorageAccounts.ListAccountSAS.
-type StorageAccountsListAccountSASResult struct {
+// AccountsClientListAccountSASResult contains the result from method AccountsClient.ListAccountSAS.
+type AccountsClientListAccountSASResult struct {
 	ListAccountSasResponse
 }
 
-// StorageAccountsListByResourceGroupResponse contains the response from method StorageAccounts.ListByResourceGroup.
-type StorageAccountsListByResourceGroupResponse struct {
-	StorageAccountsListByResourceGroupResult
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	AccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListByResourceGroupResult contains the result from method StorageAccounts.ListByResourceGroup.
-type StorageAccountsListByResourceGroupResult struct {
-	StorageAccountListResult
+// AccountsClientListByResourceGroupResult contains the result from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResult struct {
+	AccountListResult
 }
 
-// StorageAccountsListKeysResponse contains the response from method StorageAccounts.ListKeys.
-type StorageAccountsListKeysResponse struct {
-	StorageAccountsListKeysResult
+// AccountsClientListKeysResponse contains the response from method AccountsClient.ListKeys.
+type AccountsClientListKeysResponse struct {
+	AccountsClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListKeysResult contains the result from method StorageAccounts.ListKeys.
-type StorageAccountsListKeysResult struct {
-	StorageAccountListKeysResult
+// AccountsClientListKeysResult contains the result from method AccountsClient.ListKeys.
+type AccountsClientListKeysResult struct {
+	AccountListKeysResult
 }
 
-// StorageAccountsListResponse contains the response from method StorageAccounts.List.
-type StorageAccountsListResponse struct {
-	StorageAccountsListResult
+// AccountsClientListResponse contains the response from method AccountsClient.List.
+type AccountsClientListResponse struct {
+	AccountsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListResult contains the result from method StorageAccounts.List.
-type StorageAccountsListResult struct {
-	StorageAccountListResult
+// AccountsClientListResult contains the result from method AccountsClient.List.
+type AccountsClientListResult struct {
+	AccountListResult
 }
 
-// StorageAccountsListServiceSASResponse contains the response from method StorageAccounts.ListServiceSAS.
-type StorageAccountsListServiceSASResponse struct {
-	StorageAccountsListServiceSASResult
+// AccountsClientListServiceSASResponse contains the response from method AccountsClient.ListServiceSAS.
+type AccountsClientListServiceSASResponse struct {
+	AccountsClientListServiceSASResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListServiceSASResult contains the result from method StorageAccounts.ListServiceSAS.
-type StorageAccountsListServiceSASResult struct {
+// AccountsClientListServiceSASResult contains the result from method AccountsClient.ListServiceSAS.
+type AccountsClientListServiceSASResult struct {
 	ListServiceSasResponse
 }
 
-// StorageAccountsRegenerateKeyResponse contains the response from method StorageAccounts.RegenerateKey.
-type StorageAccountsRegenerateKeyResponse struct {
-	StorageAccountsRegenerateKeyResult
+// AccountsClientRegenerateKeyResponse contains the response from method AccountsClient.RegenerateKey.
+type AccountsClientRegenerateKeyResponse struct {
+	AccountsClientRegenerateKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsRegenerateKeyResult contains the result from method StorageAccounts.RegenerateKey.
-type StorageAccountsRegenerateKeyResult struct {
-	StorageAccountListKeysResult
+// AccountsClientRegenerateKeyResult contains the result from method AccountsClient.RegenerateKey.
+type AccountsClientRegenerateKeyResult struct {
+	AccountListKeysResult
 }
 
-// StorageAccountsRestoreBlobRangesPollerResponse contains the response from method StorageAccounts.RestoreBlobRanges.
-type StorageAccountsRestoreBlobRangesPollerResponse struct {
+// AccountsClientRestoreBlobRangesPollerResponse contains the response from method AccountsClient.RestoreBlobRanges.
+type AccountsClientRestoreBlobRangesPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StorageAccountsRestoreBlobRangesPoller
+	Poller *AccountsClientRestoreBlobRangesPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1025,8 +320,8 @@ type StorageAccountsRestoreBlobRangesPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageAccountsRestoreBlobRangesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsRestoreBlobRangesResponse, error) {
-	respType := StorageAccountsRestoreBlobRangesResponse{}
+func (l AccountsClientRestoreBlobRangesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientRestoreBlobRangesResponse, error) {
+	respType := AccountsClientRestoreBlobRangesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BlobRestoreStatus)
 	if err != nil {
 		return respType, err
@@ -1035,13 +330,13 @@ func (l StorageAccountsRestoreBlobRangesPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a StorageAccountsRestoreBlobRangesPollerResponse from the provided client and resume token.
-func (l *StorageAccountsRestoreBlobRangesPollerResponse) Resume(ctx context.Context, client *StorageAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageAccountsClient.RestoreBlobRanges", token, client.pl, client.restoreBlobRangesHandleError)
+// Resume rehydrates a AccountsClientRestoreBlobRangesPollerResponse from the provided client and resume token.
+func (l *AccountsClientRestoreBlobRangesPollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.RestoreBlobRanges", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StorageAccountsRestoreBlobRangesPoller{
+	poller := &AccountsClientRestoreBlobRangesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1053,134 +348,906 @@ func (l *StorageAccountsRestoreBlobRangesPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// StorageAccountsRestoreBlobRangesResponse contains the response from method StorageAccounts.RestoreBlobRanges.
-type StorageAccountsRestoreBlobRangesResponse struct {
-	StorageAccountsRestoreBlobRangesResult
+// AccountsClientRestoreBlobRangesResponse contains the response from method AccountsClient.RestoreBlobRanges.
+type AccountsClientRestoreBlobRangesResponse struct {
+	AccountsClientRestoreBlobRangesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsRestoreBlobRangesResult contains the result from method StorageAccounts.RestoreBlobRanges.
-type StorageAccountsRestoreBlobRangesResult struct {
+// AccountsClientRestoreBlobRangesResult contains the result from method AccountsClient.RestoreBlobRanges.
+type AccountsClientRestoreBlobRangesResult struct {
 	BlobRestoreStatus
 }
 
-// StorageAccountsRevokeUserDelegationKeysResponse contains the response from method StorageAccounts.RevokeUserDelegationKeys.
-type StorageAccountsRevokeUserDelegationKeysResponse struct {
+// AccountsClientRevokeUserDelegationKeysResponse contains the response from method AccountsClient.RevokeUserDelegationKeys.
+type AccountsClientRevokeUserDelegationKeysResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsUpdateResponse contains the response from method StorageAccounts.Update.
-type StorageAccountsUpdateResponse struct {
-	StorageAccountsUpdateResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsUpdateResult contains the result from method StorageAccounts.Update.
-type StorageAccountsUpdateResult struct {
-	StorageAccount
+// AccountsClientUpdateResult contains the result from method AccountsClient.Update.
+type AccountsClientUpdateResult struct {
+	Account
 }
 
-// TableCreateResponse contains the response from method Table.Create.
-type TableCreateResponse struct {
-	TableCreateResult
+// BlobContainersClientClearLegalHoldResponse contains the response from method BlobContainersClient.ClearLegalHold.
+type BlobContainersClientClearLegalHoldResponse struct {
+	BlobContainersClientClearLegalHoldResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableCreateResult contains the result from method Table.Create.
-type TableCreateResult struct {
+// BlobContainersClientClearLegalHoldResult contains the result from method BlobContainersClient.ClearLegalHold.
+type BlobContainersClientClearLegalHoldResult struct {
+	LegalHold
+}
+
+// BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse contains the response from method BlobContainersClient.CreateOrUpdateImmutabilityPolicy.
+type BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse struct {
+	BlobContainersClientCreateOrUpdateImmutabilityPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientCreateOrUpdateImmutabilityPolicyResult contains the result from method BlobContainersClient.CreateOrUpdateImmutabilityPolicy.
+type BlobContainersClientCreateOrUpdateImmutabilityPolicyResult struct {
+	ImmutabilityPolicy
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// BlobContainersClientCreateResponse contains the response from method BlobContainersClient.Create.
+type BlobContainersClientCreateResponse struct {
+	BlobContainersClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientCreateResult contains the result from method BlobContainersClient.Create.
+type BlobContainersClientCreateResult struct {
+	BlobContainer
+}
+
+// BlobContainersClientDeleteImmutabilityPolicyResponse contains the response from method BlobContainersClient.DeleteImmutabilityPolicy.
+type BlobContainersClientDeleteImmutabilityPolicyResponse struct {
+	BlobContainersClientDeleteImmutabilityPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientDeleteImmutabilityPolicyResult contains the result from method BlobContainersClient.DeleteImmutabilityPolicy.
+type BlobContainersClientDeleteImmutabilityPolicyResult struct {
+	ImmutabilityPolicy
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// BlobContainersClientDeleteResponse contains the response from method BlobContainersClient.Delete.
+type BlobContainersClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientExtendImmutabilityPolicyResponse contains the response from method BlobContainersClient.ExtendImmutabilityPolicy.
+type BlobContainersClientExtendImmutabilityPolicyResponse struct {
+	BlobContainersClientExtendImmutabilityPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientExtendImmutabilityPolicyResult contains the result from method BlobContainersClient.ExtendImmutabilityPolicy.
+type BlobContainersClientExtendImmutabilityPolicyResult struct {
+	ImmutabilityPolicy
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// BlobContainersClientGetImmutabilityPolicyResponse contains the response from method BlobContainersClient.GetImmutabilityPolicy.
+type BlobContainersClientGetImmutabilityPolicyResponse struct {
+	BlobContainersClientGetImmutabilityPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientGetImmutabilityPolicyResult contains the result from method BlobContainersClient.GetImmutabilityPolicy.
+type BlobContainersClientGetImmutabilityPolicyResult struct {
+	ImmutabilityPolicy
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// BlobContainersClientGetResponse contains the response from method BlobContainersClient.Get.
+type BlobContainersClientGetResponse struct {
+	BlobContainersClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientGetResult contains the result from method BlobContainersClient.Get.
+type BlobContainersClientGetResult struct {
+	BlobContainer
+}
+
+// BlobContainersClientLeaseResponse contains the response from method BlobContainersClient.Lease.
+type BlobContainersClientLeaseResponse struct {
+	BlobContainersClientLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientLeaseResult contains the result from method BlobContainersClient.Lease.
+type BlobContainersClientLeaseResult struct {
+	LeaseContainerResponse
+}
+
+// BlobContainersClientListResponse contains the response from method BlobContainersClient.List.
+type BlobContainersClientListResponse struct {
+	BlobContainersClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientListResult contains the result from method BlobContainersClient.List.
+type BlobContainersClientListResult struct {
+	ListContainerItems
+}
+
+// BlobContainersClientLockImmutabilityPolicyResponse contains the response from method BlobContainersClient.LockImmutabilityPolicy.
+type BlobContainersClientLockImmutabilityPolicyResponse struct {
+	BlobContainersClientLockImmutabilityPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientLockImmutabilityPolicyResult contains the result from method BlobContainersClient.LockImmutabilityPolicy.
+type BlobContainersClientLockImmutabilityPolicyResult struct {
+	ImmutabilityPolicy
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// BlobContainersClientObjectLevelWormPollerResponse contains the response from method BlobContainersClient.ObjectLevelWorm.
+type BlobContainersClientObjectLevelWormPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *BlobContainersClientObjectLevelWormPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l BlobContainersClientObjectLevelWormPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BlobContainersClientObjectLevelWormResponse, error) {
+	respType := BlobContainersClientObjectLevelWormResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a BlobContainersClientObjectLevelWormPollerResponse from the provided client and resume token.
+func (l *BlobContainersClientObjectLevelWormPollerResponse) Resume(ctx context.Context, client *BlobContainersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BlobContainersClient.ObjectLevelWorm", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &BlobContainersClientObjectLevelWormPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// BlobContainersClientObjectLevelWormResponse contains the response from method BlobContainersClient.ObjectLevelWorm.
+type BlobContainersClientObjectLevelWormResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientSetLegalHoldResponse contains the response from method BlobContainersClient.SetLegalHold.
+type BlobContainersClientSetLegalHoldResponse struct {
+	BlobContainersClientSetLegalHoldResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientSetLegalHoldResult contains the result from method BlobContainersClient.SetLegalHold.
+type BlobContainersClientSetLegalHoldResult struct {
+	LegalHold
+}
+
+// BlobContainersClientUpdateResponse contains the response from method BlobContainersClient.Update.
+type BlobContainersClientUpdateResponse struct {
+	BlobContainersClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobContainersClientUpdateResult contains the result from method BlobContainersClient.Update.
+type BlobContainersClientUpdateResult struct {
+	BlobContainer
+}
+
+// BlobInventoryPoliciesClientCreateOrUpdateResponse contains the response from method BlobInventoryPoliciesClient.CreateOrUpdate.
+type BlobInventoryPoliciesClientCreateOrUpdateResponse struct {
+	BlobInventoryPoliciesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobInventoryPoliciesClientCreateOrUpdateResult contains the result from method BlobInventoryPoliciesClient.CreateOrUpdate.
+type BlobInventoryPoliciesClientCreateOrUpdateResult struct {
+	BlobInventoryPolicy
+}
+
+// BlobInventoryPoliciesClientDeleteResponse contains the response from method BlobInventoryPoliciesClient.Delete.
+type BlobInventoryPoliciesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobInventoryPoliciesClientGetResponse contains the response from method BlobInventoryPoliciesClient.Get.
+type BlobInventoryPoliciesClientGetResponse struct {
+	BlobInventoryPoliciesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobInventoryPoliciesClientGetResult contains the result from method BlobInventoryPoliciesClient.Get.
+type BlobInventoryPoliciesClientGetResult struct {
+	BlobInventoryPolicy
+}
+
+// BlobInventoryPoliciesClientListResponse contains the response from method BlobInventoryPoliciesClient.List.
+type BlobInventoryPoliciesClientListResponse struct {
+	BlobInventoryPoliciesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobInventoryPoliciesClientListResult contains the result from method BlobInventoryPoliciesClient.List.
+type BlobInventoryPoliciesClientListResult struct {
+	ListBlobInventoryPolicy
+}
+
+// BlobServicesClientGetServicePropertiesResponse contains the response from method BlobServicesClient.GetServiceProperties.
+type BlobServicesClientGetServicePropertiesResponse struct {
+	BlobServicesClientGetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobServicesClientGetServicePropertiesResult contains the result from method BlobServicesClient.GetServiceProperties.
+type BlobServicesClientGetServicePropertiesResult struct {
+	BlobServiceProperties
+}
+
+// BlobServicesClientListResponse contains the response from method BlobServicesClient.List.
+type BlobServicesClientListResponse struct {
+	BlobServicesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobServicesClientListResult contains the result from method BlobServicesClient.List.
+type BlobServicesClientListResult struct {
+	BlobServiceItems
+}
+
+// BlobServicesClientSetServicePropertiesResponse contains the response from method BlobServicesClient.SetServiceProperties.
+type BlobServicesClientSetServicePropertiesResponse struct {
+	BlobServicesClientSetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobServicesClientSetServicePropertiesResult contains the result from method BlobServicesClient.SetServiceProperties.
+type BlobServicesClientSetServicePropertiesResult struct {
+	BlobServiceProperties
+}
+
+// DeletedAccountsClientGetResponse contains the response from method DeletedAccountsClient.Get.
+type DeletedAccountsClientGetResponse struct {
+	DeletedAccountsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedAccountsClientGetResult contains the result from method DeletedAccountsClient.Get.
+type DeletedAccountsClientGetResult struct {
+	DeletedAccount
+}
+
+// DeletedAccountsClientListResponse contains the response from method DeletedAccountsClient.List.
+type DeletedAccountsClientListResponse struct {
+	DeletedAccountsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedAccountsClientListResult contains the result from method DeletedAccountsClient.List.
+type DeletedAccountsClientListResult struct {
+	DeletedAccountListResult
+}
+
+// EncryptionScopesClientGetResponse contains the response from method EncryptionScopesClient.Get.
+type EncryptionScopesClientGetResponse struct {
+	EncryptionScopesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EncryptionScopesClientGetResult contains the result from method EncryptionScopesClient.Get.
+type EncryptionScopesClientGetResult struct {
+	EncryptionScope
+}
+
+// EncryptionScopesClientListResponse contains the response from method EncryptionScopesClient.List.
+type EncryptionScopesClientListResponse struct {
+	EncryptionScopesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EncryptionScopesClientListResult contains the result from method EncryptionScopesClient.List.
+type EncryptionScopesClientListResult struct {
+	EncryptionScopeListResult
+}
+
+// EncryptionScopesClientPatchResponse contains the response from method EncryptionScopesClient.Patch.
+type EncryptionScopesClientPatchResponse struct {
+	EncryptionScopesClientPatchResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EncryptionScopesClientPatchResult contains the result from method EncryptionScopesClient.Patch.
+type EncryptionScopesClientPatchResult struct {
+	EncryptionScope
+}
+
+// EncryptionScopesClientPutResponse contains the response from method EncryptionScopesClient.Put.
+type EncryptionScopesClientPutResponse struct {
+	EncryptionScopesClientPutResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EncryptionScopesClientPutResult contains the result from method EncryptionScopesClient.Put.
+type EncryptionScopesClientPutResult struct {
+	EncryptionScope
+}
+
+// FileServicesClientGetServicePropertiesResponse contains the response from method FileServicesClient.GetServiceProperties.
+type FileServicesClientGetServicePropertiesResponse struct {
+	FileServicesClientGetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileServicesClientGetServicePropertiesResult contains the result from method FileServicesClient.GetServiceProperties.
+type FileServicesClientGetServicePropertiesResult struct {
+	FileServiceProperties
+}
+
+// FileServicesClientListResponse contains the response from method FileServicesClient.List.
+type FileServicesClientListResponse struct {
+	FileServicesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileServicesClientListResult contains the result from method FileServicesClient.List.
+type FileServicesClientListResult struct {
+	FileServiceItems
+}
+
+// FileServicesClientSetServicePropertiesResponse contains the response from method FileServicesClient.SetServiceProperties.
+type FileServicesClientSetServicePropertiesResponse struct {
+	FileServicesClientSetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileServicesClientSetServicePropertiesResult contains the result from method FileServicesClient.SetServiceProperties.
+type FileServicesClientSetServicePropertiesResult struct {
+	FileServiceProperties
+}
+
+// FileSharesClientCreateResponse contains the response from method FileSharesClient.Create.
+type FileSharesClientCreateResponse struct {
+	FileSharesClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientCreateResult contains the result from method FileSharesClient.Create.
+type FileSharesClientCreateResult struct {
+	FileShare
+}
+
+// FileSharesClientDeleteResponse contains the response from method FileSharesClient.Delete.
+type FileSharesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientGetResponse contains the response from method FileSharesClient.Get.
+type FileSharesClientGetResponse struct {
+	FileSharesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientGetResult contains the result from method FileSharesClient.Get.
+type FileSharesClientGetResult struct {
+	FileShare
+}
+
+// FileSharesClientLeaseResponse contains the response from method FileSharesClient.Lease.
+type FileSharesClientLeaseResponse struct {
+	FileSharesClientLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientLeaseResult contains the result from method FileSharesClient.Lease.
+type FileSharesClientLeaseResult struct {
+	LeaseShareResponse
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// FileSharesClientListResponse contains the response from method FileSharesClient.List.
+type FileSharesClientListResponse struct {
+	FileSharesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientListResult contains the result from method FileSharesClient.List.
+type FileSharesClientListResult struct {
+	FileShareItems
+}
+
+// FileSharesClientRestoreResponse contains the response from method FileSharesClient.Restore.
+type FileSharesClientRestoreResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientUpdateResponse contains the response from method FileSharesClient.Update.
+type FileSharesClientUpdateResponse struct {
+	FileSharesClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// FileSharesClientUpdateResult contains the result from method FileSharesClient.Update.
+type FileSharesClientUpdateResult struct {
+	FileShare
+}
+
+// LocalUsersClientCreateOrUpdateResponse contains the response from method LocalUsersClient.CreateOrUpdate.
+type LocalUsersClientCreateOrUpdateResponse struct {
+	LocalUsersClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientCreateOrUpdateResult contains the result from method LocalUsersClient.CreateOrUpdate.
+type LocalUsersClientCreateOrUpdateResult struct {
+	LocalUser
+}
+
+// LocalUsersClientDeleteResponse contains the response from method LocalUsersClient.Delete.
+type LocalUsersClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientGetResponse contains the response from method LocalUsersClient.Get.
+type LocalUsersClientGetResponse struct {
+	LocalUsersClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientGetResult contains the result from method LocalUsersClient.Get.
+type LocalUsersClientGetResult struct {
+	LocalUser
+}
+
+// LocalUsersClientListKeysResponse contains the response from method LocalUsersClient.ListKeys.
+type LocalUsersClientListKeysResponse struct {
+	LocalUsersClientListKeysResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientListKeysResult contains the result from method LocalUsersClient.ListKeys.
+type LocalUsersClientListKeysResult struct {
+	LocalUserKeys
+}
+
+// LocalUsersClientListResponse contains the response from method LocalUsersClient.List.
+type LocalUsersClientListResponse struct {
+	LocalUsersClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientListResult contains the result from method LocalUsersClient.List.
+type LocalUsersClientListResult struct {
+	LocalUsers
+}
+
+// LocalUsersClientRegeneratePasswordResponse contains the response from method LocalUsersClient.RegeneratePassword.
+type LocalUsersClientRegeneratePasswordResponse struct {
+	LocalUsersClientRegeneratePasswordResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocalUsersClientRegeneratePasswordResult contains the result from method LocalUsersClient.RegeneratePassword.
+type LocalUsersClientRegeneratePasswordResult struct {
+	LocalUserRegeneratePasswordResult
+}
+
+// ManagementPoliciesClientCreateOrUpdateResponse contains the response from method ManagementPoliciesClient.CreateOrUpdate.
+type ManagementPoliciesClientCreateOrUpdateResponse struct {
+	ManagementPoliciesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementPoliciesClientCreateOrUpdateResult contains the result from method ManagementPoliciesClient.CreateOrUpdate.
+type ManagementPoliciesClientCreateOrUpdateResult struct {
+	ManagementPolicy
+}
+
+// ManagementPoliciesClientDeleteResponse contains the response from method ManagementPoliciesClient.Delete.
+type ManagementPoliciesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementPoliciesClientGetResponse contains the response from method ManagementPoliciesClient.Get.
+type ManagementPoliciesClientGetResponse struct {
+	ManagementPoliciesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementPoliciesClientGetResult contains the result from method ManagementPoliciesClient.Get.
+type ManagementPoliciesClientGetResult struct {
+	ManagementPolicy
+}
+
+// ObjectReplicationPoliciesClientCreateOrUpdateResponse contains the response from method ObjectReplicationPoliciesClient.CreateOrUpdate.
+type ObjectReplicationPoliciesClientCreateOrUpdateResponse struct {
+	ObjectReplicationPoliciesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ObjectReplicationPoliciesClientCreateOrUpdateResult contains the result from method ObjectReplicationPoliciesClient.CreateOrUpdate.
+type ObjectReplicationPoliciesClientCreateOrUpdateResult struct {
+	ObjectReplicationPolicy
+}
+
+// ObjectReplicationPoliciesClientDeleteResponse contains the response from method ObjectReplicationPoliciesClient.Delete.
+type ObjectReplicationPoliciesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ObjectReplicationPoliciesClientGetResponse contains the response from method ObjectReplicationPoliciesClient.Get.
+type ObjectReplicationPoliciesClientGetResponse struct {
+	ObjectReplicationPoliciesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ObjectReplicationPoliciesClientGetResult contains the result from method ObjectReplicationPoliciesClient.Get.
+type ObjectReplicationPoliciesClientGetResult struct {
+	ObjectReplicationPolicy
+}
+
+// ObjectReplicationPoliciesClientListResponse contains the response from method ObjectReplicationPoliciesClient.List.
+type ObjectReplicationPoliciesClientListResponse struct {
+	ObjectReplicationPoliciesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ObjectReplicationPoliciesClientListResult contains the result from method ObjectReplicationPoliciesClient.List.
+type ObjectReplicationPoliciesClientListResult struct {
+	ObjectReplicationPolicies
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateEndpointConnectionsClientPutResponse contains the response from method PrivateEndpointConnectionsClient.Put.
+type PrivateEndpointConnectionsClientPutResponse struct {
+	PrivateEndpointConnectionsClientPutResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientPutResult contains the result from method PrivateEndpointConnectionsClient.Put.
+type PrivateEndpointConnectionsClientPutResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateLinkResourcesClientListByStorageAccountResponse contains the response from method PrivateLinkResourcesClient.ListByStorageAccount.
+type PrivateLinkResourcesClientListByStorageAccountResponse struct {
+	PrivateLinkResourcesClientListByStorageAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientListByStorageAccountResult contains the result from method PrivateLinkResourcesClient.ListByStorageAccount.
+type PrivateLinkResourcesClientListByStorageAccountResult struct {
+	PrivateLinkResourceListResult
+}
+
+// QueueClientCreateResponse contains the response from method QueueClient.Create.
+type QueueClientCreateResponse struct {
+	QueueClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueClientCreateResult contains the result from method QueueClient.Create.
+type QueueClientCreateResult struct {
+	Queue
+}
+
+// QueueClientDeleteResponse contains the response from method QueueClient.Delete.
+type QueueClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueClientGetResponse contains the response from method QueueClient.Get.
+type QueueClientGetResponse struct {
+	QueueClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueClientGetResult contains the result from method QueueClient.Get.
+type QueueClientGetResult struct {
+	Queue
+}
+
+// QueueClientListResponse contains the response from method QueueClient.List.
+type QueueClientListResponse struct {
+	QueueClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueClientListResult contains the result from method QueueClient.List.
+type QueueClientListResult struct {
+	ListQueueResource
+}
+
+// QueueClientUpdateResponse contains the response from method QueueClient.Update.
+type QueueClientUpdateResponse struct {
+	QueueClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueClientUpdateResult contains the result from method QueueClient.Update.
+type QueueClientUpdateResult struct {
+	Queue
+}
+
+// QueueServicesClientGetServicePropertiesResponse contains the response from method QueueServicesClient.GetServiceProperties.
+type QueueServicesClientGetServicePropertiesResponse struct {
+	QueueServicesClientGetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueServicesClientGetServicePropertiesResult contains the result from method QueueServicesClient.GetServiceProperties.
+type QueueServicesClientGetServicePropertiesResult struct {
+	QueueServiceProperties
+}
+
+// QueueServicesClientListResponse contains the response from method QueueServicesClient.List.
+type QueueServicesClientListResponse struct {
+	QueueServicesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueServicesClientListResult contains the result from method QueueServicesClient.List.
+type QueueServicesClientListResult struct {
+	ListQueueServices
+}
+
+// QueueServicesClientSetServicePropertiesResponse contains the response from method QueueServicesClient.SetServiceProperties.
+type QueueServicesClientSetServicePropertiesResponse struct {
+	QueueServicesClientSetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueueServicesClientSetServicePropertiesResult contains the result from method QueueServicesClient.SetServiceProperties.
+type QueueServicesClientSetServicePropertiesResult struct {
+	QueueServiceProperties
+}
+
+// SKUsClientListResponse contains the response from method SKUsClient.List.
+type SKUsClientListResponse struct {
+	SKUsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SKUsClientListResult contains the result from method SKUsClient.List.
+type SKUsClientListResult struct {
+	SKUListResult
+}
+
+// TableClientCreateResponse contains the response from method TableClient.Create.
+type TableClientCreateResponse struct {
+	TableClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TableClientCreateResult contains the result from method TableClient.Create.
+type TableClientCreateResult struct {
 	Table
 }
 
-// TableDeleteResponse contains the response from method Table.Delete.
-type TableDeleteResponse struct {
+// TableClientDeleteResponse contains the response from method TableClient.Delete.
+type TableClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableGetResponse contains the response from method Table.Get.
-type TableGetResponse struct {
-	TableGetResult
+// TableClientGetResponse contains the response from method TableClient.Get.
+type TableClientGetResponse struct {
+	TableClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableGetResult contains the result from method Table.Get.
-type TableGetResult struct {
+// TableClientGetResult contains the result from method TableClient.Get.
+type TableClientGetResult struct {
 	Table
 }
 
-// TableListResponse contains the response from method Table.List.
-type TableListResponse struct {
-	TableListResult
+// TableClientListResponse contains the response from method TableClient.List.
+type TableClientListResponse struct {
+	TableClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableListResult contains the result from method Table.List.
-type TableListResult struct {
+// TableClientListResult contains the result from method TableClient.List.
+type TableClientListResult struct {
 	ListTableResource
 }
 
-// TableServicesGetServicePropertiesResponse contains the response from method TableServices.GetServiceProperties.
-type TableServicesGetServicePropertiesResponse struct {
-	TableServicesGetServicePropertiesResult
+// TableClientUpdateResponse contains the response from method TableClient.Update.
+type TableClientUpdateResponse struct {
+	TableClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TableServicesGetServicePropertiesResult contains the result from method TableServices.GetServiceProperties.
-type TableServicesGetServicePropertiesResult struct {
-	TableServiceProperties
-}
-
-// TableServicesListResponse contains the response from method TableServices.List.
-type TableServicesListResponse struct {
-	TableServicesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableServicesListResult contains the result from method TableServices.List.
-type TableServicesListResult struct {
-	ListTableServices
-}
-
-// TableServicesSetServicePropertiesResponse contains the response from method TableServices.SetServiceProperties.
-type TableServicesSetServicePropertiesResponse struct {
-	TableServicesSetServicePropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableServicesSetServicePropertiesResult contains the result from method TableServices.SetServiceProperties.
-type TableServicesSetServicePropertiesResult struct {
-	TableServiceProperties
-}
-
-// TableUpdateResponse contains the response from method Table.Update.
-type TableUpdateResponse struct {
-	TableUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableUpdateResult contains the result from method Table.Update.
-type TableUpdateResult struct {
+// TableClientUpdateResult contains the result from method TableClient.Update.
+type TableClientUpdateResult struct {
 	Table
 }
 
-// UsagesListByLocationResponse contains the response from method Usages.ListByLocation.
-type UsagesListByLocationResponse struct {
-	UsagesListByLocationResult
+// TableServicesClientGetServicePropertiesResponse contains the response from method TableServicesClient.GetServiceProperties.
+type TableServicesClientGetServicePropertiesResponse struct {
+	TableServicesClientGetServicePropertiesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UsagesListByLocationResult contains the result from method Usages.ListByLocation.
-type UsagesListByLocationResult struct {
+// TableServicesClientGetServicePropertiesResult contains the result from method TableServicesClient.GetServiceProperties.
+type TableServicesClientGetServicePropertiesResult struct {
+	TableServiceProperties
+}
+
+// TableServicesClientListResponse contains the response from method TableServicesClient.List.
+type TableServicesClientListResponse struct {
+	TableServicesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TableServicesClientListResult contains the result from method TableServicesClient.List.
+type TableServicesClientListResult struct {
+	ListTableServices
+}
+
+// TableServicesClientSetServicePropertiesResponse contains the response from method TableServicesClient.SetServiceProperties.
+type TableServicesClientSetServicePropertiesResponse struct {
+	TableServicesClientSetServicePropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TableServicesClientSetServicePropertiesResult contains the result from method TableServicesClient.SetServiceProperties.
+type TableServicesClientSetServicePropertiesResult struct {
+	TableServiceProperties
+}
+
+// UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.
+type UsagesClientListByLocationResponse struct {
+	UsagesClientListByLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UsagesClientListByLocationResult contains the result from method UsagesClient.ListByLocation.
+type UsagesClientListByLocationResult struct {
 	UsageListResult
 }

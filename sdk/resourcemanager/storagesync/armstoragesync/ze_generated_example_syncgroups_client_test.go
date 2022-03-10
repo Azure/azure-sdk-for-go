@@ -24,13 +24,14 @@ func ExampleSyncGroupsClient_ListByStorageSyncService() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
+	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SyncGroupsClientListByStorageSyncServiceResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Create.json
@@ -52,7 +53,7 @@ func ExampleSyncGroupsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SyncGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SyncGroupsClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Get.json
@@ -71,7 +72,7 @@ func ExampleSyncGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SyncGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SyncGroupsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Delete.json

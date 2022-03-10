@@ -10,116 +10,116 @@ package armstorageimportexport
 
 import "net/http"
 
-// BitLockerKeysListResponse contains the response from method BitLockerKeys.List.
-type BitLockerKeysListResponse struct {
-	BitLockerKeysListResult
+// BitLockerKeysClientListResponse contains the response from method BitLockerKeysClient.List.
+type BitLockerKeysClientListResponse struct {
+	BitLockerKeysClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BitLockerKeysListResult contains the result from method BitLockerKeys.List.
-type BitLockerKeysListResult struct {
+// BitLockerKeysClientListResult contains the result from method BitLockerKeysClient.List.
+type BitLockerKeysClientListResult struct {
 	GetBitLockerKeysResponse
 }
 
-// JobsCreateResponse contains the response from method Jobs.Create.
-type JobsCreateResponse struct {
-	JobsCreateResult
+// JobsClientCreateResponse contains the response from method JobsClient.Create.
+type JobsClientCreateResponse struct {
+	JobsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsCreateResult contains the result from method Jobs.Create.
-type JobsCreateResult struct {
+// JobsClientCreateResult contains the result from method JobsClient.Create.
+type JobsClientCreateResult struct {
 	JobResponse
 }
 
-// JobsDeleteResponse contains the response from method Jobs.Delete.
-type JobsDeleteResponse struct {
+// JobsClientDeleteResponse contains the response from method JobsClient.Delete.
+type JobsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResponse contains the response from method Jobs.Get.
-type JobsGetResponse struct {
-	JobsGetResult
+// JobsClientGetResponse contains the response from method JobsClient.Get.
+type JobsClientGetResponse struct {
+	JobsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResult contains the result from method Jobs.Get.
-type JobsGetResult struct {
+// JobsClientGetResult contains the result from method JobsClient.Get.
+type JobsClientGetResult struct {
 	JobResponse
 }
 
-// JobsListByResourceGroupResponse contains the response from method Jobs.ListByResourceGroup.
-type JobsListByResourceGroupResponse struct {
-	JobsListByResourceGroupResult
+// JobsClientListByResourceGroupResponse contains the response from method JobsClient.ListByResourceGroup.
+type JobsClientListByResourceGroupResponse struct {
+	JobsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListByResourceGroupResult contains the result from method Jobs.ListByResourceGroup.
-type JobsListByResourceGroupResult struct {
+// JobsClientListByResourceGroupResult contains the result from method JobsClient.ListByResourceGroup.
+type JobsClientListByResourceGroupResult struct {
 	ListJobsResponse
 }
 
-// JobsListBySubscriptionResponse contains the response from method Jobs.ListBySubscription.
-type JobsListBySubscriptionResponse struct {
-	JobsListBySubscriptionResult
+// JobsClientListBySubscriptionResponse contains the response from method JobsClient.ListBySubscription.
+type JobsClientListBySubscriptionResponse struct {
+	JobsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListBySubscriptionResult contains the result from method Jobs.ListBySubscription.
-type JobsListBySubscriptionResult struct {
+// JobsClientListBySubscriptionResult contains the result from method JobsClient.ListBySubscription.
+type JobsClientListBySubscriptionResult struct {
 	ListJobsResponse
 }
 
-// JobsUpdateResponse contains the response from method Jobs.Update.
-type JobsUpdateResponse struct {
-	JobsUpdateResult
+// JobsClientUpdateResponse contains the response from method JobsClient.Update.
+type JobsClientUpdateResponse struct {
+	JobsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsUpdateResult contains the result from method Jobs.Update.
-type JobsUpdateResult struct {
+// JobsClientUpdateResult contains the result from method JobsClient.Update.
+type JobsClientUpdateResult struct {
 	JobResponse
 }
 
-// LocationsGetResponse contains the response from method Locations.Get.
-type LocationsGetResponse struct {
-	LocationsGetResult
+// LocationsClientGetResponse contains the response from method LocationsClient.Get.
+type LocationsClientGetResponse struct {
+	LocationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsGetResult contains the result from method Locations.Get.
-type LocationsGetResult struct {
+// LocationsClientGetResult contains the result from method LocationsClient.Get.
+type LocationsClientGetResult struct {
 	Location
 }
 
-// LocationsListResponse contains the response from method Locations.List.
-type LocationsListResponse struct {
-	LocationsListResult
+// LocationsClientListResponse contains the response from method LocationsClient.List.
+type LocationsClientListResponse struct {
+	LocationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsListResult contains the result from method Locations.List.
-type LocationsListResult struct {
+// LocationsClientListResult contains the result from method LocationsClient.List.
+type LocationsClientListResult struct {
 	LocationsResponse
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	ListOperationsResponse
 }

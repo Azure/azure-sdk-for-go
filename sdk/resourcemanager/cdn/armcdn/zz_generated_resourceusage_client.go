@@ -11,7 +11,6 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,73 +24,69 @@ import (
 // ResourceUsageClient contains the methods for the ResourceUsage group.
 // Don't use this type directly, use NewResourceUsageClient() instead.
 type ResourceUsageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceUsageClient creates a new instance of ResourceUsageClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceUsageClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ResourceUsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceUsageClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // List - Check the quota and actual usage of the CDN profiles under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceUsageClient) List(options *ResourceUsageListOptions) *ResourceUsageListPager {
-	return &ResourceUsageListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.List method.
+func (client *ResourceUsageClient) List(options *ResourceUsageClientListOptions) *ResourceUsageClientListPager {
+	return &ResourceUsageClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceUsageListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceUsageClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceUsageListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, options *ResourceUsageListOptions) (*policy.Request, error) {
+func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, options *ResourceUsageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceUsageClient) listHandleResponse(resp *http.Response) (ResourceUsageListResponse, error) {
-	result := ResourceUsageListResponse{RawResponse: resp}
+func (client *ResourceUsageClient) listHandleResponse(resp *http.Response) (ResourceUsageClientListResponse, error) {
+	result := ResourceUsageClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsageListResult); err != nil {
-		return ResourceUsageListResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceUsageClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ResourceUsageClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

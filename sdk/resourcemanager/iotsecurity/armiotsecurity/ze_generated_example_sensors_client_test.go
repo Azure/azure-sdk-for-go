@@ -25,12 +25,13 @@ func ExampleSensorsClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewSensorsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<scope>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SensorsClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sensors/Get.json
@@ -48,7 +49,7 @@ func ExampleSensorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SensorModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SensorsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sensors/Put.json
@@ -64,7 +65,7 @@ func ExampleSensorsClient_CreateOrUpdate() {
 		"<sensor-name>",
 		armiotsecurity.SensorModel{
 			Properties: &armiotsecurity.SensorProperties{
-				SensorType:         armiotsecurity.SensorTypeOt.ToPtr(),
+				SensorType:         armiotsecurity.SensorType("Ot").ToPtr(),
 				TiAutomaticUpdates: to.BoolPtr(true),
 				Zone:               to.StringPtr("<zone>"),
 			},
@@ -73,7 +74,7 @@ func ExampleSensorsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SensorModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SensorsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sensors/Delete.json

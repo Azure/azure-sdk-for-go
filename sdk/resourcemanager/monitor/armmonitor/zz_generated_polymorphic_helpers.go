@@ -30,44 +30,6 @@ func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalActionClassificationArray(rawMsg json.RawMessage) ([]ActionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ActionClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalActionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalActionClassificationMap(rawMsg json.RawMessage) (map[string]ActionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ActionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalActionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalMetricAlertCriteriaClassification(rawMsg json.RawMessage) (MetricAlertCriteriaClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -88,44 +50,6 @@ func unmarshalMetricAlertCriteriaClassification(rawMsg json.RawMessage) (MetricA
 		b = &MetricAlertCriteria{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalMetricAlertCriteriaClassificationArray(rawMsg json.RawMessage) ([]MetricAlertCriteriaClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]MetricAlertCriteriaClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalMetricAlertCriteriaClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalMetricAlertCriteriaClassificationMap(rawMsg json.RawMessage) (map[string]MetricAlertCriteriaClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]MetricAlertCriteriaClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalMetricAlertCriteriaClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalMultiMetricCriteriaClassification(rawMsg json.RawMessage) (MultiMetricCriteriaClassification, error) {
@@ -167,25 +91,6 @@ func unmarshalMultiMetricCriteriaClassificationArray(rawMsg json.RawMessage) ([]
 	return fArray, nil
 }
 
-func unmarshalMultiMetricCriteriaClassificationMap(rawMsg json.RawMessage) (map[string]MultiMetricCriteriaClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]MultiMetricCriteriaClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalMultiMetricCriteriaClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalRuleActionClassification(rawMsg json.RawMessage) (RuleActionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -225,25 +130,6 @@ func unmarshalRuleActionClassificationArray(rawMsg json.RawMessage) ([]RuleActio
 	return fArray, nil
 }
 
-func unmarshalRuleActionClassificationMap(rawMsg json.RawMessage) (map[string]RuleActionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RuleActionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRuleActionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalRuleConditionClassification(rawMsg json.RawMessage) (RuleConditionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -266,44 +152,6 @@ func unmarshalRuleConditionClassification(rawMsg json.RawMessage) (RuleCondition
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRuleConditionClassificationArray(rawMsg json.RawMessage) ([]RuleConditionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RuleConditionClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRuleConditionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalRuleConditionClassificationMap(rawMsg json.RawMessage) (map[string]RuleConditionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RuleConditionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRuleConditionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (RuleDataSourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -322,42 +170,4 @@ func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (RuleDataSour
 		b = &RuleDataSource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalRuleDataSourceClassificationArray(rawMsg json.RawMessage) ([]RuleDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RuleDataSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRuleDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalRuleDataSourceClassificationMap(rawMsg json.RawMessage) (map[string]RuleDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RuleDataSourceClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRuleDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

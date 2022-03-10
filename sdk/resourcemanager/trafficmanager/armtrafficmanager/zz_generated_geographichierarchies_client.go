@@ -10,7 +10,6 @@ package armtrafficmanager
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,51 @@ import (
 // GeographicHierarchiesClient contains the methods for the GeographicHierarchies group.
 // Don't use this type directly, use NewGeographicHierarchiesClient() instead.
 type GeographicHierarchiesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewGeographicHierarchiesClient creates a new instance of GeographicHierarchiesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGeographicHierarchiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GeographicHierarchiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GeographicHierarchiesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GeographicHierarchiesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetDefault - Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-// If the operation fails it returns the *CloudError error type.
-func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, options *GeographicHierarchiesGetDefaultOptions) (GeographicHierarchiesGetDefaultResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - GeographicHierarchiesClientGetDefaultOptions contains the optional parameters for the GeographicHierarchiesClient.GetDefault
+// method.
+func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, options *GeographicHierarchiesClientGetDefaultOptions) (GeographicHierarchiesClientGetDefaultResponse, error) {
 	req, err := client.getDefaultCreateRequest(ctx, options)
 	if err != nil {
-		return GeographicHierarchiesGetDefaultResponse{}, err
+		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GeographicHierarchiesGetDefaultResponse{}, err
+		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GeographicHierarchiesGetDefaultResponse{}, client.getDefaultHandleError(resp)
+		return GeographicHierarchiesClientGetDefaultResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDefaultHandleResponse(resp)
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
-func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.Context, options *GeographicHierarchiesGetDefaultOptions) (*policy.Request, error) {
+func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.Context, options *GeographicHierarchiesClientGetDefaultOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,23 +77,10 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 }
 
 // getDefaultHandleResponse handles the GetDefault response.
-func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response) (GeographicHierarchiesGetDefaultResponse, error) {
-	result := GeographicHierarchiesGetDefaultResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrafficManagerGeographicHierarchy); err != nil {
-		return GeographicHierarchiesGetDefaultResponse{}, runtime.NewResponseError(err, resp)
+func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response) (GeographicHierarchiesClientGetDefaultResponse, error) {
+	result := GeographicHierarchiesClientGetDefaultResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GeographicHierarchy); err != nil {
+		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
 	return result, nil
-}
-
-// getDefaultHandleError handles the GetDefault error response.
-func (client *GeographicHierarchiesClient) getDefaultHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

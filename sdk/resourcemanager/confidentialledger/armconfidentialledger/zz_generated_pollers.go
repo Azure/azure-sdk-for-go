@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// LedgerCreatePoller provides polling facilities until the operation reaches a terminal state.
-type LedgerCreatePoller struct {
+// LedgerClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type LedgerClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LedgerCreatePoller) Done() bool {
+func (p *LedgerClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *LedgerCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LedgerCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LedgerClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LedgerCreateResponse will be returned.
-func (p *LedgerCreatePoller) FinalResponse(ctx context.Context) (LedgerCreateResponse, error) {
-	respType := LedgerCreateResponse{}
+// If the final GET succeeded then the final LedgerClientCreateResponse will be returned.
+func (p *LedgerClientCreatePoller) FinalResponse(ctx context.Context) (LedgerClientCreateResponse, error) {
+	respType := LedgerClientCreateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ConfidentialLedger)
 	if err != nil {
-		return LedgerCreateResponse{}, err
+		return LedgerClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *LedgerCreatePoller) FinalResponse(ctx context.Context) (LedgerCreateRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LedgerCreatePoller) ResumeToken() (string, error) {
+func (p *LedgerClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// LedgerDeletePoller provides polling facilities until the operation reaches a terminal state.
-type LedgerDeletePoller struct {
+// LedgerClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type LedgerClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LedgerDeletePoller) Done() bool {
+func (p *LedgerClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *LedgerDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LedgerDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LedgerClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LedgerDeleteResponse will be returned.
-func (p *LedgerDeletePoller) FinalResponse(ctx context.Context) (LedgerDeleteResponse, error) {
-	respType := LedgerDeleteResponse{}
+// If the final GET succeeded then the final LedgerClientDeleteResponse will be returned.
+func (p *LedgerClientDeletePoller) FinalResponse(ctx context.Context) (LedgerClientDeleteResponse, error) {
+	respType := LedgerClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return LedgerDeleteResponse{}, err
+		return LedgerClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *LedgerDeletePoller) FinalResponse(ctx context.Context) (LedgerDeleteRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LedgerDeletePoller) ResumeToken() (string, error) {
+func (p *LedgerClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// LedgerUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type LedgerUpdatePoller struct {
+// LedgerClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type LedgerClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LedgerUpdatePoller) Done() bool {
+func (p *LedgerClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *LedgerUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LedgerUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LedgerClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LedgerUpdateResponse will be returned.
-func (p *LedgerUpdatePoller) FinalResponse(ctx context.Context) (LedgerUpdateResponse, error) {
-	respType := LedgerUpdateResponse{}
+// If the final GET succeeded then the final LedgerClientUpdateResponse will be returned.
+func (p *LedgerClientUpdatePoller) FinalResponse(ctx context.Context) (LedgerClientUpdateResponse, error) {
+	respType := LedgerClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ConfidentialLedger)
 	if err != nil {
-		return LedgerUpdateResponse{}, err
+		return LedgerClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,6 +139,6 @@ func (p *LedgerUpdatePoller) FinalResponse(ctx context.Context) (LedgerUpdateRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LedgerUpdatePoller) ResumeToken() (string, error) {
+func (p *LedgerClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

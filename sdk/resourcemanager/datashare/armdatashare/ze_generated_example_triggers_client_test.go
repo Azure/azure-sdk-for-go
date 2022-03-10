@@ -36,7 +36,7 @@ func ExampleTriggersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Create.json
@@ -53,12 +53,10 @@ func ExampleTriggersClient_BeginCreate() {
 		"<share-subscription-name>",
 		"<trigger-name>",
 		&armdatashare.ScheduledTrigger{
-			Trigger: armdatashare.Trigger{
-				Kind: armdatashare.TriggerKindScheduleBased.ToPtr(),
-			},
+			Kind: armdatashare.TriggerKind("ScheduleBased").ToPtr(),
 			Properties: &armdatashare.ScheduledTriggerProperties{
-				RecurrenceInterval:  armdatashare.RecurrenceIntervalDay.ToPtr(),
-				SynchronizationMode: armdatashare.SynchronizationModeIncremental.ToPtr(),
+				RecurrenceInterval:  armdatashare.RecurrenceInterval("Day").ToPtr(),
+				SynchronizationMode: armdatashare.SynchronizationMode("Incremental").ToPtr(),
 				SynchronizationTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
 			},
 		},
@@ -70,7 +68,7 @@ func ExampleTriggersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Delete.json
@@ -90,10 +88,11 @@ func ExampleTriggersClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggersClientDeleteResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_ListByShareSubscription.json
@@ -107,13 +106,17 @@ func ExampleTriggersClient_ListByShareSubscription() {
 	pager := client.ListByShareSubscription("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
-		&armdatashare.TriggersListByShareSubscriptionOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatashare.TriggersClientListByShareSubscriptionOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *v.GetTrigger().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

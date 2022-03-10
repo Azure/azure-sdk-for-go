@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // IntegrationRuntimesClient contains the methods for the IntegrationRuntimes group.
 // Don't use this type directly, use NewIntegrationRuntimesClient() instead.
 type IntegrationRuntimesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimesClient creates a new instance of IntegrationRuntimesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationRuntimesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationRuntimesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateLinkedIntegrationRuntime - Create a linked integration runtime entry in a shared integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) CreateLinkedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest CreateLinkedIntegrationRuntimeRequest, options *IntegrationRuntimesCreateLinkedIntegrationRuntimeOptions) (IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// createLinkedIntegrationRuntimeRequest - The linked integration runtime properties.
+// options - IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions contains the optional parameters for the IntegrationRuntimesClient.CreateLinkedIntegrationRuntime
+// method.
+func (client *IntegrationRuntimesClient) CreateLinkedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest CreateLinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions) (IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error) {
 	req, err := client.createLinkedIntegrationRuntimeCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest, options)
 	if err != nil {
-		return IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse{}, err
+		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse{}, err
+		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse{}, client.createLinkedIntegrationRuntimeHandleError(resp)
+		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createLinkedIntegrationRuntimeHandleResponse(resp)
 }
 
 // createLinkedIntegrationRuntimeCreateRequest creates the CreateLinkedIntegrationRuntime request.
-func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest CreateLinkedIntegrationRuntimeRequest, options *IntegrationRuntimesCreateLinkedIntegrationRuntimeOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest CreateLinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/linkedIntegrationRuntime"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateReq
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,39 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateReq
 }
 
 // createLinkedIntegrationRuntimeHandleResponse handles the CreateLinkedIntegrationRuntime response.
-func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleResponse(resp *http.Response) (IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse, error) {
-	result := IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleResponse(resp *http.Response) (IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error) {
+	result := IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeStatusResponse); err != nil {
-		return IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
 	}
 	return result, nil
 }
 
-// createLinkedIntegrationRuntimeHandleError handles the CreateLinkedIntegrationRuntime error response.
-func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Creates or updates an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesCreateOrUpdateOptions) (IntegrationRuntimesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// integrationRuntime - Integration runtime resource definition.
+// options - IntegrationRuntimesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.CreateOrUpdate
+// method.
+func (client *IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientCreateOrUpdateOptions) (IntegrationRuntimesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, options)
 	if err != nil {
-		return IntegrationRuntimesCreateOrUpdateResponse{}, err
+		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesCreateOrUpdateResponse{}, err
+		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationRuntimesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +153,7 @@ func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,46 +168,38 @@ func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationRuntimesCreateOrUpdateResponse, error) {
-	result := IntegrationRuntimesCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationRuntimesClientCreateOrUpdateResponse, error) {
+	result := IntegrationRuntimesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
-		return IntegrationRuntimesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationRuntimesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesDeleteOptions) (IntegrationRuntimesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientDeleteOptions contains the optional parameters for the IntegrationRuntimesClient.Delete
+// method.
+func (client *IntegrationRuntimesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientDeleteOptions) (IntegrationRuntimesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesDeleteResponse{}, err
+		return IntegrationRuntimesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesDeleteResponse{}, err
+		return IntegrationRuntimesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationRuntimesDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationRuntimesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationRuntimesDeleteResponse{RawResponse: resp}, nil
+	return IntegrationRuntimesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +217,7 @@ func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,38 +228,29 @@ func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationRuntimesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetOptions) (IntegrationRuntimesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientGetOptions contains the optional parameters for the IntegrationRuntimesClient.Get method.
+func (client *IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetOptions) (IntegrationRuntimesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesGetResponse{}, err
+		return IntegrationRuntimesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesGetResponse{}, err
+		return IntegrationRuntimesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotModified) {
-		return IntegrationRuntimesGetResponse{}, client.getHandleError(resp)
+		return IntegrationRuntimesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -279,7 +268,7 @@ func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,46 +283,39 @@ func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) (IntegrationRuntimesGetResponse, error) {
-	result := IntegrationRuntimesGetResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetResponse, error) {
+	result := IntegrationRuntimesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
-		return IntegrationRuntimesGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationRuntimesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetConnectionInfo - Gets the on-premises integration runtime connection information for encrypting the on-premises data source credentials.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) GetConnectionInfo(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetConnectionInfoOptions) (IntegrationRuntimesGetConnectionInfoResponse, error) {
+// GetConnectionInfo - Gets the on-premises integration runtime connection information for encrypting the on-premises data
+// source credentials.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientGetConnectionInfoOptions contains the optional parameters for the IntegrationRuntimesClient.GetConnectionInfo
+// method.
+func (client *IntegrationRuntimesClient) GetConnectionInfo(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetConnectionInfoOptions) (IntegrationRuntimesClientGetConnectionInfoResponse, error) {
 	req, err := client.getConnectionInfoCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesGetConnectionInfoResponse{}, err
+		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesGetConnectionInfoResponse{}, err
+		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesGetConnectionInfoResponse{}, client.getConnectionInfoHandleError(resp)
+		return IntegrationRuntimesClientGetConnectionInfoResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getConnectionInfoHandleResponse(resp)
 }
 
 // getConnectionInfoCreateRequest creates the GetConnectionInfo request.
-func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetConnectionInfoOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetConnectionInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getConnectionInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -351,7 +333,7 @@ func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,46 +345,39 @@ func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx cont
 }
 
 // getConnectionInfoHandleResponse handles the GetConnectionInfo response.
-func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *http.Response) (IntegrationRuntimesGetConnectionInfoResponse, error) {
-	result := IntegrationRuntimesGetConnectionInfoResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetConnectionInfoResponse, error) {
+	result := IntegrationRuntimesClientGetConnectionInfoResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeConnectionInfo); err != nil {
-		return IntegrationRuntimesGetConnectionInfoResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
 	}
 	return result, nil
 }
 
-// getConnectionInfoHandleError handles the GetConnectionInfo error response.
-func (client *IntegrationRuntimesClient) getConnectionInfoHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetMonitoringData - Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) GetMonitoringData(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetMonitoringDataOptions) (IntegrationRuntimesGetMonitoringDataResponse, error) {
+// GetMonitoringData - Get the integration runtime monitoring data, which includes the monitor data for all the nodes under
+// this integration runtime.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientGetMonitoringDataOptions contains the optional parameters for the IntegrationRuntimesClient.GetMonitoringData
+// method.
+func (client *IntegrationRuntimesClient) GetMonitoringData(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetMonitoringDataOptions) (IntegrationRuntimesClientGetMonitoringDataResponse, error) {
 	req, err := client.getMonitoringDataCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesGetMonitoringDataResponse{}, err
+		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesGetMonitoringDataResponse{}, err
+		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesGetMonitoringDataResponse{}, client.getMonitoringDataHandleError(resp)
+		return IntegrationRuntimesClientGetMonitoringDataResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getMonitoringDataHandleResponse(resp)
 }
 
 // getMonitoringDataCreateRequest creates the GetMonitoringData request.
-func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetMonitoringDataOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetMonitoringDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/monitoringData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -420,7 +395,7 @@ func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,46 +407,38 @@ func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx cont
 }
 
 // getMonitoringDataHandleResponse handles the GetMonitoringData response.
-func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *http.Response) (IntegrationRuntimesGetMonitoringDataResponse, error) {
-	result := IntegrationRuntimesGetMonitoringDataResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetMonitoringDataResponse, error) {
+	result := IntegrationRuntimesClientGetMonitoringDataResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
-		return IntegrationRuntimesGetMonitoringDataResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
 	}
 	return result, nil
 }
 
-// getMonitoringDataHandleError handles the GetMonitoringData error response.
-func (client *IntegrationRuntimesClient) getMonitoringDataHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStatus - Gets detailed status information for an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) GetStatus(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetStatusOptions) (IntegrationRuntimesGetStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientGetStatusOptions contains the optional parameters for the IntegrationRuntimesClient.GetStatus
+// method.
+func (client *IntegrationRuntimesClient) GetStatus(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetStatusOptions) (IntegrationRuntimesClientGetStatusResponse, error) {
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesGetStatusResponse{}, err
+		return IntegrationRuntimesClientGetStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesGetStatusResponse{}, err
+		return IntegrationRuntimesClientGetStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesGetStatusResponse{}, client.getStatusHandleError(resp)
+		return IntegrationRuntimesClientGetStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStatusHandleResponse(resp)
 }
 
 // getStatusCreateRequest creates the GetStatus request.
-func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesGetStatusOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -489,7 +456,7 @@ func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -501,46 +468,38 @@ func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Cont
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Response) (IntegrationRuntimesGetStatusResponse, error) {
-	result := IntegrationRuntimesGetStatusResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetStatusResponse, error) {
+	result := IntegrationRuntimesClientGetStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeStatusResponse); err != nil {
-		return IntegrationRuntimesGetStatusResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientGetStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getStatusHandleError handles the GetStatus error response.
-func (client *IntegrationRuntimesClient) getStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAuthKeys - Retrieves the authentication keys for an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) ListAuthKeys(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesListAuthKeysOptions) (IntegrationRuntimesListAuthKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientListAuthKeysOptions contains the optional parameters for the IntegrationRuntimesClient.ListAuthKeys
+// method.
+func (client *IntegrationRuntimesClient) ListAuthKeys(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListAuthKeysOptions) (IntegrationRuntimesClientListAuthKeysResponse, error) {
 	req, err := client.listAuthKeysCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesListAuthKeysResponse{}, err
+		return IntegrationRuntimesClientListAuthKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesListAuthKeysResponse{}, err
+		return IntegrationRuntimesClientListAuthKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesListAuthKeysResponse{}, client.listAuthKeysHandleError(resp)
+		return IntegrationRuntimesClientListAuthKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listAuthKeysHandleResponse(resp)
 }
 
 // listAuthKeysCreateRequest creates the ListAuthKeys request.
-func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesListAuthKeysOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListAuthKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -558,7 +517,7 @@ func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -570,43 +529,34 @@ func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.C
 }
 
 // listAuthKeysHandleResponse handles the ListAuthKeys response.
-func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.Response) (IntegrationRuntimesListAuthKeysResponse, error) {
-	result := IntegrationRuntimesListAuthKeysResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.Response) (IntegrationRuntimesClientListAuthKeysResponse, error) {
+	result := IntegrationRuntimesClientListAuthKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
-		return IntegrationRuntimesListAuthKeysResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientListAuthKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listAuthKeysHandleError handles the ListAuthKeys error response.
-func (client *IntegrationRuntimesClient) listAuthKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByFactory - Lists integration runtimes.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) ListByFactory(resourceGroupName string, factoryName string, options *IntegrationRuntimesListByFactoryOptions) *IntegrationRuntimesListByFactoryPager {
-	return &IntegrationRuntimesListByFactoryPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// options - IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.ListByFactory
+// method.
+func (client *IntegrationRuntimesClient) ListByFactory(resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) *IntegrationRuntimesClientListByFactoryPager {
+	return &IntegrationRuntimesClientListByFactoryPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationRuntimesListByFactoryResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationRuntimesClientListByFactoryResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationRuntimeListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *IntegrationRuntimesListByFactoryOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -620,7 +570,7 @@ func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -632,46 +582,39 @@ func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.Response) (IntegrationRuntimesListByFactoryResponse, error) {
-	result := IntegrationRuntimesListByFactoryResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.Response) (IntegrationRuntimesClientListByFactoryResponse, error) {
+	result := IntegrationRuntimesClientListByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeListResponse); err != nil {
-		return IntegrationRuntimesListByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientListByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
-// listByFactoryHandleError handles the ListByFactory error response.
-func (client *IntegrationRuntimesClient) listByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListOutboundNetworkDependenciesEndpoints - Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions) (IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse, error) {
+// ListOutboundNetworkDependenciesEndpoints - Gets the list of outbound network dependencies for a given Azure-SSIS integration
+// runtime.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for
+// the IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints method.
+func (client *IntegrationRuntimesClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions) (IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
 	req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse{}, err
+		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse{}, err
+		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse{}, client.listOutboundNetworkDependenciesEndpointsHandleError(resp)
+		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
-func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -689,7 +632,7 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -701,46 +644,39 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse); err != nil {
-		return IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
-// listOutboundNetworkDependenciesEndpointsHandleError handles the ListOutboundNetworkDependenciesEndpoints error response.
-func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateAuthKey - Regenerates the authentication key for an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) RegenerateAuthKey(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimesRegenerateAuthKeyOptions) (IntegrationRuntimesRegenerateAuthKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// regenerateKeyParameters - The parameters for regenerating integration runtime authentication key.
+// options - IntegrationRuntimesClientRegenerateAuthKeyOptions contains the optional parameters for the IntegrationRuntimesClient.RegenerateAuthKey
+// method.
+func (client *IntegrationRuntimesClient) RegenerateAuthKey(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimesClientRegenerateAuthKeyOptions) (IntegrationRuntimesClientRegenerateAuthKeyResponse, error) {
 	req, err := client.regenerateAuthKeyCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters, options)
 	if err != nil {
-		return IntegrationRuntimesRegenerateAuthKeyResponse{}, err
+		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesRegenerateAuthKeyResponse{}, err
+		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesRegenerateAuthKeyResponse{}, client.regenerateAuthKeyHandleError(resp)
+		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateAuthKeyHandleResponse(resp)
 }
 
 // regenerateAuthKeyCreateRequest creates the RegenerateAuthKey request.
-func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimesRegenerateAuthKeyOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimesClientRegenerateAuthKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -758,7 +694,7 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -770,46 +706,39 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx cont
 }
 
 // regenerateAuthKeyHandleResponse handles the RegenerateAuthKey response.
-func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *http.Response) (IntegrationRuntimesRegenerateAuthKeyResponse, error) {
-	result := IntegrationRuntimesRegenerateAuthKeyResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *http.Response) (IntegrationRuntimesClientRegenerateAuthKeyResponse, error) {
+	result := IntegrationRuntimesClientRegenerateAuthKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
-		return IntegrationRuntimesRegenerateAuthKeyResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// regenerateAuthKeyHandleError handles the RegenerateAuthKey error response.
-func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RemoveLinks - Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) RemoveLinks(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest LinkedIntegrationRuntimeRequest, options *IntegrationRuntimesRemoveLinksOptions) (IntegrationRuntimesRemoveLinksResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// linkedIntegrationRuntimeRequest - The data factory name for the linked integration runtime.
+// options - IntegrationRuntimesClientRemoveLinksOptions contains the optional parameters for the IntegrationRuntimesClient.RemoveLinks
+// method.
+func (client *IntegrationRuntimesClient) RemoveLinks(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest LinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientRemoveLinksOptions) (IntegrationRuntimesClientRemoveLinksResponse, error) {
 	req, err := client.removeLinksCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, options)
 	if err != nil {
-		return IntegrationRuntimesRemoveLinksResponse{}, err
+		return IntegrationRuntimesClientRemoveLinksResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesRemoveLinksResponse{}, err
+		return IntegrationRuntimesClientRemoveLinksResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesRemoveLinksResponse{}, client.removeLinksHandleError(resp)
+		return IntegrationRuntimesClientRemoveLinksResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationRuntimesRemoveLinksResponse{RawResponse: resp}, nil
+	return IntegrationRuntimesClientRemoveLinksResponse{RawResponse: resp}, nil
 }
 
 // removeLinksCreateRequest creates the RemoveLinks request.
-func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest LinkedIntegrationRuntimeRequest, options *IntegrationRuntimesRemoveLinksOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest LinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientRemoveLinksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeLinks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -827,7 +756,7 @@ func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Co
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -838,42 +767,34 @@ func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, linkedIntegrationRuntimeRequest)
 }
 
-// removeLinksHandleError handles the RemoveLinks error response.
-func (client *IntegrationRuntimesClient) removeLinksHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Starts a ManagedReserved type integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStartOptions) (IntegrationRuntimesStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientBeginStartOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStart
+// method.
+func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (IntegrationRuntimesClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesStartPollerResponse{}, err
+		return IntegrationRuntimesClientStartPollerResponse{}, err
 	}
-	result := IntegrationRuntimesStartPollerResponse{
+	result := IntegrationRuntimesClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IntegrationRuntimesClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("IntegrationRuntimesClient.Start", "", resp, client.pl)
 	if err != nil {
-		return IntegrationRuntimesStartPollerResponse{}, err
+		return IntegrationRuntimesClientStartPollerResponse{}, err
 	}
-	result.Poller = &IntegrationRuntimesStartPoller{
+	result.Poller = &IntegrationRuntimesClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts a ManagedReserved type integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
 		return nil, err
@@ -883,13 +804,13 @@ func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStartOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -907,7 +828,7 @@ func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -918,42 +839,34 @@ func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *IntegrationRuntimesClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Stops a ManagedReserved type integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStopOptions) (IntegrationRuntimesStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientBeginStopOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStop
+// method.
+func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (IntegrationRuntimesClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesStopPollerResponse{}, err
+		return IntegrationRuntimesClientStopPollerResponse{}, err
 	}
-	result := IntegrationRuntimesStopPollerResponse{
+	result := IntegrationRuntimesClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IntegrationRuntimesClient.Stop", "", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("IntegrationRuntimesClient.Stop", "", resp, client.pl)
 	if err != nil {
-		return IntegrationRuntimesStopPollerResponse{}, err
+		return IntegrationRuntimesClientStopPollerResponse{}, err
 	}
-	result.Poller = &IntegrationRuntimesStopPoller{
+	result.Poller = &IntegrationRuntimesClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Stops a ManagedReserved type integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
 		return nil, err
@@ -963,13 +876,13 @@ func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesBeginStopOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -987,7 +900,7 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -998,41 +911,33 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *IntegrationRuntimesClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// SyncCredentials - Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override the credentials across
-// all worker nodes with those available on the dispatcher node.
-// If you already have the latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime node than using
-// this API directly.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) SyncCredentials(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesSyncCredentialsOptions) (IntegrationRuntimesSyncCredentialsResponse, error) {
+// SyncCredentials - Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+// override the credentials across all worker nodes with those available on the dispatcher node.
+// If you already have the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+// runtime node than using this API directly.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientSyncCredentialsOptions contains the optional parameters for the IntegrationRuntimesClient.SyncCredentials
+// method.
+func (client *IntegrationRuntimesClient) SyncCredentials(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientSyncCredentialsOptions) (IntegrationRuntimesClientSyncCredentialsResponse, error) {
 	req, err := client.syncCredentialsCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesSyncCredentialsResponse{}, err
+		return IntegrationRuntimesClientSyncCredentialsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesSyncCredentialsResponse{}, err
+		return IntegrationRuntimesClientSyncCredentialsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesSyncCredentialsResponse{}, client.syncCredentialsHandleError(resp)
+		return IntegrationRuntimesClientSyncCredentialsResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationRuntimesSyncCredentialsResponse{RawResponse: resp}, nil
+	return IntegrationRuntimesClientSyncCredentialsResponse{RawResponse: resp}, nil
 }
 
 // syncCredentialsCreateRequest creates the SyncCredentials request.
-func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesSyncCredentialsOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientSyncCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/syncCredentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1050,7 +955,7 @@ func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx contex
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1061,38 +966,31 @@ func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx contex
 	return req, nil
 }
 
-// syncCredentialsHandleError handles the SyncCredentials error response.
-func (client *IntegrationRuntimesClient) syncCredentialsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an integration runtime.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest, options *IntegrationRuntimesUpdateOptions) (IntegrationRuntimesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// updateIntegrationRuntimeRequest - The parameters for updating an integration runtime.
+// options - IntegrationRuntimesClientUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.Update
+// method.
+func (client *IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest, options *IntegrationRuntimesClientUpdateOptions) (IntegrationRuntimesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest, options)
 	if err != nil {
-		return IntegrationRuntimesUpdateResponse{}, err
+		return IntegrationRuntimesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesUpdateResponse{}, err
+		return IntegrationRuntimesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesUpdateResponse{}, client.updateHandleError(resp)
+		return IntegrationRuntimesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest, options *IntegrationRuntimesUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest, options *IntegrationRuntimesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1110,7 +1008,7 @@ func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1122,46 +1020,38 @@ func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Response) (IntegrationRuntimesUpdateResponse, error) {
-	result := IntegrationRuntimesUpdateResponse{RawResponse: resp}
+func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Response) (IntegrationRuntimesClientUpdateResponse, error) {
+	result := IntegrationRuntimesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
-		return IntegrationRuntimesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimesClientUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// updateHandleError handles the Update error response.
-func (client *IntegrationRuntimesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Upgrade - Upgrade self-hosted integration runtime to latest version if availability.
-// If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesUpgradeOptions) (IntegrationRuntimesUpgradeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// integrationRuntimeName - The integration runtime name.
+// options - IntegrationRuntimesClientUpgradeOptions contains the optional parameters for the IntegrationRuntimesClient.Upgrade
+// method.
+func (client *IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientUpgradeOptions) (IntegrationRuntimesClientUpgradeResponse, error) {
 	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimesUpgradeResponse{}, err
+		return IntegrationRuntimesClientUpgradeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimesUpgradeResponse{}, err
+		return IntegrationRuntimesClientUpgradeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimesUpgradeResponse{}, client.upgradeHandleError(resp)
+		return IntegrationRuntimesClientUpgradeResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationRuntimesUpgradeResponse{RawResponse: resp}, nil
+	return IntegrationRuntimesClientUpgradeResponse{RawResponse: resp}, nil
 }
 
 // upgradeCreateRequest creates the Upgrade request.
-func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesUpgradeOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/upgrade"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1179,7 +1069,7 @@ func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1188,17 +1078,4 @@ func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// upgradeHandleError handles the Upgrade error response.
-func (client *IntegrationRuntimesClient) upgradeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,44 +24,60 @@ import (
 // ReplicationProtectionIntentsClient contains the methods for the ReplicationProtectionIntents group.
 // Don't use this type directly, use NewReplicationProtectionIntentsClient() instead.
 type ReplicationProtectionIntentsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationProtectionIntentsClient creates a new instance of ReplicationProtectionIntentsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationProtectionIntentsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectionIntentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationProtectionIntentsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationProtectionIntentsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - The operation to create an ASR replication protection intent item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionIntentsClient) Create(ctx context.Context, intentObjectName string, input CreateProtectionIntentInput, options *ReplicationProtectionIntentsCreateOptions) (ReplicationProtectionIntentsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// intentObjectName - A name for the replication protection item.
+// input - Create Protection Intent Input.
+// options - ReplicationProtectionIntentsClientCreateOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Create
+// method.
+func (client *ReplicationProtectionIntentsClient) Create(ctx context.Context, intentObjectName string, input CreateProtectionIntentInput, options *ReplicationProtectionIntentsClientCreateOptions) (ReplicationProtectionIntentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, intentObjectName, input, options)
 	if err != nil {
-		return ReplicationProtectionIntentsCreateResponse{}, err
+		return ReplicationProtectionIntentsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationProtectionIntentsCreateResponse{}, err
+		return ReplicationProtectionIntentsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationProtectionIntentsCreateResponse{}, client.createHandleError(resp)
+		return ReplicationProtectionIntentsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx context.Context, intentObjectName string, input CreateProtectionIntentInput, options *ReplicationProtectionIntentsCreateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx context.Context, intentObjectName string, input CreateProtectionIntentInput, options *ReplicationProtectionIntentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents/{intentObjectName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -79,57 +95,48 @@ func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx contex
 		return nil, errors.New("parameter intentObjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{intentObjectName}", url.PathEscape(intentObjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
 // createHandleResponse handles the Create response.
-func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *http.Response) (ReplicationProtectionIntentsCreateResponse, error) {
-	result := ReplicationProtectionIntentsCreateResponse{RawResponse: resp}
+func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientCreateResponse, error) {
+	result := ReplicationProtectionIntentsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntent); err != nil {
-		return ReplicationProtectionIntentsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionIntentsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationProtectionIntentsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of an ASR replication protection intent.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionIntentsClient) Get(ctx context.Context, intentObjectName string, options *ReplicationProtectionIntentsGetOptions) (ReplicationProtectionIntentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// intentObjectName - Replication protection intent name.
+// options - ReplicationProtectionIntentsClientGetOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Get
+// method.
+func (client *ReplicationProtectionIntentsClient) Get(ctx context.Context, intentObjectName string, options *ReplicationProtectionIntentsClientGetOptions) (ReplicationProtectionIntentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, intentObjectName, options)
 	if err != nil {
-		return ReplicationProtectionIntentsGetResponse{}, err
+		return ReplicationProtectionIntentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationProtectionIntentsGetResponse{}, err
+		return ReplicationProtectionIntentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationProtectionIntentsGetResponse{}, client.getHandleError(resp)
+		return ReplicationProtectionIntentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.Context, intentObjectName string, options *ReplicationProtectionIntentsGetOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.Context, intentObjectName string, options *ReplicationProtectionIntentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents/{intentObjectName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -147,54 +154,44 @@ func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter intentObjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{intentObjectName}", url.PathEscape(intentObjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.Response) (ReplicationProtectionIntentsGetResponse, error) {
-	result := ReplicationProtectionIntentsGetResponse{RawResponse: resp}
+func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientGetResponse, error) {
+	result := ReplicationProtectionIntentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntent); err != nil {
-		return ReplicationProtectionIntentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionIntentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationProtectionIntentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets the list of ASR replication protection intent objects in the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionIntentsClient) List(options *ReplicationProtectionIntentsListOptions) *ReplicationProtectionIntentsListPager {
-	return &ReplicationProtectionIntentsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.List
+// method.
+func (client *ReplicationProtectionIntentsClient) List(options *ReplicationProtectionIntentsClientListOptions) *ReplicationProtectionIntentsClientListPager {
+	return &ReplicationProtectionIntentsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionIntentsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectionIntentsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationProtectionIntentCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionIntentsListOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionIntentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -208,12 +205,12 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -226,22 +223,10 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationProtectionIntentsClient) listHandleResponse(resp *http.Response) (ReplicationProtectionIntentsListResponse, error) {
-	result := ReplicationProtectionIntentsListResponse{RawResponse: resp}
+func (client *ReplicationProtectionIntentsClient) listHandleResponse(resp *http.Response) (ReplicationProtectionIntentsClientListResponse, error) {
+	result := ReplicationProtectionIntentsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionIntentCollection); err != nil {
-		return ReplicationProtectionIntentsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionIntentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReplicationProtectionIntentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

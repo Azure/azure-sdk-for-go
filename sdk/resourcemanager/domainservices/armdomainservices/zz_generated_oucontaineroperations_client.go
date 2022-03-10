@@ -10,7 +10,6 @@ package armdomainservices
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,48 @@ import (
 // OuContainerOperationsClient contains the methods for the OuContainerOperations group.
 // Don't use this type directly, use NewOuContainerOperationsClient() instead.
 type OuContainerOperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewOuContainerOperationsClient creates a new instance of OuContainerOperationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOuContainerOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OuContainerOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OuContainerOperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OuContainerOperationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all the available OuContainer operations.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerOperationsClient) List(options *OuContainerOperationsListOptions) *OuContainerOperationsListPager {
-	return &OuContainerOperationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - OuContainerOperationsClientListOptions contains the optional parameters for the OuContainerOperationsClient.List
+// method.
+func (client *OuContainerOperationsClient) List(options *OuContainerOperationsClientListOptions) *OuContainerOperationsClientListPager {
+	return &OuContainerOperationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp OuContainerOperationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OuContainerOperationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationEntityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OuContainerOperationsClient) listCreateRequest(ctx context.Context, options *OuContainerOperationsListOptions) (*policy.Request, error) {
+func (client *OuContainerOperationsClient) listCreateRequest(ctx context.Context, options *OuContainerOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Aad/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +74,10 @@ func (client *OuContainerOperationsClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *OuContainerOperationsClient) listHandleResponse(resp *http.Response) (OuContainerOperationsListResponse, error) {
-	result := OuContainerOperationsListResponse{RawResponse: resp}
+func (client *OuContainerOperationsClient) listHandleResponse(resp *http.Response) (OuContainerOperationsClientListResponse, error) {
+	result := OuContainerOperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationEntityListResult); err != nil {
-		return OuContainerOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return OuContainerOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OuContainerOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

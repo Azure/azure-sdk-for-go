@@ -19,30 +19,31 @@ import (
 )
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/QueryPerformanceInsightResetData.json
-func ExampleMariaDBManagementClient_ResetQueryPerformanceInsightData() {
+func ExampleManagementClient_ResetQueryPerformanceInsightData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmariadb.NewMariaDBManagementClient("<subscription-id>", cred, nil)
-	_, err = client.ResetQueryPerformanceInsightData(ctx,
+	client := armmariadb.NewManagementClient("<subscription-id>", cred, nil)
+	res, err := client.ResetQueryPerformanceInsightData(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagementClientResetQueryPerformanceInsightDataResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/RecommendedActionSessionCreate.json
-func ExampleMariaDBManagementClient_BeginCreateRecommendedActionSession() {
+func ExampleManagementClient_BeginCreateRecommendedActionSession() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmariadb.NewMariaDBManagementClient("<subscription-id>", cred, nil)
+	client := armmariadb.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateRecommendedActionSession(ctx,
 		"<resource-group-name>",
 		"<server-name>",

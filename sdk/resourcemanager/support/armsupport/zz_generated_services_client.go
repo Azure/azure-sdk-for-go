@@ -11,7 +11,6 @@ package armsupport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,55 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServicesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServicesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServicesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a specific Azure service for support ticket creation.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *ServicesClient) Get(ctx context.Context, serviceName string, options *ServicesGetOptions) (ServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// serviceName - Name of the Azure service.
+// options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+func (client *ServicesClient) Get(ctx context.Context, serviceName string, options *ServicesClientGetOptions) (ServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, serviceName, options)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesGetResponse{}, client.getHandleError(resp)
+		return ServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, serviceName string, options *ServicesGetOptions) (*policy.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, serviceName string, options *ServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Support/services/{serviceName}"
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,53 +84,41 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, serviceName 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesGetResponse, error) {
-	result := ServicesGetResponse{RawResponse: resp}
+func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
+	result := ServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Service); err != nil {
-		return ServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all the Azure services available for support ticket creation. For Technical issues, select the Service Id that maps to the Azure service/product
-// as displayed in the Services drop-down list on
-// the Azure portal's New support request [https://portal.azure.com/#blade/MicrosoftAzureSupport/HelpAndSupportBlade/overview] page. Always use the service
-// and its corresponding problem classification(s)
-// obtained programmatically for support ticket creation. This practice ensures that you always have the most recent set of service and problem classification
-// Ids.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *ServicesClient) List(ctx context.Context, options *ServicesListOptions) (ServicesListResponse, error) {
+// List - Lists all the Azure services available for support ticket creation. For Technical issues, select the Service Id
+// that maps to the Azure service/product as displayed in the Services drop-down list on
+// the Azure portal's New support request [https://portal.azure.com/#blade/MicrosoftAzureSupport/HelpAndSupportBlade/overview]
+// page. Always use the service and its corresponding problem classification(s)
+// obtained programmatically for support ticket creation. This practice ensures that you always have the most recent set of
+// service and problem classification Ids.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+func (client *ServicesClient) List(ctx context.Context, options *ServicesClientListOptions) (ServicesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ServicesListResponse{}, err
+		return ServicesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesListResponse{}, err
+		return ServicesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesListResponse{}, client.listHandleError(resp)
+		return ServicesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, options *ServicesListOptions) (*policy.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, options *ServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Support/services"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,23 +130,10 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, options *Se
 }
 
 // listHandleResponse handles the List response.
-func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesListResponse, error) {
-	result := ServicesListResponse{RawResponse: resp}
+func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesClientListResponse, error) {
+	result := ServicesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServicesListResult); err != nil {
-		return ServicesListResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ServicesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

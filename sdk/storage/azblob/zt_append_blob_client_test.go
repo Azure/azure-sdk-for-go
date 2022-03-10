@@ -150,7 +150,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert.Equal((*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
@@ -202,7 +202,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
 	_assert.Nil(err)
 	_assert.Equal(destData, sourceData)
-	_ = downloadResp.Body(RetryReaderOptions{}).Close()
+	_ = downloadResp.Body(nil).Close()
 }
 
 //nolint
@@ -245,7 +245,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_assert.Equal((*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
@@ -294,7 +294,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 

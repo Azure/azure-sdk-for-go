@@ -13,6 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+const credNameManagedIdentity = "ManagedIdentityCredential"
+
 type managedIdentityIDKind int
 
 const (
@@ -70,18 +72,15 @@ type ManagedIdentityCredential struct {
 }
 
 // NewManagedIdentityCredential creates a ManagedIdentityCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
-	client := newManagedIdentityClient(options)
-	msiType, err := client.getMSIType()
+	client, err := newManagedIdentityClient(options)
 	if err != nil {
-		logCredentialError("Managed Identity Credential", err)
 		return nil, err
 	}
-	client.msiType = msiType
 	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
 }
 
@@ -89,25 +88,17 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // ctx: Context used to control the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if opts.Scopes == nil {
-		err := errors.New("must specify a resource in order to authenticate")
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
-		return nil, err
-	}
 	if len(opts.Scopes) != 1 {
-		err := errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		err := errors.New(credNameManagedIdentity + ": GetToken() requires exactly one scope")
 		return nil, err
 	}
 	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
-	logMSIEnv(c.client.msiType)
 	return tk, err
 }
 

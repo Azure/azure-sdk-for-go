@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -120,18 +121,23 @@ type GetTopicOptions struct {
 }
 
 // GetTopic gets a topic by name.
+// If the entity does not exist this function will return a nil GetTopicResponse and a nil error.
 func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
 	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetTopicResponse{
@@ -159,18 +165,23 @@ type GetTopicRuntimePropertiesOptions struct {
 }
 
 // GetTopicRuntimeProperties gets runtime properties of a topic, like the SizeInBytes, or SubscriptionCount.
+// If the entity does not exist this function will return a nil GetTopicRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string, options *GetTopicRuntimePropertiesOptions) (*GetTopicRuntimePropertiesResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
 	props, err := newTopicRuntimeProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetTopicRuntimePropertiesResponse{
@@ -239,7 +250,7 @@ func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, err
 		props, err := newTopicProperties(&env.Content.TopicDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &TopicItem{
@@ -326,7 +337,7 @@ func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTop
 		props, err := newTopicRuntimeProperties(&entry.Content.TopicDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &TopicRuntimePropertiesItem{
@@ -436,7 +447,7 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, nil, atom.NewResponseError(err, resp)
+		return nil, nil, err
 	}
 
 	return topicProps, resp, nil

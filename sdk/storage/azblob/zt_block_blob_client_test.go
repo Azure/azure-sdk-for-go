@@ -124,7 +124,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
@@ -189,7 +189,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 }
@@ -222,7 +222,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
@@ -268,7 +268,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 
@@ -317,7 +317,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get blob url with SAS.
-	blobParts := NewBlobURLParts(bbClient.URL())
+	blobParts, _ := NewBlobURLParts(bbClient.URL())
 
 	cacheControlVal := "cache-control-override"
 	contentDispositionVal := "content-disposition-override"
@@ -1186,7 +1186,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}.Sign(credential)
 	_assert.Nil(err)
 
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -1235,7 +1235,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -1306,7 +1306,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, content)
 

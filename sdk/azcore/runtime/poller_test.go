@@ -16,8 +16,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -92,12 +92,17 @@ func TestLocPollerSimple(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, nil)
+	var respFromCtx *http.Response
+	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
+	resp, err := lro.PollUntilDone(ctxWithResp, time.Second, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	if respFromCtx != resp {
+		t.Fatal("response from context doesn't match returned response")
 	}
 }
 
@@ -167,7 +172,7 @@ func TestLocPollerCancelled(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	if _, ok := err.(*azcore.ResponseError); !ok {
+	if _, ok := err.(*shared.ResponseError); !ok {
 		t.Fatal("expected pollerError")
 	}
 	if resp != nil {

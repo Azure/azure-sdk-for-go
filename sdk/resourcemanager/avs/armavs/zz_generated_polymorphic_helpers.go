@@ -32,44 +32,6 @@ func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonProper
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAddonPropertiesClassificationArray(rawMsg json.RawMessage) ([]AddonPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AddonPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAddonPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAddonPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]AddonPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AddonPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAddonPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (PlacementPolicyPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -88,44 +50,6 @@ func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (P
 		b = &PlacementPolicyProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalPlacementPolicyPropertiesClassificationArray(rawMsg json.RawMessage) ([]PlacementPolicyPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]PlacementPolicyPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalPlacementPolicyPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalPlacementPolicyPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]PlacementPolicyPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]PlacementPolicyPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalPlacementPolicyPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (ScriptExecutionParameterClassification, error) {
@@ -169,25 +93,6 @@ func unmarshalScriptExecutionParameterClassificationArray(rawMsg json.RawMessage
 	return fArray, nil
 }
 
-func unmarshalScriptExecutionParameterClassificationMap(rawMsg json.RawMessage) (map[string]ScriptExecutionParameterClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ScriptExecutionParameterClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalScriptExecutionParameterClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (WorkloadNetworkDhcpEntityClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -206,42 +111,4 @@ func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (W
 		b = &WorkloadNetworkDhcpEntity{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalWorkloadNetworkDhcpEntityClassificationArray(rawMsg json.RawMessage) ([]WorkloadNetworkDhcpEntityClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]WorkloadNetworkDhcpEntityClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalWorkloadNetworkDhcpEntityClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalWorkloadNetworkDhcpEntityClassificationMap(rawMsg json.RawMessage) (map[string]WorkloadNetworkDhcpEntityClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]WorkloadNetworkDhcpEntityClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalWorkloadNetworkDhcpEntityClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

@@ -9,8 +9,8 @@
 package armcompute
 
 const (
-	module  = "armcompute"
-	version = "v0.2.1"
+	moduleName    = "armcompute"
+	moduleVersion = "v0.5.0"
 )
 
 type AccessLevel string
@@ -60,8 +60,50 @@ func (c AggregatedReplicationState) ToPtr() *AggregatedReplicationState {
 	return &c
 }
 
-// AvailabilitySetSKUTypes - Specifies the sku of an Availability Set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines
-// with unmanaged disks. Default value is 'Classic'.
+// Architecture - The architecture of the image. Applicable to OS disks only.
+type Architecture string
+
+const (
+	ArchitectureArm64 Architecture = "Arm64"
+	ArchitectureX64   Architecture = "x64"
+)
+
+// PossibleArchitectureValues returns the possible values for the Architecture const type.
+func PossibleArchitectureValues() []Architecture {
+	return []Architecture{
+		ArchitectureArm64,
+		ArchitectureX64,
+	}
+}
+
+// ToPtr returns a *Architecture pointing to the current value.
+func (c Architecture) ToPtr() *Architecture {
+	return &c
+}
+
+// ArchitectureTypes - Specifies the Architecture Type
+type ArchitectureTypes string
+
+const (
+	ArchitectureTypesArm64 ArchitectureTypes = "Arm64"
+	ArchitectureTypesX64   ArchitectureTypes = "x64"
+)
+
+// PossibleArchitectureTypesValues returns the possible values for the ArchitectureTypes const type.
+func PossibleArchitectureTypesValues() []ArchitectureTypes {
+	return []ArchitectureTypes{
+		ArchitectureTypesArm64,
+		ArchitectureTypesX64,
+	}
+}
+
+// ToPtr returns a *ArchitectureTypes pointing to the current value.
+func (c ArchitectureTypes) ToPtr() *ArchitectureTypes {
+	return &c
+}
+
+// AvailabilitySetSKUTypes - Specifies the sku of an Availability Set. Use 'Aligned' for virtual machines with managed disks
+// and 'Classic' for virtual machines with unmanaged disks. Default value is 'Classic'.
 type AvailabilitySetSKUTypes string
 
 const (
@@ -146,14 +188,14 @@ func (c CapacityReservationInstanceViewTypes) ToPtr() *CapacityReservationInstan
 	return &c
 }
 
-// CloudServiceUpgradeMode - Update mode for the cloud service. Role instances are allocated to update domains when the service is deployed. Updates can
-// be initiated manually in each update domain or initiated automatically in
+// CloudServiceUpgradeMode - Update mode for the cloud service. Role instances are allocated to update domains when the service
+// is deployed. Updates can be initiated manually in each update domain or initiated automatically in
 // all update domains. Possible Values are
 // Auto
 // Manual
 // Simultaneous
-// If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the update. If set to Auto, the update is automatically
-// applied to each update domain in
+// If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the update. If
+// set to Auto, the update is automatically applied to each update domain in
 // sequence.
 type CloudServiceUpgradeMode string
 
@@ -177,7 +219,31 @@ func (c CloudServiceUpgradeMode) ToPtr() *CloudServiceUpgradeMode {
 	return &c
 }
 
-// ConsistencyModeTypes - Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details.
+// ConfidentialVMEncryptionType - confidential VM encryption types
+type ConfidentialVMEncryptionType string
+
+const (
+	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = "EncryptedVMGuestStateOnlyWithPmk"
+	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = "EncryptedWithCmk"
+	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = "EncryptedWithPmk"
+)
+
+// PossibleConfidentialVMEncryptionTypeValues returns the possible values for the ConfidentialVMEncryptionType const type.
+func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
+	return []ConfidentialVMEncryptionType{
+		ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk,
+		ConfidentialVMEncryptionTypeEncryptedWithCmk,
+		ConfidentialVMEncryptionTypeEncryptedWithPmk,
+	}
+}
+
+// ToPtr returns a *ConfidentialVMEncryptionType pointing to the current value.
+func (c ConfidentialVMEncryptionType) ToPtr() *ConfidentialVMEncryptionType {
+	return &c
+}
+
+// ConsistencyModeTypes - Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for
+// more details.
 type ConsistencyModeTypes string
 
 const (
@@ -200,7 +266,32 @@ func (c ConsistencyModeTypes) ToPtr() *ConsistencyModeTypes {
 	return &c
 }
 
-// DedicatedHostLicenseTypes - Specifies the software license type that will be applied to the VMs deployed on the dedicated host.
+// DataAccessAuthMode - Additional authentication requirements when exporting or uploading to a disk or snapshot.
+type DataAccessAuthMode string
+
+const (
+	// DataAccessAuthModeAzureActiveDirectory - When export/upload URL is used, the system checks if the user has an identity
+	// in Azure Active Directory and has necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
+	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = "AzureActiveDirectory"
+	// DataAccessAuthModeNone - No additional authentication would be performed when accessing export/upload URL.
+	DataAccessAuthModeNone DataAccessAuthMode = "None"
+)
+
+// PossibleDataAccessAuthModeValues returns the possible values for the DataAccessAuthMode const type.
+func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
+	return []DataAccessAuthMode{
+		DataAccessAuthModeAzureActiveDirectory,
+		DataAccessAuthModeNone,
+	}
+}
+
+// ToPtr returns a *DataAccessAuthMode pointing to the current value.
+func (c DataAccessAuthMode) ToPtr() *DataAccessAuthMode {
+	return &c
+}
+
+// DedicatedHostLicenseTypes - Specifies the software license type that will be applied to the VMs deployed on the dedicated
+// host.
 // Possible values are:
 // None
 // WindowsServerHybrid
@@ -268,9 +359,10 @@ func (c DiffDiskOptions) ToPtr() *DiffDiskOptions {
 	return &c
 }
 
-// DiffDiskPlacement - Specifies the ephemeral disk placement for operating system disk. This property can be used by user in the request to choose the
-// location i.e, cache disk or resource disk space for Ephemeral OS disk
-// provisioning. For more information on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements for Windows VM at
+// DiffDiskPlacement - Specifies the ephemeral disk placement for operating system disk. This property can be used by user
+// in the request to choose the location i.e, cache disk or resource disk space for Ephemeral OS disk
+// provisioning. For more information on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements
+// for Windows VM at
 // https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VM at
 // https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
 type DiffDiskPlacement string
@@ -301,19 +393,27 @@ const (
 	DiskCreateOptionAttach DiskCreateOption = "Attach"
 	// DiskCreateOptionCopy - Create a new disk or snapshot by copying from a disk or snapshot specified by the given sourceResourceId.
 	DiskCreateOptionCopy DiskCreateOption = "Copy"
-	// DiskCreateOptionCopyStart - Create a new disk by using a deep copy process, where the resource creation is considered complete only after all data has
-	// been copied from the source.
+	// DiskCreateOptionCopyStart - Create a new disk by using a deep copy process, where the resource creation is considered complete
+	// only after all data has been copied from the source.
 	DiskCreateOptionCopyStart DiskCreateOption = "CopyStart"
 	// DiskCreateOptionEmpty - Create an empty data disk of a size given by diskSizeGB.
 	DiskCreateOptionEmpty DiskCreateOption = "Empty"
 	// DiskCreateOptionFromImage - Create a new disk from a platform image specified by the given imageReference or galleryImageReference.
 	DiskCreateOptionFromImage DiskCreateOption = "FromImage"
-	// DiskCreateOptionImport - Create a disk by importing from a blob specified by a sourceUri in a storage account specified by storageAccountId.
+	// DiskCreateOptionImport - Create a disk by importing from a blob specified by a sourceUri in a storage account specified
+	// by storageAccountId.
 	DiskCreateOptionImport DiskCreateOption = "Import"
+	// DiskCreateOptionImportSecure - Similar to Import create option. Create a new Trusted Launch VM or Confidential VM supported
+	// disk by importing additional blob for VM guest state specified by securityDataUri in storage account specified by storageAccountId
+	DiskCreateOptionImportSecure DiskCreateOption = "ImportSecure"
 	// DiskCreateOptionRestore - Create a new disk by copying from a backup recovery point.
 	DiskCreateOptionRestore DiskCreateOption = "Restore"
-	// DiskCreateOptionUpload - Create a new disk by obtaining a write token and using it to directly upload the contents of the disk.
+	// DiskCreateOptionUpload - Create a new disk by obtaining a write token and using it to directly upload the contents of the
+	// disk.
 	DiskCreateOptionUpload DiskCreateOption = "Upload"
+	// DiskCreateOptionUploadPreparedSecure - Similar to Upload create option. Create a new Trusted Launch VM or Confidential
+	// VM supported disk and upload using write token in both disk and VM guest state
+	DiskCreateOptionUploadPreparedSecure DiskCreateOption = "UploadPreparedSecure"
 )
 
 // PossibleDiskCreateOptionValues returns the possible values for the DiskCreateOption const type.
@@ -325,8 +425,10 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 		DiskCreateOptionEmpty,
 		DiskCreateOptionFromImage,
 		DiskCreateOptionImport,
+		DiskCreateOptionImportSecure,
 		DiskCreateOptionRestore,
 		DiskCreateOptionUpload,
+		DiskCreateOptionUploadPreparedSecure,
 	}
 }
 
@@ -338,8 +440,8 @@ func (c DiskCreateOption) ToPtr() *DiskCreateOption {
 // DiskCreateOptionTypes - Specifies how the virtual machine should be created.
 // Possible values are:
 // Attach \u2013 This value is used when you are using a specialized disk to create the virtual machine.
-// FromImage \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference
-// element described above. If you are
+// FromImage \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform
+// image, you also use the imageReference element described above. If you are
 // using a marketplace image, you also use the plan element previously described.
 type DiskCreateOptionTypes string
 
@@ -363,8 +465,8 @@ func (c DiskCreateOptionTypes) ToPtr() *DiskCreateOptionTypes {
 	return &c
 }
 
-// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted i.e whether the managed disk is deleted or detached. Supported
-// values:
+// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted i.e whether the managed disk
+// is deleted or detached. Supported values:
 // Delete If this value is used, the managed disk is deleted when VM gets deleted.
 // Detach If this value is used, the managed disk is retained after VM gets deleted.
 // Minimum api-version: 2021-03-01
@@ -388,14 +490,14 @@ func (c DiskDeleteOptionTypes) ToPtr() *DiskDeleteOptionTypes {
 	return &c
 }
 
-// DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the virtual
-// machine. Supported values: ForceDetach.
-// detachOption: ForceDetach is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
-// failure from the virtual machine and the
-// disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-// when using this detach behavior.
-// This feature is still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along
-// with setting detachOption: 'ForceDetach'.
+// DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process
+// of detachment from the virtual machine. Supported values: ForceDetach.
+// detachOption: ForceDetach is applicable only for managed data disks. If a previous detachment attempt of the data disk
+// did not complete due to an unexpected failure from the virtual machine and the
+// disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes
+// might not have been flushed when using this detach behavior.
+// This feature is still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
+// toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
 type DiskDetachOptionTypes string
 
 const (
@@ -414,8 +516,8 @@ func (c DiskDetachOptionTypes) ToPtr() *DiskDetachOptionTypes {
 	return &c
 }
 
-// DiskEncryptionSetIdentityType - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations. Disk
-// Encryption Sets can be updated with Identity type None during migration of
+// DiskEncryptionSetIdentityType - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported
+// for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
 // subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
 type DiskEncryptionSetIdentityType string
 
@@ -441,17 +543,21 @@ func (c DiskEncryptionSetIdentityType) ToPtr() *DiskEncryptionSetIdentityType {
 type DiskEncryptionSetType string
 
 const (
-	// DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey - Resource using diskEncryptionSet would be encrypted at rest with Customer managed key that can
-	// be changed and revoked by a customer.
+	// DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey - Confidential VM supported disk and VM guest state would be
+	// encrypted with customer managed key.
+	DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey DiskEncryptionSetType = "ConfidentialVmEncryptedWithCustomerKey"
+	// DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey - Resource using diskEncryptionSet would be encrypted at rest with
+	// Customer managed key that can be changed and revoked by a customer.
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey DiskEncryptionSetType = "EncryptionAtRestWithCustomerKey"
-	// DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys - Resource using diskEncryptionSet would be encrypted at rest with two layers of encryption.
-	// One of the keys is Customer managed and the other key is Platform managed.
+	// DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys - Resource using diskEncryptionSet would be encrypted
+	// at rest with two layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 )
 
 // PossibleDiskEncryptionSetTypeValues returns the possible values for the DiskEncryptionSetType const type.
 func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
 	return []DiskEncryptionSetType{
+		DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 	}
@@ -466,13 +572,26 @@ func (c DiskEncryptionSetType) ToPtr() *DiskEncryptionSetType {
 type DiskSecurityTypes string
 
 const (
-	// DiskSecurityTypesTrustedLaunch - Trusted Launch provides security features such as secure boot and virtual Trusted Platform Module (vTPM)
+	// DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey - Indicates Confidential VM disk with both OS disk and VM guest
+	// state encrypted with a customer managed key
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey DiskSecurityTypes = "ConfidentialVM_DiskEncryptedWithCustomerKey"
+	// DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey - Indicates Confidential VM disk with both OS disk and VM guest
+	// state encrypted with a platform managed key
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey DiskSecurityTypes = "ConfidentialVM_DiskEncryptedWithPlatformKey"
+	// DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey - Indicates Confidential VM disk with only VM guest
+	// state encrypted
+	DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey DiskSecurityTypes = "ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey"
+	// DiskSecurityTypesTrustedLaunch - Trusted Launch provides security features such as secure boot and virtual Trusted Platform
+	// Module (vTPM)
 	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = "TrustedLaunch"
 )
 
 // PossibleDiskSecurityTypesValues returns the possible values for the DiskSecurityTypes const type.
 func PossibleDiskSecurityTypesValues() []DiskSecurityTypes {
 	return []DiskSecurityTypes{
+		DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey,
+		DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey,
+		DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey,
 		DiskSecurityTypesTrustedLaunch,
 	}
 }
@@ -527,19 +646,23 @@ func (c DiskState) ToPtr() *DiskState {
 type DiskStorageAccountTypes string
 
 const (
-	// DiskStorageAccountTypesPremiumLRS - Premium SSD locally redundant storage. Best for production and performance sensitive workloads.
+	// DiskStorageAccountTypesPremiumLRS - Premium SSD locally redundant storage. Best for production and performance sensitive
+	// workloads.
 	DiskStorageAccountTypesPremiumLRS DiskStorageAccountTypes = "Premium_LRS"
-	// DiskStorageAccountTypesPremiumZRS - Premium SSD zone redundant storage. Best for the production workloads that need storage resiliency against zone failures.
+	// DiskStorageAccountTypesPremiumZRS - Premium SSD zone redundant storage. Best for the production workloads that need storage
+	// resiliency against zone failures.
 	DiskStorageAccountTypesPremiumZRS DiskStorageAccountTypes = "Premium_ZRS"
-	// DiskStorageAccountTypesStandardLRS - Standard HDD locally redundant storage. Best for backup, non-critical, and infrequent access.
+	// DiskStorageAccountTypesStandardLRS - Standard HDD locally redundant storage. Best for backup, non-critical, and infrequent
+	// access.
 	DiskStorageAccountTypesStandardLRS DiskStorageAccountTypes = "Standard_LRS"
-	// DiskStorageAccountTypesStandardSSDLRS - Standard SSD locally redundant storage. Best for web servers, lightly used enterprise applications and dev/test.
+	// DiskStorageAccountTypesStandardSSDLRS - Standard SSD locally redundant storage. Best for web servers, lightly used enterprise
+	// applications and dev/test.
 	DiskStorageAccountTypesStandardSSDLRS DiskStorageAccountTypes = "StandardSSD_LRS"
-	// DiskStorageAccountTypesStandardSSDZRS - Standard SSD zone redundant storage. Best for web servers, lightly used enterprise applications and dev/test
-	// that need storage resiliency against zone failures.
+	// DiskStorageAccountTypesStandardSSDZRS - Standard SSD zone redundant storage. Best for web servers, lightly used enterprise
+	// applications and dev/test that need storage resiliency against zone failures.
 	DiskStorageAccountTypesStandardSSDZRS DiskStorageAccountTypes = "StandardSSD_ZRS"
-	// DiskStorageAccountTypesUltraSSDLRS - Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA, top tier databases (for example,
-	// SQL, Oracle), and other transaction-heavy workloads.
+	// DiskStorageAccountTypesUltraSSDLRS - Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA,
+	// top tier databases (for example, SQL, Oracle), and other transaction-heavy workloads.
 	DiskStorageAccountTypesUltraSSDLRS DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
@@ -564,13 +687,14 @@ func (c DiskStorageAccountTypes) ToPtr() *DiskStorageAccountTypes {
 type EncryptionType string
 
 const (
-	// EncryptionTypeEncryptionAtRestWithCustomerKey - Disk is encrypted at rest with Customer managed key that can be changed and revoked by a customer.
+	// EncryptionTypeEncryptionAtRestWithCustomerKey - Disk is encrypted at rest with Customer managed key that can be changed
+	// and revoked by a customer.
 	EncryptionTypeEncryptionAtRestWithCustomerKey EncryptionType = "EncryptionAtRestWithCustomerKey"
-	// EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk is encrypted at rest with 2 layers of encryption. One of the keys is Customer managed
-	// and the other key is Platform managed.
+	// EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk is encrypted at rest with 2 layers of encryption. One
+	// of the keys is Customer managed and the other key is Platform managed.
 	EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = "EncryptionAtRestWithPlatformAndCustomerKeys"
-	// EncryptionTypeEncryptionAtRestWithPlatformKey - Disk is encrypted at rest with Platform managed key. It is the default encryption type. This is not a
-	// valid encryption type for disk encryption sets.
+	// EncryptionTypeEncryptionAtRestWithPlatformKey - Disk is encrypted at rest with Platform managed key. It is the default
+	// encryption type. This is not a valid encryption type for disk encryption sets.
 	EncryptionTypeEncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
@@ -721,6 +845,45 @@ func PossibleGalleryApplicationVersionPropertiesProvisioningStateValues() []Gall
 
 // ToPtr returns a *GalleryApplicationVersionPropertiesProvisioningState pointing to the current value.
 func (c GalleryApplicationVersionPropertiesProvisioningState) ToPtr() *GalleryApplicationVersionPropertiesProvisioningState {
+	return &c
+}
+
+type GalleryExpandParams string
+
+const (
+	GalleryExpandParamsSharingProfileGroups GalleryExpandParams = "SharingProfile/Groups"
+)
+
+// PossibleGalleryExpandParamsValues returns the possible values for the GalleryExpandParams const type.
+func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
+	return []GalleryExpandParams{
+		GalleryExpandParamsSharingProfileGroups,
+	}
+}
+
+// ToPtr returns a *GalleryExpandParams pointing to the current value.
+func (c GalleryExpandParams) ToPtr() *GalleryExpandParams {
+	return &c
+}
+
+// GalleryExtendedLocationType - It is type of the extended location.
+type GalleryExtendedLocationType string
+
+const (
+	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = "EdgeZone"
+	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = "Unknown"
+)
+
+// PossibleGalleryExtendedLocationTypeValues returns the possible values for the GalleryExtendedLocationType const type.
+func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
+	return []GalleryExtendedLocationType{
+		GalleryExtendedLocationTypeEdgeZone,
+		GalleryExtendedLocationTypeUnknown,
+	}
+}
+
+// ToPtr returns a *GalleryExtendedLocationType pointing to the current value.
+func (c GalleryExtendedLocationType) ToPtr() *GalleryExtendedLocationType {
 	return &c
 }
 
@@ -921,8 +1084,8 @@ func (c HyperVGenerationTypes) ToPtr() *HyperVGenerationTypes {
 	return &c
 }
 
-// IPVersion - Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-// Possible values are: 'IPv4' and 'IPv6'.
+// IPVersion - Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
+// IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersion string
 
 const (
@@ -943,8 +1106,8 @@ func (c IPVersion) ToPtr() *IPVersion {
 	return &c
 }
 
-// IPVersions - Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-// Possible values are: 'IPv4' and 'IPv6'.
+// IPVersions - Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4
+// or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersions string
 
 const (
@@ -1034,11 +1197,12 @@ func (c LinuxPatchAssessmentMode) ToPtr() *LinuxPatchAssessmentMode {
 	return &c
 }
 
-// LinuxVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale set with
-// OrchestrationMode as Flexible.
+// LinuxVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.
 // Possible values are:
 // ImageDefault - The virtual machine's default patching configuration is used.
-// AutomaticByPlatform - The virtual machine will be automatically updated by the platform. The property provisionVMAgent must be true
+// AutomaticByPlatform - The virtual machine will be automatically updated by the platform. The property provisionVMAgent
+// must be true
 type LinuxVMGuestPatchMode string
 
 const (
@@ -1084,7 +1248,8 @@ func (c MaintenanceOperationResultCodeTypes) ToPtr() *MaintenanceOperationResult
 	return &c
 }
 
-// NetworkAPIVersion - specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
+// NetworkAPIVersion - specifies the Microsoft.Network API version used when creating networking resources in the Network
+// Interface Configurations
 type NetworkAPIVersion string
 
 const (
@@ -1129,13 +1294,12 @@ func (c NetworkAccessPolicy) ToPtr() *NetworkAccessPolicy {
 	return &c
 }
 
-// OperatingSystemStateTypes - The OS State.
+// OperatingSystemStateTypes - This property allows the user to specify whether the virtual machines created under this image
+// are 'Generalized' or 'Specialized'.
 type OperatingSystemStateTypes string
 
 const (
-	// OperatingSystemStateTypesGeneralized - Generalized image. Needs to be provisioned during deployment time.
 	OperatingSystemStateTypesGeneralized OperatingSystemStateTypes = "Generalized"
-	// OperatingSystemStateTypesSpecialized - Specialized image. Contains already provisioned OS Disk.
 	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = "Specialized"
 )
 
@@ -1173,7 +1337,11 @@ func (c OperatingSystemType) ToPtr() *OperatingSystemType {
 	return &c
 }
 
-// OperatingSystemTypes - The Operating System type.
+// OperatingSystemTypes - This property allows you to specify the type of the OS that is included in the disk when creating
+// a VM from a managed image.
+// Possible values are:
+// Windows
+// Linux
 type OperatingSystemTypes string
 
 const (
@@ -1328,8 +1496,8 @@ func (c PatchInstallationState) ToPtr() *PatchInstallationState {
 	return &c
 }
 
-// PatchOperationStatus - The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At that point it
-// will become "Unknown", "Failed", "Succeeded", or
+// PatchOperationStatus - The overall success or failure status of the operation. It remains "InProgress" until the operation
+// completes. At that point it will become "Unknown", "Failed", "Succeeded", or
 // "CompletedWithWarnings."
 type PatchOperationStatus string
 
@@ -1520,11 +1688,13 @@ func (c PublicIPAllocationMethod) ToPtr() *PublicIPAllocationMethod {
 type PublicNetworkAccess string
 
 const (
-	// PublicNetworkAccessDisabled - You cannot access the underlying data of the disk publicly on the internet even when NetworkAccessPolicy is set to AllowAll.
-	// You can access the data via the SAS URI only from your trusted Azure VNET when NetworkAccessPolicy is set to AllowPrivate.
+	// PublicNetworkAccessDisabled - You cannot access the underlying data of the disk publicly on the internet even when NetworkAccessPolicy
+	// is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET when NetworkAccessPolicy
+	// is set to AllowPrivate.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	// PublicNetworkAccessEnabled - You can generate a SAS URI to access the underlying data of the disk publicly on the internet when NetworkAccessPolicy is
-	// set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET when NetworkAccessPolicy is set to AllowPrivate.
+	// PublicNetworkAccessEnabled - You can generate a SAS URI to access the underlying data of the disk publicly on the internet
+	// when NetworkAccessPolicy is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET
+	// when NetworkAccessPolicy is set to AllowPrivate.
 	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
@@ -1538,6 +1708,30 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 
 // ToPtr returns a *PublicNetworkAccess pointing to the current value.
 func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
+	return &c
+}
+
+// RepairAction - Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines
+// in the scale set. Default value is replace.
+type RepairAction string
+
+const (
+	RepairActionReimage RepairAction = "Reimage"
+	RepairActionReplace RepairAction = "Replace"
+	RepairActionRestart RepairAction = "Restart"
+)
+
+// PossibleRepairActionValues returns the possible values for the RepairAction const type.
+func PossibleRepairActionValues() []RepairAction {
+	return []RepairAction{
+		RepairActionReimage,
+		RepairActionReplace,
+		RepairActionRestart,
+	}
+}
+
+// ToPtr returns a *RepairAction pointing to the current value.
+func (c RepairAction) ToPtr() *RepairAction {
 	return &c
 }
 
@@ -1605,8 +1799,8 @@ func (c ReplicationStatusTypes) ToPtr() *ReplicationStatusTypes {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-// identity and a set of user assigned identities. The type 'None' will
+// ResourceIdentityType - The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes
+// both an implicitly created identity and a set of user assigned identities. The type 'None' will
 // remove any identities from the virtual machine.
 type ResourceIdentityType string
 
@@ -1715,6 +1909,24 @@ func (c RestorePointCollectionExpandOptions) ToPtr() *RestorePointCollectionExpa
 	return &c
 }
 
+type RestorePointExpandOptions string
+
+const (
+	RestorePointExpandOptionsInstanceView RestorePointExpandOptions = "instanceView"
+)
+
+// PossibleRestorePointExpandOptionsValues returns the possible values for the RestorePointExpandOptions const type.
+func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
+	return []RestorePointExpandOptions{
+		RestorePointExpandOptionsInstanceView,
+	}
+}
+
+// ToPtr returns a *RestorePointExpandOptions pointing to the current value.
+func (c RestorePointExpandOptions) ToPtr() *RestorePointExpandOptions {
+	return &c
+}
+
 // RollingUpgradeActionType - The last action performed on the rolling upgrade.
 type RollingUpgradeActionType string
 
@@ -1761,17 +1973,43 @@ func (c RollingUpgradeStatusCode) ToPtr() *RollingUpgradeStatusCode {
 	return &c
 }
 
-// SecurityTypes - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
-// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk.
+// It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly
+// for encryption of just the VMGuestState blob.
+// NOTE: It can be set for only Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
+}
+
+// ToPtr returns a *SecurityEncryptionTypes pointing to the current value.
+func (c SecurityEncryptionTypes) ToPtr() *SecurityEncryptionTypes {
+	return &c
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+// Default: UefiSettings will not be enabled unless this property is set.
 type SecurityTypes string
 
 const (
-	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
+	SecurityTypesTrustedLaunch  SecurityTypes = "TrustedLaunch"
 )
 
 // PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
 		SecurityTypesTrustedLaunch,
 	}
 }
@@ -1799,7 +2037,8 @@ func (c SelectPermissions) ToPtr() *SelectPermissions {
 	return &c
 }
 
-// SettingNames - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon.
+// SettingNames - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands
+// and AutoLogon.
 type SettingNames string
 
 const (
@@ -1842,10 +2081,12 @@ func (c SharedToValues) ToPtr() *SharedToValues {
 // Possible values are:
 // Subscriptions
 // AADTenants
+// Community
 type SharingProfileGroupTypes string
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = "AADTenants"
+	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = "Community"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
@@ -1853,12 +2094,38 @@ const (
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAADTenants,
+		SharingProfileGroupTypesCommunity,
 		SharingProfileGroupTypesSubscriptions,
 	}
 }
 
 // ToPtr returns a *SharingProfileGroupTypes pointing to the current value.
 func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
+	return &c
+}
+
+// SharingState - The sharing state of the gallery, which only appears in the response.
+type SharingState string
+
+const (
+	SharingStateFailed     SharingState = "Failed"
+	SharingStateInProgress SharingState = "InProgress"
+	SharingStateSucceeded  SharingState = "Succeeded"
+	SharingStateUnknown    SharingState = "Unknown"
+)
+
+// PossibleSharingStateValues returns the possible values for the SharingState const type.
+func PossibleSharingStateValues() []SharingState {
+	return []SharingState{
+		SharingStateFailed,
+		SharingStateInProgress,
+		SharingStateSucceeded,
+		SharingStateUnknown,
+	}
+}
+
+// ToPtr returns a *SharingState pointing to the current value.
+func (c SharingState) ToPtr() *SharingState {
 	return &c
 }
 
@@ -1870,15 +2137,17 @@ func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
 type SharingUpdateOperationTypes string
 
 const (
-	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = "Add"
-	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = "Remove"
-	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = "Reset"
+	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = "Add"
+	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = "EnableCommunity"
+	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = "Remove"
+	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = "Reset"
 )
 
 // PossibleSharingUpdateOperationTypesValues returns the possible values for the SharingUpdateOperationTypes const type.
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return []SharingUpdateOperationTypes{
 		SharingUpdateOperationTypesAdd,
+		SharingUpdateOperationTypesEnableCommunity,
 		SharingUpdateOperationTypesRemove,
 		SharingUpdateOperationTypesReset,
 	}
@@ -1961,12 +2230,12 @@ func (c StorageAccountType) ToPtr() *StorageAccountType {
 	return &c
 }
 
-// StorageAccountTypes - Specifies the storage account type for the managed disk. Managed OS disk storage account type can only be set when you create the
-// scale set. NOTE: UltraSSDLRS can only be used with data disks. It
-// cannot be used with OS Disk. StandardLRS uses Standard HDD. StandardSSDLRS uses Standard SSD. PremiumLRS uses Premium SSD. UltraSSDLRS uses Ultra disk.
-// PremiumZRS uses Premium SSD zone redundant
-// storage. StandardSSD_ZRS uses Standard SSD zone redundant storage. For more information regarding disks supported for Windows Virtual Machines, refer
-// to
+// StorageAccountTypes - Specifies the storage account type for the managed disk. Managed OS disk storage account type can
+// only be set when you create the scale set. NOTE: UltraSSDLRS can only be used with data disks. It
+// cannot be used with OS Disk. StandardLRS uses Standard HDD. StandardSSDLRS uses Standard SSD. PremiumLRS uses Premium SSD.
+// UltraSSDLRS uses Ultra disk. PremiumZRS uses Premium SSD zone redundant
+// storage. StandardSSD_ZRS uses Standard SSD zone redundant storage. For more information regarding disks supported for Windows
+// Virtual Machines, refer to
 // https://docs.microsoft.com/azure/virtual-machines/windows/disks-types and, for Linux Virtual Machines, refer to https://docs.microsoft.com/azure/virtual-machines/linux/disks-types
 type StorageAccountTypes string
 
@@ -1998,7 +2267,8 @@ func (c StorageAccountTypes) ToPtr() *StorageAccountTypes {
 
 // UpgradeMode - Specifies the mode of an upgrade to virtual machines in the scale set.
 // Possible values are:
-// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.
+// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
+// action.
 // Automatic - All virtual machines in the scale set are automatically updated at the same time.
 type UpgradeMode string
 
@@ -2243,7 +2513,8 @@ func (c VirtualMachineEvictionPolicyTypes) ToPtr() *VirtualMachineEvictionPolicy
 	return &c
 }
 
-// VirtualMachinePriorityTypes - Specifies the priority for a standalone virtual machine or the virtual machines in the scale set.
+// VirtualMachinePriorityTypes - Specifies the priority for a standalone virtual machine or the virtual machines in the scale
+// set.
 // 'Low' enum will be deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot VM/VMSS.
 type VirtualMachinePriorityTypes string
 
@@ -2315,8 +2586,8 @@ func (c VirtualMachineScaleSetScaleInRules) ToPtr() *VirtualMachineScaleSetScale
 // Recommended way to get the list of available sizes is using these APIs:
 // List all available virtual machine sizes in an availability set [https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes]
 // List all available virtual machine sizes in a region [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
-// List all available virtual machine sizes for resizing [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes]. For more information
-// about virtual machine sizes, see Sizes for
+// List all available virtual machine sizes for resizing [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes].
+// For more information about virtual machine sizes, see Sizes for
 // virtual machines [https://docs.microsoft.com/azure/virtual-machines/sizes].
 // The available VM sizes depend on region and availability set.
 type VirtualMachineSizeTypes string
@@ -2691,15 +2962,16 @@ func (c WindowsPatchAssessmentMode) ToPtr() *WindowsPatchAssessmentMode {
 	return &c
 }
 
-// WindowsVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale set
-// with OrchestrationMode as Flexible.
+// WindowsVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.
 // Possible values are:
-// Manual - You control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic
-// updates are disabled; the property
+// Manual - You control the application of patches to a virtual machine. You do this by applying patches manually inside the
+// VM. In this mode, automatic updates are disabled; the property
 // WindowsConfiguration.enableAutomaticUpdates must be false
-// AutomaticByOS - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true.
-// AutomaticByPlatform - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates
-// must be true
+// AutomaticByOS - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates
+// must be true.
+// AutomaticByPlatform - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and
+// WindowsConfiguration.enableAutomaticUpdates must be true
 type WindowsVMGuestPatchMode string
 
 const (

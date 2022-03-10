@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // PeerExpressRouteCircuitConnectionsClient contains the methods for the PeerExpressRouteCircuitConnections group.
 // Don't use this type directly, use NewPeerExpressRouteCircuitConnectionsClient() instead.
 type PeerExpressRouteCircuitConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPeerExpressRouteCircuitConnectionsClient creates a new instance of PeerExpressRouteCircuitConnectionsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PeerExpressRouteCircuitConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PeerExpressRouteCircuitConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PeerExpressRouteCircuitConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-// If the operation fails it returns the *CloudError error type.
-func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (PeerExpressRouteCircuitConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// circuitName - The name of the express route circuit.
+// peeringName - The name of the peering.
+// connectionName - The name of the peer express route circuit connection.
+// options - PeerExpressRouteCircuitConnectionsClientGetOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.Get
+// method.
+func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsClientGetOptions) (PeerExpressRouteCircuitConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
-		return PeerExpressRouteCircuitConnectionsGetResponse{}, err
+		return PeerExpressRouteCircuitConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeerExpressRouteCircuitConnectionsGetResponse{}, err
+		return PeerExpressRouteCircuitConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PeerExpressRouteCircuitConnectionsGetResponse{}, client.getHandleError(resp)
+		return PeerExpressRouteCircuitConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (*policy.Request, error) {
+func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections/{connectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,7 +96,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +108,35 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *http.Response) (PeerExpressRouteCircuitConnectionsGetResponse, error) {
-	result := PeerExpressRouteCircuitConnectionsGetResponse{RawResponse: resp}
+func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *http.Response) (PeerExpressRouteCircuitConnectionsClientGetResponse, error) {
+	result := PeerExpressRouteCircuitConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerExpressRouteCircuitConnection); err != nil {
-		return PeerExpressRouteCircuitConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PeerExpressRouteCircuitConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PeerExpressRouteCircuitConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all global reach peer connections associated with a private peering in an express route circuit.
-// If the operation fails it returns the *CloudError error type.
-func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) *PeerExpressRouteCircuitConnectionsListPager {
-	return &PeerExpressRouteCircuitConnectionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// circuitName - The name of the circuit.
+// peeringName - The name of the peering.
+// options - PeerExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.List
+// method.
+func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsClientListOptions) *PeerExpressRouteCircuitConnectionsClientListPager {
+	return &PeerExpressRouteCircuitConnectionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
 		},
-		advancer: func(ctx context.Context, resp PeerExpressRouteCircuitConnectionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PeerExpressRouteCircuitConnectionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeerExpressRouteCircuitConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) (*policy.Request, error) {
+func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -148,7 +154,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +166,10 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client *PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp *http.Response) (PeerExpressRouteCircuitConnectionsListResponse, error) {
-	result := PeerExpressRouteCircuitConnectionsListResponse{RawResponse: resp}
+func (client *PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp *http.Response) (PeerExpressRouteCircuitConnectionsClientListResponse, error) {
+	result := PeerExpressRouteCircuitConnectionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerExpressRouteCircuitConnectionListResult); err != nil {
-		return PeerExpressRouteCircuitConnectionsListResponse{}, runtime.NewResponseError(err, resp)
+		return PeerExpressRouteCircuitConnectionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PeerExpressRouteCircuitConnectionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

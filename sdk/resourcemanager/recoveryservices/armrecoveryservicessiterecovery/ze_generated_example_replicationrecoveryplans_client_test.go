@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_List.json
 func ExampleReplicationRecoveryPlansClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,17 +30,21 @@ func ExampleReplicationRecoveryPlansClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecoveryPlan.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Get.json
 func ExampleReplicationRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +60,10 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Create.json
 func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,11 +77,11 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.CreateRecoveryPlanInput{
 			Properties: &armrecoveryservicessiterecovery.CreateRecoveryPlanInputProperties{
-				FailoverDeploymentModel: armrecoveryservicessiterecovery.FailoverDeploymentModelResourceManager.ToPtr(),
+				FailoverDeploymentModel: armrecoveryservicessiterecovery.FailoverDeploymentModel("ResourceManager").ToPtr(),
 				Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot.ToPtr(),
+						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
 								ID:               to.StringPtr("<id>"),
@@ -97,10 +101,10 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Delete.json
 func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +126,7 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Update.json
 func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,19 +143,19 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 				Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 					{
 						EndGroupActions:           []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupTypeShutdown.ToPtr(),
+						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupType("Shutdown").ToPtr(),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{},
 						StartGroupActions:         []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					},
 					{
 						EndGroupActions:           []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupTypeFailover.ToPtr(),
+						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupType("Failover").ToPtr(),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{},
 						StartGroupActions:         []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					},
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot.ToPtr(),
+						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
 								ID:               to.StringPtr("<id>"),
@@ -161,7 +165,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 					},
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot.ToPtr(),
+						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
 								ID:               to.StringPtr("<id>"),
@@ -179,10 +183,10 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,10 +206,10 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientFailoverCancelResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,10 +229,10 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientFailoverCommitResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,12 +246,10 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery.ToPtr(),
+				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						RecoveryPlanProviderSpecificFailoverInput: armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInput{
-							InstanceType: to.StringPtr("<instance-type>"),
-						},
+						InstanceType: to.StringPtr("<instance-type>"),
 					}},
 			},
 		},
@@ -259,10 +261,10 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientPlannedFailoverResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_Reprotect.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Reprotect.json
 func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,10 +284,10 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientReprotectResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_TestFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_TestFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,14 +301,12 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery.ToPtr(),
+				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
 				NetworkID:         to.StringPtr("<network-id>"),
 				NetworkType:       to.StringPtr("<network-type>"),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						RecoveryPlanProviderSpecificFailoverInput: armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInput{
-							InstanceType: to.StringPtr("<instance-type>"),
-						},
+						InstanceType: to.StringPtr("<instance-type>"),
 					}},
 			},
 		},
@@ -318,10 +318,10 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientTestFailoverResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,10 +346,10 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientTestFailoverCleanupResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,14 +363,12 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery.ToPtr(),
+				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						RecoveryPlanProviderSpecificFailoverInput: armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInput{
-							InstanceType: to.StringPtr("<instance-type>"),
-						},
+						InstanceType: to.StringPtr("<instance-type>"),
 					}},
-				SourceSiteOperations: armrecoveryservicessiterecovery.SourceSiteOperationsRequired.ToPtr(),
+				SourceSiteOperations: armrecoveryservicessiterecovery.SourceSiteOperations("Required").ToPtr(),
 			},
 		},
 		nil)
@@ -381,5 +379,5 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientUnplannedFailoverResult)
 }

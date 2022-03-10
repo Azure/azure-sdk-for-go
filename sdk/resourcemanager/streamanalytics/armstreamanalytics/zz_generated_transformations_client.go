@@ -11,7 +11,6 @@ package armstreamanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // TransformationsClient contains the methods for the Transformations group.
 // Don't use this type directly, use NewTransformationsClient() instead.
 type TransformationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTransformationsClient creates a new instance of TransformationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTransformationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransformationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TransformationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TransformationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrReplace - Creates a transformation or replaces an already existing transformation under an existing streaming job.
-// If the operation fails it returns the *Error error type.
-func (client *TransformationsClient) CreateOrReplace(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsCreateOrReplaceOptions) (TransformationsCreateOrReplaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// transformationName - The name of the transformation.
+// transformation - The definition of the transformation that will be used to create a new transformation or replace the existing
+// one under the streaming job.
+// options - TransformationsClientCreateOrReplaceOptions contains the optional parameters for the TransformationsClient.CreateOrReplace
+// method.
+func (client *TransformationsClient) CreateOrReplace(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsClientCreateOrReplaceOptions) (TransformationsClientCreateOrReplaceResponse, error) {
 	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, jobName, transformationName, transformation, options)
 	if err != nil {
-		return TransformationsCreateOrReplaceResponse{}, err
+		return TransformationsClientCreateOrReplaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformationsCreateOrReplaceResponse{}, err
+		return TransformationsClientCreateOrReplaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TransformationsCreateOrReplaceResponse{}, client.createOrReplaceHandleError(resp)
+		return TransformationsClientCreateOrReplaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrReplaceHandleResponse(resp)
 }
 
 // createOrReplaceCreateRequest creates the CreateOrReplace request.
-func (client *TransformationsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsCreateOrReplaceOptions) (*policy.Request, error) {
+func (client *TransformationsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsClientCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/transformations/{transformationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,12 +92,12 @@ func (client *TransformationsClient) createOrReplaceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter transformationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformationName}", url.PathEscape(transformationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -96,49 +110,40 @@ func (client *TransformationsClient) createOrReplaceCreateRequest(ctx context.Co
 }
 
 // createOrReplaceHandleResponse handles the CreateOrReplace response.
-func (client *TransformationsClient) createOrReplaceHandleResponse(resp *http.Response) (TransformationsCreateOrReplaceResponse, error) {
-	result := TransformationsCreateOrReplaceResponse{RawResponse: resp}
+func (client *TransformationsClient) createOrReplaceHandleResponse(resp *http.Response) (TransformationsClientCreateOrReplaceResponse, error) {
+	result := TransformationsClientCreateOrReplaceResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsCreateOrReplaceResponse{}, runtime.NewResponseError(err, resp)
+		return TransformationsClientCreateOrReplaceResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrReplaceHandleError handles the CreateOrReplace error response.
-func (client *TransformationsClient) createOrReplaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets details about the specified transformation.
-// If the operation fails it returns the *Error error type.
-func (client *TransformationsClient) Get(ctx context.Context, resourceGroupName string, jobName string, transformationName string, options *TransformationsGetOptions) (TransformationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// transformationName - The name of the transformation.
+// options - TransformationsClientGetOptions contains the optional parameters for the TransformationsClient.Get method.
+func (client *TransformationsClient) Get(ctx context.Context, resourceGroupName string, jobName string, transformationName string, options *TransformationsClientGetOptions) (TransformationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jobName, transformationName, options)
 	if err != nil {
-		return TransformationsGetResponse{}, err
+		return TransformationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformationsGetResponse{}, err
+		return TransformationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransformationsGetResponse{}, client.getHandleError(resp)
+		return TransformationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TransformationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, options *TransformationsGetOptions) (*policy.Request, error) {
+func (client *TransformationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, options *TransformationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/transformations/{transformationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,63 +161,58 @@ func (client *TransformationsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter transformationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformationName}", url.PathEscape(transformationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TransformationsClient) getHandleResponse(resp *http.Response) (TransformationsGetResponse, error) {
-	result := TransformationsGetResponse{RawResponse: resp}
+func (client *TransformationsClient) getHandleResponse(resp *http.Response) (TransformationsClientGetResponse, error) {
+	result := TransformationsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TransformationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TransformationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates an existing transformation under an existing streaming job. This can be used to partially update (ie. update one or two properties)
-// a transformation without affecting the rest the job or
+// Update - Updates an existing transformation under an existing streaming job. This can be used to partially update (ie.
+// update one or two properties) a transformation without affecting the rest the job or
 // transformation definition.
-// If the operation fails it returns the *Error error type.
-func (client *TransformationsClient) Update(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsUpdateOptions) (TransformationsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// transformationName - The name of the transformation.
+// transformation - A Transformation object. The properties specified here will overwrite the corresponding properties in
+// the existing transformation (ie. Those properties will be updated). Any properties that are set to
+// null here will mean that the corresponding property in the existing transformation will remain the same and not change
+// as a result of this PATCH operation.
+// options - TransformationsClientUpdateOptions contains the optional parameters for the TransformationsClient.Update method.
+func (client *TransformationsClient) Update(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsClientUpdateOptions) (TransformationsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jobName, transformationName, transformation, options)
 	if err != nil {
-		return TransformationsUpdateResponse{}, err
+		return TransformationsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformationsUpdateResponse{}, err
+		return TransformationsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransformationsUpdateResponse{}, client.updateHandleError(resp)
+		return TransformationsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TransformationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsUpdateOptions) (*policy.Request, error) {
+func (client *TransformationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jobName string, transformationName string, transformation Transformation, options *TransformationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/transformations/{transformationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -230,12 +230,12 @@ func (client *TransformationsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter transformationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformationName}", url.PathEscape(transformationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -245,26 +245,13 @@ func (client *TransformationsClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TransformationsClient) updateHandleResponse(resp *http.Response) (TransformationsUpdateResponse, error) {
-	result := TransformationsUpdateResponse{RawResponse: resp}
+func (client *TransformationsClient) updateHandleResponse(resp *http.Response) (TransformationsClientUpdateResponse, error) {
+	result := TransformationsClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TransformationsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TransformationsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

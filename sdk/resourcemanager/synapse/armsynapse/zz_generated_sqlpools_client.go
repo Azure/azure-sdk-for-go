@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // SQLPoolsClient contains the methods for the SQLPools group.
 // Don't use this type directly, use NewSQLPoolsClient() instead.
 type SQLPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolsClient creates a new instance of SQLPoolsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsBeginCreateOptions) (SQLPoolsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// sqlPoolInfo - The SQL pool to create
+// options - SQLPoolsClientBeginCreateOptions contains the optional parameters for the SQLPoolsClient.BeginCreate method.
+func (client *SQLPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsClientBeginCreateOptions) (SQLPoolsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, options)
 	if err != nil {
-		return SQLPoolsCreatePollerResponse{}, err
+		return SQLPoolsClientCreatePollerResponse{}, err
 	}
-	result := SQLPoolsCreatePollerResponse{
+	result := SQLPoolsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolsClient.Create", "location", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolsClient.Create", "location", resp, client.pl)
 	if err != nil {
-		return SQLPoolsCreatePollerResponse{}, err
+		return SQLPoolsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolsCreatePoller{
+	result.Poller = &SQLPoolsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *SQLPoolsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNotFound) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *SQLPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsBeginCreateOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPool, options *SQLPoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *SQLPoolsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *SQLPoolsClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, sqlPoolInfo)
 }
 
-// createHandleError handles the Create error response.
-func (client *SQLPoolsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginDeleteOptions) (SQLPoolsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolsClientBeginDeleteOptions contains the optional parameters for the SQLPoolsClient.BeginDelete method.
+func (client *SQLPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginDeleteOptions) (SQLPoolsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolsDeletePollerResponse{}, err
+		return SQLPoolsClientDeletePollerResponse{}, err
 	}
-	result := SQLPoolsDeletePollerResponse{
+	result := SQLPoolsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return SQLPoolsDeletePollerResponse{}, err
+		return SQLPoolsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolsDeletePoller{
+	result.Poller = &SQLPoolsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *SQLPoolsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +181,7 @@ func (client *SQLPoolsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,29 @@ func (client *SQLPoolsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SQLPoolsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get SQL pool properties
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsGetOptions) (SQLPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolsClientGetOptions contains the optional parameters for the SQLPoolsClient.Get method.
+func (client *SQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientGetOptions) (SQLPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolsGetResponse{}, err
+		return SQLPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolsGetResponse{}, err
+		return SQLPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +232,7 @@ func (client *SQLPoolsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +244,34 @@ func (client *SQLPoolsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolsClient) getHandleResponse(resp *http.Response) (SQLPoolsGetResponse, error) {
-	result := SQLPoolsGetResponse{RawResponse: resp}
+func (client *SQLPoolsClient) getHandleResponse(resp *http.Response) (SQLPoolsClientGetResponse, error) {
+	result := SQLPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPool); err != nil {
-		return SQLPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - List all SQL pools
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SQLPoolsListByWorkspaceOptions) *SQLPoolsListByWorkspacePager {
-	return &SQLPoolsListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - SQLPoolsClientListByWorkspaceOptions contains the optional parameters for the SQLPoolsClient.ListByWorkspace
+// method.
+func (client *SQLPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SQLPoolsClientListByWorkspaceOptions) *SQLPoolsClientListByWorkspacePager {
+	return &SQLPoolsClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolsListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolsClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLPoolInfoListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *SQLPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SQLPoolsListByWorkspaceOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SQLPoolsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +285,7 @@ func (client *SQLPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,50 +297,41 @@ func (client *SQLPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, 
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *SQLPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (SQLPoolsListByWorkspaceResponse, error) {
-	result := SQLPoolsListByWorkspaceResponse{RawResponse: resp}
+func (client *SQLPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (SQLPoolsClientListByWorkspaceResponse, error) {
+	result := SQLPoolsClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolInfoListResult); err != nil {
-		return SQLPoolsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *SQLPoolsClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPause - Pause a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) BeginPause(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginPauseOptions) (SQLPoolsPausePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolsClientBeginPauseOptions contains the optional parameters for the SQLPoolsClient.BeginPause method.
+func (client *SQLPoolsClient) BeginPause(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginPauseOptions) (SQLPoolsClientPausePollerResponse, error) {
 	resp, err := client.pause(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolsPausePollerResponse{}, err
+		return SQLPoolsClientPausePollerResponse{}, err
 	}
-	result := SQLPoolsPausePollerResponse{
+	result := SQLPoolsClientPausePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolsClient.Pause", "location", resp, client.pl, client.pauseHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolsClient.Pause", "location", resp, client.pl)
 	if err != nil {
-		return SQLPoolsPausePollerResponse{}, err
+		return SQLPoolsClientPausePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolsPausePoller{
+	result.Poller = &SQLPoolsClientPausePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Pause - Pause a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) pause(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginPauseOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolsClient) pause(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginPauseOptions) (*http.Response, error) {
 	req, err := client.pauseCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +341,13 @@ func (client *SQLPoolsClient) pause(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.pauseHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // pauseCreateRequest creates the Pause request.
-func (client *SQLPoolsClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginPauseOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginPauseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/pause"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -389,7 +365,7 @@ func (client *SQLPoolsClient) pauseCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -400,38 +376,30 @@ func (client *SQLPoolsClient) pauseCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// pauseHandleError handles the Pause error response.
-func (client *SQLPoolsClient) pauseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Rename - Rename a SQL pool.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolsClient) Rename(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters ResourceMoveDefinition, options *SQLPoolsRenameOptions) (SQLPoolsRenameResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// parameters - The resource move definition for renaming this Sql pool.
+// options - SQLPoolsClientRenameOptions contains the optional parameters for the SQLPoolsClient.Rename method.
+func (client *SQLPoolsClient) Rename(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters ResourceMoveDefinition, options *SQLPoolsClientRenameOptions) (SQLPoolsClientRenameResponse, error) {
 	req, err := client.renameCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 	if err != nil {
-		return SQLPoolsRenameResponse{}, err
+		return SQLPoolsClientRenameResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolsRenameResponse{}, err
+		return SQLPoolsClientRenameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolsRenameResponse{}, client.renameHandleError(resp)
+		return SQLPoolsClientRenameResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolsRenameResponse{RawResponse: resp}, nil
+	return SQLPoolsClientRenameResponse{RawResponse: resp}, nil
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *SQLPoolsClient) renameCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters ResourceMoveDefinition, options *SQLPoolsRenameOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) renameCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters ResourceMoveDefinition, options *SQLPoolsClientRenameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/move"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -449,7 +417,7 @@ func (client *SQLPoolsClient) renameCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -459,41 +427,33 @@ func (client *SQLPoolsClient) renameCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// renameHandleError handles the Rename error response.
-func (client *SQLPoolsClient) renameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginResume - Resume a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) BeginResume(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginResumeOptions) (SQLPoolsResumePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolsClientBeginResumeOptions contains the optional parameters for the SQLPoolsClient.BeginResume method.
+func (client *SQLPoolsClient) BeginResume(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginResumeOptions) (SQLPoolsClientResumePollerResponse, error) {
 	resp, err := client.resume(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolsResumePollerResponse{}, err
+		return SQLPoolsClientResumePollerResponse{}, err
 	}
-	result := SQLPoolsResumePollerResponse{
+	result := SQLPoolsClientResumePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolsClient.Resume", "location", resp, client.pl, client.resumeHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolsClient.Resume", "location", resp, client.pl)
 	if err != nil {
-		return SQLPoolsResumePollerResponse{}, err
+		return SQLPoolsClientResumePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolsResumePoller{
+	result.Poller = &SQLPoolsClientResumePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resume a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) resume(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginResumeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolsClient) resume(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
 		return nil, err
@@ -503,13 +463,13 @@ func (client *SQLPoolsClient) resume(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resumeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *SQLPoolsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsBeginResumeOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolsClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/resume"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -527,7 +487,7 @@ func (client *SQLPoolsClient) resumeCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -538,38 +498,30 @@ func (client *SQLPoolsClient) resumeCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *SQLPoolsClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Apply a partial update to a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPoolPatchInfo, options *SQLPoolsUpdateOptions) (SQLPoolsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// sqlPoolInfo - The updated SQL pool properties
+// options - SQLPoolsClientUpdateOptions contains the optional parameters for the SQLPoolsClient.Update method.
+func (client *SQLPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPoolPatchInfo, options *SQLPoolsClientUpdateOptions) (SQLPoolsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, options)
 	if err != nil {
-		return SQLPoolsUpdateResponse{}, err
+		return SQLPoolsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolsUpdateResponse{}, err
+		return SQLPoolsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return SQLPoolsUpdateResponse{}, client.updateHandleError(resp)
+		return SQLPoolsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SQLPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPoolPatchInfo, options *SQLPoolsUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, sqlPoolInfo SQLPoolPatchInfo, options *SQLPoolsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -587,7 +539,7 @@ func (client *SQLPoolsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -599,23 +551,10 @@ func (client *SQLPoolsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SQLPoolsClient) updateHandleResponse(resp *http.Response) (SQLPoolsUpdateResponse, error) {
-	result := SQLPoolsUpdateResponse{RawResponse: resp}
+func (client *SQLPoolsClient) updateHandleResponse(resp *http.Response) (SQLPoolsClientUpdateResponse, error) {
+	result := SQLPoolsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPool); err != nil {
-		return SQLPoolsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *SQLPoolsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

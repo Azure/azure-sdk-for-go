@@ -29,5 +29,5 @@ func ExamplePartnersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PartnerResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PartnersClientGetResult)
 }

@@ -12,11 +12,74 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPrefixesByPeeringService.json
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/GetPeeringServicePrefix.json
+func ExamplePrefixesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	res, err := client.Get(ctx,
+		"<resource-group-name>",
+		"<peering-service-name>",
+		"<prefix-name>",
+		&armpeering.PrefixesClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.PrefixesClientGetResult)
+}
+
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/CreatePeeringServicePrefix.json
+func ExamplePrefixesClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	res, err := client.CreateOrUpdate(ctx,
+		"<resource-group-name>",
+		"<peering-service-name>",
+		"<prefix-name>",
+		armpeering.ServicePrefix{
+			Properties: &armpeering.ServicePrefixProperties{
+				PeeringServicePrefixKey: to.StringPtr("<peering-service-prefix-key>"),
+				Prefix:                  to.StringPtr("<prefix>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.PrefixesClientCreateOrUpdateResult)
+}
+
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/DeletePeeringServicePrefix.json
+func ExamplePrefixesClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	_, err = client.Delete(ctx,
+		"<resource-group-name>",
+		"<peering-service-name>",
+		"<prefix-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPrefixesByPeeringService.json
 func ExamplePrefixesClient_ListByPeeringService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,13 +89,17 @@ func ExamplePrefixesClient_ListByPeeringService() {
 	client := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
 	pager := client.ListByPeeringService("<resource-group-name>",
 		"<peering-service-name>",
-		nil)
-	for pager.NextPage(ctx) {
+		&armpeering.PrefixesClientListByPeeringServiceOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeeringServicePrefix.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

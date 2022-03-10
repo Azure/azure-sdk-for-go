@@ -28,12 +28,16 @@ func ExampleKeysClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Key.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleKeysClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Key.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KeysClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateKey.json
@@ -79,7 +83,7 @@ func ExampleKeysClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Key.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KeysClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteKey.json
@@ -98,5 +102,5 @@ func ExampleKeysClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Key.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KeysClientDeleteResult)
 }

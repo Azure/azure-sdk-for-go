@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// MarketplaceAgreementsCreateOrUpdateResponse contains the response from method MarketplaceAgreements.CreateOrUpdate.
-type MarketplaceAgreementsCreateOrUpdateResponse struct {
-	MarketplaceAgreementsCreateOrUpdateResult
+// MarketplaceAgreementsClientCreateOrUpdateResponse contains the response from method MarketplaceAgreementsClient.CreateOrUpdate.
+type MarketplaceAgreementsClientCreateOrUpdateResponse struct {
+	MarketplaceAgreementsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsCreateOrUpdateResult contains the result from method MarketplaceAgreements.CreateOrUpdate.
-type MarketplaceAgreementsCreateOrUpdateResult struct {
-	DatadogAgreementResource
+// MarketplaceAgreementsClientCreateOrUpdateResult contains the result from method MarketplaceAgreementsClient.CreateOrUpdate.
+type MarketplaceAgreementsClientCreateOrUpdateResult struct {
+	AgreementResource
 }
 
-// MarketplaceAgreementsListResponse contains the response from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResponse struct {
-	MarketplaceAgreementsListResult
+// MarketplaceAgreementsClientListResponse contains the response from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResponse struct {
+	MarketplaceAgreementsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsListResult contains the result from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResult struct {
-	DatadogAgreementResourceListResponse
+// MarketplaceAgreementsClientListResult contains the result from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResult struct {
+	AgreementResourceListResponse
 }
 
-// MonitorsCreatePollerResponse contains the response from method Monitors.Create.
-type MonitorsCreatePollerResponse struct {
+// MonitorsClientCreatePollerResponse contains the response from method MonitorsClient.Create.
+type MonitorsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MonitorsCreatePoller
+	Poller *MonitorsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,9 +51,9 @@ type MonitorsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsCreateResponse, error) {
-	respType := MonitorsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DatadogMonitorResource)
+func (l MonitorsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsClientCreateResponse, error) {
+	respType := MonitorsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitorResource)
 	if err != nil {
 		return respType, err
 	}
@@ -61,13 +61,13 @@ func (l MonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a MonitorsCreatePollerResponse from the provided client and resume token.
-func (l *MonitorsCreatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a MonitorsClientCreatePollerResponse from the provided client and resume token.
+func (l *MonitorsClientCreatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MonitorsCreatePoller{
+	poller := &MonitorsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +79,22 @@ func (l *MonitorsCreatePollerResponse) Resume(ctx context.Context, client *Monit
 	return nil
 }
 
-// MonitorsCreateResponse contains the response from method Monitors.Create.
-type MonitorsCreateResponse struct {
-	MonitorsCreateResult
+// MonitorsClientCreateResponse contains the response from method MonitorsClient.Create.
+type MonitorsClientCreateResponse struct {
+	MonitorsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsCreateResult contains the result from method Monitors.Create.
-type MonitorsCreateResult struct {
-	DatadogMonitorResource
+// MonitorsClientCreateResult contains the result from method MonitorsClient.Create.
+type MonitorsClientCreateResult struct {
+	MonitorResource
 }
 
-// MonitorsDeletePollerResponse contains the response from method Monitors.Delete.
-type MonitorsDeletePollerResponse struct {
+// MonitorsClientDeletePollerResponse contains the response from method MonitorsClient.Delete.
+type MonitorsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MonitorsDeletePoller
+	Poller *MonitorsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +103,8 @@ type MonitorsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsDeleteResponse, error) {
-	respType := MonitorsDeleteResponse{}
+func (l MonitorsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsClientDeleteResponse, error) {
+	respType := MonitorsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +113,13 @@ func (l MonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a MonitorsDeletePollerResponse from the provided client and resume token.
-func (l *MonitorsDeletePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MonitorsClientDeletePollerResponse from the provided client and resume token.
+func (l *MonitorsClientDeletePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MonitorsDeletePoller{
+	poller := &MonitorsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,130 +131,130 @@ func (l *MonitorsDeletePollerResponse) Resume(ctx context.Context, client *Monit
 	return nil
 }
 
-// MonitorsDeleteResponse contains the response from method Monitors.Delete.
-type MonitorsDeleteResponse struct {
+// MonitorsClientDeleteResponse contains the response from method MonitorsClient.Delete.
+type MonitorsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsGetDefaultKeyResponse contains the response from method Monitors.GetDefaultKey.
-type MonitorsGetDefaultKeyResponse struct {
-	MonitorsGetDefaultKeyResult
+// MonitorsClientGetDefaultKeyResponse contains the response from method MonitorsClient.GetDefaultKey.
+type MonitorsClientGetDefaultKeyResponse struct {
+	MonitorsClientGetDefaultKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsGetDefaultKeyResult contains the result from method Monitors.GetDefaultKey.
-type MonitorsGetDefaultKeyResult struct {
-	DatadogAPIKey
+// MonitorsClientGetDefaultKeyResult contains the result from method MonitorsClient.GetDefaultKey.
+type MonitorsClientGetDefaultKeyResult struct {
+	APIKey
 }
 
-// MonitorsGetResponse contains the response from method Monitors.Get.
-type MonitorsGetResponse struct {
-	MonitorsGetResult
+// MonitorsClientGetResponse contains the response from method MonitorsClient.Get.
+type MonitorsClientGetResponse struct {
+	MonitorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsGetResult contains the result from method Monitors.Get.
-type MonitorsGetResult struct {
-	DatadogMonitorResource
+// MonitorsClientGetResult contains the result from method MonitorsClient.Get.
+type MonitorsClientGetResult struct {
+	MonitorResource
 }
 
-// MonitorsListAPIKeysResponse contains the response from method Monitors.ListAPIKeys.
-type MonitorsListAPIKeysResponse struct {
-	MonitorsListAPIKeysResult
+// MonitorsClientListAPIKeysResponse contains the response from method MonitorsClient.ListAPIKeys.
+type MonitorsClientListAPIKeysResponse struct {
+	MonitorsClientListAPIKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListAPIKeysResult contains the result from method Monitors.ListAPIKeys.
-type MonitorsListAPIKeysResult struct {
-	DatadogAPIKeyListResponse
+// MonitorsClientListAPIKeysResult contains the result from method MonitorsClient.ListAPIKeys.
+type MonitorsClientListAPIKeysResult struct {
+	APIKeyListResponse
 }
 
-// MonitorsListByResourceGroupResponse contains the response from method Monitors.ListByResourceGroup.
-type MonitorsListByResourceGroupResponse struct {
-	MonitorsListByResourceGroupResult
+// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.ListByResourceGroup.
+type MonitorsClientListByResourceGroupResponse struct {
+	MonitorsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListByResourceGroupResult contains the result from method Monitors.ListByResourceGroup.
-type MonitorsListByResourceGroupResult struct {
-	DatadogMonitorResourceListResponse
+// MonitorsClientListByResourceGroupResult contains the result from method MonitorsClient.ListByResourceGroup.
+type MonitorsClientListByResourceGroupResult struct {
+	MonitorResourceListResponse
 }
 
-// MonitorsListHostsResponse contains the response from method Monitors.ListHosts.
-type MonitorsListHostsResponse struct {
-	MonitorsListHostsResult
+// MonitorsClientListHostsResponse contains the response from method MonitorsClient.ListHosts.
+type MonitorsClientListHostsResponse struct {
+	MonitorsClientListHostsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListHostsResult contains the result from method Monitors.ListHosts.
-type MonitorsListHostsResult struct {
-	DatadogHostListResponse
+// MonitorsClientListHostsResult contains the result from method MonitorsClient.ListHosts.
+type MonitorsClientListHostsResult struct {
+	HostListResponse
 }
 
-// MonitorsListLinkedResourcesResponse contains the response from method Monitors.ListLinkedResources.
-type MonitorsListLinkedResourcesResponse struct {
-	MonitorsListLinkedResourcesResult
+// MonitorsClientListLinkedResourcesResponse contains the response from method MonitorsClient.ListLinkedResources.
+type MonitorsClientListLinkedResourcesResponse struct {
+	MonitorsClientListLinkedResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListLinkedResourcesResult contains the result from method Monitors.ListLinkedResources.
-type MonitorsListLinkedResourcesResult struct {
+// MonitorsClientListLinkedResourcesResult contains the result from method MonitorsClient.ListLinkedResources.
+type MonitorsClientListLinkedResourcesResult struct {
 	LinkedResourceListResponse
 }
 
-// MonitorsListMonitoredResourcesResponse contains the response from method Monitors.ListMonitoredResources.
-type MonitorsListMonitoredResourcesResponse struct {
-	MonitorsListMonitoredResourcesResult
+// MonitorsClientListMonitoredResourcesResponse contains the response from method MonitorsClient.ListMonitoredResources.
+type MonitorsClientListMonitoredResourcesResponse struct {
+	MonitorsClientListMonitoredResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListMonitoredResourcesResult contains the result from method Monitors.ListMonitoredResources.
-type MonitorsListMonitoredResourcesResult struct {
+// MonitorsClientListMonitoredResourcesResult contains the result from method MonitorsClient.ListMonitoredResources.
+type MonitorsClientListMonitoredResourcesResult struct {
 	MonitoredResourceListResponse
 }
 
-// MonitorsListResponse contains the response from method Monitors.List.
-type MonitorsListResponse struct {
-	MonitorsListResult
+// MonitorsClientListResponse contains the response from method MonitorsClient.List.
+type MonitorsClientListResponse struct {
+	MonitorsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListResult contains the result from method Monitors.List.
-type MonitorsListResult struct {
-	DatadogMonitorResourceListResponse
+// MonitorsClientListResult contains the result from method MonitorsClient.List.
+type MonitorsClientListResult struct {
+	MonitorResourceListResponse
 }
 
-// MonitorsRefreshSetPasswordLinkResponse contains the response from method Monitors.RefreshSetPasswordLink.
-type MonitorsRefreshSetPasswordLinkResponse struct {
-	MonitorsRefreshSetPasswordLinkResult
+// MonitorsClientRefreshSetPasswordLinkResponse contains the response from method MonitorsClient.RefreshSetPasswordLink.
+type MonitorsClientRefreshSetPasswordLinkResponse struct {
+	MonitorsClientRefreshSetPasswordLinkResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsRefreshSetPasswordLinkResult contains the result from method Monitors.RefreshSetPasswordLink.
-type MonitorsRefreshSetPasswordLinkResult struct {
-	DatadogSetPasswordLink
+// MonitorsClientRefreshSetPasswordLinkResult contains the result from method MonitorsClient.RefreshSetPasswordLink.
+type MonitorsClientRefreshSetPasswordLinkResult struct {
+	SetPasswordLink
 }
 
-// MonitorsSetDefaultKeyResponse contains the response from method Monitors.SetDefaultKey.
-type MonitorsSetDefaultKeyResponse struct {
+// MonitorsClientSetDefaultKeyResponse contains the response from method MonitorsClient.SetDefaultKey.
+type MonitorsClientSetDefaultKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsUpdatePollerResponse contains the response from method Monitors.Update.
-type MonitorsUpdatePollerResponse struct {
+// MonitorsClientUpdatePollerResponse contains the response from method MonitorsClient.Update.
+type MonitorsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MonitorsUpdatePoller
+	Poller *MonitorsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -263,9 +263,9 @@ type MonitorsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MonitorsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsUpdateResponse, error) {
-	respType := MonitorsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DatadogMonitorResource)
+func (l MonitorsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsClientUpdateResponse, error) {
+	respType := MonitorsClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitorResource)
 	if err != nil {
 		return respType, err
 	}
@@ -273,13 +273,13 @@ func (l MonitorsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a MonitorsUpdatePollerResponse from the provided client and resume token.
-func (l *MonitorsUpdatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a MonitorsClientUpdatePollerResponse from the provided client and resume token.
+func (l *MonitorsClientUpdatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MonitorsUpdatePoller{
+	poller := &MonitorsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -291,34 +291,34 @@ func (l *MonitorsUpdatePollerResponse) Resume(ctx context.Context, client *Monit
 	return nil
 }
 
-// MonitorsUpdateResponse contains the response from method Monitors.Update.
-type MonitorsUpdateResponse struct {
-	MonitorsUpdateResult
+// MonitorsClientUpdateResponse contains the response from method MonitorsClient.Update.
+type MonitorsClientUpdateResponse struct {
+	MonitorsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsUpdateResult contains the result from method Monitors.Update.
-type MonitorsUpdateResult struct {
-	DatadogMonitorResource
+// MonitorsClientUpdateResult contains the result from method MonitorsClient.Update.
+type MonitorsClientUpdateResult struct {
+	MonitorResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SingleSignOnConfigurationsCreateOrUpdatePollerResponse contains the response from method SingleSignOnConfigurations.CreateOrUpdate.
-type SingleSignOnConfigurationsCreateOrUpdatePollerResponse struct {
+// SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse contains the response from method SingleSignOnConfigurationsClient.CreateOrUpdate.
+type SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SingleSignOnConfigurationsCreateOrUpdatePoller
+	Poller *SingleSignOnConfigurationsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -327,9 +327,9 @@ type SingleSignOnConfigurationsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SingleSignOnConfigurationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SingleSignOnConfigurationsCreateOrUpdateResponse, error) {
-	respType := SingleSignOnConfigurationsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DatadogSingleSignOnResource)
+func (l SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SingleSignOnConfigurationsClientCreateOrUpdateResponse, error) {
+	respType := SingleSignOnConfigurationsClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SingleSignOnResource)
 	if err != nil {
 		return respType, err
 	}
@@ -337,13 +337,13 @@ func (l SingleSignOnConfigurationsCreateOrUpdatePollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a SingleSignOnConfigurationsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SingleSignOnConfigurationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SingleSignOnConfigurationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SingleSignOnConfigurationsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SingleSignOnConfigurationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SingleSignOnConfigurationsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SingleSignOnConfigurationsCreateOrUpdatePoller{
+	poller := &SingleSignOnConfigurationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -355,74 +355,74 @@ func (l *SingleSignOnConfigurationsCreateOrUpdatePollerResponse) Resume(ctx cont
 	return nil
 }
 
-// SingleSignOnConfigurationsCreateOrUpdateResponse contains the response from method SingleSignOnConfigurations.CreateOrUpdate.
-type SingleSignOnConfigurationsCreateOrUpdateResponse struct {
-	SingleSignOnConfigurationsCreateOrUpdateResult
+// SingleSignOnConfigurationsClientCreateOrUpdateResponse contains the response from method SingleSignOnConfigurationsClient.CreateOrUpdate.
+type SingleSignOnConfigurationsClientCreateOrUpdateResponse struct {
+	SingleSignOnConfigurationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnConfigurationsCreateOrUpdateResult contains the result from method SingleSignOnConfigurations.CreateOrUpdate.
-type SingleSignOnConfigurationsCreateOrUpdateResult struct {
-	DatadogSingleSignOnResource
+// SingleSignOnConfigurationsClientCreateOrUpdateResult contains the result from method SingleSignOnConfigurationsClient.CreateOrUpdate.
+type SingleSignOnConfigurationsClientCreateOrUpdateResult struct {
+	SingleSignOnResource
 }
 
-// SingleSignOnConfigurationsGetResponse contains the response from method SingleSignOnConfigurations.Get.
-type SingleSignOnConfigurationsGetResponse struct {
-	SingleSignOnConfigurationsGetResult
+// SingleSignOnConfigurationsClientGetResponse contains the response from method SingleSignOnConfigurationsClient.Get.
+type SingleSignOnConfigurationsClientGetResponse struct {
+	SingleSignOnConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnConfigurationsGetResult contains the result from method SingleSignOnConfigurations.Get.
-type SingleSignOnConfigurationsGetResult struct {
-	DatadogSingleSignOnResource
+// SingleSignOnConfigurationsClientGetResult contains the result from method SingleSignOnConfigurationsClient.Get.
+type SingleSignOnConfigurationsClientGetResult struct {
+	SingleSignOnResource
 }
 
-// SingleSignOnConfigurationsListResponse contains the response from method SingleSignOnConfigurations.List.
-type SingleSignOnConfigurationsListResponse struct {
-	SingleSignOnConfigurationsListResult
+// SingleSignOnConfigurationsClientListResponse contains the response from method SingleSignOnConfigurationsClient.List.
+type SingleSignOnConfigurationsClientListResponse struct {
+	SingleSignOnConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnConfigurationsListResult contains the result from method SingleSignOnConfigurations.List.
-type SingleSignOnConfigurationsListResult struct {
-	DatadogSingleSignOnResourceListResponse
+// SingleSignOnConfigurationsClientListResult contains the result from method SingleSignOnConfigurationsClient.List.
+type SingleSignOnConfigurationsClientListResult struct {
+	SingleSignOnResourceListResponse
 }
 
-// TagRulesCreateOrUpdateResponse contains the response from method TagRules.CreateOrUpdate.
-type TagRulesCreateOrUpdateResponse struct {
-	TagRulesCreateOrUpdateResult
+// TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.
+type TagRulesClientCreateOrUpdateResponse struct {
+	TagRulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesCreateOrUpdateResult contains the result from method TagRules.CreateOrUpdate.
-type TagRulesCreateOrUpdateResult struct {
+// TagRulesClientCreateOrUpdateResult contains the result from method TagRulesClient.CreateOrUpdate.
+type TagRulesClientCreateOrUpdateResult struct {
 	MonitoringTagRules
 }
 
-// TagRulesGetResponse contains the response from method TagRules.Get.
-type TagRulesGetResponse struct {
-	TagRulesGetResult
+// TagRulesClientGetResponse contains the response from method TagRulesClient.Get.
+type TagRulesClientGetResponse struct {
+	TagRulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesGetResult contains the result from method TagRules.Get.
-type TagRulesGetResult struct {
+// TagRulesClientGetResult contains the result from method TagRulesClient.Get.
+type TagRulesClientGetResult struct {
 	MonitoringTagRules
 }
 
-// TagRulesListResponse contains the response from method TagRules.List.
-type TagRulesListResponse struct {
-	TagRulesListResult
+// TagRulesClientListResponse contains the response from method TagRulesClient.List.
+type TagRulesClientListResponse struct {
+	TagRulesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesListResult contains the result from method TagRules.List.
-type TagRulesListResult struct {
+// TagRulesClientListResult contains the result from method TagRulesClient.List.
+type TagRulesClientListResult struct {
 	MonitoringTagRulesListResponse
 }

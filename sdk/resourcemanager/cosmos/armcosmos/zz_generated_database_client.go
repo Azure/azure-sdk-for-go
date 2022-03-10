@@ -24,42 +24,55 @@ import (
 // DatabaseClient contains the methods for the Database group.
 // Don't use this type directly, use NewDatabaseClient() instead.
 type DatabaseClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListMetricDefinitions - Retrieves metric definitions for the given database.
-// If the operation fails it returns a generic error.
-func (client *DatabaseClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseListMetricDefinitionsOptions) (DatabaseListMetricDefinitionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseRid - Cosmos DB database rid.
+// options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
+// method.
+func (client *DatabaseClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) (DatabaseClientListMetricDefinitionsResponse, error) {
 	req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
 	if err != nil {
-		return DatabaseListMetricDefinitionsResponse{}, err
+		return DatabaseClientListMetricDefinitionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseListMetricDefinitionsResponse{}, err
+		return DatabaseClientListMetricDefinitionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseListMetricDefinitionsResponse{}, client.listMetricDefinitionsHandleError(resp)
+		return DatabaseClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricDefinitionsHandleResponse(resp)
 }
 
 // listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
-func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseListMetricDefinitionsOptions) (*policy.Request, error) {
+func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/metricDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +90,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter databaseRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseRid}", url.PathEscape(databaseRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,45 +102,40 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 }
 
 // listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
-func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseListMetricDefinitionsResponse, error) {
-	result := DatabaseListMetricDefinitionsResponse{RawResponse: resp}
+func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseClientListMetricDefinitionsResponse, error) {
+	result := DatabaseClientListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
-		return DatabaseListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseClientListMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricDefinitionsHandleError handles the ListMetricDefinitions error response.
-func (client *DatabaseClient) listMetricDefinitionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListMetrics - Retrieves the metrics determined by the given filter for the given database account and database.
-// If the operation fails it returns a generic error.
-func (client *DatabaseClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseListMetricsOptions) (DatabaseListMetricsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseRid - Cosmos DB database rid.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.ListMetrics method.
+func (client *DatabaseClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) (DatabaseClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, filter, options)
 	if err != nil {
-		return DatabaseListMetricsResponse{}, err
+		return DatabaseClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseListMetricsResponse{}, err
+		return DatabaseClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return DatabaseClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseListMetricsOptions) (*policy.Request, error) {
+func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -145,7 +153,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter databaseRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseRid}", url.PathEscape(databaseRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,45 +166,37 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (DatabaseListMetricsResponse, error) {
-	result := DatabaseListMetricsResponse{RawResponse: resp}
+func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (DatabaseClientListMetricsResponse, error) {
+	result := DatabaseClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return DatabaseListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseClientListMetricsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *DatabaseClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListUsages - Retrieves the usages (most recent data) for the given database.
-// If the operation fails it returns a generic error.
-func (client *DatabaseClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseListUsagesOptions) (DatabaseListUsagesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseRid - Cosmos DB database rid.
+// options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.ListUsages method.
+func (client *DatabaseClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) (DatabaseClientListUsagesResponse, error) {
 	req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
 	if err != nil {
-		return DatabaseListUsagesResponse{}, err
+		return DatabaseClientListUsagesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseListUsagesResponse{}, err
+		return DatabaseClientListUsagesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseListUsagesResponse{}, client.listUsagesHandleError(resp)
+		return DatabaseClientListUsagesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listUsagesHandleResponse(resp)
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseListUsagesOptions) (*policy.Request, error) {
+func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -214,7 +214,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter databaseRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseRid}", url.PathEscape(databaseRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -229,22 +229,10 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *DatabaseClient) listUsagesHandleResponse(resp *http.Response) (DatabaseListUsagesResponse, error) {
-	result := DatabaseListUsagesResponse{RawResponse: resp}
+func (client *DatabaseClient) listUsagesHandleResponse(resp *http.Response) (DatabaseClientListUsagesResponse, error) {
+	result := DatabaseClientListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
-		return DatabaseListUsagesResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseClientListUsagesResponse{}, err
 	}
 	return result, nil
-}
-
-// listUsagesHandleError handles the ListUsages error response.
-func (client *DatabaseClient) listUsagesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

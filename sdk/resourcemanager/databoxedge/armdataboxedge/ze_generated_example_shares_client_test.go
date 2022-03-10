@@ -30,12 +30,16 @@ func ExampleSharesClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Share.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleSharesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharesClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/SharePut.json
@@ -74,18 +78,18 @@ func ExampleSharesClient_BeginCreateOrUpdate() {
 		armdataboxedge.Share{
 			Properties: &armdataboxedge.ShareProperties{
 				Description:    to.StringPtr("<description>"),
-				AccessProtocol: armdataboxedge.ShareAccessProtocolSMB.ToPtr(),
+				AccessProtocol: armdataboxedge.ShareAccessProtocol("SMB").ToPtr(),
 				AzureContainerInfo: &armdataboxedge.AzureContainerInfo{
 					ContainerName:              to.StringPtr("<container-name>"),
-					DataFormat:                 armdataboxedge.AzureContainerDataFormatBlockBlob.ToPtr(),
+					DataFormat:                 armdataboxedge.AzureContainerDataFormat("BlockBlob").ToPtr(),
 					StorageAccountCredentialID: to.StringPtr("<storage-account-credential-id>"),
 				},
-				DataPolicy:       armdataboxedge.DataPolicyCloud.ToPtr(),
-				MonitoringStatus: armdataboxedge.MonitoringStatusEnabled.ToPtr(),
-				ShareStatus:      armdataboxedge.ShareStatusOffline.ToPtr(),
+				DataPolicy:       armdataboxedge.DataPolicy("Cloud").ToPtr(),
+				MonitoringStatus: armdataboxedge.MonitoringStatus("Enabled").ToPtr(),
+				ShareStatus:      armdataboxedge.ShareStatus("Online").ToPtr(),
 				UserAccessRights: []*armdataboxedge.UserAccessRight{
 					{
-						AccessType: armdataboxedge.ShareAccessTypeChange.ToPtr(),
+						AccessType: armdataboxedge.ShareAccessType("Change").ToPtr(),
 						UserID:     to.StringPtr("<user-id>"),
 					}},
 			},
@@ -98,7 +102,7 @@ func ExampleSharesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ShareDelete.json

@@ -36,54 +36,55 @@ func (a APIKeyRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIKeysCreateOptions contains the optional parameters for the APIKeys.Create method.
-type APIKeysCreateOptions struct {
+// APIKeysClientCreateOptions contains the optional parameters for the APIKeysClient.Create method.
+type APIKeysClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIKeysDeleteOptions contains the optional parameters for the APIKeys.Delete method.
-type APIKeysDeleteOptions struct {
+// APIKeysClientDeleteOptions contains the optional parameters for the APIKeysClient.Delete method.
+type APIKeysClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIKeysGetOptions contains the optional parameters for the APIKeys.Get method.
-type APIKeysGetOptions struct {
+// APIKeysClientGetOptions contains the optional parameters for the APIKeysClient.Get method.
+type APIKeysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIKeysListOptions contains the optional parameters for the APIKeys.List method.
-type APIKeysListOptions struct {
+// APIKeysClientListOptions contains the optional parameters for the APIKeysClient.List method.
+type APIKeysClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AnalyticsItemsDeleteOptions contains the optional parameters for the AnalyticsItems.Delete method.
-type AnalyticsItemsDeleteOptions struct {
+// AnalyticsItemsClientDeleteOptions contains the optional parameters for the AnalyticsItemsClient.Delete method.
+type AnalyticsItemsClientDeleteOptions struct {
 	// The Id of a specific item defined in the Application Insights component
 	ID *string
 	// The name of a specific item defined in the Application Insights component
 	Name *string
 }
 
-// AnalyticsItemsGetOptions contains the optional parameters for the AnalyticsItems.Get method.
-type AnalyticsItemsGetOptions struct {
+// AnalyticsItemsClientGetOptions contains the optional parameters for the AnalyticsItemsClient.Get method.
+type AnalyticsItemsClientGetOptions struct {
 	// The Id of a specific item defined in the Application Insights component
 	ID *string
 	// The name of a specific item defined in the Application Insights component
 	Name *string
 }
 
-// AnalyticsItemsListOptions contains the optional parameters for the AnalyticsItems.List method.
-type AnalyticsItemsListOptions struct {
+// AnalyticsItemsClientListOptions contains the optional parameters for the AnalyticsItemsClient.List method.
+type AnalyticsItemsClientListOptions struct {
 	// Flag indicating whether or not to return the content of each applicable item. If false, only return the item information.
 	IncludeContent *bool
-	// Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component.
+	// Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application
+	// Insights component.
 	Scope *ItemScope
 	// Enum indicating the type of the Analytics item.
 	Type *ItemTypeParameter
 }
 
-// AnalyticsItemsPutOptions contains the optional parameters for the AnalyticsItems.Put method.
-type AnalyticsItemsPutOptions struct {
+// AnalyticsItemsClientPutOptions contains the optional parameters for the AnalyticsItemsClient.Put method.
+type AnalyticsItemsClientPutOptions struct {
 	// Flag indicating whether or not to force save an item. This allows overriding an item if it already exists.
 	OverrideItem *bool
 }
@@ -157,9 +158,7 @@ func (a *Annotation) UnmarshalJSON(data []byte) error {
 }
 
 // AnnotationError - Error associated with trying to create annotation with Id that already exist
-// Implements the error and azcore.HTTPResponse interfaces.
 type AnnotationError struct {
-	raw string
 	// Error detail code and explanation
 	Code *string `json:"code,omitempty"`
 
@@ -170,29 +169,23 @@ type AnnotationError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type AnnotationError.
-// The contents of the error text are not contractual and subject to change.
-func (e AnnotationError) Error() string {
-	return e.raw
-}
-
-// AnnotationsCreateOptions contains the optional parameters for the Annotations.Create method.
-type AnnotationsCreateOptions struct {
+// AnnotationsClientCreateOptions contains the optional parameters for the AnnotationsClient.Create method.
+type AnnotationsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AnnotationsDeleteOptions contains the optional parameters for the Annotations.Delete method.
-type AnnotationsDeleteOptions struct {
+// AnnotationsClientDeleteOptions contains the optional parameters for the AnnotationsClient.Delete method.
+type AnnotationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AnnotationsGetOptions contains the optional parameters for the Annotations.Get method.
-type AnnotationsGetOptions struct {
+// AnnotationsClientGetOptions contains the optional parameters for the AnnotationsClient.Get method.
+type AnnotationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AnnotationsListOptions contains the optional parameters for the Annotations.List method.
-type AnnotationsListOptions struct {
+// AnnotationsClientListOptions contains the optional parameters for the AnnotationsClient.List method.
+type AnnotationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -209,28 +202,46 @@ func (a AnnotationsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponent - An Application Insights component definition.
-type ApplicationInsightsComponent struct {
-	ComponentsResource
-	// REQUIRED; The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one
-	// of the following: web, ios, other, store, java, phone.
+// Component - An Application Insights component definition.
+type Component struct {
+	// REQUIRED; The kind of application that this component refers to, used to customize UI. This value is a freeform string,
+	// values should typically be one of the following: web, ios, other, store, java, phone.
 	Kind *string `json:"kind,omitempty"`
 
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties that define an Application Insights component resource.
-	Properties *ApplicationInsightsComponentProperties `json:"properties,omitempty"`
+	Properties *ComponentProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponent.
-func (a ApplicationInsightsComponent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Component.
+func (c Component) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ComponentsResource.marshalInternal(objectMap)
-	populate(objectMap, "kind", a.Kind)
-	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentAPIKey - Properties that define an API key of an Application Insights Component.
-type ApplicationInsightsComponentAPIKey struct {
+// ComponentAPIKey - Properties that define an API key of an Application Insights Component.
+type ComponentAPIKey struct {
 	// The create date of this API key.
 	CreatedDate *string `json:"createdDate,omitempty"`
 
@@ -246,37 +257,38 @@ type ApplicationInsightsComponentAPIKey struct {
 	// READ-ONLY; The API key value. It will be only return once when the API Key was created.
 	APIKey *string `json:"apiKey,omitempty" azure:"ro"`
 
-	// READ-ONLY; The unique ID of the API key inside an Application Insights component. It is auto generated when the API key is created.
+	// READ-ONLY; The unique ID of the API key inside an Application Insights component. It is auto generated when the API key
+	// is created.
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentAPIKey.
-func (a ApplicationInsightsComponentAPIKey) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentAPIKey.
+func (c ComponentAPIKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiKey", a.APIKey)
-	populate(objectMap, "createdDate", a.CreatedDate)
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "linkedReadProperties", a.LinkedReadProperties)
-	populate(objectMap, "linkedWriteProperties", a.LinkedWriteProperties)
-	populate(objectMap, "name", a.Name)
+	populate(objectMap, "apiKey", c.APIKey)
+	populate(objectMap, "createdDate", c.CreatedDate)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "linkedReadProperties", c.LinkedReadProperties)
+	populate(objectMap, "linkedWriteProperties", c.LinkedWriteProperties)
+	populate(objectMap, "name", c.Name)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentAPIKeyListResult - Describes the list of API Keys of an Application Insights Component.
-type ApplicationInsightsComponentAPIKeyListResult struct {
+// ComponentAPIKeyListResult - Describes the list of API Keys of an Application Insights Component.
+type ComponentAPIKeyListResult struct {
 	// REQUIRED; List of API Key definitions.
-	Value []*ApplicationInsightsComponentAPIKey `json:"value,omitempty"`
+	Value []*ComponentAPIKey `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentAPIKeyListResult.
-func (a ApplicationInsightsComponentAPIKeyListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentAPIKeyListResult.
+func (c ComponentAPIKeyListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
+	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentAnalyticsItem - Properties that define an Analytics item that is associated to an Application Insights component.
-type ApplicationInsightsComponentAnalyticsItem struct {
+// ComponentAnalyticsItem - Properties that define an Analytics item that is associated to an Application Insights component.
+type ComponentAnalyticsItem struct {
 	// The content of this item
 	Content *string `json:"Content,omitempty"`
 
@@ -287,9 +299,10 @@ type ApplicationInsightsComponentAnalyticsItem struct {
 	Name *string `json:"Name,omitempty"`
 
 	// A set of properties that can be defined in the context of a specific item type. Each type may have its own properties.
-	Properties *ApplicationInsightsComponentAnalyticsItemProperties `json:"Properties,omitempty"`
+	Properties *ComponentAnalyticsItemProperties `json:"Properties,omitempty"`
 
-	// Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component.
+	// Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application
+	// Insights component.
 	Scope *ItemScope `json:"Scope,omitempty"`
 
 	// Enum indicating the type of the Analytics item.
@@ -305,45 +318,64 @@ type ApplicationInsightsComponentAnalyticsItem struct {
 	Version *string `json:"Version,omitempty" azure:"ro"`
 }
 
-// ApplicationInsightsComponentAnalyticsItemProperties - A set of properties that can be defined in the context of a specific item type. Each type may have
-// its own properties.
-type ApplicationInsightsComponentAnalyticsItemProperties struct {
+// ComponentAnalyticsItemProperties - A set of properties that can be defined in the context of a specific item type. Each
+// type may have its own properties.
+type ComponentAnalyticsItemProperties struct {
 	// A function alias, used when the type of the item is Function
 	FunctionAlias *string `json:"functionAlias,omitempty"`
 }
 
-// ApplicationInsightsComponentAvailableFeatures - An Application Insights component available features.
-type ApplicationInsightsComponentAvailableFeatures struct {
+// ComponentAvailableFeatures - An Application Insights component available features.
+type ComponentAvailableFeatures struct {
 	// READ-ONLY; A list of Application Insights component feature.
-	Result []*ApplicationInsightsComponentFeature `json:"Result,omitempty" azure:"ro"`
+	Result []*ComponentFeature `json:"Result,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentAvailableFeatures.
-func (a ApplicationInsightsComponentAvailableFeatures) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentAvailableFeatures.
+func (c ComponentAvailableFeatures) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "Result", a.Result)
+	populate(objectMap, "Result", c.Result)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentBillingFeatures - An Application Insights component billing features
-type ApplicationInsightsComponentBillingFeatures struct {
-	// Current enabled pricing plan. When the component is in the Enterprise plan, this will list both 'Basic' and 'Application Insights Enterprise'.
+// ComponentAvailableFeaturesClientGetOptions contains the optional parameters for the ComponentAvailableFeaturesClient.Get
+// method.
+type ComponentAvailableFeaturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentBillingFeatures - An Application Insights component billing features
+type ComponentBillingFeatures struct {
+	// Current enabled pricing plan. When the component is in the Enterprise plan, this will list both 'Basic' and 'Application
+	// Insights Enterprise'.
 	CurrentBillingFeatures []*string `json:"CurrentBillingFeatures,omitempty"`
 
 	// An Application Insights component daily data volume cap
-	DataVolumeCap *ApplicationInsightsComponentDataVolumeCap `json:"DataVolumeCap,omitempty"`
+	DataVolumeCap *ComponentDataVolumeCap `json:"DataVolumeCap,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentBillingFeatures.
-func (a ApplicationInsightsComponentBillingFeatures) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentBillingFeatures.
+func (c ComponentBillingFeatures) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "CurrentBillingFeatures", a.CurrentBillingFeatures)
-	populate(objectMap, "DataVolumeCap", a.DataVolumeCap)
+	populate(objectMap, "CurrentBillingFeatures", c.CurrentBillingFeatures)
+	populate(objectMap, "DataVolumeCap", c.DataVolumeCap)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentDataVolumeCap - An Application Insights component daily data volume cap
-type ApplicationInsightsComponentDataVolumeCap struct {
+// ComponentCurrentBillingFeaturesClientGetOptions contains the optional parameters for the ComponentCurrentBillingFeaturesClient.Get
+// method.
+type ComponentCurrentBillingFeaturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentCurrentBillingFeaturesClientUpdateOptions contains the optional parameters for the ComponentCurrentBillingFeaturesClient.Update
+// method.
+type ComponentCurrentBillingFeaturesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentDataVolumeCap - An Application Insights component daily data volume cap
+type ComponentDataVolumeCap struct {
 	// Daily data volume cap in GB.
 	Cap *float32 `json:"Cap,omitempty"`
 
@@ -363,13 +395,13 @@ type ApplicationInsightsComponentDataVolumeCap struct {
 	ResetTime *int32 `json:"ResetTime,omitempty" azure:"ro"`
 }
 
-// ApplicationInsightsComponentExportConfiguration - Properties that define a Continuous Export configuration.
-type ApplicationInsightsComponentExportConfiguration struct {
+// ComponentExportConfiguration - Properties that define a Continuous Export configuration.
+type ComponentExportConfiguration struct {
 	// Deprecated
 	NotificationQueueEnabled *string `json:"NotificationQueueEnabled,omitempty"`
 
-	// This comma separated list of document types that will be exported. The possible values include 'Requests', 'Event', 'Exceptions', 'Metrics', 'PageViews',
-	// 'PageViewPerformance', 'Rdd',
+	// This comma separated list of document types that will be exported. The possible values include 'Requests', 'Event', 'Exceptions',
+	// 'Metrics', 'PageViews', 'PageViewPerformance', 'Rdd',
 	// 'PerformanceCounters', 'Availability', 'Messages'.
 	RecordTypes *string `json:"RecordTypes,omitempty"`
 
@@ -391,11 +423,12 @@ type ApplicationInsightsComponentExportConfiguration struct {
 	// READ-ONLY; The destination type.
 	DestinationType *string `json:"DestinationType,omitempty" azure:"ro"`
 
-	// READ-ONLY; The unique ID of the export configuration inside an Application Insights component. It is auto generated when the Continuous Export configuration
-	// is created.
+	// READ-ONLY; The unique ID of the export configuration inside an Application Insights component. It is auto generated when
+	// the Continuous Export configuration is created.
 	ExportID *string `json:"ExportId,omitempty" azure:"ro"`
 
-	// READ-ONLY; This indicates current Continuous Export configuration status. The possible values are 'Preparing', 'Success', 'Failure'.
+	// READ-ONLY; This indicates current Continuous Export configuration status. The possible values are 'Preparing', 'Success',
+	// 'Failure'.
 	ExportStatus *string `json:"ExportStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; The instrumentation key of the Application Insights component.
@@ -407,13 +440,15 @@ type ApplicationInsightsComponentExportConfiguration struct {
 	// READ-ONLY; The last time the Continuous Export configuration started failing.
 	LastGapTime *string `json:"LastGapTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; The last time data was successfully delivered to the destination storage container for this Continuous Export configuration.
+	// READ-ONLY; The last time data was successfully delivered to the destination storage container for this Continuous Export
+	// configuration.
 	LastSuccessTime *string `json:"LastSuccessTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last time the Continuous Export configuration was updated.
 	LastUserUpdate *string `json:"LastUserUpdate,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the reason the Continuous Export configuration started failing. It can be 'AzureStorageNotFound' or 'AzureStorageAccessDenied'.
+	// READ-ONLY; This is the reason the Continuous Export configuration started failing. It can be 'AzureStorageNotFound' or
+	// 'AzureStorageAccessDenied'.
 	PermanentErrorReason *string `json:"PermanentErrorReason,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource group of the Application Insights component.
@@ -426,8 +461,8 @@ type ApplicationInsightsComponentExportConfiguration struct {
 	SubscriptionID *string `json:"SubscriptionId,omitempty" azure:"ro"`
 }
 
-// ApplicationInsightsComponentExportRequest - An Application Insights component Continuous Export configuration request definition.
-type ApplicationInsightsComponentExportRequest struct {
+// ComponentExportRequest - An Application Insights component Continuous Export configuration request definition.
+type ComponentExportRequest struct {
 	// The name of destination storage account.
 	DestinationAccountID *string `json:"DestinationAccountId,omitempty"`
 
@@ -452,21 +487,23 @@ type ApplicationInsightsComponentExportRequest struct {
 	// Deprecated
 	NotificationQueueURI *string `json:"NotificationQueueUri,omitempty"`
 
-	// The document types to be exported, as comma separated values. Allowed values include 'Requests', 'Event', 'Exceptions', 'Metrics', 'PageViews', 'PageViewPerformance',
-	// 'Rdd', 'PerformanceCounters',
+	// The document types to be exported, as comma separated values. Allowed values include 'Requests', 'Event', 'Exceptions',
+	// 'Metrics', 'PageViews', 'PageViewPerformance', 'Rdd', 'PerformanceCounters',
 	// 'Availability', 'Messages'.
 	RecordTypes *string `json:"RecordTypes,omitempty"`
 }
 
-// ApplicationInsightsComponentFavorite - Properties that define a favorite that is associated to an Application Insights component.
-type ApplicationInsightsComponentFavorite struct {
+// ComponentFavorite - Properties that define a favorite that is associated to an Application Insights component.
+type ComponentFavorite struct {
 	// Favorite category, as defined by the user at creation time.
 	Category *string `json:"Category,omitempty"`
 
-	// Configuration of this particular favorite, which are driven by the Azure portal UX. Configuration data is a string containing valid JSON
+	// Configuration of this particular favorite, which are driven by the Azure portal UX. Configuration data is a string containing
+	// valid JSON
 	Config *string `json:"Config,omitempty"`
 
-	// Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to the Application Insights component.
+	// Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to the
+	// Application Insights component.
 	FavoriteType *FavoriteType `json:"FavoriteType,omitempty"`
 
 	// Flag denoting wether or not this favorite was generated from a template.
@@ -481,8 +518,8 @@ type ApplicationInsightsComponentFavorite struct {
 	// A list of 0 or more tags that are associated with this favorite definition
 	Tags []*string `json:"Tags,omitempty"`
 
-	// This instance's version of the data model. This can change as new features are added that can be marked favorite. Current examples include MetricsExplorer
-	// (ME) and Search.
+	// This instance's version of the data model. This can change as new features are added that can be marked favorite. Current
+	// examples include MetricsExplorer (ME) and Search.
 	Version *string `json:"Version,omitempty"`
 
 	// READ-ONLY; Internally assigned unique id of the favorite definition.
@@ -495,27 +532,27 @@ type ApplicationInsightsComponentFavorite struct {
 	UserID *string `json:"UserId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentFavorite.
-func (a ApplicationInsightsComponentFavorite) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentFavorite.
+func (c ComponentFavorite) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "Category", a.Category)
-	populate(objectMap, "Config", a.Config)
-	populate(objectMap, "FavoriteId", a.FavoriteID)
-	populate(objectMap, "FavoriteType", a.FavoriteType)
-	populate(objectMap, "IsGeneratedFromTemplate", a.IsGeneratedFromTemplate)
-	populate(objectMap, "Name", a.Name)
-	populate(objectMap, "SourceType", a.SourceType)
-	populate(objectMap, "Tags", a.Tags)
-	populate(objectMap, "TimeModified", a.TimeModified)
-	populate(objectMap, "UserId", a.UserID)
-	populate(objectMap, "Version", a.Version)
+	populate(objectMap, "Category", c.Category)
+	populate(objectMap, "Config", c.Config)
+	populate(objectMap, "FavoriteId", c.FavoriteID)
+	populate(objectMap, "FavoriteType", c.FavoriteType)
+	populate(objectMap, "IsGeneratedFromTemplate", c.IsGeneratedFromTemplate)
+	populate(objectMap, "Name", c.Name)
+	populate(objectMap, "SourceType", c.SourceType)
+	populate(objectMap, "Tags", c.Tags)
+	populate(objectMap, "TimeModified", c.TimeModified)
+	populate(objectMap, "UserId", c.UserID)
+	populate(objectMap, "Version", c.Version)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentFeature - An Application Insights component daily data volume cap status
-type ApplicationInsightsComponentFeature struct {
+// ComponentFeature - An Application Insights component daily data volume cap status
+type ComponentFeature struct {
 	// READ-ONLY; A list of Application Insights component feature capability.
-	Capabilities []*ApplicationInsightsComponentFeatureCapability `json:"Capabilities,omitempty" azure:"ro"`
+	Capabilities []*ComponentFeatureCapability `json:"Capabilities,omitempty" azure:"ro"`
 
 	// READ-ONLY; The pricing feature name.
 	FeatureName *string `json:"FeatureName,omitempty" azure:"ro"`
@@ -542,23 +579,23 @@ type ApplicationInsightsComponentFeature struct {
 	Title *string `json:"Title,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentFeature.
-func (a ApplicationInsightsComponentFeature) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentFeature.
+func (c ComponentFeature) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "Capabilities", a.Capabilities)
-	populate(objectMap, "FeatureName", a.FeatureName)
-	populate(objectMap, "IsHidden", a.IsHidden)
-	populate(objectMap, "IsMainFeature", a.IsMainFeature)
-	populate(objectMap, "MeterId", a.MeterID)
-	populate(objectMap, "MeterRateFrequency", a.MeterRateFrequency)
-	populate(objectMap, "ResouceId", a.ResouceID)
-	populate(objectMap, "SupportedAddonFeatures", a.SupportedAddonFeatures)
-	populate(objectMap, "Title", a.Title)
+	populate(objectMap, "Capabilities", c.Capabilities)
+	populate(objectMap, "FeatureName", c.FeatureName)
+	populate(objectMap, "IsHidden", c.IsHidden)
+	populate(objectMap, "IsMainFeature", c.IsMainFeature)
+	populate(objectMap, "MeterId", c.MeterID)
+	populate(objectMap, "MeterRateFrequency", c.MeterRateFrequency)
+	populate(objectMap, "ResouceId", c.ResouceID)
+	populate(objectMap, "SupportedAddonFeatures", c.SupportedAddonFeatures)
+	populate(objectMap, "Title", c.Title)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentFeatureCapabilities - An Application Insights component feature capabilities
-type ApplicationInsightsComponentFeatureCapabilities struct {
+// ComponentFeatureCapabilities - An Application Insights component feature capabilities
+type ComponentFeatureCapabilities struct {
 	// READ-ONLY; Reserved, not used now.
 	APIAccessLevel *string `json:"ApiAccessLevel,omitempty" azure:"ro"`
 
@@ -608,8 +645,14 @@ type ApplicationInsightsComponentFeatureCapabilities struct {
 	WorkItemIntegration *bool `json:"WorkItemIntegration,omitempty" azure:"ro"`
 }
 
-// ApplicationInsightsComponentFeatureCapability - An Application Insights component feature capability
-type ApplicationInsightsComponentFeatureCapability struct {
+// ComponentFeatureCapabilitiesClientGetOptions contains the optional parameters for the ComponentFeatureCapabilitiesClient.Get
+// method.
+type ComponentFeatureCapabilitiesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentFeatureCapability - An Application Insights component feature capability
+type ComponentFeatureCapability struct {
 	// READ-ONLY; The description of the capability.
 	Description *string `json:"Description,omitempty" azure:"ro"`
 
@@ -629,25 +672,78 @@ type ApplicationInsightsComponentFeatureCapability struct {
 	Value *string `json:"Value,omitempty" azure:"ro"`
 }
 
-// ApplicationInsightsComponentListResult - Describes the list of Application Insights Resources.
-type ApplicationInsightsComponentListResult struct {
-	// REQUIRED; List of Application Insights component definitions.
-	Value []*ApplicationInsightsComponent `json:"value,omitempty"`
+// ComponentLinkedStorageAccounts - An Application Insights component linked storage accounts
+type ComponentLinkedStorageAccounts struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
 
-	// The URI to get the next set of Application Insights component definitions if too many components where returned in the result set.
-	NextLink *string `json:"nextLink,omitempty"`
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentListResult.
-func (a ApplicationInsightsComponentListResult) MarshalJSON() ([]byte, error) {
+// ComponentLinkedStorageAccountsClientCreateAndUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.CreateAndUpdate
+// method.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientDeleteOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Delete
+// method.
+type ComponentLinkedStorageAccountsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientGetOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Get
+// method.
+type ComponentLinkedStorageAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Update
+// method.
+type ComponentLinkedStorageAccountsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsPatch - An Application Insights component linked storage accounts patch
+type ComponentLinkedStorageAccountsPatch struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ComponentLinkedStorageAccountsPatch.
+func (c ComponentLinkedStorageAccountsPatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
+	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentProactiveDetectionConfiguration - Properties that define a ProactiveDetection configuration.
-type ApplicationInsightsComponentProactiveDetectionConfiguration struct {
+// ComponentListResult - Describes the list of Application Insights Resources.
+type ComponentListResult struct {
+	// REQUIRED; List of Application Insights component definitions.
+	Value []*Component `json:"value,omitempty"`
+
+	// The URI to get the next set of Application Insights component definitions if too many components where returned in the
+	// result set.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ComponentListResult.
+func (c ComponentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// ComponentProactiveDetectionConfiguration - Properties that define a ProactiveDetection configuration.
+type ComponentProactiveDetectionConfiguration struct {
 	// Custom email addresses for this rule notifications
 	CustomEmails []*string `json:"CustomEmails,omitempty"`
 
@@ -661,27 +757,27 @@ type ApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	Name *string `json:"Name,omitempty"`
 
 	// Static definitions of the ProactiveDetection configuration rule (same values for all components).
-	RuleDefinitions *ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions `json:"RuleDefinitions,omitempty"`
+	RuleDefinitions *ComponentProactiveDetectionConfigurationRuleDefinitions `json:"RuleDefinitions,omitempty"`
 
 	// A flag that indicated whether notifications on this rule should be sent to subscription owners
 	SendEmailsToSubscriptionOwners *bool `json:"SendEmailsToSubscriptionOwners,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentProactiveDetectionConfiguration.
-func (a ApplicationInsightsComponentProactiveDetectionConfiguration) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentProactiveDetectionConfiguration.
+func (c ComponentProactiveDetectionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "CustomEmails", a.CustomEmails)
-	populate(objectMap, "Enabled", a.Enabled)
-	populate(objectMap, "LastUpdatedTime", a.LastUpdatedTime)
-	populate(objectMap, "Name", a.Name)
-	populate(objectMap, "RuleDefinitions", a.RuleDefinitions)
-	populate(objectMap, "SendEmailsToSubscriptionOwners", a.SendEmailsToSubscriptionOwners)
+	populate(objectMap, "CustomEmails", c.CustomEmails)
+	populate(objectMap, "Enabled", c.Enabled)
+	populate(objectMap, "LastUpdatedTime", c.LastUpdatedTime)
+	populate(objectMap, "Name", c.Name)
+	populate(objectMap, "RuleDefinitions", c.RuleDefinitions)
+	populate(objectMap, "SendEmailsToSubscriptionOwners", c.SendEmailsToSubscriptionOwners)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions - Static definitions of the ProactiveDetection configuration rule (same values
-// for all components).
-type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions struct {
+// ComponentProactiveDetectionConfigurationRuleDefinitions - Static definitions of the ProactiveDetection configuration rule
+// (same values for all components).
+type ComponentProactiveDetectionConfigurationRuleDefinitions struct {
 	// The rule description
 	Description *string `json:"Description,omitempty"`
 
@@ -707,16 +803,16 @@ type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions 
 	SupportsEmailNotifications *bool `json:"SupportsEmailNotifications,omitempty"`
 }
 
-// ApplicationInsightsComponentProperties - Properties that define an Application Insights component resource.
-type ApplicationInsightsComponentProperties struct {
+// ComponentProperties - Properties that define an Application Insights component resource.
+type ComponentProperties struct {
 	// REQUIRED; Type of application being monitored.
 	ApplicationType *ApplicationType `json:"Application_Type,omitempty"`
 
 	// Disable IP masking.
 	DisableIPMasking *bool `json:"DisableIpMasking,omitempty"`
 
-	// Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating
-	// a component via the REST API.
+	// Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set
+	// to 'Bluefield' when creating/updating a component via the REST API.
 	FlowType *FlowType `json:"Flow_Type,omitempty"`
 
 	// The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp.
@@ -734,7 +830,8 @@ type ApplicationInsightsComponentProperties struct {
 	// The network access type for accessing Application Insights query.
 	PublicNetworkAccessForQuery *PublicNetworkAccessType `json:"publicNetworkAccessForQuery,omitempty"`
 
-	// Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'.
+	// Describes what tool created this Application Insights component. Customers using this API should set this to the default
+	// 'rest'.
 	RequestSource *RequestSource `json:"Request_Source,omitempty"`
 
 	// Retention period in days.
@@ -758,16 +855,16 @@ type ApplicationInsightsComponentProperties struct {
 	// READ-ONLY; Token used to authenticate communications with between Application Insights and HockeyApp.
 	HockeyAppToken *string `json:"HockeyAppToken,omitempty" azure:"ro"`
 
-	// READ-ONLY; Application Insights Instrumentation key. A read-only value that applications can use to identify the destination for all telemetry sent to
-	// Azure Application Insights. This value will be supplied upon
+	// READ-ONLY; Application Insights Instrumentation key. A read-only value that applications can use to identify the destination
+	// for all telemetry sent to Azure Application Insights. This value will be supplied upon
 	// construction of each new Application Insights component.
 	InstrumentationKey *string `json:"InstrumentationKey,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources []*PrivateLinkScopedResource `json:"PrivateLinkScopedResources,omitempty" azure:"ro"`
 
-	// READ-ONLY; Current state of this component: whether or not is has been provisioned within the resource group it is defined. Users cannot change this
-	// value but are able to read from it. Values will include
+	// READ-ONLY; Current state of this component: whether or not is has been provisioned within the resource group it is defined.
+	// Users cannot change this value but are able to read from it. Values will include
 	// Succeeded, Deploying, Canceled, and Failed.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
@@ -775,34 +872,34 @@ type ApplicationInsightsComponentProperties struct {
 	TenantID *string `json:"TenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsComponentProperties.
-func (a ApplicationInsightsComponentProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComponentProperties.
+func (c ComponentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "AppId", a.AppID)
-	populate(objectMap, "ApplicationId", a.ApplicationID)
-	populate(objectMap, "Application_Type", a.ApplicationType)
-	populate(objectMap, "ConnectionString", a.ConnectionString)
-	populateTimeRFC3339(objectMap, "CreationDate", a.CreationDate)
-	populate(objectMap, "DisableIpMasking", a.DisableIPMasking)
-	populate(objectMap, "Flow_Type", a.FlowType)
-	populate(objectMap, "HockeyAppId", a.HockeyAppID)
-	populate(objectMap, "HockeyAppToken", a.HockeyAppToken)
-	populate(objectMap, "ImmediatePurgeDataOn30Days", a.ImmediatePurgeDataOn30Days)
-	populate(objectMap, "IngestionMode", a.IngestionMode)
-	populate(objectMap, "InstrumentationKey", a.InstrumentationKey)
-	populate(objectMap, "PrivateLinkScopedResources", a.PrivateLinkScopedResources)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "publicNetworkAccessForIngestion", a.PublicNetworkAccessForIngestion)
-	populate(objectMap, "publicNetworkAccessForQuery", a.PublicNetworkAccessForQuery)
-	populate(objectMap, "Request_Source", a.RequestSource)
-	populate(objectMap, "RetentionInDays", a.RetentionInDays)
-	populate(objectMap, "SamplingPercentage", a.SamplingPercentage)
-	populate(objectMap, "TenantId", a.TenantID)
+	populate(objectMap, "AppId", c.AppID)
+	populate(objectMap, "ApplicationId", c.ApplicationID)
+	populate(objectMap, "Application_Type", c.ApplicationType)
+	populate(objectMap, "ConnectionString", c.ConnectionString)
+	populateTimeRFC3339(objectMap, "CreationDate", c.CreationDate)
+	populate(objectMap, "DisableIpMasking", c.DisableIPMasking)
+	populate(objectMap, "Flow_Type", c.FlowType)
+	populate(objectMap, "HockeyAppId", c.HockeyAppID)
+	populate(objectMap, "HockeyAppToken", c.HockeyAppToken)
+	populate(objectMap, "ImmediatePurgeDataOn30Days", c.ImmediatePurgeDataOn30Days)
+	populate(objectMap, "IngestionMode", c.IngestionMode)
+	populate(objectMap, "InstrumentationKey", c.InstrumentationKey)
+	populate(objectMap, "PrivateLinkScopedResources", c.PrivateLinkScopedResources)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "publicNetworkAccessForIngestion", c.PublicNetworkAccessForIngestion)
+	populate(objectMap, "publicNetworkAccessForQuery", c.PublicNetworkAccessForQuery)
+	populate(objectMap, "Request_Source", c.RequestSource)
+	populate(objectMap, "RetentionInDays", c.RetentionInDays)
+	populate(objectMap, "SamplingPercentage", c.SamplingPercentage)
+	populate(objectMap, "TenantId", c.TenantID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationInsightsComponentProperties.
-func (a *ApplicationInsightsComponentProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ComponentProperties.
+func (c *ComponentProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -811,64 +908,64 @@ func (a *ApplicationInsightsComponentProperties) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "AppId":
-			err = unpopulate(val, &a.AppID)
+			err = unpopulate(val, &c.AppID)
 			delete(rawMsg, key)
 		case "ApplicationId":
-			err = unpopulate(val, &a.ApplicationID)
+			err = unpopulate(val, &c.ApplicationID)
 			delete(rawMsg, key)
 		case "Application_Type":
-			err = unpopulate(val, &a.ApplicationType)
+			err = unpopulate(val, &c.ApplicationType)
 			delete(rawMsg, key)
 		case "ConnectionString":
-			err = unpopulate(val, &a.ConnectionString)
+			err = unpopulate(val, &c.ConnectionString)
 			delete(rawMsg, key)
 		case "CreationDate":
-			err = unpopulateTimeRFC3339(val, &a.CreationDate)
+			err = unpopulateTimeRFC3339(val, &c.CreationDate)
 			delete(rawMsg, key)
 		case "DisableIpMasking":
-			err = unpopulate(val, &a.DisableIPMasking)
+			err = unpopulate(val, &c.DisableIPMasking)
 			delete(rawMsg, key)
 		case "Flow_Type":
-			err = unpopulate(val, &a.FlowType)
+			err = unpopulate(val, &c.FlowType)
 			delete(rawMsg, key)
 		case "HockeyAppId":
-			err = unpopulate(val, &a.HockeyAppID)
+			err = unpopulate(val, &c.HockeyAppID)
 			delete(rawMsg, key)
 		case "HockeyAppToken":
-			err = unpopulate(val, &a.HockeyAppToken)
+			err = unpopulate(val, &c.HockeyAppToken)
 			delete(rawMsg, key)
 		case "ImmediatePurgeDataOn30Days":
-			err = unpopulate(val, &a.ImmediatePurgeDataOn30Days)
+			err = unpopulate(val, &c.ImmediatePurgeDataOn30Days)
 			delete(rawMsg, key)
 		case "IngestionMode":
-			err = unpopulate(val, &a.IngestionMode)
+			err = unpopulate(val, &c.IngestionMode)
 			delete(rawMsg, key)
 		case "InstrumentationKey":
-			err = unpopulate(val, &a.InstrumentationKey)
+			err = unpopulate(val, &c.InstrumentationKey)
 			delete(rawMsg, key)
 		case "PrivateLinkScopedResources":
-			err = unpopulate(val, &a.PrivateLinkScopedResources)
+			err = unpopulate(val, &c.PrivateLinkScopedResources)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, &c.ProvisioningState)
 			delete(rawMsg, key)
 		case "publicNetworkAccessForIngestion":
-			err = unpopulate(val, &a.PublicNetworkAccessForIngestion)
+			err = unpopulate(val, &c.PublicNetworkAccessForIngestion)
 			delete(rawMsg, key)
 		case "publicNetworkAccessForQuery":
-			err = unpopulate(val, &a.PublicNetworkAccessForQuery)
+			err = unpopulate(val, &c.PublicNetworkAccessForQuery)
 			delete(rawMsg, key)
 		case "Request_Source":
-			err = unpopulate(val, &a.RequestSource)
+			err = unpopulate(val, &c.RequestSource)
 			delete(rawMsg, key)
 		case "RetentionInDays":
-			err = unpopulate(val, &a.RetentionInDays)
+			err = unpopulate(val, &c.RetentionInDays)
 			delete(rawMsg, key)
 		case "SamplingPercentage":
-			err = unpopulate(val, &a.SamplingPercentage)
+			err = unpopulate(val, &c.SamplingPercentage)
 			delete(rawMsg, key)
 		case "TenantId":
-			err = unpopulate(val, &a.TenantID)
+			err = unpopulate(val, &c.TenantID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -876,108 +973,6 @@ func (a *ApplicationInsightsComponentProperties) UnmarshalJSON(data []byte) erro
 		}
 	}
 	return nil
-}
-
-// ApplicationInsightsComponentQuotaStatus - An Application Insights component daily data volume cap status
-type ApplicationInsightsComponentQuotaStatus struct {
-	// READ-ONLY; The Application ID for the Application Insights component.
-	AppID *string `json:"AppId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Date and time when the daily data volume cap will be reset, and data ingestion will resume.
-	ExpirationTime *string `json:"ExpirationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; The daily data volume cap is met, and data ingestion will be stopped.
-	ShouldBeThrottled *bool `json:"ShouldBeThrottled,omitempty" azure:"ro"`
-}
-
-// ApplicationInsightsComponentWebTestLocation - Properties that define a web test location available to an Application Insights Component.
-type ApplicationInsightsComponentWebTestLocation struct {
-	// READ-ONLY; The display name of the web test location.
-	DisplayName *string `json:"DisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Internally defined geographic location tag.
-	Tag *string `json:"Tag,omitempty" azure:"ro"`
-}
-
-// ApplicationInsightsWebTestLocationsListResult - Describes the list of web test locations available to an Application Insights Component.
-type ApplicationInsightsWebTestLocationsListResult struct {
-	// REQUIRED; List of web test locations.
-	Value []*ApplicationInsightsComponentWebTestLocation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationInsightsWebTestLocationsListResult.
-func (a ApplicationInsightsWebTestLocationsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// ComponentAvailableFeaturesGetOptions contains the optional parameters for the ComponentAvailableFeatures.Get method.
-type ComponentAvailableFeaturesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentCurrentBillingFeaturesGetOptions contains the optional parameters for the ComponentCurrentBillingFeatures.Get method.
-type ComponentCurrentBillingFeaturesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentCurrentBillingFeaturesUpdateOptions contains the optional parameters for the ComponentCurrentBillingFeatures.Update method.
-type ComponentCurrentBillingFeaturesUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentFeatureCapabilitiesGetOptions contains the optional parameters for the ComponentFeatureCapabilities.Get method.
-type ComponentFeatureCapabilitiesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentLinkedStorageAccounts - An Application Insights component linked storage accounts
-type ComponentLinkedStorageAccounts struct {
-	ProxyResource
-	// The properties of the linked storage accounts.
-	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ComponentLinkedStorageAccounts.
-func (c ComponentLinkedStorageAccounts) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ComponentLinkedStorageAccountsCreateAndUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccounts.CreateAndUpdate method.
-type ComponentLinkedStorageAccountsCreateAndUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentLinkedStorageAccountsDeleteOptions contains the optional parameters for the ComponentLinkedStorageAccounts.Delete method.
-type ComponentLinkedStorageAccountsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentLinkedStorageAccountsGetOptions contains the optional parameters for the ComponentLinkedStorageAccounts.Get method.
-type ComponentLinkedStorageAccountsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComponentLinkedStorageAccountsPatch - An Application Insights component linked storage accounts patch
-type ComponentLinkedStorageAccountsPatch struct {
-	// The properties of the linked storage accounts.
-	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ComponentLinkedStorageAccountsPatch.
-func (c ComponentLinkedStorageAccountsPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ComponentLinkedStorageAccountsUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccounts.Update method.
-type ComponentLinkedStorageAccountsUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ComponentPurgeBody - Describes the body of a purge request for an App Insights component
@@ -1005,11 +1000,12 @@ type ComponentPurgeBodyFilters struct {
 	// When filtering over custom dimensions, this key will be used as the name of the custom dimension.
 	Key *string `json:"key,omitempty"`
 
-	// A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <, <=, between, and have the same
-	// behavior as they would in a KQL query.
+	// A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <,
+	// <=, between, and have the same behavior as they would in a KQL query.
 	Operator *string `json:"operator,omitempty"`
 
-	// the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values.
+	// the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or
+	// array of values.
 	Value interface{} `json:"value,omitempty"`
 }
 
@@ -1025,43 +1021,70 @@ type ComponentPurgeStatusResponse struct {
 	Status *PurgeState `json:"status,omitempty"`
 }
 
-// ComponentQuotaStatusGetOptions contains the optional parameters for the ComponentQuotaStatus.Get method.
-type ComponentQuotaStatusGetOptions struct {
+// ComponentQuotaStatus - An Application Insights component daily data volume cap status
+type ComponentQuotaStatus struct {
+	// READ-ONLY; The Application ID for the Application Insights component.
+	AppID *string `json:"AppId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date and time when the daily data volume cap will be reset, and data ingestion will resume.
+	ExpirationTime *string `json:"ExpirationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The daily data volume cap is met, and data ingestion will be stopped.
+	ShouldBeThrottled *bool `json:"ShouldBeThrottled,omitempty" azure:"ro"`
+}
+
+// ComponentQuotaStatusClientGetOptions contains the optional parameters for the ComponentQuotaStatusClient.Get method.
+type ComponentQuotaStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsCreateOrUpdateOptions contains the optional parameters for the Components.CreateOrUpdate method.
-type ComponentsCreateOrUpdateOptions struct {
+// ComponentWebTestLocation - Properties that define a web test location available to an Application Insights Component.
+type ComponentWebTestLocation struct {
+	// READ-ONLY; The display name of the web test location.
+	DisplayName *string `json:"DisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Internally defined geographic location tag.
+	Tag *string `json:"Tag,omitempty" azure:"ro"`
+}
+
+// ComponentsClientCreateOrUpdateOptions contains the optional parameters for the ComponentsClient.CreateOrUpdate method.
+type ComponentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsDeleteOptions contains the optional parameters for the Components.Delete method.
-type ComponentsDeleteOptions struct {
+// ComponentsClientDeleteOptions contains the optional parameters for the ComponentsClient.Delete method.
+type ComponentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsGetOptions contains the optional parameters for the Components.Get method.
-type ComponentsGetOptions struct {
+// ComponentsClientGetOptions contains the optional parameters for the ComponentsClient.Get method.
+type ComponentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsGetPurgeStatusOptions contains the optional parameters for the Components.GetPurgeStatus method.
-type ComponentsGetPurgeStatusOptions struct {
+// ComponentsClientGetPurgeStatusOptions contains the optional parameters for the ComponentsClient.GetPurgeStatus method.
+type ComponentsClientGetPurgeStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsListByResourceGroupOptions contains the optional parameters for the Components.ListByResourceGroup method.
-type ComponentsListByResourceGroupOptions struct {
+// ComponentsClientListByResourceGroupOptions contains the optional parameters for the ComponentsClient.ListByResourceGroup
+// method.
+type ComponentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsListOptions contains the optional parameters for the Components.List method.
-type ComponentsListOptions struct {
+// ComponentsClientListOptions contains the optional parameters for the ComponentsClient.List method.
+type ComponentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentsPurgeOptions contains the optional parameters for the Components.Purge method.
-type ComponentsPurgeOptions struct {
+// ComponentsClientPurgeOptions contains the optional parameters for the ComponentsClient.Purge method.
+type ComponentsClientPurgeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentsClientUpdateTagsOptions contains the optional parameters for the ComponentsClient.UpdateTags method.
+type ComponentsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1086,21 +1109,12 @@ type ComponentsResource struct {
 // MarshalJSON implements the json.Marshaller interface for type ComponentsResource.
 func (c ComponentsResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (c ComponentsResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "location", c.Location)
 	populate(objectMap, "name", c.Name)
 	populate(objectMap, "tags", c.Tags)
 	populate(objectMap, "type", c.Type)
-}
-
-// ComponentsUpdateTagsOptions contains the optional parameters for the Components.UpdateTags method.
-type ComponentsUpdateTagsOptions struct {
-	// placeholder for future optional parameters
+	return json.Marshal(objectMap)
 }
 
 // ErrorDefinition - Error definition.
@@ -1115,7 +1129,8 @@ type ErrorDefinition struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error response indicates Insights service is not able to process the incoming request. The reason is provided in the error message.
+// ErrorResponse - Error response indicates Insights service is not able to process the incoming request. The reason is provided
+// in the error message.
 type ErrorResponse struct {
 	// Error code.
 	Code *string `json:"code,omitempty"`
@@ -1124,21 +1139,14 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponseLinkedStorage struct {
-	raw string
-	// Error response indicates Insights service is not able to process the incoming request. The reason is provided in the error message.
-	InnerError *ErrorResponseLinkedStorageError `json:"error,omitempty"`
+	// Error response indicates Insights service is not able to process the incoming request. The reason is provided in the error
+	// message.
+	Error *ErrorResponseLinkedStorageError `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponseLinkedStorage.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponseLinkedStorage) Error() string {
-	return e.raw
-}
-
-// ErrorResponseLinkedStorageError - Error response indicates Insights service is not able to process the incoming request. The reason is provided in the
-// error message.
+// ErrorResponseLinkedStorageError - Error response indicates Insights service is not able to process the incoming request.
+// The reason is provided in the error message.
 type ErrorResponseLinkedStorageError struct {
 	// READ-ONLY; Error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
@@ -1147,49 +1155,50 @@ type ErrorResponseLinkedStorageError struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ExportConfigurationsCreateOptions contains the optional parameters for the ExportConfigurations.Create method.
-type ExportConfigurationsCreateOptions struct {
+// ExportConfigurationsClientCreateOptions contains the optional parameters for the ExportConfigurationsClient.Create method.
+type ExportConfigurationsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportConfigurationsDeleteOptions contains the optional parameters for the ExportConfigurations.Delete method.
-type ExportConfigurationsDeleteOptions struct {
+// ExportConfigurationsClientDeleteOptions contains the optional parameters for the ExportConfigurationsClient.Delete method.
+type ExportConfigurationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportConfigurationsGetOptions contains the optional parameters for the ExportConfigurations.Get method.
-type ExportConfigurationsGetOptions struct {
+// ExportConfigurationsClientGetOptions contains the optional parameters for the ExportConfigurationsClient.Get method.
+type ExportConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportConfigurationsListOptions contains the optional parameters for the ExportConfigurations.List method.
-type ExportConfigurationsListOptions struct {
+// ExportConfigurationsClientListOptions contains the optional parameters for the ExportConfigurationsClient.List method.
+type ExportConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportConfigurationsUpdateOptions contains the optional parameters for the ExportConfigurations.Update method.
-type ExportConfigurationsUpdateOptions struct {
+// ExportConfigurationsClientUpdateOptions contains the optional parameters for the ExportConfigurationsClient.Update method.
+type ExportConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoritesAddOptions contains the optional parameters for the Favorites.Add method.
-type FavoritesAddOptions struct {
+// FavoritesClientAddOptions contains the optional parameters for the FavoritesClient.Add method.
+type FavoritesClientAddOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoritesDeleteOptions contains the optional parameters for the Favorites.Delete method.
-type FavoritesDeleteOptions struct {
+// FavoritesClientDeleteOptions contains the optional parameters for the FavoritesClient.Delete method.
+type FavoritesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoritesGetOptions contains the optional parameters for the Favorites.Get method.
-type FavoritesGetOptions struct {
+// FavoritesClientGetOptions contains the optional parameters for the FavoritesClient.Get method.
+type FavoritesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoritesListOptions contains the optional parameters for the Favorites.List method.
-type FavoritesListOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable favorite. If false, only return summary content for favorites.
+// FavoritesClientListOptions contains the optional parameters for the FavoritesClient.List method.
+type FavoritesClientListOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable favorite. If false, only return summary content
+	// for favorites.
 	CanFetchContent *bool
 	// The type of favorite. Value can be either shared or user.
 	FavoriteType *FavoriteType
@@ -1199,8 +1208,8 @@ type FavoritesListOptions struct {
 	Tags []string
 }
 
-// FavoritesUpdateOptions contains the optional parameters for the Favorites.Update method.
-type FavoritesUpdateOptions struct {
+// FavoritesClientUpdateOptions contains the optional parameters for the FavoritesClient.Update method.
+type FavoritesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1263,8 +1272,8 @@ type LinkedStorageAccountsProperties struct {
 	LinkedStorageAccount *string `json:"linkedStorageAccount,omitempty"`
 }
 
-// LiveTokenGetOptions contains the optional parameters for the LiveToken.Get method.
-type LiveTokenGetOptions struct {
+// LiveTokenClientGetOptions contains the optional parameters for the LiveTokenClient.Get method.
+type LiveTokenClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1279,13 +1288,15 @@ type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 
-	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary
-	// values can be empty objects ({}) in
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
 	// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -1295,25 +1306,41 @@ type ManagedServiceIdentity struct {
 // MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
 func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (m ManagedServiceIdentity) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "principalId", m.PrincipalID)
 	populate(objectMap, "tenantId", m.TenantID)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
+	return json.Marshal(objectMap)
 }
 
 // MyWorkbook - An Application Insights private workbook definition.
 type MyWorkbook struct {
-	MyWorkbookResource
+	// Resource etag
+	Etag map[string]*string `json:"etag,omitempty"`
+
+	// Azure resource Id
+	ID *string `json:"id,omitempty"`
+
+	// Identity used for BYOS
+	Identity *MyWorkbookManagedIdentity `json:"identity,omitempty"`
+
 	// The kind of workbook. Choices are user and shared.
 	Kind *Kind `json:"kind,omitempty"`
 
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// Azure resource name
+	Name *string `json:"name,omitempty"`
+
 	// Metadata describing a workbook for an Azure resource.
 	Properties *MyWorkbookProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Azure resource type
+	Type *string `json:"type,omitempty"`
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
@@ -1322,25 +1349,23 @@ type MyWorkbook struct {
 // MarshalJSON implements the json.Marshaller interface for type MyWorkbook.
 func (m MyWorkbook) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.MyWorkbookResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", m.Etag)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "identity", m.Identity)
 	populate(objectMap, "kind", m.Kind)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
 	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
 // MyWorkbookError - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type MyWorkbookError struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type MyWorkbookError.
-// The contents of the error text are not contractual and subject to change.
-func (e MyWorkbookError) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // MyWorkbookManagedIdentity - Customer Managed Identity
@@ -1424,11 +1449,6 @@ type MyWorkbookResource struct {
 // MarshalJSON implements the json.Marshaller interface for type MyWorkbookResource.
 func (m MyWorkbookResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (m MyWorkbookResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", m.Etag)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "identity", m.Identity)
@@ -1436,6 +1456,7 @@ func (m MyWorkbookResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "name", m.Name)
 	populate(objectMap, "tags", m.Tags)
 	populate(objectMap, "type", m.Type)
+	return json.Marshal(objectMap)
 }
 
 // MyWorkbookUserAssignedIdentities - Customer Managed Identity
@@ -1447,25 +1468,27 @@ type MyWorkbookUserAssignedIdentities struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MyWorkbooksCreateOrUpdateOptions contains the optional parameters for the MyWorkbooks.CreateOrUpdate method.
-type MyWorkbooksCreateOrUpdateOptions struct {
+// MyWorkbooksClientCreateOrUpdateOptions contains the optional parameters for the MyWorkbooksClient.CreateOrUpdate method.
+type MyWorkbooksClientCreateOrUpdateOptions struct {
 	// Azure Resource Id that will fetch all linked workbooks.
 	SourceID *string
 }
 
-// MyWorkbooksDeleteOptions contains the optional parameters for the MyWorkbooks.Delete method.
-type MyWorkbooksDeleteOptions struct {
+// MyWorkbooksClientDeleteOptions contains the optional parameters for the MyWorkbooksClient.Delete method.
+type MyWorkbooksClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MyWorkbooksGetOptions contains the optional parameters for the MyWorkbooks.Get method.
-type MyWorkbooksGetOptions struct {
+// MyWorkbooksClientGetOptions contains the optional parameters for the MyWorkbooksClient.Get method.
+type MyWorkbooksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MyWorkbooksListByResourceGroupOptions contains the optional parameters for the MyWorkbooks.ListByResourceGroup method.
-type MyWorkbooksListByResourceGroupOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
+// MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.ListByResourceGroup
+// method.
+type MyWorkbooksClientListByResourceGroupOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
 	CanFetchContent *bool
 	// Azure Resource Id that will fetch all linked workbooks.
 	SourceID *string
@@ -1473,12 +1496,20 @@ type MyWorkbooksListByResourceGroupOptions struct {
 	Tags []string
 }
 
-// MyWorkbooksListBySubscriptionOptions contains the optional parameters for the MyWorkbooks.ListBySubscription method.
-type MyWorkbooksListBySubscriptionOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
+// MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.ListBySubscription
+// method.
+type MyWorkbooksClientListBySubscriptionOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
 	CanFetchContent *bool
 	// Tags presents on each workbook returned.
 	Tags []string
+}
+
+// MyWorkbooksClientUpdateOptions contains the optional parameters for the MyWorkbooksClient.Update method.
+type MyWorkbooksClientUpdateOptions struct {
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 }
 
 // MyWorkbooksListResult - Workbook list result.
@@ -1495,12 +1526,6 @@ func (m MyWorkbooksListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", m.NextLink)
 	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
-}
-
-// MyWorkbooksUpdateOptions contains the optional parameters for the MyWorkbooks.Update method.
-type MyWorkbooksUpdateOptions struct {
-	// Azure Resource Id that will fetch all linked workbooks.
-	SourceID *string
 }
 
 // Operation - CDN REST API operation
@@ -1539,7 +1564,8 @@ type OperationInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list CDN operations. It contains a list of operations and a URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1571,8 +1597,8 @@ type OperationLive struct {
 	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1602,28 +1628,35 @@ type PrivateLinkScopedResource struct {
 	ScopeID *string `json:"ScopeId,omitempty"`
 }
 
-// ProactiveDetectionConfigurationsGetOptions contains the optional parameters for the ProactiveDetectionConfigurations.Get method.
-type ProactiveDetectionConfigurationsGetOptions struct {
+// ProactiveDetectionConfigurationsClientGetOptions contains the optional parameters for the ProactiveDetectionConfigurationsClient.Get
+// method.
+type ProactiveDetectionConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProactiveDetectionConfigurationsListOptions contains the optional parameters for the ProactiveDetectionConfigurations.List method.
-type ProactiveDetectionConfigurationsListOptions struct {
+// ProactiveDetectionConfigurationsClientListOptions contains the optional parameters for the ProactiveDetectionConfigurationsClient.List
+// method.
+type ProactiveDetectionConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProactiveDetectionConfigurationsUpdateOptions contains the optional parameters for the ProactiveDetectionConfigurations.Update method.
-type ProactiveDetectionConfigurationsUpdateOptions struct {
+// ProactiveDetectionConfigurationsClientUpdateOptions contains the optional parameters for the ProactiveDetectionConfigurationsClient.Update
+// method.
+type ProactiveDetectionConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -1636,19 +1669,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1732,27 +1752,34 @@ func (t TagsResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UserAssignedIdentity - User assigned identity properties
@@ -1766,24 +1793,43 @@ type UserAssignedIdentity struct {
 
 // WebTest - An Application Insights web test definition.
 type WebTest struct {
-	WebtestsResource
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
 	// The kind of web test that this web test watches. Choices are ping and multistep.
 	Kind *WebTestKind `json:"kind,omitempty"`
 
 	// Metadata describing a web test for an Azure resource.
 	Properties *WebTestProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WebTest.
 func (w WebTest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.WebtestsResource.marshalInternal(objectMap)
+	populate(objectMap, "id", w.ID)
 	populate(objectMap, "kind", w.Kind)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
-// WebTestGeolocation - Geo-physical location to run a web test from. You must specify one or more locations for the test to run from.
+// WebTestGeolocation - Geo-physical location to run a web test from. You must specify one or more locations for the test
+// to run from.
 type WebTestGeolocation struct {
 	// Location ID for the webtest to run from.
 	Location *string `json:"Id,omitempty"`
@@ -1794,7 +1840,8 @@ type WebTestListResult struct {
 	// REQUIRED; Set of Application Insights web test definitions.
 	Value []*WebTest `json:"value,omitempty"`
 
-	// The link to get the next part of the returned list of web tests, should the return set be too large for a single request. May be null.
+	// The link to get the next part of the returned list of web tests, should the return set be too large for a single request.
+	// May be null.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1806,9 +1853,22 @@ func (w WebTestListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebTestLocationsListOptions contains the optional parameters for the WebTestLocations.List method.
-type WebTestLocationsListOptions struct {
+// WebTestLocationsClientListOptions contains the optional parameters for the WebTestLocationsClient.List method.
+type WebTestLocationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// WebTestLocationsListResult - Describes the list of web test locations available to an Application Insights Component.
+type WebTestLocationsListResult struct {
+	// REQUIRED; List of web test locations.
+	Value []*ComponentWebTestLocation `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WebTestLocationsListResult.
+func (w WebTestLocationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", w.Value)
+	return json.Marshal(objectMap)
 }
 
 // WebTestProperties - Metadata describing a web test for an Azure resource.
@@ -1843,8 +1903,8 @@ type WebTestProperties struct {
 	// Seconds until this WebTest will timeout and fail. Default value is 30.
 	Timeout *int32 `json:"Timeout,omitempty"`
 
-	// READ-ONLY; Current state of this component, whether or not is has been provisioned within the resource group it is defined. Users cannot change this
-	// value but are able to read from it. Values will include
+	// READ-ONLY; Current state of this component, whether or not is has been provisioned within the resource group it is defined.
+	// Users cannot change this value but are able to read from it. Values will include
 	// Succeeded, Deploying, Canceled, and Failed.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
@@ -1872,38 +1932,38 @@ type WebTestPropertiesConfiguration struct {
 	WebTest *string `json:"WebTest,omitempty"`
 }
 
-// WebTestsCreateOrUpdateOptions contains the optional parameters for the WebTests.CreateOrUpdate method.
-type WebTestsCreateOrUpdateOptions struct {
+// WebTestsClientCreateOrUpdateOptions contains the optional parameters for the WebTestsClient.CreateOrUpdate method.
+type WebTestsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsDeleteOptions contains the optional parameters for the WebTests.Delete method.
-type WebTestsDeleteOptions struct {
+// WebTestsClientDeleteOptions contains the optional parameters for the WebTestsClient.Delete method.
+type WebTestsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsGetOptions contains the optional parameters for the WebTests.Get method.
-type WebTestsGetOptions struct {
+// WebTestsClientGetOptions contains the optional parameters for the WebTestsClient.Get method.
+type WebTestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsListByComponentOptions contains the optional parameters for the WebTests.ListByComponent method.
-type WebTestsListByComponentOptions struct {
+// WebTestsClientListByComponentOptions contains the optional parameters for the WebTestsClient.ListByComponent method.
+type WebTestsClientListByComponentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsListByResourceGroupOptions contains the optional parameters for the WebTests.ListByResourceGroup method.
-type WebTestsListByResourceGroupOptions struct {
+// WebTestsClientListByResourceGroupOptions contains the optional parameters for the WebTestsClient.ListByResourceGroup method.
+type WebTestsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsListOptions contains the optional parameters for the WebTests.List method.
-type WebTestsListOptions struct {
+// WebTestsClientListOptions contains the optional parameters for the WebTestsClient.List method.
+type WebTestsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebTestsUpdateTagsOptions contains the optional parameters for the WebTests.UpdateTags method.
-type WebTestsUpdateTagsOptions struct {
+// WebTestsClientUpdateTagsOptions contains the optional parameters for the WebTestsClient.UpdateTags method.
+type WebTestsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1928,16 +1988,12 @@ type WebtestsResource struct {
 // MarshalJSON implements the json.Marshaller interface for type WebtestsResource.
 func (w WebtestsResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (w WebtestsResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", w.ID)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "name", w.Name)
 	populate(objectMap, "tags", w.Tags)
 	populate(objectMap, "type", w.Type)
+	return json.Marshal(objectMap)
 }
 
 // WorkItemConfiguration - Work item configuration associated with an application insights resource.
@@ -1959,9 +2015,7 @@ type WorkItemConfiguration struct {
 }
 
 // WorkItemConfigurationError - Error associated with trying to get work item configuration or configurations
-// Implements the error and azcore.HTTPResponse interfaces.
 type WorkItemConfigurationError struct {
-	raw string
 	// Error detail code and explanation
 	Code *string `json:"code,omitempty"`
 
@@ -1972,34 +2026,38 @@ type WorkItemConfigurationError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type WorkItemConfigurationError.
-// The contents of the error text are not contractual and subject to change.
-func (e WorkItemConfigurationError) Error() string {
-	return e.raw
-}
-
-// WorkItemConfigurationsCreateOptions contains the optional parameters for the WorkItemConfigurations.Create method.
-type WorkItemConfigurationsCreateOptions struct {
+// WorkItemConfigurationsClientCreateOptions contains the optional parameters for the WorkItemConfigurationsClient.Create
+// method.
+type WorkItemConfigurationsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkItemConfigurationsDeleteOptions contains the optional parameters for the WorkItemConfigurations.Delete method.
-type WorkItemConfigurationsDeleteOptions struct {
+// WorkItemConfigurationsClientDeleteOptions contains the optional parameters for the WorkItemConfigurationsClient.Delete
+// method.
+type WorkItemConfigurationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkItemConfigurationsGetDefaultOptions contains the optional parameters for the WorkItemConfigurations.GetDefault method.
-type WorkItemConfigurationsGetDefaultOptions struct {
+// WorkItemConfigurationsClientGetDefaultOptions contains the optional parameters for the WorkItemConfigurationsClient.GetDefault
+// method.
+type WorkItemConfigurationsClientGetDefaultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkItemConfigurationsGetItemOptions contains the optional parameters for the WorkItemConfigurations.GetItem method.
-type WorkItemConfigurationsGetItemOptions struct {
+// WorkItemConfigurationsClientGetItemOptions contains the optional parameters for the WorkItemConfigurationsClient.GetItem
+// method.
+type WorkItemConfigurationsClientGetItemOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkItemConfigurationsListOptions contains the optional parameters for the WorkItemConfigurations.List method.
-type WorkItemConfigurationsListOptions struct {
+// WorkItemConfigurationsClientListOptions contains the optional parameters for the WorkItemConfigurationsClient.List method.
+type WorkItemConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkItemConfigurationsClientUpdateItemOptions contains the optional parameters for the WorkItemConfigurationsClient.UpdateItem
+// method.
+type WorkItemConfigurationsClientUpdateItemOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2014,11 +2072,6 @@ func (w WorkItemConfigurationsListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
-}
-
-// WorkItemConfigurationsUpdateItemOptions contains the optional parameters for the WorkItemConfigurations.UpdateItem method.
-type WorkItemConfigurationsUpdateItemOptions struct {
-	// placeholder for future optional parameters
 }
 
 // WorkItemCreateConfiguration - Work item configuration creation payload
@@ -2048,35 +2101,57 @@ func (w WorkItemCreateConfiguration) MarshalJSON() ([]byte, error) {
 
 // Workbook - An Application Insights workbook definition.
 type Workbook struct {
-	WorkbookResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Identity used for BYOS
+	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
+
+	// The kind of workbook. Choices are user and shared.
+	Kind *Kind `json:"kind,omitempty"`
+
 	// Metadata describing a workbook for an Azure resource.
 	Properties *WorkbookProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Workbook.
 func (w Workbook) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.WorkbookResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", w.Etag)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "identity", w.Identity)
+	populate(objectMap, "kind", w.Kind)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "systemData", w.SystemData)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
 // WorkbookError - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type WorkbookError struct {
-	raw string
 	// The error details.
-	InnerError *WorkbookErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type WorkbookError.
-// The contents of the error text are not contractual and subject to change.
-func (e WorkbookError) Error() string {
-	return e.raw
+	Error *WorkbookErrorDefinition `json:"error,omitempty"`
 }
 
 // WorkbookErrorDefinition - Error definition.
@@ -2242,7 +2317,9 @@ func (w WorkbookPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // WorkbookResource - An azure resource object
 type WorkbookResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Resource etag
 	Etag *string `json:"etag,omitempty"`
 
@@ -2251,54 +2328,101 @@ type WorkbookResource struct {
 
 	// The kind of workbook. Choices are user and shared.
 	Kind *Kind `json:"kind,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WorkbookResource.
 func (w WorkbookResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (w WorkbookResource) marshalInternal(objectMap map[string]interface{}) {
-	w.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", w.Etag)
+	populate(objectMap, "id", w.ID)
 	populate(objectMap, "identity", w.Identity)
 	populate(objectMap, "kind", w.Kind)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
+	return json.Marshal(objectMap)
 }
 
 // WorkbookResourceIdentity - Identity used for BYOS
 type WorkbookResourceIdentity struct {
-	ManagedServiceIdentity
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WorkbookResourceIdentity.
+func (w WorkbookResourceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "principalId", w.PrincipalID)
+	populate(objectMap, "tenantId", w.TenantID)
+	populate(objectMap, "type", w.Type)
+	populate(objectMap, "userAssignedIdentities", w.UserAssignedIdentities)
+	return json.Marshal(objectMap)
 }
 
 // WorkbookTemplate - An Application Insights workbook template definition.
 type WorkbookTemplate struct {
-	WorkbookTemplateResource
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Metadata describing a workbook template for an Azure resource.
 	Properties *WorkbookTemplateProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WorkbookTemplate.
 func (w WorkbookTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.WorkbookTemplateResource.marshalInternal(objectMap)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
 // WorkbookTemplateError - Error message that will indicate why the operation failed.
-// Implements the error and azcore.HTTPResponse interfaces.
 type WorkbookTemplateError struct {
-	raw string
 	// Error message object that will indicate why the operation failed.
-	InnerError *WorkbookTemplateErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type WorkbookTemplateError.
-// The contents of the error text are not contractual and subject to change.
-func (e WorkbookTemplateError) Error() string {
-	return e.raw
+	Error *WorkbookTemplateErrorBody `json:"error,omitempty"`
 }
 
 // WorkbookTemplateErrorBody - Error message body that will indicate why the operation failed.
@@ -2419,16 +2543,12 @@ type WorkbookTemplateResource struct {
 // MarshalJSON implements the json.Marshaller interface for type WorkbookTemplateResource.
 func (w WorkbookTemplateResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (w WorkbookTemplateResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", w.ID)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "name", w.Name)
 	populate(objectMap, "tags", w.Tags)
 	populate(objectMap, "type", w.Type)
+	return json.Marshal(objectMap)
 }
 
 // WorkbookTemplateUpdateParameters - The parameters that can be provided when updating workbook template.
@@ -2448,24 +2568,32 @@ func (w WorkbookTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WorkbookTemplatesCreateOrUpdateOptions contains the optional parameters for the WorkbookTemplates.CreateOrUpdate method.
-type WorkbookTemplatesCreateOrUpdateOptions struct {
+// WorkbookTemplatesClientCreateOrUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.CreateOrUpdate
+// method.
+type WorkbookTemplatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkbookTemplatesDeleteOptions contains the optional parameters for the WorkbookTemplates.Delete method.
-type WorkbookTemplatesDeleteOptions struct {
+// WorkbookTemplatesClientDeleteOptions contains the optional parameters for the WorkbookTemplatesClient.Delete method.
+type WorkbookTemplatesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkbookTemplatesGetOptions contains the optional parameters for the WorkbookTemplates.Get method.
-type WorkbookTemplatesGetOptions struct {
+// WorkbookTemplatesClientGetOptions contains the optional parameters for the WorkbookTemplatesClient.Get method.
+type WorkbookTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkbookTemplatesListByResourceGroupOptions contains the optional parameters for the WorkbookTemplates.ListByResourceGroup method.
-type WorkbookTemplatesListByResourceGroupOptions struct {
+// WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.ListByResourceGroup
+// method.
+type WorkbookTemplatesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.Update method.
+type WorkbookTemplatesClientUpdateOptions struct {
+	// Properties that need to be specified to patch a workbook template.
+	WorkbookTemplateUpdateParameters *WorkbookTemplateUpdateParameters
 }
 
 // WorkbookTemplatesListResult - WorkbookTemplate list result.
@@ -2479,12 +2607,6 @@ func (w WorkbookTemplatesListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
-}
-
-// WorkbookTemplatesUpdateOptions contains the optional parameters for the WorkbookTemplates.Update method.
-type WorkbookTemplatesUpdateOptions struct {
-	// Properties that need to be specified to patch a workbook template.
-	WorkbookTemplateUpdateParameters *WorkbookTemplateUpdateParameters
 }
 
 // WorkbookUpdateParameters - The parameters that can be provided when updating workbook properties properties.
@@ -2508,25 +2630,27 @@ func (w WorkbookUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WorkbooksCreateOrUpdateOptions contains the optional parameters for the Workbooks.CreateOrUpdate method.
-type WorkbooksCreateOrUpdateOptions struct {
+// WorkbooksClientCreateOrUpdateOptions contains the optional parameters for the WorkbooksClient.CreateOrUpdate method.
+type WorkbooksClientCreateOrUpdateOptions struct {
 	// Azure Resource Id that will fetch all linked workbooks.
 	SourceID *string
 }
 
-// WorkbooksDeleteOptions contains the optional parameters for the Workbooks.Delete method.
-type WorkbooksDeleteOptions struct {
+// WorkbooksClientDeleteOptions contains the optional parameters for the WorkbooksClient.Delete method.
+type WorkbooksClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkbooksGetOptions contains the optional parameters for the Workbooks.Get method.
-type WorkbooksGetOptions struct {
+// WorkbooksClientGetOptions contains the optional parameters for the WorkbooksClient.Get method.
+type WorkbooksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkbooksListByResourceGroupOptions contains the optional parameters for the Workbooks.ListByResourceGroup method.
-type WorkbooksListByResourceGroupOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
+// WorkbooksClientListByResourceGroupOptions contains the optional parameters for the WorkbooksClient.ListByResourceGroup
+// method.
+type WorkbooksClientListByResourceGroupOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
 	CanFetchContent *bool
 	// Azure Resource Id that will fetch all linked workbooks.
 	SourceID *string
@@ -2534,12 +2658,31 @@ type WorkbooksListByResourceGroupOptions struct {
 	Tags []string
 }
 
-// WorkbooksListBySubscriptionOptions contains the optional parameters for the Workbooks.ListBySubscription method.
-type WorkbooksListBySubscriptionOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
+// WorkbooksClientListBySubscriptionOptions contains the optional parameters for the WorkbooksClient.ListBySubscription method.
+type WorkbooksClientListBySubscriptionOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
 	CanFetchContent *bool
 	// Tags presents on each workbook returned.
 	Tags []string
+}
+
+// WorkbooksClientRevisionGetOptions contains the optional parameters for the WorkbooksClient.RevisionGet method.
+type WorkbooksClientRevisionGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbooksClientRevisionsListOptions contains the optional parameters for the WorkbooksClient.RevisionsList method.
+type WorkbooksClientRevisionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbooksClientUpdateOptions contains the optional parameters for the WorkbooksClient.Update method.
+type WorkbooksClientUpdateOptions struct {
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
+	// Properties that need to be specified to create a new workbook.
+	WorkbookUpdateParameters *WorkbookUpdateParameters
 }
 
 // WorkbooksListResult - Workbook list result.
@@ -2556,24 +2699,6 @@ func (w WorkbooksListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", w.NextLink)
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
-}
-
-// WorkbooksRevisionGetOptions contains the optional parameters for the Workbooks.RevisionGet method.
-type WorkbooksRevisionGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkbooksRevisionsListOptions contains the optional parameters for the Workbooks.RevisionsList method.
-type WorkbooksRevisionsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkbooksUpdateOptions contains the optional parameters for the Workbooks.Update method.
-type WorkbooksUpdateOptions struct {
-	// Azure Resource Id that will fetch all linked workbooks.
-	SourceID *string
-	// Properties that need to be specified to create a new workbook.
-	WorkbookUpdateParameters *WorkbookUpdateParameters
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

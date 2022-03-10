@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ScalingPlansClient contains the methods for the ScalingPlans group.
 // Don't use this type directly, use NewScalingPlansClient() instead.
 type ScalingPlansClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScalingPlansClient creates a new instance of ScalingPlansClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScalingPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScalingPlansClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScalingPlansClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScalingPlansClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create or update a scaling plan.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlan ScalingPlan, options *ScalingPlansCreateOptions) (ScalingPlansCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// scalingPlanName - The name of the scaling plan.
+// scalingPlan - Object containing scaling plan definitions.
+// options - ScalingPlansClientCreateOptions contains the optional parameters for the ScalingPlansClient.Create method.
+func (client *ScalingPlansClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlan ScalingPlan, options *ScalingPlansClientCreateOptions) (ScalingPlansClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlan, options)
 	if err != nil {
-		return ScalingPlansCreateResponse{}, err
+		return ScalingPlansClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScalingPlansCreateResponse{}, err
+		return ScalingPlansClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ScalingPlansCreateResponse{}, client.createHandleError(resp)
+		return ScalingPlansClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ScalingPlansClient) createCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlan ScalingPlan, options *ScalingPlansCreateOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) createCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlan ScalingPlan, options *ScalingPlansClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *ScalingPlansClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +97,36 @@ func (client *ScalingPlansClient) createCreateRequest(ctx context.Context, resou
 }
 
 // createHandleResponse handles the Create response.
-func (client *ScalingPlansClient) createHandleResponse(resp *http.Response) (ScalingPlansCreateResponse, error) {
-	result := ScalingPlansCreateResponse{RawResponse: resp}
+func (client *ScalingPlansClient) createHandleResponse(resp *http.Response) (ScalingPlansClientCreateResponse, error) {
+	result := ScalingPlansClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlan); err != nil {
-		return ScalingPlansCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ScalingPlansClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Remove a scaling plan.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansDeleteOptions) (ScalingPlansDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// scalingPlanName - The name of the scaling plan.
+// options - ScalingPlansClientDeleteOptions contains the optional parameters for the ScalingPlansClient.Delete method.
+func (client *ScalingPlansClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientDeleteOptions) (ScalingPlansClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
-		return ScalingPlansDeleteResponse{}, err
+		return ScalingPlansClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScalingPlansDeleteResponse{}, err
+		return ScalingPlansClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ScalingPlansDeleteResponse{}, client.deleteHandleError(resp)
+		return ScalingPlansClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ScalingPlansDeleteResponse{RawResponse: resp}, nil
+	return ScalingPlansClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansDeleteOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +140,7 @@ func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +151,28 @@ func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ScalingPlansClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a scaling plan.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansGetOptions) (ScalingPlansGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// scalingPlanName - The name of the scaling plan.
+// options - ScalingPlansClientGetOptions contains the optional parameters for the ScalingPlansClient.Get method.
+func (client *ScalingPlansClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientGetOptions) (ScalingPlansClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
-		return ScalingPlansGetResponse{}, err
+		return ScalingPlansClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScalingPlansGetResponse{}, err
+		return ScalingPlansClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScalingPlansGetResponse{}, client.getHandleError(resp)
+		return ScalingPlansClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScalingPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansGetOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +186,7 @@ func (client *ScalingPlansClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +198,34 @@ func (client *ScalingPlansClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScalingPlansClient) getHandleResponse(resp *http.Response) (ScalingPlansGetResponse, error) {
-	result := ScalingPlansGetResponse{RawResponse: resp}
+func (client *ScalingPlansClient) getHandleResponse(resp *http.Response) (ScalingPlansClientGetResponse, error) {
+	result := ScalingPlansClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlan); err != nil {
-		return ScalingPlansGetResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ScalingPlansClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByHostPool - List scaling plan associated with hostpool.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *ScalingPlansListByHostPoolOptions) *ScalingPlansListByHostPoolPager {
-	return &ScalingPlansListByHostPoolPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// options - ScalingPlansClientListByHostPoolOptions contains the optional parameters for the ScalingPlansClient.ListByHostPool
+// method.
+func (client *ScalingPlansClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *ScalingPlansClientListByHostPoolOptions) *ScalingPlansClientListByHostPoolPager {
+	return &ScalingPlansClientListByHostPoolPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp ScalingPlansListByHostPoolResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScalingPlansClientListByHostPoolResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScalingPlanList.NextLink)
 		},
 	}
 }
 
 // listByHostPoolCreateRequest creates the ListByHostPool request.
-func (client *ScalingPlansClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *ScalingPlansListByHostPoolOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *ScalingPlansClientListByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/scalingPlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,7 +239,7 @@ func (client *ScalingPlansClient) listByHostPoolCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,43 +251,33 @@ func (client *ScalingPlansClient) listByHostPoolCreateRequest(ctx context.Contex
 }
 
 // listByHostPoolHandleResponse handles the ListByHostPool response.
-func (client *ScalingPlansClient) listByHostPoolHandleResponse(resp *http.Response) (ScalingPlansListByHostPoolResponse, error) {
-	result := ScalingPlansListByHostPoolResponse{RawResponse: resp}
+func (client *ScalingPlansClient) listByHostPoolHandleResponse(resp *http.Response) (ScalingPlansClientListByHostPoolResponse, error) {
+	result := ScalingPlansClientListByHostPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanList); err != nil {
-		return ScalingPlansListByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientListByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// listByHostPoolHandleError handles the ListByHostPool error response.
-func (client *ScalingPlansClient) listByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List scaling plans.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) ListByResourceGroup(resourceGroupName string, options *ScalingPlansListByResourceGroupOptions) *ScalingPlansListByResourceGroupPager {
-	return &ScalingPlansListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ScalingPlansClientListByResourceGroupOptions contains the optional parameters for the ScalingPlansClient.ListByResourceGroup
+// method.
+func (client *ScalingPlansClient) ListByResourceGroup(resourceGroupName string, options *ScalingPlansClientListByResourceGroupOptions) *ScalingPlansClientListByResourceGroupPager {
+	return &ScalingPlansClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ScalingPlansListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScalingPlansClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScalingPlanList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ScalingPlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ScalingPlansListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ScalingPlansClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -315,7 +287,7 @@ func (client *ScalingPlansClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,49 +299,38 @@ func (client *ScalingPlansClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ScalingPlansClient) listByResourceGroupHandleResponse(resp *http.Response) (ScalingPlansListByResourceGroupResponse, error) {
-	result := ScalingPlansListByResourceGroupResponse{RawResponse: resp}
+func (client *ScalingPlansClient) listByResourceGroupHandleResponse(resp *http.Response) (ScalingPlansClientListByResourceGroupResponse, error) {
+	result := ScalingPlansClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanList); err != nil {
-		return ScalingPlansListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ScalingPlansClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List scaling plans in subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) ListBySubscription(options *ScalingPlansListBySubscriptionOptions) *ScalingPlansListBySubscriptionPager {
-	return &ScalingPlansListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ScalingPlansClientListBySubscriptionOptions contains the optional parameters for the ScalingPlansClient.ListBySubscription
+// method.
+func (client *ScalingPlansClient) ListBySubscription(options *ScalingPlansClientListBySubscriptionOptions) *ScalingPlansClientListBySubscriptionPager {
+	return &ScalingPlansClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ScalingPlansListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScalingPlansClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScalingPlanList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ScalingPlansClient) listBySubscriptionCreateRequest(ctx context.Context, options *ScalingPlansListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) listBySubscriptionCreateRequest(ctx context.Context, options *ScalingPlansClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/scalingPlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,46 +342,36 @@ func (client *ScalingPlansClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ScalingPlansClient) listBySubscriptionHandleResponse(resp *http.Response) (ScalingPlansListBySubscriptionResponse, error) {
-	result := ScalingPlansListBySubscriptionResponse{RawResponse: resp}
+func (client *ScalingPlansClient) listBySubscriptionHandleResponse(resp *http.Response) (ScalingPlansClientListBySubscriptionResponse, error) {
+	result := ScalingPlansClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanList); err != nil {
-		return ScalingPlansListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ScalingPlansClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a scaling plan.
-// If the operation fails it returns the *CloudError error type.
-func (client *ScalingPlansClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansUpdateOptions) (ScalingPlansUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// scalingPlanName - The name of the scaling plan.
+// options - ScalingPlansClientUpdateOptions contains the optional parameters for the ScalingPlansClient.Update method.
+func (client *ScalingPlansClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientUpdateOptions) (ScalingPlansClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
-		return ScalingPlansUpdateResponse{}, err
+		return ScalingPlansClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScalingPlansUpdateResponse{}, err
+		return ScalingPlansClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScalingPlansUpdateResponse{}, client.updateHandleError(resp)
+		return ScalingPlansClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ScalingPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansUpdateOptions) (*policy.Request, error) {
+func (client *ScalingPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -434,7 +385,7 @@ func (client *ScalingPlansClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -449,23 +400,10 @@ func (client *ScalingPlansClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ScalingPlansClient) updateHandleResponse(resp *http.Response) (ScalingPlansUpdateResponse, error) {
-	result := ScalingPlansUpdateResponse{RawResponse: resp}
+func (client *ScalingPlansClient) updateHandleResponse(resp *http.Response) (ScalingPlansClientUpdateResponse, error) {
+	result := ScalingPlansClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlan); err != nil {
-		return ScalingPlansUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ScalingPlansClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ScalingPlansClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

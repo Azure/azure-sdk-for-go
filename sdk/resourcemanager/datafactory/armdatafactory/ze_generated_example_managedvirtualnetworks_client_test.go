@@ -27,12 +27,16 @@ func ExampleManagedVirtualNetworksClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagedVirtualNetworkResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,11 +56,11 @@ func ExampleManagedVirtualNetworksClient_CreateOrUpdate() {
 		armdatafactory.ManagedVirtualNetworkResource{
 			Properties: &armdatafactory.ManagedVirtualNetwork{},
 		},
-		&armdatafactory.ManagedVirtualNetworksCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.ManagedVirtualNetworksClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedVirtualNetworkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedVirtualNetworksClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Get.json
@@ -71,9 +75,9 @@ func ExampleManagedVirtualNetworksClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<managed-virtual-network-name>",
-		&armdatafactory.ManagedVirtualNetworksGetOptions{IfNoneMatch: nil})
+		&armdatafactory.ManagedVirtualNetworksClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedVirtualNetworkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedVirtualNetworksClientGetResult)
 }

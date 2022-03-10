@@ -31,11 +31,17 @@ type CheckNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResult - Response for check name availability API. Resource provider will set availability as true | false.
+// CheckNameAvailabilityResult - Response for check name availability API. Resource provider will set availability as true
+// | false.
 type CheckNameAvailabilityResult struct {
 	Message       *string `json:"message,omitempty"`
 	NameAvailable *bool   `json:"nameAvailable,omitempty"`
 	Reason        *string `json:"reason,omitempty"`
+}
+
+// ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
+type ClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ClientDiscoveryDisplay - Localized display information of an operation.
@@ -117,17 +123,9 @@ type ClientDiscoveryValueForSingleAPI struct {
 }
 
 // CloudError - An error response from Azure Backup.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The resource management error response.
-	InnerError *Error `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *Error `json:"error,omitempty"`
 }
 
 // CmkKekIdentity - The details of the identity used for CMK
@@ -185,12 +183,13 @@ type ErrorAdditionalInfo struct {
 
 // IdentityData - Identity for the resource.
 type IdentityData struct {
-	// REQUIRED; The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-	// identities. The type 'None' will remove any
+	// REQUIRED; The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+	// identity and a set of user-assigned identities. The type 'None' will remove any
 	// identities.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM resource ids in the form:
+	// The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM
+	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -258,7 +257,8 @@ type OperationResource struct {
 	// End time of the operation
 	EndTime *time.Time `json:"endTime,omitempty"`
 
-	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into the v2.2 Azure REST API guidelines.
+	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into
+	// the v2.2 Azure REST API guidelines.
 	Error *Error `json:"error,omitempty"`
 
 	// It should match what is used to GET the operation result
@@ -321,64 +321,98 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OperationsGetOperationResultOptions contains the optional parameters for the Operations.GetOperationResult method.
-type OperationsGetOperationResultOptions struct {
+// OperationsClientGetOperationResultOptions contains the optional parameters for the OperationsClient.GetOperationResult
+// method.
+type OperationsClientGetOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsOperationStatusGetOptions contains the optional parameters for the Operations.OperationStatusGet method.
-type OperationsOperationStatusGetOptions struct {
+// OperationsClientOperationStatusGetOptions contains the optional parameters for the OperationsClient.OperationStatusGet
+// method.
+type OperationsClientOperationStatusGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PatchTrackedResource - Tracked resource with location.
 type PatchTrackedResource struct {
-	Resource
+	// Optional ETag.
+	Etag *string `json:"etag,omitempty"`
+
 	// Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PatchTrackedResource.
 func (p PatchTrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (p PatchTrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
 	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
 }
 
 // PatchVault - Patch Resource information, as returned by the resource provider.
 type PatchVault struct {
-	PatchTrackedResource
+	// Optional ETag.
+	Etag *string `json:"etag,omitempty"`
+
 	// Identity for the resource.
 	Identity *IdentityData `json:"identity,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
 
 	// Properties of the vault.
 	Properties *VaultProperties `json:"properties,omitempty"`
 
 	// Identifies the unique system identifier for each Azure resource.
 	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PatchVault.
 func (p PatchVault) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.PatchTrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
 	populate(objectMap, "identity", p.Identity)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "sku", p.SKU)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -400,7 +434,8 @@ type PrivateEndpointConnection struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionVaultProperties - Information to be stored in Vault properties as an element of privateEndpointConnections List.
+// PrivateEndpointConnectionVaultProperties - Information to be stored in Vault properties as an element of privateEndpointConnections
+// List.
 type PrivateEndpointConnectionVaultProperties struct {
 	// READ-ONLY; Format of id subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{resourceName}/privateEndpointConnections/{connectionName}.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -471,13 +506,13 @@ func (p PrivateLinkResources) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -533,13 +568,8 @@ func (r *RawCertificateData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RecoveryServicesCheckNameAvailabilityOptions contains the optional parameters for the RecoveryServices.CheckNameAvailability method.
-type RecoveryServicesCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegisteredIdentitiesDeleteOptions contains the optional parameters for the RegisteredIdentities.Delete method.
-type RegisteredIdentitiesDeleteOptions struct {
+// RegisteredIdentitiesClientDeleteOptions contains the optional parameters for the RegisteredIdentitiesClient.Delete method.
+type RegisteredIdentitiesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -577,8 +607,8 @@ func (r ReplicationUsageList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ReplicationUsagesListOptions contains the optional parameters for the ReplicationUsages.List method.
-type ReplicationUsagesListOptions struct {
+// ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.List method.
+type ReplicationUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -597,28 +627,16 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceCertificateAndAADDetails - Certificate details representing the Vault credentials for AAD.
 type ResourceCertificateAndAADDetails struct {
-	ResourceCertificateDetails
 	// REQUIRED; AAD tenant authority.
 	AADAuthority *string `json:"aadAuthority,omitempty"`
 
 	// REQUIRED; AAD tenant Id.
 	AADTenantID *string `json:"aadTenantId,omitempty"`
+
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	AuthType *string `json:"authType,omitempty"`
 
 	// REQUIRED; Azure Management Endpoint Audience.
 	AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
@@ -629,20 +647,67 @@ type ResourceCertificateAndAADDetails struct {
 	// REQUIRED; AAD service principal ObjectId.
 	ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
 
+	// The base64 encoded certificate raw data string.
+	Certificate []byte `json:"certificate,omitempty"`
+
+	// Certificate friendly name.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Certificate issuer.
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Resource ID of the vault.
+	ResourceID *int64 `json:"resourceId,omitempty"`
+
 	// Service Resource Id.
 	ServiceResourceID *string `json:"serviceResourceId,omitempty"`
+
+	// Certificate Subject Name.
+	Subject *string `json:"subject,omitempty"`
+
+	// Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+
+	// Certificate Validity start Date time.
+	ValidFrom *time.Time `json:"validFrom,omitempty"`
+
+	// Certificate Validity End Date time.
+	ValidTo *time.Time `json:"validTo,omitempty"`
+}
+
+// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAADDetails.
+func (r *ResourceCertificateAndAADDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
+	return &ResourceCertificateDetails{
+		AuthType:     r.AuthType,
+		Certificate:  r.Certificate,
+		FriendlyName: r.FriendlyName,
+		Issuer:       r.Issuer,
+		ResourceID:   r.ResourceID,
+		Subject:      r.Subject,
+		Thumbprint:   r.Thumbprint,
+		ValidFrom:    r.ValidFrom,
+		ValidTo:      r.ValidTo,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAADDetails.
 func (r ResourceCertificateAndAADDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ResourceCertificateDetails.marshalInternal(objectMap, "AzureActiveDirectory")
 	populate(objectMap, "aadAuthority", r.AADAuthority)
 	populate(objectMap, "aadTenantId", r.AADTenantID)
+	objectMap["authType"] = "AzureActiveDirectory"
 	populate(objectMap, "azureManagementEndpointAudience", r.AzureManagementEndpointAudience)
+	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populate(objectMap, "friendlyName", r.FriendlyName)
+	populate(objectMap, "issuer", r.Issuer)
+	populate(objectMap, "resourceId", r.ResourceID)
 	populate(objectMap, "servicePrincipalClientId", r.ServicePrincipalClientID)
 	populate(objectMap, "servicePrincipalObjectId", r.ServicePrincipalObjectID)
 	populate(objectMap, "serviceResourceId", r.ServiceResourceID)
+	populate(objectMap, "subject", r.Subject)
+	populate(objectMap, "thumbprint", r.Thumbprint)
+	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
+	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
 	return json.Marshal(objectMap)
 }
 
@@ -661,8 +726,23 @@ func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
 		case "aadTenantId":
 			err = unpopulate(val, &r.AADTenantID)
 			delete(rawMsg, key)
+		case "authType":
+			err = unpopulate(val, &r.AuthType)
+			delete(rawMsg, key)
 		case "azureManagementEndpointAudience":
 			err = unpopulate(val, &r.AzureManagementEndpointAudience)
+			delete(rawMsg, key)
+		case "certificate":
+			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &r.FriendlyName)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &r.Issuer)
+			delete(rawMsg, key)
+		case "resourceId":
+			err = unpopulate(val, &r.ResourceID)
 			delete(rawMsg, key)
 		case "servicePrincipalClientId":
 			err = unpopulate(val, &r.ServicePrincipalClientID)
@@ -673,20 +753,31 @@ func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
 		case "serviceResourceId":
 			err = unpopulate(val, &r.ServiceResourceID)
 			delete(rawMsg, key)
+		case "subject":
+			err = unpopulate(val, &r.Subject)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &r.Thumbprint)
+			delete(rawMsg, key)
+		case "validFrom":
+			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
+			delete(rawMsg, key)
+		case "validTo":
+			err = unpopulateTimeRFC3339(val, &r.ValidTo)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.ResourceCertificateDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // ResourceCertificateAndAcsDetails - Certificate details representing the Vault credentials for ACS.
 type ResourceCertificateAndAcsDetails struct {
-	ResourceCertificateDetails
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	AuthType *string `json:"authType,omitempty"`
+
 	// REQUIRED; Acs mgmt host name to connect to.
 	GlobalAcsHostName *string `json:"globalAcsHostName,omitempty"`
 
@@ -695,15 +786,62 @@ type ResourceCertificateAndAcsDetails struct {
 
 	// REQUIRED; Global ACS namespace RP realm.
 	GlobalAcsRPRealm *string `json:"globalAcsRPRealm,omitempty"`
+
+	// The base64 encoded certificate raw data string.
+	Certificate []byte `json:"certificate,omitempty"`
+
+	// Certificate friendly name.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Certificate issuer.
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Resource ID of the vault.
+	ResourceID *int64 `json:"resourceId,omitempty"`
+
+	// Certificate Subject Name.
+	Subject *string `json:"subject,omitempty"`
+
+	// Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+
+	// Certificate Validity start Date time.
+	ValidFrom *time.Time `json:"validFrom,omitempty"`
+
+	// Certificate Validity End Date time.
+	ValidTo *time.Time `json:"validTo,omitempty"`
+}
+
+// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAcsDetails.
+func (r *ResourceCertificateAndAcsDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
+	return &ResourceCertificateDetails{
+		AuthType:     r.AuthType,
+		Certificate:  r.Certificate,
+		FriendlyName: r.FriendlyName,
+		Issuer:       r.Issuer,
+		ResourceID:   r.ResourceID,
+		Subject:      r.Subject,
+		Thumbprint:   r.Thumbprint,
+		ValidFrom:    r.ValidFrom,
+		ValidTo:      r.ValidTo,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAcsDetails.
 func (r ResourceCertificateAndAcsDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ResourceCertificateDetails.marshalInternal(objectMap, "AccessControlService")
+	objectMap["authType"] = "AccessControlService"
+	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "globalAcsHostName", r.GlobalAcsHostName)
 	populate(objectMap, "globalAcsNamespace", r.GlobalAcsNamespace)
 	populate(objectMap, "globalAcsRPRealm", r.GlobalAcsRPRealm)
+	populate(objectMap, "issuer", r.Issuer)
+	populate(objectMap, "resourceId", r.ResourceID)
+	populate(objectMap, "subject", r.Subject)
+	populate(objectMap, "thumbprint", r.Thumbprint)
+	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
+	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
 	return json.Marshal(objectMap)
 }
 
@@ -716,6 +854,15 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "authType":
+			err = unpopulate(val, &r.AuthType)
+			delete(rawMsg, key)
+		case "certificate":
+			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &r.FriendlyName)
+			delete(rawMsg, key)
 		case "globalAcsHostName":
 			err = unpopulate(val, &r.GlobalAcsHostName)
 			delete(rawMsg, key)
@@ -725,13 +872,28 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 		case "globalAcsRPRealm":
 			err = unpopulate(val, &r.GlobalAcsRPRealm)
 			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &r.Issuer)
+			delete(rawMsg, key)
+		case "resourceId":
+			err = unpopulate(val, &r.ResourceID)
+			delete(rawMsg, key)
+		case "subject":
+			err = unpopulate(val, &r.Subject)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &r.Thumbprint)
+			delete(rawMsg, key)
+		case "validFrom":
+			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
+			delete(rawMsg, key)
+		case "validTo":
+			err = unpopulateTimeRFC3339(val, &r.ValidTo)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.ResourceCertificateDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -739,7 +901,7 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 // ResourceCertificateDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetResourceCertificateDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ResourceCertificateAndAadDetails, *ResourceCertificateAndAcsDetails, *ResourceCertificateDetails
+// - *ResourceCertificateAndAADDetails, *ResourceCertificateAndAcsDetails, *ResourceCertificateDetails
 type ResourceCertificateDetailsClassification interface {
 	// GetResourceCertificateDetails returns the ResourceCertificateDetails content of the underlying type.
 	GetResourceCertificateDetails() *ResourceCertificateDetails
@@ -780,17 +942,9 @@ func (r *ResourceCertificateDetails) GetResourceCertificateDetails() *ResourceCe
 	return r
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceCertificateDetails.
-func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r ResourceCertificateDetails) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	r.AuthType = &discValue
+// MarshalJSON implements the json.Marshaller interface for type ResourceCertificateDetails.
+func (r ResourceCertificateDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	objectMap["authType"] = r.AuthType
 	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
 	populate(objectMap, "friendlyName", r.FriendlyName)
@@ -800,9 +954,15 @@ func (r ResourceCertificateDetails) marshalInternal(objectMap map[string]interfa
 	populate(objectMap, "thumbprint", r.Thumbprint)
 	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
 	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
+	return json.Marshal(objectMap)
 }
 
-func (r *ResourceCertificateDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceCertificateDetails.
+func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -929,25 +1089,35 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - Tracked resource with location.
 type TrackedResource struct {
-	Resource
 	// REQUIRED; Resource location.
 	Location *string `json:"location,omitempty"`
 
+	// Optional ETag.
+	Etag *string `json:"etag,omitempty"`
+
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", t.Etag)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UpgradeDetails - Details for upgrading vault.
@@ -1039,8 +1209,8 @@ func (u *UpgradeDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UsagesListByVaultsOptions contains the optional parameters for the Usages.ListByVaults method.
-type UsagesListByVaultsOptions struct {
+// UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.ListByVaults method.
+type UsagesClientListByVaultsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1055,7 +1225,12 @@ type UserIdentity struct {
 
 // Vault - Resource information, as returned by the resource provider.
 type Vault struct {
-	TrackedResource
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Optional ETag.
+	Etag *string `json:"etag,omitempty"`
+
 	// Identity for the resource.
 	Identity *IdentityData `json:"identity,omitempty"`
 
@@ -1065,22 +1240,40 @@ type Vault struct {
 	// Identifies the unique system identifier for each Azure resource.
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Vault.
 func (v Vault) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", v.Etag)
+	populate(objectMap, "id", v.ID)
 	populate(objectMap, "identity", v.Identity)
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "systemData", v.SystemData)
+	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
-// VaultCertificateResponse - Certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+// VaultCertificateResponse - Certificate corresponding to a vault that can be used by clients to register themselves with
+// the vault.
 type VaultCertificateResponse struct {
 	// Certificate details representing the Vault credentials.
 	Properties ResourceCertificateDetailsClassification `json:"properties,omitempty"`
@@ -1134,8 +1327,8 @@ func (v *VaultCertificateResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// VaultCertificatesCreateOptions contains the optional parameters for the VaultCertificates.Create method.
-type VaultCertificatesCreateOptions struct {
+// VaultCertificatesClientCreateOptions contains the optional parameters for the VaultCertificatesClient.Create method.
+type VaultCertificatesClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1154,34 +1347,49 @@ type VaultExtendedInfo struct {
 	IntegrityKey *string `json:"integrityKey,omitempty"`
 }
 
-// VaultExtendedInfoCreateOrUpdateOptions contains the optional parameters for the VaultExtendedInfo.CreateOrUpdate method.
-type VaultExtendedInfoCreateOrUpdateOptions struct {
+// VaultExtendedInfoClientCreateOrUpdateOptions contains the optional parameters for the VaultExtendedInfoClient.CreateOrUpdate
+// method.
+type VaultExtendedInfoClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultExtendedInfoGetOptions contains the optional parameters for the VaultExtendedInfo.Get method.
-type VaultExtendedInfoGetOptions struct {
+// VaultExtendedInfoClientGetOptions contains the optional parameters for the VaultExtendedInfoClient.Get method.
+type VaultExtendedInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultExtendedInfoClientUpdateOptions contains the optional parameters for the VaultExtendedInfoClient.Update method.
+type VaultExtendedInfoClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // VaultExtendedInfoResource - Vault extended information.
 type VaultExtendedInfoResource struct {
-	Resource
+	// Optional ETag.
+	Etag *string `json:"etag,omitempty"`
+
 	// Vault extended information.
 	Properties *VaultExtendedInfo `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VaultExtendedInfoResource.
 func (v VaultExtendedInfoResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", v.Etag)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
-}
-
-// VaultExtendedInfoUpdateOptions contains the optional parameters for the VaultExtendedInfo.Update method.
-type VaultExtendedInfoUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // VaultList - The response model for a list of Vaults.
@@ -1211,6 +1419,9 @@ type VaultProperties struct {
 	// Details for upgrading vault.
 	UpgradeDetails *UpgradeDetails `json:"upgradeDetails,omitempty"`
 
+	// READ-ONLY; Backup storage version
+	BackupStorageVersion *BackupStorageVersion `json:"backupStorageVersion,omitempty" azure:"ro"`
+
 	// READ-ONLY; The State of the Resource after the move operation
 	MoveState *ResourceMoveState `json:"moveState,omitempty" azure:"ro"`
 
@@ -1230,6 +1441,7 @@ type VaultProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type VaultProperties.
 func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "backupStorageVersion", v.BackupStorageVersion)
 	populate(objectMap, "encryption", v.Encryption)
 	populate(objectMap, "moveDetails", v.MoveDetails)
 	populate(objectMap, "moveState", v.MoveState)
@@ -1395,33 +1607,33 @@ func (v VaultUsageList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VaultsBeginCreateOrUpdateOptions contains the optional parameters for the Vaults.BeginCreateOrUpdate method.
-type VaultsBeginCreateOrUpdateOptions struct {
+// VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate method.
+type VaultsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsBeginUpdateOptions contains the optional parameters for the Vaults.BeginUpdate method.
-type VaultsBeginUpdateOptions struct {
+// VaultsClientBeginUpdateOptions contains the optional parameters for the VaultsClient.BeginUpdate method.
+type VaultsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsDeleteOptions contains the optional parameters for the Vaults.Delete method.
-type VaultsDeleteOptions struct {
+// VaultsClientDeleteOptions contains the optional parameters for the VaultsClient.Delete method.
+type VaultsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsGetOptions contains the optional parameters for the Vaults.Get method.
-type VaultsGetOptions struct {
+// VaultsClientGetOptions contains the optional parameters for the VaultsClient.Get method.
+type VaultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsListByResourceGroupOptions contains the optional parameters for the Vaults.ListByResourceGroup method.
-type VaultsListByResourceGroupOptions struct {
+// VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup method.
+type VaultsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsListBySubscriptionIDOptions contains the optional parameters for the Vaults.ListBySubscriptionID method.
-type VaultsListBySubscriptionIDOptions struct {
+// VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.ListBySubscriptionID method.
+type VaultsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
 }
 

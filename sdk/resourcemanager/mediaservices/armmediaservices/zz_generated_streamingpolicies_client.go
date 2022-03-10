@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // StreamingPoliciesClient contains the methods for the StreamingPolicies group.
 // Don't use this type directly, use NewStreamingPoliciesClient() instead.
 type StreamingPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStreamingPoliciesClient creates a new instance of StreamingPoliciesClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StreamingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StreamingPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a Streaming Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingPoliciesClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, parameters StreamingPolicy, options *StreamingPoliciesCreateOptions) (StreamingPoliciesCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingPolicyName - The Streaming Policy name.
+// parameters - The request parameters
+// options - StreamingPoliciesClientCreateOptions contains the optional parameters for the StreamingPoliciesClient.Create
+// method.
+func (client *StreamingPoliciesClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, parameters StreamingPolicy, options *StreamingPoliciesClientCreateOptions) (StreamingPoliciesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, streamingPolicyName, parameters, options)
 	if err != nil {
-		return StreamingPoliciesCreateResponse{}, err
+		return StreamingPoliciesClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingPoliciesCreateResponse{}, err
+		return StreamingPoliciesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return StreamingPoliciesCreateResponse{}, client.createHandleError(resp)
+		return StreamingPoliciesClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, parameters StreamingPolicy, options *StreamingPoliciesCreateOptions) (*policy.Request, error) {
+func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, parameters StreamingPolicy, options *StreamingPoliciesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingPolicyName}", url.PathEscape(streamingPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response) (StreamingPoliciesCreateResponse, error) {
-	result := StreamingPoliciesCreateResponse{RawResponse: resp}
+func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response) (StreamingPoliciesClientCreateResponse, error) {
+	result := StreamingPoliciesClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
-		return StreamingPoliciesCreateResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingPoliciesClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *StreamingPoliciesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Streaming Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesDeleteOptions) (StreamingPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingPolicyName - The Streaming Policy name.
+// options - StreamingPoliciesClientDeleteOptions contains the optional parameters for the StreamingPoliciesClient.Delete
+// method.
+func (client *StreamingPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesClientDeleteOptions) (StreamingPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, streamingPolicyName, options)
 	if err != nil {
-		return StreamingPoliciesDeleteResponse{}, err
+		return StreamingPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingPoliciesDeleteResponse{}, err
+		return StreamingPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return StreamingPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return StreamingPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StreamingPoliciesDeleteResponse{RawResponse: resp}, nil
+	return StreamingPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingPolicyName}", url.PathEscape(streamingPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,29 @@ func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *StreamingPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of a Streaming Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesGetOptions) (StreamingPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingPolicyName - The Streaming Policy name.
+// options - StreamingPoliciesClientGetOptions contains the optional parameters for the StreamingPoliciesClient.Get method.
+func (client *StreamingPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesClientGetOptions) (StreamingPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, streamingPolicyName, options)
 	if err != nil {
-		return StreamingPoliciesGetResponse{}, err
+		return StreamingPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingPoliciesGetResponse{}, err
+		return StreamingPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StreamingPoliciesGetResponse{}, client.getHandleError(resp)
+		return StreamingPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesGetOptions) (*policy.Request, error) {
+func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, options *StreamingPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +204,7 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter streamingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingPolicyName}", url.PathEscape(streamingPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +216,33 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (StreamingPoliciesGetResponse, error) {
-	result := StreamingPoliciesGetResponse{RawResponse: resp}
+func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (StreamingPoliciesClientGetResponse, error) {
+	result := StreamingPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
-		return StreamingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *StreamingPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the Streaming Policies in the account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingPoliciesClient) List(resourceGroupName string, accountName string, options *StreamingPoliciesListOptions) *StreamingPoliciesListPager {
-	return &StreamingPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// options - StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
+func (client *StreamingPoliciesClient) List(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *StreamingPoliciesClientListPager {
+	return &StreamingPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp StreamingPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StreamingPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StreamingPolicyCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StreamingPoliciesListOptions) (*policy.Request, error) {
+func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +256,7 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,23 +277,10 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *StreamingPoliciesClient) listHandleResponse(resp *http.Response) (StreamingPoliciesListResponse, error) {
-	result := StreamingPoliciesListResponse{RawResponse: resp}
+func (client *StreamingPoliciesClient) listHandleResponse(resp *http.Response) (StreamingPoliciesClientListResponse, error) {
+	result := StreamingPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicyCollection); err != nil {
-		return StreamingPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *StreamingPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

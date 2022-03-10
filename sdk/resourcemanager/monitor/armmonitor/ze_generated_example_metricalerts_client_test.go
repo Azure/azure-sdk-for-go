@@ -25,11 +25,12 @@ func ExampleMetricAlertsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricAlertsClientListBySubscriptionResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
@@ -40,12 +41,13 @@ func ExampleMetricAlertsClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricAlertsClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertMultipleResource.json
@@ -63,7 +65,7 @@ func ExampleMetricAlertsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MetricAlertsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateDynamicMetricAlertMultipleResource.json
@@ -78,10 +80,8 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<rule-name>",
 		armmonitor.MetricAlertResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.MetricAlertProperties{
 				Description: to.StringPtr("<description>"),
 				Actions: []*armmonitor.MetricAlertAction{
@@ -94,25 +94,21 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 					}},
 				AutoMitigate: to.BoolPtr(true),
 				Criteria: &armmonitor.MetricAlertMultipleResourceMultipleMetricCriteria{
-					MetricAlertCriteria: armmonitor.MetricAlertCriteria{
-						ODataType: armmonitor.OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria.ToPtr(),
-					},
+					ODataType: armmonitor.Odatatype("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria").ToPtr(),
 					AllOf: []armmonitor.MultiMetricCriteriaClassification{
 						&armmonitor.DynamicMetricCriteria{
-							MultiMetricCriteria: armmonitor.MultiMetricCriteria{
-								Name:            to.StringPtr("<name>"),
-								CriterionType:   armmonitor.CriterionTypeDynamicThresholdCriterion.ToPtr(),
-								Dimensions:      []*armmonitor.MetricDimension{},
-								MetricName:      to.StringPtr("<metric-name>"),
-								MetricNamespace: to.StringPtr("<metric-namespace>"),
-								TimeAggregation: armmonitor.AggregationTypeEnumAverage.ToPtr(),
-							},
-							AlertSensitivity: armmonitor.DynamicThresholdSensitivityMedium.ToPtr(),
+							Name:             to.StringPtr("<name>"),
+							CriterionType:    armmonitor.CriterionType("DynamicThresholdCriterion").ToPtr(),
+							Dimensions:       []*armmonitor.MetricDimension{},
+							MetricName:       to.StringPtr("<metric-name>"),
+							MetricNamespace:  to.StringPtr("<metric-namespace>"),
+							TimeAggregation:  armmonitor.AggregationTypeEnum("Average").ToPtr(),
+							AlertSensitivity: armmonitor.DynamicThresholdSensitivity("Medium").ToPtr(),
 							FailingPeriods: &armmonitor.DynamicThresholdFailingPeriods{
 								MinFailingPeriodsToAlert:  to.Float32Ptr(4),
 								NumberOfEvaluationPeriods: to.Float32Ptr(4),
 							},
-							Operator: armmonitor.DynamicThresholdOperatorGreaterOrLessThan.ToPtr(),
+							Operator: armmonitor.DynamicThresholdOperator("GreaterOrLessThan").ToPtr(),
 						}},
 				},
 				Enabled:             to.BoolPtr(true),
@@ -130,7 +126,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MetricAlertsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/UpdateMetricAlert.json
@@ -157,20 +153,16 @@ func ExampleMetricAlertsClient_Update() {
 					}},
 				AutoMitigate: to.BoolPtr(true),
 				Criteria: &armmonitor.MetricAlertSingleResourceMultipleMetricCriteria{
-					MetricAlertCriteria: armmonitor.MetricAlertCriteria{
-						ODataType: armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria.ToPtr(),
-					},
+					ODataType: armmonitor.Odatatype("Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria").ToPtr(),
 					AllOf: []*armmonitor.MetricCriteria{
 						{
-							MultiMetricCriteria: armmonitor.MultiMetricCriteria{
-								Name:            to.StringPtr("<name>"),
-								CriterionType:   armmonitor.CriterionTypeStaticThresholdCriterion.ToPtr(),
-								Dimensions:      []*armmonitor.MetricDimension{},
-								MetricName:      to.StringPtr("<metric-name>"),
-								TimeAggregation: armmonitor.AggregationTypeEnumAverage.ToPtr(),
-							},
-							Operator:  armmonitor.OperatorGreaterThan.ToPtr(),
-							Threshold: to.Float64Ptr(80.5),
+							Name:            to.StringPtr("<name>"),
+							CriterionType:   armmonitor.CriterionType("StaticThresholdCriterion").ToPtr(),
+							Dimensions:      []*armmonitor.MetricDimension{},
+							MetricName:      to.StringPtr("<metric-name>"),
+							TimeAggregation: armmonitor.AggregationTypeEnum("Average").ToPtr(),
+							Operator:        armmonitor.Operator("GreaterThan").ToPtr(),
+							Threshold:       to.Float64Ptr(80.5),
 						}},
 				},
 				Enabled:             to.BoolPtr(true),
@@ -186,7 +178,7 @@ func ExampleMetricAlertsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MetricAlertsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/deleteMetricAlert.json

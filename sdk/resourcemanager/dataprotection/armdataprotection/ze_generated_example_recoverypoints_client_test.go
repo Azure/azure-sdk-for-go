@@ -27,15 +27,19 @@ func ExampleRecoveryPointsClient_List() {
 	pager := client.List("<vault-name>",
 		"<resource-group-name>",
 		"<backup-instance-name>",
-		&armdataprotection.RecoveryPointsListOptions{Filter: nil,
+		&armdataprotection.RecoveryPointsClientListOptions{Filter: nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureBackupRecoveryPointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -57,5 +61,5 @@ func ExampleRecoveryPointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureBackupRecoveryPointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecoveryPointsClientGetResult)
 }

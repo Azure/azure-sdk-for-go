@@ -11,7 +11,6 @@ package armportal
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // DashboardsClient contains the methods for the Dashboards group.
 // Don't use this type directly, use NewDashboardsClient() instead.
 type DashboardsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDashboardsClient creates a new instance of DashboardsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDashboardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DashboardsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DashboardsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DashboardsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a Dashboard.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dashboardName string, dashboard Dashboard, options *DashboardsCreateOrUpdateOptions) (DashboardsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dashboardName - The name of the dashboard.
+// dashboard - The parameters required to create or update a dashboard.
+// options - DashboardsClientCreateOrUpdateOptions contains the optional parameters for the DashboardsClient.CreateOrUpdate
+// method.
+func (client *DashboardsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dashboardName string, dashboard Dashboard, options *DashboardsClientCreateOrUpdateOptions) (DashboardsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dashboardName, dashboard, options)
 	if err != nil {
-		return DashboardsCreateOrUpdateResponse{}, err
+		return DashboardsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DashboardsCreateOrUpdateResponse{}, err
+		return DashboardsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DashboardsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DashboardsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, dashboard Dashboard, options *DashboardsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, dashboard Dashboard, options *DashboardsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter dashboardName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dashboardName}", url.PathEscape(dashboardName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,36 @@ func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DashboardsClient) createOrUpdateHandleResponse(resp *http.Response) (DashboardsCreateOrUpdateResponse, error) {
-	result := DashboardsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DashboardsClient) createOrUpdateHandleResponse(resp *http.Response) (DashboardsClientCreateOrUpdateResponse, error) {
+	result := DashboardsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
-		return DashboardsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DashboardsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DashboardsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the Dashboard.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) Delete(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsDeleteOptions) (DashboardsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dashboardName - The name of the dashboard.
+// options - DashboardsClientDeleteOptions contains the optional parameters for the DashboardsClient.Delete method.
+func (client *DashboardsClient) Delete(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsClientDeleteOptions) (DashboardsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dashboardName, options)
 	if err != nil {
-		return DashboardsDeleteResponse{}, err
+		return DashboardsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DashboardsDeleteResponse{}, err
+		return DashboardsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DashboardsDeleteResponse{}, client.deleteHandleError(resp)
+		return DashboardsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DashboardsDeleteResponse{RawResponse: resp}, nil
+	return DashboardsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DashboardsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsDeleteOptions) (*policy.Request, error) {
+func (client *DashboardsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +141,7 @@ func (client *DashboardsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter dashboardName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dashboardName}", url.PathEscape(dashboardName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +152,28 @@ func (client *DashboardsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DashboardsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the Dashboard.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) Get(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsGetOptions) (DashboardsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dashboardName - The name of the dashboard.
+// options - DashboardsClientGetOptions contains the optional parameters for the DashboardsClient.Get method.
+func (client *DashboardsClient) Get(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsClientGetOptions) (DashboardsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dashboardName, options)
 	if err != nil {
-		return DashboardsGetResponse{}, err
+		return DashboardsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DashboardsGetResponse{}, err
+		return DashboardsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return DashboardsGetResponse{}, client.getHandleError(resp)
+		return DashboardsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsGetOptions) (*policy.Request, error) {
+func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, options *DashboardsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +187,7 @@ func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter dashboardName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dashboardName}", url.PathEscape(dashboardName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +199,33 @@ func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *DashboardsClient) getHandleResponse(resp *http.Response) (DashboardsGetResponse, error) {
-	result := DashboardsGetResponse{RawResponse: resp}
+func (client *DashboardsClient) getHandleResponse(resp *http.Response) (DashboardsClientGetResponse, error) {
+	result := DashboardsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
-		return DashboardsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DashboardsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DashboardsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the Dashboards within a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) ListByResourceGroup(resourceGroupName string, options *DashboardsListByResourceGroupOptions) *DashboardsListByResourceGroupPager {
-	return &DashboardsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - DashboardsClientListByResourceGroupOptions contains the optional parameters for the DashboardsClient.ListByResourceGroup
+// method.
+func (client *DashboardsClient) ListByResourceGroup(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *DashboardsClientListByResourceGroupPager {
+	return &DashboardsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DashboardsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DashboardsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DashboardListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DashboardsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,7 +235,7 @@ func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,49 +247,38 @@ func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Response) (DashboardsListByResourceGroupResponse, error) {
-	result := DashboardsListByResourceGroupResponse{RawResponse: resp}
+func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Response) (DashboardsClientListByResourceGroupResponse, error) {
+	result := DashboardsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DashboardListResult); err != nil {
-		return DashboardsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DashboardsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DashboardsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Gets all the dashboards within a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) ListBySubscription(options *DashboardsListBySubscriptionOptions) *DashboardsListBySubscriptionPager {
-	return &DashboardsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DashboardsClientListBySubscriptionOptions contains the optional parameters for the DashboardsClient.ListBySubscription
+// method.
+func (client *DashboardsClient) ListBySubscription(options *DashboardsClientListBySubscriptionOptions) *DashboardsClientListBySubscriptionPager {
+	return &DashboardsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DashboardsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DashboardsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DashboardListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DashboardsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DashboardsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DashboardsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DashboardsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Portal/dashboards"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,46 +290,37 @@ func (client *DashboardsClient) listBySubscriptionCreateRequest(ctx context.Cont
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DashboardsClient) listBySubscriptionHandleResponse(resp *http.Response) (DashboardsListBySubscriptionResponse, error) {
-	result := DashboardsListBySubscriptionResponse{RawResponse: resp}
+func (client *DashboardsClient) listBySubscriptionHandleResponse(resp *http.Response) (DashboardsClientListBySubscriptionResponse, error) {
+	result := DashboardsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DashboardListResult); err != nil {
-		return DashboardsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DashboardsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DashboardsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing Dashboard.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DashboardsClient) Update(ctx context.Context, resourceGroupName string, dashboardName string, dashboard PatchableDashboard, options *DashboardsUpdateOptions) (DashboardsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dashboardName - The name of the dashboard.
+// dashboard - The updatable fields of a Dashboard.
+// options - DashboardsClientUpdateOptions contains the optional parameters for the DashboardsClient.Update method.
+func (client *DashboardsClient) Update(ctx context.Context, resourceGroupName string, dashboardName string, dashboard PatchableDashboard, options *DashboardsClientUpdateOptions) (DashboardsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dashboardName, dashboard, options)
 	if err != nil {
-		return DashboardsUpdateResponse{}, err
+		return DashboardsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DashboardsUpdateResponse{}, err
+		return DashboardsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return DashboardsUpdateResponse{}, client.updateHandleError(resp)
+		return DashboardsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, dashboard PatchableDashboard, options *DashboardsUpdateOptions) (*policy.Request, error) {
+func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, dashboard PatchableDashboard, options *DashboardsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,7 +334,7 @@ func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter dashboardName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dashboardName}", url.PathEscape(dashboardName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,23 +346,10 @@ func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DashboardsClient) updateHandleResponse(resp *http.Response) (DashboardsUpdateResponse, error) {
-	result := DashboardsUpdateResponse{RawResponse: resp}
+func (client *DashboardsClient) updateHandleResponse(resp *http.Response) (DashboardsClientUpdateResponse, error) {
+	result := DashboardsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
-		return DashboardsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DashboardsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DashboardsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

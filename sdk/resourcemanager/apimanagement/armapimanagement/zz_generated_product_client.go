@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // ProductClient contains the methods for the Product group.
 // Don't use this type directly, use NewProductClient() instead.
 type ProductClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProductClient creates a new instance of ProductClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProductClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProductClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or Updates a product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, options *ProductCreateOrUpdateOptions) (ProductCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// parameters - Create or update parameters.
+// options - ProductClientCreateOrUpdateOptions contains the optional parameters for the ProductClient.CreateOrUpdate method.
+func (client *ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, options *ProductClientCreateOrUpdateOptions) (ProductClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, productID, parameters, options)
 	if err != nil {
-		return ProductCreateOrUpdateResponse{}, err
+		return ProductClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductCreateOrUpdateResponse{}, err
+		return ProductClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ProductCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ProductClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, options *ProductCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, options *ProductClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +92,7 @@ func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +107,42 @@ func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProductClient) createOrUpdateHandleResponse(resp *http.Response) (ProductCreateOrUpdateResponse, error) {
-	result := ProductCreateOrUpdateResponse{RawResponse: resp}
+func (client *ProductClient) createOrUpdateHandleResponse(resp *http.Response) (ProductClientCreateOrUpdateResponse, error) {
+	result := ProductClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProductClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ProductClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductDeleteOptions) (ProductDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - ProductClientDeleteOptions contains the optional parameters for the ProductClient.Delete method.
+func (client *ProductClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductClientDeleteOptions) (ProductClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, options)
 	if err != nil {
-		return ProductDeleteResponse{}, err
+		return ProductClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductDeleteResponse{}, err
+		return ProductClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ProductDeleteResponse{}, client.deleteHandleError(resp)
+		return ProductClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProductDeleteResponse{RawResponse: resp}, nil
+	return ProductClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductDeleteOptions) (*policy.Request, error) {
+func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +160,7 @@ func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,38 +175,29 @@ func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ProductClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the product specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGetOptions) (ProductGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// options - ProductClientGetOptions contains the optional parameters for the ProductClient.Get method.
+func (client *ProductClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetOptions) (ProductClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
-		return ProductGetResponse{}, err
+		return ProductClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductGetResponse{}, err
+		return ProductClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProductGetResponse{}, client.getHandleError(resp)
+		return ProductClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGetOptions) (*policy.Request, error) {
+func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,7 +215,7 @@ func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,46 +227,36 @@ func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProductClient) getHandleResponse(resp *http.Response) (ProductGetResponse, error) {
-	result := ProductGetResponse{RawResponse: resp}
+func (client *ProductClient) getHandleResponse(resp *http.Response) (ProductClientGetResponse, error) {
+	result := ProductClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProductClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProductClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the product specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGetEntityTagOptions) (ProductGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// options - ProductClientGetEntityTagOptions contains the optional parameters for the ProductClient.GetEntityTag method.
+func (client *ProductClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetEntityTagOptions) (ProductClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
-		return ProductGetEntityTagResponse{}, err
+		return ProductClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductGetEntityTagResponse{}, err
+		return ProductClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGetEntityTagOptions) (*policy.Request, error) {
+func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,7 +274,7 @@ func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -299,8 +286,8 @@ func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, reso
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (ProductGetEntityTagResponse, error) {
-	result := ProductGetEntityTagResponse{RawResponse: resp}
+func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (ProductClientGetEntityTagResponse, error) {
+	result := ProductClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -311,21 +298,24 @@ func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (Pr
 }
 
 // ListByService - Lists a collection of products in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) ListByService(resourceGroupName string, serviceName string, options *ProductListByServiceOptions) *ProductListByServicePager {
-	return &ProductListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - ProductClientListByServiceOptions contains the optional parameters for the ProductClient.ListByService method.
+func (client *ProductClient) ListByService(resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) *ProductClientListByServicePager {
+	return &ProductClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp ProductListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProductClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ProductListByServiceOptions) (*policy.Request, error) {
+func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -339,7 +329,7 @@ func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -366,43 +356,33 @@ func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, res
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *ProductClient) listByServiceHandleResponse(resp *http.Response) (ProductListByServiceResponse, error) {
-	result := ProductListByServiceResponse{RawResponse: resp}
+func (client *ProductClient) listByServiceHandleResponse(resp *http.Response) (ProductClientListByServiceResponse, error) {
+	result := ProductClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductCollection); err != nil {
-		return ProductListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return ProductClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *ProductClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByTags - Lists a collection of products associated with tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) ListByTags(resourceGroupName string, serviceName string, options *ProductListByTagsOptions) *ProductListByTagsPager {
-	return &ProductListByTagsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - ProductClientListByTagsOptions contains the optional parameters for the ProductClient.ListByTags method.
+func (client *ProductClient) ListByTags(resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) *ProductClientListByTagsPager {
+	return &ProductClientListByTagsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTagsCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp ProductListByTagsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProductClientListByTagsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagResourceCollection.NextLink)
 		},
 	}
 }
 
 // listByTagsCreateRequest creates the ListByTags request.
-func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ProductListByTagsOptions) (*policy.Request, error) {
+func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/productsByTags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,7 +396,7 @@ func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -440,46 +420,40 @@ func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resour
 }
 
 // listByTagsHandleResponse handles the ListByTags response.
-func (client *ProductClient) listByTagsHandleResponse(resp *http.Response) (ProductListByTagsResponse, error) {
-	result := ProductListByTagsResponse{RawResponse: resp}
+func (client *ProductClient) listByTagsHandleResponse(resp *http.Response) (ProductClientListByTagsResponse, error) {
+	result := ProductClientListByTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return ProductListByTagsResponse{}, runtime.NewResponseError(err, resp)
+		return ProductClientListByTagsResponse{}, err
 	}
 	return result, nil
 }
 
-// listByTagsHandleError handles the ListByTags error response.
-func (client *ProductClient) listByTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update existing product details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters ProductUpdateParameters, options *ProductUpdateOptions) (ProductUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - ProductClientUpdateOptions contains the optional parameters for the ProductClient.Update method.
+func (client *ProductClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters ProductUpdateParameters, options *ProductClientUpdateOptions) (ProductClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, parameters, options)
 	if err != nil {
-		return ProductUpdateResponse{}, err
+		return ProductClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductUpdateResponse{}, err
+		return ProductClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProductUpdateResponse{}, client.updateHandleError(resp)
+		return ProductClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters ProductUpdateParameters, options *ProductUpdateOptions) (*policy.Request, error) {
+func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters ProductUpdateParameters, options *ProductClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -497,7 +471,7 @@ func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -510,26 +484,13 @@ func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProductClient) updateHandleResponse(resp *http.Response) (ProductUpdateResponse, error) {
-	result := ProductUpdateResponse{RawResponse: resp}
+func (client *ProductClient) updateHandleResponse(resp *http.Response) (ProductClientUpdateResponse, error) {
+	result := ProductClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProductClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ProductClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

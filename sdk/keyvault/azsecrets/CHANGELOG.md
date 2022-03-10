@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.6.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.6.0 (2022-03-08)
+
+### Breaking Changes
+* Changes `Attributes` to `Properties`
+* Changes `Secret.KID` to `Secret.KeyID`
+* Changes `DeletedSecretBundle` to `DeletedSecret`
+* Changes `DeletedDate` to `DeletedOn`, `Created` to `CreatedOn`, and `Updated` to `UpdatedOn`
+* Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
+* Changes `Item` to `SecretItem`
+* Pollers and pagers are structs instead of interfaces
+* Prefixed all `DeletionRecoveryLevel` constants with "DeletionRecoveryLevel"
+* Changed pager APIs for `ListSecretVersionsPager`, `ListDeletedSecretsPager`, and `ListSecretsPager`
+    * Use the `More()` method to determine if there are more pages to fetch
+    * Use the `NextPage(context.Context)` to fetch the next page of results
+* Removed all `RawResponse *http.Response` fields from response structs.
+
+## 0.5.0 (2022-02-08)
+
+### Breaking Changes
+* Fixes a bug where `UpdateSecretProperties` will delete properties that are not explicitly set each time. This is only a breaking change at runtime, where the request body will change.
+
+## 0.4.0 (2022-01-11)
+
+### Other Changes
+* Bumps `azcore` dependency from `v0.20.0` to `v0.21.0`
 
 ## 0.3.0 (2021-11-09)
 

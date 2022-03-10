@@ -32,7 +32,7 @@ func ExampleAdvisorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Advisor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AdvisorsClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/AdvisorsListByServer.json
@@ -46,12 +46,16 @@ func ExampleAdvisorsClient_ListByServer() {
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Advisor.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

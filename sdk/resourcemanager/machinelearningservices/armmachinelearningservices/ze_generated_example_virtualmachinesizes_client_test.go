@@ -24,10 +24,11 @@ func ExampleVirtualMachineSizesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewVirtualMachineSizesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VirtualMachineSizesClientListResult)
 }

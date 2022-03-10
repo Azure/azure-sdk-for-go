@@ -20,34 +20,38 @@ import (
 )
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_List.json
-func ExampleWebPubSubHubsClient_List() {
+func ExampleHubsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubHubsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewHubsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebPubSubHub.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_Get.json
-func ExampleWebPubSubHubsClient_Get() {
+func ExampleHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubHubsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewHubsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<hub-name>",
 		"<resource-group-name>",
@@ -56,27 +60,27 @@ func ExampleWebPubSubHubsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebPubSubHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HubsClientGetResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_CreateOrUpdate.json
-func ExampleWebPubSubHubsClient_BeginCreateOrUpdate() {
+func ExampleHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubHubsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewHubsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<hub-name>",
 		"<resource-group-name>",
 		"<resource-name>",
-		armwebpubsub.WebPubSubHub{
-			Properties: &armwebpubsub.WebPubSubHubProperties{
+		armwebpubsub.Hub{
+			Properties: &armwebpubsub.HubProperties{
 				EventHandlers: []*armwebpubsub.EventHandler{
 					{
 						Auth: &armwebpubsub.UpstreamAuthSettings{
-							Type: armwebpubsub.UpstreamAuthTypeManagedIdentity.ToPtr(),
+							Type: armwebpubsub.UpstreamAuthType("ManagedIdentity").ToPtr(),
 							ManagedIdentity: &armwebpubsub.ManagedIdentitySettings{
 								Resource: to.StringPtr("<resource>"),
 							},
@@ -97,17 +101,17 @@ func ExampleWebPubSubHubsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebPubSubHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HubsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_Delete.json
-func ExampleWebPubSubHubsClient_BeginDelete() {
+func ExampleHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubHubsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewHubsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<hub-name>",
 		"<resource-group-name>",

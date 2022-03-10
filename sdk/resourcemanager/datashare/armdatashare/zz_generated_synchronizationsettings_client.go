@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // SynchronizationSettingsClient contains the methods for the SynchronizationSettings group.
 // Don't use this type directly, use NewSynchronizationSettingsClient() instead.
 type SynchronizationSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSynchronizationSettingsClient creates a new instance of SynchronizationSettingsClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSynchronizationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SynchronizationSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SynchronizationSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SynchronizationSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a synchronizationSetting
-// If the operation fails it returns the *DataShareError error type.
-func (client *SynchronizationSettingsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, synchronizationSetting SynchronizationSettingClassification, options *SynchronizationSettingsCreateOptions) (SynchronizationSettingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share to add the synchronization setting to.
+// synchronizationSettingName - The name of the synchronizationSetting.
+// synchronizationSetting - The new synchronization setting information.
+// options - SynchronizationSettingsClientCreateOptions contains the optional parameters for the SynchronizationSettingsClient.Create
+// method.
+func (client *SynchronizationSettingsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, synchronizationSetting SynchronizationSettingClassification, options *SynchronizationSettingsClientCreateOptions) (SynchronizationSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, synchronizationSetting, options)
 	if err != nil {
-		return SynchronizationSettingsCreateResponse{}, err
+		return SynchronizationSettingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SynchronizationSettingsCreateResponse{}, err
+		return SynchronizationSettingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SynchronizationSettingsCreateResponse{}, client.createHandleError(resp)
+		return SynchronizationSettingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SynchronizationSettingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, synchronizationSetting SynchronizationSettingClassification, options *SynchronizationSettingsCreateOptions) (*policy.Request, error) {
+func (client *SynchronizationSettingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, synchronizationSetting SynchronizationSettingClassification, options *SynchronizationSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/synchronizationSettings/{synchronizationSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *SynchronizationSettingsClient) createCreateRequest(ctx context.Con
 		return nil, errors.New("parameter synchronizationSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{synchronizationSettingName}", url.PathEscape(synchronizationSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,50 +108,43 @@ func (client *SynchronizationSettingsClient) createCreateRequest(ctx context.Con
 }
 
 // createHandleResponse handles the Create response.
-func (client *SynchronizationSettingsClient) createHandleResponse(resp *http.Response) (SynchronizationSettingsCreateResponse, error) {
-	result := SynchronizationSettingsCreateResponse{RawResponse: resp}
+func (client *SynchronizationSettingsClient) createHandleResponse(resp *http.Response) (SynchronizationSettingsClientCreateResponse, error) {
+	result := SynchronizationSettingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return SynchronizationSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SynchronizationSettingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SynchronizationSettingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a synchronizationSetting in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SynchronizationSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsBeginDeleteOptions) (SynchronizationSettingsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// synchronizationSettingName - The name of the synchronizationSetting .
+// options - SynchronizationSettingsClientBeginDeleteOptions contains the optional parameters for the SynchronizationSettingsClient.BeginDelete
+// method.
+func (client *SynchronizationSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientBeginDeleteOptions) (SynchronizationSettingsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, options)
 	if err != nil {
-		return SynchronizationSettingsDeletePollerResponse{}, err
+		return SynchronizationSettingsClientDeletePollerResponse{}, err
 	}
-	result := SynchronizationSettingsDeletePollerResponse{
+	result := SynchronizationSettingsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SynchronizationSettingsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SynchronizationSettingsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return SynchronizationSettingsDeletePollerResponse{}, err
+		return SynchronizationSettingsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SynchronizationSettingsDeletePoller{
+	result.Poller = &SynchronizationSettingsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a synchronizationSetting in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SynchronizationSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SynchronizationSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, options)
 	if err != nil {
 		return nil, err
@@ -147,13 +154,13 @@ func (client *SynchronizationSettingsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SynchronizationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SynchronizationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/synchronizationSettings/{synchronizationSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -175,7 +182,7 @@ func (client *SynchronizationSettingsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter synchronizationSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{synchronizationSettingName}", url.PathEscape(synchronizationSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,38 +193,31 @@ func (client *SynchronizationSettingsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SynchronizationSettingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a synchronizationSetting in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SynchronizationSettingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsGetOptions) (SynchronizationSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// synchronizationSettingName - The name of the synchronizationSetting.
+// options - SynchronizationSettingsClientGetOptions contains the optional parameters for the SynchronizationSettingsClient.Get
+// method.
+func (client *SynchronizationSettingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientGetOptions) (SynchronizationSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, options)
 	if err != nil {
-		return SynchronizationSettingsGetResponse{}, err
+		return SynchronizationSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SynchronizationSettingsGetResponse{}, err
+		return SynchronizationSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SynchronizationSettingsGetResponse{}, client.getHandleError(resp)
+		return SynchronizationSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SynchronizationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsGetOptions) (*policy.Request, error) {
+func (client *SynchronizationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/synchronizationSettings/{synchronizationSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +239,7 @@ func (client *SynchronizationSettingsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter synchronizationSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{synchronizationSettingName}", url.PathEscape(synchronizationSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,43 +251,35 @@ func (client *SynchronizationSettingsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *SynchronizationSettingsClient) getHandleResponse(resp *http.Response) (SynchronizationSettingsGetResponse, error) {
-	result := SynchronizationSettingsGetResponse{RawResponse: resp}
+func (client *SynchronizationSettingsClient) getHandleResponse(resp *http.Response) (SynchronizationSettingsClientGetResponse, error) {
+	result := SynchronizationSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return SynchronizationSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SynchronizationSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SynchronizationSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByShare - List synchronizationSettings in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SynchronizationSettingsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsListByShareOptions) *SynchronizationSettingsListBySharePager {
-	return &SynchronizationSettingsListBySharePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// options - SynchronizationSettingsClientListByShareOptions contains the optional parameters for the SynchronizationSettingsClient.ListByShare
+// method.
+func (client *SynchronizationSettingsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) *SynchronizationSettingsClientListBySharePager {
+	return &SynchronizationSettingsClientListBySharePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 		},
-		advancer: func(ctx context.Context, resp SynchronizationSettingsListByShareResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SynchronizationSettingsClientListByShareResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SynchronizationSettingList.NextLink)
 		},
 	}
 }
 
 // listByShareCreateRequest creates the ListByShare request.
-func (client *SynchronizationSettingsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsListByShareOptions) (*policy.Request, error) {
+func (client *SynchronizationSettingsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/synchronizationSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -305,7 +297,7 @@ func (client *SynchronizationSettingsClient) listByShareCreateRequest(ctx contex
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,23 +312,10 @@ func (client *SynchronizationSettingsClient) listByShareCreateRequest(ctx contex
 }
 
 // listByShareHandleResponse handles the ListByShare response.
-func (client *SynchronizationSettingsClient) listByShareHandleResponse(resp *http.Response) (SynchronizationSettingsListByShareResponse, error) {
-	result := SynchronizationSettingsListByShareResponse{RawResponse: resp}
+func (client *SynchronizationSettingsClient) listByShareHandleResponse(resp *http.Response) (SynchronizationSettingsClientListByShareResponse, error) {
+	result := SynchronizationSettingsClientListByShareResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SynchronizationSettingList); err != nil {
-		return SynchronizationSettingsListByShareResponse{}, runtime.NewResponseError(err, resp)
+		return SynchronizationSettingsClientListByShareResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareHandleError handles the ListByShare error response.
-func (client *SynchronizationSettingsClient) listByShareHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

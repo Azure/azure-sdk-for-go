@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // StreamingLocatorsClient contains the methods for the StreamingLocators group.
 // Don't use this type directly, use NewStreamingLocatorsClient() instead.
 type StreamingLocatorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStreamingLocatorsClient creates a new instance of StreamingLocatorsClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingLocatorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StreamingLocatorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StreamingLocatorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a Streaming Locator in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator, options *StreamingLocatorsCreateOptions) (StreamingLocatorsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingLocatorName - The Streaming Locator name.
+// parameters - The request parameters
+// options - StreamingLocatorsClientCreateOptions contains the optional parameters for the StreamingLocatorsClient.Create
+// method.
+func (client *StreamingLocatorsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator, options *StreamingLocatorsClientCreateOptions) (StreamingLocatorsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, parameters, options)
 	if err != nil {
-		return StreamingLocatorsCreateResponse{}, err
+		return StreamingLocatorsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingLocatorsCreateResponse{}, err
+		return StreamingLocatorsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return StreamingLocatorsCreateResponse{}, client.createHandleError(resp)
+		return StreamingLocatorsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator, options *StreamingLocatorsCreateOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator, options *StreamingLocatorsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response) (StreamingLocatorsCreateResponse, error) {
-	result := StreamingLocatorsCreateResponse{RawResponse: resp}
+func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response) (StreamingLocatorsClientCreateResponse, error) {
+	result := StreamingLocatorsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
-		return StreamingLocatorsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingLocatorsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *StreamingLocatorsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Streaming Locator in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsDeleteOptions) (StreamingLocatorsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingLocatorName - The Streaming Locator name.
+// options - StreamingLocatorsClientDeleteOptions contains the optional parameters for the StreamingLocatorsClient.Delete
+// method.
+func (client *StreamingLocatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientDeleteOptions) (StreamingLocatorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
-		return StreamingLocatorsDeleteResponse{}, err
+		return StreamingLocatorsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingLocatorsDeleteResponse{}, err
+		return StreamingLocatorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return StreamingLocatorsDeleteResponse{}, client.deleteHandleError(resp)
+		return StreamingLocatorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StreamingLocatorsDeleteResponse{RawResponse: resp}, nil
+	return StreamingLocatorsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsDeleteOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,29 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *StreamingLocatorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of a Streaming Locator in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsGetOptions) (StreamingLocatorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingLocatorName - The Streaming Locator name.
+// options - StreamingLocatorsClientGetOptions contains the optional parameters for the StreamingLocatorsClient.Get method.
+func (client *StreamingLocatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientGetOptions) (StreamingLocatorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
-		return StreamingLocatorsGetResponse{}, err
+		return StreamingLocatorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingLocatorsGetResponse{}, err
+		return StreamingLocatorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StreamingLocatorsGetResponse{}, client.getHandleError(resp)
+		return StreamingLocatorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsGetOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +204,7 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +216,33 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (StreamingLocatorsGetResponse, error) {
-	result := StreamingLocatorsGetResponse{RawResponse: resp}
+func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (StreamingLocatorsClientGetResponse, error) {
+	result := StreamingLocatorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
-		return StreamingLocatorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingLocatorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *StreamingLocatorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the Streaming Locators in the account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) List(resourceGroupName string, accountName string, options *StreamingLocatorsListOptions) *StreamingLocatorsListPager {
-	return &StreamingLocatorsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+func (client *StreamingLocatorsClient) List(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *StreamingLocatorsClientListPager {
+	return &StreamingLocatorsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp StreamingLocatorsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StreamingLocatorsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StreamingLocatorCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StreamingLocatorsListOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +256,7 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,46 +277,38 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (StreamingLocatorsListResponse, error) {
-	result := StreamingLocatorsListResponse{RawResponse: resp}
+func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (StreamingLocatorsClientListResponse, error) {
+	result := StreamingLocatorsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocatorCollection); err != nil {
-		return StreamingLocatorsListResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingLocatorsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *StreamingLocatorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListContentKeys - List Content Keys used by this Streaming Locator
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) ListContentKeys(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsListContentKeysOptions) (StreamingLocatorsListContentKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingLocatorName - The Streaming Locator name.
+// options - StreamingLocatorsClientListContentKeysOptions contains the optional parameters for the StreamingLocatorsClient.ListContentKeys
+// method.
+func (client *StreamingLocatorsClient) ListContentKeys(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListContentKeysOptions) (StreamingLocatorsClientListContentKeysResponse, error) {
 	req, err := client.listContentKeysCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
-		return StreamingLocatorsListContentKeysResponse{}, err
+		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingLocatorsListContentKeysResponse{}, err
+		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StreamingLocatorsListContentKeysResponse{}, client.listContentKeysHandleError(resp)
+		return StreamingLocatorsClientListContentKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentKeysHandleResponse(resp)
 }
 
 // listContentKeysCreateRequest creates the ListContentKeys request.
-func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsListContentKeysOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListContentKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}/listContentKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -348,7 +326,7 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,46 +338,38 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 }
 
 // listContentKeysHandleResponse handles the ListContentKeys response.
-func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.Response) (StreamingLocatorsListContentKeysResponse, error) {
-	result := StreamingLocatorsListContentKeysResponse{RawResponse: resp}
+func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.Response) (StreamingLocatorsClientListContentKeysResponse, error) {
+	result := StreamingLocatorsClientListContentKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListContentKeysResponse); err != nil {
-		return StreamingLocatorsListContentKeysResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listContentKeysHandleError handles the ListContentKeys error response.
-func (client *StreamingLocatorsClient) listContentKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListPaths - List Paths supported by this Streaming Locator
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StreamingLocatorsClient) ListPaths(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsListPathsOptions) (StreamingLocatorsListPathsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingLocatorName - The Streaming Locator name.
+// options - StreamingLocatorsClientListPathsOptions contains the optional parameters for the StreamingLocatorsClient.ListPaths
+// method.
+func (client *StreamingLocatorsClient) ListPaths(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListPathsOptions) (StreamingLocatorsClientListPathsResponse, error) {
 	req, err := client.listPathsCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
-		return StreamingLocatorsListPathsResponse{}, err
+		return StreamingLocatorsClientListPathsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StreamingLocatorsListPathsResponse{}, err
+		return StreamingLocatorsClientListPathsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StreamingLocatorsListPathsResponse{}, client.listPathsHandleError(resp)
+		return StreamingLocatorsClientListPathsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listPathsHandleResponse(resp)
 }
 
 // listPathsCreateRequest creates the ListPaths request.
-func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsListPathsOptions) (*policy.Request, error) {
+func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListPathsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}/listPaths"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -417,7 +387,7 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,23 +399,10 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 }
 
 // listPathsHandleResponse handles the ListPaths response.
-func (client *StreamingLocatorsClient) listPathsHandleResponse(resp *http.Response) (StreamingLocatorsListPathsResponse, error) {
-	result := StreamingLocatorsListPathsResponse{RawResponse: resp}
+func (client *StreamingLocatorsClient) listPathsHandleResponse(resp *http.Response) (StreamingLocatorsClientListPathsResponse, error) {
+	result := StreamingLocatorsClientListPathsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPathsResponse); err != nil {
-		return StreamingLocatorsListPathsResponse{}, runtime.NewResponseError(err, resp)
+		return StreamingLocatorsClientListPathsResponse{}, err
 	}
 	return result, nil
-}
-
-// listPathsHandleError handles the ListPaths error response.
-func (client *StreamingLocatorsClient) listPathsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

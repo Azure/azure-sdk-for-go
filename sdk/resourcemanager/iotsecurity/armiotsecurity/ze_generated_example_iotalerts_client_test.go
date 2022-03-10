@@ -26,13 +26,17 @@ func ExampleIotAlertsClient_List() {
 	client := armiotsecurity.NewIotAlertsClient("<subscription-id>",
 		"<iot-defender-location>", cred, nil)
 	pager := client.List("<device-group-name>",
-		&armiotsecurity.IotAlertsListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armiotsecurity.IotAlertsClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AlertModel.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,7 +57,7 @@ func ExampleIotAlertsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotAlertsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-07-01-preview/examples/Alerts/PatchAlert.json
@@ -70,13 +74,13 @@ func ExampleIotAlertsClient_Patch() {
 		"<alert-id>",
 		armiotsecurity.AlertPatchPropertiesModel{
 			Properties: &armiotsecurity.AlertPatchPropertiesModelProperties{
-				Severity: armiotsecurity.AlertSeverityMedium.ToPtr(),
-				Status:   armiotsecurity.AlertStatusInProgress.ToPtr(),
+				Severity: armiotsecurity.AlertSeverity("Medium").ToPtr(),
+				Status:   armiotsecurity.AlertStatus("InProgress").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotAlertsClientPatchResult)
 }

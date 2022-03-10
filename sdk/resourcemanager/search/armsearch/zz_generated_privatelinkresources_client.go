@@ -11,7 +11,6 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,36 +24,49 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListSupported - Gets a list of all supported private link resource types for the given service.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourcesClient) ListSupported(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (PrivateLinkResourcesListSupportedResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *PrivateLinkResourcesClient) ListSupported(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (PrivateLinkResourcesClientListSupportedResponse, error) {
 	req, err := client.listSupportedCreateRequest(ctx, resourceGroupName, searchServiceName, options)
 	if err != nil {
-		return PrivateLinkResourcesListSupportedResponse{}, err
+		return PrivateLinkResourcesClientListSupportedResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesListSupportedResponse{}, err
+		return PrivateLinkResourcesClientListSupportedResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesListSupportedResponse{}, client.listSupportedHandleError(resp)
+		return PrivateLinkResourcesClientListSupportedResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSupportedHandleResponse(resp)
 }
@@ -74,7 +86,7 @@ func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context
 		return nil, errors.New("parameter searchServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{searchServiceName}", url.PathEscape(searchServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,23 +101,10 @@ func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context
 }
 
 // listSupportedHandleResponse handles the ListSupported response.
-func (client *PrivateLinkResourcesClient) listSupportedHandleResponse(resp *http.Response) (PrivateLinkResourcesListSupportedResponse, error) {
-	result := PrivateLinkResourcesListSupportedResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listSupportedHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListSupportedResponse, error) {
+	result := PrivateLinkResourcesClientListSupportedResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesResult); err != nil {
-		return PrivateLinkResourcesListSupportedResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListSupportedResponse{}, err
 	}
 	return result, nil
-}
-
-// listSupportedHandleError handles the ListSupported error response.
-func (client *PrivateLinkResourcesClient) listSupportedHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

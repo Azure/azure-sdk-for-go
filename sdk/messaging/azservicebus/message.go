@@ -4,14 +4,14 @@
 package azservicebus
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 // ReceivedMessage is a received message from a Client.NewReceiver().
@@ -46,6 +46,9 @@ type ReceivedMessage struct {
 	DeadLetterReason           *string
 	DeadLetterSource           *string
 
+	// State represents the current state of the message (Active, Scheduled, Deferred).
+	State MessageState
+
 	// available in the raw AMQP message, but not exported by default
 	// GroupSequence  *uint32
 
@@ -56,6 +59,18 @@ type ReceivedMessage struct {
 	// always be settled with the management link.
 	deferred bool
 }
+
+// MessageState represents the current state of a message (Active, Scheduled, Deferred).
+type MessageState int32
+
+const (
+	// MessageStateActive indicates the message is active.
+	MessageStateActive MessageState = 0
+	// MessageStateDeferred indicates the message is deferred.
+	MessageStateDeferred MessageState = 1
+	// MessageStateScheduled indicates the message is scheduled.
+	MessageStateScheduled MessageState = 2
+)
 
 // Body returns the body for this received message.
 // If the body not compatible with ReceivedMessage this function will return an error.
@@ -104,6 +119,7 @@ const (
 	enqueuedTimeAnnotation           = "x-opt-enqueued-time"
 	deadLetterSourceAnnotation       = "x-opt-deadletter-source"
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
+	messageStateAnnotation           = "x-opt-message-state"
 )
 
 func (m *Message) toAMQPMessage() *amqp.Message {
@@ -193,9 +209,10 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // newReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *ReceivedMessage {
+func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
 		rawAMQPMessage: amqpMsg,
+		State:          MessageStateActive,
 	}
 
 	if amqpMsg.Properties != nil {
@@ -270,6 +287,15 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 			msg.TransactionPartitionKey = to.StringPtr(viaPartitionKey.(string))
 		}
 
+		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {
+		case 1:
+			msg.State = MessageStateDeferred
+		case 2:
+			msg.State = MessageStateScheduled
+		default:
+			msg.State = MessageStateActive
+		}
+
 		// TODO: annotation propagation is a thing. Currently these are only stored inside
 		// of the underlying AMQP message, but not inside of the message itself.
 
@@ -302,7 +328,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if err == nil {
 			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
-			tab.For(ctxForLogging).Info(fmt.Sprintf("msg.DeliveryTag could not be converted into a UUID: %s", err.Error()))
+			log.Writef(internal.EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
 		}
 	}
 
@@ -346,4 +372,17 @@ func uuidFromLockTokenBytes(bytes []byte) (*amqp.UUID, error) {
 	amqpUUID := amqp.UUID(lockTokenBytes)
 
 	return &amqpUUID, nil
+}
+
+func asInt64(v interface{}, defVal int64) int64 {
+	switch v2 := v.(type) {
+	case int32:
+		return int64(v2)
+	case int64:
+		return int64(v2)
+	case int:
+		return int64(v2)
+	default:
+		return defVal
+	}
 }

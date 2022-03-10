@@ -9,8 +9,8 @@
 package armrelay
 
 const (
-	module  = "armrelay"
-	version = "v0.2.1"
+	moduleName    = "armrelay"
+	moduleVersion = "v0.3.1"
 )
 
 type AccessRights string

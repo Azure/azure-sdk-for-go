@@ -29,25 +29,19 @@ func ExampleSecretClient_Create() {
 		"<resource-group-name>",
 		"<secret-resource-name>",
 		armservicefabricmesh.SecretResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.InlinedValueSecretResourceProperties{
-				SecretResourceProperties: armservicefabricmesh.SecretResourceProperties{
-					SecretResourcePropertiesBase: armservicefabricmesh.SecretResourcePropertiesBase{
-						Kind: armservicefabricmesh.SecretKindInlinedValue.ToPtr(),
-					},
-					Description: to.StringPtr("<description>"),
-					ContentType: to.StringPtr("<content-type>"),
-				},
+				Kind:        armservicefabricmesh.SecretKind("inlinedValue").ToPtr(),
+				Description: to.StringPtr("<description>"),
+				ContentType: to.StringPtr("<content-type>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SecretResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SecretClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/secrets/get.json
@@ -65,7 +59,7 @@ func ExampleSecretClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SecretResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SecretClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/secrets/delete.json
@@ -95,12 +89,16 @@ func ExampleSecretClient_ListByResourceGroup() {
 	client := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SecretResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -114,12 +112,16 @@ func ExampleSecretClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SecretResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -30,12 +30,16 @@ func ExampleClustersClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleClustersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Clusters_CreateOrUpdate.json
@@ -73,9 +77,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		"<cluster-name>",
 		armavs.Cluster{
 			Properties: &armavs.ClusterProperties{
-				CommonClusterProperties: armavs.CommonClusterProperties{
-					ClusterSize: to.Int32Ptr(3),
-				},
+				ClusterSize: to.Int32Ptr(3),
 			},
 			SKU: &armavs.SKU{
 				Name: to.StringPtr("<name>"),
@@ -89,7 +91,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Clusters_Update.json
@@ -117,7 +119,7 @@ func ExampleClustersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Clusters_Delete.json

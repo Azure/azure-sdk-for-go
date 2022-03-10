@@ -27,16 +27,20 @@ func ExampleDedicatedCloudServicesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armvmwarecloudsimple.NewDedicatedCloudServicesClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armvmwarecloudsimple.DedicatedCloudServicesListBySubscriptionOptions{Filter: nil,
+	pager := client.ListBySubscription(&armvmwarecloudsimple.DedicatedCloudServicesClientListBySubscriptionOptions{Filter: nil,
 		Top:       nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DedicatedCloudService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -50,16 +54,20 @@ func ExampleDedicatedCloudServicesClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armvmwarecloudsimple.NewDedicatedCloudServicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armvmwarecloudsimple.DedicatedCloudServicesListByResourceGroupOptions{Filter: nil,
+		&armvmwarecloudsimple.DedicatedCloudServicesClientListByResourceGroupOptions{Filter: nil,
 			Top:       nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DedicatedCloudService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -79,7 +87,7 @@ func ExampleDedicatedCloudServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCloudService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedCloudServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/CreateDedicatedCloudService.json
@@ -103,7 +111,7 @@ func ExampleDedicatedCloudServicesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCloudService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedCloudServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/DeleteDedicatedCloudService.json
@@ -147,5 +155,5 @@ func ExampleDedicatedCloudServicesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCloudService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedCloudServicesClientUpdateResult)
 }

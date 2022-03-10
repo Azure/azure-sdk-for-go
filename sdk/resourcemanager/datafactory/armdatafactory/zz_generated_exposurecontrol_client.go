@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ExposureControlClient contains the methods for the ExposureControl group.
 // Don't use this type directly, use NewExposureControlClient() instead.
 type ExposureControlClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExposureControlClient creates a new instance of ExposureControlClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExposureControlClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExposureControlClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExposureControlClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetFeatureValue - Get exposure control feature for specific location.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueOptions) (ExposureControlGetFeatureValueResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationID - The location identifier.
+// exposureControlRequest - The exposure control request.
+// options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
+// method.
+func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueOptions) (ExposureControlClientGetFeatureValueResponse, error) {
 	req, err := client.getFeatureValueCreateRequest(ctx, locationID, exposureControlRequest, options)
 	if err != nil {
-		return ExposureControlGetFeatureValueResponse{}, err
+		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExposureControlGetFeatureValueResponse{}, err
+		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExposureControlGetFeatureValueResponse{}, client.getFeatureValueHandleError(resp)
+		return ExposureControlClientGetFeatureValueResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getFeatureValueHandleResponse(resp)
 }
 
 // getFeatureValueCreateRequest creates the GetFeatureValue request.
-func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueOptions) (*policy.Request, error) {
+func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +93,38 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 }
 
 // getFeatureValueHandleResponse handles the GetFeatureValue response.
-func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlGetFeatureValueResponse, error) {
-	result := ExposureControlGetFeatureValueResponse{RawResponse: resp}
+func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueResponse, error) {
+	result := ExposureControlClientGetFeatureValueResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
-		return ExposureControlGetFeatureValueResponse{}, runtime.NewResponseError(err, resp)
+		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
 	return result, nil
 }
 
-// getFeatureValueHandleError handles the GetFeatureValue error response.
-func (client *ExposureControlClient) getFeatureValueHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetFeatureValueByFactory - Get exposure control feature for specific factory.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueByFactoryOptions) (ExposureControlGetFeatureValueByFactoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// exposureControlRequest - The exposure control request.
+// options - ExposureControlClientGetFeatureValueByFactoryOptions contains the optional parameters for the ExposureControlClient.GetFeatureValueByFactory
+// method.
+func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueByFactoryOptions) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
 	req, err := client.getFeatureValueByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlRequest, options)
 	if err != nil {
-		return ExposureControlGetFeatureValueByFactoryResponse{}, err
+		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExposureControlGetFeatureValueByFactoryResponse{}, err
+		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExposureControlGetFeatureValueByFactoryResponse{}, client.getFeatureValueByFactoryHandleError(resp)
+		return ExposureControlClientGetFeatureValueByFactoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getFeatureValueByFactoryHandleResponse(resp)
 }
 
 // getFeatureValueByFactoryCreateRequest creates the GetFeatureValueByFactory request.
-func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueByFactoryOptions) (*policy.Request, error) {
+func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,7 +138,7 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,46 +150,38 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 }
 
 // getFeatureValueByFactoryHandleResponse handles the GetFeatureValueByFactory response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlGetFeatureValueByFactoryResponse, error) {
-	result := ExposureControlGetFeatureValueByFactoryResponse{RawResponse: resp}
+func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
+	result := ExposureControlClientGetFeatureValueByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
-		return ExposureControlGetFeatureValueByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
-// getFeatureValueByFactoryHandleError handles the GetFeatureValueByFactory error response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryFeatureValuesByFactory - Get list of exposure control features for specific factory.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlQueryFeatureValuesByFactoryOptions) (ExposureControlQueryFeatureValuesByFactoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// exposureControlBatchRequest - The exposure control request for list of features.
+// options - ExposureControlClientQueryFeatureValuesByFactoryOptions contains the optional parameters for the ExposureControlClient.QueryFeatureValuesByFactory
+// method.
+func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlClientQueryFeatureValuesByFactoryOptions) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
 	req, err := client.queryFeatureValuesByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlBatchRequest, options)
 	if err != nil {
-		return ExposureControlQueryFeatureValuesByFactoryResponse{}, err
+		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExposureControlQueryFeatureValuesByFactoryResponse{}, err
+		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExposureControlQueryFeatureValuesByFactoryResponse{}, client.queryFeatureValuesByFactoryHandleError(resp)
+		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryFeatureValuesByFactoryHandleResponse(resp)
 }
 
 // queryFeatureValuesByFactoryCreateRequest creates the QueryFeatureValuesByFactory request.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlQueryFeatureValuesByFactoryOptions) (*policy.Request, error) {
+func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlClientQueryFeatureValuesByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +195,7 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,23 +207,10 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 }
 
 // queryFeatureValuesByFactoryHandleResponse handles the QueryFeatureValuesByFactory response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlQueryFeatureValuesByFactoryResponse, error) {
-	result := ExposureControlQueryFeatureValuesByFactoryResponse{RawResponse: resp}
+func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
+	result := ExposureControlClientQueryFeatureValuesByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlBatchResponse); err != nil {
-		return ExposureControlQueryFeatureValuesByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
 	return result, nil
-}
-
-// queryFeatureValuesByFactoryHandleError handles the QueryFeatureValuesByFactory error response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

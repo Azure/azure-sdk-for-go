@@ -20,14 +20,14 @@ import (
 )
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
-func ExampleStorageSyncServicesClient_CheckNameAvailability() {
+func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		"<location-name>",
 		armstoragesync.CheckNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
@@ -37,23 +37,24 @@ func ExampleStorageSyncServicesClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_Create.json
-func ExampleStorageSyncServicesClient_BeginCreate() {
+func ExampleServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
-		armstoragesync.StorageSyncServiceCreateParameters{
+		armstoragesync.ServiceCreateParameters{
 			Location: to.StringPtr("<location>"),
-			Properties: &armstoragesync.StorageSyncServiceCreateParametersProperties{
-				IncomingTrafficPolicy: armstoragesync.IncomingTrafficPolicyAllowAllTraffic.ToPtr(),
+			Properties: &armstoragesync.ServiceCreateParametersProperties{
+				IncomingTrafficPolicy: armstoragesync.IncomingTrafficPolicy("AllowAllTraffic").ToPtr(),
 			},
 			Tags: map[string]*string{},
 		},
@@ -65,17 +66,17 @@ func ExampleStorageSyncServicesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageSyncService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_Get.json
-func ExampleStorageSyncServicesClient_Get() {
+func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
@@ -83,23 +84,23 @@ func ExampleStorageSyncServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageSyncService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_Update.json
-func ExampleStorageSyncServicesClient_BeginUpdate() {
+func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
-		&armstoragesync.StorageSyncServicesBeginUpdateOptions{Parameters: &armstoragesync.StorageSyncServiceUpdateParameters{
-			Properties: &armstoragesync.StorageSyncServiceUpdateProperties{
-				IncomingTrafficPolicy: armstoragesync.IncomingTrafficPolicyAllowAllTraffic.ToPtr(),
+		&armstoragesync.ServicesClientBeginUpdateOptions{Parameters: &armstoragesync.ServiceUpdateParameters{
+			Properties: &armstoragesync.ServiceUpdateProperties{
+				IncomingTrafficPolicy: armstoragesync.IncomingTrafficPolicy("AllowAllTraffic").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"Dept":        to.StringPtr("IT"),
@@ -114,17 +115,17 @@ func ExampleStorageSyncServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageSyncService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_Delete.json
-func ExampleStorageSyncServicesClient_BeginDelete() {
+func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
@@ -139,32 +140,34 @@ func ExampleStorageSyncServicesClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_ListByResourceGroup.json
-func ExampleStorageSyncServicesClient_ListByResourceGroup() {
+func ExampleServicesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/StorageSyncServices_ListBySubscription.json
-func ExampleStorageSyncServicesClient_ListBySubscription() {
+func ExampleServicesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewStorageSyncServicesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	client := armstoragesync.NewServicesClient("<subscription-id>", cred, nil)
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientListBySubscriptionResult)
 }

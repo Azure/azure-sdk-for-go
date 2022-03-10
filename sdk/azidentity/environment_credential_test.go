@@ -9,24 +9,10 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
-
-func initEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", fakeTenantID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", fakeClientID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		return err
-	}
-	return nil
-}
 
 func resetEnvironmentVarsForTest() {
 	clearEnvVars("AZURE_TENANT_ID", "AZURE_CLIENT_ID", "AZURE_CLIENT_SECRET", "AZURE_CLIENT_CERTIFICATE_PATH", "AZURE_USERNAME", "AZURE_PASSWORD")
@@ -173,6 +159,35 @@ func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
 	}
 }
 
+func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
+	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+
+	vars := map[string]string{
+		"AZURE_CLIENT_ID":               liveSP.clientID,
+		"AZURE_CLIENT_CERTIFICATE_PATH": liveSP.pfxPath,
+		"AZURE_TENANT_ID":               liveSP.tenantID,
+		envVarSendCertChain:             "true",
+	}
+	setEnvironmentVariables(t, vars)
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token: %s", tk.Token)
+	}
+}
+
 func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 	vars := map[string]string{
 		"AZURE_CLIENT_ID":     liveSP.clientID,
@@ -210,8 +225,8 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}
-	if e.RawResponse() == nil {
-		t.Fatal("expected RawResponse() to return a non-nil *http.Response")
+	if e.RawResponse == nil {
+		t.Fatal("expected a non-nil RawResponse")
 	}
 }
 
@@ -254,7 +269,7 @@ func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}
-	if e.RawResponse() == nil {
-		t.Fatal("expected RawResponse() to return a non-nil *http.Response")
+	if e.RawResponse == nil {
+		t.Fatal("expected a non-nil RawResponse")
 	}
 }

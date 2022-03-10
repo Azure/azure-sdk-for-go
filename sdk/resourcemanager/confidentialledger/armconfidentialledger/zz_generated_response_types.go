@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// ConfidentialLedgerCheckNameAvailabilityResponse contains the response from method ConfidentialLedger.CheckNameAvailability.
-type ConfidentialLedgerCheckNameAvailabilityResponse struct {
-	ConfidentialLedgerCheckNameAvailabilityResult
+// ClientCheckNameAvailabilityResponse contains the response from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResponse struct {
+	ClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfidentialLedgerCheckNameAvailabilityResult contains the result from method ConfidentialLedger.CheckNameAvailability.
-type ConfidentialLedgerCheckNameAvailabilityResult struct {
+// ClientCheckNameAvailabilityResult contains the result from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResponse
 }
 
-// LedgerCreatePollerResponse contains the response from method Ledger.Create.
-type LedgerCreatePollerResponse struct {
+// LedgerClientCreatePollerResponse contains the response from method LedgerClient.Create.
+type LedgerClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LedgerCreatePoller
+	Poller *LedgerClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type LedgerCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LedgerCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerCreateResponse, error) {
-	respType := LedgerCreateResponse{}
+func (l LedgerClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerClientCreateResponse, error) {
+	respType := LedgerClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfidentialLedger)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l LedgerCreatePollerResponse) PollUntilDone(ctx context.Context, freq time
 	return respType, nil
 }
 
-// Resume rehydrates a LedgerCreatePollerResponse from the provided client and resume token.
-func (l *LedgerCreatePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a LedgerClientCreatePollerResponse from the provided client and resume token.
+func (l *LedgerClientCreatePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LedgerCreatePoller{
+	poller := &LedgerClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +67,22 @@ func (l *LedgerCreatePollerResponse) Resume(ctx context.Context, client *LedgerC
 	return nil
 }
 
-// LedgerCreateResponse contains the response from method Ledger.Create.
-type LedgerCreateResponse struct {
-	LedgerCreateResult
+// LedgerClientCreateResponse contains the response from method LedgerClient.Create.
+type LedgerClientCreateResponse struct {
+	LedgerClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerCreateResult contains the result from method Ledger.Create.
-type LedgerCreateResult struct {
+// LedgerClientCreateResult contains the result from method LedgerClient.Create.
+type LedgerClientCreateResult struct {
 	ConfidentialLedger
 }
 
-// LedgerDeletePollerResponse contains the response from method Ledger.Delete.
-type LedgerDeletePollerResponse struct {
+// LedgerClientDeletePollerResponse contains the response from method LedgerClient.Delete.
+type LedgerClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LedgerDeletePoller
+	Poller *LedgerClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +91,8 @@ type LedgerDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LedgerDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerDeleteResponse, error) {
-	respType := LedgerDeleteResponse{}
+func (l LedgerClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerClientDeleteResponse, error) {
+	respType := LedgerClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +101,13 @@ func (l LedgerDeletePollerResponse) PollUntilDone(ctx context.Context, freq time
 	return respType, nil
 }
 
-// Resume rehydrates a LedgerDeletePollerResponse from the provided client and resume token.
-func (l *LedgerDeletePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a LedgerClientDeletePollerResponse from the provided client and resume token.
+func (l *LedgerClientDeletePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LedgerDeletePoller{
+	poller := &LedgerClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,52 +119,52 @@ func (l *LedgerDeletePollerResponse) Resume(ctx context.Context, client *LedgerC
 	return nil
 }
 
-// LedgerDeleteResponse contains the response from method Ledger.Delete.
-type LedgerDeleteResponse struct {
+// LedgerClientDeleteResponse contains the response from method LedgerClient.Delete.
+type LedgerClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerGetResponse contains the response from method Ledger.Get.
-type LedgerGetResponse struct {
-	LedgerGetResult
+// LedgerClientGetResponse contains the response from method LedgerClient.Get.
+type LedgerClientGetResponse struct {
+	LedgerClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerGetResult contains the result from method Ledger.Get.
-type LedgerGetResult struct {
+// LedgerClientGetResult contains the result from method LedgerClient.Get.
+type LedgerClientGetResult struct {
 	ConfidentialLedger
 }
 
-// LedgerListByResourceGroupResponse contains the response from method Ledger.ListByResourceGroup.
-type LedgerListByResourceGroupResponse struct {
-	LedgerListByResourceGroupResult
+// LedgerClientListByResourceGroupResponse contains the response from method LedgerClient.ListByResourceGroup.
+type LedgerClientListByResourceGroupResponse struct {
+	LedgerClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerListByResourceGroupResult contains the result from method Ledger.ListByResourceGroup.
-type LedgerListByResourceGroupResult struct {
-	ConfidentialLedgerList
+// LedgerClientListByResourceGroupResult contains the result from method LedgerClient.ListByResourceGroup.
+type LedgerClientListByResourceGroupResult struct {
+	List
 }
 
-// LedgerListBySubscriptionResponse contains the response from method Ledger.ListBySubscription.
-type LedgerListBySubscriptionResponse struct {
-	LedgerListBySubscriptionResult
+// LedgerClientListBySubscriptionResponse contains the response from method LedgerClient.ListBySubscription.
+type LedgerClientListBySubscriptionResponse struct {
+	LedgerClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerListBySubscriptionResult contains the result from method Ledger.ListBySubscription.
-type LedgerListBySubscriptionResult struct {
-	ConfidentialLedgerList
+// LedgerClientListBySubscriptionResult contains the result from method LedgerClient.ListBySubscription.
+type LedgerClientListBySubscriptionResult struct {
+	List
 }
 
-// LedgerUpdatePollerResponse contains the response from method Ledger.Update.
-type LedgerUpdatePollerResponse struct {
+// LedgerClientUpdatePollerResponse contains the response from method LedgerClient.Update.
+type LedgerClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LedgerUpdatePoller
+	Poller *LedgerClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -173,8 +173,8 @@ type LedgerUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LedgerUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerUpdateResponse, error) {
-	respType := LedgerUpdateResponse{}
+func (l LedgerClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LedgerClientUpdateResponse, error) {
+	respType := LedgerClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfidentialLedger)
 	if err != nil {
 		return respType, err
@@ -183,13 +183,13 @@ func (l LedgerUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time
 	return respType, nil
 }
 
-// Resume rehydrates a LedgerUpdatePollerResponse from the provided client and resume token.
-func (l *LedgerUpdatePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a LedgerClientUpdatePollerResponse from the provided client and resume token.
+func (l *LedgerClientUpdatePollerResponse) Resume(ctx context.Context, client *LedgerClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LedgerClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LedgerUpdatePoller{
+	poller := &LedgerClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -201,26 +201,26 @@ func (l *LedgerUpdatePollerResponse) Resume(ctx context.Context, client *LedgerC
 	return nil
 }
 
-// LedgerUpdateResponse contains the response from method Ledger.Update.
-type LedgerUpdateResponse struct {
-	LedgerUpdateResult
+// LedgerClientUpdateResponse contains the response from method LedgerClient.Update.
+type LedgerClientUpdateResponse struct {
+	LedgerClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LedgerUpdateResult contains the result from method Ledger.Update.
-type LedgerUpdateResult struct {
+// LedgerClientUpdateResult contains the result from method LedgerClient.Update.
+type LedgerClientUpdateResult struct {
 	ConfidentialLedger
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	ResourceProviderOperationList
 }

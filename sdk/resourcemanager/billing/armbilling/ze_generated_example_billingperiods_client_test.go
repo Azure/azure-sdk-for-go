@@ -17,40 +17,44 @@ import (
 )
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/preview/2018-03-01-preview/examples/BillingPeriodsList.json
-func ExampleBillingPeriodsClient_List() {
+func ExamplePeriodsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingPeriodsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armbilling.BillingPeriodsListOptions{Filter: nil,
+	client := armbilling.NewPeriodsClient("<subscription-id>", cred, nil)
+	pager := client.List(&armbilling.PeriodsClientListOptions{Filter: nil,
 		Skiptoken: nil,
 		Top:       nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingPeriod.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/preview/2018-03-01-preview/examples/BillingPeriodsGet.json
-func ExampleBillingPeriodsClient_Get() {
+func ExamplePeriodsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingPeriodsClient("<subscription-id>", cred, nil)
+	client := armbilling.NewPeriodsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<billing-period-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingPeriod.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeriodsClientGetResult)
 }

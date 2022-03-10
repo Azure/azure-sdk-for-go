@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// PipelinesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type PipelinesCreateOrUpdatePoller struct {
+// PipelinesClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type PipelinesClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *PipelinesCreateOrUpdatePoller) Done() bool {
+func (p *PipelinesClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *PipelinesCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *PipelinesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *PipelinesClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final PipelinesCreateOrUpdateResponse will be returned.
-func (p *PipelinesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (PipelinesCreateOrUpdateResponse, error) {
-	respType := PipelinesCreateOrUpdateResponse{}
+// If the final GET succeeded then the final PipelinesClientCreateOrUpdateResponse will be returned.
+func (p *PipelinesClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (PipelinesClientCreateOrUpdateResponse, error) {
+	respType := PipelinesClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Pipeline)
 	if err != nil {
-		return PipelinesCreateOrUpdateResponse{}, err
+		return PipelinesClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *PipelinesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (Pipe
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *PipelinesCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *PipelinesClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

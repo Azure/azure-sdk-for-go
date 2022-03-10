@@ -27,7 +27,7 @@ func ExampleDataConnectionsClient_ListByDatabase() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByDatabase(ctx,
+	res, err := client.ListByDatabase(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -35,6 +35,7 @@ func ExampleDataConnectionsClient_ListByDatabase() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientListByDatabaseResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionValidationAsync.json
@@ -52,19 +53,18 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation() {
 		armkusto.DataConnectionValidation{
 			DataConnectionName: to.StringPtr("<data-connection-name>"),
 			Properties: &armkusto.EventHubDataConnection{
-				DataConnection: armkusto.DataConnection{
-					Kind: armkusto.DataConnectionKindEventHub.ToPtr(),
-				},
+				Kind: armkusto.DataConnectionKind("EventHub").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientDataConnectionValidationResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsCheckNameAvailability.json
@@ -75,7 +75,7 @@ func ExampleDataConnectionsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -87,6 +87,7 @@ func ExampleDataConnectionsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsGet.json
@@ -106,7 +107,7 @@ func ExampleDataConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsCreateOrUpdate.json
@@ -123,10 +124,8 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate() {
 		"<database-name>",
 		"<data-connection-name>",
 		&armkusto.EventHubDataConnection{
-			DataConnection: armkusto.DataConnection{
-				Kind:     armkusto.DataConnectionKindEventHub.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armkusto.DataConnectionKind("EventHub").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armkusto.EventHubConnectionProperties{
 				ConsumerGroup:             to.StringPtr("<consumer-group>"),
 				EventHubResourceID:        to.StringPtr("<event-hub-resource-id>"),
@@ -141,7 +140,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsUpdate.json
@@ -158,10 +157,8 @@ func ExampleDataConnectionsClient_BeginUpdate() {
 		"<database-name>",
 		"<data-connection-name>",
 		&armkusto.EventHubDataConnection{
-			DataConnection: armkusto.DataConnection{
-				Kind:     armkusto.DataConnectionKindEventHub.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armkusto.DataConnectionKind("EventHub").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armkusto.EventHubConnectionProperties{
 				ConsumerGroup:             to.StringPtr("<consumer-group>"),
 				EventHubResourceID:        to.StringPtr("<event-hub-resource-id>"),
@@ -176,7 +173,7 @@ func ExampleDataConnectionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.DataConnectionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsDelete.json

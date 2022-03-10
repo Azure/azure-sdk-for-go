@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// CommunicationsCheckNameAvailabilityResponse contains the response from method Communications.CheckNameAvailability.
-type CommunicationsCheckNameAvailabilityResponse struct {
-	CommunicationsCheckNameAvailabilityResult
+// CommunicationsClientCheckNameAvailabilityResponse contains the response from method CommunicationsClient.CheckNameAvailability.
+type CommunicationsClientCheckNameAvailabilityResponse struct {
+	CommunicationsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationsCheckNameAvailabilityResult contains the result from method Communications.CheckNameAvailability.
-type CommunicationsCheckNameAvailabilityResult struct {
+// CommunicationsClientCheckNameAvailabilityResult contains the result from method CommunicationsClient.CheckNameAvailability.
+type CommunicationsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityOutput
 }
 
-// CommunicationsCreatePollerResponse contains the response from method Communications.Create.
-type CommunicationsCreatePollerResponse struct {
+// CommunicationsClientCreatePollerResponse contains the response from method CommunicationsClient.Create.
+type CommunicationsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CommunicationsCreatePoller
+	Poller *CommunicationsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type CommunicationsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CommunicationsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CommunicationsCreateResponse, error) {
-	respType := CommunicationsCreateResponse{}
+func (l CommunicationsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CommunicationsClientCreateResponse, error) {
+	respType := CommunicationsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CommunicationDetails)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l CommunicationsCreatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a CommunicationsCreatePollerResponse from the provided client and resume token.
-func (l *CommunicationsCreatePollerResponse) Resume(ctx context.Context, client *CommunicationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CommunicationsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a CommunicationsClientCreatePollerResponse from the provided client and resume token.
+func (l *CommunicationsClientCreatePollerResponse) Resume(ctx context.Context, client *CommunicationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CommunicationsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CommunicationsCreatePoller{
+	poller := &CommunicationsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,118 +67,118 @@ func (l *CommunicationsCreatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// CommunicationsCreateResponse contains the response from method Communications.Create.
-type CommunicationsCreateResponse struct {
-	CommunicationsCreateResult
+// CommunicationsClientCreateResponse contains the response from method CommunicationsClient.Create.
+type CommunicationsClientCreateResponse struct {
+	CommunicationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationsCreateResult contains the result from method Communications.Create.
-type CommunicationsCreateResult struct {
+// CommunicationsClientCreateResult contains the result from method CommunicationsClient.Create.
+type CommunicationsClientCreateResult struct {
 	CommunicationDetails
 }
 
-// CommunicationsGetResponse contains the response from method Communications.Get.
-type CommunicationsGetResponse struct {
-	CommunicationsGetResult
+// CommunicationsClientGetResponse contains the response from method CommunicationsClient.Get.
+type CommunicationsClientGetResponse struct {
+	CommunicationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationsGetResult contains the result from method Communications.Get.
-type CommunicationsGetResult struct {
+// CommunicationsClientGetResult contains the result from method CommunicationsClient.Get.
+type CommunicationsClientGetResult struct {
 	CommunicationDetails
 }
 
-// CommunicationsListResponse contains the response from method Communications.List.
-type CommunicationsListResponse struct {
-	CommunicationsListResultEnvelope
+// CommunicationsClientListResponse contains the response from method CommunicationsClient.List.
+type CommunicationsClientListResponse struct {
+	CommunicationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationsListResultEnvelope contains the result from method Communications.List.
-type CommunicationsListResultEnvelope struct {
+// CommunicationsClientListResult contains the result from method CommunicationsClient.List.
+type CommunicationsClientListResult struct {
 	CommunicationsListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResultEnvelope
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResultEnvelope contains the result from method Operations.List.
-type OperationsListResultEnvelope struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsListResult
 }
 
-// ProblemClassificationsGetResponse contains the response from method ProblemClassifications.Get.
-type ProblemClassificationsGetResponse struct {
-	ProblemClassificationsGetResult
+// ProblemClassificationsClientGetResponse contains the response from method ProblemClassificationsClient.Get.
+type ProblemClassificationsClientGetResponse struct {
+	ProblemClassificationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProblemClassificationsGetResult contains the result from method ProblemClassifications.Get.
-type ProblemClassificationsGetResult struct {
+// ProblemClassificationsClientGetResult contains the result from method ProblemClassificationsClient.Get.
+type ProblemClassificationsClientGetResult struct {
 	ProblemClassification
 }
 
-// ProblemClassificationsListResponse contains the response from method ProblemClassifications.List.
-type ProblemClassificationsListResponse struct {
-	ProblemClassificationsListResultEnvelope
+// ProblemClassificationsClientListResponse contains the response from method ProblemClassificationsClient.List.
+type ProblemClassificationsClientListResponse struct {
+	ProblemClassificationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProblemClassificationsListResultEnvelope contains the result from method ProblemClassifications.List.
-type ProblemClassificationsListResultEnvelope struct {
+// ProblemClassificationsClientListResult contains the result from method ProblemClassificationsClient.List.
+type ProblemClassificationsClientListResult struct {
 	ProblemClassificationsListResult
 }
 
-// ServicesGetResponse contains the response from method Services.Get.
-type ServicesGetResponse struct {
-	ServicesGetResult
+// ServicesClientGetResponse contains the response from method ServicesClient.Get.
+type ServicesClientGetResponse struct {
+	ServicesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesGetResult contains the result from method Services.Get.
-type ServicesGetResult struct {
+// ServicesClientGetResult contains the result from method ServicesClient.Get.
+type ServicesClientGetResult struct {
 	Service
 }
 
-// ServicesListResponse contains the response from method Services.List.
-type ServicesListResponse struct {
-	ServicesListResultEnvelope
+// ServicesClientListResponse contains the response from method ServicesClient.List.
+type ServicesClientListResponse struct {
+	ServicesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesListResultEnvelope contains the result from method Services.List.
-type ServicesListResultEnvelope struct {
+// ServicesClientListResult contains the result from method ServicesClient.List.
+type ServicesClientListResult struct {
 	ServicesListResult
 }
 
-// SupportTicketsCheckNameAvailabilityResponse contains the response from method SupportTickets.CheckNameAvailability.
-type SupportTicketsCheckNameAvailabilityResponse struct {
-	SupportTicketsCheckNameAvailabilityResult
+// TicketsClientCheckNameAvailabilityResponse contains the response from method TicketsClient.CheckNameAvailability.
+type TicketsClientCheckNameAvailabilityResponse struct {
+	TicketsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportTicketsCheckNameAvailabilityResult contains the result from method SupportTickets.CheckNameAvailability.
-type SupportTicketsCheckNameAvailabilityResult struct {
+// TicketsClientCheckNameAvailabilityResult contains the result from method TicketsClient.CheckNameAvailability.
+type TicketsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityOutput
 }
 
-// SupportTicketsCreatePollerResponse contains the response from method SupportTickets.Create.
-type SupportTicketsCreatePollerResponse struct {
+// TicketsClientCreatePollerResponse contains the response from method TicketsClient.Create.
+type TicketsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SupportTicketsCreatePoller
+	Poller *TicketsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -187,9 +187,9 @@ type SupportTicketsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SupportTicketsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SupportTicketsCreateResponse, error) {
-	respType := SupportTicketsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SupportTicketDetails)
+func (l TicketsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TicketsClientCreateResponse, error) {
+	respType := TicketsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TicketDetails)
 	if err != nil {
 		return respType, err
 	}
@@ -197,13 +197,13 @@ func (l SupportTicketsCreatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a SupportTicketsCreatePollerResponse from the provided client and resume token.
-func (l *SupportTicketsCreatePollerResponse) Resume(ctx context.Context, client *SupportTicketsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SupportTicketsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a TicketsClientCreatePollerResponse from the provided client and resume token.
+func (l *TicketsClientCreatePollerResponse) Resume(ctx context.Context, client *TicketsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TicketsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SupportTicketsCreatePoller{
+	poller := &TicketsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -215,50 +215,50 @@ func (l *SupportTicketsCreatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// SupportTicketsCreateResponse contains the response from method SupportTickets.Create.
-type SupportTicketsCreateResponse struct {
-	SupportTicketsCreateResult
+// TicketsClientCreateResponse contains the response from method TicketsClient.Create.
+type TicketsClientCreateResponse struct {
+	TicketsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportTicketsCreateResult contains the result from method SupportTickets.Create.
-type SupportTicketsCreateResult struct {
-	SupportTicketDetails
+// TicketsClientCreateResult contains the result from method TicketsClient.Create.
+type TicketsClientCreateResult struct {
+	TicketDetails
 }
 
-// SupportTicketsGetResponse contains the response from method SupportTickets.Get.
-type SupportTicketsGetResponse struct {
-	SupportTicketsGetResult
+// TicketsClientGetResponse contains the response from method TicketsClient.Get.
+type TicketsClientGetResponse struct {
+	TicketsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportTicketsGetResult contains the result from method SupportTickets.Get.
-type SupportTicketsGetResult struct {
-	SupportTicketDetails
+// TicketsClientGetResult contains the result from method TicketsClient.Get.
+type TicketsClientGetResult struct {
+	TicketDetails
 }
 
-// SupportTicketsListResponse contains the response from method SupportTickets.List.
-type SupportTicketsListResponse struct {
-	SupportTicketsListResultEnvelope
+// TicketsClientListResponse contains the response from method TicketsClient.List.
+type TicketsClientListResponse struct {
+	TicketsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportTicketsListResultEnvelope contains the result from method SupportTickets.List.
-type SupportTicketsListResultEnvelope struct {
-	SupportTicketsListResult
+// TicketsClientListResult contains the result from method TicketsClient.List.
+type TicketsClientListResult struct {
+	TicketsListResult
 }
 
-// SupportTicketsUpdateResponse contains the response from method SupportTickets.Update.
-type SupportTicketsUpdateResponse struct {
-	SupportTicketsUpdateResult
+// TicketsClientUpdateResponse contains the response from method TicketsClient.Update.
+type TicketsClientUpdateResponse struct {
+	TicketsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportTicketsUpdateResult contains the result from method SupportTickets.Update.
-type SupportTicketsUpdateResult struct {
-	SupportTicketDetails
+// TicketsClientUpdateResult contains the result from method TicketsClient.Update.
+type TicketsClientUpdateResult struct {
+	TicketDetails
 }

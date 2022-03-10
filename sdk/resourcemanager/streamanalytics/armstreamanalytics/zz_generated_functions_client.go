@@ -11,7 +11,6 @@ package armstreamanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // FunctionsClient contains the methods for the Functions group.
 // Don't use this type directly, use NewFunctionsClient() instead.
 type FunctionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFunctionsClient creates a new instance of FunctionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FunctionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FunctionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FunctionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrReplace - Creates a function or replaces an already existing function under an existing streaming job.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) CreateOrReplace(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsCreateOrReplaceOptions) (FunctionsCreateOrReplaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// function - The definition of the function that will be used to create a new function or replace the existing one under
+// the streaming job.
+// options - FunctionsClientCreateOrReplaceOptions contains the optional parameters for the FunctionsClient.CreateOrReplace
+// method.
+func (client *FunctionsClient) CreateOrReplace(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsClientCreateOrReplaceOptions) (FunctionsClientCreateOrReplaceResponse, error) {
 	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, jobName, functionName, function, options)
 	if err != nil {
-		return FunctionsCreateOrReplaceResponse{}, err
+		return FunctionsClientCreateOrReplaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FunctionsCreateOrReplaceResponse{}, err
+		return FunctionsClientCreateOrReplaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return FunctionsCreateOrReplaceResponse{}, client.createOrReplaceHandleError(resp)
+		return FunctionsClientCreateOrReplaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrReplaceHandleResponse(resp)
 }
 
 // createOrReplaceCreateRequest creates the CreateOrReplace request.
-func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsCreateOrReplaceOptions) (*policy.Request, error) {
+func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsClientCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,12 +92,12 @@ func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -96,49 +110,40 @@ func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context,
 }
 
 // createOrReplaceHandleResponse handles the CreateOrReplace response.
-func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response) (FunctionsCreateOrReplaceResponse, error) {
-	result := FunctionsCreateOrReplaceResponse{RawResponse: resp}
+func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response) (FunctionsClientCreateOrReplaceResponse, error) {
+	result := FunctionsClientCreateOrReplaceResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsCreateOrReplaceResponse{}, runtime.NewResponseError(err, resp)
+		return FunctionsClientCreateOrReplaceResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrReplaceHandleError handles the CreateOrReplace error response.
-func (client *FunctionsClient) createOrReplaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a function from the streaming job.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) Delete(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsDeleteOptions) (FunctionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// options - FunctionsClientDeleteOptions contains the optional parameters for the FunctionsClient.Delete method.
+func (client *FunctionsClient) Delete(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientDeleteOptions) (FunctionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
-		return FunctionsDeleteResponse{}, err
+		return FunctionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FunctionsDeleteResponse{}, err
+		return FunctionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FunctionsDeleteResponse{}, client.deleteHandleError(resp)
+		return FunctionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FunctionsDeleteResponse{RawResponse: resp}, nil
+	return FunctionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsDeleteOptions) (*policy.Request, error) {
+func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,49 +161,40 @@ func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FunctionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets details about the specified function.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) Get(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsGetOptions) (FunctionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// options - FunctionsClientGetOptions contains the optional parameters for the FunctionsClient.Get method.
+func (client *FunctionsClient) Get(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientGetOptions) (FunctionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
-		return FunctionsGetResponse{}, err
+		return FunctionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FunctionsGetResponse{}, err
+		return FunctionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FunctionsGetResponse{}, client.getHandleError(resp)
+		return FunctionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsGetOptions) (*policy.Request, error) {
+func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -216,58 +212,49 @@ func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FunctionsClient) getHandleResponse(resp *http.Response) (FunctionsGetResponse, error) {
-	result := FunctionsGetResponse{RawResponse: resp}
+func (client *FunctionsClient) getHandleResponse(resp *http.Response) (FunctionsClientGetResponse, error) {
+	result := FunctionsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return FunctionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FunctionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByStreamingJob - Lists all of the functions under the specified streaming job.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *FunctionsListByStreamingJobOptions) *FunctionsListByStreamingJobPager {
-	return &FunctionsListByStreamingJobPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// options - FunctionsClientListByStreamingJobOptions contains the optional parameters for the FunctionsClient.ListByStreamingJob
+// method.
+func (client *FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *FunctionsClientListByStreamingJobPager {
+	return &FunctionsClientListByStreamingJobPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByStreamingJobCreateRequest(ctx, resourceGroupName, jobName, options)
 		},
-		advancer: func(ctx context.Context, resp FunctionsListByStreamingJobResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FunctionsClientListByStreamingJobResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FunctionListResult.NextLink)
 		},
 	}
 }
 
 // listByStreamingJobCreateRequest creates the ListByStreamingJob request.
-func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Context, resourceGroupName string, jobName string, options *FunctionsListByStreamingJobOptions) (*policy.Request, error) {
+func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Context, resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -281,7 +268,7 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,53 +276,45 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByStreamingJobHandleResponse handles the ListByStreamingJob response.
-func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Response) (FunctionsListByStreamingJobResponse, error) {
-	result := FunctionsListByStreamingJobResponse{RawResponse: resp}
+func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Response) (FunctionsClientListByStreamingJobResponse, error) {
+	result := FunctionsClientListByStreamingJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionListResult); err != nil {
-		return FunctionsListByStreamingJobResponse{}, runtime.NewResponseError(err, resp)
+		return FunctionsClientListByStreamingJobResponse{}, err
 	}
 	return result, nil
 }
 
-// listByStreamingJobHandleError handles the ListByStreamingJob error response.
-func (client *FunctionsClient) listByStreamingJobHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RetrieveDefaultDefinition - Retrieves the default definition of a function based on the parameters specified.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) RetrieveDefaultDefinition(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsRetrieveDefaultDefinitionOptions) (FunctionsRetrieveDefaultDefinitionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// options - FunctionsClientRetrieveDefaultDefinitionOptions contains the optional parameters for the FunctionsClient.RetrieveDefaultDefinition
+// method.
+func (client *FunctionsClient) RetrieveDefaultDefinition(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientRetrieveDefaultDefinitionOptions) (FunctionsClientRetrieveDefaultDefinitionResponse, error) {
 	req, err := client.retrieveDefaultDefinitionCreateRequest(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
-		return FunctionsRetrieveDefaultDefinitionResponse{}, err
+		return FunctionsClientRetrieveDefaultDefinitionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FunctionsRetrieveDefaultDefinitionResponse{}, err
+		return FunctionsClientRetrieveDefaultDefinitionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FunctionsRetrieveDefaultDefinitionResponse{}, client.retrieveDefaultDefinitionHandleError(resp)
+		return FunctionsClientRetrieveDefaultDefinitionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.retrieveDefaultDefinitionHandleResponse(resp)
 }
 
 // retrieveDefaultDefinitionCreateRequest creates the RetrieveDefaultDefinition request.
-func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsRetrieveDefaultDefinitionOptions) (*policy.Request, error) {
+func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientRetrieveDefaultDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/retrieveDefaultDefinition"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -353,12 +332,12 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.FunctionRetrieveDefaultDefinitionParameters != nil {
@@ -368,54 +347,45 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 }
 
 // retrieveDefaultDefinitionHandleResponse handles the RetrieveDefaultDefinition response.
-func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *http.Response) (FunctionsRetrieveDefaultDefinitionResponse, error) {
-	result := FunctionsRetrieveDefaultDefinitionResponse{RawResponse: resp}
+func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *http.Response) (FunctionsClientRetrieveDefaultDefinitionResponse, error) {
+	result := FunctionsClientRetrieveDefaultDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsRetrieveDefaultDefinitionResponse{}, runtime.NewResponseError(err, resp)
+		return FunctionsClientRetrieveDefaultDefinitionResponse{}, err
 	}
 	return result, nil
 }
 
-// retrieveDefaultDefinitionHandleError handles the RetrieveDefaultDefinition error response.
-func (client *FunctionsClient) retrieveDefaultDefinitionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginTest - Tests if the information provided for a function is valid. This can range from testing the connection to the underlying web service behind
-// the function or making sure the function code provided is
+// BeginTest - Tests if the information provided for a function is valid. This can range from testing the connection to the
+// underlying web service behind the function or making sure the function code provided is
 // syntactically correct.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsBeginTestOptions) (FunctionsTestPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// options - FunctionsClientBeginTestOptions contains the optional parameters for the FunctionsClient.BeginTest method.
+func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (FunctionsClientTestPollerResponse, error) {
 	resp, err := client.test(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
-		return FunctionsTestPollerResponse{}, err
+		return FunctionsClientTestPollerResponse{}, err
 	}
-	result := FunctionsTestPollerResponse{
+	result := FunctionsClientTestPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FunctionsClient.Test", "", resp, client.pl, client.testHandleError)
+	pt, err := armruntime.NewPoller("FunctionsClient.Test", "", resp, client.pl)
 	if err != nil {
-		return FunctionsTestPollerResponse{}, err
+		return FunctionsClientTestPollerResponse{}, err
 	}
-	result.Poller = &FunctionsTestPoller{
+	result.Poller = &FunctionsClientTestPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Test - Tests if the information provided for a function is valid. This can range from testing the connection to the underlying web service behind the
-// function or making sure the function code provided is
+// Test - Tests if the information provided for a function is valid. This can range from testing the connection to the underlying
+// web service behind the function or making sure the function code provided is
 // syntactically correct.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) test(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsBeginTestOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FunctionsClient) test(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*http.Response, error) {
 	req, err := client.testCreateRequest(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
 		return nil, err
@@ -425,13 +395,13 @@ func (client *FunctionsClient) test(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.testHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // testCreateRequest creates the Test request.
-func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsBeginTestOptions) (*policy.Request, error) {
+func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/test"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -449,12 +419,12 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Function != nil {
@@ -463,40 +433,35 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// testHandleError handles the Test error response.
-func (client *FunctionsClient) testHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates an existing function under an existing streaming job. This can be used to partially update (ie. update one or two properties) a function
-// without affecting the rest the job or function
+// Update - Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
+// one or two properties) a function without affecting the rest the job or function
 // definition.
-// If the operation fails it returns the *Error error type.
-func (client *FunctionsClient) Update(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsUpdateOptions) (FunctionsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jobName - The name of the streaming job.
+// functionName - The name of the function.
+// function - A function object. The properties specified here will overwrite the corresponding properties in the existing
+// function (ie. Those properties will be updated). Any properties that are set to null here
+// will mean that the corresponding property in the existing function will remain the same and not change as a result of this
+// PATCH operation.
+// options - FunctionsClientUpdateOptions contains the optional parameters for the FunctionsClient.Update method.
+func (client *FunctionsClient) Update(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsClientUpdateOptions) (FunctionsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jobName, functionName, function, options)
 	if err != nil {
-		return FunctionsUpdateResponse{}, err
+		return FunctionsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FunctionsUpdateResponse{}, err
+		return FunctionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FunctionsUpdateResponse{}, client.updateHandleError(resp)
+		return FunctionsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsUpdateOptions) (*policy.Request, error) {
+func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jobName string, functionName string, function Function, options *FunctionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -514,12 +479,12 @@ func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter functionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{functionName}", url.PathEscape(functionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -529,26 +494,13 @@ func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FunctionsClient) updateHandleResponse(resp *http.Response) (FunctionsUpdateResponse, error) {
-	result := FunctionsUpdateResponse{RawResponse: resp}
+func (client *FunctionsClient) updateHandleResponse(resp *http.Response) (FunctionsClientUpdateResponse, error) {
+	result := FunctionsClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FunctionsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *FunctionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

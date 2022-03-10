@@ -20,6 +20,14 @@ const (
 	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
 
+// PossibleSASProtocolValues returns the possible values for the SASProtocol const type.
+func PossibleSASProtocolValues() []SASProtocol {
+	return []SASProtocol{
+		SASProtocolHTTPS,
+		SASProtocolHTTPSandHTTP,
+	}
+}
+
 // FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
 // SASField's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
 func FormatTimesForSASSigning(startTime, expiryTime time.Time) (string, string) {

@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // IntegrationRuntimeMonitoringDataClient contains the methods for the IntegrationRuntimeMonitoringData group.
 // Don't use this type directly, use NewIntegrationRuntimeMonitoringDataClient() instead.
 type IntegrationRuntimeMonitoringDataClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeMonitoringDataClient creates a new instance of IntegrationRuntimeMonitoringDataClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationRuntimeMonitoringDataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeMonitoringDataClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationRuntimeMonitoringDataClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationRuntimeMonitoringDataClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get monitoring data for an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeMonitoringDataClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeMonitoringDataListOptions) (IntegrationRuntimeMonitoringDataListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// options - IntegrationRuntimeMonitoringDataClientListOptions contains the optional parameters for the IntegrationRuntimeMonitoringDataClient.List
+// method.
+func (client *IntegrationRuntimeMonitoringDataClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeMonitoringDataClientListOptions) (IntegrationRuntimeMonitoringDataClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimeMonitoringDataListResponse{}, err
+		return IntegrationRuntimeMonitoringDataClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimeMonitoringDataListResponse{}, err
+		return IntegrationRuntimeMonitoringDataClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimeMonitoringDataListResponse{}, client.listHandleError(resp)
+		return IntegrationRuntimeMonitoringDataClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationRuntimeMonitoringDataClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeMonitoringDataListOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeMonitoringDataClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeMonitoringDataClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/monitoringData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *IntegrationRuntimeMonitoringDataClient) listCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +102,10 @@ func (client *IntegrationRuntimeMonitoringDataClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationRuntimeMonitoringDataClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeMonitoringDataListResponse, error) {
-	result := IntegrationRuntimeMonitoringDataListResponse{RawResponse: resp}
+func (client *IntegrationRuntimeMonitoringDataClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeMonitoringDataClientListResponse, error) {
+	result := IntegrationRuntimeMonitoringDataClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
-		return IntegrationRuntimeMonitoringDataListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimeMonitoringDataClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IntegrationRuntimeMonitoringDataClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

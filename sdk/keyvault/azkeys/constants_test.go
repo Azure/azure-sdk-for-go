@@ -16,20 +16,19 @@ func TestToPtrMethods(t *testing.T) {
 	d := DeletionRecoveryLevelCustomizedRecoverable
 	require.Equal(t, d.ToPtr(), &d)
 
-	j := JSONWebKeyCurveNameP256
+	j := CurveNameP256
 	require.Equal(t, j.ToPtr(), &j)
 
-	o := JSONWebKeyOperationDecrypt
+	o := OperationDecrypt
 	require.Equal(t, o.ToPtr(), &o)
 
-	a := KeyEncryptionAlgorithmRSAAESKEYWRAP256
+	a := ExportEncryptionAlgorithmRSAAESKEYWRAP256
 	require.Equal(t, a.ToPtr(), &a)
 }
 
 //nolint
 func TestToGeneratedMethods(t *testing.T) {
 	// If done incorrectly, this will have a nil pointer reference
-	var l *ListKeyVersionsOptions
-	l = nil
+	var l *ListPropertiesOfKeyVersionsOptions = nil
 	_ = l.toGenerated()
 }

@@ -74,6 +74,53 @@ func TestSetGetSecret(t *testing.T) {
 	require.Equal(t, *getResp.Value, value)
 }
 
+func TestSecretTags(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	resp, err := client.SetSecret(context.Background(), secret, value, &SetSecretOptions{
+		Tags: map[string]string{
+			"Tag1": "Val1",
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Tags))
+	require.Equal(t, "Val1", resp.Tags["Tag1"])
+
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, 1, len(getResp.Tags))
+	require.Equal(t, "Val1", getResp.Tags["Tag1"])
+
+	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
+		Properties: &Properties{
+			ExpiresOn: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 1, len(updateResp.Tags))
+	require.Equal(t, "Val1", updateResp.Tags["Tag1"])
+
+	// Delete the tags
+	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
+		Tags: make(map[string]string),
+	})
+	require.NoError(t, err)
+	require.Equal(t, 0, len(updateResp.Tags))
+	require.NotEqual(t, "Val1", updateResp.Tags["Tag1"])
+}
+
 func TestListSecretVersions(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -96,12 +143,12 @@ func TestListSecretVersions(t *testing.T) {
 
 	count := 0
 	pager := client.ListSecretVersions(secret, nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.Secrets)
 	}
 	require.GreaterOrEqual(t, count, 3)
-	require.NoError(t, pager.Err())
 }
 
 func TestListSecrets(t *testing.T) {
@@ -127,12 +174,12 @@ func TestListSecrets(t *testing.T) {
 
 	count := 0
 	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.Secrets)
 	}
 	require.Equal(t, count, 4)
-	require.NoError(t, pager.Err())
 }
 
 func TestListDeletedSecrets(t *testing.T) {
@@ -184,8 +231,9 @@ func TestListDeletedSecrets(t *testing.T) {
 	}
 	count := 0
 	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		count += len(page.DeletedSecrets)
 		for _, secret := range page.DeletedSecrets {
 			for deleted := range deletedSecrets {
@@ -220,11 +268,16 @@ func TestDeleteSecret(t *testing.T) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), delay())
+	finalResp, err := resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
+	require.NotNil(t, finalResp.Properties)
+	require.NotNil(t, finalResp.DeletedOn)
+	require.NotNil(t, finalResp.ID)
+	require.NotNil(t, finalResp.ScheduledPurgeDate)
 
-	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
+	deleteResp, err := client.GetDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
+	require.NotNil(t, deleteResp.Properties)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -261,8 +314,9 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	require.NoError(t, err)
 
 	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 		for _, secret := range page.DeletedSecrets {
 			require.NotEqual(t, *secret.ID, secret)
 		}
@@ -292,21 +346,19 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
-	expires := time.Now().Add(48 * time.Hour)
-	nb := time.Now().Add(-24 * time.Hour)
-	params := Properties{
+	options := &UpdateSecretPropertiesOptions{
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
-		SecretAttributes: &Attributes{
+		Properties: &Properties{
 			Enabled:   to.BoolPtr(true),
-			Expires:   &expires,
-			NotBefore: &nb,
+			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
+			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
 		},
 	}
 
-	_, err = client.UpdateSecretProperties(context.Background(), secret, params, nil)
+	_, err = client.UpdateSecretProperties(context.Background(), secret, options)
 	require.NoError(t, err)
 
 	getResp, err = client.GetSecret(context.Background(), secret, nil)
@@ -383,13 +435,13 @@ func TestBackupSecret(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = client.GetSecret(context.Background(), secret, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+	require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
 	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+	require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 	time.Sleep(20 * delay())
 
@@ -432,25 +484,25 @@ func TestTimeout(t *testing.T) {
 }
 
 func TestConstants(t *testing.T) {
-	d := CustomizedRecoverable
+	d := DeletionRecoveryLevelCustomizedRecoverable
 	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
 
-	d1 := CustomizedRecoverableProtectedSubscription
+	d1 := DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
 	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
 
-	d2 := CustomizedRecoverablePurgeable
+	d2 := DeletionRecoveryLevelCustomizedRecoverablePurgeable
 	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
 
-	d3 := Purgeable
+	d3 := DeletionRecoveryLevelPurgeable
 	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
 
-	d4 := Recoverable
+	d4 := DeletionRecoveryLevelRecoverable
 	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
 
-	d5 := RecoverableProtectedSubscription
+	d5 := DeletionRecoveryLevelRecoverableProtectedSubscription
 	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
 
-	d6 := RecoverablePurgeable
+	d6 := DeletionRecoveryLevelRecoverablePurgeable
 	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
 }
 

@@ -11,7 +11,6 @@ package armquota
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,62 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsagesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsagesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the current usage of a resource.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope string, options *UsagesGetOptions) (UsagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceName - Resource name for a given resource provider. For example:
+// * SKU name for Microsoft.Compute
+// * SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
+// scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
+// This is the target Azure
+// resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
+// URI in the GET operation for the specific resource.
+// options - UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
+func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
 	if err != nil {
-		return UsagesGetResponse{}, err
+		return UsagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UsagesGetResponse{}, err
+		return UsagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UsagesGetResponse{}, client.getHandleError(resp)
+		return UsagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName string, scope string, options *UsagesGetOptions) (*policy.Request, error) {
+func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/usages/{resourceName}"
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,49 +91,41 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName s
 }
 
 // getHandleResponse handles the Get response.
-func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesGetResponse, error) {
-	result := UsagesGetResponse{RawResponse: resp}
+func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClientGetResponse, error) {
+	result := UsagesClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CurrentUsagesBase); err != nil {
-		return UsagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *UsagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get a list of current usage for all resources for the scope specified.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *UsagesClient) List(scope string, options *UsagesListOptions) *UsagesListPager {
-	return &UsagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
+// This is the target Azure
+// resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
+// URI in the GET operation for the specific resource.
+// options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+func (client *UsagesClient) List(scope string, options *UsagesClientListOptions) *UsagesClientListPager {
+	return &UsagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UsagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesLimits.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, options *UsagesListOptions) (*policy.Request, error) {
+func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, options *UsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,26 +137,13 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string,
 }
 
 // listHandleResponse handles the List response.
-func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesListResponse, error) {
-	result := UsagesListResponse{RawResponse: resp}
+func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
+	result := UsagesClientListResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesLimits); err != nil {
-		return UsagesListResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *UsagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

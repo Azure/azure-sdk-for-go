@@ -11,7 +11,6 @@ package armpeering
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,227 @@ import (
 // PrefixesClient contains the methods for the Prefixes group.
 // Don't use this type directly, use NewPrefixesClient() instead.
 type PrefixesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrefixesClient creates a new instance of PrefixesClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrefixesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &PrefixesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrefixesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// ListByPeeringService - Lists the peerings prefix in the resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrefixesClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *PrefixesListByPeeringServiceOptions) *PrefixesListByPeeringServicePager {
-	return &PrefixesListByPeeringServicePager{
+// CreateOrUpdate - Creates a new prefix with the specified name under the given subscription, resource group and peering
+// service.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringServiceName - The name of the peering service.
+// prefixName - The name of the prefix.
+// peeringServicePrefix - The properties needed to create a prefix.
+// options - PrefixesClientCreateOrUpdateOptions contains the optional parameters for the PrefixesClient.CreateOrUpdate method.
+func (client *PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix, options *PrefixesClientCreateOrUpdateOptions) (PrefixesClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix, options)
+	if err != nil {
+		return PrefixesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PrefixesClientCreateOrUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return PrefixesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.createOrUpdateHandleResponse(resp)
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix, options *PrefixesClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if peeringServiceName == "" {
+		return nil, errors.New("parameter peeringServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peeringServiceName}", url.PathEscape(peeringServiceName))
+	if prefixName == "" {
+		return nil, errors.New("parameter prefixName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{prefixName}", url.PathEscape(prefixName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, peeringServicePrefix)
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *PrefixesClient) createOrUpdateHandleResponse(resp *http.Response) (PrefixesClientCreateOrUpdateResponse, error) {
+	result := PrefixesClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefix); err != nil {
+		return PrefixesClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
+}
+
+// Delete - Deletes an existing prefix with the specified name under the given subscription, resource group and peering service.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringServiceName - The name of the peering service.
+// prefixName - The name of the prefix.
+// options - PrefixesClientDeleteOptions contains the optional parameters for the PrefixesClient.Delete method.
+func (client *PrefixesClient) Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, options *PrefixesClientDeleteOptions) (PrefixesClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, peeringServiceName, prefixName, options)
+	if err != nil {
+		return PrefixesClientDeleteResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PrefixesClientDeleteResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return PrefixesClientDeleteResponse{}, runtime.NewResponseError(resp)
+	}
+	return PrefixesClientDeleteResponse{RawResponse: resp}, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, options *PrefixesClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if peeringServiceName == "" {
+		return nil, errors.New("parameter peeringServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peeringServiceName}", url.PathEscape(peeringServiceName))
+	if prefixName == "" {
+		return nil, errors.New("parameter prefixName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{prefixName}", url.PathEscape(prefixName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// Get - Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringServiceName - The name of the peering service.
+// prefixName - The name of the prefix.
+// options - PrefixesClientGetOptions contains the optional parameters for the PrefixesClient.Get method.
+func (client *PrefixesClient) Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, options *PrefixesClientGetOptions) (PrefixesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, peeringServiceName, prefixName, options)
+	if err != nil {
+		return PrefixesClientGetResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PrefixesClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrefixesClientGetResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getHandleResponse(resp)
+}
+
+// getCreateRequest creates the Get request.
+func (client *PrefixesClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, options *PrefixesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if peeringServiceName == "" {
+		return nil, errors.New("parameter peeringServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peeringServiceName}", url.PathEscape(peeringServiceName))
+	if prefixName == "" {
+		return nil, errors.New("parameter prefixName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{prefixName}", url.PathEscape(prefixName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesClientGetResponse, error) {
+	result := PrefixesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefix); err != nil {
+		return PrefixesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListByPeeringService - Lists all prefixes under the given subscription, resource group and peering service.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringServiceName - The name of the peering service.
+// options - PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.ListByPeeringService
+// method.
+func (client *PrefixesClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) *PrefixesClientListByPeeringServicePager {
+	return &PrefixesClientListByPeeringServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByPeeringServiceCreateRequest(ctx, resourceGroupName, peeringServiceName, options)
 		},
-		advancer: func(ctx context.Context, resp PrefixesListByPeeringServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeeringServicePrefixListResult.NextLink)
+		advancer: func(ctx context.Context, resp PrefixesClientListByPeeringServiceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServicePrefixListResult.NextLink)
 		},
 	}
 }
 
 // listByPeeringServiceCreateRequest creates the ListByPeeringService request.
-func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, options *PrefixesListByPeeringServiceOptions) (*policy.Request, error) {
+func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,35 +258,25 @@ func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01-preview")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByPeeringServiceHandleResponse handles the ListByPeeringService response.
-func (client *PrefixesClient) listByPeeringServiceHandleResponse(resp *http.Response) (PrefixesListByPeeringServiceResponse, error) {
-	result := PrefixesListByPeeringServiceResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PeeringServicePrefixListResult); err != nil {
-		return PrefixesListByPeeringServiceResponse{}, runtime.NewResponseError(err, resp)
+func (client *PrefixesClient) listByPeeringServiceHandleResponse(resp *http.Response) (PrefixesClientListByPeeringServiceResponse, error) {
+	result := PrefixesClientListByPeeringServiceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServicePrefixListResult); err != nil {
+		return PrefixesClientListByPeeringServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByPeeringServiceHandleError handles the ListByPeeringService error response.
-func (client *PrefixesClient) listByPeeringServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

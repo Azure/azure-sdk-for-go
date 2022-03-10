@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"os"
 	"testing"
@@ -23,13 +24,29 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
+
+	var credsToAdd []azcore.TokenCredential
+
+	cliCred, err := azidentity.NewAzureCLICredential(nil)
+	require.NoError(t, err)
+
 	envCred, err := azidentity.NewEnvironmentCredential(nil)
+
+	if err == nil {
+		fmt.Printf("Env cred works, being added to our chained token credential")
+		credsToAdd = append(credsToAdd, envCred)
+	}
+
+	credsToAdd = append(credsToAdd, cliCred)
+
+	cred, err := azidentity.NewChainedTokenCredential(credsToAdd, nil)
+	require.NoError(t, err)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	client, err := NewClient(ns, envCred, nil)
+	client, err := NewClient(ns, cred, nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue, nil)
@@ -130,7 +147,7 @@ func TestNewClientUnitTests(t *testing.T) {
 
 		// (really all part of the same functionality)
 		ns := &internal.Namespace{}
-		require.NoError(t, internal.NamespacesWithTokenCredential("mysb.windows.servicebus.net",
+		require.NoError(t, internal.NamespaceWithTokenCredential("mysb.windows.servicebus.net",
 			fakeTokenCredential)(ns))
 
 		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
@@ -173,26 +190,6 @@ func TestNewClientUnitTests(t *testing.T) {
 
 		client, ns = setupClient()
 		_, err = client.NewReceiverForSubscription("hello", "world", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
-
-		client, ns = setupClient()
-		_, err = newProcessorForQueue(client, "hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
-
-		client, ns = setupClient()
-		_, err = newProcessorForSubscription(client, "hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

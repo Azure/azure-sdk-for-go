@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // CustomizationPoliciesClient contains the methods for the CustomizationPolicies group.
 // Don't use this type directly, use NewCustomizationPoliciesClient() instead.
 type CustomizationPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCustomizationPoliciesClient creates a new instance of CustomizationPoliciesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCustomizationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomizationPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CustomizationPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CustomizationPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns customization policy by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *CustomizationPoliciesClient) Get(ctx context.Context, regionID string, pcName string, customizationPolicyName string, options *CustomizationPoliciesGetOptions) (CustomizationPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// pcName - The private cloud name
+// customizationPolicyName - customization policy name
+// options - CustomizationPoliciesClientGetOptions contains the optional parameters for the CustomizationPoliciesClient.Get
+// method.
+func (client *CustomizationPoliciesClient) Get(ctx context.Context, regionID string, pcName string, customizationPolicyName string, options *CustomizationPoliciesClientGetOptions) (CustomizationPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, regionID, pcName, customizationPolicyName, options)
 	if err != nil {
-		return CustomizationPoliciesGetResponse{}, err
+		return CustomizationPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomizationPoliciesGetResponse{}, err
+		return CustomizationPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomizationPoliciesGetResponse{}, client.getHandleError(resp)
+		return CustomizationPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomizationPoliciesClient) getCreateRequest(ctx context.Context, regionID string, pcName string, customizationPolicyName string, options *CustomizationPoliciesGetOptions) (*policy.Request, error) {
+func (client *CustomizationPoliciesClient) getCreateRequest(ctx context.Context, regionID string, pcName string, customizationPolicyName string, options *CustomizationPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies/{customizationPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *CustomizationPoliciesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter customizationPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customizationPolicyName}", url.PathEscape(customizationPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *CustomizationPoliciesClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomizationPoliciesClient) getHandleResponse(resp *http.Response) (CustomizationPoliciesGetResponse, error) {
-	result := CustomizationPoliciesGetResponse{RawResponse: resp}
+func (client *CustomizationPoliciesClient) getHandleResponse(resp *http.Response) (CustomizationPoliciesClientGetResponse, error) {
+	result := CustomizationPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationPolicy); err != nil {
-		return CustomizationPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomizationPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomizationPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns list of customization policies in region for private cloud
-// If the operation fails it returns the *CSRPError error type.
-func (client *CustomizationPoliciesClient) List(regionID string, pcName string, options *CustomizationPoliciesListOptions) *CustomizationPoliciesListPager {
-	return &CustomizationPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// pcName - The private cloud name
+// options - CustomizationPoliciesClientListOptions contains the optional parameters for the CustomizationPoliciesClient.List
+// method.
+func (client *CustomizationPoliciesClient) List(regionID string, pcName string, options *CustomizationPoliciesClientListOptions) *CustomizationPoliciesClientListPager {
+	return &CustomizationPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, regionID, pcName, options)
 		},
-		advancer: func(ctx context.Context, resp CustomizationPoliciesListResponseEnvelope) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CustomizationPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomizationPoliciesListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CustomizationPoliciesClient) listCreateRequest(ctx context.Context, regionID string, pcName string, options *CustomizationPoliciesListOptions) (*policy.Request, error) {
+func (client *CustomizationPoliciesClient) listCreateRequest(ctx context.Context, regionID string, pcName string, options *CustomizationPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *CustomizationPoliciesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter pcName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pcName}", url.PathEscape(pcName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +158,10 @@ func (client *CustomizationPoliciesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *CustomizationPoliciesClient) listHandleResponse(resp *http.Response) (CustomizationPoliciesListResponseEnvelope, error) {
-	result := CustomizationPoliciesListResponseEnvelope{RawResponse: resp}
+func (client *CustomizationPoliciesClient) listHandleResponse(resp *http.Response) (CustomizationPoliciesClientListResponse, error) {
+	result := CustomizationPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationPoliciesListResponse); err != nil {
-		return CustomizationPoliciesListResponseEnvelope{}, runtime.NewResponseError(err, resp)
+		return CustomizationPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *CustomizationPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

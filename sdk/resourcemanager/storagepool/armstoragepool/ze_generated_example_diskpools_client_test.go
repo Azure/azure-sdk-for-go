@@ -28,12 +28,16 @@ func ExampleDiskPoolsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DiskPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleDiskPoolsClient_ListByResourceGroup() {
 	client := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DiskPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -99,7 +107,7 @@ func ExampleDiskPoolsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiskPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiskPoolsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Patch.json
@@ -139,7 +147,7 @@ func ExampleDiskPoolsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiskPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiskPoolsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Delete.json
@@ -178,7 +186,7 @@ func ExampleDiskPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiskPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiskPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_GetOutboundNetworkDependencies.json
@@ -192,9 +200,16 @@ func ExampleDiskPoolsClient_ListOutboundNetworkDependenciesEndpoints() {
 	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<disk-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

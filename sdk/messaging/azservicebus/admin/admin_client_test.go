@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -26,13 +25,13 @@ import (
 func TestAdminClient_UsingIdentity(t *testing.T) {
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	adminClient, err := NewClient(ns, envCred, nil)
+	adminClient, err := NewClient(ns, cred, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
@@ -206,7 +205,12 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 
 	updatedProps, err = adminClient.UpdateQueue(context.Background(), "non-existent-queue", createdProps.QueueProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updatedProps)
 }
 
@@ -477,7 +481,12 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 
 	updateResp, err = adminClient.UpdateTopic(context.Background(), "non-existent-topic", addResp.TopicProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updateResp)
 }
 
@@ -646,6 +655,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	for i, expectedTopic := range expectedSubscriptions {
 		props, exists := all[expectedTopic]
 		require.True(t, exists)
+		require.Equal(t, topicName, props.TopicName)
 		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
 	}
 }
@@ -740,8 +750,12 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
-	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updateResp)
 }
 
@@ -751,26 +765,41 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
+	queue, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queue)
+
+	runtimeProps, err := testData.Client.GetQueueRuntimeProperties(ctx, "not-found-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, runtimeProps)
+
+	var re *azcore.ResponseError
 
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	pager := testData.Client.ListQueues(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.CreateQueue(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.UpdateQueue(ctx, "canneverbecreated", QueueProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Topic(t *testing.T) {
@@ -779,31 +808,88 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
+	resp, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, resp)
+
+	resprt, err := testData.Client.GetTopicRuntimeProperties(ctx, "not-found-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, resprt)
+
+	var asResponseErr *azcore.ResponseError
 
 	_, err = testData.Client.GetTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	pager := testData.Client.ListTopics(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.CreateTopic(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.UpdateTopic(ctx, "canneverbecreated", TopicProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
+}
 
-	// sanity check that the http response is getting bundled into these errors, should it be needed.
-	var httpResponse azcore.HTTPResponse
-	require.True(t, errors.As(err, &httpResponse))
-	require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse().StatusCode)
+// TestAdminClient_NotFound makes sure that the "GET as LIST" behavior maps to nil when we are trying
+// to get an entity by name and it is not found.
+func TestAdminClient_NotFound(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	queue, err := adminClient.GetQueue(context.Background(), "non-existent-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queue)
+
+	queuert, err := adminClient.GetQueueRuntimeProperties(context.Background(), "non-existent-queue", nil)
+	require.NoError(t, err)
+	require.Nil(t, queuert)
+
+	topic, err := adminClient.GetTopic(context.Background(), "non-existent-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, topic)
+
+	topicrt, err := adminClient.GetTopicRuntimeProperties(context.Background(), "non-existent-topic", nil)
+	require.NoError(t, err)
+	require.Nil(t, topicrt)
+
+	sub, err := adminClient.GetSubscription(context.Background(), "non-existent-topic", "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, sub)
+
+	subrt, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), "non-existent-topic", "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, subrt)
+
+	nanoSeconds := time.Now().UnixNano()
+	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	require.NoError(t, err)
+
+	defer deleteTopic(t, adminClient, topicName)
+
+	sub, err = adminClient.GetSubscription(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, sub)
+
+	subrt, err = adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+	require.Nil(t, subrt)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

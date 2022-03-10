@@ -35,7 +35,7 @@ func ExampleTransactionNodesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TransactionNodesClientGetResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Create.json
@@ -50,7 +50,7 @@ func ExampleTransactionNodesClient_BeginCreate() {
 		"<blockchain-member-name>",
 		"<transaction-node-name>",
 		"<resource-group-name>",
-		&armblockchain.TransactionNodesBeginCreateOptions{TransactionNode: &armblockchain.TransactionNode{
+		&armblockchain.TransactionNodesClientBeginCreateOptions{TransactionNode: &armblockchain.TransactionNode{
 			Location: to.StringPtr("<location>"),
 			Properties: &armblockchain.TransactionNodeProperties{
 				Password: to.StringPtr("<password>"),
@@ -64,7 +64,7 @@ func ExampleTransactionNodesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TransactionNodesClientCreateResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Delete.json
@@ -101,7 +101,7 @@ func ExampleTransactionNodesClient_Update() {
 		"<blockchain-member-name>",
 		"<transaction-node-name>",
 		"<resource-group-name>",
-		&armblockchain.TransactionNodesUpdateOptions{TransactionNode: &armblockchain.TransactionNodeUpdate{
+		&armblockchain.TransactionNodesClientUpdateOptions{TransactionNode: &armblockchain.TransactionNodeUpdate{
 			Properties: &armblockchain.TransactionNodePropertiesUpdate{
 				Password: to.StringPtr("<password>"),
 			},
@@ -110,7 +110,7 @@ func ExampleTransactionNodesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TransactionNodesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_List.json
@@ -124,51 +124,16 @@ func ExampleTransactionNodesClient_List() {
 	pager := client.List("<blockchain-member-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("TransactionNode.ID: %s\n", *v.ID)
+		if !nextResult {
+			break
 		}
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_ListApiKeys.json
-func ExampleTransactionNodesClient_ListAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
-	_, err = client.ListAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_ListRegenerateApiKeys.json
-func ExampleTransactionNodesClient_ListRegenerateAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
-	_, err = client.ListRegenerateAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		&armblockchain.TransactionNodesListRegenerateAPIKeysOptions{APIKey: &armblockchain.APIKey{
-			KeyName: to.StringPtr("<key-name>"),
-		},
-		})
-	if err != nil {
-		log.Fatal(err)
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
 	}
 }

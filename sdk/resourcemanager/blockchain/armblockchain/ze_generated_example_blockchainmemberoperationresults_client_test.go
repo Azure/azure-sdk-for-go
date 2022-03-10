@@ -17,18 +17,19 @@ import (
 )
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMemberOperationResults_Get.json
-func ExampleBlockchainMemberOperationResultsClient_Get() {
+func ExampleMemberOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMemberOperationResultsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	client := armblockchain.NewMemberOperationResultsClient("<subscription-id>", cred, nil)
+	res, err := client.Get(ctx,
 		"<location-name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MemberOperationResultsClientGetResult)
 }

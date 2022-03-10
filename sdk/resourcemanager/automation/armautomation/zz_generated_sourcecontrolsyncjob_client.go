@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,58 @@ import (
 // SourceControlSyncJobClient contains the methods for the SourceControlSyncJob group.
 // Don't use this type directly, use NewSourceControlSyncJobClient() instead.
 type SourceControlSyncJobClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSourceControlSyncJobClient creates a new instance of SourceControlSyncJobClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSourceControlSyncJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlSyncJobClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SourceControlSyncJobClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SourceControlSyncJobClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Creates the sync job for a source control.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlSyncJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, parameters SourceControlSyncJobCreateParameters, options *SourceControlSyncJobCreateOptions) (SourceControlSyncJobCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The source control name.
+// sourceControlSyncJobID - The source control sync job id.
+// parameters - The parameters supplied to the create source control sync job operation.
+// options - SourceControlSyncJobClientCreateOptions contains the optional parameters for the SourceControlSyncJobClient.Create
+// method.
+func (client *SourceControlSyncJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, parameters SourceControlSyncJobCreateParameters, options *SourceControlSyncJobClientCreateOptions) (SourceControlSyncJobClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, parameters, options)
 	if err != nil {
-		return SourceControlSyncJobCreateResponse{}, err
+		return SourceControlSyncJobClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlSyncJobCreateResponse{}, err
+		return SourceControlSyncJobClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return SourceControlSyncJobCreateResponse{}, client.createHandleError(resp)
+		return SourceControlSyncJobClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, parameters SourceControlSyncJobCreateParameters, options *SourceControlSyncJobCreateOptions) (*policy.Request, error) {
+func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, parameters SourceControlSyncJobCreateParameters, options *SourceControlSyncJobClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}/sourceControlSyncJobs/{sourceControlSyncJobId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +94,7 @@ func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +106,39 @@ func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *SourceControlSyncJobClient) createHandleResponse(resp *http.Response) (SourceControlSyncJobCreateResponse, error) {
-	result := SourceControlSyncJobCreateResponse{RawResponse: resp}
+func (client *SourceControlSyncJobClient) createHandleResponse(resp *http.Response) (SourceControlSyncJobClientCreateResponse, error) {
+	result := SourceControlSyncJobClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJob); err != nil {
-		return SourceControlSyncJobCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlSyncJobClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SourceControlSyncJobClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the source control sync job identified by job id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlSyncJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobGetOptions) (SourceControlSyncJobGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The source control name.
+// sourceControlSyncJobID - The source control sync job id.
+// options - SourceControlSyncJobClientGetOptions contains the optional parameters for the SourceControlSyncJobClient.Get
+// method.
+func (client *SourceControlSyncJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobClientGetOptions) (SourceControlSyncJobClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, options)
 	if err != nil {
-		return SourceControlSyncJobGetResponse{}, err
+		return SourceControlSyncJobClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlSyncJobGetResponse{}, err
+		return SourceControlSyncJobClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SourceControlSyncJobGetResponse{}, client.getHandleError(resp)
+		return SourceControlSyncJobClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobGetOptions) (*policy.Request, error) {
+func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}/sourceControlSyncJobs/{sourceControlSyncJobId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -149,7 +157,7 @@ func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,43 +169,35 @@ func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobGetResponse, error) {
-	result := SourceControlSyncJobGetResponse{RawResponse: resp}
+func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobClientGetResponse, error) {
+	result := SourceControlSyncJobClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobByID); err != nil {
-		return SourceControlSyncJobGetResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlSyncJobClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SourceControlSyncJobClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of source control sync jobs.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlSyncJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobListByAutomationAccountOptions) *SourceControlSyncJobListByAutomationAccountPager {
-	return &SourceControlSyncJobListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The source control name.
+// options - SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
+// method.
+func (client *SourceControlSyncJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *SourceControlSyncJobClientListByAutomationAccountPager {
+	return &SourceControlSyncJobClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
 		},
-		advancer: func(ctx context.Context, resp SourceControlSyncJobListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SourceControlSyncJobClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlSyncJobListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}/sourceControlSyncJobs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,7 +215,7 @@ func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,23 +230,10 @@ func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(c
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *SourceControlSyncJobClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlSyncJobListByAutomationAccountResponse, error) {
-	result := SourceControlSyncJobListByAutomationAccountResponse{RawResponse: resp}
+func (client *SourceControlSyncJobClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlSyncJobClientListByAutomationAccountResponse, error) {
+	result := SourceControlSyncJobClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobListResult); err != nil {
-		return SourceControlSyncJobListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *SourceControlSyncJobClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

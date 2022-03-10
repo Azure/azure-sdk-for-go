@@ -27,12 +27,16 @@ func ExampleTagRulesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MonitoringTagRules.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,11 +53,11 @@ func ExampleTagRulesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<monitor-name>",
 		"<rule-set-name>",
-		&armlogz.TagRulesCreateOrUpdateOptions{Body: nil})
+		&armlogz.TagRulesClientCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TagRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/TagRules_Get.json
@@ -72,7 +76,7 @@ func ExampleTagRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TagRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/TagRules_Delete.json

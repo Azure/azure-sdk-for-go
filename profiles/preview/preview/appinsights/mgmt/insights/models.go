@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2021-11-01-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights"
 )
 
 const (
@@ -95,8 +95,8 @@ const (
 type ItemType = original.ItemType
 
 const (
-	ItemTypeFolder   ItemType = original.ItemTypeFolder
 	ItemTypeFunction ItemType = original.ItemTypeFunction
+	ItemTypeNone     ItemType = original.ItemTypeNone
 	ItemTypeQuery    ItemType = original.ItemTypeQuery
 	ItemTypeRecent   ItemType = original.ItemTypeRecent
 )
@@ -215,6 +215,8 @@ type ComponentsClient = original.ComponentsClient
 type ComponentsResource = original.ComponentsResource
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseComponents = original.ErrorResponseComponents
+type ErrorResponseComponentsError = original.ErrorResponseComponentsError
 type ErrorResponseLinkedStorage = original.ErrorResponseLinkedStorage
 type ErrorResponseLinkedStorageError = original.ErrorResponseLinkedStorageError
 type ExportConfigurationsClient = original.ExportConfigurationsClient
@@ -249,8 +251,6 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationLive = original.OperationLive
 type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
-type OperationsListResultIterator = original.OperationsListResultIterator
-type OperationsListResultPage = original.OperationsListResultPage
 type PrivateLinkScopedResource = original.PrivateLinkScopedResource
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
 type ProxyResource = original.ProxyResource
@@ -403,12 +403,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
-	return original.NewOperationsListResultIterator(page)
-}
-func NewOperationsListResultPage(cur OperationsListResult, getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
-	return original.NewOperationsListResultPage(cur, getNextPage)
 }
 func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
 	return original.NewProactiveDetectionConfigurationsClient(subscriptionID)

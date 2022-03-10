@@ -11,7 +11,6 @@ package armhdinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // ScriptActionsClient contains the methods for the ScriptActions group.
 // Don't use this type directly, use NewScriptActionsClient() instead.
 type ScriptActionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScriptActionsClient creates a new instance of ScriptActionsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptActionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScriptActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScriptActionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Deletes a specified persisted script action of the cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScriptActionsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, scriptName string, options *ScriptActionsDeleteOptions) (ScriptActionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// scriptName - The name of the script.
+// options - ScriptActionsClientDeleteOptions contains the optional parameters for the ScriptActionsClient.Delete method.
+func (client *ScriptActionsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, scriptName string, options *ScriptActionsClientDeleteOptions) (ScriptActionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, scriptName, options)
 	if err != nil {
-		return ScriptActionsDeleteResponse{}, err
+		return ScriptActionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptActionsDeleteResponse{}, err
+		return ScriptActionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ScriptActionsDeleteResponse{}, client.deleteHandleError(resp)
+		return ScriptActionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ScriptActionsDeleteResponse{RawResponse: resp}, nil
+	return ScriptActionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, scriptName string, options *ScriptActionsDeleteOptions) (*policy.Request, error) {
+func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, scriptName string, options *ScriptActionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptActions/{scriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter scriptName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptName}", url.PathEscape(scriptName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,38 +101,30 @@ func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ScriptActionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetExecutionAsyncOperationStatus - Gets the async operation status of execution operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScriptActionsClient) GetExecutionAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, operationID string, options *ScriptActionsGetExecutionAsyncOperationStatusOptions) (ScriptActionsGetExecutionAsyncOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// operationID - The long running operation id.
+// options - ScriptActionsClientGetExecutionAsyncOperationStatusOptions contains the optional parameters for the ScriptActionsClient.GetExecutionAsyncOperationStatus
+// method.
+func (client *ScriptActionsClient) GetExecutionAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, operationID string, options *ScriptActionsClientGetExecutionAsyncOperationStatusOptions) (ScriptActionsClientGetExecutionAsyncOperationStatusResponse, error) {
 	req, err := client.getExecutionAsyncOperationStatusCreateRequest(ctx, resourceGroupName, clusterName, operationID, options)
 	if err != nil {
-		return ScriptActionsGetExecutionAsyncOperationStatusResponse{}, err
+		return ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptActionsGetExecutionAsyncOperationStatusResponse{}, err
+		return ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptActionsGetExecutionAsyncOperationStatusResponse{}, client.getExecutionAsyncOperationStatusHandleError(resp)
+		return ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getExecutionAsyncOperationStatusHandleResponse(resp)
 }
 
 // getExecutionAsyncOperationStatusCreateRequest creates the GetExecutionAsyncOperationStatus request.
-func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, operationID string, options *ScriptActionsGetExecutionAsyncOperationStatusOptions) (*policy.Request, error) {
+func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, operationID string, options *ScriptActionsClientGetExecutionAsyncOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/executeScriptActions/azureasyncoperations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,7 +142,7 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,46 +154,38 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest
 }
 
 // getExecutionAsyncOperationStatusHandleResponse handles the GetExecutionAsyncOperationStatus response.
-func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleResponse(resp *http.Response) (ScriptActionsGetExecutionAsyncOperationStatusResponse, error) {
-	result := ScriptActionsGetExecutionAsyncOperationStatusResponse{RawResponse: resp}
+func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleResponse(resp *http.Response) (ScriptActionsClientGetExecutionAsyncOperationStatusResponse, error) {
+	result := ScriptActionsClientGetExecutionAsyncOperationStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
-		return ScriptActionsGetExecutionAsyncOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getExecutionAsyncOperationStatusHandleError handles the GetExecutionAsyncOperationStatus error response.
-func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetExecutionDetail - Gets the script execution detail for the given script execution ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScriptActionsClient) GetExecutionDetail(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string, options *ScriptActionsGetExecutionDetailOptions) (ScriptActionsGetExecutionDetailResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// scriptExecutionID - The script execution Id
+// options - ScriptActionsClientGetExecutionDetailOptions contains the optional parameters for the ScriptActionsClient.GetExecutionDetail
+// method.
+func (client *ScriptActionsClient) GetExecutionDetail(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string, options *ScriptActionsClientGetExecutionDetailOptions) (ScriptActionsClientGetExecutionDetailResponse, error) {
 	req, err := client.getExecutionDetailCreateRequest(ctx, resourceGroupName, clusterName, scriptExecutionID, options)
 	if err != nil {
-		return ScriptActionsGetExecutionDetailResponse{}, err
+		return ScriptActionsClientGetExecutionDetailResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptActionsGetExecutionDetailResponse{}, err
+		return ScriptActionsClientGetExecutionDetailResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptActionsGetExecutionDetailResponse{}, client.getExecutionDetailHandleError(resp)
+		return ScriptActionsClientGetExecutionDetailResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getExecutionDetailHandleResponse(resp)
 }
 
 // getExecutionDetailCreateRequest creates the GetExecutionDetail request.
-func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string, options *ScriptActionsGetExecutionDetailOptions) (*policy.Request, error) {
+func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string, options *ScriptActionsClientGetExecutionDetailOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory/{scriptExecutionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +203,7 @@ func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.C
 		return nil, errors.New("parameter scriptExecutionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionId}", url.PathEscape(scriptExecutionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +215,34 @@ func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.C
 }
 
 // getExecutionDetailHandleResponse handles the GetExecutionDetail response.
-func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.Response) (ScriptActionsGetExecutionDetailResponse, error) {
-	result := ScriptActionsGetExecutionDetailResponse{RawResponse: resp}
+func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.Response) (ScriptActionsClientGetExecutionDetailResponse, error) {
+	result := ScriptActionsClientGetExecutionDetailResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeScriptActionDetail); err != nil {
-		return ScriptActionsGetExecutionDetailResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptActionsClientGetExecutionDetailResponse{}, err
 	}
 	return result, nil
 }
 
-// getExecutionDetailHandleError handles the GetExecutionDetail error response.
-func (client *ScriptActionsClient) getExecutionDetailHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByCluster - Lists all the persisted script actions for the specified cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScriptActionsClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptActionsListByClusterOptions) *ScriptActionsListByClusterPager {
-	return &ScriptActionsListByClusterPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.ListByCluster
+// method.
+func (client *ScriptActionsClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *ScriptActionsClientListByClusterPager {
+	return &ScriptActionsClientListByClusterPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 		},
-		advancer: func(ctx context.Context, resp ScriptActionsListByClusterResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScriptActionsClientListByClusterResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptActionsList.NextLink)
 		},
 	}
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ScriptActionsListByClusterOptions) (*policy.Request, error) {
+func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptActions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,7 +256,7 @@ func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,23 +268,10 @@ func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Contex
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *ScriptActionsClient) listByClusterHandleResponse(resp *http.Response) (ScriptActionsListByClusterResponse, error) {
-	result := ScriptActionsListByClusterResponse{RawResponse: resp}
+func (client *ScriptActionsClient) listByClusterHandleResponse(resp *http.Response) (ScriptActionsClientListByClusterResponse, error) {
+	result := ScriptActionsClientListByClusterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptActionsList); err != nil {
-		return ScriptActionsListByClusterResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptActionsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// listByClusterHandleError handles the ListByCluster error response.
-func (client *ScriptActionsClient) listByClusterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -934,7 +934,7 @@ type BigDataPoolResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AutoScale - Auto-scaling properties
 	AutoScale *AutoScaleProperties `json:"autoScale,omitempty"`
-	// CreationDate - The time when the Big Data pool was created.
+	// CreationDate - READ-ONLY; The time when the Big Data pool was created.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// AutoPause - Auto-pausing properties
 	AutoPause *AutoPauseProperties `json:"autoPause,omitempty"`
@@ -976,9 +976,6 @@ func (bdprp BigDataPoolResourceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if bdprp.AutoScale != nil {
 		objectMap["autoScale"] = bdprp.AutoScale
-	}
-	if bdprp.CreationDate != nil {
-		objectMap["creationDate"] = bdprp.CreationDate
 	}
 	if bdprp.AutoPause != nil {
 		objectMap["autoPause"] = bdprp.AutoPause
@@ -1624,6 +1621,7 @@ func (csb CustomSetupBase) AsBasicCustomSetupBase() (BasicCustomSetupBase, bool)
 // BasicDatabase class representing a Kusto database.
 type BasicDatabase interface {
 	AsReadWriteDatabase() (*ReadWriteDatabase, bool)
+	AsReadOnlyFollowingDatabase() (*ReadOnlyFollowingDatabase, bool)
 	AsDatabase() (*Database, bool)
 }
 
@@ -1634,7 +1632,7 @@ type Database struct {
 	Location *string `json:"location,omitempty"`
 	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty"`
-	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite'
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1656,6 +1654,10 @@ func unmarshalBasicDatabase(body []byte) (BasicDatabase, error) {
 		var rwd ReadWriteDatabase
 		err := json.Unmarshal(body, &rwd)
 		return rwd, err
+	case string(KindReadOnlyFollowing):
+		var rofd ReadOnlyFollowingDatabase
+		err := json.Unmarshal(body, &rofd)
+		return rofd, err
 	default:
 		var d Database
 		err := json.Unmarshal(body, &d)
@@ -1696,6 +1698,11 @@ func (d Database) MarshalJSON() ([]byte, error) {
 
 // AsReadWriteDatabase is the BasicDatabase implementation for Database.
 func (d Database) AsReadWriteDatabase() (*ReadWriteDatabase, bool) {
+	return nil, false
+}
+
+// AsReadOnlyFollowingDatabase is the BasicDatabase implementation for Database.
+func (d Database) AsReadOnlyFollowingDatabase() (*ReadOnlyFollowingDatabase, bool) {
 	return nil, false
 }
 
@@ -2526,6 +2533,10 @@ func (dwuap DataWarehouseUserActivitiesProperties) MarshalJSON() ([]byte, error)
 type DynamicExecutorAllocation struct {
 	// Enabled - Indicates whether Dynamic Executor Allocation is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
+	// MinExecutors - The minimum number of executors alloted
+	MinExecutors *int32 `json:"minExecutors,omitempty"`
+	// MaxExecutors - The maximum number of executors alloted
+	MaxExecutors *int32 `json:"maxExecutors,omitempty"`
 }
 
 // EncryptionDetails details of the encryption associated with the workspace
@@ -3620,6 +3631,17 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// QueueDelayMs - Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
+	// IsDevopsAuditEnabled - Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor.
+	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+	//
+	// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on the master database should also be created.
+	//
+	// Diagnostic Settings URI format:
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+	//
+	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
 }
 
 // ExtendedSQLPoolBlobAuditingPolicy an extended Sql pool blob auditing policy.
@@ -8790,6 +8812,8 @@ type ManagedIntegrationRuntime struct {
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// ManagedIntegrationRuntimeManagedVirtualNetworkReference - Managed integration runtime managed virtual network.
+	*ManagedIntegrationRuntimeManagedVirtualNetworkReference `json:"managedVirtualNetwork,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -8804,6 +8828,9 @@ func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mir.ManagedIntegrationRuntimeTypeProperties != nil {
 		objectMap["typeProperties"] = mir.ManagedIntegrationRuntimeTypeProperties
+	}
+	if mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference != nil {
+		objectMap["managedVirtualNetwork"] = mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference
 	}
 	if mir.Description != nil {
 		objectMap["description"] = mir.Description
@@ -8864,6 +8891,15 @@ func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 				}
 				mir.ManagedIntegrationRuntimeTypeProperties = &managedIntegrationRuntimeTypeProperties
 			}
+		case "managedVirtualNetwork":
+			if v != nil {
+				var managedIntegrationRuntimeManagedVirtualNetworkReference ManagedIntegrationRuntimeManagedVirtualNetworkReference
+				err = json.Unmarshal(*v, &managedIntegrationRuntimeManagedVirtualNetworkReference)
+				if err != nil {
+					return err
+				}
+				mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference = &managedIntegrationRuntimeManagedVirtualNetworkReference
+			}
 		default:
 			if v != nil {
 				var additionalProperties interface{}
@@ -8916,6 +8952,17 @@ type ManagedIntegrationRuntimeError struct {
 func (mire ManagedIntegrationRuntimeError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ManagedIntegrationRuntimeManagedVirtualNetworkReference managed integration runtime managed virtual
+// network reference.
+type ManagedIntegrationRuntimeManagedVirtualNetworkReference struct {
+	// ReferenceName - The reference name of the managed virtual network.
+	ReferenceName *string `json:"referenceName,omitempty"`
+	// Type - The type of the managed virtual network.
+	Type *string `json:"type,omitempty"`
+	// ID - The id of the managed virtual network.
+	ID *string `json:"id,omitempty"`
 }
 
 // ManagedIntegrationRuntimeNode properties of integration runtime node.
@@ -10735,6 +10782,165 @@ func (qs QueryStatistic) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ReadOnlyFollowingDatabase class representing a read only following database.
+type ReadOnlyFollowingDatabase struct {
+	// ReadOnlyFollowingDatabaseProperties - The database properties.
+	*ReadOnlyFollowingDatabaseProperties `json:"properties,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
+	Kind Kind `json:"kind,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReadOnlyFollowingDatabase.
+func (rofd ReadOnlyFollowingDatabase) MarshalJSON() ([]byte, error) {
+	rofd.Kind = KindReadOnlyFollowing
+	objectMap := make(map[string]interface{})
+	if rofd.ReadOnlyFollowingDatabaseProperties != nil {
+		objectMap["properties"] = rofd.ReadOnlyFollowingDatabaseProperties
+	}
+	if rofd.Location != nil {
+		objectMap["location"] = rofd.Location
+	}
+	if rofd.Kind != "" {
+		objectMap["kind"] = rofd.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsReadWriteDatabase is the BasicDatabase implementation for ReadOnlyFollowingDatabase.
+func (rofd ReadOnlyFollowingDatabase) AsReadWriteDatabase() (*ReadWriteDatabase, bool) {
+	return nil, false
+}
+
+// AsReadOnlyFollowingDatabase is the BasicDatabase implementation for ReadOnlyFollowingDatabase.
+func (rofd ReadOnlyFollowingDatabase) AsReadOnlyFollowingDatabase() (*ReadOnlyFollowingDatabase, bool) {
+	return &rofd, true
+}
+
+// AsDatabase is the BasicDatabase implementation for ReadOnlyFollowingDatabase.
+func (rofd ReadOnlyFollowingDatabase) AsDatabase() (*Database, bool) {
+	return nil, false
+}
+
+// AsBasicDatabase is the BasicDatabase implementation for ReadOnlyFollowingDatabase.
+func (rofd ReadOnlyFollowingDatabase) AsBasicDatabase() (BasicDatabase, bool) {
+	return &rofd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReadOnlyFollowingDatabase struct.
+func (rofd *ReadOnlyFollowingDatabase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var readOnlyFollowingDatabaseProperties ReadOnlyFollowingDatabaseProperties
+				err = json.Unmarshal(*v, &readOnlyFollowingDatabaseProperties)
+				if err != nil {
+					return err
+				}
+				rofd.ReadOnlyFollowingDatabaseProperties = &readOnlyFollowingDatabaseProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				rofd.Location = &location
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				rofd.SystemData = &systemData
+			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				rofd.Kind = kind
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rofd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rofd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rofd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReadOnlyFollowingDatabaseProperties class representing the Kusto database properties.
+type ReadOnlyFollowingDatabaseProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ResourceProvisioningStateRunning', 'ResourceProvisioningStateCreating', 'ResourceProvisioningStateDeleting', 'ResourceProvisioningStateSucceeded', 'ResourceProvisioningStateFailed', 'ResourceProvisioningStateMoving', 'ResourceProvisioningStateCanceled'
+	ProvisioningState ResourceProvisioningState `json:"provisioningState,omitempty"`
+	// SoftDeletePeriod - READ-ONLY; The time the data should be kept before it stops being accessible to queries in TimeSpan.
+	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
+	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
+	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
+	// Statistics - READ-ONLY; The statistics of the database.
+	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
+	// LeaderClusterResourceID - READ-ONLY; The name of the leader cluster
+	LeaderClusterResourceID *string `json:"leaderClusterResourceId,omitempty"`
+	// AttachedDatabaseConfigurationName - READ-ONLY; The name of the attached database configuration cluster
+	AttachedDatabaseConfigurationName *string `json:"attachedDatabaseConfigurationName,omitempty"`
+	// PrincipalsModificationKind - READ-ONLY; The principals modification kind of the database. Possible values include: 'PrincipalsModificationKindUnion', 'PrincipalsModificationKindReplace', 'PrincipalsModificationKindNone'
+	PrincipalsModificationKind PrincipalsModificationKind `json:"principalsModificationKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReadOnlyFollowingDatabaseProperties.
+func (rofdp ReadOnlyFollowingDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rofdp.HotCachePeriod != nil {
+		objectMap["hotCachePeriod"] = rofdp.HotCachePeriod
+	}
+	return json.Marshal(objectMap)
+}
+
 // ReadWriteDatabase class representing a read write database.
 type ReadWriteDatabase struct {
 	// ReadWriteDatabaseProperties - The database properties.
@@ -10743,7 +10949,7 @@ type ReadWriteDatabase struct {
 	Location *string `json:"location,omitempty"`
 	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty"`
-	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite'
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -10772,6 +10978,11 @@ func (rwd ReadWriteDatabase) MarshalJSON() ([]byte, error) {
 // AsReadWriteDatabase is the BasicDatabase implementation for ReadWriteDatabase.
 func (rwd ReadWriteDatabase) AsReadWriteDatabase() (*ReadWriteDatabase, bool) {
 	return &rwd, true
+}
+
+// AsReadOnlyFollowingDatabase is the BasicDatabase implementation for ReadWriteDatabase.
+func (rwd ReadWriteDatabase) AsReadOnlyFollowingDatabase() (*ReadOnlyFollowingDatabase, bool) {
+	return nil, false
 }
 
 // AsDatabase is the BasicDatabase implementation for ReadWriteDatabase.
@@ -12409,6 +12620,10 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	LatestVersion *string `json:"latestVersion,omitempty"`
 	// AutoUpdateETA - READ-ONLY; The estimated time when the self-hosted integration runtime will be updated.
 	AutoUpdateETA *date.Time `json:"autoUpdateETA,omitempty"`
+	// ServiceRegion - The service region of the integration runtime
+	ServiceRegion *string `json:"serviceRegion,omitempty"`
+	// NewerVersions - The newer versions on download center.
+	NewerVersions *[]string `json:"newerVersions,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
@@ -12419,6 +12634,12 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	}
 	if shirstp.Links != nil {
 		objectMap["links"] = shirstp.Links
+	}
+	if shirstp.ServiceRegion != nil {
+		objectMap["serviceRegion"] = shirstp.ServiceRegion
+	}
+	if shirstp.NewerVersions != nil {
+		objectMap["newerVersions"] = shirstp.NewerVersions
 	}
 	return json.Marshal(objectMap)
 }
@@ -13166,6 +13387,17 @@ type ServerBlobAuditingPolicyProperties struct {
 	// QueueDelayMs - Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
+	// IsDevopsAuditEnabled - Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor.
+	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+	//
+	// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on the master database should also be created.
+	//
+	// Diagnostic Settings URI format:
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+	//
+	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
 }
 
 // ServerSecurityAlertPolicy workspace managed Sql server security alert policy.
@@ -15615,7 +15847,7 @@ type SQLPoolResourceProperties struct {
 	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
 	// ProvisioningState - Resource state
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Status - Resource status
+	// Status - READ-ONLY; Resource status
 	Status *string `json:"status,omitempty"`
 	// RestorePointInTime - Snapshot time to restore
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
@@ -15625,12 +15857,45 @@ type SQLPoolResourceProperties struct {
 	// Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
 	// Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified. Possible values include: 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeRecovery', 'CreateModeRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// CreationDate - Date the SQL pool was created
+	// CreationDate - READ-ONLY; Date the SQL pool was created
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'StorageAccountTypeGRS', 'StorageAccountTypeLRS', 'StorageAccountTypeZRS'
+	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'StorageAccountTypeGRS', 'StorageAccountTypeLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	// SourceDatabaseDeletionDate - Specifies the time that the sql pool was deleted
 	SourceDatabaseDeletionDate *date.Time `json:"sourceDatabaseDeletionDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLPoolResourceProperties.
+func (sprp SQLPoolResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sprp.MaxSizeBytes != nil {
+		objectMap["maxSizeBytes"] = sprp.MaxSizeBytes
+	}
+	if sprp.Collation != nil {
+		objectMap["collation"] = sprp.Collation
+	}
+	if sprp.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = sprp.SourceDatabaseID
+	}
+	if sprp.RecoverableDatabaseID != nil {
+		objectMap["recoverableDatabaseId"] = sprp.RecoverableDatabaseID
+	}
+	if sprp.ProvisioningState != nil {
+		objectMap["provisioningState"] = sprp.ProvisioningState
+	}
+	if sprp.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = sprp.RestorePointInTime
+	}
+	if sprp.CreateMode != "" {
+		objectMap["createMode"] = sprp.CreateMode
+	}
+	if sprp.StorageAccountType != "" {
+		objectMap["storageAccountType"] = sprp.StorageAccountType
+	}
+	if sprp.SourceDatabaseDeletionDate != nil {
+		objectMap["sourceDatabaseDeletionDate"] = sprp.SourceDatabaseDeletionDate
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLPoolRestorePointsCreateFuture an abstraction for monitoring and retrieving the results of a
@@ -19660,6 +19925,8 @@ type WorkspaceProperties struct {
 	Settings map[string]interface{} `json:"settings"`
 	// AzureADOnlyAuthentication - Enable or Disable AzureADOnlyAuthentication on All Workspace subresource
 	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
+	// TrustedServiceBypassEnabled - Is trustedServiceBypassEnabled for the workspace
+	TrustedServiceBypassEnabled *bool `json:"trustedServiceBypassEnabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -19709,6 +19976,9 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.AzureADOnlyAuthentication != nil {
 		objectMap["azureADOnlyAuthentication"] = wp.AzureADOnlyAuthentication
+	}
+	if wp.TrustedServiceBypassEnabled != nil {
+		objectMap["trustedServiceBypassEnabled"] = wp.TrustedServiceBypassEnabled
 	}
 	return json.Marshal(objectMap)
 }

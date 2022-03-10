@@ -36,7 +36,7 @@ func ExampleDataSetsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataSetClassification.GetDataSet().ID: %s\n", *res.GetDataSet().ID)
+	log.Printf("Response result: %#v\n", res.DataSetsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSets_Create.json
@@ -53,9 +53,7 @@ func ExampleDataSetsClient_Create() {
 		"<share-name>",
 		"<data-set-name>",
 		&armdatashare.BlobDataSet{
-			DataSet: armdatashare.DataSet{
-				Kind: armdatashare.DataSetKindBlob.ToPtr(),
-			},
+			Kind: armdatashare.DataSetKind("Blob").ToPtr(),
 			Properties: &armdatashare.BlobProperties{
 				ContainerName:      to.StringPtr("<container-name>"),
 				FilePath:           to.StringPtr("<file-path>"),
@@ -68,7 +66,7 @@ func ExampleDataSetsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataSetClassification.GetDataSet().ID: %s\n", *res.GetDataSet().ID)
+	log.Printf("Response result: %#v\n", res.DataSetsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSets_Delete.json
@@ -105,16 +103,20 @@ func ExampleDataSetsClient_ListByShare() {
 	pager := client.ListByShare("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
-		&armdatashare.DataSetsListByShareOptions{SkipToken: nil,
+		&armdatashare.DataSetsClientListByShareOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataSetClassification.GetDataSet().ID: %s\n", *v.GetDataSet().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

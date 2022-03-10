@@ -16,7 +16,9 @@ import (
 
 // App - The IoT Central application.
 type App struct {
-	Resource
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; A valid instance SKU.
 	SKU *AppSKUInfo `json:"sku,omitempty"`
 
@@ -25,15 +27,31 @@ type App struct {
 
 	// The common properties of an IoT Central application.
 	Properties *AppProperties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The ARM resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ARM resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type App.
 func (a App) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
 	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -99,8 +117,8 @@ type AppProperties struct {
 	// The subdomain of the application.
 	Subdomain *string `json:"subdomain,omitempty"`
 
-	// The ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified,
-	// defaults to a blank blueprint and allows the
+	// The ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application.
+	// Optional; if not specified, defaults to a blank blueprint and allows the
 	// application to be defined from scratch.
 	Template *string `json:"template,omitempty"`
 
@@ -184,63 +202,56 @@ func (a AppTemplatesResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AppsBeginCreateOrUpdateOptions contains the optional parameters for the Apps.BeginCreateOrUpdate method.
-type AppsBeginCreateOrUpdateOptions struct {
+// AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate method.
+type AppsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsBeginDeleteOptions contains the optional parameters for the Apps.BeginDelete method.
-type AppsBeginDeleteOptions struct {
+// AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
+type AppsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsBeginUpdateOptions contains the optional parameters for the Apps.BeginUpdate method.
-type AppsBeginUpdateOptions struct {
+// AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
+type AppsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsCheckNameAvailabilityOptions contains the optional parameters for the Apps.CheckNameAvailability method.
-type AppsCheckNameAvailabilityOptions struct {
+// AppsClientCheckNameAvailabilityOptions contains the optional parameters for the AppsClient.CheckNameAvailability method.
+type AppsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsCheckSubdomainAvailabilityOptions contains the optional parameters for the Apps.CheckSubdomainAvailability method.
-type AppsCheckSubdomainAvailabilityOptions struct {
+// AppsClientCheckSubdomainAvailabilityOptions contains the optional parameters for the AppsClient.CheckSubdomainAvailability
+// method.
+type AppsClientCheckSubdomainAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsGetOptions contains the optional parameters for the Apps.Get method.
-type AppsGetOptions struct {
+// AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
+type AppsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsListByResourceGroupOptions contains the optional parameters for the Apps.ListByResourceGroup method.
-type AppsListByResourceGroupOptions struct {
+// AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.ListByResourceGroup method.
+type AppsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsListBySubscriptionOptions contains the optional parameters for the Apps.ListBySubscription method.
-type AppsListBySubscriptionOptions struct {
+// AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.ListBySubscription method.
+type AppsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsListTemplatesOptions contains the optional parameters for the Apps.ListTemplates method.
-type AppsListTemplatesOptions struct {
+// AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.ListTemplates method.
+type AppsClientListTemplatesOptions struct {
 	// placeholder for future optional parameters
 }
 
 // CloudError - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Error response body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - Details of error response.
@@ -307,7 +318,8 @@ type OperationInputs struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// OperationListResult - A list of IoT Central operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - A list of IoT Central operations. It contains a list of operations and a URL link to get the next
+// set of results.
 type OperationListResult struct {
 	// The link used to get the next page of IoT Central description objects.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -324,8 +336,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -350,16 +362,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
@@ -367,7 +375,8 @@ type SystemAssignedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (either system assigned, or none).
 	Type *SystemAssignedServiceIdentityType `json:"type,omitempty"`
 
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.

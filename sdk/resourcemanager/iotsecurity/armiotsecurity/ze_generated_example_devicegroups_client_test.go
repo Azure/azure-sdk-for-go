@@ -26,12 +26,16 @@ func ExampleDeviceGroupsClient_List() {
 	client := armiotsecurity.NewDeviceGroupsClient("<subscription-id>",
 		"<iot-defender-location>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeviceGroupModel.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,7 +55,7 @@ func ExampleDeviceGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceGroupModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DeviceGroupsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DeviceGroups/Put.json
@@ -72,7 +76,7 @@ func ExampleDeviceGroupsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceGroupModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DeviceGroupsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DeviceGroups/Delete.json

@@ -1,6 +1,35 @@
 # Release History
 
-## 0.21.0 (Unreleased)
+## 0.22.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.22.0 (2022-03-03)
+
+### Features Added
+* Added header `WWW-Authenticate` to the default allow-list of headers for logging.
+* Added a pipeline policy that enables the retrieval of HTTP responses from API calls.
+  * Added `runtime.WithCaptureResponse` to enable the policy at the API level (off by default).
+
+### Breaking Changes
+* Moved `WithHTTPHeader` and `WithRetryOptions` from the `policy` package to the `runtime` package.
+
+## 0.21.1 (2022-02-04)
+
+### Bugs Fixed
+* Restore response body after reading in `Poller.FinalResponse()`. (#16911)
+* Fixed bug in `NullValue` that could lead to incorrect comparisons for empty maps/slices (#16969)
+
+### Other Changes
+* `BearerTokenPolicy` is more resilient to transient authentication failures. (#16789)
+
+## 0.21.0 (2022-01-11)
 
 ### Features Added
 * Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
@@ -13,10 +42,6 @@
 * Removed `azcore.HTTPResponse` interface type
 * `arm.NewPoller()` and `runtime.NewPoller()` no longer require an `eu` parameter
 * `runtime.NewResponseError()` no longer requires an `error` parameter
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.20.0 (2021-10-22)
 

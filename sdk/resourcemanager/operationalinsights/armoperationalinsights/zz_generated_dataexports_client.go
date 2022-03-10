@@ -11,7 +11,6 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DataExportsClient contains the methods for the DataExports group.
 // Don't use this type directly, use NewDataExportsClient() instead.
 type DataExportsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataExportsClient creates a new instance of DataExportsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataExportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataExportsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataExportsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataExportsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a data export.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport, options *DataExportsCreateOrUpdateOptions) (DataExportsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataExportName - The data export rule name.
+// parameters - The parameters required to create or update a data export.
+// options - DataExportsClientCreateOrUpdateOptions contains the optional parameters for the DataExportsClient.CreateOrUpdate
+// method.
+func (client *DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport, options *DataExportsClientCreateOrUpdateOptions) (DataExportsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, parameters, options)
 	if err != nil {
-		return DataExportsCreateOrUpdateResponse{}, err
+		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataExportsCreateOrUpdateResponse{}, err
+		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataExportsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DataExportsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport, options *DataExportsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport, options *DataExportsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataExportsClient) createOrUpdateHandleResponse(resp *http.Response) (DataExportsCreateOrUpdateResponse, error) {
-	result := DataExportsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DataExportsClient) createOrUpdateHandleResponse(resp *http.Response) (DataExportsClientCreateOrUpdateResponse, error) {
+	result := DataExportsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExport); err != nil {
-		return DataExportsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataExportsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified data export in a given workspace..
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsDeleteOptions) (DataExportsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataExportName - The data export rule name.
+// options - DataExportsClientDeleteOptions contains the optional parameters for the DataExportsClient.Delete method.
+func (client *DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientDeleteOptions) (DataExportsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, options)
 	if err != nil {
-		return DataExportsDeleteResponse{}, err
+		return DataExportsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataExportsDeleteResponse{}, err
+		return DataExportsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return DataExportsDeleteResponse{}, client.deleteHandleError(resp)
+		return DataExportsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataExportsDeleteResponse{RawResponse: resp}, nil
+	return DataExportsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsDeleteOptions) (*policy.Request, error) {
+func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +151,7 @@ func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataExportsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a data export instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsGetOptions) (DataExportsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataExportName - The data export rule name.
+// options - DataExportsClientGetOptions contains the optional parameters for the DataExportsClient.Get method.
+func (client *DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientGetOptions) (DataExportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, options)
 	if err != nil {
-		return DataExportsGetResponse{}, err
+		return DataExportsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataExportsGetResponse{}, err
+		return DataExportsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataExportsGetResponse{}, client.getHandleError(resp)
+		return DataExportsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsGetOptions) (*policy.Request, error) {
+func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +202,7 @@ func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,46 +214,37 @@ func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExportsGetResponse, error) {
-	result := DataExportsGetResponse{RawResponse: resp}
+func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExportsClientGetResponse, error) {
+	result := DataExportsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExport); err != nil {
-		return DataExportsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataExportsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataExportsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - Lists the data export instances within a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataExportsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *DataExportsListByWorkspaceOptions) (DataExportsListByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace
+// method.
+func (client *DataExportsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) (DataExportsClientListByWorkspaceResponse, error) {
 	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return DataExportsListByWorkspaceResponse{}, err
+		return DataExportsClientListByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataExportsListByWorkspaceResponse{}, err
+		return DataExportsClientListByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataExportsListByWorkspaceResponse{}, client.listByWorkspaceHandleError(resp)
+		return DataExportsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByWorkspaceHandleResponse(resp)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DataExportsListByWorkspaceOptions) (*policy.Request, error) {
+func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -272,7 +258,7 @@ func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,23 +270,10 @@ func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Contex
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *DataExportsClient) listByWorkspaceHandleResponse(resp *http.Response) (DataExportsListByWorkspaceResponse, error) {
-	result := DataExportsListByWorkspaceResponse{RawResponse: resp}
+func (client *DataExportsClient) listByWorkspaceHandleResponse(resp *http.Response) (DataExportsClientListByWorkspaceResponse, error) {
+	result := DataExportsClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExportListResult); err != nil {
-		return DataExportsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return DataExportsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *DataExportsClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

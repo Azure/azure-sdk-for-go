@@ -9,9 +9,30 @@
 package armrecoveryservicesbackup
 
 const (
-	module  = "armrecoveryservicesbackup"
-	version = "v0.1.0"
+	moduleName    = "armrecoveryservicesbackup"
+	moduleVersion = "v0.3.1"
 )
+
+// AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
+type AcquireStorageAccountLock string
+
+const (
+	AcquireStorageAccountLockAcquire    AcquireStorageAccountLock = "Acquire"
+	AcquireStorageAccountLockNotAcquire AcquireStorageAccountLock = "NotAcquire"
+)
+
+// PossibleAcquireStorageAccountLockValues returns the possible values for the AcquireStorageAccountLock const type.
+func PossibleAcquireStorageAccountLockValues() []AcquireStorageAccountLock {
+	return []AcquireStorageAccountLock{
+		AcquireStorageAccountLockAcquire,
+		AcquireStorageAccountLockNotAcquire,
+	}
+}
+
+// ToPtr returns a *AcquireStorageAccountLock pointing to the current value.
+func (c AcquireStorageAccountLock) ToPtr() *AcquireStorageAccountLock {
+	return &c
+}
 
 // AzureFileShareType - File Share type XSync or XSMB.
 type AzureFileShareType string
@@ -174,21 +195,24 @@ func (c BackupType) ToPtr() *BackupType {
 type ContainerType string
 
 const (
-	ContainerTypeAzureBackupServerContainer ContainerType = "AzureBackupServerContainer"
-	ContainerTypeAzureSQLContainer          ContainerType = "AzureSqlContainer"
-	ContainerTypeCluster                    ContainerType = "Cluster"
-	ContainerTypeDPMContainer               ContainerType = "DPMContainer"
-	ContainerTypeGenericContainer           ContainerType = "GenericContainer"
-	ContainerTypeIaasVMContainer            ContainerType = "IaasVMContainer"
-	ContainerTypeIaasVMServiceContainer     ContainerType = "IaasVMServiceContainer"
-	ContainerTypeInvalid                    ContainerType = "Invalid"
-	ContainerTypeMABContainer               ContainerType = "MABContainer"
-	ContainerTypeSQLAGWorkLoadContainer     ContainerType = "SQLAGWorkLoadContainer"
-	ContainerTypeStorageContainer           ContainerType = "StorageContainer"
-	ContainerTypeUnknown                    ContainerType = "Unknown"
-	ContainerTypeVCenter                    ContainerType = "VCenter"
-	ContainerTypeVMAppContainer             ContainerType = "VMAppContainer"
-	ContainerTypeWindows                    ContainerType = "Windows"
+	ContainerTypeAzureBackupServerContainer             ContainerType = "AzureBackupServerContainer"
+	ContainerTypeAzureSQLContainer                      ContainerType = "AzureSqlContainer"
+	ContainerTypeAzureWorkloadContainer                 ContainerType = "AzureWorkloadContainer"
+	ContainerTypeCluster                                ContainerType = "Cluster"
+	ContainerTypeDPMContainer                           ContainerType = "DPMContainer"
+	ContainerTypeGenericContainer                       ContainerType = "GenericContainer"
+	ContainerTypeIaasVMContainer                        ContainerType = "IaasVMContainer"
+	ContainerTypeIaasVMServiceContainer                 ContainerType = "IaasVMServiceContainer"
+	ContainerTypeInvalid                                ContainerType = "Invalid"
+	ContainerTypeMABContainer                           ContainerType = "MABContainer"
+	ContainerTypeMicrosoftClassicComputeVirtualMachines ContainerType = "Microsoft.ClassicCompute/virtualMachines"
+	ContainerTypeMicrosoftComputeVirtualMachines        ContainerType = "Microsoft.Compute/virtualMachines"
+	ContainerTypeSQLAGWorkLoadContainer                 ContainerType = "SQLAGWorkLoadContainer"
+	ContainerTypeStorageContainer                       ContainerType = "StorageContainer"
+	ContainerTypeUnknown                                ContainerType = "Unknown"
+	ContainerTypeVCenter                                ContainerType = "VCenter"
+	ContainerTypeVMAppContainer                         ContainerType = "VMAppContainer"
+	ContainerTypeWindows                                ContainerType = "Windows"
 )
 
 // PossibleContainerTypeValues returns the possible values for the ContainerType const type.
@@ -196,6 +220,7 @@ func PossibleContainerTypeValues() []ContainerType {
 	return []ContainerType{
 		ContainerTypeAzureBackupServerContainer,
 		ContainerTypeAzureSQLContainer,
+		ContainerTypeAzureWorkloadContainer,
 		ContainerTypeCluster,
 		ContainerTypeDPMContainer,
 		ContainerTypeGenericContainer,
@@ -203,6 +228,8 @@ func PossibleContainerTypeValues() []ContainerType {
 		ContainerTypeIaasVMServiceContainer,
 		ContainerTypeInvalid,
 		ContainerTypeMABContainer,
+		ContainerTypeMicrosoftClassicComputeVirtualMachines,
+		ContainerTypeMicrosoftComputeVirtualMachines,
 		ContainerTypeSQLAGWorkLoadContainer,
 		ContainerTypeStorageContainer,
 		ContainerTypeUnknown,
@@ -364,6 +391,29 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 
 // ToPtr returns a *DayOfWeek pointing to the current value.
 func (c DayOfWeek) ToPtr() *DayOfWeek {
+	return &c
+}
+
+// DedupState - Vault Dedup state
+type DedupState string
+
+const (
+	DedupStateDisabled DedupState = "Disabled"
+	DedupStateEnabled  DedupState = "Enabled"
+	DedupStateInvalid  DedupState = "Invalid"
+)
+
+// PossibleDedupStateValues returns the possible values for the DedupState const type.
+func PossibleDedupStateValues() []DedupState {
+	return []DedupState{
+		DedupStateDisabled,
+		DedupStateEnabled,
+		DedupStateInvalid,
+	}
+}
+
+// ToPtr returns a *DedupState pointing to the current value.
+func (c DedupState) ToPtr() *DedupState {
 	return &c
 }
 
@@ -592,6 +642,28 @@ func PossibleHealthStatusValues() []HealthStatus {
 
 // ToPtr returns a *HealthStatus pointing to the current value.
 func (c HealthStatus) ToPtr() *HealthStatus {
+	return &c
+}
+
+type IAASVMPolicyType string
+
+const (
+	IAASVMPolicyTypeInvalid IAASVMPolicyType = "Invalid"
+	IAASVMPolicyTypeV1      IAASVMPolicyType = "V1"
+	IAASVMPolicyTypeV2      IAASVMPolicyType = "V2"
+)
+
+// PossibleIAASVMPolicyTypeValues returns the possible values for the IAASVMPolicyType const type.
+func PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType {
+	return []IAASVMPolicyType{
+		IAASVMPolicyTypeInvalid,
+		IAASVMPolicyTypeV1,
+		IAASVMPolicyTypeV2,
+	}
+}
+
+// ToPtr returns a *IAASVMPolicyType pointing to the current value.
+func (c IAASVMPolicyType) ToPtr() *IAASVMPolicyType {
 	return &c
 }
 
@@ -1084,6 +1156,35 @@ func (c ProtectedItemState) ToPtr() *ProtectedItemState {
 	return &c
 }
 
+// ProtectionIntentItemType - backup protectionIntent type.
+type ProtectionIntentItemType string
+
+const (
+	ProtectionIntentItemTypeAzureResourceItem                          ProtectionIntentItemType = "AzureResourceItem"
+	ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent          ProtectionIntentItemType = "AzureWorkloadAutoProtectionIntent"
+	ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadContainerAutoProtectionIntent"
+	ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent       ProtectionIntentItemType = "AzureWorkloadSQLAutoProtectionIntent"
+	ProtectionIntentItemTypeInvalid                                    ProtectionIntentItemType = "Invalid"
+	ProtectionIntentItemTypeRecoveryServiceVaultItem                   ProtectionIntentItemType = "RecoveryServiceVaultItem"
+)
+
+// PossibleProtectionIntentItemTypeValues returns the possible values for the ProtectionIntentItemType const type.
+func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
+	return []ProtectionIntentItemType{
+		ProtectionIntentItemTypeAzureResourceItem,
+		ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent,
+		ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent,
+		ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent,
+		ProtectionIntentItemTypeInvalid,
+		ProtectionIntentItemTypeRecoveryServiceVaultItem,
+	}
+}
+
+// ToPtr returns a *ProtectionIntentItemType pointing to the current value.
+func (c ProtectionIntentItemType) ToPtr() *ProtectionIntentItemType {
+	return &c
+}
+
 // ProtectionState - Backup state of this backup item.
 type ProtectionState string
 
@@ -1476,6 +1577,7 @@ type ScheduleRunType string
 
 const (
 	ScheduleRunTypeDaily   ScheduleRunType = "Daily"
+	ScheduleRunTypeHourly  ScheduleRunType = "Hourly"
 	ScheduleRunTypeInvalid ScheduleRunType = "Invalid"
 	ScheduleRunTypeWeekly  ScheduleRunType = "Weekly"
 )
@@ -1484,6 +1586,7 @@ const (
 func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	return []ScheduleRunType{
 		ScheduleRunTypeDaily,
+		ScheduleRunTypeHourly,
 		ScheduleRunTypeInvalid,
 		ScheduleRunTypeWeekly,
 	}
@@ -1544,7 +1647,8 @@ func (c StorageType) ToPtr() *StorageType {
 	return &c
 }
 
-// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
+// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always
+// Locked.
 type StorageTypeState string
 
 const (
@@ -1772,5 +1876,28 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 
 // ToPtr returns a *WorkloadType pointing to the current value.
 func (c WorkloadType) ToPtr() *WorkloadType {
+	return &c
+}
+
+// XcoolState - Vault x-cool state
+type XcoolState string
+
+const (
+	XcoolStateDisabled XcoolState = "Disabled"
+	XcoolStateEnabled  XcoolState = "Enabled"
+	XcoolStateInvalid  XcoolState = "Invalid"
+)
+
+// PossibleXcoolStateValues returns the possible values for the XcoolState const type.
+func PossibleXcoolStateValues() []XcoolState {
+	return []XcoolState{
+		XcoolStateDisabled,
+		XcoolStateEnabled,
+		XcoolStateInvalid,
+	}
+}
+
+// ToPtr returns a *XcoolState pointing to the current value.
+func (c XcoolState) ToPtr() *XcoolState {
 	return &c
 }

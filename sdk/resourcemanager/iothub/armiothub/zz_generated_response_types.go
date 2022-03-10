@@ -15,76 +15,76 @@ import (
 	"time"
 )
 
-// CertificatesCreateOrUpdateResponse contains the response from method Certificates.CreateOrUpdate.
-type CertificatesCreateOrUpdateResponse struct {
-	CertificatesCreateOrUpdateResult
+// CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
+type CertificatesClientCreateOrUpdateResponse struct {
+	CertificatesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesCreateOrUpdateResult contains the result from method Certificates.CreateOrUpdate.
-type CertificatesCreateOrUpdateResult struct {
+// CertificatesClientCreateOrUpdateResult contains the result from method CertificatesClient.CreateOrUpdate.
+type CertificatesClientCreateOrUpdateResult struct {
 	CertificateDescription
 }
 
-// CertificatesDeleteResponse contains the response from method Certificates.Delete.
-type CertificatesDeleteResponse struct {
+// CertificatesClientDeleteResponse contains the response from method CertificatesClient.Delete.
+type CertificatesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesGenerateVerificationCodeResponse contains the response from method Certificates.GenerateVerificationCode.
-type CertificatesGenerateVerificationCodeResponse struct {
-	CertificatesGenerateVerificationCodeResult
+// CertificatesClientGenerateVerificationCodeResponse contains the response from method CertificatesClient.GenerateVerificationCode.
+type CertificatesClientGenerateVerificationCodeResponse struct {
+	CertificatesClientGenerateVerificationCodeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesGenerateVerificationCodeResult contains the result from method Certificates.GenerateVerificationCode.
-type CertificatesGenerateVerificationCodeResult struct {
+// CertificatesClientGenerateVerificationCodeResult contains the result from method CertificatesClient.GenerateVerificationCode.
+type CertificatesClientGenerateVerificationCodeResult struct {
 	CertificateWithNonceDescription
 }
 
-// CertificatesGetResponse contains the response from method Certificates.Get.
-type CertificatesGetResponse struct {
-	CertificatesGetResult
+// CertificatesClientGetResponse contains the response from method CertificatesClient.Get.
+type CertificatesClientGetResponse struct {
+	CertificatesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesGetResult contains the result from method Certificates.Get.
-type CertificatesGetResult struct {
+// CertificatesClientGetResult contains the result from method CertificatesClient.Get.
+type CertificatesClientGetResult struct {
 	CertificateDescription
 }
 
-// CertificatesListByIotHubResponse contains the response from method Certificates.ListByIotHub.
-type CertificatesListByIotHubResponse struct {
-	CertificatesListByIotHubResult
+// CertificatesClientListByIotHubResponse contains the response from method CertificatesClient.ListByIotHub.
+type CertificatesClientListByIotHubResponse struct {
+	CertificatesClientListByIotHubResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesListByIotHubResult contains the result from method Certificates.ListByIotHub.
-type CertificatesListByIotHubResult struct {
+// CertificatesClientListByIotHubResult contains the result from method CertificatesClient.ListByIotHub.
+type CertificatesClientListByIotHubResult struct {
 	CertificateListDescription
 }
 
-// CertificatesVerifyResponse contains the response from method Certificates.Verify.
-type CertificatesVerifyResponse struct {
-	CertificatesVerifyResult
+// CertificatesClientVerifyResponse contains the response from method CertificatesClient.Verify.
+type CertificatesClientVerifyResponse struct {
+	CertificatesClientVerifyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesVerifyResult contains the result from method Certificates.Verify.
-type CertificatesVerifyResult struct {
+// CertificatesClientVerifyResult contains the result from method CertificatesClient.Verify.
+type CertificatesClientVerifyResult struct {
 	CertificateDescription
 }
 
-// IotHubManualFailoverPollerResponse contains the response from method IotHub.ManualFailover.
-type IotHubManualFailoverPollerResponse struct {
+// ClientManualFailoverPollerResponse contains the response from method Client.ManualFailover.
+type ClientManualFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotHubManualFailoverPoller
+	Poller *ClientManualFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -93,8 +93,8 @@ type IotHubManualFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotHubManualFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubManualFailoverResponse, error) {
-	respType := IotHubManualFailoverResponse{}
+func (l ClientManualFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientManualFailoverResponse, error) {
+	respType := ClientManualFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -103,13 +103,13 @@ func (l IotHubManualFailoverPollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a IotHubManualFailoverPollerResponse from the provided client and resume token.
-func (l *IotHubManualFailoverPollerResponse) Resume(ctx context.Context, client *IotHubClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotHubClient.ManualFailover", token, client.pl, client.manualFailoverHandleError)
+// Resume rehydrates a ClientManualFailoverPollerResponse from the provided client and resume token.
+func (l *ClientManualFailoverPollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.ManualFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotHubManualFailoverPoller{
+	poller := &ClientManualFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -121,418 +121,28 @@ func (l *IotHubManualFailoverPollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// IotHubManualFailoverResponse contains the response from method IotHub.ManualFailover.
-type IotHubManualFailoverResponse struct {
+// ClientManualFailoverResponse contains the response from method Client.ManualFailover.
+type ClientManualFailoverResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotHubResourceCheckNameAvailabilityResponse contains the response from method IotHubResource.CheckNameAvailability.
-type IotHubResourceCheckNameAvailabilityResponse struct {
-	IotHubResourceCheckNameAvailabilityResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotHubResourceCheckNameAvailabilityResult contains the result from method IotHubResource.CheckNameAvailability.
-type IotHubResourceCheckNameAvailabilityResult struct {
-	IotHubNameAvailabilityInfo
-}
-
-// IotHubResourceCreateEventHubConsumerGroupResponse contains the response from method IotHubResource.CreateEventHubConsumerGroup.
-type IotHubResourceCreateEventHubConsumerGroupResponse struct {
-	IotHubResourceCreateEventHubConsumerGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceCreateEventHubConsumerGroupResult contains the result from method IotHubResource.CreateEventHubConsumerGroup.
-type IotHubResourceCreateEventHubConsumerGroupResult struct {
-	EventHubConsumerGroupInfo
-}
-
-// IotHubResourceCreateOrUpdatePollerResponse contains the response from method IotHubResource.CreateOrUpdate.
-type IotHubResourceCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IotHubResourceCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotHubResourceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceCreateOrUpdateResponse, error) {
-	respType := IotHubResourceCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IotHubResourceCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *IotHubResourceCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *IotHubResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotHubResourceClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IotHubResourceCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IotHubResourceCreateOrUpdateResponse contains the response from method IotHubResource.CreateOrUpdate.
-type IotHubResourceCreateOrUpdateResponse struct {
-	IotHubResourceCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceCreateOrUpdateResult contains the result from method IotHubResource.CreateOrUpdate.
-type IotHubResourceCreateOrUpdateResult struct {
-	IotHubDescription
-}
-
-// IotHubResourceDeleteEventHubConsumerGroupResponse contains the response from method IotHubResource.DeleteEventHubConsumerGroup.
-type IotHubResourceDeleteEventHubConsumerGroupResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceDeletePollerResponse contains the response from method IotHubResource.Delete.
-type IotHubResourceDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IotHubResourceDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotHubResourceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceDeleteResponse, error) {
-	respType := IotHubResourceDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IotHubResourceDeletePollerResponse from the provided client and resume token.
-func (l *IotHubResourceDeletePollerResponse) Resume(ctx context.Context, client *IotHubResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotHubResourceClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IotHubResourceDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IotHubResourceDeleteResponse contains the response from method IotHubResource.Delete.
-type IotHubResourceDeleteResponse struct {
-	IotHubResourceDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceDeleteResult contains the result from method IotHubResource.Delete.
-type IotHubResourceDeleteResult struct {
-	IotHubDescription
-}
-
-// IotHubResourceExportDevicesResponse contains the response from method IotHubResource.ExportDevices.
-type IotHubResourceExportDevicesResponse struct {
-	IotHubResourceExportDevicesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceExportDevicesResult contains the result from method IotHubResource.ExportDevices.
-type IotHubResourceExportDevicesResult struct {
-	JobResponse
-}
-
-// IotHubResourceGetEndpointHealthResponse contains the response from method IotHubResource.GetEndpointHealth.
-type IotHubResourceGetEndpointHealthResponse struct {
-	IotHubResourceGetEndpointHealthResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetEndpointHealthResult contains the result from method IotHubResource.GetEndpointHealth.
-type IotHubResourceGetEndpointHealthResult struct {
-	EndpointHealthDataListResult
-}
-
-// IotHubResourceGetEventHubConsumerGroupResponse contains the response from method IotHubResource.GetEventHubConsumerGroup.
-type IotHubResourceGetEventHubConsumerGroupResponse struct {
-	IotHubResourceGetEventHubConsumerGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetEventHubConsumerGroupResult contains the result from method IotHubResource.GetEventHubConsumerGroup.
-type IotHubResourceGetEventHubConsumerGroupResult struct {
-	EventHubConsumerGroupInfo
-}
-
-// IotHubResourceGetJobResponse contains the response from method IotHubResource.GetJob.
-type IotHubResourceGetJobResponse struct {
-	IotHubResourceGetJobResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetJobResult contains the result from method IotHubResource.GetJob.
-type IotHubResourceGetJobResult struct {
-	JobResponse
-}
-
-// IotHubResourceGetKeysForKeyNameResponse contains the response from method IotHubResource.GetKeysForKeyName.
-type IotHubResourceGetKeysForKeyNameResponse struct {
-	IotHubResourceGetKeysForKeyNameResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetKeysForKeyNameResult contains the result from method IotHubResource.GetKeysForKeyName.
-type IotHubResourceGetKeysForKeyNameResult struct {
-	SharedAccessSignatureAuthorizationRule
-}
-
-// IotHubResourceGetQuotaMetricsResponse contains the response from method IotHubResource.GetQuotaMetrics.
-type IotHubResourceGetQuotaMetricsResponse struct {
-	IotHubResourceGetQuotaMetricsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetQuotaMetricsResult contains the result from method IotHubResource.GetQuotaMetrics.
-type IotHubResourceGetQuotaMetricsResult struct {
-	IotHubQuotaMetricInfoListResult
-}
-
-// IotHubResourceGetResponse contains the response from method IotHubResource.Get.
-type IotHubResourceGetResponse struct {
-	IotHubResourceGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetResult contains the result from method IotHubResource.Get.
-type IotHubResourceGetResult struct {
-	IotHubDescription
-}
-
-// IotHubResourceGetStatsResponse contains the response from method IotHubResource.GetStats.
-type IotHubResourceGetStatsResponse struct {
-	IotHubResourceGetStatsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetStatsResult contains the result from method IotHubResource.GetStats.
-type IotHubResourceGetStatsResult struct {
-	RegistryStatistics
-}
-
-// IotHubResourceGetValidSKUsResponse contains the response from method IotHubResource.GetValidSKUs.
-type IotHubResourceGetValidSKUsResponse struct {
-	IotHubResourceGetValidSKUsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceGetValidSKUsResult contains the result from method IotHubResource.GetValidSKUs.
-type IotHubResourceGetValidSKUsResult struct {
-	IotHubSKUDescriptionListResult
-}
-
-// IotHubResourceImportDevicesResponse contains the response from method IotHubResource.ImportDevices.
-type IotHubResourceImportDevicesResponse struct {
-	IotHubResourceImportDevicesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceImportDevicesResult contains the result from method IotHubResource.ImportDevices.
-type IotHubResourceImportDevicesResult struct {
-	JobResponse
-}
-
-// IotHubResourceListByResourceGroupResponse contains the response from method IotHubResource.ListByResourceGroup.
-type IotHubResourceListByResourceGroupResponse struct {
-	IotHubResourceListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceListByResourceGroupResult contains the result from method IotHubResource.ListByResourceGroup.
-type IotHubResourceListByResourceGroupResult struct {
-	IotHubDescriptionListResult
-}
-
-// IotHubResourceListBySubscriptionResponse contains the response from method IotHubResource.ListBySubscription.
-type IotHubResourceListBySubscriptionResponse struct {
-	IotHubResourceListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceListBySubscriptionResult contains the result from method IotHubResource.ListBySubscription.
-type IotHubResourceListBySubscriptionResult struct {
-	IotHubDescriptionListResult
-}
-
-// IotHubResourceListEventHubConsumerGroupsResponse contains the response from method IotHubResource.ListEventHubConsumerGroups.
-type IotHubResourceListEventHubConsumerGroupsResponse struct {
-	IotHubResourceListEventHubConsumerGroupsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceListEventHubConsumerGroupsResult contains the result from method IotHubResource.ListEventHubConsumerGroups.
-type IotHubResourceListEventHubConsumerGroupsResult struct {
-	EventHubConsumerGroupsListResult
-}
-
-// IotHubResourceListJobsResponse contains the response from method IotHubResource.ListJobs.
-type IotHubResourceListJobsResponse struct {
-	IotHubResourceListJobsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceListJobsResult contains the result from method IotHubResource.ListJobs.
-type IotHubResourceListJobsResult struct {
-	JobResponseListResult
-}
-
-// IotHubResourceListKeysResponse contains the response from method IotHubResource.ListKeys.
-type IotHubResourceListKeysResponse struct {
-	IotHubResourceListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceListKeysResult contains the result from method IotHubResource.ListKeys.
-type IotHubResourceListKeysResult struct {
-	SharedAccessSignatureAuthorizationRuleListResult
-}
-
-// IotHubResourceTestAllRoutesResponse contains the response from method IotHubResource.TestAllRoutes.
-type IotHubResourceTestAllRoutesResponse struct {
-	IotHubResourceTestAllRoutesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceTestAllRoutesResult contains the result from method IotHubResource.TestAllRoutes.
-type IotHubResourceTestAllRoutesResult struct {
-	TestAllRoutesResult
-}
-
-// IotHubResourceTestRouteResponse contains the response from method IotHubResource.TestRoute.
-type IotHubResourceTestRouteResponse struct {
-	IotHubResourceTestRouteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceTestRouteResult contains the result from method IotHubResource.TestRoute.
-type IotHubResourceTestRouteResult struct {
-	TestRouteResult
-}
-
-// IotHubResourceUpdatePollerResponse contains the response from method IotHubResource.Update.
-type IotHubResourceUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IotHubResourceUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotHubResourceUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceUpdateResponse, error) {
-	respType := IotHubResourceUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IotHubResourceUpdatePollerResponse from the provided client and resume token.
-func (l *IotHubResourceUpdatePollerResponse) Resume(ctx context.Context, client *IotHubResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotHubResourceClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IotHubResourceUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IotHubResourceUpdateResponse contains the response from method IotHubResource.Update.
-type IotHubResourceUpdateResponse struct {
-	IotHubResourceUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotHubResourceUpdateResult contains the result from method IotHubResource.Update.
-type IotHubResourceUpdateResult struct {
-	IotHubDescription
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -541,8 +151,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -551,13 +161,13 @@ func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -569,47 +179,47 @@ func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	PrivateEndpointConnectionsDeleteResult
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	PrivateEndpointConnectionsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsDeleteResult contains the result from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResult struct {
+// PrivateEndpointConnectionsClientDeleteResult contains the result from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	// The list of private endpoint connections for an IotHub
 	PrivateEndpointConnectionArray []*PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsUpdatePollerResponse contains the response from method PrivateEndpointConnections.Update.
-type PrivateEndpointConnectionsUpdatePollerResponse struct {
+// PrivateEndpointConnectionsClientUpdatePollerResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsUpdatePoller
+	Poller *PrivateEndpointConnectionsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -618,8 +228,8 @@ type PrivateEndpointConnectionsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsUpdateResponse{}
+func (l PrivateEndpointConnectionsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -628,13 +238,13 @@ func (l PrivateEndpointConnectionsUpdatePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsUpdatePoller{
+	poller := &PrivateEndpointConnectionsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -646,50 +256,440 @@ func (l *PrivateEndpointConnectionsUpdatePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsUpdateResponse contains the response from method PrivateEndpointConnections.Update.
-type PrivateEndpointConnectionsUpdateResponse struct {
-	PrivateEndpointConnectionsUpdateResult
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	PrivateEndpointConnectionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsUpdateResult contains the result from method PrivateEndpointConnections.Update.
-type PrivateEndpointConnectionsUpdateResult struct {
+// PrivateEndpointConnectionsClientUpdateResult contains the result from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
 	GroupIDInformation
 }
 
-// PrivateLinkResourcesListResponse contains the response from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResponse struct {
-	PrivateLinkResourcesListResult
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListResult contains the result from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResult struct {
+// PrivateLinkResourcesClientListResult contains the result from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResult struct {
 	PrivateLinkResources
 }
 
-// ResourceProviderCommonGetSubscriptionQuotaResponse contains the response from method ResourceProviderCommon.GetSubscriptionQuota.
-type ResourceProviderCommonGetSubscriptionQuotaResponse struct {
-	ResourceProviderCommonGetSubscriptionQuotaResult
+// ResourceClientCheckNameAvailabilityResponse contains the response from method ResourceClient.CheckNameAvailability.
+type ResourceClientCheckNameAvailabilityResponse struct {
+	ResourceClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceProviderCommonGetSubscriptionQuotaResult contains the result from method ResourceProviderCommon.GetSubscriptionQuota.
-type ResourceProviderCommonGetSubscriptionQuotaResult struct {
+// ResourceClientCheckNameAvailabilityResult contains the result from method ResourceClient.CheckNameAvailability.
+type ResourceClientCheckNameAvailabilityResult struct {
+	NameAvailabilityInfo
+}
+
+// ResourceClientCreateEventHubConsumerGroupResponse contains the response from method ResourceClient.CreateEventHubConsumerGroup.
+type ResourceClientCreateEventHubConsumerGroupResponse struct {
+	ResourceClientCreateEventHubConsumerGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientCreateEventHubConsumerGroupResult contains the result from method ResourceClient.CreateEventHubConsumerGroup.
+type ResourceClientCreateEventHubConsumerGroupResult struct {
+	EventHubConsumerGroupInfo
+}
+
+// ResourceClientCreateOrUpdatePollerResponse contains the response from method ResourceClient.CreateOrUpdate.
+type ResourceClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ResourceClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ResourceClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ResourceClientCreateOrUpdateResponse, error) {
+	respType := ResourceClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Description)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ResourceClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ResourceClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ResourceClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ResourceClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ResourceClientCreateOrUpdateResponse contains the response from method ResourceClient.CreateOrUpdate.
+type ResourceClientCreateOrUpdateResponse struct {
+	ResourceClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientCreateOrUpdateResult contains the result from method ResourceClient.CreateOrUpdate.
+type ResourceClientCreateOrUpdateResult struct {
+	Description
+}
+
+// ResourceClientDeleteEventHubConsumerGroupResponse contains the response from method ResourceClient.DeleteEventHubConsumerGroup.
+type ResourceClientDeleteEventHubConsumerGroupResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientDeletePollerResponse contains the response from method ResourceClient.Delete.
+type ResourceClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ResourceClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ResourceClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ResourceClientDeleteResponse, error) {
+	respType := ResourceClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Description)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ResourceClientDeletePollerResponse from the provided client and resume token.
+func (l *ResourceClientDeletePollerResponse) Resume(ctx context.Context, client *ResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ResourceClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ResourceClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ResourceClientDeleteResponse contains the response from method ResourceClient.Delete.
+type ResourceClientDeleteResponse struct {
+	ResourceClientDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientDeleteResult contains the result from method ResourceClient.Delete.
+type ResourceClientDeleteResult struct {
+	Description
+}
+
+// ResourceClientExportDevicesResponse contains the response from method ResourceClient.ExportDevices.
+type ResourceClientExportDevicesResponse struct {
+	ResourceClientExportDevicesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientExportDevicesResult contains the result from method ResourceClient.ExportDevices.
+type ResourceClientExportDevicesResult struct {
+	JobResponse
+}
+
+// ResourceClientGetEndpointHealthResponse contains the response from method ResourceClient.GetEndpointHealth.
+type ResourceClientGetEndpointHealthResponse struct {
+	ResourceClientGetEndpointHealthResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetEndpointHealthResult contains the result from method ResourceClient.GetEndpointHealth.
+type ResourceClientGetEndpointHealthResult struct {
+	EndpointHealthDataListResult
+}
+
+// ResourceClientGetEventHubConsumerGroupResponse contains the response from method ResourceClient.GetEventHubConsumerGroup.
+type ResourceClientGetEventHubConsumerGroupResponse struct {
+	ResourceClientGetEventHubConsumerGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetEventHubConsumerGroupResult contains the result from method ResourceClient.GetEventHubConsumerGroup.
+type ResourceClientGetEventHubConsumerGroupResult struct {
+	EventHubConsumerGroupInfo
+}
+
+// ResourceClientGetJobResponse contains the response from method ResourceClient.GetJob.
+type ResourceClientGetJobResponse struct {
+	ResourceClientGetJobResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetJobResult contains the result from method ResourceClient.GetJob.
+type ResourceClientGetJobResult struct {
+	JobResponse
+}
+
+// ResourceClientGetKeysForKeyNameResponse contains the response from method ResourceClient.GetKeysForKeyName.
+type ResourceClientGetKeysForKeyNameResponse struct {
+	ResourceClientGetKeysForKeyNameResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetKeysForKeyNameResult contains the result from method ResourceClient.GetKeysForKeyName.
+type ResourceClientGetKeysForKeyNameResult struct {
+	SharedAccessSignatureAuthorizationRule
+}
+
+// ResourceClientGetQuotaMetricsResponse contains the response from method ResourceClient.GetQuotaMetrics.
+type ResourceClientGetQuotaMetricsResponse struct {
+	ResourceClientGetQuotaMetricsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetQuotaMetricsResult contains the result from method ResourceClient.GetQuotaMetrics.
+type ResourceClientGetQuotaMetricsResult struct {
+	QuotaMetricInfoListResult
+}
+
+// ResourceClientGetResponse contains the response from method ResourceClient.Get.
+type ResourceClientGetResponse struct {
+	ResourceClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetResult contains the result from method ResourceClient.Get.
+type ResourceClientGetResult struct {
+	Description
+}
+
+// ResourceClientGetStatsResponse contains the response from method ResourceClient.GetStats.
+type ResourceClientGetStatsResponse struct {
+	ResourceClientGetStatsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetStatsResult contains the result from method ResourceClient.GetStats.
+type ResourceClientGetStatsResult struct {
+	RegistryStatistics
+}
+
+// ResourceClientGetValidSKUsResponse contains the response from method ResourceClient.GetValidSKUs.
+type ResourceClientGetValidSKUsResponse struct {
+	ResourceClientGetValidSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientGetValidSKUsResult contains the result from method ResourceClient.GetValidSKUs.
+type ResourceClientGetValidSKUsResult struct {
+	SKUDescriptionListResult
+}
+
+// ResourceClientImportDevicesResponse contains the response from method ResourceClient.ImportDevices.
+type ResourceClientImportDevicesResponse struct {
+	ResourceClientImportDevicesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientImportDevicesResult contains the result from method ResourceClient.ImportDevices.
+type ResourceClientImportDevicesResult struct {
+	JobResponse
+}
+
+// ResourceClientListByResourceGroupResponse contains the response from method ResourceClient.ListByResourceGroup.
+type ResourceClientListByResourceGroupResponse struct {
+	ResourceClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientListByResourceGroupResult contains the result from method ResourceClient.ListByResourceGroup.
+type ResourceClientListByResourceGroupResult struct {
+	DescriptionListResult
+}
+
+// ResourceClientListBySubscriptionResponse contains the response from method ResourceClient.ListBySubscription.
+type ResourceClientListBySubscriptionResponse struct {
+	ResourceClientListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientListBySubscriptionResult contains the result from method ResourceClient.ListBySubscription.
+type ResourceClientListBySubscriptionResult struct {
+	DescriptionListResult
+}
+
+// ResourceClientListEventHubConsumerGroupsResponse contains the response from method ResourceClient.ListEventHubConsumerGroups.
+type ResourceClientListEventHubConsumerGroupsResponse struct {
+	ResourceClientListEventHubConsumerGroupsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientListEventHubConsumerGroupsResult contains the result from method ResourceClient.ListEventHubConsumerGroups.
+type ResourceClientListEventHubConsumerGroupsResult struct {
+	EventHubConsumerGroupsListResult
+}
+
+// ResourceClientListJobsResponse contains the response from method ResourceClient.ListJobs.
+type ResourceClientListJobsResponse struct {
+	ResourceClientListJobsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientListJobsResult contains the result from method ResourceClient.ListJobs.
+type ResourceClientListJobsResult struct {
+	JobResponseListResult
+}
+
+// ResourceClientListKeysResponse contains the response from method ResourceClient.ListKeys.
+type ResourceClientListKeysResponse struct {
+	ResourceClientListKeysResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientListKeysResult contains the result from method ResourceClient.ListKeys.
+type ResourceClientListKeysResult struct {
+	SharedAccessSignatureAuthorizationRuleListResult
+}
+
+// ResourceClientTestAllRoutesResponse contains the response from method ResourceClient.TestAllRoutes.
+type ResourceClientTestAllRoutesResponse struct {
+	ResourceClientTestAllRoutesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientTestAllRoutesResult contains the result from method ResourceClient.TestAllRoutes.
+type ResourceClientTestAllRoutesResult struct {
+	TestAllRoutesResult
+}
+
+// ResourceClientTestRouteResponse contains the response from method ResourceClient.TestRoute.
+type ResourceClientTestRouteResponse struct {
+	ResourceClientTestRouteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientTestRouteResult contains the result from method ResourceClient.TestRoute.
+type ResourceClientTestRouteResult struct {
+	TestRouteResult
+}
+
+// ResourceClientUpdatePollerResponse contains the response from method ResourceClient.Update.
+type ResourceClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ResourceClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ResourceClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ResourceClientUpdateResponse, error) {
+	respType := ResourceClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Description)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ResourceClientUpdatePollerResponse from the provided client and resume token.
+func (l *ResourceClientUpdatePollerResponse) Resume(ctx context.Context, client *ResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ResourceClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ResourceClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ResourceClientUpdateResponse contains the response from method ResourceClient.Update.
+type ResourceClientUpdateResponse struct {
+	ResourceClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceClientUpdateResult contains the result from method ResourceClient.Update.
+type ResourceClientUpdateResult struct {
+	Description
+}
+
+// ResourceProviderCommonClientGetSubscriptionQuotaResponse contains the response from method ResourceProviderCommonClient.GetSubscriptionQuota.
+type ResourceProviderCommonClientGetSubscriptionQuotaResponse struct {
+	ResourceProviderCommonClientGetSubscriptionQuotaResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceProviderCommonClientGetSubscriptionQuotaResult contains the result from method ResourceProviderCommonClient.GetSubscriptionQuota.
+type ResourceProviderCommonClientGetSubscriptionQuotaResult struct {
 	UserSubscriptionQuotaListResult
 }

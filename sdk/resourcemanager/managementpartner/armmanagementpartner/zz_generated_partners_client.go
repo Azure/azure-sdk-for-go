@@ -10,7 +10,6 @@ package armmanagementpartner
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,50 @@ import (
 // PartnersClient contains the methods for the Partners group.
 // Don't use this type directly, use NewPartnersClient() instead.
 type PartnersClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPartnersClient creates a new instance of PartnersClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPartnersClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PartnersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PartnersClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PartnersClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the management partner using the objectId and tenantId.
-// If the operation fails it returns the *Error error type.
-func (client *PartnersClient) Get(ctx context.Context, options *PartnersGetOptions) (PartnersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PartnersClientGetOptions contains the optional parameters for the PartnersClient.Get method.
+func (client *PartnersClient) Get(ctx context.Context, options *PartnersClientGetOptions) (PartnersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return PartnersGetResponse{}, err
+		return PartnersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartnersGetResponse{}, err
+		return PartnersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartnersGetResponse{}, client.getHandleError(resp)
+		return PartnersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PartnersClient) getCreateRequest(ctx context.Context, options *PartnersGetOptions) (*policy.Request, error) {
+func (client *PartnersClient) getCreateRequest(ctx context.Context, options *PartnersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagementPartner/partners"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,23 +76,10 @@ func (client *PartnersClient) getCreateRequest(ctx context.Context, options *Par
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnersClient) getHandleResponse(resp *http.Response) (PartnersGetResponse, error) {
-	result := PartnersGetResponse{RawResponse: resp}
+func (client *PartnersClient) getHandleResponse(resp *http.Response) (PartnersClientGetResponse, error) {
+	result := PartnersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerResponse); err != nil {
-		return PartnersGetResponse{}, runtime.NewResponseError(err, resp)
+		return PartnersClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *PartnersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

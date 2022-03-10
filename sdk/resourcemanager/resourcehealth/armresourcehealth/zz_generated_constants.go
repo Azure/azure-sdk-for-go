@@ -9,11 +9,12 @@
 package armresourcehealth
 
 const (
-	module  = "armresourcehealth"
-	version = "v0.2.1"
+	moduleName    = "armresourcehealth"
+	moduleVersion = "v0.4.0"
 )
 
-// AvailabilityStateValues - Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting event
+// AvailabilityStateValues - Availability status of the resource. When it is null, this availabilityStatus object represents
+// an availability impacting event
 type AvailabilityStateValues string
 
 const (
@@ -33,24 +34,6 @@ func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 
 // ToPtr returns a *AvailabilityStateValues pointing to the current value.
 func (c AvailabilityStateValues) ToPtr() *AvailabilityStateValues {
-	return &c
-}
-
-type Enum0 string
-
-const (
-	Enum0Default Enum0 = "default"
-)
-
-// PossibleEnum0Values returns the possible values for the Enum0 const type.
-func PossibleEnum0Values() []Enum0 {
-	return []Enum0{
-		Enum0Default,
-	}
-}
-
-// ToPtr returns a *Enum0 pointing to the current value.
-func (c Enum0) ToPtr() *Enum0 {
 	return &c
 }
 

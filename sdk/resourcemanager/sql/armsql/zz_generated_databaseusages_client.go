@@ -24,39 +24,53 @@ import (
 // DatabaseUsagesClient contains the methods for the DatabaseUsages group.
 // Don't use this type directly, use NewDatabaseUsagesClient() instead.
 type DatabaseUsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseUsagesClient creates a new instance of DatabaseUsagesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseUsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseUsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseUsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByDatabase - Gets database usages.
-// If the operation fails it returns a generic error.
-func (client *DatabaseUsagesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesListByDatabaseOptions) *DatabaseUsagesListByDatabasePager {
-	return &DatabaseUsagesListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - DatabaseUsagesClientListByDatabaseOptions contains the optional parameters for the DatabaseUsagesClient.ListByDatabase
+// method.
+func (client *DatabaseUsagesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) *DatabaseUsagesClientListByDatabasePager {
+	return &DatabaseUsagesClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseUsagesListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DatabaseUsagesClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseUsageListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesListByDatabaseOptions) (*policy.Request, error) {
+func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +88,7 @@ func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,22 +100,10 @@ func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Cont
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseUsagesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseUsagesListByDatabaseResponse, error) {
-	result := DatabaseUsagesListByDatabaseResponse{RawResponse: resp}
+func (client *DatabaseUsagesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseUsagesClientListByDatabaseResponse, error) {
+	result := DatabaseUsagesClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseUsageListResult); err != nil {
-		return DatabaseUsagesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseUsagesClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseUsagesClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

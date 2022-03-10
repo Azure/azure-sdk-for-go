@@ -16,21 +16,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringServiceProviders.json
-func ExamplePeeringServiceProvidersClient_List() {
+// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-06-01/examples/ListPeeringServiceProviders.json
+func ExampleServiceProvidersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServiceProvidersClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServiceProvidersClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeeringServiceProvider.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

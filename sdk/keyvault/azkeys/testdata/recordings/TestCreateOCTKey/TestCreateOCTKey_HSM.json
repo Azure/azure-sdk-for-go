@@ -4,14 +4,11 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key900305795/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key900305795/create?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -24,7 +21,7 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "87eac498-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "f6adb9ae-7e04-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": null
@@ -33,16 +30,13 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key900305795/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key900305795/create?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "32",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "key_size": 256,
@@ -59,17 +53,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "8806ff82-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "172"
+        "x-ms-request-id": "f6f49a2c-7e04-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "155"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018425,
+          "created": 1643132033,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018425
+          "updated": 1643132033
         },
         "key": {
           "key_ops": [
@@ -81,7 +75,7 @@
             "encrypt",
             "decrypt"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/dd474e0b703646a08491a6faaebe905c",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/41e66f4f46990db42d451f9a3981c0f3",
           "kty": "oct-HSM"
         }
       }
@@ -90,14 +84,10 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key900305795?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/key900305795?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -111,19 +101,19 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "882bd366-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "116"
+        "x-ms-request-id": "f716f310-7e04-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "115"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018425,
+          "created": 1643132033,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018425
+          "updated": 1643132033
         },
-        "deletedDate": 1640018425,
+        "deletedDate": 1643132033,
         "key": {
           "key_ops": [
             "deriveKey",
@@ -134,25 +124,22 @@
             "verify",
             "sign"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/dd474e0b703646a08491a6faaebe905c",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/41e66f4f46990db42d451f9a3981c0f3",
           "kty": "oct-HSM"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key900305795",
-        "scheduledPurgeDate": 1640623225
+        "scheduledPurgeDate": 1643736833
       }
     },
     {
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key900305795?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key900305795?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -164,22 +151,22 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
+        "x-ms-build-version": "1.0.20220117-1-eb2a1acb-1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "8847e9f2-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "37"
+        "x-ms-request-id": "f7332c88-7e04-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "35"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018425,
+          "created": 1643132033,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018425
+          "updated": 1643132033
         },
-        "deletedDate": 1640018425,
+        "deletedDate": 1643132033,
         "key": {
           "key_ops": [
             "decrypt",
@@ -190,25 +177,22 @@
             "wrapKey",
             "deriveKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/dd474e0b703646a08491a6faaebe905c",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/41e66f4f46990db42d451f9a3981c0f3",
           "kty": "oct-HSM"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key900305795",
-        "scheduledPurgeDate": 1640623225
+        "scheduledPurgeDate": 1643736833
       }
     },
     {
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key900305795?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key900305795?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -220,22 +204,22 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
+        "x-ms-build-version": "1.0.20220117-1-eb2a1acb-1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "8859efa8-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "f7434550-7e04-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "29"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018425,
+          "created": 1643132033,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018425
+          "updated": 1643132033
         },
-        "deletedDate": 1640018425,
+        "deletedDate": 1643132033,
         "key": {
           "key_ops": [
             "decrypt",
@@ -246,25 +230,21 @@
             "wrapKey",
             "deriveKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/dd474e0b703646a08491a6faaebe905c",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key900305795/41e66f4f46990db42d451f9a3981c0f3",
           "kty": "oct-HSM"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key900305795",
-        "scheduledPurgeDate": 1640623225
+        "scheduledPurgeDate": 1643736833
       }
     },
     {
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key900305795?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/deletedkeys/key900305795?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 204,
@@ -278,7 +258,7 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "88688f5e-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "f755089e-7e04-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "108"
       },
       "ResponseBody": null

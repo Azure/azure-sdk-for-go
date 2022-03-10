@@ -24,42 +24,57 @@ import (
 // DataMaskingPoliciesClient contains the methods for the DataMaskingPolicies group.
 // Don't use this type directly, use NewDataMaskingPoliciesClient() instead.
 type DataMaskingPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataMaskingPoliciesClient creates a new instance of DataMaskingPoliciesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataMaskingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataMaskingPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataMaskingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataMaskingPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a database data masking policy
-// If the operation fails it returns a generic error.
-func (client *DataMaskingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesCreateOrUpdateOptions) (DataMaskingPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// parameters - Parameters for creating or updating a data masking policy.
+// options - DataMaskingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the DataMaskingPoliciesClient.CreateOrUpdate
+// method.
+func (client *DataMaskingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesClientCreateOrUpdateOptions) (DataMaskingPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
-		return DataMaskingPoliciesCreateOrUpdateResponse{}, err
+		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataMaskingPoliciesCreateOrUpdateResponse{}, err
+		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataMaskingPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +93,7 @@ func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
 	urlPath = strings.ReplaceAll(urlPath, "{dataMaskingPolicyName}", url.PathEscape("Default"))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +105,38 @@ func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataMaskingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DataMaskingPoliciesCreateOrUpdateResponse, error) {
-	result := DataMaskingPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *DataMaskingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DataMaskingPoliciesClientCreateOrUpdateResponse, error) {
+	result := DataMaskingPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingPolicy); err != nil {
-		return DataMaskingPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataMaskingPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a database data masking policy.
-// If the operation fails it returns a generic error.
-func (client *DataMaskingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesGetOptions) (DataMaskingPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - DataMaskingPoliciesClientGetOptions contains the optional parameters for the DataMaskingPoliciesClient.Get method.
+func (client *DataMaskingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesClientGetOptions) (DataMaskingPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
-		return DataMaskingPoliciesGetResponse{}, err
+		return DataMaskingPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataMaskingPoliciesGetResponse{}, err
+		return DataMaskingPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataMaskingPoliciesGetResponse{}, client.getHandleError(resp)
+		return DataMaskingPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataMaskingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesGetOptions) (*policy.Request, error) {
+func (client *DataMaskingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +155,7 @@ func (client *DataMaskingPoliciesClient) getCreateRequest(ctx context.Context, r
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
 	urlPath = strings.ReplaceAll(urlPath, "{dataMaskingPolicyName}", url.PathEscape("Default"))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,22 +167,10 @@ func (client *DataMaskingPoliciesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataMaskingPoliciesClient) getHandleResponse(resp *http.Response) (DataMaskingPoliciesGetResponse, error) {
-	result := DataMaskingPoliciesGetResponse{RawResponse: resp}
+func (client *DataMaskingPoliciesClient) getHandleResponse(resp *http.Response) (DataMaskingPoliciesClientGetResponse, error) {
+	result := DataMaskingPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingPolicy); err != nil {
-		return DataMaskingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataMaskingPoliciesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *DataMaskingPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

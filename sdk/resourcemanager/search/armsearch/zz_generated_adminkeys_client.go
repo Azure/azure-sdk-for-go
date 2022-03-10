@@ -11,7 +11,6 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,36 +24,49 @@ import (
 // AdminKeysClient contains the methods for the AdminKeys group.
 // Don't use this type directly, use NewAdminKeysClient() instead.
 type AdminKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAdminKeysClient creates a new instance of AdminKeysClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAdminKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdminKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AdminKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AdminKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the primary and secondary admin API keys for the specified Azure Cognitive Search service.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (AdminKeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (AdminKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, searchServiceName, options)
 	if err != nil {
-		return AdminKeysGetResponse{}, err
+		return AdminKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdminKeysGetResponse{}, err
+		return AdminKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdminKeysGetResponse{}, client.getHandleError(resp)
+		return AdminKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -74,7 +86,7 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,40 +101,32 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeysGetResponse, error) {
-	result := AdminKeysGetResponse{RawResponse: resp}
+func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeysClientGetResponse, error) {
+	result := AdminKeysClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
-		return AdminKeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return AdminKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AdminKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Regenerate - Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, options *SearchManagementRequestOptions) (AdminKeysRegenerateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// keyKind - Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, options *SearchManagementRequestOptions) (AdminKeysClientRegenerateResponse, error) {
 	req, err := client.regenerateCreateRequest(ctx, resourceGroupName, searchServiceName, keyKind, options)
 	if err != nil {
-		return AdminKeysRegenerateResponse{}, err
+		return AdminKeysClientRegenerateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdminKeysRegenerateResponse{}, err
+		return AdminKeysClientRegenerateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdminKeysRegenerateResponse{}, client.regenerateHandleError(resp)
+		return AdminKeysClientRegenerateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateHandleResponse(resp)
 }
@@ -146,7 +150,7 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,23 +165,10 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response) (AdminKeysRegenerateResponse, error) {
-	result := AdminKeysRegenerateResponse{RawResponse: resp}
+func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response) (AdminKeysClientRegenerateResponse, error) {
+	result := AdminKeysClientRegenerateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
-		return AdminKeysRegenerateResponse{}, runtime.NewResponseError(err, resp)
+		return AdminKeysClientRegenerateResponse{}, err
 	}
 	return result, nil
-}
-
-// regenerateHandleError handles the Regenerate error response.
-func (client *AdminKeysClient) regenerateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

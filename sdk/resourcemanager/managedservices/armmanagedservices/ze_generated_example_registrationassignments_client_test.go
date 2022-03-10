@@ -30,11 +30,11 @@ func ExampleRegistrationAssignmentsClient_Get() {
 	res, err := client.Get(ctx,
 		"<scope>",
 		"<registration-assignment-id>",
-		&armmanagedservices.RegistrationAssignmentsGetOptions{ExpandRegistrationDefinition: nil})
+		&armmanagedservices.RegistrationAssignmentsClientGetOptions{ExpandRegistrationDefinition: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegistrationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegistrationAssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/DeleteRegistrationAssignment.json
@@ -82,7 +82,7 @@ func ExampleRegistrationAssignmentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegistrationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegistrationAssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/GetRegistrationAssignments.json
@@ -94,13 +94,17 @@ func ExampleRegistrationAssignmentsClient_List() {
 	ctx := context.Background()
 	client := armmanagedservices.NewRegistrationAssignmentsClient(cred, nil)
 	pager := client.List("<scope>",
-		&armmanagedservices.RegistrationAssignmentsListOptions{ExpandRegistrationDefinition: nil})
-	for pager.NextPage(ctx) {
+		&armmanagedservices.RegistrationAssignmentsClientListOptions{ExpandRegistrationDefinition: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RegistrationAssignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

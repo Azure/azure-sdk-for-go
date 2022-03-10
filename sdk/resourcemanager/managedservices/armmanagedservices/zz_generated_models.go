@@ -14,18 +14,18 @@ import (
 	"reflect"
 )
 
-// Authorization - The Azure Active Directory principal identifier and Azure built-in role that describes the access the principal will receive on the delegated
-// resource in the managed tenant.
+// Authorization - The Azure Active Directory principal identifier and Azure built-in role that describes the access the principal
+// will receive on the delegated resource in the managed tenant.
 type Authorization struct {
 	// REQUIRED; The identifier of the Azure Active Directory principal.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// REQUIRED; The identifier of the Azure built-in role that defines the permissions that the Azure Active Directory principal will have on the projected
-	// scope.
+	// REQUIRED; The identifier of the Azure built-in role that defines the permissions that the Azure Active Directory principal
+	// will have on the projected scope.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
-	// The delegatedRoleDefinitionIds field is required when the roleDefinitionId refers to the User Access Administrator Role. It is the list of role definition
-	// ids which define all the permissions that the
+	// The delegatedRoleDefinitionIds field is required when the roleDefinitionId refers to the User Access Administrator Role.
+	// It is the list of role definition ids which define all the permissions that the
 	// user in the authorization can assign to other principals.
 	DelegatedRoleDefinitionIDs []*string `json:"delegatedRoleDefinitionIds,omitempty"`
 
@@ -43,7 +43,8 @@ func (a Authorization) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EligibleApprover - Defines the Azure Active Directory principal that can approve any just-in-time access requests by the principal defined in the EligibleAuthorization.
+// EligibleApprover - Defines the Azure Active Directory principal that can approve any just-in-time access requests by the
+// principal defined in the EligibleAuthorization.
 type EligibleApprover struct {
 	// REQUIRED; The identifier of the Azure Active Directory principal.
 	PrincipalID *string `json:"principalId,omitempty"`
@@ -52,15 +53,15 @@ type EligibleApprover struct {
 	PrincipalIDDisplayName *string `json:"principalIdDisplayName,omitempty"`
 }
 
-// EligibleAuthorization - The Azure Active Directory principal identifier, Azure built-in role, and just-in-time access policy that describes the just-in-time
-// access the principal will receive on the delegated resource in the
+// EligibleAuthorization - The Azure Active Directory principal identifier, Azure built-in role, and just-in-time access policy
+// that describes the just-in-time access the principal will receive on the delegated resource in the
 // managed tenant.
 type EligibleAuthorization struct {
 	// REQUIRED; The identifier of the Azure Active Directory principal.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// REQUIRED; The identifier of the Azure built-in role that defines the permissions that the Azure Active Directory principal will have on the projected
-	// scope.
+	// REQUIRED; The identifier of the Azure built-in role that defines the permissions that the Azure Active Directory principal
+	// will have on the projected scope.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
 	// The just-in-time access policy setting.
@@ -92,17 +93,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // JustInTimeAccessPolicy - Just-in-time access policy setting.
@@ -162,15 +155,15 @@ func (m MarketplaceRegistrationDefinitionList) MarshalJSON() ([]byte, error) {
 
 // MarketplaceRegistrationDefinitionProperties - The properties of the marketplace registration definition.
 type MarketplaceRegistrationDefinitionProperties struct {
-	// REQUIRED; The collection of authorization objects describing the access Azure Active Directory principals in the managedBy tenant will receive on the
-	// delegated resource in the managed tenant.
+	// REQUIRED; The collection of authorization objects describing the access Azure Active Directory principals in the managedBy
+	// tenant will receive on the delegated resource in the managed tenant.
 	Authorizations []*Authorization `json:"authorizations,omitempty"`
 
 	// REQUIRED; The identifier of the managedBy tenant.
 	ManagedByTenantID *string `json:"managedByTenantId,omitempty"`
 
-	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in the managedBy tenant will receive
-	// on the delegated resource in the managed
+	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in
+	// the managedBy tenant will receive on the delegated resource in the managed
 	// tenant.
 	EligibleAuthorizations []*EligibleAuthorization `json:"eligibleAuthorizations,omitempty"`
 
@@ -196,26 +189,28 @@ func (m MarketplaceRegistrationDefinitionProperties) MarshalJSON() ([]byte, erro
 	return json.Marshal(objectMap)
 }
 
-// MarketplaceRegistrationDefinitionsGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitions.Get method.
-type MarketplaceRegistrationDefinitionsGetOptions struct {
+// MarketplaceRegistrationDefinitionsClientGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.Get
+// method.
+type MarketplaceRegistrationDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceRegistrationDefinitionsListOptions contains the optional parameters for the MarketplaceRegistrationDefinitions.List method.
-type MarketplaceRegistrationDefinitionsListOptions struct {
+// MarketplaceRegistrationDefinitionsClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.List
+// method.
+type MarketplaceRegistrationDefinitionsClientListOptions struct {
 	// The filter query parameter to filter marketplace registration definitions by plan identifier, publisher, version etc.
 	Filter *string
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScope.Get
+// MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.Get
 // method.
-type MarketplaceRegistrationDefinitionsWithoutScopeGetOptions struct {
+type MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScope.List
+// MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.List
 // method.
-type MarketplaceRegistrationDefinitionsWithoutScopeListOptions struct {
+type MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions struct {
 	// The filter query parameter to filter marketplace registration definitions by plan identifier, publisher, version etc.
 	Filter *string
 }
@@ -257,8 +252,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -339,17 +334,18 @@ type RegistrationAssignmentPropertiesRegistrationDefinition struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RegistrationAssignmentPropertiesRegistrationDefinitionProperties - The properties of the registration definition associated with the registration assignment.
+// RegistrationAssignmentPropertiesRegistrationDefinitionProperties - The properties of the registration definition associated
+// with the registration assignment.
 type RegistrationAssignmentPropertiesRegistrationDefinitionProperties struct {
-	// The collection of authorization objects describing the access Azure Active Directory principals in the managedBy tenant will receive on the delegated
-	// resource in the managed tenant.
+	// The collection of authorization objects describing the access Azure Active Directory principals in the managedBy tenant
+	// will receive on the delegated resource in the managed tenant.
 	Authorizations []*Authorization `json:"authorizations,omitempty"`
 
 	// The description of the registration definition.
 	Description *string `json:"description,omitempty"`
 
-	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in the managedBy tenant will receive
-	// on the delegated resource in the managed
+	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in
+	// the managedBy tenant will receive on the delegated resource in the managed
 	// tenant.
 	EligibleAuthorizations []*EligibleAuthorization `json:"eligibleAuthorizations,omitempty"`
 
@@ -387,24 +383,26 @@ func (r RegistrationAssignmentPropertiesRegistrationDefinitionProperties) Marsha
 	return json.Marshal(objectMap)
 }
 
-// RegistrationAssignmentsBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationAssignments.BeginCreateOrUpdate method.
-type RegistrationAssignmentsBeginCreateOrUpdateOptions struct {
+// RegistrationAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginCreateOrUpdate
+// method.
+type RegistrationAssignmentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistrationAssignmentsBeginDeleteOptions contains the optional parameters for the RegistrationAssignments.BeginDelete method.
-type RegistrationAssignmentsBeginDeleteOptions struct {
+// RegistrationAssignmentsClientBeginDeleteOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginDelete
+// method.
+type RegistrationAssignmentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistrationAssignmentsGetOptions contains the optional parameters for the RegistrationAssignments.Get method.
-type RegistrationAssignmentsGetOptions struct {
+// RegistrationAssignmentsClientGetOptions contains the optional parameters for the RegistrationAssignmentsClient.Get method.
+type RegistrationAssignmentsClientGetOptions struct {
 	// The flag indicating whether to return the registration definition details along with the registration assignment details.
 	ExpandRegistrationDefinition *bool
 }
 
-// RegistrationAssignmentsListOptions contains the optional parameters for the RegistrationAssignments.List method.
-type RegistrationAssignmentsListOptions struct {
+// RegistrationAssignmentsClientListOptions contains the optional parameters for the RegistrationAssignmentsClient.List method.
+type RegistrationAssignmentsClientListOptions struct {
 	// The flag indicating whether to return the registration definition details along with the registration assignment details.
 	ExpandRegistrationDefinition *bool
 }
@@ -446,8 +444,8 @@ func (r RegistrationDefinitionList) MarshalJSON() ([]byte, error) {
 
 // RegistrationDefinitionProperties - The properties of a registration definition.
 type RegistrationDefinitionProperties struct {
-	// REQUIRED; The collection of authorization objects describing the access Azure Active Directory principals in the managedBy tenant will receive on the
-	// delegated resource in the managed tenant.
+	// REQUIRED; The collection of authorization objects describing the access Azure Active Directory principals in the managedBy
+	// tenant will receive on the delegated resource in the managed tenant.
 	Authorizations []*Authorization `json:"authorizations,omitempty"`
 
 	// REQUIRED; The identifier of the managedBy tenant.
@@ -456,8 +454,8 @@ type RegistrationDefinitionProperties struct {
 	// The description of the registration definition.
 	Description *string `json:"description,omitempty"`
 
-	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in the managedBy tenant will receive
-	// on the delegated resource in the managed
+	// The collection of eligible authorization objects describing the just-in-time access Azure Active Directory principals in
+	// the managedBy tenant will receive on the delegated resource in the managed
 	// tenant.
 	EligibleAuthorizations []*EligibleAuthorization `json:"eligibleAuthorizations,omitempty"`
 
@@ -492,23 +490,25 @@ func (r RegistrationDefinitionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RegistrationDefinitionsBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationDefinitions.BeginCreateOrUpdate method.
-type RegistrationDefinitionsBeginCreateOrUpdateOptions struct {
+// RegistrationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationDefinitionsClient.BeginCreateOrUpdate
+// method.
+type RegistrationDefinitionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistrationDefinitionsDeleteOptions contains the optional parameters for the RegistrationDefinitions.Delete method.
-type RegistrationDefinitionsDeleteOptions struct {
+// RegistrationDefinitionsClientDeleteOptions contains the optional parameters for the RegistrationDefinitionsClient.Delete
+// method.
+type RegistrationDefinitionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistrationDefinitionsGetOptions contains the optional parameters for the RegistrationDefinitions.Get method.
-type RegistrationDefinitionsGetOptions struct {
+// RegistrationDefinitionsClientGetOptions contains the optional parameters for the RegistrationDefinitionsClient.Get method.
+type RegistrationDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistrationDefinitionsListOptions contains the optional parameters for the RegistrationDefinitions.List method.
-type RegistrationDefinitionsListOptions struct {
+// RegistrationDefinitionsClientListOptions contains the optional parameters for the RegistrationDefinitionsClient.List method.
+type RegistrationDefinitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

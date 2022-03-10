@@ -24,46 +24,60 @@ import (
 // ServerBlobAuditingPoliciesClient contains the methods for the ServerBlobAuditingPolicies group.
 // Don't use this type directly, use NewServerBlobAuditingPoliciesClient() instead.
 type ServerBlobAuditingPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerBlobAuditingPoliciesClient creates a new instance of ServerBlobAuditingPoliciesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerBlobAuditingPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerBlobAuditingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerBlobAuditingPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a server's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *ServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (ServerBlobAuditingPoliciesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// parameters - Properties of blob auditing policy
+// options - ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.BeginCreateOrUpdate
+// method.
+func (client *ServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
-		return ServerBlobAuditingPoliciesCreateOrUpdatePollerResponse{}, err
+		return ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerBlobAuditingPoliciesCreateOrUpdatePollerResponse{
+	result := ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerBlobAuditingPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerBlobAuditingPoliciesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerBlobAuditingPoliciesCreateOrUpdatePollerResponse{}, err
+		return ServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerBlobAuditingPoliciesCreateOrUpdatePoller{
+	result.Poller = &ServerBlobAuditingPoliciesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a server's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *ServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +87,13 @@ func (client *ServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +108,7 @@ func (client *ServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,37 +119,30 @@ func (client *ServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx 
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerBlobAuditingPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a server's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *ServerBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesGetOptions) (ServerBlobAuditingPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerBlobAuditingPoliciesClientGetOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.Get
+// method.
+func (client *ServerBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientGetOptions) (ServerBlobAuditingPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerBlobAuditingPoliciesGetResponse{}, err
+		return ServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerBlobAuditingPoliciesGetResponse{}, err
+		return ServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerBlobAuditingPoliciesGetResponse{}, client.getHandleError(resp)
+		return ServerBlobAuditingPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
+func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -150,7 +157,7 @@ func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,42 +169,35 @@ func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesGetResponse, error) {
-	result := ServerBlobAuditingPoliciesGetResponse{RawResponse: resp}
+func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesClientGetResponse, error) {
+	result := ServerBlobAuditingPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicy); err != nil {
-		return ServerBlobAuditingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerBlobAuditingPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Lists auditing settings of a server.
-// If the operation fails it returns a generic error.
-func (client *ServerBlobAuditingPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesListByServerOptions) *ServerBlobAuditingPoliciesListByServerPager {
-	return &ServerBlobAuditingPoliciesListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.ListByServer
+// method.
+func (client *ServerBlobAuditingPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *ServerBlobAuditingPoliciesClientListByServerPager {
+	return &ServerBlobAuditingPoliciesClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerBlobAuditingPoliciesListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerBlobAuditingPoliciesClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerBlobAuditingPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesListByServerOptions) (*policy.Request, error) {
+func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -211,7 +211,7 @@ func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -223,22 +223,10 @@ func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx co
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesListByServerResponse, error) {
-	result := ServerBlobAuditingPoliciesListByServerResponse{RawResponse: resp}
+func (client *ServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesClientListByServerResponse, error) {
+	result := ServerBlobAuditingPoliciesClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicyListResult); err != nil {
-		return ServerBlobAuditingPoliciesListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerBlobAuditingPoliciesClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerBlobAuditingPoliciesClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

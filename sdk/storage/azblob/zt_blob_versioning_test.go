@@ -4,10 +4,12 @@
 package azblob
 
 import (
+	"bytes"
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -144,7 +146,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 
 		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
 		_assert.Nil(err)
-		d1, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
+		d1, err := ioutil.ReadAll(dResp.Body(nil))
 		_assert.Nil(err)
 		_assert.NotEqual(*dResp.Version, "")
 		_assert.EqualValues(string(d1), string(data[i]))
@@ -263,89 +265,70 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //		_assert(blob.VersionID, chk.Not(chk.Equals), versionId)
 //	}
 //}
-//
-//func (s *azblobTestSuite) TestDownloadSpecificBlobVersion() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//	blobURL, _ := getBlockBlobClient(c, containerClient)
-//
-//	blockBlobUploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(blockBlobUploadResp, chk.NotNil)
-//	versionId1 := blockBlobUploadResp.VersionID
-//
-//	blockBlobUploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(blockBlobUploadResp, chk.NotNil)
-//	versionId2 := blockBlobUploadResp.VersionID
-//	_assert(blockBlobUploadResp.VersionID, chk.NotNil)
-//
-//	// Download previous version of snapshot.
-//	blobURL = blobURL.WithVersionID(versionId1)
-//	blockBlobDeleteResp, err := blobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	data, err := ioutil.ReadAll(blockBlobDeleteResp.Response().Body)
-//	_assert(string(data), chk.Equals, "data")
-//
-//	// Download current version of snapshot.
-//	blobURL = blobURL.WithVersionID(versionId2)
-//	blockBlobDeleteResp, err = blobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	data, err = ioutil.ReadAll(blockBlobDeleteResp.Response().Body)
-//	_assert(string(data), chk.Equals, "updated_data")
-//}
-//
-//func (s *azblobTestSuite) TestCreateBlobSnapshotReturnsVID() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
-//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(uploadResp.VersionID, chk.NotNil)
-//
-//	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(csResp.VersionID, chk.NotNil)
-//	lbResp, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{
-//		Details: BlobListingDetails{Versions: true, Snapshots: true},
-//	})
-//	_assert(lbResp, chk.NotNil)
-//	if len(lbResp.Segment.BlobItems) < 2 {
-//		s.T().Fail()
-//	}
-//
-//	_, err = blobURL.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
-//	lbResp, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{
-//		Details: BlobListingDetails{Versions: true, Snapshots: true},
-//	})
-//	_assert(lbResp, chk.NotNil)
-//	if len(lbResp.Segment.BlobItems) < 2 {
-//		s.T().Fail()
-//	}
-//	for _, blob := range lbResp.Segment.BlobItems {
-//		_assert(blob.Snapshot, chk.Equals, "")
-//	}
-//}
+func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &UploadBlockBlobOptions{
+			Metadata: basicMetadata,
+		})
+		_assert.Nil(err)
+		_assert.NotNil(uploadResp.VersionID)
+		versions = append(versions, *uploadResp.VersionID)
+	}
+
+	listPager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
+	})
+
+	found := make([]*BlobItemInternal, 0)
+	for listPager.NextPage(ctx) {
+		resp := listPager.PageResponse()
+		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+	}
+	_assert.Nil(listPager.Err())
+	_assert.Len(found, 5)
+
+	// Deleting the 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		deleteResp, err := bbClient.WithVersionID(versions[i]).Delete(ctx, nil)
+		_assert.Nil(err)
+		_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
+	}
+
+	listPager = containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*BlobItemInternal, 0)
+	for listPager.NextPage(ctx) {
+		resp := listPager.PageResponse()
+		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+	}
+	_assert.Nil(listPager.Err())
+	_assert.Len(found, 2)
+
+	for i := 3; i < 5; i++ {
+		downloadResp, err := bbClient.WithVersionID(versions[i]).Download(ctx, nil)
+		_assert.Nil(err)
+		destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+		_assert.Nil(err)
+		_assert.EqualValues(destData, "data"+strconv.Itoa(i))
+	}
+}
+
 //
 //func (s *azblobTestSuite) TestCopyBlobFromURLWithSASReturnsVID() {
 //	_assert := assert.New(s.T())
@@ -398,7 +381,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //
 //	downloadResp, err := destBlob.BlobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+//	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 //	_assert.Nil(err)
 //	_assert(destData, chk.DeepEquals, sourceData)
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
@@ -502,14 +485,74 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	contentData, err := ioutil.ReadAll(contentResp.Body(nil))
 	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
+}
+
+func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	testSize := 2 * 1024 * 1024 // 1MB
+	r, _ := getRandomDataAndReader(testSize)
+	ctx := context.Background() // Use default Background context
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+
+	// Prepare source blob for copy.
+	uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(r), nil)
+	_assert.Nil(err)
+	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(uploadResp.VersionID)
+
+	csResp, err := bbClient.CreateSnapshot(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(csResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(csResp.VersionID)
+
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
+	})
+
+	found := make([]*BlobItemInternal, 0)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+	}
+	_assert.Nil(pager.Err())
+	_assert.Len(found, 2)
+
+	deleteSnapshotsOnly := DeleteSnapshotsOptionTypeOnly
+	deleteResp, err := bbClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_assert.Nil(err)
+	_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
+
+	pager = containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots, ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*BlobItemInternal, 0)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+	}
+	_assert.Nil(pager.Err())
+	_assert.NotEqual(len(found), 0)
 }
 
 func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
+
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {

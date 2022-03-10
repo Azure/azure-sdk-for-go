@@ -34,7 +34,7 @@ func ExampleHostPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HostPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HostPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Create.json
@@ -49,34 +49,31 @@ func ExampleHostPoolsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<host-pool-name>",
 		armdesktopvirtualization.HostPool{
-			ResourceModelWithAllowedPropertySet: armdesktopvirtualization.ResourceModelWithAllowedPropertySet{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-					"tag2": to.StringPtr("value2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("value1"),
+				"tag2": to.StringPtr("value2"),
 			},
 			Properties: &armdesktopvirtualization.HostPoolProperties{
-				Description:       to.StringPtr("<description>"),
-				CustomRdpProperty: to.StringPtr("<custom-rdp-property>"),
-				FriendlyName:      to.StringPtr("<friendly-name>"),
-				HostPoolType:      armdesktopvirtualization.HostPoolTypePooled.ToPtr(),
-				LoadBalancerType:  armdesktopvirtualization.LoadBalancerTypeBreadthFirst.ToPtr(),
-				MaxSessionLimit:   to.Int32Ptr(999999),
+				Description:      to.StringPtr("<description>"),
+				FriendlyName:     to.StringPtr("<friendly-name>"),
+				HostPoolType:     armdesktopvirtualization.HostPoolType("Pooled").ToPtr(),
+				LoadBalancerType: armdesktopvirtualization.LoadBalancerType("BreadthFirst").ToPtr(),
+				MaxSessionLimit:  to.Int32Ptr(999999),
 				MigrationRequest: &armdesktopvirtualization.MigrationRequestProperties{
 					MigrationPath: to.StringPtr("<migration-path>"),
-					Operation:     armdesktopvirtualization.OperationStart.ToPtr(),
+					Operation:     armdesktopvirtualization.Operation("Start").ToPtr(),
 				},
-				PersonalDesktopAssignmentType: armdesktopvirtualization.PersonalDesktopAssignmentTypeAutomatic.ToPtr(),
-				PreferredAppGroupType:         armdesktopvirtualization.PreferredAppGroupTypeDesktop.ToPtr(),
-				PublicNetworkAccess:           armdesktopvirtualization.PublicNetworkAccessEnabled.ToPtr(),
+				PersonalDesktopAssignmentType: armdesktopvirtualization.PersonalDesktopAssignmentType("Automatic").ToPtr(),
+				PreferredAppGroupType:         armdesktopvirtualization.PreferredAppGroupType("Desktop").ToPtr(),
+				PublicNetworkAccess:           armdesktopvirtualization.PublicNetworkAccess("Enabled").ToPtr(),
 				RegistrationInfo: &armdesktopvirtualization.RegistrationInfo{
 					ExpirationTime:             to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T14:01:54.9571247Z"); return t }()),
-					RegistrationTokenOperation: armdesktopvirtualization.RegistrationTokenOperationUpdate.ToPtr(),
+					RegistrationTokenOperation: armdesktopvirtualization.RegistrationTokenOperation("Update").ToPtr(),
 				},
 				SsoClientID:                 to.StringPtr("<sso-client-id>"),
 				SsoClientSecretKeyVaultPath: to.StringPtr("<sso-client-secret-key-vault-path>"),
-				SsoSecretType:               armdesktopvirtualization.SSOSecretTypeSharedKey.ToPtr(),
+				SsoSecretType:               armdesktopvirtualization.SSOSecretType("SharedKey").ToPtr(),
 				SsoadfsAuthority:            to.StringPtr("<ssoadfs-authority>"),
 				StartVMOnConnect:            to.BoolPtr(false),
 				VMTemplate:                  to.StringPtr("<vmtemplate>"),
@@ -86,7 +83,7 @@ func ExampleHostPoolsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HostPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HostPoolsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Delete.json
@@ -100,7 +97,7 @@ func ExampleHostPoolsClient_Delete() {
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<host-pool-name>",
-		&armdesktopvirtualization.HostPoolsDeleteOptions{Force: to.BoolPtr(true)})
+		&armdesktopvirtualization.HostPoolsClientDeleteOptions{Force: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,22 +114,21 @@ func ExampleHostPoolsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<host-pool-name>",
-		&armdesktopvirtualization.HostPoolsUpdateOptions{HostPool: &armdesktopvirtualization.HostPoolPatch{
+		&armdesktopvirtualization.HostPoolsClientUpdateOptions{HostPool: &armdesktopvirtualization.HostPoolPatch{
 			Properties: &armdesktopvirtualization.HostPoolPatchProperties{
 				Description:                   to.StringPtr("<description>"),
-				CustomRdpProperty:             to.StringPtr("<custom-rdp-property>"),
 				FriendlyName:                  to.StringPtr("<friendly-name>"),
-				LoadBalancerType:              armdesktopvirtualization.LoadBalancerTypeBreadthFirst.ToPtr(),
+				LoadBalancerType:              armdesktopvirtualization.LoadBalancerType("BreadthFirst").ToPtr(),
 				MaxSessionLimit:               to.Int32Ptr(999999),
-				PersonalDesktopAssignmentType: armdesktopvirtualization.PersonalDesktopAssignmentTypeAutomatic.ToPtr(),
-				PublicNetworkAccess:           armdesktopvirtualization.PublicNetworkAccessEnabled.ToPtr(),
+				PersonalDesktopAssignmentType: armdesktopvirtualization.PersonalDesktopAssignmentType("Automatic").ToPtr(),
+				PublicNetworkAccess:           armdesktopvirtualization.PublicNetworkAccess("Enabled").ToPtr(),
 				RegistrationInfo: &armdesktopvirtualization.RegistrationInfoPatch{
 					ExpirationTime:             to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T15:01:54.9571247Z"); return t }()),
-					RegistrationTokenOperation: armdesktopvirtualization.RegistrationTokenOperationUpdate.ToPtr(),
+					RegistrationTokenOperation: armdesktopvirtualization.RegistrationTokenOperation("Update").ToPtr(),
 				},
 				SsoClientID:                 to.StringPtr("<sso-client-id>"),
 				SsoClientSecretKeyVaultPath: to.StringPtr("<sso-client-secret-key-vault-path>"),
-				SsoSecretType:               armdesktopvirtualization.SSOSecretTypeSharedKey.ToPtr(),
+				SsoSecretType:               armdesktopvirtualization.SSOSecretType("SharedKey").ToPtr(),
 				SsoadfsAuthority:            to.StringPtr("<ssoadfs-authority>"),
 				StartVMOnConnect:            to.BoolPtr(false),
 				VMTemplate:                  to.StringPtr("<vmtemplate>"),
@@ -146,7 +142,7 @@ func ExampleHostPoolsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HostPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HostPoolsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_ListByResourceGroup.json
@@ -159,12 +155,16 @@ func ExampleHostPoolsClient_ListByResourceGroup() {
 	client := armdesktopvirtualization.NewHostPoolsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HostPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -178,12 +178,16 @@ func ExampleHostPoolsClient_List() {
 	ctx := context.Background()
 	client := armdesktopvirtualization.NewHostPoolsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HostPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -196,11 +200,12 @@ func ExampleHostPoolsClient_RetrieveRegistrationToken() {
 	}
 	ctx := context.Background()
 	client := armdesktopvirtualization.NewHostPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.RetrieveRegistrationToken(ctx,
+	res, err := client.RetrieveRegistrationToken(ctx,
 		"<resource-group-name>",
 		"<host-pool-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.HostPoolsClientRetrieveRegistrationTokenResult)
 }

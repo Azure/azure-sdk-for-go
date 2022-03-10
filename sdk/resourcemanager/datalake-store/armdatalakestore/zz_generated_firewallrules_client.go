@@ -24,43 +24,58 @@ import (
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 type FirewallRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FirewallRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FirewallRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this
-// new firewall rule.
-// If the operation fails it returns a generic error.
-func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters, options *FirewallRulesCreateOrUpdateOptions) (FirewallRulesCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates or updates the specified firewall rule. During update, the firewall rule with the specified name
+// will be replaced with this new firewall rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// firewallRuleName - The name of the firewall rule to create or update.
+// parameters - Parameters supplied to create or update the firewall rule.
+// options - FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate
+// method.
+func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters, options *FirewallRulesClientCreateOrUpdateOptions) (FirewallRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, firewallRuleName, parameters, options)
 	if err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, err
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, err
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallRulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return FirewallRulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters, options *FirewallRulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters, options *FirewallRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +93,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter firewallRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +105,37 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallRulesCreateOrUpdateResponse, error) {
-	result := FirewallRulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallRulesClientCreateOrUpdateResponse, error) {
+	result := FirewallRulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FirewallRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes the specified firewall rule from the specified Data Lake Store account.
-// If the operation fails it returns a generic error.
-func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesDeleteOptions) (FirewallRulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// firewallRuleName - The name of the firewall rule to delete.
+// options - FirewallRulesClientDeleteOptions contains the optional parameters for the FirewallRulesClient.Delete method.
+func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientDeleteOptions) (FirewallRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, firewallRuleName, options)
 	if err != nil {
-		return FirewallRulesDeleteResponse{}, err
+		return FirewallRulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesDeleteResponse{}, err
+		return FirewallRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FirewallRulesDeleteResponse{}, client.deleteHandleError(resp)
+		return FirewallRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FirewallRulesDeleteResponse{RawResponse: resp}, nil
+	return FirewallRulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesDeleteOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +153,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter firewallRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,37 +163,29 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FirewallRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the specified Data Lake Store firewall rule.
-// If the operation fails it returns a generic error.
-func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesGetOptions) (FirewallRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// firewallRuleName - The name of the firewall rule to retrieve.
+// options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
+func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, firewallRuleName, options)
 	if err != nil {
-		return FirewallRulesGetResponse{}, err
+		return FirewallRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesGetResponse{}, err
+		return FirewallRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallRulesGetResponse{}, client.getHandleError(resp)
+		return FirewallRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesGetOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -204,7 +203,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter firewallRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,42 +215,34 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesGetResponse, error) {
-	result := FirewallRulesGetResponse{RawResponse: resp}
+func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesClientGetResponse, error) {
+	result := FirewallRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FirewallRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAccount - Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-// If the operation fails it returns a generic error.
-func (client *FirewallRulesClient) ListByAccount(resourceGroupName string, accountName string, options *FirewallRulesListByAccountOptions) *FirewallRulesListByAccountPager {
-	return &FirewallRulesListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// options - FirewallRulesClientListByAccountOptions contains the optional parameters for the FirewallRulesClient.ListByAccount
+// method.
+func (client *FirewallRulesClient) ListByAccount(resourceGroupName string, accountName string, options *FirewallRulesClientListByAccountOptions) *FirewallRulesClientListByAccountPager {
+	return &FirewallRulesClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp FirewallRulesListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FirewallRulesClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FirewallRuleListResult.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *FirewallRulesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FirewallRulesListByAccountOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FirewallRulesClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +256,7 @@ func (client *FirewallRulesClient) listByAccountCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,45 +268,37 @@ func (client *FirewallRulesClient) listByAccountCreateRequest(ctx context.Contex
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *FirewallRulesClient) listByAccountHandleResponse(resp *http.Response) (FirewallRulesListByAccountResponse, error) {
-	result := FirewallRulesListByAccountResponse{RawResponse: resp}
+func (client *FirewallRulesClient) listByAccountHandleResponse(resp *http.Response) (FirewallRulesClientListByAccountResponse, error) {
+	result := FirewallRulesClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
-		return FirewallRulesListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallRulesClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *FirewallRulesClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates the specified firewall rule.
-// If the operation fails it returns a generic error.
-func (client *FirewallRulesClient) Update(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesUpdateOptions) (FirewallRulesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// firewallRuleName - The name of the firewall rule to update.
+// options - FirewallRulesClientUpdateOptions contains the optional parameters for the FirewallRulesClient.Update method.
+func (client *FirewallRulesClient) Update(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientUpdateOptions) (FirewallRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, firewallRuleName, options)
 	if err != nil {
-		return FirewallRulesUpdateResponse{}, err
+		return FirewallRulesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesUpdateResponse{}, err
+		return FirewallRulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallRulesUpdateResponse{}, client.updateHandleError(resp)
+		return FirewallRulesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FirewallRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesUpdateOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, options *FirewallRulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,7 +316,7 @@ func (client *FirewallRulesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter firewallRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -348,22 +331,10 @@ func (client *FirewallRulesClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FirewallRulesClient) updateHandleResponse(resp *http.Response) (FirewallRulesUpdateResponse, error) {
-	result := FirewallRulesUpdateResponse{RawResponse: resp}
+func (client *FirewallRulesClient) updateHandleResponse(resp *http.Response) (FirewallRulesClientUpdateResponse, error) {
+	result := FirewallRulesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallRulesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *FirewallRulesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

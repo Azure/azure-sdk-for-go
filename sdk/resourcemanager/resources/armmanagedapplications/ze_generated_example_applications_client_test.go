@@ -34,7 +34,7 @@ func ExampleApplicationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplication.json
@@ -70,12 +70,8 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<application-name>",
 		armmanagedapplications.Application{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Kind: to.StringPtr("<kind>"),
+			Location: to.StringPtr("<location>"),
+			Kind:     to.StringPtr("<kind>"),
 			Properties: &armmanagedapplications.ApplicationProperties{
 				ManagedResourceGroupID: to.StringPtr("<managed-resource-group-id>"),
 			},
@@ -88,7 +84,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/updateApplication.json
@@ -102,7 +98,7 @@ func ExampleApplicationsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<application-name>",
-		&armmanagedapplications.ApplicationsUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
+		&armmanagedapplications.ApplicationsClientUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
 			Kind: to.StringPtr("<kind>"),
 			Properties: &armmanagedapplications.ApplicationPropertiesPatchable{
 				ApplicationDefinitionID: to.StringPtr("<application-definition-id>"),
@@ -113,7 +109,7 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationsByResourceGroup.json
@@ -126,12 +122,16 @@ func ExampleApplicationsClient_ListByResourceGroup() {
 	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -145,105 +145,16 @@ func ExampleApplicationsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplicationById.json
-func ExampleApplicationsClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
-	res, err := client.GetByID(ctx,
-		"<application-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Application.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationById.json
-func ExampleApplicationsClient_BeginDeleteByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDeleteByID(ctx,
-		"<application-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationById.json
-func ExampleApplicationsClient_BeginCreateOrUpdateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateOrUpdateByID(ctx,
-		"<application-id>",
-		armmanagedapplications.Application{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Kind: to.StringPtr("<kind>"),
-			Properties: &armmanagedapplications.ApplicationProperties{
-				ManagedResourceGroupID: to.StringPtr("<managed-resource-group-id>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Application.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/updateApplicationById.json
-func ExampleApplicationsClient_UpdateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
-	res, err := client.UpdateByID(ctx,
-		"<application-id>",
-		&armmanagedapplications.ApplicationsUpdateByIDOptions{Parameters: &armmanagedapplications.Application{
-			Kind: to.StringPtr("<kind>"),
-			Properties: &armmanagedapplications.ApplicationProperties{
-				ApplicationDefinitionID: to.StringPtr("<application-definition-id>"),
-				ManagedResourceGroupID:  to.StringPtr("<managed-resource-group-id>"),
-			},
-		},
-		})
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Application.ID: %s\n", *res.ID)
 }

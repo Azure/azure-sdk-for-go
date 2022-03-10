@@ -10,7 +10,6 @@ package armauthorization
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,53 @@ import (
 // ProviderOperationsMetadataClient contains the methods for the ProviderOperationsMetadata group.
 // Don't use this type directly, use NewProviderOperationsMetadataClient() instead.
 type ProviderOperationsMetadataClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewProviderOperationsMetadataClient creates a new instance of ProviderOperationsMetadataClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderOperationsMetadataClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProviderOperationsMetadataClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProviderOperationsMetadataClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets provider operations metadata for the specified resource provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderOperationsMetadataClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataGetOptions) (ProviderOperationsMetadataGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider.
+// options - ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
+// method.
+func (client *ProviderOperationsMetadataClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataClientGetOptions) (ProviderOperationsMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProviderOperationsMetadataGetResponse{}, err
+		return ProviderOperationsMetadataClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProviderOperationsMetadataGetResponse{}, err
+		return ProviderOperationsMetadataClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProviderOperationsMetadataGetResponse{}, client.getHandleError(resp)
+		return ProviderOperationsMetadataClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataGetOptions) (*policy.Request, error) {
+func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,45 +83,34 @@ func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Response) (ProviderOperationsMetadataGetResponse, error) {
-	result := ProviderOperationsMetadataGetResponse{RawResponse: resp}
+func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Response) (ProviderOperationsMetadataClientGetResponse, error) {
+	result := ProviderOperationsMetadataClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderOperationsMetadata); err != nil {
-		return ProviderOperationsMetadataGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProviderOperationsMetadataClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProviderOperationsMetadataClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets provider operations metadata for all resource providers.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderOperationsMetadataClient) List(options *ProviderOperationsMetadataListOptions) *ProviderOperationsMetadataListPager {
-	return &ProviderOperationsMetadataListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
+// method.
+func (client *ProviderOperationsMetadataClient) List(options *ProviderOperationsMetadataClientListOptions) *ProviderOperationsMetadataClientListPager {
+	return &ProviderOperationsMetadataClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ProviderOperationsMetadataListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderOperationsMetadataClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderOperationsMetadataListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Context, options *ProviderOperationsMetadataListOptions) (*policy.Request, error) {
+func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Context, options *ProviderOperationsMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/providerOperations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,23 +125,10 @@ func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderOperationsMetadataClient) listHandleResponse(resp *http.Response) (ProviderOperationsMetadataListResponse, error) {
-	result := ProviderOperationsMetadataListResponse{RawResponse: resp}
+func (client *ProviderOperationsMetadataClient) listHandleResponse(resp *http.Response) (ProviderOperationsMetadataClientListResponse, error) {
+	result := ProviderOperationsMetadataClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderOperationsMetadataListResult); err != nil {
-		return ProviderOperationsMetadataListResponse{}, runtime.NewResponseError(err, resp)
+		return ProviderOperationsMetadataClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ProviderOperationsMetadataClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

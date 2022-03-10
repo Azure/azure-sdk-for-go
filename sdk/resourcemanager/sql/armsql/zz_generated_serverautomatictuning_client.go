@@ -24,42 +24,55 @@ import (
 // ServerAutomaticTuningClient contains the methods for the ServerAutomaticTuning group.
 // Don't use this type directly, use NewServerAutomaticTuningClient() instead.
 type ServerAutomaticTuningClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerAutomaticTuningClient creates a new instance of ServerAutomaticTuningClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAutomaticTuningClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerAutomaticTuningClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerAutomaticTuningClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieves server automatic tuning options.
-// If the operation fails it returns a generic error.
-func (client *ServerAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerAutomaticTuningGetOptions) (ServerAutomaticTuningGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerAutomaticTuningClientGetOptions contains the optional parameters for the ServerAutomaticTuningClient.Get
+// method.
+func (client *ServerAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerAutomaticTuningClientGetOptions) (ServerAutomaticTuningClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerAutomaticTuningGetResponse{}, err
+		return ServerAutomaticTuningClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAutomaticTuningGetResponse{}, err
+		return ServerAutomaticTuningClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAutomaticTuningGetResponse{}, client.getHandleError(resp)
+		return ServerAutomaticTuningClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAutomaticTuningGetOptions) (*policy.Request, error) {
+func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAutomaticTuningClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +86,7 @@ func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +98,39 @@ func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response) (ServerAutomaticTuningGetResponse, error) {
-	result := ServerAutomaticTuningGetResponse{RawResponse: resp}
+func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response) (ServerAutomaticTuningClientGetResponse, error) {
+	result := ServerAutomaticTuningClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
-		return ServerAutomaticTuningGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAutomaticTuningClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerAutomaticTuningClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update automatic tuning options on server.
-// If the operation fails it returns a generic error.
-func (client *ServerAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAutomaticTuning, options *ServerAutomaticTuningUpdateOptions) (ServerAutomaticTuningUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// parameters - The requested automatic tuning resource state.
+// options - ServerAutomaticTuningClientUpdateOptions contains the optional parameters for the ServerAutomaticTuningClient.Update
+// method.
+func (client *ServerAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAutomaticTuning, options *ServerAutomaticTuningClientUpdateOptions) (ServerAutomaticTuningClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
-		return ServerAutomaticTuningUpdateResponse{}, err
+		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAutomaticTuningUpdateResponse{}, err
+		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAutomaticTuningUpdateResponse{}, client.updateHandleError(resp)
+		return ServerAutomaticTuningClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAutomaticTuning, options *ServerAutomaticTuningUpdateOptions) (*policy.Request, error) {
+func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAutomaticTuning, options *ServerAutomaticTuningClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,7 +144,7 @@ func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,22 +156,10 @@ func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServerAutomaticTuningClient) updateHandleResponse(resp *http.Response) (ServerAutomaticTuningUpdateResponse, error) {
-	result := ServerAutomaticTuningUpdateResponse{RawResponse: resp}
+func (client *ServerAutomaticTuningClient) updateHandleResponse(resp *http.Response) (ServerAutomaticTuningClientUpdateResponse, error) {
+	result := ServerAutomaticTuningClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
-		return ServerAutomaticTuningUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServerAutomaticTuningClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

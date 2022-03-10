@@ -11,7 +11,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -80,6 +82,38 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 		getSortedBodies(messages))
 
 	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+}
+
+func TestReceiverDrainHasError(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	// close the link _just_ before the drain credit to simulate connection loss.
+	stubReceiver := &StubAMQPReceiver{
+		stubDrainCredit: func(inner internal.AMQPReceiverCloser, ctx context.Context) error {
+			require.NoError(t, inner.Close(context.Background()))
+			return inner.DrainCredit(ctx)
+		},
+	}
+
+	addStub(t, receiver, stubReceiver)
+
+	// there's only one message, requesting more messages will time out.
+	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 }
 
 func TestReceiverAbandon(t *testing.T) {
@@ -343,6 +377,134 @@ func TestReceiverPeek(t *testing.T) {
 	require.Empty(t, noMessagesExpected)
 }
 
+func TestReceiverDetachWithPeekLock(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the receiver link and connection are live.
+	_, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	var messages []*ReceivedMessage
+
+	for i := 0; i < 5; i++ {
+		// depending on how long it takes to rehydrate our links we might
+		// have to call multiple times.
+		tmpMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		if len(tmpMessages) == 1 {
+			messages = tmpMessages
+			break
+		}
+	}
+
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, []string{"hello world"}, getSortedBodies(peekedMessages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	// and last, check that the queue is properly empty
+	peekedMessages, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, peekedMessages)
+}
+
+func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+
+	require.NoError(t, err)
+
+	// make sure the receiver link and connection are live.
+	_, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	var messages []*ReceivedMessage
+
+	for i := 0; i < 5; i++ {
+		// depending on how long it takes to rehydrate our links we might
+		// have to call multiple times.
+		tmpMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		if len(tmpMessages) == 1 {
+			// NOTE: in ReceiveAndDelete mode we return any messages we've received, even in the face of connection
+			// errors
+			messages = tmpMessages
+			break
+		}
+	}
+
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, peekedMessages)
+}
+
 func TestReceiver_RenewMessageLock(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
@@ -382,38 +544,96 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 		"error message from SB comes through")
 }
 
-func TestReceiverOptions(t *testing.T) {
-	// defaults
-	receiver := &Receiver{}
-	e := &entity{Topic: "topic", Subscription: "subscription"}
+// TestReceiverAMQPDataTypes checks that we can send and receive all the AMQP primitive types that are supported
+// in ApplicationProperties.
+// http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-application-properties
+//
+// > The keys of this map are restricted to be of type string (which excludes the possibility of a null key) and the values
+// > are restricted to be of simple types only, that is, excluding map, list, and array types.
+func TestReceiverAMQPDataTypes(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
 
-	require.NoError(t, applyReceiverOptions(receiver, e, nil))
-
-	require.EqualValues(t, ReceiveModePeekLock, receiver.receiveMode)
-	path, err := e.String()
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
-	require.EqualValues(t, "topic/Subscriptions/subscription", path)
 
-	// using options
-	receiver = &Receiver{}
-	e = &entity{Topic: "topic", Subscription: "subscription"}
-
-	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
-		SubQueue:    SubQueueTransfer,
+	})
+	require.NoError(t, err)
+
+	expectedTime, err := time.Parse(time.RFC3339, "2000-01-01T01:02:03Z")
+	require.NoError(t, err)
+
+	require.NoError(t, sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello, this is the body"),
+		ApplicationProperties: map[string]interface{}{
+			// Some primitive types are missing - it's a bit unclear what the right representation of this would be in Go:
+			// - TypeCodeDecimal32
+			// - TypeCodeDecimal64
+			// - TypeCodeDecimal128
+			// - TypeCodeChar  (although note below that a 'character' does work, although it's not a TypecodeChar value)
+			// https://github.com/Azure/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
+			"timestamp": expectedTime,
+
+			"byte":   byte(128),
+			"uint8":  int8(101),
+			"uint32": int32(400),
+			"uint64": int64(400),
+
+			"int":   400,
+			"int8":  int8(-101),
+			"int32": int32(-400),
+			"int64": int64(-400),
+
+			"float":   400.1,
+			"float64": float64(400.1),
+
+			"string": "hello world",
+			// these aren't "true" chars in the amqp sense - they end up being int32's
+			"char":  'g',
+			"char2": '❤',
+
+			"bool": true,
+			"uuid": amqp.UUID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}),
+		},
 	}))
 
-	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
-	path, err = e.String()
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
-	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
+
+	actualProps := messages[0].ApplicationProperties
+
+	require.Equal(t, map[string]interface{}{
+		"timestamp": expectedTime,
+
+		"byte":   byte(128),
+		"uint8":  int8(101),
+		"uint32": int32(400),
+		"uint64": int64(400),
+
+		"int":   int64(400),
+		"int8":  int8(-101),
+		"int32": int32(-400),
+		"int64": int64(-400),
+
+		"float":   float64(400.1),
+		"float64": float64(400.1),
+
+		"string": "hello world",
+		"char":   'g',
+		"char2":  '❤',
+
+		"bool": true,
+		"uuid": amqp.UUID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}),
+	}, actualProps)
 }
 
-type badMgmtClient struct {
-	internal.MgmtClient
+type badRPCLink struct {
+	internal.RPCLink
 }
 
-func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+func (br *badRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*internal.RPCResponse, error) {
 	return nil, errors.New("receive deferred messages failed")
 }
 
@@ -430,7 +650,7 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 
 	r = &Receiver{
 		amqpLinks: &internal.FakeAMQPLinks{
-			Mgmt: &badMgmtClient{},
+			RPC: &badRPCLink{},
 		},
 	}
 

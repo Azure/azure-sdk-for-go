@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-type DatadogAPIKey struct {
+type APIKey struct {
 	// REQUIRED; The value of the API key.
 	Key *string `json:"key,omitempty"`
 
@@ -29,25 +29,25 @@ type DatadogAPIKey struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// DatadogAPIKeyListResponse - Response of a list operation.
-type DatadogAPIKeyListResponse struct {
+// APIKeyListResponse - Response of a list operation.
+type APIKeyListResponse struct {
 	// Link to the next set of results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Results of a list operation.
-	Value []*DatadogAPIKey `json:"value,omitempty"`
+	Value []*APIKey `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatadogAPIKeyListResponse.
-func (d DatadogAPIKeyListResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type APIKeyListResponse.
+func (a APIKeyListResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
-// DatadogAgreementProperties - Terms properties.
-type DatadogAgreementProperties struct {
+// AgreementProperties - Terms properties.
+type AgreementProperties struct {
 	// If any version of the terms have been accepted, otherwise false.
 	Accepted *bool `json:"accepted,omitempty"`
 
@@ -73,22 +73,22 @@ type DatadogAgreementProperties struct {
 	Signature *string `json:"signature,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatadogAgreementProperties.
-func (d DatadogAgreementProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AgreementProperties.
+func (a AgreementProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "accepted", d.Accepted)
-	populate(objectMap, "licenseTextLink", d.LicenseTextLink)
-	populate(objectMap, "plan", d.Plan)
-	populate(objectMap, "privacyPolicyLink", d.PrivacyPolicyLink)
-	populate(objectMap, "product", d.Product)
-	populate(objectMap, "publisher", d.Publisher)
-	populateTimeRFC3339(objectMap, "retrieveDatetime", d.RetrieveDatetime)
-	populate(objectMap, "signature", d.Signature)
+	populate(objectMap, "accepted", a.Accepted)
+	populate(objectMap, "licenseTextLink", a.LicenseTextLink)
+	populate(objectMap, "plan", a.Plan)
+	populate(objectMap, "privacyPolicyLink", a.PrivacyPolicyLink)
+	populate(objectMap, "product", a.Product)
+	populate(objectMap, "publisher", a.Publisher)
+	populateTimeRFC3339(objectMap, "retrieveDatetime", a.RetrieveDatetime)
+	populate(objectMap, "signature", a.Signature)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatadogAgreementProperties.
-func (d *DatadogAgreementProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AgreementProperties.
+func (a *AgreementProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -97,28 +97,28 @@ func (d *DatadogAgreementProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "accepted":
-			err = unpopulate(val, &d.Accepted)
+			err = unpopulate(val, &a.Accepted)
 			delete(rawMsg, key)
 		case "licenseTextLink":
-			err = unpopulate(val, &d.LicenseTextLink)
+			err = unpopulate(val, &a.LicenseTextLink)
 			delete(rawMsg, key)
 		case "plan":
-			err = unpopulate(val, &d.Plan)
+			err = unpopulate(val, &a.Plan)
 			delete(rawMsg, key)
 		case "privacyPolicyLink":
-			err = unpopulate(val, &d.PrivacyPolicyLink)
+			err = unpopulate(val, &a.PrivacyPolicyLink)
 			delete(rawMsg, key)
 		case "product":
-			err = unpopulate(val, &d.Product)
+			err = unpopulate(val, &a.Product)
 			delete(rawMsg, key)
 		case "publisher":
-			err = unpopulate(val, &d.Publisher)
+			err = unpopulate(val, &a.Publisher)
 			delete(rawMsg, key)
 		case "retrieveDatetime":
-			err = unpopulateTimeRFC3339(val, &d.RetrieveDatetime)
+			err = unpopulateTimeRFC3339(val, &a.RetrieveDatetime)
 			delete(rawMsg, key)
 		case "signature":
-			err = unpopulate(val, &d.Signature)
+			err = unpopulate(val, &a.Signature)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -128,9 +128,9 @@ func (d *DatadogAgreementProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type DatadogAgreementResource struct {
+type AgreementResource struct {
 	// Represents the properties of the resource.
-	Properties *DatadogAgreementProperties `json:"properties,omitempty"`
+	Properties *AgreementProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; ARM id of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -145,236 +145,20 @@ type DatadogAgreementResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// DatadogAgreementResourceListResponse - Response of a list operation.
-type DatadogAgreementResourceListResponse struct {
+// AgreementResourceListResponse - Response of a list operation.
+type AgreementResourceListResponse struct {
 	// Link to the next set of results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Results of a list operation.
-	Value []*DatadogAgreementResource `json:"value,omitempty"`
+	Value []*AgreementResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatadogAgreementResourceListResponse.
-func (d DatadogAgreementResourceListResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AgreementResourceListResponse.
+func (a AgreementResourceListResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-type DatadogHost struct {
-	// The aliases for the host.
-	Aliases []*string `json:"aliases,omitempty"`
-
-	// The Datadog integrations reporting metrics for the host.
-	Apps []*string            `json:"apps,omitempty"`
-	Meta *DatadogHostMetadata `json:"meta,omitempty"`
-
-	// The name of the host.
-	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogHost.
-func (d DatadogHost) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aliases", d.Aliases)
-	populate(objectMap, "apps", d.Apps)
-	populate(objectMap, "meta", d.Meta)
-	populate(objectMap, "name", d.Name)
-	return json.Marshal(objectMap)
-}
-
-// DatadogHostListResponse - Response of a list operation.
-type DatadogHostListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Results of a list operation.
-	Value []*DatadogHost `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogHostListResponse.
-func (d DatadogHostListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-type DatadogHostMetadata struct {
-	// The agent version.
-	AgentVersion  *string               `json:"agentVersion,omitempty"`
-	InstallMethod *DatadogInstallMethod `json:"installMethod,omitempty"`
-	LogsAgent     *DatadogLogsAgent     `json:"logsAgent,omitempty"`
-}
-
-type DatadogInstallMethod struct {
-	// The installer version.
-	InstallerVersion *string `json:"installerVersion,omitempty"`
-
-	// The tool.
-	Tool *string `json:"tool,omitempty"`
-
-	// The tool version.
-	ToolVersion *string `json:"toolVersion,omitempty"`
-}
-
-type DatadogLogsAgent struct {
-	// The transport.
-	Transport *string `json:"transport,omitempty"`
-}
-
-type DatadogMonitorResource struct {
-	// REQUIRED
-	Location *string             `json:"location,omitempty"`
-	Identity *IdentityProperties `json:"identity,omitempty"`
-
-	// Properties specific to the monitor resource.
-	Properties *MonitorProperties `json:"properties,omitempty"`
-	SKU        *ResourceSKU       `json:"sku,omitempty"`
-
-	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; ARM id of the monitor resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the monitor resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the monitor resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogMonitorResource.
-func (d DatadogMonitorResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// DatadogMonitorResourceListResponse - Response of a list operation.
-type DatadogMonitorResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Results of a list operation.
-	Value []*DatadogMonitorResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogMonitorResourceListResponse.
-func (d DatadogMonitorResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// DatadogMonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
-type DatadogMonitorResourceUpdateParameters struct {
-	// The set of properties that can be update in a PATCH request to a monitor resource.
-	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
-	SKU        *ResourceSKU             `json:"sku,omitempty"`
-
-	// The new tags of the monitor resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogMonitorResourceUpdateParameters.
-func (d DatadogMonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
-// DatadogOrganizationProperties - Datadog organization properties
-type DatadogOrganizationProperties struct {
-	// Api key associated to the Datadog organization.
-	APIKey *string `json:"apiKey,omitempty"`
-
-	// Application key associated to the Datadog organization.
-	ApplicationKey *string `json:"applicationKey,omitempty"`
-
-	// The Id of the Enterprise App used for Single sign on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
-
-	// The auth code used to linking to an existing datadog organization.
-	LinkingAuthCode *string `json:"linkingAuthCode,omitempty"`
-
-	// The client_id from an existing in exchange for an auth token to link organization.
-	LinkingClientID *string `json:"linkingClientId,omitempty"`
-
-	// The redirect uri for linking.
-	RedirectURI *string `json:"redirectUri,omitempty"`
-
-	// READ-ONLY; Id of the Datadog organization.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the Datadog organization.
-	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
-type DatadogSetPasswordLink struct {
-	SetPasswordLink *string `json:"setPasswordLink,omitempty"`
-}
-
-type DatadogSingleSignOnProperties struct {
-	// The Id of the Enterprise App used for Single sign-on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
-
-	// Various states of the SSO resource
-	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
-
-	// READ-ONLY
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The login URL specific to this Datadog Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty" azure:"ro"`
-}
-
-type DatadogSingleSignOnResource struct {
-	Properties *DatadogSingleSignOnProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DatadogSingleSignOnResourceListResponse - Response of a list operation.
-type DatadogSingleSignOnResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Results of a list operation.
-	Value []*DatadogSingleSignOnResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatadogSingleSignOnResourceListResponse.
-func (d DatadogSingleSignOnResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -416,22 +200,15 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them from being monitored.
+// FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
+// from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag. Exclusion takes priority over inclusion.
 	Action *TagAction `json:"action,omitempty"`
@@ -443,6 +220,52 @@ type FilteringTag struct {
 	Value *string `json:"value,omitempty"`
 }
 
+type Host struct {
+	// The aliases for the host.
+	Aliases []*string `json:"aliases,omitempty"`
+
+	// The Datadog integrations reporting metrics for the host.
+	Apps []*string     `json:"apps,omitempty"`
+	Meta *HostMetadata `json:"meta,omitempty"`
+
+	// The name of the host.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Host.
+func (h Host) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "aliases", h.Aliases)
+	populate(objectMap, "apps", h.Apps)
+	populate(objectMap, "meta", h.Meta)
+	populate(objectMap, "name", h.Name)
+	return json.Marshal(objectMap)
+}
+
+// HostListResponse - Response of a list operation.
+type HostListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Results of a list operation.
+	Value []*Host `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HostListResponse.
+func (h HostListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", h.NextLink)
+	populate(objectMap, "value", h.Value)
+	return json.Marshal(objectMap)
+}
+
+type HostMetadata struct {
+	// The agent version.
+	AgentVersion  *string        `json:"agentVersion,omitempty"`
+	InstallMethod *InstallMethod `json:"installMethod,omitempty"`
+	LogsAgent     *LogsAgent     `json:"logsAgent,omitempty"`
+}
+
 type IdentityProperties struct {
 	// Identity type
 	Type *ManagedIdentityTypes `json:"type,omitempty"`
@@ -452,6 +275,17 @@ type IdentityProperties struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+type InstallMethod struct {
+	// The installer version.
+	InstallerVersion *string `json:"installerVersion,omitempty"`
+
+	// The tool.
+	Tool *string `json:"tool,omitempty"`
+
+	// The tool version.
+	ToolVersion *string `json:"toolVersion,omitempty"`
 }
 
 // LinkedResource - The definition of a linked resource.
@@ -479,10 +313,10 @@ func (l LinkedResourceListResponse) MarshalJSON() ([]byte, error) {
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
 type LogRules struct {
-	// List of filtering tags to be used for capturing logs. This only takes effect if SendResourceLogs flag is enabled. If empty, all resources will be captured.
-	// If only Exclude action is specified, the
-	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include resources with the associated
-	// tags.
+	// List of filtering tags to be used for capturing logs. This only takes effect if SendResourceLogs flag is enabled. If empty,
+	// all resources will be captured. If only Exclude action is specified, the
+	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
+	// resources with the associated tags.
 	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
@@ -505,20 +339,26 @@ func (l LogRules) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarketplaceAgreementsCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreements.CreateOrUpdate method.
-type MarketplaceAgreementsCreateOrUpdateOptions struct {
-	Body *DatadogAgreementResource
+type LogsAgent struct {
+	// The transport.
+	Transport *string `json:"transport,omitempty"`
 }
 
-// MarketplaceAgreementsListOptions contains the optional parameters for the MarketplaceAgreements.List method.
-type MarketplaceAgreementsListOptions struct {
+// MarketplaceAgreementsClientCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreementsClient.CreateOrUpdate
+// method.
+type MarketplaceAgreementsClientCreateOrUpdateOptions struct {
+	Body *AgreementResource
+}
+
+// MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List method.
+type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
 type MetricRules struct {
-	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action is specified, the rules will
-	// apply to the list of all available resources. If
+	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action
+	// is specified, the rules will apply to the list of all available resources. If
 	// Include actions are specified, the rules will only include resources with the associated tags.
 	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
 }
@@ -533,7 +373,7 @@ func (m MetricRules) MarshalJSON() ([]byte, error) {
 // MonitorProperties - Properties specific to the monitor resource.
 type MonitorProperties struct {
 	// Datadog organization properties
-	DatadogOrganizationProperties *DatadogOrganizationProperties `json:"datadogOrganizationProperties,omitempty"`
+	DatadogOrganizationProperties *OrganizationProperties `json:"datadogOrganizationProperties,omitempty"`
 
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
@@ -547,11 +387,88 @@ type MonitorProperties struct {
 	// READ-ONLY; The priority of the resource.
 	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
 
-	// READ-ONLY; Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource will go in Suspended state.
+	// READ-ONLY; Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource
+	// will go in Suspended state.
 	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+type MonitorResource struct {
+	// REQUIRED
+	Location *string             `json:"location,omitempty"`
+	Identity *IdentityProperties `json:"identity,omitempty"`
+
+	// Properties specific to the monitor resource.
+	Properties *MonitorProperties `json:"properties,omitempty"`
+	SKU        *ResourceSKU       `json:"sku,omitempty"`
+
+	// Dictionary of
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; ARM id of the monitor resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the monitor resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the monitor resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MonitorResource.
+func (m MonitorResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "sku", m.SKU)
+	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
+	return json.Marshal(objectMap)
+}
+
+// MonitorResourceListResponse - Response of a list operation.
+type MonitorResourceListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Results of a list operation.
+	Value []*MonitorResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MonitorResourceListResponse.
+func (m MonitorResourceListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", m.NextLink)
+	populate(objectMap, "value", m.Value)
+	return json.Marshal(objectMap)
+}
+
+// MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
+type MonitorResourceUpdateParameters struct {
+	// The set of properties that can be update in a PATCH request to a monitor resource.
+	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
+	SKU        *ResourceSKU             `json:"sku,omitempty"`
+
+	// The new tags of the monitor resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MonitorResourceUpdateParameters.
+func (m MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "sku", m.SKU)
+	populate(objectMap, "tags", m.Tags)
+	return json.Marshal(objectMap)
 }
 
 // MonitorUpdateProperties - The set of properties that can be update in a PATCH request to a monitor resource.
@@ -642,69 +559,71 @@ type MonitoringTagRulesProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MonitorsBeginCreateOptions contains the optional parameters for the Monitors.BeginCreate method.
-type MonitorsBeginCreateOptions struct {
-	Body *DatadogMonitorResource
+// MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
+type MonitorsClientBeginCreateOptions struct {
+	Body *MonitorResource
 }
 
-// MonitorsBeginDeleteOptions contains the optional parameters for the Monitors.BeginDelete method.
-type MonitorsBeginDeleteOptions struct {
+// MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
+type MonitorsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsBeginUpdateOptions contains the optional parameters for the Monitors.BeginUpdate method.
-type MonitorsBeginUpdateOptions struct {
-	Body *DatadogMonitorResourceUpdateParameters
+// MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
+type MonitorsClientBeginUpdateOptions struct {
+	Body *MonitorResourceUpdateParameters
 }
 
-// MonitorsGetDefaultKeyOptions contains the optional parameters for the Monitors.GetDefaultKey method.
-type MonitorsGetDefaultKeyOptions struct {
+// MonitorsClientGetDefaultKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultKey method.
+type MonitorsClientGetDefaultKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsGetOptions contains the optional parameters for the Monitors.Get method.
-type MonitorsGetOptions struct {
+// MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
+type MonitorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListAPIKeysOptions contains the optional parameters for the Monitors.ListAPIKeys method.
-type MonitorsListAPIKeysOptions struct {
+// MonitorsClientListAPIKeysOptions contains the optional parameters for the MonitorsClient.ListAPIKeys method.
+type MonitorsClientListAPIKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListByResourceGroupOptions contains the optional parameters for the Monitors.ListByResourceGroup method.
-type MonitorsListByResourceGroupOptions struct {
+// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup method.
+type MonitorsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListHostsOptions contains the optional parameters for the Monitors.ListHosts method.
-type MonitorsListHostsOptions struct {
+// MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.ListHosts method.
+type MonitorsClientListHostsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListLinkedResourcesOptions contains the optional parameters for the Monitors.ListLinkedResources method.
-type MonitorsListLinkedResourcesOptions struct {
+// MonitorsClientListLinkedResourcesOptions contains the optional parameters for the MonitorsClient.ListLinkedResources method.
+type MonitorsClientListLinkedResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListMonitoredResourcesOptions contains the optional parameters for the Monitors.ListMonitoredResources method.
-type MonitorsListMonitoredResourcesOptions struct {
+// MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
+// method.
+type MonitorsClientListMonitoredResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListOptions contains the optional parameters for the Monitors.List method.
-type MonitorsListOptions struct {
+// MonitorsClientListOptions contains the optional parameters for the MonitorsClient.List method.
+type MonitorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsRefreshSetPasswordLinkOptions contains the optional parameters for the Monitors.RefreshSetPasswordLink method.
-type MonitorsRefreshSetPasswordLinkOptions struct {
+// MonitorsClientRefreshSetPasswordLinkOptions contains the optional parameters for the MonitorsClient.RefreshSetPasswordLink
+// method.
+type MonitorsClientRefreshSetPasswordLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsSetDefaultKeyOptions contains the optional parameters for the Monitors.SetDefaultKey method.
-type MonitorsSetDefaultKeyOptions struct {
-	Body *DatadogAPIKey
+// MonitorsClientSetDefaultKeyOptions contains the optional parameters for the MonitorsClient.SetDefaultKey method.
+type MonitorsClientSetDefaultKeyOptions struct {
+	Body *APIKey
 }
 
 // OperationDisplay - The object that represents the operation.
@@ -751,9 +670,36 @@ type OperationResult struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OrganizationProperties - Datadog organization properties
+type OrganizationProperties struct {
+	// Api key associated to the Datadog organization.
+	APIKey *string `json:"apiKey,omitempty"`
+
+	// Application key associated to the Datadog organization.
+	ApplicationKey *string `json:"applicationKey,omitempty"`
+
+	// The Id of the Enterprise App used for Single sign on.
+	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+
+	// The auth code used to linking to an existing datadog organization.
+	LinkingAuthCode *string `json:"linkingAuthCode,omitempty"`
+
+	// The client_id from an existing in exchange for an auth token to link organization.
+	LinkingClientID *string `json:"linkingClientId,omitempty"`
+
+	// The redirect uri for linking.
+	RedirectURI *string `json:"redirectUri,omitempty"`
+
+	// READ-ONLY; Id of the Datadog organization.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the Datadog organization.
+	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
 type ResourceSKU struct {
@@ -761,19 +707,73 @@ type ResourceSKU struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// SingleSignOnConfigurationsBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnConfigurations.BeginCreateOrUpdate method.
-type SingleSignOnConfigurationsBeginCreateOrUpdateOptions struct {
-	Body *DatadogSingleSignOnResource
+type SetPasswordLink struct {
+	SetPasswordLink *string `json:"setPasswordLink,omitempty"`
 }
 
-// SingleSignOnConfigurationsGetOptions contains the optional parameters for the SingleSignOnConfigurations.Get method.
-type SingleSignOnConfigurationsGetOptions struct {
+// SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnConfigurationsClient.BeginCreateOrUpdate
+// method.
+type SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions struct {
+	Body *SingleSignOnResource
+}
+
+// SingleSignOnConfigurationsClientGetOptions contains the optional parameters for the SingleSignOnConfigurationsClient.Get
+// method.
+type SingleSignOnConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SingleSignOnConfigurationsListOptions contains the optional parameters for the SingleSignOnConfigurations.List method.
-type SingleSignOnConfigurationsListOptions struct {
+// SingleSignOnConfigurationsClientListOptions contains the optional parameters for the SingleSignOnConfigurationsClient.List
+// method.
+type SingleSignOnConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+type SingleSignOnProperties struct {
+	// The Id of the Enterprise App used for Single sign-on.
+	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+
+	// Various states of the SSO resource
+	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The login URL specific to this Datadog Organization.
+	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty" azure:"ro"`
+}
+
+type SingleSignOnResource struct {
+	Properties *SingleSignOnProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; ARM id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the configuration.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SingleSignOnResourceListResponse - Response of a list operation.
+type SingleSignOnResourceListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Results of a list operation.
+	Value []*SingleSignOnResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SingleSignOnResourceListResponse.
+func (s SingleSignOnResourceListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -844,18 +844,18 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TagRulesCreateOrUpdateOptions contains the optional parameters for the TagRules.CreateOrUpdate method.
-type TagRulesCreateOrUpdateOptions struct {
+// TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
+type TagRulesClientCreateOrUpdateOptions struct {
 	Body *MonitoringTagRules
 }
 
-// TagRulesGetOptions contains the optional parameters for the TagRules.Get method.
-type TagRulesGetOptions struct {
+// TagRulesClientGetOptions contains the optional parameters for the TagRulesClient.Get method.
+type TagRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagRulesListOptions contains the optional parameters for the TagRules.List method.
-type TagRulesListOptions struct {
+// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
+type TagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

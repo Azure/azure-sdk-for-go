@@ -11,7 +11,6 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // PublicMaintenanceConfigurationsClient contains the methods for the PublicMaintenanceConfigurations group.
 // Don't use this type directly, use NewPublicMaintenanceConfigurationsClient() instead.
 type PublicMaintenanceConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPublicMaintenanceConfigurationsClient creates a new instance of PublicMaintenanceConfigurationsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicMaintenanceConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PublicMaintenanceConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PublicMaintenanceConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get Public Maintenance Configuration record
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *PublicMaintenanceConfigurationsClient) Get(ctx context.Context, resourceName string, options *PublicMaintenanceConfigurationsGetOptions) (PublicMaintenanceConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceName - Maintenance Configuration Name
+// options - PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
+// method.
+func (client *PublicMaintenanceConfigurationsClient) Get(ctx context.Context, resourceName string, options *PublicMaintenanceConfigurationsClientGetOptions) (PublicMaintenanceConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceName, options)
 	if err != nil {
-		return PublicMaintenanceConfigurationsGetResponse{}, err
+		return PublicMaintenanceConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublicMaintenanceConfigurationsGetResponse{}, err
+		return PublicMaintenanceConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublicMaintenanceConfigurationsGetResponse{}, client.getHandleError(resp)
+		return PublicMaintenanceConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx context.Context, resourceName string, options *PublicMaintenanceConfigurationsGetOptions) (*policy.Request, error) {
+func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx context.Context, resourceName string, options *PublicMaintenanceConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,52 +93,41 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsGetResponse, error) {
-	result := PublicMaintenanceConfigurationsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfiguration); err != nil {
-		return PublicMaintenanceConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsClientGetResponse, error) {
+	result := PublicMaintenanceConfigurationsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
+		return PublicMaintenanceConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PublicMaintenanceConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get Public Maintenance Configuration records
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *PublicMaintenanceConfigurationsClient) List(ctx context.Context, options *PublicMaintenanceConfigurationsListOptions) (PublicMaintenanceConfigurationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
+// method.
+func (client *PublicMaintenanceConfigurationsClient) List(ctx context.Context, options *PublicMaintenanceConfigurationsClientListOptions) (PublicMaintenanceConfigurationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return PublicMaintenanceConfigurationsListResponse{}, err
+		return PublicMaintenanceConfigurationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublicMaintenanceConfigurationsListResponse{}, err
+		return PublicMaintenanceConfigurationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublicMaintenanceConfigurationsListResponse{}, client.listHandleError(resp)
+		return PublicMaintenanceConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx context.Context, options *PublicMaintenanceConfigurationsListOptions) (*policy.Request, error) {
+func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx context.Context, options *PublicMaintenanceConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,23 +139,10 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client *PublicMaintenanceConfigurationsClient) listHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsListResponse, error) {
-	result := PublicMaintenanceConfigurationsListResponse{RawResponse: resp}
+func (client *PublicMaintenanceConfigurationsClient) listHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsClientListResponse, error) {
+	result := PublicMaintenanceConfigurationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListMaintenanceConfigurationsResult); err != nil {
-		return PublicMaintenanceConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
+		return PublicMaintenanceConfigurationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PublicMaintenanceConfigurationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armstoragecache
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,62 @@ import (
 // StorageTargetClient contains the methods for the StorageTarget group.
 // Don't use this type directly, use NewStorageTargetClient() instead.
 type StorageTargetClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStorageTargetClient creates a new instance of StorageTargetClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageTargetClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StorageTargetClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StorageTargetClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginFlush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage target's namespace will
-// return errors until the flush operation completes.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginFlushOptions) (StorageTargetFlushPollerResponse, error) {
+// BeginFlush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
+// target's namespace will return errors until the flush operation completes.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetClientBeginFlushOptions contains the optional parameters for the StorageTargetClient.BeginFlush
+// method.
+func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (StorageTargetClientFlushPollerResponse, error) {
 	resp, err := client.flush(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetFlushPollerResponse{}, err
+		return StorageTargetClientFlushPollerResponse{}, err
 	}
-	result := StorageTargetFlushPollerResponse{
+	result := StorageTargetClientFlushPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Flush", "azure-async-operation", resp, client.pl, client.flushHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetClient.Flush", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StorageTargetFlushPollerResponse{}, err
+		return StorageTargetClientFlushPollerResponse{}, err
 	}
-	result.Poller = &StorageTargetFlushPoller{
+	result.Poller = &StorageTargetClientFlushPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage target's namespace will return
-// errors until the flush operation completes.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginFlushOptions) (*http.Response, error) {
+// Flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
+// target's namespace will return errors until the flush operation completes.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*http.Response, error) {
 	req, err := client.flushCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -76,13 +89,13 @@ func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.flushHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // flushCreateRequest creates the Flush request.
-func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginFlushOptions) (*policy.Request, error) {
+func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/flush"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -100,7 +113,7 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,42 +124,34 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// flushHandleError handles the Flush error response.
-func (client *StorageTargetClient) flushHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginResume - Resumes client access to a previously suspended storage target.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginResumeOptions) (StorageTargetResumePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetClientBeginResumeOptions contains the optional parameters for the StorageTargetClient.BeginResume
+// method.
+func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (StorageTargetClientResumePollerResponse, error) {
 	resp, err := client.resume(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetResumePollerResponse{}, err
+		return StorageTargetClientResumePollerResponse{}, err
 	}
-	result := StorageTargetResumePollerResponse{
+	result := StorageTargetClientResumePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Resume", "azure-async-operation", resp, client.pl, client.resumeHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetClient.Resume", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StorageTargetResumePollerResponse{}, err
+		return StorageTargetClientResumePollerResponse{}, err
 	}
-	result.Poller = &StorageTargetResumePoller{
+	result.Poller = &StorageTargetClientResumePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resumes client access to a previously suspended storage target.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginResumeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -156,13 +161,13 @@ func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.resumeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginResumeOptions) (*policy.Request, error) {
+func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -180,7 +185,7 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -191,42 +196,34 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *StorageTargetClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSuspend - Suspends client access to a storage target.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginSuspendOptions) (StorageTargetSuspendPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetClientBeginSuspendOptions contains the optional parameters for the StorageTargetClient.BeginSuspend
+// method.
+func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (StorageTargetClientSuspendPollerResponse, error) {
 	resp, err := client.suspend(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetSuspendPollerResponse{}, err
+		return StorageTargetClientSuspendPollerResponse{}, err
 	}
-	result := StorageTargetSuspendPollerResponse{
+	result := StorageTargetClientSuspendPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetClient.Suspend", "azure-async-operation", resp, client.pl, client.suspendHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetClient.Suspend", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StorageTargetSuspendPollerResponse{}, err
+		return StorageTargetClientSuspendPollerResponse{}, err
 	}
-	result.Poller = &StorageTargetSuspendPoller{
+	result.Poller = &StorageTargetClientSuspendPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Suspend - Suspends client access to a storage target.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginSuspendOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -236,13 +233,13 @@ func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.suspendHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetBeginSuspendOptions) (*policy.Request, error) {
+func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/suspend"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +257,7 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,17 +266,4 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// suspendHandleError handles the Suspend error response.
-func (client *StorageTargetClient) suspendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

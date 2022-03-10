@@ -24,7 +24,7 @@ func ExampleServiceReplicaClient_Get() {
 	}
 	ctx := context.Background()
 	client := armservicefabricmesh.NewServiceReplicaClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<application-resource-name>",
 		"<service-resource-name>",
@@ -33,6 +33,7 @@ func ExampleServiceReplicaClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceReplicaClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/applications/services/replicas/list.json
@@ -47,9 +48,16 @@ func ExampleServiceReplicaClient_List() {
 		"<application-resource-name>",
 		"<service-resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

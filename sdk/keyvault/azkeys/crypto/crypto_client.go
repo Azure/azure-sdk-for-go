@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -97,7 +98,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		genOptions.PerRetryPolicies,
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
@@ -110,7 +111,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}
 
 	return &Client{
-		kvClient:   generated.NewKeyVaultClient(conn),
+		kvClient:   generated.NewKeyVaultClient(pl),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,
@@ -153,7 +154,7 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) Enc
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			KeyID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -221,7 +222,7 @@ func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) Dec
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			KeyID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -265,7 +266,7 @@ type WrapKeyOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) generated.KeyOperationsParameters {
+func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
@@ -289,7 +290,7 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) Wra
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			KeyID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -300,7 +301,7 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) Wra
 //in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
 // the key. This operation is supported for asymmetric keys as a convenience for callers that have a
 // key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.
-func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
+func (c *Client) WrapKey(ctx context.Context, alg WrapAlgorithm, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
 	if options == nil {
 		options = &WrapKeyOptions{}
 	}
@@ -333,7 +334,7 @@ type UnwrapKeyOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) generated.KeyOperationsParameters {
+func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
@@ -357,7 +358,7 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse)
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			KeyID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -367,7 +368,7 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse)
 // This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric
 // keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
 // keys/unwrapKey permission.
-func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedKey []byte, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
+func (c *Client) UnwrapKey(ctx context.Context, alg WrapAlgorithm, encryptedKey []byte, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
 	if options == nil {
 		options = &UnwrapKeyOptions{}
 	}
@@ -408,7 +409,7 @@ func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignRespo
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			KeyID:                       i.Kid,
+			ID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}

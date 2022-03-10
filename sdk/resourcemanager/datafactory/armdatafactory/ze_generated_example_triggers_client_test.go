@@ -30,12 +30,16 @@ func ExampleTriggersClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TriggerResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,7 +52,7 @@ func ExampleTriggersClient_QueryByFactory() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
-	_, err = client.QueryByFactory(ctx,
+	res, err := client.QueryByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.TriggerFilterParameters{
@@ -58,6 +62,7 @@ func ExampleTriggersClient_QueryByFactory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggersClientQueryByFactoryResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
@@ -74,27 +79,23 @@ func ExampleTriggersClient_CreateOrUpdate() {
 		"<trigger-name>",
 		armdatafactory.TriggerResource{
 			Properties: &armdatafactory.ScheduleTrigger{
-				MultiplePipelineTrigger: armdatafactory.MultiplePipelineTrigger{
-					Trigger: armdatafactory.Trigger{
-						Type: to.StringPtr("<type>"),
-					},
-					Pipelines: []*armdatafactory.TriggerPipelineReference{
-						{
-							Parameters: map[string]map[string]interface{}{
-								"OutputBlobNameList": {
-									"0": "exampleoutput.csv",
-								},
+				Type: to.StringPtr("<type>"),
+				Pipelines: []*armdatafactory.TriggerPipelineReference{
+					{
+						Parameters: map[string]map[string]interface{}{
+							"OutputBlobNameList": {
+								"0": "exampleoutput.csv",
 							},
-							PipelineReference: &armdatafactory.PipelineReference{
-								Type:          armdatafactory.PipelineReferenceTypePipelineReference.ToPtr(),
-								ReferenceName: to.StringPtr("<reference-name>"),
-							},
-						}},
-				},
+						},
+						PipelineReference: &armdatafactory.PipelineReference{
+							Type:          armdatafactory.PipelineReferenceType("PipelineReference").ToPtr(),
+							ReferenceName: to.StringPtr("<reference-name>"),
+						},
+					}},
 				TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 					Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
 						EndTime:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:13.8441801Z"); return t }()),
-						Frequency: armdatafactory.RecurrenceFrequencyMinute.ToPtr(),
+						Frequency: armdatafactory.RecurrenceFrequency("Minute").ToPtr(),
 						Interval:  to.Int32Ptr(4),
 						StartTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t }()),
 						TimeZone:  to.StringPtr("<time-zone>"),
@@ -102,11 +103,11 @@ func ExampleTriggersClient_CreateOrUpdate() {
 				},
 			},
 		},
-		&armdatafactory.TriggersCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.TriggersClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Get.json
@@ -121,11 +122,11 @@ func ExampleTriggersClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<trigger-name>",
-		&armdatafactory.TriggersGetOptions{IfNoneMatch: nil})
+		&armdatafactory.TriggersClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Delete.json
@@ -162,10 +163,11 @@ func ExampleTriggersClient_BeginSubscribeToEvents() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggersClientSubscribeToEventsResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_GetEventSubscriptionStatus.json
@@ -176,7 +178,7 @@ func ExampleTriggersClient_GetEventSubscriptionStatus() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
-	_, err = client.GetEventSubscriptionStatus(ctx,
+	res, err := client.GetEventSubscriptionStatus(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<trigger-name>",
@@ -184,6 +186,7 @@ func ExampleTriggersClient_GetEventSubscriptionStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggersClientGetEventSubscriptionStatusResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_UnsubscribeFromEvents.json
@@ -202,10 +205,11 @@ func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggersClientUnsubscribeFromEventsResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json

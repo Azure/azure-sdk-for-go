@@ -30,5 +30,5 @@ func ExampleBillingAccountClient_GetPolicy() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingAccountPoliciesResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BillingAccountClientGetPolicyResult)
 }

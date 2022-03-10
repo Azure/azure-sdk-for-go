@@ -6,7 +6,7 @@
 
 package azkeys
 
-import generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
 // certificate can be permanently deleted by a privileged user; otherwise,
@@ -78,44 +78,80 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 	}
 }
 
-// JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type JSONWebKeyCurveName string
+// PossibleDeletionRecoveryLevelValues provides a slice of all possible DeletionRecoveryLevels
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return []DeletionRecoveryLevel{
+		DeletionRecoveryLevelCustomizedRecoverable,
+		DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription,
+		DeletionRecoveryLevelCustomizedRecoverablePurgeable,
+		DeletionRecoveryLevelPurgeable,
+		DeletionRecoveryLevelRecoverable,
+		DeletionRecoveryLevelRecoverableProtectedSubscription,
+		DeletionRecoveryLevelRecoverablePurgeable,
+	}
+}
+
+// CurveName - Elliptic curve name. For valid values, see PossibleCurveNameValues.
+type CurveName string
 
 const (
-	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
+	// CurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	CurveNameP256 CurveName = "P-256"
 
-	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
+	// CurveNameP256K - The SECG SECP256K1 elliptic curve.
+	CurveNameP256K CurveName = "P-256K"
 
-	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
+	// CurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	CurveNameP384 CurveName = "P-384"
 
-	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
+	// CurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	CurveNameP521 CurveName = "P-521"
 )
 
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
+// ToPtr returns a *CurveName pointing to the current value.
+func (c CurveName) ToPtr() *CurveName {
 	return &c
 }
 
-// JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
-type JSONWebKeyOperation string
+// PossibleCurveNameValues provides a slice of all possible CurveNames
+func PossibleCurveNameValues() []CurveName {
+	return []CurveName{
+		CurveNameP256,
+		CurveNameP256K,
+		CurveNameP384,
+		CurveNameP521,
+	}
+}
+
+// Operation - JSON web key operations. For more information, see Operation.
+type Operation string
 
 const (
-	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
-	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
+	OperationDecrypt   Operation = "decrypt"
+	OperationEncrypt   Operation = "encrypt"
+	OperationImport    Operation = "import"
+	OperationSign      Operation = "sign"
+	OperationUnwrapKey Operation = "unwrapKey"
+	OperationVerify    Operation = "verify"
+	OperationWrapKey   Operation = "wrapKey"
 )
 
-// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
-func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+// ToPtr returns a *KeyOperation pointing to the current value.
+func (c Operation) ToPtr() *Operation {
 	return &c
+}
+
+// PossibleOperationValues provides a slice of all possible Operations
+func PossibleOperationValues() []Operation {
+	return []Operation{
+		OperationDecrypt,
+		OperationEncrypt,
+		OperationImport,
+		OperationSign,
+		OperationUnwrapKey,
+		OperationVerify,
+		OperationWrapKey,
+	}
 }
 
 // ActionType - The type of the action.
@@ -133,16 +169,77 @@ func (c ActionType) ToPtr() *ActionType {
 	return &c
 }
 
-// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type KeyEncryptionAlgorithm string
+// PossibleActionTypeValues provides a slice of all possible ActionTypes
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeRotate,
+		ActionTypeNotify,
+	}
+}
+
+// ExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type ExportEncryptionAlgorithm string
 
 const (
-	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	ExportEncryptionAlgorithmCKMRSAAESKEYWRAP ExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP256 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	ExportEncryptionAlgorithmRSAAESKEYWRAP384 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
 
-// ToPtr returns a *KeyEncryptionAlgorithm pointing to the current value.
-func (c KeyEncryptionAlgorithm) ToPtr() *KeyEncryptionAlgorithm {
+// ToPtr returns a *ExportEncryptionAlgorithm pointing to the current value.
+func (c ExportEncryptionAlgorithm) ToPtr() *ExportEncryptionAlgorithm {
 	return &c
+}
+
+// PossibleExportEncryptionAlgorithmValues provides a slice of all possible ExportEncryptionAlgorithms
+func PossibleExportEncryptionAlgorithmValues() []ExportEncryptionAlgorithm {
+	return []ExportEncryptionAlgorithm{
+		ExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP256,
+		ExportEncryptionAlgorithmRSAAESKEYWRAP384,
+	}
+}
+
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type KeyType string
+
+const (
+	// EC - Elliptic Curve.
+	KeyTypeEC KeyType = "EC"
+
+	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
+	KeyTypeECHSM KeyType = "EC-HSM"
+
+	// Oct - Octet sequence (used to represent symmetric keys)
+	KeyTypeOct KeyType = "oct"
+
+	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
+	KeyTypeOctHSM KeyType = "oct-HSM"
+
+	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
+	KeyTypeRSA KeyType = "RSA"
+
+	// RSAHSM - RSA with a private key which is not exportable from the HSM.
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
+)
+
+func (k KeyType) ToPtr() *KeyType {
+	return &k
+}
+
+// PossibleKeyTypeValues provides a slice of all possible KeyTypes
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeOct,
+		KeyTypeOctHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
+	}
+}
+
+// convert KeyType to *generated.JSONWebKeyType
+func (j KeyType) toGenerated() *generated.JSONWebKeyType {
+	return generated.JSONWebKeyType(j).ToPtr()
 }

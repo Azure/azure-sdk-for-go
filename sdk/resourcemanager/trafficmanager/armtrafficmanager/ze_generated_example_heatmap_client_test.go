@@ -27,12 +27,12 @@ func ExampleHeatMapClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
-		armtrafficmanager.Enum8Default,
-		&armtrafficmanager.HeatMapGetOptions{TopLeft: []float64{},
+		armtrafficmanager.Enum8("default"),
+		&armtrafficmanager.HeatMapClientGetOptions{TopLeft: []float64{},
 			BotRight: []float64{},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HeatMapModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HeatMapClientGetResult)
 }

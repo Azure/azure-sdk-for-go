@@ -10,194 +10,194 @@ package armtrafficmanager
 
 import "net/http"
 
-// EndpointsCreateOrUpdateResponse contains the response from method Endpoints.CreateOrUpdate.
-type EndpointsCreateOrUpdateResponse struct {
-	EndpointsCreateOrUpdateResult
+// EndpointsClientCreateOrUpdateResponse contains the response from method EndpointsClient.CreateOrUpdate.
+type EndpointsClientCreateOrUpdateResponse struct {
+	EndpointsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsCreateOrUpdateResult contains the result from method Endpoints.CreateOrUpdate.
-type EndpointsCreateOrUpdateResult struct {
+// EndpointsClientCreateOrUpdateResult contains the result from method EndpointsClient.CreateOrUpdate.
+type EndpointsClientCreateOrUpdateResult struct {
 	Endpoint
 }
 
-// EndpointsDeleteResponse contains the response from method Endpoints.Delete.
-type EndpointsDeleteResponse struct {
-	EndpointsDeleteResult
+// EndpointsClientDeleteResponse contains the response from method EndpointsClient.Delete.
+type EndpointsClientDeleteResponse struct {
+	EndpointsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsDeleteResult contains the result from method Endpoints.Delete.
-type EndpointsDeleteResult struct {
+// EndpointsClientDeleteResult contains the result from method EndpointsClient.Delete.
+type EndpointsClientDeleteResult struct {
 	DeleteOperationResult
 }
 
-// EndpointsGetResponse contains the response from method Endpoints.Get.
-type EndpointsGetResponse struct {
-	EndpointsGetResult
+// EndpointsClientGetResponse contains the response from method EndpointsClient.Get.
+type EndpointsClientGetResponse struct {
+	EndpointsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsGetResult contains the result from method Endpoints.Get.
-type EndpointsGetResult struct {
+// EndpointsClientGetResult contains the result from method EndpointsClient.Get.
+type EndpointsClientGetResult struct {
 	Endpoint
 }
 
-// EndpointsUpdateResponse contains the response from method Endpoints.Update.
-type EndpointsUpdateResponse struct {
-	EndpointsUpdateResult
+// EndpointsClientUpdateResponse contains the response from method EndpointsClient.Update.
+type EndpointsClientUpdateResponse struct {
+	EndpointsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsUpdateResult contains the result from method Endpoints.Update.
-type EndpointsUpdateResult struct {
+// EndpointsClientUpdateResult contains the result from method EndpointsClient.Update.
+type EndpointsClientUpdateResult struct {
 	Endpoint
 }
 
-// GeographicHierarchiesGetDefaultResponse contains the response from method GeographicHierarchies.GetDefault.
-type GeographicHierarchiesGetDefaultResponse struct {
-	GeographicHierarchiesGetDefaultResult
+// GeographicHierarchiesClientGetDefaultResponse contains the response from method GeographicHierarchiesClient.GetDefault.
+type GeographicHierarchiesClientGetDefaultResponse struct {
+	GeographicHierarchiesClientGetDefaultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GeographicHierarchiesGetDefaultResult contains the result from method GeographicHierarchies.GetDefault.
-type GeographicHierarchiesGetDefaultResult struct {
-	TrafficManagerGeographicHierarchy
+// GeographicHierarchiesClientGetDefaultResult contains the result from method GeographicHierarchiesClient.GetDefault.
+type GeographicHierarchiesClientGetDefaultResult struct {
+	GeographicHierarchy
 }
 
-// HeatMapGetResponse contains the response from method HeatMap.Get.
-type HeatMapGetResponse struct {
-	HeatMapGetResult
+// HeatMapClientGetResponse contains the response from method HeatMapClient.Get.
+type HeatMapClientGetResponse struct {
+	HeatMapClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HeatMapGetResult contains the result from method HeatMap.Get.
-type HeatMapGetResult struct {
+// HeatMapClientGetResult contains the result from method HeatMapClient.Get.
+type HeatMapClientGetResult struct {
 	HeatMapModel
 }
 
-// ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse contains the response from method Profiles.CheckTrafficManagerRelativeDNSNameAvailability.
-type ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse struct {
-	ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResult
+// ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse contains the response from method ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability.
+type ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse struct {
+	ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResult contains the result from method Profiles.CheckTrafficManagerRelativeDNSNameAvailability.
-type ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResult struct {
-	TrafficManagerNameAvailability
+// ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResult contains the result from method ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability.
+type ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResult struct {
+	NameAvailability
 }
 
-// ProfilesCreateOrUpdateResponse contains the response from method Profiles.CreateOrUpdate.
-type ProfilesCreateOrUpdateResponse struct {
-	ProfilesCreateOrUpdateResult
+// ProfilesClientCreateOrUpdateResponse contains the response from method ProfilesClient.CreateOrUpdate.
+type ProfilesClientCreateOrUpdateResponse struct {
+	ProfilesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesCreateOrUpdateResult contains the result from method Profiles.CreateOrUpdate.
-type ProfilesCreateOrUpdateResult struct {
+// ProfilesClientCreateOrUpdateResult contains the result from method ProfilesClient.CreateOrUpdate.
+type ProfilesClientCreateOrUpdateResult struct {
 	Profile
 }
 
-// ProfilesDeleteResponse contains the response from method Profiles.Delete.
-type ProfilesDeleteResponse struct {
-	ProfilesDeleteResult
+// ProfilesClientDeleteResponse contains the response from method ProfilesClient.Delete.
+type ProfilesClientDeleteResponse struct {
+	ProfilesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesDeleteResult contains the result from method Profiles.Delete.
-type ProfilesDeleteResult struct {
+// ProfilesClientDeleteResult contains the result from method ProfilesClient.Delete.
+type ProfilesClientDeleteResult struct {
 	DeleteOperationResult
 }
 
-// ProfilesGetResponse contains the response from method Profiles.Get.
-type ProfilesGetResponse struct {
-	ProfilesGetResult
+// ProfilesClientGetResponse contains the response from method ProfilesClient.Get.
+type ProfilesClientGetResponse struct {
+	ProfilesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesGetResult contains the result from method Profiles.Get.
-type ProfilesGetResult struct {
+// ProfilesClientGetResult contains the result from method ProfilesClient.Get.
+type ProfilesClientGetResult struct {
 	Profile
 }
 
-// ProfilesListByResourceGroupResponse contains the response from method Profiles.ListByResourceGroup.
-type ProfilesListByResourceGroupResponse struct {
-	ProfilesListByResourceGroupResult
+// ProfilesClientListByResourceGroupResponse contains the response from method ProfilesClient.ListByResourceGroup.
+type ProfilesClientListByResourceGroupResponse struct {
+	ProfilesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesListByResourceGroupResult contains the result from method Profiles.ListByResourceGroup.
-type ProfilesListByResourceGroupResult struct {
+// ProfilesClientListByResourceGroupResult contains the result from method ProfilesClient.ListByResourceGroup.
+type ProfilesClientListByResourceGroupResult struct {
 	ProfileListResult
 }
 
-// ProfilesListBySubscriptionResponse contains the response from method Profiles.ListBySubscription.
-type ProfilesListBySubscriptionResponse struct {
-	ProfilesListBySubscriptionResult
+// ProfilesClientListBySubscriptionResponse contains the response from method ProfilesClient.ListBySubscription.
+type ProfilesClientListBySubscriptionResponse struct {
+	ProfilesClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesListBySubscriptionResult contains the result from method Profiles.ListBySubscription.
-type ProfilesListBySubscriptionResult struct {
+// ProfilesClientListBySubscriptionResult contains the result from method ProfilesClient.ListBySubscription.
+type ProfilesClientListBySubscriptionResult struct {
 	ProfileListResult
 }
 
-// ProfilesUpdateResponse contains the response from method Profiles.Update.
-type ProfilesUpdateResponse struct {
-	ProfilesUpdateResult
+// ProfilesClientUpdateResponse contains the response from method ProfilesClient.Update.
+type ProfilesClientUpdateResponse struct {
+	ProfilesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProfilesUpdateResult contains the result from method Profiles.Update.
-type ProfilesUpdateResult struct {
+// ProfilesClientUpdateResult contains the result from method ProfilesClient.Update.
+type ProfilesClientUpdateResult struct {
 	Profile
 }
 
-// TrafficManagerUserMetricsKeysCreateOrUpdateResponse contains the response from method TrafficManagerUserMetricsKeys.CreateOrUpdate.
-type TrafficManagerUserMetricsKeysCreateOrUpdateResponse struct {
-	TrafficManagerUserMetricsKeysCreateOrUpdateResult
+// UserMetricsKeysClientCreateOrUpdateResponse contains the response from method UserMetricsKeysClient.CreateOrUpdate.
+type UserMetricsKeysClientCreateOrUpdateResponse struct {
+	UserMetricsKeysClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrafficManagerUserMetricsKeysCreateOrUpdateResult contains the result from method TrafficManagerUserMetricsKeys.CreateOrUpdate.
-type TrafficManagerUserMetricsKeysCreateOrUpdateResult struct {
+// UserMetricsKeysClientCreateOrUpdateResult contains the result from method UserMetricsKeysClient.CreateOrUpdate.
+type UserMetricsKeysClientCreateOrUpdateResult struct {
 	UserMetricsModel
 }
 
-// TrafficManagerUserMetricsKeysDeleteResponse contains the response from method TrafficManagerUserMetricsKeys.Delete.
-type TrafficManagerUserMetricsKeysDeleteResponse struct {
-	TrafficManagerUserMetricsKeysDeleteResult
+// UserMetricsKeysClientDeleteResponse contains the response from method UserMetricsKeysClient.Delete.
+type UserMetricsKeysClientDeleteResponse struct {
+	UserMetricsKeysClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrafficManagerUserMetricsKeysDeleteResult contains the result from method TrafficManagerUserMetricsKeys.Delete.
-type TrafficManagerUserMetricsKeysDeleteResult struct {
+// UserMetricsKeysClientDeleteResult contains the result from method UserMetricsKeysClient.Delete.
+type UserMetricsKeysClientDeleteResult struct {
 	DeleteOperationResult
 }
 
-// TrafficManagerUserMetricsKeysGetResponse contains the response from method TrafficManagerUserMetricsKeys.Get.
-type TrafficManagerUserMetricsKeysGetResponse struct {
-	TrafficManagerUserMetricsKeysGetResult
+// UserMetricsKeysClientGetResponse contains the response from method UserMetricsKeysClient.Get.
+type UserMetricsKeysClientGetResponse struct {
+	UserMetricsKeysClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrafficManagerUserMetricsKeysGetResult contains the result from method TrafficManagerUserMetricsKeys.Get.
-type TrafficManagerUserMetricsKeysGetResult struct {
+// UserMetricsKeysClientGetResult contains the result from method UserMetricsKeysClient.Get.
+type UserMetricsKeysClientGetResult struct {
 	UserMetricsModel
 }

@@ -38,7 +38,9 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 		qp = append(qp, cp.Logging.AllowedQueryParams...)
 		cp.Logging.AllowedQueryParams = qp
 	}
-	policies := []policy.Policy{}
+	// we put the includeResponsePolicy at the very beginning so that the raw response
+	// is populated with the final response (some policies might mutate the response)
+	policies := []policy.Policy{pipeline.PolicyFunc(includeResponsePolicy)}
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))
 	}

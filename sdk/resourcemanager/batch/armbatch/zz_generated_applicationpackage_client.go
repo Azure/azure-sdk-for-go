@@ -11,7 +11,6 @@ package armbatch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,44 +25,59 @@ import (
 // ApplicationPackageClient contains the methods for the ApplicationPackage group.
 // Don't use this type directly, use NewApplicationPackageClient() instead.
 type ApplicationPackageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationPackageClient creates a new instance of ApplicationPackageClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationPackageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationPackageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationPackageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Activate - Activates the specified application package. This should be done after the ApplicationPackage was created and uploaded. This needs to be done
-// before an ApplicationPackage can be used on Pools or
+// Activate - Activates the specified application package. This should be done after the ApplicationPackage was created and
+// uploaded. This needs to be done before an ApplicationPackage can be used on Pools or
 // Tasks.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationPackageClient) Activate(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ActivateApplicationPackageParameters, options *ApplicationPackageActivateOptions) (ApplicationPackageActivateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// applicationName - The name of the application. This must be unique within the account.
+// versionName - The version of the application.
+// parameters - The parameters for the request.
+// options - ApplicationPackageClientActivateOptions contains the optional parameters for the ApplicationPackageClient.Activate
+// method.
+func (client *ApplicationPackageClient) Activate(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ActivateApplicationPackageParameters, options *ApplicationPackageClientActivateOptions) (ApplicationPackageClientActivateResponse, error) {
 	req, err := client.activateCreateRequest(ctx, resourceGroupName, accountName, applicationName, versionName, parameters, options)
 	if err != nil {
-		return ApplicationPackageActivateResponse{}, err
+		return ApplicationPackageClientActivateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationPackageActivateResponse{}, err
+		return ApplicationPackageClientActivateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationPackageActivateResponse{}, client.activateHandleError(resp)
+		return ApplicationPackageClientActivateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.activateHandleResponse(resp)
 }
 
 // activateCreateRequest creates the Activate request.
-func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ActivateApplicationPackageParameters, options *ApplicationPackageActivateOptions) (*policy.Request, error) {
+func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ActivateApplicationPackageParameters, options *ApplicationPackageClientActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}/activate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -85,7 +99,7 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,48 +111,42 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 }
 
 // activateHandleResponse handles the Activate response.
-func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Response) (ApplicationPackageActivateResponse, error) {
-	result := ApplicationPackageActivateResponse{RawResponse: resp}
+func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Response) (ApplicationPackageClientActivateResponse, error) {
+	result := ApplicationPackageClientActivateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
-		return ApplicationPackageActivateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationPackageClientActivateResponse{}, err
 	}
 	return result, nil
 }
 
-// activateHandleError handles the Activate error response.
-func (client *ApplicationPackageClient) activateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Create - Creates an application package record. The record contains a storageUrl where the package should be uploaded to. Once it is uploaded the ApplicationPackage
-// needs to be activated using
-// ApplicationPackageActive before it can be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationPackageClient) Create(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageCreateOptions) (ApplicationPackageCreateResponse, error) {
+// Create - Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+// Once it is uploaded the ApplicationPackage needs to be activated using
+// ApplicationPackageActive before it can be used. If the auto storage account was configured to use storage keys, the URL
+// returned will contain a SAS.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// applicationName - The name of the application. This must be unique within the account.
+// versionName - The version of the application.
+// options - ApplicationPackageClientCreateOptions contains the optional parameters for the ApplicationPackageClient.Create
+// method.
+func (client *ApplicationPackageClient) Create(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientCreateOptions) (ApplicationPackageClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, applicationName, versionName, options)
 	if err != nil {
-		return ApplicationPackageCreateResponse{}, err
+		return ApplicationPackageClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationPackageCreateResponse{}, err
+		return ApplicationPackageClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationPackageCreateResponse{}, client.createHandleError(resp)
+		return ApplicationPackageClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageCreateOptions) (*policy.Request, error) {
+func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,7 +168,7 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,46 +183,39 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 }
 
 // createHandleResponse handles the Create response.
-func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response) (ApplicationPackageCreateResponse, error) {
-	result := ApplicationPackageCreateResponse{RawResponse: resp}
+func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response) (ApplicationPackageClientCreateResponse, error) {
+	result := ApplicationPackageClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
-		return ApplicationPackageCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationPackageClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ApplicationPackageClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an application package record and its associated binary file.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationPackageClient) Delete(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageDeleteOptions) (ApplicationPackageDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// applicationName - The name of the application. This must be unique within the account.
+// versionName - The version of the application.
+// options - ApplicationPackageClientDeleteOptions contains the optional parameters for the ApplicationPackageClient.Delete
+// method.
+func (client *ApplicationPackageClient) Delete(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientDeleteOptions) (ApplicationPackageClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, applicationName, versionName, options)
 	if err != nil {
-		return ApplicationPackageDeleteResponse{}, err
+		return ApplicationPackageClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationPackageDeleteResponse{}, err
+		return ApplicationPackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ApplicationPackageDeleteResponse{}, client.deleteHandleError(resp)
+		return ApplicationPackageClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationPackageDeleteResponse{RawResponse: resp}, nil
+	return ApplicationPackageClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,7 +237,7 @@ func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,38 +248,30 @@ func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationPackageClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified application package.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationPackageClient) Get(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageGetOptions) (ApplicationPackageGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// applicationName - The name of the application. This must be unique within the account.
+// versionName - The version of the application.
+// options - ApplicationPackageClientGetOptions contains the optional parameters for the ApplicationPackageClient.Get method.
+func (client *ApplicationPackageClient) Get(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientGetOptions) (ApplicationPackageClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, applicationName, versionName, options)
 	if err != nil {
-		return ApplicationPackageGetResponse{}, err
+		return ApplicationPackageClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationPackageGetResponse{}, err
+		return ApplicationPackageClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationPackageGetResponse{}, client.getHandleError(resp)
+		return ApplicationPackageClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageGetOptions) (*policy.Request, error) {
+func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions/{versionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,7 +293,7 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,43 +305,34 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (ApplicationPackageGetResponse, error) {
-	result := ApplicationPackageGetResponse{RawResponse: resp}
+func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (ApplicationPackageClientGetResponse, error) {
+	result := ApplicationPackageClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
-		return ApplicationPackageGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationPackageClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationPackageClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all of the application packages in the specified application.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationPackageClient) List(resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageListOptions) *ApplicationPackageListPager {
-	return &ApplicationPackageListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// applicationName - The name of the application. This must be unique within the account.
+// options - ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.List method.
+func (client *ApplicationPackageClient) List(resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) *ApplicationPackageClientListPager {
+	return &ApplicationPackageClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationPackageListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationPackageClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListApplicationPackagesResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageListOptions) (*policy.Request, error) {
+func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -366,7 +350,7 @@ func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,23 +365,10 @@ func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplicationPackageClient) listHandleResponse(resp *http.Response) (ApplicationPackageListResponse, error) {
-	result := ApplicationPackageListResponse{RawResponse: resp}
+func (client *ApplicationPackageClient) listHandleResponse(resp *http.Response) (ApplicationPackageClientListResponse, error) {
+	result := ApplicationPackageClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplicationPackagesResult); err != nil {
-		return ApplicationPackageListResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationPackageClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ApplicationPackageClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

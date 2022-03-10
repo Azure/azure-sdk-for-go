@@ -45,7 +45,7 @@ func ExampleTemplateSpecVersionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpecVersion.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TemplateSpecVersionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecVersionsPatch.json
@@ -60,7 +60,7 @@ func ExampleTemplateSpecVersionsClient_Update() {
 		"<resource-group-name>",
 		"<template-spec-name>",
 		"<template-spec-version>",
-		&armtemplatespecs.TemplateSpecVersionsUpdateOptions{TemplateSpecVersionUpdateModel: &armtemplatespecs.TemplateSpecVersionUpdateModel{
+		&armtemplatespecs.TemplateSpecVersionsClientUpdateOptions{TemplateSpecVersionUpdateModel: &armtemplatespecs.TemplateSpecVersionUpdateModel{
 			Tags: map[string]*string{
 				"myTag": to.StringPtr("My Value"),
 			},
@@ -69,7 +69,7 @@ func ExampleTemplateSpecVersionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpecVersion.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TemplateSpecVersionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecVersionsGet.json
@@ -88,7 +88,7 @@ func ExampleTemplateSpecVersionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpecVersion.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TemplateSpecVersionsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecVersionsDelete.json
@@ -120,12 +120,16 @@ func ExampleTemplateSpecVersionsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<template-spec-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TemplateSpecVersion.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

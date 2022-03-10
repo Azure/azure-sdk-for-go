@@ -7,7 +7,6 @@
 package shared
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -20,11 +19,35 @@ import (
 	"time"
 )
 
+// TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
+type TokenRequestOptions struct {
+	// Scopes contains the list of permission scopes required for the token.
+	Scopes []string
+	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
+	// it will override the tenant ID that was added at credential creation time.
+	TenantID string
+}
+
+// TokenCredential represents a credential capable of providing an OAuth token.
+type TokenCredential interface {
+	// GetToken requests an access token for the specified set of scopes.
+	GetToken(ctx context.Context, options TokenRequestOptions) (*AccessToken, error)
+}
+
+// AccessToken represents an Azure service bearer access token with expiry information.
+type AccessToken struct {
+	Token     string
+	ExpiresOn time.Time
+}
+
 // CtxWithHTTPHeaderKey is used as a context key for adding/retrieving http.Header.
 type CtxWithHTTPHeaderKey struct{}
 
 // CtxWithRetryOptionsKey is used as a context key for adding/retrieving RetryOptions.
 type CtxWithRetryOptionsKey struct{}
+
+// CtxIncludeResponseKey is used as a context key for retrieving the raw response.
+type CtxIncludeResponseKey struct{}
 
 type nopCloser struct {
 	io.ReadSeeker
@@ -55,16 +78,13 @@ var ErrNoBody = errors.New("the response did not contain a body")
 // GetJSON reads the response body into a raw JSON object.
 // It returns ErrNoBody if there was no content.
 func GetJSON(resp *http.Response) (map[string]interface{}, error) {
-	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
+	body, err := Payload(resp)
 	if err != nil {
 		return nil, err
 	}
 	if len(body) == 0 {
 		return nil, ErrNoBody
 	}
-	// put the body back so it's available to others
-	resp.Body = ioutil.NopCloser(bytes.NewReader(body))
 	// unmarshall the body to get the value
 	var jsonBody map[string]interface{}
 	if err = json.Unmarshal(body, &jsonBody); err != nil {

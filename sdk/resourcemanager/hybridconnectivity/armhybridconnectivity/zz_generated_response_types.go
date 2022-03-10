@@ -10,80 +10,80 @@ package armhybridconnectivity
 
 import "net/http"
 
-// EndpointsCreateOrUpdateResponse contains the response from method Endpoints.CreateOrUpdate.
-type EndpointsCreateOrUpdateResponse struct {
-	EndpointsCreateOrUpdateResult
+// EndpointsClientCreateOrUpdateResponse contains the response from method EndpointsClient.CreateOrUpdate.
+type EndpointsClientCreateOrUpdateResponse struct {
+	EndpointsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsCreateOrUpdateResult contains the result from method Endpoints.CreateOrUpdate.
-type EndpointsCreateOrUpdateResult struct {
+// EndpointsClientCreateOrUpdateResult contains the result from method EndpointsClient.CreateOrUpdate.
+type EndpointsClientCreateOrUpdateResult struct {
 	EndpointResource
 }
 
-// EndpointsDeleteResponse contains the response from method Endpoints.Delete.
-type EndpointsDeleteResponse struct {
+// EndpointsClientDeleteResponse contains the response from method EndpointsClient.Delete.
+type EndpointsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsGetResponse contains the response from method Endpoints.Get.
-type EndpointsGetResponse struct {
-	EndpointsGetResult
+// EndpointsClientGetResponse contains the response from method EndpointsClient.Get.
+type EndpointsClientGetResponse struct {
+	EndpointsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsGetResult contains the result from method Endpoints.Get.
-type EndpointsGetResult struct {
+// EndpointsClientGetResult contains the result from method EndpointsClient.Get.
+type EndpointsClientGetResult struct {
 	EndpointResource
 }
 
-// EndpointsListCredentialsResponse contains the response from method Endpoints.ListCredentials.
-type EndpointsListCredentialsResponse struct {
-	EndpointsListCredentialsResult
+// EndpointsClientListCredentialsResponse contains the response from method EndpointsClient.ListCredentials.
+type EndpointsClientListCredentialsResponse struct {
+	EndpointsClientListCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsListCredentialsResult contains the result from method Endpoints.ListCredentials.
-type EndpointsListCredentialsResult struct {
+// EndpointsClientListCredentialsResult contains the result from method EndpointsClient.ListCredentials.
+type EndpointsClientListCredentialsResult struct {
 	EndpointAccessResource
 }
 
-// EndpointsListResponse contains the response from method Endpoints.List.
-type EndpointsListResponse struct {
-	EndpointsListResult
+// EndpointsClientListResponse contains the response from method EndpointsClient.List.
+type EndpointsClientListResponse struct {
+	EndpointsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsListResult contains the result from method Endpoints.List.
-type EndpointsListResult struct {
+// EndpointsClientListResult contains the result from method EndpointsClient.List.
+type EndpointsClientListResult struct {
 	EndpointsList
 }
 
-// EndpointsUpdateResponse contains the response from method Endpoints.Update.
-type EndpointsUpdateResponse struct {
-	EndpointsUpdateResult
+// EndpointsClientUpdateResponse contains the response from method EndpointsClient.Update.
+type EndpointsClientUpdateResponse struct {
+	EndpointsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EndpointsUpdateResult contains the result from method Endpoints.Update.
-type EndpointsUpdateResult struct {
+// EndpointsClientUpdateResult contains the result from method EndpointsClient.Update.
+type EndpointsClientUpdateResult struct {
 	EndpointResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

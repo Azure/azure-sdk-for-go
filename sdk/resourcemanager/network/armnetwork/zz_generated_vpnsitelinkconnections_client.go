@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // VPNSiteLinkConnectionsClient contains the methods for the VPNSiteLinkConnections group.
 // Don't use this type directly, use NewVPNSiteLinkConnectionsClient() instead.
 type VPNSiteLinkConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVPNSiteLinkConnectionsClient creates a new instance of VPNSiteLinkConnectionsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVPNSiteLinkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VPNSiteLinkConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VPNSiteLinkConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VPNSiteLinkConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieves the details of a vpn site link connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *VPNSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNSiteLinkConnectionsGetOptions) (VPNSiteLinkConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name of the VpnGateway.
+// gatewayName - The name of the gateway.
+// connectionName - The name of the vpn connection.
+// linkConnectionName - The name of the vpn connection.
+// options - VPNSiteLinkConnectionsClientGetOptions contains the optional parameters for the VPNSiteLinkConnectionsClient.Get
+// method.
+func (client *VPNSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNSiteLinkConnectionsClientGetOptions) (VPNSiteLinkConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
 	if err != nil {
-		return VPNSiteLinkConnectionsGetResponse{}, err
+		return VPNSiteLinkConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VPNSiteLinkConnectionsGetResponse{}, err
+		return VPNSiteLinkConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VPNSiteLinkConnectionsGetResponse{}, client.getHandleError(resp)
+		return VPNSiteLinkConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNSiteLinkConnectionsGetOptions) (*policy.Request, error) {
+func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNSiteLinkConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter linkConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkConnectionName}", url.PathEscape(linkConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +108,10 @@ func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *http.Response) (VPNSiteLinkConnectionsGetResponse, error) {
-	result := VPNSiteLinkConnectionsGetResponse{RawResponse: resp}
+func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *http.Response) (VPNSiteLinkConnectionsClientGetResponse, error) {
+	result := VPNSiteLinkConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VPNSiteLinkConnection); err != nil {
-		return VPNSiteLinkConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VPNSiteLinkConnectionsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *VPNSiteLinkConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

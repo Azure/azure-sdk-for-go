@@ -44,7 +44,12 @@ type AutomaticResolutionProperties struct {
 
 // AvailabilitySetResourceSettings - Gets or sets the availability set resource settings.
 type AvailabilitySetResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the target fault domain.
 	FaultDomain *int32 `json:"faultDomain,omitempty"`
 
@@ -55,12 +60,21 @@ type AvailabilitySetResourceSettings struct {
 	UpdateDomain *int32 `json:"updateDomain,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type AvailabilitySetResourceSettings.
+func (a *AvailabilitySetResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       a.ResourceType,
+		TargetResourceName: a.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AvailabilitySetResourceSettings.
 func (a AvailabilitySetResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ResourceSettings.marshalInternal(objectMap, "Microsoft.Compute/availabilitySets")
 	populate(objectMap, "faultDomain", a.FaultDomain)
+	objectMap["resourceType"] = "Microsoft.Compute/availabilitySets"
 	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "targetResourceName", a.TargetResourceName)
 	populate(objectMap, "updateDomain", a.UpdateDomain)
 	return json.Marshal(objectMap)
 }
@@ -77,8 +91,14 @@ func (a *AvailabilitySetResourceSettings) UnmarshalJSON(data []byte) error {
 		case "faultDomain":
 			err = unpopulate(val, &a.FaultDomain)
 			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, &a.ResourceType)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &a.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &a.TargetResourceName)
 			delete(rawMsg, key)
 		case "updateDomain":
 			err = unpopulate(val, &a.UpdateDomain)
@@ -87,9 +107,6 @@ func (a *AvailabilitySetResourceSettings) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -105,7 +122,8 @@ type BulkRemoveRequest struct {
 	// Defines the move resource input type.
 	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
 
-	// Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType property.
+	// Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via
+	// moveResourceInputType property.
 	MoveResources []*string `json:"moveResources,omitempty"`
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
@@ -122,17 +140,9 @@ func (b BulkRemoveRequest) MarshalJSON() ([]byte, error) {
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Cloud error body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -162,8 +172,8 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 
 // CommitRequest - Defines the request body for commit operation.
 type CommitRequest struct {
-	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType
-	// property.
+	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
+	// via moveResourceInputType property.
 	MoveResources []*string `json:"moveResources,omitempty"`
 
 	// Defines the move resource input type.
@@ -184,8 +194,8 @@ func (c CommitRequest) MarshalJSON() ([]byte, error) {
 
 // DiscardRequest - Defines the request body for discard operation.
 type DiscardRequest struct {
-	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType
-	// property.
+	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
+	// via moveResourceInputType property.
 	MoveResources []*string `json:"moveResources,omitempty"`
 
 	// Defines the move resource input type.
@@ -206,42 +216,78 @@ func (d DiscardRequest) MarshalJSON() ([]byte, error) {
 
 // DiskEncryptionSetResourceSettings - Defines the disk encryption set resource settings.
 type DiskEncryptionSetResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type DiskEncryptionSetResourceSettings.
+func (d *DiskEncryptionSetResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       d.ResourceType,
+		TargetResourceName: d.TargetResourceName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DiskEncryptionSetResourceSettings.
 func (d DiskEncryptionSetResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ResourceSettings.marshalInternal(objectMap, "Microsoft.Compute/diskEncryptionSets")
+	objectMap["resourceType"] = "Microsoft.Compute/diskEncryptionSets"
+	populate(objectMap, "targetResourceName", d.TargetResourceName)
 	return json.Marshal(objectMap)
 }
 
-// Display - Contains the localized display information for this particular operation / action. These value will be used by several clients for (1) custom
-// role definitions for RBAC; (2) complex query filters for
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskEncryptionSetResourceSettings.
+func (d *DiskEncryptionSetResourceSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceType":
+			err = unpopulate(val, &d.ResourceType)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &d.TargetResourceName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Display - Contains the localized display information for this particular operation / action. These value will be used by
+// several clients for (1) custom role definitions for RBAC; (2) complex query filters for
 // the event service; and (3) audit history / records for management operations.
 type Display struct {
-	// Gets or sets the description. The localized friendly description for the operation, as it should be shown to the user. It should be thorough, yet concise
-	// – it will be used in tool tips and detailed
-	// views. Prescriptive guidance for namespace: Read any 'display.provider' resource Create or Update any 'display.provider' resource Delete any 'display.provider'
-	// resource Perform any other action on any
-	// 'display.provider' resource Prescriptive guidance for namespace: Read any 'display.resource' Create or Update any 'display.resource' Delete any 'display.resource'
-	// 'ActionName' any 'display.resources'.
+	// Gets or sets the description. The localized friendly description for the operation, as it should be shown to the user.
+	// It should be thorough, yet concise – it will be used in tool tips and detailed
+	// views. Prescriptive guidance for namespace: Read any 'display.provider' resource Create or Update any 'display.provider'
+	// resource Delete any 'display.provider' resource Perform any other action on any
+	// 'display.provider' resource Prescriptive guidance for namespace: Read any 'display.resource' Create or Update any 'display.resource'
+	// Delete any 'display.resource' 'ActionName' any 'display.resources'.
 	Description *string `json:"description,omitempty"`
 
-	// Gets or sets the operation. The localized friendly name for the operation, as it should be shown to the user. It should be concise (to fit in drop downs)
-	// but clear (i.e. self-documenting). It should
+	// Gets or sets the operation. The localized friendly name for the operation, as it should be shown to the user. It should
+	// be concise (to fit in drop downs) but clear (i.e. self-documenting). It should
 	// use Title Casing. Prescriptive guidance: Read Create or Update Delete 'ActionName'.
 	Operation *string `json:"operation,omitempty"`
 
-	// Gets or sets the provider. The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible.
-	// It should use Title Casing and begin with
+	// Gets or sets the provider. The localized friendly form of the resource provider name – it is expected to also include the
+	// publisher/company responsible. It should use Title Casing and begin with
 	// "Microsoft" for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
 	Provider *string `json:"provider,omitempty"`
 
-	// Gets or sets the resource. The localized friendly form of the resource related to this action/operation – it should match the public documentation for
-	// the resource provider. It should use Title
-	// Casing. This value should be unique for a particular URL type (e.g. nested types should notreuse their parent’s display.resource field) e.g. "Virtual
-	// Machines" or "Scheduler Job Collections", or
+	// Gets or sets the resource. The localized friendly form of the resource related to this action/operation – it should match
+	// the public documentation for the resource provider. It should use Title
+	// Casing. This value should be unique for a particular URL type (e.g. nested types should notreuse their parent’s display.resource
+	// field) e.g. "Virtual Machines" or "Scheduler Job Collections", or
 	// "Virtual Machine VM Sizes" or "Scheduler Jobs".
 	Resource *string `json:"resource,omitempty"`
 }
@@ -269,14 +315,50 @@ type JobStatus struct {
 
 // KeyVaultResourceSettings - Defines the key vault resource settings.
 type KeyVaultResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type KeyVaultResourceSettings.
+func (k *KeyVaultResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       k.ResourceType,
+		TargetResourceName: k.TargetResourceName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyVaultResourceSettings.
 func (k KeyVaultResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.ResourceSettings.marshalInternal(objectMap, "Microsoft.KeyVault/vaults")
+	objectMap["resourceType"] = "Microsoft.KeyVault/vaults"
+	populate(objectMap, "targetResourceName", k.TargetResourceName)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVaultResourceSettings.
+func (k *KeyVaultResourceSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceType":
+			err = unpopulate(val, &k.ResourceType)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &k.TargetResourceName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // LBBackendAddressPoolResourceSettings - Defines load balancer backend address pool properties.
@@ -290,8 +372,8 @@ type LBFrontendIPConfigurationResourceSettings struct {
 	// Gets or sets the frontend IP configuration name.
 	Name *string `json:"name,omitempty"`
 
-	// Gets or sets the IP address of the Load Balancer.This is only specified if a specific private IP address shall be allocated from the subnet specified
-	// in subnetRef.
+	// Gets or sets the IP address of the Load Balancer.This is only specified if a specific private IP address shall be allocated
+	// from the subnet specified in subnetRef.
 	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
 
 	// Gets or sets PrivateIP allocation method (Static/Dynamic).
@@ -306,17 +388,30 @@ type LBFrontendIPConfigurationResourceSettings struct {
 
 // LoadBalancerBackendAddressPoolReference - Defines reference to load balancer backend address pools.
 type LoadBalancerBackendAddressPoolReference struct {
-	ProxyResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+
+	// Gets the name of the proxy resource on the target side.
+	Name *string `json:"name,omitempty"`
 }
 
 // LoadBalancerNatRuleReference - Defines reference to load balancer NAT rules.
 type LoadBalancerNatRuleReference struct {
-	ProxyResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+
+	// Gets the name of the proxy resource on the target side.
+	Name *string `json:"name,omitempty"`
 }
 
 // LoadBalancerResourceSettings - Defines the load balancer resource settings.
 type LoadBalancerResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the backend address pools of the load balancer.
 	BackendAddressPools []*LBBackendAddressPoolResourceSettings `json:"backendAddressPools,omitempty"`
 
@@ -329,19 +424,28 @@ type LoadBalancerResourceSettings struct {
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// Gets or sets the csv list of zones common for all frontend IP configurations. Note this is given precedence only if frontend IP configurations settings
-	// are not present.
+	// Gets or sets the csv list of zones common for all frontend IP configurations. Note this is given precedence only if frontend
+	// IP configurations settings are not present.
 	Zones *string `json:"zones,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type LoadBalancerResourceSettings.
+func (l *LoadBalancerResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       l.ResourceType,
+		TargetResourceName: l.TargetResourceName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LoadBalancerResourceSettings.
 func (l LoadBalancerResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.ResourceSettings.marshalInternal(objectMap, "Microsoft.Network/loadBalancers")
 	populate(objectMap, "backendAddressPools", l.BackendAddressPools)
 	populate(objectMap, "frontendIPConfigurations", l.FrontendIPConfigurations)
+	objectMap["resourceType"] = "Microsoft.Network/loadBalancers"
 	populate(objectMap, "sku", l.SKU)
 	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "targetResourceName", l.TargetResourceName)
 	populate(objectMap, "zones", l.Zones)
 	return json.Marshal(objectMap)
 }
@@ -361,11 +465,17 @@ func (l *LoadBalancerResourceSettings) UnmarshalJSON(data []byte) error {
 		case "frontendIPConfigurations":
 			err = unpopulate(val, &l.FrontendIPConfigurations)
 			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, &l.ResourceType)
+			delete(rawMsg, key)
 		case "sku":
 			err = unpopulate(val, &l.SKU)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &l.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &l.TargetResourceName)
 			delete(rawMsg, key)
 		case "zones":
 			err = unpopulate(val, &l.Zones)
@@ -374,9 +484,6 @@ func (l *LoadBalancerResourceSettings) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := l.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -449,7 +556,8 @@ type MoveCollectionProperties struct {
 
 // MoveCollectionPropertiesErrors - Defines the move collection errors.
 type MoveCollectionPropertiesErrors struct {
-	MoveResourceError
+	// The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
 }
 
 // MoveCollectionResultList - Defines the collection of move collections.
@@ -469,69 +577,74 @@ func (m MoveCollectionResultList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MoveCollectionsBeginBulkRemoveOptions contains the optional parameters for the MoveCollections.BeginBulkRemove method.
-type MoveCollectionsBeginBulkRemoveOptions struct {
+// MoveCollectionsClientBeginBulkRemoveOptions contains the optional parameters for the MoveCollectionsClient.BeginBulkRemove
+// method.
+type MoveCollectionsClientBeginBulkRemoveOptions struct {
 	Body *BulkRemoveRequest
 }
 
-// MoveCollectionsBeginCommitOptions contains the optional parameters for the MoveCollections.BeginCommit method.
-type MoveCollectionsBeginCommitOptions struct {
+// MoveCollectionsClientBeginCommitOptions contains the optional parameters for the MoveCollectionsClient.BeginCommit method.
+type MoveCollectionsClientBeginCommitOptions struct {
 	Body *CommitRequest
 }
 
-// MoveCollectionsBeginDeleteOptions contains the optional parameters for the MoveCollections.BeginDelete method.
-type MoveCollectionsBeginDeleteOptions struct {
+// MoveCollectionsClientBeginDeleteOptions contains the optional parameters for the MoveCollectionsClient.BeginDelete method.
+type MoveCollectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsBeginDiscardOptions contains the optional parameters for the MoveCollections.BeginDiscard method.
-type MoveCollectionsBeginDiscardOptions struct {
+// MoveCollectionsClientBeginDiscardOptions contains the optional parameters for the MoveCollectionsClient.BeginDiscard method.
+type MoveCollectionsClientBeginDiscardOptions struct {
 	Body *DiscardRequest
 }
 
-// MoveCollectionsBeginInitiateMoveOptions contains the optional parameters for the MoveCollections.BeginInitiateMove method.
-type MoveCollectionsBeginInitiateMoveOptions struct {
+// MoveCollectionsClientBeginInitiateMoveOptions contains the optional parameters for the MoveCollectionsClient.BeginInitiateMove
+// method.
+type MoveCollectionsClientBeginInitiateMoveOptions struct {
 	Body *ResourceMoveRequest
 }
 
-// MoveCollectionsBeginPrepareOptions contains the optional parameters for the MoveCollections.BeginPrepare method.
-type MoveCollectionsBeginPrepareOptions struct {
+// MoveCollectionsClientBeginPrepareOptions contains the optional parameters for the MoveCollectionsClient.BeginPrepare method.
+type MoveCollectionsClientBeginPrepareOptions struct {
 	Body *PrepareRequest
 }
 
-// MoveCollectionsBeginResolveDependenciesOptions contains the optional parameters for the MoveCollections.BeginResolveDependencies method.
-type MoveCollectionsBeginResolveDependenciesOptions struct {
+// MoveCollectionsClientBeginResolveDependenciesOptions contains the optional parameters for the MoveCollectionsClient.BeginResolveDependencies
+// method.
+type MoveCollectionsClientBeginResolveDependenciesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsCreateOptions contains the optional parameters for the MoveCollections.Create method.
-type MoveCollectionsCreateOptions struct {
+// MoveCollectionsClientCreateOptions contains the optional parameters for the MoveCollectionsClient.Create method.
+type MoveCollectionsClientCreateOptions struct {
 	Body *MoveCollection
 }
 
-// MoveCollectionsGetOptions contains the optional parameters for the MoveCollections.Get method.
-type MoveCollectionsGetOptions struct {
+// MoveCollectionsClientGetOptions contains the optional parameters for the MoveCollectionsClient.Get method.
+type MoveCollectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsListMoveCollectionsByResourceGroupOptions contains the optional parameters for the MoveCollections.ListMoveCollectionsByResourceGroup
+// MoveCollectionsClientListMoveCollectionsByResourceGroupOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsByResourceGroup
 // method.
-type MoveCollectionsListMoveCollectionsByResourceGroupOptions struct {
+type MoveCollectionsClientListMoveCollectionsByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsListMoveCollectionsBySubscriptionOptions contains the optional parameters for the MoveCollections.ListMoveCollectionsBySubscription method.
-type MoveCollectionsListMoveCollectionsBySubscriptionOptions struct {
+// MoveCollectionsClientListMoveCollectionsBySubscriptionOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsBySubscription
+// method.
+type MoveCollectionsClientListMoveCollectionsBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsListRequiredForOptions contains the optional parameters for the MoveCollections.ListRequiredFor method.
-type MoveCollectionsListRequiredForOptions struct {
+// MoveCollectionsClientListRequiredForOptions contains the optional parameters for the MoveCollectionsClient.ListRequiredFor
+// method.
+type MoveCollectionsClientListRequiredForOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveCollectionsUpdateOptions contains the optional parameters for the MoveCollections.Update method.
-type MoveCollectionsUpdateOptions struct {
+// MoveCollectionsClientUpdateOptions contains the optional parameters for the MoveCollectionsClient.Update method.
+type MoveCollectionsClientUpdateOptions struct {
 	Body *UpdateMoveCollectionRequest
 }
 
@@ -770,12 +883,20 @@ func (m *MoveResourceProperties) UnmarshalJSON(data []byte) error {
 
 // MoveResourcePropertiesErrors - Defines the move resource errors.
 type MoveResourcePropertiesErrors struct {
-	MoveResourceError
+	// The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
 }
 
 // MoveResourcePropertiesMoveStatus - Defines the move resource status.
 type MoveResourcePropertiesMoveStatus struct {
-	MoveResourceStatus
+	// An error response from the azure resource mover service.
+	Errors *MoveResourceError `json:"errors,omitempty"`
+
+	// Defines the job status.
+	JobStatus *JobStatus `json:"jobStatus,omitempty"`
+
+	// READ-ONLY; Defines the MoveResource states.
+	MoveState *MoveState `json:"moveState,omitempty" azure:"ro"`
 }
 
 // MoveResourceStatus - Defines the move resource status.
@@ -790,30 +911,35 @@ type MoveResourceStatus struct {
 	MoveState *MoveState `json:"moveState,omitempty" azure:"ro"`
 }
 
-// MoveResourcesBeginCreateOptions contains the optional parameters for the MoveResources.BeginCreate method.
-type MoveResourcesBeginCreateOptions struct {
+// MoveResourcesClientBeginCreateOptions contains the optional parameters for the MoveResourcesClient.BeginCreate method.
+type MoveResourcesClientBeginCreateOptions struct {
 	Body *MoveResource
 }
 
-// MoveResourcesBeginDeleteOptions contains the optional parameters for the MoveResources.BeginDelete method.
-type MoveResourcesBeginDeleteOptions struct {
+// MoveResourcesClientBeginDeleteOptions contains the optional parameters for the MoveResourcesClient.BeginDelete method.
+type MoveResourcesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveResourcesGetOptions contains the optional parameters for the MoveResources.Get method.
-type MoveResourcesGetOptions struct {
+// MoveResourcesClientGetOptions contains the optional parameters for the MoveResourcesClient.Get method.
+type MoveResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MoveResourcesListOptions contains the optional parameters for the MoveResources.List method.
-type MoveResourcesListOptions struct {
+// MoveResourcesClientListOptions contains the optional parameters for the MoveResourcesClient.List method.
+type MoveResourcesClientListOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=Properties/ProvisioningState eq 'Succeeded'.
 	Filter *string
 }
 
 // NetworkInterfaceResourceSettings - Defines the network interface resource settings.
 type NetworkInterfaceResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets a value indicating whether accelerated networking is enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
 
@@ -824,13 +950,22 @@ type NetworkInterfaceResourceSettings struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkInterfaceResourceSettings.
+func (n *NetworkInterfaceResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       n.ResourceType,
+		TargetResourceName: n.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type NetworkInterfaceResourceSettings.
 func (n NetworkInterfaceResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.ResourceSettings.marshalInternal(objectMap, "Microsoft.Network/networkInterfaces")
 	populate(objectMap, "enableAcceleratedNetworking", n.EnableAcceleratedNetworking)
 	populate(objectMap, "ipConfigurations", n.IPConfigurations)
+	objectMap["resourceType"] = "Microsoft.Network/networkInterfaces"
 	populate(objectMap, "tags", n.Tags)
+	populate(objectMap, "targetResourceName", n.TargetResourceName)
 	return json.Marshal(objectMap)
 }
 
@@ -849,23 +984,31 @@ func (n *NetworkInterfaceResourceSettings) UnmarshalJSON(data []byte) error {
 		case "ipConfigurations":
 			err = unpopulate(val, &n.IPConfigurations)
 			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, &n.ResourceType)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &n.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &n.TargetResourceName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := n.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // NetworkSecurityGroupResourceSettings - Defines the NSG resource settings.
 type NetworkSecurityGroupResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets Security rules of network security group.
 	SecurityRules []*NsgSecurityRule `json:"securityRules,omitempty"`
 
@@ -873,12 +1016,21 @@ type NetworkSecurityGroupResourceSettings struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkSecurityGroupResourceSettings.
+func (n *NetworkSecurityGroupResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       n.ResourceType,
+		TargetResourceName: n.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type NetworkSecurityGroupResourceSettings.
 func (n NetworkSecurityGroupResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.ResourceSettings.marshalInternal(objectMap, "Microsoft.Network/networkSecurityGroups")
+	objectMap["resourceType"] = "Microsoft.Network/networkSecurityGroups"
 	populate(objectMap, "securityRules", n.SecurityRules)
 	populate(objectMap, "tags", n.Tags)
+	populate(objectMap, "targetResourceName", n.TargetResourceName)
 	return json.Marshal(objectMap)
 }
 
@@ -891,19 +1043,22 @@ func (n *NetworkSecurityGroupResourceSettings) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "resourceType":
+			err = unpopulate(val, &n.ResourceType)
+			delete(rawMsg, key)
 		case "securityRules":
 			err = unpopulate(val, &n.SecurityRules)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &n.Tags)
 			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &n.TargetResourceName)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := n.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -951,7 +1106,8 @@ func (n NicIPConfigurationResourceSettings) MarshalJSON() ([]byte, error) {
 
 // NsgReference - Defines reference to NSG.
 type NsgReference struct {
-	AzureResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
 }
 
 // NsgSecurityRule - Security Rule data model for Network Security Groups.
@@ -962,30 +1118,31 @@ type NsgSecurityRule struct {
 	// Gets or sets a description for this rule. Restricted to 140 chars.
 	Description *string `json:"description,omitempty"`
 
-	// Gets or sets destination address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default tags such as ‘VirtualNetwork’,
-	// ‘AzureLoadBalancer’ and ‘Internet’ can also be
+	// Gets or sets destination address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default
+	// tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be
 	// used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 
 	// Gets or sets Destination Port or Range. Integer or range between 0 and 65535. A “*” can also be used to match all ports.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
 
-	// Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
+	// Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming
+	// or outgoing traffic.
 	Direction *string `json:"direction,omitempty"`
 
 	// Gets or sets the Security rule name.
 	Name *string `json:"name,omitempty"`
 
-	// Gets or sets the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The
-	// lower the priority number, the higher the priority
+	// Gets or sets the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
+	// rule in the collection. The lower the priority number, the higher the priority
 	// of the rule.
 	Priority *int32 `json:"priority,omitempty"`
 
 	// Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or All(*).
 	Protocol *string `json:"protocol,omitempty"`
 
-	// Gets or sets source address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’
-	// and ‘Internet’ can also be used.
+	// Gets or sets source address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default tags
+	// such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used.
 	// If this is an ingress rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 
@@ -1023,8 +1180,8 @@ type OperationStatus struct {
 	// READ-ONLY; Start time.
 	StartTime *string `json:"startTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/ Canceled. All other values imply that the operation
-	// is still running.
+	// READ-ONLY; Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/ Canceled. All other
+	// values imply that the operation is still running.
 	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
@@ -1055,38 +1212,43 @@ func (o OperationStatusError) MarshalJSON() ([]byte, error) {
 
 // OperationsDiscovery - Operations discovery class.
 type OperationsDiscovery struct {
-	// Contains the localized display information for this particular operation / action. These value will be used by several clients for (1) custom role definitions
-	// for RBAC; (2) complex query filters for
+	// Contains the localized display information for this particular operation / action. These value will be used by several
+	// clients for (1) custom role definitions for RBAC; (2) complex query filters for
 	// the event service; and (3) audit history / records for management operations.
 	Display *Display `json:"display,omitempty"`
 
 	// Indicates whether the operation is a data action
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 
-	// Gets or sets Name of the API. The name of the operation being performed on this particular object. It should match the action name that appears in RBAC
-	// / the event service. Examples of operations
+	// Gets or sets Name of the API. The name of the operation being performed on this particular object. It should match the
+	// action name that appears in RBAC / the event service. Examples of operations
 	// include:
 	// * Microsoft.Compute/virtualMachine/capture/action
 	// * Microsoft.Compute/virtualMachine/restart/action
 	// * Microsoft.Compute/virtualMachine/write
 	// * Microsoft.Compute/virtualMachine/read
-	// * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type hierarchy for which the action
-	// applies (e.g. server/databases for a SQL Azure
-	// database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should be used.
-	// If it is a GET, Read should be used. If it is a
-	// DELETE, Delete should be used. If it is a POST, Action should be used. As a note: all resource providers would need to include the "{Resource Provider
-	// Namespace}/register/action" operation in their
-	// response. This API is used to register for their service, and should include details about the operation (e.g. a localized name for the resource provider
-	// + any special considerations like PII
+	// * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type
+	// hierarchy for which the action applies (e.g. server/databases for a SQL Azure
+	// database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named
+	// value, Write should be used. If it is a GET, Read should be used. If it is a
+	// DELETE, Delete should be used. If it is a POST, Action should be used. As a note: all resource providers would need to
+	// include the "{Resource Provider Namespace}/register/action" operation in their
+	// response. This API is used to register for their service, and should include details about the operation (e.g. a localized
+	// name for the resource provider + any special considerations like PII
 	// release).
 	Name *string `json:"name,omitempty"`
 
-	// Gets or sets Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value
-	// is "user,system".
+	// Gets or sets Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the
+	// audit logs UX. Default value is "user,system".
 	Origin *string `json:"origin,omitempty"`
 
 	// Any object
 	Properties map[string]interface{} `json:"properties,omitempty"`
+}
+
+// OperationsDiscoveryClientGetOptions contains the optional parameters for the OperationsDiscoveryClient.Get method.
+type OperationsDiscoveryClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsDiscoveryCollection - Collection of ClientDiscovery details.
@@ -1106,15 +1268,10 @@ func (o OperationsDiscoveryCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsDiscoveryGetOptions contains the optional parameters for the OperationsDiscovery.Get method.
-type OperationsDiscoveryGetOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrepareRequest - Defines the request body for initiate prepare operation.
 type PrepareRequest struct {
-	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType
-	// property.
+	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
+	// via moveResourceInputType property.
 	MoveResources []*string `json:"moveResources,omitempty"`
 
 	// Defines the move resource input type.
@@ -1135,14 +1292,21 @@ func (p PrepareRequest) MarshalJSON() ([]byte, error) {
 
 // ProxyResourceReference - Defines reference to a proxy resource.
 type ProxyResourceReference struct {
-	AzureResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+
 	// Gets the name of the proxy resource on the target side.
 	Name *string `json:"name,omitempty"`
 }
 
 // PublicIPAddressResourceSettings - Defines the public IP address resource settings.
 type PublicIPAddressResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the domain name label.
 	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
 
@@ -1162,15 +1326,24 @@ type PublicIPAddressResourceSettings struct {
 	Zones *string `json:"zones,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type PublicIPAddressResourceSettings.
+func (p *PublicIPAddressResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       p.ResourceType,
+		TargetResourceName: p.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PublicIPAddressResourceSettings.
 func (p PublicIPAddressResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceSettings.marshalInternal(objectMap, "Microsoft.Network/publicIPAddresses")
 	populate(objectMap, "domainNameLabel", p.DomainNameLabel)
 	populate(objectMap, "fqdn", p.Fqdn)
 	populate(objectMap, "publicIpAllocationMethod", p.PublicIPAllocationMethod)
+	objectMap["resourceType"] = "Microsoft.Network/publicIPAddresses"
 	populate(objectMap, "sku", p.SKU)
 	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "targetResourceName", p.TargetResourceName)
 	populate(objectMap, "zones", p.Zones)
 	return json.Marshal(objectMap)
 }
@@ -1193,11 +1366,17 @@ func (p *PublicIPAddressResourceSettings) UnmarshalJSON(data []byte) error {
 		case "publicIpAllocationMethod":
 			err = unpopulate(val, &p.PublicIPAllocationMethod)
 			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, &p.ResourceType)
+			delete(rawMsg, key)
 		case "sku":
 			err = unpopulate(val, &p.SKU)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &p.TargetResourceName)
 			delete(rawMsg, key)
 		case "zones":
 			err = unpopulate(val, &p.Zones)
@@ -1207,15 +1386,13 @@ func (p *PublicIPAddressResourceSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := p.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // PublicIPReference - Defines reference to a public IP.
 type PublicIPReference struct {
-	AzureResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
 }
 
 // RequiredForResourcesCollection - Required for resources collection.
@@ -1233,20 +1410,56 @@ func (r RequiredForResourcesCollection) MarshalJSON() ([]byte, error) {
 
 // ResourceGroupResourceSettings - Defines the resource group resource settings.
 type ResourceGroupResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceGroupResourceSettings.
+func (r *ResourceGroupResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       r.ResourceType,
+		TargetResourceName: r.TargetResourceName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceGroupResourceSettings.
 func (r ResourceGroupResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ResourceSettings.marshalInternal(objectMap, "resourceGroups")
+	objectMap["resourceType"] = "resourceGroups"
+	populate(objectMap, "targetResourceName", r.TargetResourceName)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceGroupResourceSettings.
+func (r *ResourceGroupResourceSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceType":
+			err = unpopulate(val, &r.ResourceType)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &r.TargetResourceName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ResourceMoveRequest - Defines the request body for resource move operation.
 type ResourceMoveRequest struct {
-	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType
-	// property.
+	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
+	// via moveResourceInputType property.
 	MoveResources []*string `json:"moveResources,omitempty"`
 
 	// Defines the move resource input type.
@@ -1270,7 +1483,7 @@ func (r ResourceMoveRequest) MarshalJSON() ([]byte, error) {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AvailabilitySetResourceSettings, *DiskEncryptionSetResourceSettings, *KeyVaultResourceSettings, *LoadBalancerResourceSettings,
 // - *NetworkInterfaceResourceSettings, *NetworkSecurityGroupResourceSettings, *PublicIPAddressResourceSettings, *ResourceGroupResourceSettings,
-// - *ResourceSettings, *SqlDatabaseResourceSettings, *SqlElasticPoolResourceSettings, *SqlServerResourceSettings, *VirtualMachineResourceSettings,
+// - *ResourceSettings, *SQLDatabaseResourceSettings, *SQLElasticPoolResourceSettings, *SQLServerResourceSettings, *VirtualMachineResourceSettings,
 // - *VirtualNetworkResourceSettings
 type ResourceSettingsClassification interface {
 	// GetResourceSettings returns the ResourceSettings content of the underlying type.
@@ -1289,42 +1502,14 @@ type ResourceSettings struct {
 // GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceSettings.
 func (r *ResourceSettings) GetResourceSettings() *ResourceSettings { return r }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceSettings.
-func (r *ResourceSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r ResourceSettings) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	r.ResourceType = &discValue
-	objectMap["resourceType"] = r.ResourceType
-	populate(objectMap, "targetResourceName", r.TargetResourceName)
-}
-
-func (r *ResourceSettings) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "resourceType":
-			err = unpopulate(val, &r.ResourceType)
-			delete(rawMsg, key)
-		case "targetResourceName":
-			err = unpopulate(val, &r.TargetResourceName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SQLDatabaseResourceSettings - Defines the Sql Database resource settings.
 type SQLDatabaseResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -1332,11 +1517,20 @@ type SQLDatabaseResourceSettings struct {
 	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLDatabaseResourceSettings.
+func (s *SQLDatabaseResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SQLDatabaseResourceSettings.
 func (s SQLDatabaseResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ResourceSettings.marshalInternal(objectMap, "Microsoft.Sql/servers/databases")
+	objectMap["resourceType"] = "Microsoft.Sql/servers/databases"
 	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "targetResourceName", s.TargetResourceName)
 	populate(objectMap, "zoneRedundant", s.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
@@ -1350,8 +1544,14 @@ func (s *SQLDatabaseResourceSettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "resourceType":
+			err = unpopulate(val, &s.ResourceType)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &s.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &s.TargetResourceName)
 			delete(rawMsg, key)
 		case "zoneRedundant":
 			err = unpopulate(val, &s.ZoneRedundant)
@@ -1361,15 +1561,17 @@ func (s *SQLDatabaseResourceSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // SQLElasticPoolResourceSettings - Defines the Sql ElasticPool resource settings.
 type SQLElasticPoolResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -1377,11 +1579,20 @@ type SQLElasticPoolResourceSettings struct {
 	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLElasticPoolResourceSettings.
+func (s *SQLElasticPoolResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SQLElasticPoolResourceSettings.
 func (s SQLElasticPoolResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ResourceSettings.marshalInternal(objectMap, "Microsoft.Sql/servers/elasticPools")
+	objectMap["resourceType"] = "Microsoft.Sql/servers/elasticPools"
 	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "targetResourceName", s.TargetResourceName)
 	populate(objectMap, "zoneRedundant", s.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
@@ -1395,8 +1606,14 @@ func (s *SQLElasticPoolResourceSettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "resourceType":
+			err = unpopulate(val, &s.ResourceType)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &s.Tags)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &s.TargetResourceName)
 			delete(rawMsg, key)
 		case "zoneRedundant":
 			err = unpopulate(val, &s.ZoneRedundant)
@@ -1406,27 +1623,64 @@ func (s *SQLElasticPoolResourceSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // SQLServerResourceSettings - Defines the SQL Server resource settings.
 type SQLServerResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLServerResourceSettings.
+func (s *SQLServerResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SQLServerResourceSettings.
 func (s SQLServerResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ResourceSettings.marshalInternal(objectMap, "Microsoft.Sql/servers")
+	objectMap["resourceType"] = "Microsoft.Sql/servers"
+	populate(objectMap, "targetResourceName", s.TargetResourceName)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SQLServerResourceSettings.
+func (s *SQLServerResourceSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceType":
+			err = unpopulate(val, &s.ResourceType)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &s.TargetResourceName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // SubnetReference - Defines reference to subnet.
 type SubnetReference struct {
-	ProxyResourceReference
+	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+
+	// Gets the name of the proxy resource on the target side.
+	Name *string `json:"name,omitempty"`
 }
 
 // SubnetResourceSettings - Defines the virtual network subnets resource settings.
@@ -1535,6 +1789,16 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnresolvedDependenciesClientGetOptions contains the optional parameters for the UnresolvedDependenciesClient.Get method.
+type UnresolvedDependenciesClientGetOptions struct {
+	// Defines the dependency level.
+	DependencyLevel *DependencyLevel
+	// The filter to apply on the operation. For example, $apply=filter(count eq 2).
+	Filter *string
+	// OData order by query option. For example, you can use $orderby=Count desc.
+	Orderby *string
+}
+
 // UnresolvedDependenciesFilter - Unresolved dependencies contract.
 type UnresolvedDependenciesFilter struct {
 	Properties *UnresolvedDependenciesFilterProperties `json:"properties,omitempty"`
@@ -1543,16 +1807,6 @@ type UnresolvedDependenciesFilter struct {
 type UnresolvedDependenciesFilterProperties struct {
 	// The count of the resource.
 	Count *int32 `json:"count,omitempty"`
-}
-
-// UnresolvedDependenciesGetOptions contains the optional parameters for the UnresolvedDependencies.Get method.
-type UnresolvedDependenciesGetOptions struct {
-	// Defines the dependency level.
-	DependencyLevel *DependencyLevel
-	// The filter to apply on the operation. For example, $apply=filter(count eq 2).
-	Filter *string
-	// OData order by query option. For example, you can use $orderby=Count desc.
-	Orderby *string
 }
 
 // UnresolvedDependency - Unresolved dependency.
@@ -1608,7 +1862,12 @@ func (u UpdateMoveCollectionRequest) MarshalJSON() ([]byte, error) {
 
 // VirtualMachineResourceSettings - Gets or sets the virtual machine resource settings.
 type VirtualMachineResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -1625,13 +1884,22 @@ type VirtualMachineResourceSettings struct {
 	UserManagedIdentities []*string `json:"userManagedIdentities,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualMachineResourceSettings.
+func (v *VirtualMachineResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       v.ResourceType,
+		TargetResourceName: v.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineResourceSettings.
 func (v VirtualMachineResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ResourceSettings.marshalInternal(objectMap, "Microsoft.Compute/virtualMachines")
+	objectMap["resourceType"] = "Microsoft.Compute/virtualMachines"
 	populate(objectMap, "tags", v.Tags)
 	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
+	populate(objectMap, "targetResourceName", v.TargetResourceName)
 	populate(objectMap, "targetVmSize", v.TargetVMSize)
 	populate(objectMap, "userManagedIdentities", v.UserManagedIdentities)
 	return json.Marshal(objectMap)
@@ -1646,6 +1914,9 @@ func (v *VirtualMachineResourceSettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "resourceType":
+			err = unpopulate(val, &v.ResourceType)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &v.Tags)
 			delete(rawMsg, key)
@@ -1654,6 +1925,9 @@ func (v *VirtualMachineResourceSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetAvailabilityZone":
 			err = unpopulate(val, &v.TargetAvailabilityZone)
+			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &v.TargetResourceName)
 			delete(rawMsg, key)
 		case "targetVmSize":
 			err = unpopulate(val, &v.TargetVMSize)
@@ -1666,15 +1940,17 @@ func (v *VirtualMachineResourceSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := v.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // VirtualNetworkResourceSettings - Defines the virtual network resource settings.
 type VirtualNetworkResourceSettings struct {
-	ResourceSettings
+	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// REQUIRED; Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+
 	// Gets or sets the address prefixes for the virtual network.
 	AddressSpace []*string `json:"addressSpace,omitempty"`
 
@@ -1691,15 +1967,24 @@ type VirtualNetworkResourceSettings struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualNetworkResourceSettings.
+func (v *VirtualNetworkResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       v.ResourceType,
+		TargetResourceName: v.TargetResourceName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type VirtualNetworkResourceSettings.
 func (v VirtualNetworkResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ResourceSettings.marshalInternal(objectMap, "Microsoft.Network/virtualNetworks")
 	populate(objectMap, "addressSpace", v.AddressSpace)
 	populate(objectMap, "dnsServers", v.DNSServers)
 	populate(objectMap, "enableDdosProtection", v.EnableDdosProtection)
+	objectMap["resourceType"] = "Microsoft.Network/virtualNetworks"
 	populate(objectMap, "subnets", v.Subnets)
 	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "targetResourceName", v.TargetResourceName)
 	return json.Marshal(objectMap)
 }
 
@@ -1721,19 +2006,22 @@ func (v *VirtualNetworkResourceSettings) UnmarshalJSON(data []byte) error {
 		case "enableDdosProtection":
 			err = unpopulate(val, &v.EnableDdosProtection)
 			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, &v.ResourceType)
+			delete(rawMsg, key)
 		case "subnets":
 			err = unpopulate(val, &v.Subnets)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &v.Tags)
 			delete(rawMsg, key)
+		case "targetResourceName":
+			err = unpopulate(val, &v.TargetResourceName)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := v.ResourceSettings.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }

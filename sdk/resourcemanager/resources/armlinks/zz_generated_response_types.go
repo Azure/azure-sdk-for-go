@@ -10,68 +10,68 @@ package armlinks
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// ResourceLinksCreateOrUpdateResponse contains the response from method ResourceLinks.CreateOrUpdate.
-type ResourceLinksCreateOrUpdateResponse struct {
-	ResourceLinksCreateOrUpdateResult
+// ResourceLinksClientCreateOrUpdateResponse contains the response from method ResourceLinksClient.CreateOrUpdate.
+type ResourceLinksClientCreateOrUpdateResponse struct {
+	ResourceLinksClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceLinksCreateOrUpdateResult contains the result from method ResourceLinks.CreateOrUpdate.
-type ResourceLinksCreateOrUpdateResult struct {
+// ResourceLinksClientCreateOrUpdateResult contains the result from method ResourceLinksClient.CreateOrUpdate.
+type ResourceLinksClientCreateOrUpdateResult struct {
 	ResourceLink
 }
 
-// ResourceLinksDeleteResponse contains the response from method ResourceLinks.Delete.
-type ResourceLinksDeleteResponse struct {
+// ResourceLinksClientDeleteResponse contains the response from method ResourceLinksClient.Delete.
+type ResourceLinksClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceLinksGetResponse contains the response from method ResourceLinks.Get.
-type ResourceLinksGetResponse struct {
-	ResourceLinksGetResult
+// ResourceLinksClientGetResponse contains the response from method ResourceLinksClient.Get.
+type ResourceLinksClientGetResponse struct {
+	ResourceLinksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceLinksGetResult contains the result from method ResourceLinks.Get.
-type ResourceLinksGetResult struct {
+// ResourceLinksClientGetResult contains the result from method ResourceLinksClient.Get.
+type ResourceLinksClientGetResult struct {
 	ResourceLink
 }
 
-// ResourceLinksListAtSourceScopeResponse contains the response from method ResourceLinks.ListAtSourceScope.
-type ResourceLinksListAtSourceScopeResponse struct {
-	ResourceLinksListAtSourceScopeResult
+// ResourceLinksClientListAtSourceScopeResponse contains the response from method ResourceLinksClient.ListAtSourceScope.
+type ResourceLinksClientListAtSourceScopeResponse struct {
+	ResourceLinksClientListAtSourceScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceLinksListAtSourceScopeResult contains the result from method ResourceLinks.ListAtSourceScope.
-type ResourceLinksListAtSourceScopeResult struct {
+// ResourceLinksClientListAtSourceScopeResult contains the result from method ResourceLinksClient.ListAtSourceScope.
+type ResourceLinksClientListAtSourceScopeResult struct {
 	ResourceLinkResult
 }
 
-// ResourceLinksListAtSubscriptionResponse contains the response from method ResourceLinks.ListAtSubscription.
-type ResourceLinksListAtSubscriptionResponse struct {
-	ResourceLinksListAtSubscriptionResult
+// ResourceLinksClientListAtSubscriptionResponse contains the response from method ResourceLinksClient.ListAtSubscription.
+type ResourceLinksClientListAtSubscriptionResponse struct {
+	ResourceLinksClientListAtSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceLinksListAtSubscriptionResult contains the result from method ResourceLinks.ListAtSubscription.
-type ResourceLinksListAtSubscriptionResult struct {
+// ResourceLinksClientListAtSubscriptionResult contains the result from method ResourceLinksClient.ListAtSubscription.
+type ResourceLinksClientListAtSubscriptionResult struct {
 	ResourceLinkResult
 }

@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"testing"
@@ -55,7 +56,7 @@ func TestPagerSinglePage(t *testing.T) {
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	pageCount := 0
@@ -93,7 +94,7 @@ func TestPagerMultiplePages(t *testing.T) {
 			}
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	for pager.More() {
@@ -131,11 +132,10 @@ func TestPagerLROMultiplePages(t *testing.T) {
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, &PageResponse{
-		Values:   []int{1, 2, 3, 4, 5},
-		NextPage: true,
 	})
 	require.True(t, pager.firstPage)
+
+	require.NoError(t, json.Unmarshal([]byte(`{"values": [1, 2, 3, 4, 5], "next": true}`), pager))
 
 	pageCount := 0
 	for pager.More() {
@@ -165,7 +165,7 @@ func TestPagerFetcherError(t *testing.T) {
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			return PageResponse{}, errors.New("fetcher failed")
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	page, err := pager.NextPage(context.Background())
@@ -186,7 +186,7 @@ func TestPagerPipelineError(t *testing.T) {
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	page, err := pager.NextPage(context.Background())
@@ -214,7 +214,7 @@ func TestPagerSecondPageError(t *testing.T) {
 			}
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	for pager.More() {
@@ -250,7 +250,7 @@ func TestPagerResponderError(t *testing.T) {
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			return pageResponseFetcher(ctx, pl, srv.URL())
 		},
-	}, nil)
+	})
 	require.True(t, pager.firstPage)
 
 	page, err := pager.NextPage(context.Background())

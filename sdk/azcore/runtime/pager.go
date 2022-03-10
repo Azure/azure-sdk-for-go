@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 )
 
@@ -30,9 +31,8 @@ type Pager[T any] struct {
 
 // NewPager creates an instance of Pager using the specified PageProcessor.
 // Pass a non-nil T for firstPage if the first page has already been retrieved.
-func NewPager[T any](processor PageProcessor[T], firstPage *T) *Pager[T] {
+func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
 	return &Pager[T]{
-		current:   firstPage,
 		processor: processor,
 		firstPage: true,
 	}
@@ -69,4 +69,9 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 	}
 	p.current = &resp
 	return *p.current, nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for Pager[T].
+func (p *Pager[T]) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &p.current)
 }

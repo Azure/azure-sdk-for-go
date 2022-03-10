@@ -9,29 +9,27 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"strings"
-	"testing"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/require"
 )
 
-func TestStageGetBlocks(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestStageGetBlocks() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
 	bbClient := containerClient.NewBlockBlobClient(blobName)
@@ -43,71 +41,72 @@ func TestStageGetBlocks(t *testing.T) {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
 		io.NopCloser(strings.NewReader("hello world"))
 		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
-		require.NoError(t, err)
-		require.Equal(t, putResp.RawResponse.StatusCode, 201)
-		require.Nil(t, putResp.ContentMD5)
-		require.NotNil(t, putResp.RequestID)
-		require.NotNil(t, putResp.Version)
-		require.NotNil(t, putResp.Date)
-		require.Equal(t, (*putResp.Date).IsZero(), false)
+		_assert.Nil(err)
+		_assert.Equal(putResp.RawResponse.StatusCode, 201)
+		_assert.Nil(putResp.ContentMD5)
+		_assert.NotNil(putResp.RequestID)
+		_assert.NotNil(putResp.Version)
+		_assert.NotNil(putResp.Date)
+		_assert.Equal((*putResp.Date).IsZero(), false)
 	}
 
 	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Equal(t, blockList.RawResponse.StatusCode, 200)
-	require.Nil(t, blockList.LastModified)
-	require.Nil(t, blockList.ETag)
-	require.NotNil(t, blockList.ContentType)
-	require.Nil(t, blockList.BlobContentLength)
-	require.NotNil(t, blockList.RequestID)
-	require.NotNil(t, blockList.Version)
-	require.NotNil(t, blockList.Date)
-	require.Equal(t, (*blockList.Date).IsZero(), false)
-	require.NotNil(t, blockList.BlockList)
-	require.Nil(t, blockList.BlockList.CommittedBlocks)
-	require.NotNil(t, blockList.BlockList.UncommittedBlocks)
-	require.Len(t, blockList.BlockList.UncommittedBlocks, len(data))
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.Nil(blockList.LastModified)
+	_assert.Nil(blockList.ETag)
+	_assert.NotNil(blockList.ContentType)
+	_assert.Nil(blockList.BlobContentLength)
+	_assert.NotNil(blockList.RequestID)
+	_assert.NotNil(blockList.Version)
+	_assert.NotNil(blockList.Date)
+	_assert.Equal((*blockList.Date).IsZero(), false)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, len(data))
 
 	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-	require.NoError(t, err)
-	require.Equal(t, listResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, listResp.LastModified)
-	require.Equal(t, (*listResp.LastModified).IsZero(), false)
-	require.NotNil(t, listResp.ETag)
-	require.NotNil(t, listResp.RequestID)
-	require.NotNil(t, listResp.Version)
-	require.NotNil(t, listResp.Date)
-	require.Equal(t, (*listResp.Date).IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
 
 	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Equal(t, blockList.RawResponse.StatusCode, 200)
-	require.NotNil(t, blockList.LastModified)
-	require.Equal(t, (*blockList.LastModified).IsZero(), false)
-	require.NotNil(t, blockList.ETag)
-	require.NotNil(t, blockList.ContentType)
-	require.Equal(t, *blockList.BlobContentLength, int64(25))
-	require.NotNil(t, blockList.RequestID)
-	require.NotNil(t, blockList.Version)
-	require.NotNil(t, blockList.Date)
-	require.Equal(t, (*blockList.Date).IsZero(), false)
-	require.NotNil(t, blockList.BlockList)
-	require.NotNil(t, blockList.BlockList.CommittedBlocks)
-	require.Nil(t, blockList.BlockList.UncommittedBlocks)
-	require.Len(t, blockList.BlockList.CommittedBlocks, len(data))
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.LastModified)
+	_assert.Equal((*blockList.LastModified).IsZero(), false)
+	_assert.NotNil(blockList.ETag)
+	_assert.NotNil(blockList.ContentType)
+	_assert.Equal(*blockList.BlobContentLength, int64(25))
+	_assert.NotNil(blockList.RequestID)
+	_assert.NotNil(blockList.Version)
+	_assert.NotNil(blockList.Date)
+	_assert.Equal((*blockList.Date).IsZero(), false)
+	_assert.NotNil(blockList.BlockList)
+	_assert.NotNil(blockList.BlockList.CommittedBlocks)
+	_assert.Nil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(blockList.BlockList.CommittedBlocks, len(data))
 }
 
-func TestStageBlockFromURL(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -121,14 +120,14 @@ func TestStageBlockFromURL(t *testing.T) {
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-	require.NoError(t, err)
-	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getCredential(testAccountDefault)
-	require.NoError(t, err)
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -137,7 +136,7 @@ func TestStageBlockFromURL(t *testing.T) {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -148,64 +147,65 @@ func TestStageBlockFromURL(t *testing.T) {
 		Offset: to.Int64Ptr(0),
 		Count:  to.Int64Ptr(int64(contentSize / 2)),
 	})
-	require.NoError(t, err)
-	require.Equal(t, stageResp1.RawResponse.StatusCode, 201)
-	require.NotEqual(t, stageResp1.ContentMD5, "")
-	require.NotEqual(t, stageResp1.RequestID, "")
-	require.NotEqual(t, stageResp1.Version, "")
-	require.Equal(t, stageResp1.Date.IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp1.ContentMD5, "")
+	_assert.NotEqual(stageResp1.RequestID, "")
+	_assert.NotEqual(stageResp1.Version, "")
+	_assert.Equal(stageResp1.Date.IsZero(), false)
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
 		Offset: to.Int64Ptr(int64(contentSize / 2)),
 		Count:  to.Int64Ptr(int64(CountToEnd)),
 	})
-	require.NoError(t, err)
-	require.Equal(t, stageResp2.RawResponse.StatusCode, 201)
-	require.NotEqual(t, stageResp2.ContentMD5, "")
-	require.NotEqual(t, stageResp2.RequestID, "")
-	require.NotEqual(t, stageResp2.Version, "")
-	require.Equal(t, stageResp2.Date.IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp2.ContentMD5, "")
+	_assert.NotEqual(stageResp2.RequestID, "")
+	_assert.NotEqual(stageResp2.Version, "")
+	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Equal(t, blockList.RawResponse.StatusCode, 200)
-	require.NotNil(t, blockList.BlockList)
-	require.Nil(t, blockList.BlockList.CommittedBlocks)
-	require.NotNil(t, blockList.BlockList.UncommittedBlocks)
-	require.Len(t, blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-	require.NoError(t, err)
-	require.Equal(t, listResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, listResp.LastModified)
-	require.Equal(t, (*listResp.LastModified).IsZero(), false)
-	require.NotNil(t, listResp.ETag)
-	require.NotNil(t, listResp.RequestID)
-	require.NotNil(t, listResp.Version)
-	require.NotNil(t, listResp.Date)
-	require.Equal(t, (*listResp.Date).IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	require.NoError(t, err)
-	require.EqualValues(t, destData, content)
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
 }
 
-func TestCopyBlockBlobFromURL(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -218,14 +218,14 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(body), nil)
-	require.NoError(t, err)
-	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getCredential(testAccountDefault)
-	require.NoError(t, err)
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -234,7 +234,9 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	require.NoError(t, err)
+	if err != nil {
+		s.T().Fatal(err)
+	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -244,31 +246,31 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 		Metadata:         map[string]string{"foo": "bar"},
 		SourceContentMD5: sourceContentMD5,
 	})
-	require.NoError(t, err)
-	require.Equal(t, resp.RawResponse.StatusCode, 202)
-	require.NotNil(t, resp.ETag)
-	require.NotNil(t, resp.RequestID)
-	require.NotNil(t, resp.Version)
-	require.NotNil(t, resp.Date)
-	require.Equal(t, (*resp.Date).IsZero(), false)
-	require.NotNil(t, resp.CopyID)
-	require.EqualValues(t, resp.ContentMD5, sourceContentMD5)
-	require.Equal(t, *resp.CopyStatus, "success")
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_assert.NotNil(resp.ETag)
+	_assert.NotNil(resp.RequestID)
+	_assert.NotNil(resp.Version)
+	_assert.NotNil(resp.Date)
+	_assert.Equal((*resp.Date).IsZero(), false)
+	_assert.NotNil(resp.CopyID)
+	_assert.EqualValues(resp.ContentMD5, sourceContentMD5)
+	_assert.Equal(*resp.CopyStatus, "success")
 
 	// Make sure the metadata got copied over
 	getPropResp, err := destBlob.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	metadata := getPropResp.Metadata
-	require.NotNil(t, metadata)
-	require.Len(t, metadata, 1)
-	require.EqualValues(t, metadata, map[string]string{"Foo": "bar"})
+	_assert.NotNil(metadata)
+	_assert.Len(metadata, 1)
+	_assert.EqualValues(metadata, map[string]string{"Foo": "bar"})
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	require.NoError(t, err)
-	require.EqualValues(t, destData, content)
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
 
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
@@ -276,30 +278,30 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 		SourceContentMD5: badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
 		SourceContentMD5: sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-	require.NoError(t, err)
-	require.Equal(t, resp.RawResponse.StatusCode, 202)
-	require.EqualValues(t, *resp.CopyStatus, "success")
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_assert.EqualValues(*resp.CopyStatus, "success")
 }
 
-func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
-	recording.LiveOnly(t)
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -311,11 +313,11 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	uploadSrcResp, err := bbClient.Upload(ctx, internal.NopCloser(body), nil)
-	require.NoError(t, err)
-	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get blob url with SAS.
-	blobParts := NewBlobURLParts(bbClient.URL())
+	blobParts, _ := NewBlobURLParts(bbClient.URL())
 
 	cacheControlVal := "cache-control-override"
 	contentDispositionVal := "content-disposition-override"
@@ -323,8 +325,8 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 	contentLanguageVal := "content-language-override"
 	contentTypeVal := "content-type-override"
 
-	credential, err := getCredential(testAccountDefault)
-	require.NoError(t, err)
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	// Append User Delegation SAS token to URL
 	blobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -338,36 +340,36 @@ func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
 		ContentLanguage:    contentLanguageVal,
 		ContentType:        contentTypeVal,
 	}.NewSASQueryParameters(credential)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	// Generate new bbClient client
 	blobURLWithSAS := blobParts.URL()
-	require.NotNil(t, blobURLWithSAS)
+	_assert.NotNil(blobURLWithSAS)
 
 	blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *gResp.CacheControl, cacheControlVal)
-	require.Equal(t, *gResp.ContentDisposition, contentDispositionVal)
-	require.Equal(t, *gResp.ContentEncoding, contentEncodingVal)
-	require.Equal(t, *gResp.ContentLanguage, contentLanguageVal)
-	require.Equal(t, *gResp.ContentType, contentTypeVal)
+	_assert.Nil(err)
+	_assert.Equal(*gResp.CacheControl, cacheControlVal)
+	_assert.Equal(*gResp.ContentDisposition, contentDispositionVal)
+	_assert.Equal(*gResp.ContentEncoding, contentEncodingVal)
+	_assert.Equal(*gResp.ContentLanguage, contentLanguageVal)
+	_assert.Equal(*gResp.ContentType, contentTypeVal)
 }
 
-func TestStageBlockWithMD5(t *testing.T) {
-	t.Skip("authentication failed")
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
 	bbClient := containerClient.NewBlockBlobClient(blobName)
@@ -386,13 +388,13 @@ func TestStageBlockWithMD5(t *testing.T) {
 			TransactionalContentMD5: contentMD5,
 		},
 	})
-	require.NoError(t, err)
-	require.Equal(t, putResp.RawResponse.StatusCode, 201)
-	require.EqualValues(t, putResp.ContentMD5, contentMD5)
-	require.NotNil(t, putResp.RequestID)
-	require.NotNil(t, putResp.Version)
-	require.NotNil(t, putResp.Date)
-	require.Equal(t, (*putResp.Date).IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(putResp.RawResponse.StatusCode, 201)
+	_assert.EqualValues(putResp.ContentMD5, contentMD5)
+	_assert.NotNil(putResp.RequestID)
+	_assert.NotNil(putResp.Version)
+	_assert.NotNil(putResp.Date)
+	_assert.Equal((*putResp.Date).IsZero(), false)
 
 	// test put block with bad MD5 value
 	_, badContent := getRandomDataAndReader(contentSize)
@@ -406,109 +408,113 @@ func TestStageBlockWithMD5(t *testing.T) {
 			TransactionalContentMD5: badContentMD5,
 		},
 	})
-	require.Error(t, err)
-	require.Contains(t, err.Error(), StorageErrorCodeMD5Mismatch)
+	_assert.NotNil(err)
+	_assert.Contains(err.Error(), StorageErrorCodeMD5Mismatch)
 }
 
-func TestBlobPutBlobHTTPHeaders(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
 		HTTPHeaders: &basicHeaders,
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	h := resp.GetHTTPHeaders()
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
-	require.EqualValues(t, h, basicHeaders)
+	_assert.EqualValues(h, basicHeaders)
 }
 
-func TestBlobPutBlobMetadataNotEmpty(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	actualMetadata := resp.Metadata
-	require.NotNil(t, actualMetadata)
-	require.EqualValues(t, actualMetadata, basicMetadata)
+	_assert.NotNil(actualMetadata)
+	_assert.EqualValues(actualMetadata, basicMetadata)
 }
 
-func TestBlobPutBlobMetadataEmpty(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Nil(t, resp.Metadata)
+	_assert.Nil(err)
+	_assert.Nil(resp.Metadata)
 }
 
-func TestBlobPutBlobMetadataInvalid(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -517,29 +523,30 @@ func TestBlobPutBlobMetadataInvalid(t *testing.T) {
 	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
 	})
-	require.Error(t, err)
-	require.Contains(t, err.Error(), invalidHeaderErrorSubstring)
+	_assert.NotNil(err)
+	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
 }
 
-func TestBlobPutBlobIfModifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	require.NoError(t, err)
-	require.Equal(t, createResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, createResp.Date)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
@@ -552,29 +559,30 @@ func TestBlobPutBlobIfModifiedSinceTrue(t *testing.T) {
 			},
 		},
 	})
-	require.NoError(t, err)
-	validateUpload(t, bbClient.BlobClient)
+	_assert.Nil(err)
+	validateUpload(_assert, bbClient.BlobClient)
 }
 
-func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	require.NoError(t, err)
-	require.Equal(t, createResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, createResp.Date)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
 
@@ -591,30 +599,31 @@ func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
 	}
 
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	require.Error(t, err)
+	_assert.NotNil(err)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	require.NoError(t, err)
-	require.Equal(t, createResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, createResp.Date)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
 
@@ -630,30 +639,31 @@ func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateUpload(t, bbClient.BlobClient)
+	validateUpload(_assert, bbClient.BlobClient)
 }
 
-func TestBlobPutBlobIfUnmodifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	require.NoError(t, err)
-	require.Equal(t, createResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, createResp.Date)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
@@ -665,28 +675,29 @@ func TestBlobPutBlobIfUnmodifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
-	require.Error(t, err)
+	_ = err
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlobIfMatchTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -699,28 +710,29 @@ func TestBlobPutBlobIfMatchTrue(t *testing.T) {
 			},
 		},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateUpload(t, bbClient.BlobClient)
+	validateUpload(_assert, bbClient.BlobClient)
 }
 
-func TestBlobPutBlobIfMatchFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -734,27 +746,28 @@ func TestBlobPutBlobIfMatchFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
-	require.Error(t, err)
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlobIfNoneMatchTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -770,28 +783,29 @@ func TestBlobPutBlobIfNoneMatchTrue(t *testing.T) {
 	}
 
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateUpload(t, bbClient.BlobClient)
+	validateUpload(_assert, bbClient.BlobClient)
 }
 
-func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -805,63 +819,65 @@ func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
 		},
 	})
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(t *testing.T, bbClient BlockBlobClient) {
+func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Len(t, resp.BlockList.CommittedBlocks, 1)
+	_assert.Nil(err)
+	_assert.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
-func setupPutBlockListTest(t *testing.T, testName string) (ContainerClient, BlockBlobClient, []string) {
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
+	testName string) (ContainerClient, BlockBlobClient, []string) {
+
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_assert.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blobName, containerClient)
 
 	blockIDs := generateBlockIDsList(1)
 	_, err = bbClient.StageBlock(ctx, blockIDs[0], internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	return containerClient, bbClient, blockIDs
 }
 
-func TestBlobPutBlockListHTTPHeadersEmpty(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
 		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Nil(t, resp.ContentDisposition)
+	_assert.Nil(err)
+	_assert.Nil(resp.ContentDisposition)
 }
 
-func TestBlobPutBlockListIfModifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
-	require.NotNil(t, commitBlockListResp.Date)
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
@@ -869,22 +885,21 @@ func TestBlobPutBlockListIfModifiedSinceTrue(t *testing.T) {
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateBlobCommitted(t, bbClient)
+	validateBlobCommitted(_assert, bbClient)
 }
 
-func TestBlobPutBlockListIfModifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	getPropertyResp, err := containerClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.NotNil(t, getPropertyResp.Date)
+	_assert.Nil(err)
+	_assert.NotNil(getPropertyResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
 
@@ -894,20 +909,19 @@ func TestBlobPutBlockListIfModifiedSinceFalse(t *testing.T) {
 	})
 	_ = err
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlockListIfUnmodifiedSinceTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
-	require.NotNil(t, commitBlockListResp.Date)
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
 
@@ -915,22 +929,21 @@ func TestBlobPutBlockListIfUnmodifiedSinceTrue(t *testing.T) {
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateBlobCommitted(t, bbClient)
+	validateBlobCommitted(_assert, bbClient)
 }
 
-func TestBlobPutBlockListIfUnmodifiedSinceFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
-	require.NotNil(t, commitBlockListResp.Date)
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
@@ -940,39 +953,37 @@ func TestBlobPutBlockListIfUnmodifiedSinceFalse(t *testing.T) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlockListIfMatchTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateBlobCommitted(t, bbClient)
+	validateBlobCommitted(_assert, bbClient)
 }
 
-func TestBlobPutBlockListIfMatchFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
@@ -980,110 +991,107 @@ func TestBlobPutBlockListIfMatchFalse(t *testing.T) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlockListIfNoneMatchTrue(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	validateBlobCommitted(t, bbClient)
+	validateBlobCommitted(_assert, bbClient)
 }
 
-func TestBlobPutBlockListIfNoneMatchFalse(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	commitBlockListOptions := CommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func TestBlobPutBlockListValidateData(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.Download(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-	require.NoError(t, err)
-	require.Equal(t, string(data), blockBlobDefaultData)
+	_assert.Nil(err)
+	_assert.Equal(string(data), blockBlobDefaultData)
 }
 
-func TestBlobPutBlockListModifyBlob(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	containerClient, bbClient, blockIDs := setupPutBlockListTest(t, testName)
-	defer deleteContainer(t, containerClient)
+func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = bbClient.StageBlock(ctx, "0001", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient.StageBlock(ctx, "0010", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient.StageBlock(ctx, "0011", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient.StageBlock(ctx, "0100", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Len(t, resp.BlockList.CommittedBlocks, 2)
+	_assert.Nil(err)
+	_assert.Len(resp.BlockList.CommittedBlocks, 2)
 	committed := resp.BlockList.CommittedBlocks
-	require.Equal(t, *(committed[0].Name), "0001")
-	require.Equal(t, *(committed[1].Name), "0011")
-	require.Nil(t, resp.BlockList.UncommittedBlocks)
+	_assert.Equal(*(committed[0].Name), "0001")
+	_assert.Equal(*(committed[1].Name), "0011")
+	_assert.Nil(resp.BlockList.UncommittedBlocks)
 }
 
-func TestSetTierOnBlobUpload(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
@@ -1094,25 +1102,26 @@ func TestSetTierOnBlobUpload(t *testing.T) {
 			Tier:        &tier,
 		}
 		_, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
-		require.NoError(t, err)
+		_assert.Nil(err)
 
 		resp, err := bbClient.GetProperties(ctx, nil)
-		require.NoError(t, err)
-		require.Equal(t, *resp.AccessTier, string(tier))
+		_assert.Nil(err)
+		_assert.Equal(*resp.AccessTier, string(tier))
 	}
 }
 
-func TestBlobSetTierOnCommit(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := "test" + generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
@@ -1120,34 +1129,34 @@ func TestBlobSetTierOnCommit(t *testing.T) {
 
 		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 		_, err := bbClient.StageBlock(ctx, blockID, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-		require.NoError(t, err)
+		_assert.Nil(err)
 
 		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &CommitBlockListOptions{
 			Tier: &tier,
 		})
-		require.NoError(t, err)
+		_assert.Nil(err)
 
 		resp, err := bbClient.GetBlockList(ctx, BlockListTypeCommitted, nil)
-		require.NoError(t, err)
-		require.NotNil(t, resp.BlockList)
-		require.NotNil(t, resp.BlockList.CommittedBlocks)
-		require.Nil(t, resp.BlockList.UncommittedBlocks)
-		require.Len(t, resp.BlockList.CommittedBlocks, 1)
+		_assert.Nil(err)
+		_assert.NotNil(resp.BlockList)
+		_assert.NotNil(resp.BlockList.CommittedBlocks)
+		_assert.Nil(resp.BlockList.UncommittedBlocks)
+		_assert.Len(resp.BlockList.CommittedBlocks, 1)
 	}
 }
 
-func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
-	recording.LiveOnly(t)
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	const contentSize = 4 * 1024 * 1024 // 4 MB
 	contentReader, _ := getRandomDataAndReader(contentSize)
@@ -1157,16 +1166,16 @@ func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
 
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &UploadBlockBlobOptions{Tier: &tier})
-	require.NoError(t, err)
-	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	credential, err := getCredential(testAccountDefault)
+	credential, err := getGenericCredential(nil, testAccountDefault)
 	if err != nil {
-		t.Fatal("Couldn't fetch credential because " + err.Error())
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
 	sasQueryParams, err := AccountSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -1175,9 +1184,9 @@ func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
 		Services:      AccountSASServices{Blob: true}.String(),
 		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
 	}.Sign(credential)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -1190,27 +1199,28 @@ func TestSetTierOnCopyBlockBlobFromURL(t *testing.T) {
 			Metadata: map[string]string{"foo": "bar"},
 		}
 		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-		require.NoError(t, err)
-		require.Equal(t, resp.RawResponse.StatusCode, 202)
-		require.Equal(t, *resp.CopyStatus, "success")
+		_assert.Nil(err)
+		_assert.Equal(resp.RawResponse.StatusCode, 202)
+		_assert.Equal(*resp.CopyStatus, "success")
 
 		destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-		require.NoError(t, err)
-		require.Equal(t, *destBlobPropResp.AccessTier, string(tier))
+		_assert.Nil(err)
+		_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
 	}
 }
 
-func TestSetTierOnStageBlockFromURL(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -1221,13 +1231,13 @@ func TestSetTierOnStageBlockFromURL(t *testing.T) {
 	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
-	require.NoError(t, err)
-	require.Equal(t, uploadSrcResp.RawResponse.StatusCode, 201)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
-	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-	credential, err := getCredential(testAccountDefault)
-	require.NoError(t, err)
+	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -1235,7 +1245,9 @@ func TestSetTierOnStageBlockFromURL(t *testing.T) {
 		BlobName:      srcBlobParts.BlobName,
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
-	require.NoError(t, err)
+	if err != nil {
+		s.T().Fatal(err)
+	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
@@ -1247,12 +1259,12 @@ func TestSetTierOnStageBlockFromURL(t *testing.T) {
 		Count:  &count1,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-	require.NoError(t, err)
-	require.Equal(t, stageResp1.RawResponse.StatusCode, 201)
-	require.Nil(t, stageResp1.ContentMD5)
-	require.NotEqual(t, *stageResp1.RequestID, "")
-	require.NotEqual(t, *stageResp1.Version, "")
-	require.Equal(t, stageResp1.Date.IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
+	_assert.Nil(stageResp1.ContentMD5)
+	_assert.NotEqual(*stageResp1.RequestID, "")
+	_assert.NotEqual(*stageResp1.Version, "")
+	_assert.Equal(stageResp1.Date.IsZero(), false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
@@ -1261,93 +1273,95 @@ func TestSetTierOnStageBlockFromURL(t *testing.T) {
 		Count:  &count2,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-	require.NoError(t, err)
-	require.Equal(t, stageResp2.RawResponse.StatusCode, 201)
-	require.NotEqual(t, stageResp2.ContentMD5, "")
-	require.NotEqual(t, stageResp2.RequestID, "")
-	require.NotEqual(t, stageResp2.Version, "")
-	require.Equal(t, stageResp2.Date.IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp2.ContentMD5, "")
+	_assert.NotEqual(stageResp2.RequestID, "")
+	_assert.NotEqual(stageResp2.Version, "")
+	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-	require.NoError(t, err)
-	require.Equal(t, blockList.RawResponse.StatusCode, 200)
-	require.NotNil(t, blockList.BlockList)
-	require.Nil(t, blockList.BlockList.CommittedBlocks)
-	require.NotNil(t, blockList.BlockList.UncommittedBlocks)
-	require.Len(t, blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &CommitBlockListOptions{
 		Tier: &tier,
 	})
-	require.NoError(t, err)
-	require.Equal(t, listResp.RawResponse.StatusCode, 201)
-	require.NotNil(t, listResp.LastModified)
-	require.Equal(t, (*listResp.LastModified).IsZero(), false)
-	require.NotNil(t, listResp.ETag)
-	require.NotNil(t, listResp.RequestID)
-	require.NotNil(t, listResp.Version)
-	require.NotNil(t, listResp.Date)
-	require.Equal(t, (*listResp.Date).IsZero(), false)
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
-	require.NoError(t, err)
-	require.EqualValues(t, destData, content)
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
 
 	// Get properties to validate the tier
 	destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *destBlobPropResp.AccessTier, string(tier))
+	_assert.Nil(err)
+	_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
 }
 
-func TestSetStandardBlobTierWithRehydratePriority(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	standardTier, rehydrateTier, rehydratePriority := AccessTierArchive, AccessTierCool, RehydratePriorityStandard
 	bbName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(t, bbName, containerClient)
+	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
 
 	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
 		RehydratePriority: &rehydratePriority,
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp1, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp1.AccessTier, string(standardTier))
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(standardTier))
 
 	_, err = bbClient.SetTier(ctx, rehydrateTier, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp2, err := bbClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 }
 
-func TestRehydrateStatus(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestRehydrateStatus() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName1 := "rehydration_test_blob_1"
 	blobName2 := "rehydration_test_blob_2"
@@ -1355,16 +1369,16 @@ func TestRehydrateStatus(t *testing.T) {
 	bbClient1 := getBlockBlobClient(blobName1, containerClient)
 	reader1, _ := generateData(1024)
 	_, err = bbClient1.Upload(ctx, reader1, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient1.SetTier(ctx, AccessTierArchive, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient1.SetTier(ctx, AccessTierCool, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp1, err := bbClient1.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp1.AccessTier, string(AccessTierArchive))
-	require.Equal(t, *getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(AccessTierArchive))
+	_assert.Equal(*getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 
 	pager := containerClient.ListBlobsFlat(nil)
 	var blobs []*BlobItemInternal
@@ -1372,42 +1386,43 @@ func TestRehydrateStatus(t *testing.T) {
 		resp := pager.PageResponse()
 		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
 	}
-	require.Nil(t, pager.Err())
-	require.GreaterOrEqual(t, len(blobs), 1)
-	require.Equal(t, *blobs[0].Properties.AccessTier, AccessTierArchive)
-	require.Equal(t, *blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)
+	_assert.Nil(pager.Err())
+	_assert.GreaterOrEqual(len(blobs), 1)
+	_assert.Equal(*blobs[0].Properties.AccessTier, AccessTierArchive)
+	_assert.Equal(*blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)
 
 	// ------------------------------------------
 
 	bbClient2 := getBlockBlobClient(blobName2, containerClient)
 	reader2, _ := generateData(1024)
 	_, err = bbClient2.Upload(ctx, reader2, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient2.SetTier(ctx, AccessTierArchive, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 	_, err = bbClient2.SetTier(ctx, AccessTierHot, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp2, err := bbClient2.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp2.AccessTier, string(AccessTierArchive))
-	require.Equal(t, *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.AccessTier, string(AccessTierArchive))
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
 }
 
-func TestCopyBlobWithRehydratePriority(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(t, containerName, svcClient)
-	defer deleteContainer(t, containerClient)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	sourceBlobName := generateBlobName(testName)
-	sourceBBClient := createNewBlockBlob(t, sourceBlobName, containerClient)
+	sourceBBClient := createNewBlockBlob(_assert, sourceBlobName, containerClient)
 
 	blobTier, rehydratePriority := AccessTierArchive, RehydratePriorityHigh
 
@@ -1417,16 +1432,16 @@ func TestCopyBlobWithRehydratePriority(t *testing.T) {
 		RehydratePriority: &rehydratePriority,
 		Tier:              &blobTier,
 	})
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp1, err := destBBClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp1.AccessTier, string(blobTier))
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(blobTier))
 
 	_, err = destBBClient.SetTier(ctx, AccessTierHot, nil)
-	require.NoError(t, err)
+	_assert.Nil(err)
 
 	getResp2, err := destBBClient.GetProperties(ctx, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
 }

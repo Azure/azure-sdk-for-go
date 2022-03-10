@@ -83,7 +83,7 @@ func ParseResourceID(id string) (*ResourceID, error) {
 	return appendNext(RootResourceID, parts, id)
 }
 
-// String returns the string of the ResourceId
+// String returns the string of the ResourceID
 func (id *ResourceID) String() string {
 	if len(id.stringValue) > 0 {
 		return id.stringValue

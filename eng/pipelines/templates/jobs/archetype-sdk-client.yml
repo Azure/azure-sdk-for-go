@@ -117,7 +117,7 @@ stages:
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
-    - ${{ if startsWith(parameters.ServiceDirectory, 'resourcemanager') }}:
+    - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, "resourcemanager/internal")) }}:
       - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}

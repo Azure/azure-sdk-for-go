@@ -490,12 +490,11 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
-func (s *azblobTestSuite) TestCreateBlockBlobReturnsVID() {
+func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}

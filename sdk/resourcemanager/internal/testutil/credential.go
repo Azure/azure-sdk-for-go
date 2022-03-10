@@ -25,6 +25,11 @@ func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 	return &azcore.AccessToken{Token: "FakeToken", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
 }
 
+// GetCredAndClientOptions will create a credential and a client options for test application.
+// They can be used in any Azure resource management client.
+// The client options will initialize the transport for recording client add recording policy to the pipeline.
+// In the record mode, the credential will be a DefaultAzureCredential which combines several common credentials.
+// In the playback mode, the credential will be a fake credential which will bypass truly authorization.
 func GetCredAndClientOptions(t *testing.T) (azcore.TokenCredential, *arm.ClientOptions) {
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)

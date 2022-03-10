@@ -20,6 +20,7 @@ type recordingPolicy struct {
 	t       *testing.T
 }
 
+// Get the host of the test proxy.
 func (r recordingPolicy) Host() string {
 	if r.options.UseHTTPS {
 		return "localhost:5001"
@@ -27,6 +28,7 @@ func (r recordingPolicy) Host() string {
 	return "localhost:5000"
 }
 
+// Get the scheme of the test proxy.
 func (r recordingPolicy) Scheme() string {
 	if r.options.UseHTTPS {
 		return "https"
@@ -34,6 +36,8 @@ func (r recordingPolicy) Scheme() string {
 	return "http"
 }
 
+// NewRecordingPolicy will create a recording policy which can be used in pipeline.
+// The policy will change the destination of the request to the proxy server and add required header for the recording test.
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
 		o = &recording.RecordingOptions{UseHTTPS: true}
@@ -42,6 +46,9 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 	return p
 }
 
+// When doing live request, the policy will do nothing.
+// Otherwise, the policy will replace the URL of the request with the test proxy endpoint.
+// After request, the policy will change back to the original URL for the request to prevent wrong polling URL for LRO.
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
 		oriSchema := req.Raw().URL.Scheme
@@ -67,6 +74,7 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 	}
 }
 
+// StartRecording starts the recording with the path to store recording file.
 func StartRecording(t *testing.T, pathToPackage string) {
 	// sanitizer for any uuid string, e.g., subscriptionID
 	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
@@ -84,6 +92,7 @@ func StartRecording(t *testing.T, pathToPackage string) {
 	}
 }
 
+// StopRecording stops the recording.
 func StopRecording(t *testing.T) {
 	err := recording.Stop(t, nil)
 	if err != nil {

@@ -36,6 +36,7 @@ func (ClientID) idKind() managedIdentityIDKind {
 	return miClientID
 }
 
+// String returns the string of ClientID
 func (c ClientID) String() string {
 	return string(c)
 }
@@ -48,6 +49,7 @@ func (ResourceID) idKind() managedIdentityIDKind {
 	return miResourceID
 }
 
+// String returns the string of ResourceID
 func (r ResourceID) String() string {
 	return string(r)
 }

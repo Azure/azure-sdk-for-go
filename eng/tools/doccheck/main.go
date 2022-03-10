@@ -97,6 +97,7 @@ func main() {
 	flag.StringVar(&root, "directory", ".", "directory to check docs for")
 	flag.Parse()
 
+	fmt.Printf("checking documentation in %s\n", root)
 	var totalMissing = 0
 	for _, dir := range findAllSubDirectories(root) {
 		totalMissing += validateDirectory(dir)
@@ -106,4 +107,5 @@ func main() {
 		fmt.Printf("Found %d missing doc comments\n", totalMissing)
 		os.Exit(1)
 	}
+	fmt.Println("There are no public methods/functions/types with missing documentation")
 }

@@ -85,7 +85,7 @@ steps:
       CheckLinkGuidance: $true
 
   - script: |
-      go run . --directory '../../../sdk/${{parameters.ServiceDirectory}}'
+      go run . --directory '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}'
     displayName: 'Validate Documentation'
     condition: succeededOrFailed()
     workingDirectory: 'eng/tools/doccheck'

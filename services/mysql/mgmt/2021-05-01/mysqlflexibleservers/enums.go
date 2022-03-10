@@ -59,6 +59,21 @@ func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{CreateModeDefault, CreateModeGeoRestore, CreateModePointInTimeRestore, CreateModeReplica}
 }
 
+// DataEncryptionType enumerates the values for data encryption type.
+type DataEncryptionType string
+
+const (
+	// DataEncryptionTypeAzureKeyVault ...
+	DataEncryptionTypeAzureKeyVault DataEncryptionType = "AzureKeyVault"
+	// DataEncryptionTypeSystemManaged ...
+	DataEncryptionTypeSystemManaged DataEncryptionType = "SystemManaged"
+)
+
+// PossibleDataEncryptionTypeValues returns an array of possible values for the DataEncryptionType const type.
+func PossibleDataEncryptionTypeValues() []DataEncryptionType {
+	return []DataEncryptionType{DataEncryptionTypeAzureKeyVault, DataEncryptionTypeSystemManaged}
+}
+
 // EnableStatusEnum enumerates the values for enable status enum.
 type EnableStatusEnum string
 
@@ -155,6 +170,19 @@ const (
 // PossibleIsReadOnlyValues returns an array of possible values for the IsReadOnly const type.
 func PossibleIsReadOnlyValues() []IsReadOnly {
 	return []IsReadOnly{IsReadOnlyFalse, IsReadOnlyTrue}
+}
+
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeUserAssigned ...
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns an array of possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{ManagedServiceIdentityTypeUserAssigned}
 }
 
 // ReplicationRole enumerates the values for replication role.

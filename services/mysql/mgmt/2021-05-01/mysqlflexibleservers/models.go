@@ -1010,6 +1010,20 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 	return
 }
 
+// DataEncryption the date encryption for cmk.
+type DataEncryption struct {
+	// PrimaryUserAssignedIdentityID - Primary user identity resource id
+	PrimaryUserAssignedIdentityID *string `json:"primaryUserAssignedIdentityId,omitempty"`
+	// PrimaryKeyURI - Primary key uri
+	PrimaryKeyURI *string `json:"primaryKeyUri,omitempty"`
+	// GeoBackupUserAssignedIdentityID - Geo backup user identity resource id as identity can't cross region, need identity in same region as geo backup
+	GeoBackupUserAssignedIdentityID *string `json:"geoBackupUserAssignedIdentityId,omitempty"`
+	// GeoBackupKeyURI - Geo backup key uri as key vault can't cross region, need cmk in same region as geo backup
+	GeoBackupKeyURI *string `json:"geoBackupKeyUri,omitempty"`
+	// Type - The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk. Possible values include: 'DataEncryptionTypeAzureKeyVault', 'DataEncryptionTypeSystemManaged'
+	Type DataEncryptionType `json:"type,omitempty"`
+}
+
 // DelegatedSubnetUsage delegated subnet usage data.
 type DelegatedSubnetUsage struct {
 	// SubnetName - READ-ONLY; name of the subnet
@@ -1419,6 +1433,30 @@ func (ha HighAvailability) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Identity properties to configure Identity for Bring your Own Keys
+type Identity struct {
+	// PrincipalID - READ-ONLY; ObjectId from the KeyVault
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; TenantId from the KeyVault
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - Type of managed service identity. Possible values include: 'ManagedServiceIdentityTypeUserAssigned'
+	Type ManagedServiceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - Metadata of user assigned identity.
+	UserAssignedIdentities map[string]interface{} `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	if i.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = i.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
 // MaintenanceWindow maintenance window of a server.
 type MaintenanceWindow struct {
 	// CustomWindow - indicates whether custom window is enabled or disabled
@@ -1709,6 +1747,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // Server represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
+	// Identity - The cmk identity for the server.
+	Identity *Identity `json:"identity,omitempty"`
 	// Sku - The SKU (pricing tier) of the server.
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerProperties - Properties of the server.
@@ -1730,6 +1770,9 @@ type Server struct {
 // MarshalJSON is the custom marshaler for Server.
 func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if s.Identity != nil {
+		objectMap["identity"] = s.Identity
+	}
 	if s.Sku != nil {
 		objectMap["sku"] = s.Sku
 	}
@@ -1754,6 +1797,15 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				s.Identity = &identity
+			}
 		case "sku":
 			if v != nil {
 				var sku Sku
@@ -2103,6 +2155,8 @@ func (sec ServerEditionCapability) MarshalJSON() ([]byte, error) {
 
 // ServerForUpdate parameters allowed to update for a server.
 type ServerForUpdate struct {
+	// Identity - The cmk identity for the server.
+	Identity *Identity `json:"identity,omitempty"`
 	// Sku - The SKU (pricing tier) of the server.
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerPropertiesForUpdate - The properties that can be updated for a server.
@@ -2114,6 +2168,9 @@ type ServerForUpdate struct {
 // MarshalJSON is the custom marshaler for ServerForUpdate.
 func (sfu ServerForUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if sfu.Identity != nil {
+		objectMap["identity"] = sfu.Identity
+	}
 	if sfu.Sku != nil {
 		objectMap["sku"] = sfu.Sku
 	}
@@ -2135,6 +2192,15 @@ func (sfu *ServerForUpdate) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				sfu.Identity = &identity
+			}
 		case "sku":
 			if v != nil {
 				var sku Sku
@@ -2347,6 +2413,8 @@ type ServerProperties struct {
 	ReplicationRole ReplicationRole `json:"replicationRole,omitempty"`
 	// ReplicaCapacity - READ-ONLY; The maximum number of replicas that a primary server can have.
 	ReplicaCapacity *int32 `json:"replicaCapacity,omitempty"`
+	// DataEncryption - The Data Encryption for CMK.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 	// State - READ-ONLY; The state of a server. Possible values include: 'ServerStateReady', 'ServerStateDropping', 'ServerStateDisabled', 'ServerStateStarting', 'ServerStateStopping', 'ServerStateStopped', 'ServerStateUpdating'
 	State ServerState `json:"state,omitempty"`
 	// FullyQualifiedDomainName - READ-ONLY; The fully qualified domain name of a server.
@@ -2390,6 +2458,9 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	if sp.ReplicationRole != "" {
 		objectMap["replicationRole"] = sp.ReplicationRole
 	}
+	if sp.DataEncryption != nil {
+		objectMap["dataEncryption"] = sp.DataEncryption
+	}
 	if sp.Storage != nil {
 		objectMap["storage"] = sp.Storage
 	}
@@ -2422,6 +2493,8 @@ type ServerPropertiesForUpdate struct {
 	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
 	// ReplicationRole - The replication role of the server. Possible values include: 'ReplicationRoleNone', 'ReplicationRoleSource', 'ReplicationRoleReplica'
 	ReplicationRole ReplicationRole `json:"replicationRole,omitempty"`
+	// DataEncryption - The Data Encryption for CMK.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 }
 
 // ServerRestartParameter server restart parameters.
@@ -2828,6 +2901,20 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
 	}
+	return json.Marshal(objectMap)
+}
+
+// UserAssignedIdentity metadata of user assigned identity.
+type UserAssignedIdentity struct {
+	// PrincipalID - READ-ONLY; Principal Id of user assigned identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; Client Id of user assigned identity
+	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentity.
+func (uai UserAssignedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 

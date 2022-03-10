@@ -44,6 +44,13 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type DataEncryptionType = original.DataEncryptionType
+
+const (
+	DataEncryptionTypeAzureKeyVault DataEncryptionType = original.DataEncryptionTypeAzureKeyVault
+	DataEncryptionTypeSystemManaged DataEncryptionType = original.DataEncryptionTypeSystemManaged
+)
+
 type EnableStatusEnum = original.EnableStatusEnum
 
 const (
@@ -88,6 +95,12 @@ type IsReadOnly = original.IsReadOnly
 const (
 	IsReadOnlyFalse IsReadOnly = original.IsReadOnlyFalse
 	IsReadOnlyTrue  IsReadOnly = original.IsReadOnlyTrue
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type ReplicationRole = original.ReplicationRole
@@ -147,6 +160,7 @@ type ConfigurationProperties = original.ConfigurationProperties
 type ConfigurationsBatchUpdateFuture = original.ConfigurationsBatchUpdateFuture
 type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
+type DataEncryption = original.DataEncryption
 type Database = original.Database
 type DatabaseListResult = original.DatabaseListResult
 type DatabaseListResultIterator = original.DatabaseListResultIterator
@@ -169,6 +183,7 @@ type FirewallRulesDeleteFuture = original.FirewallRulesDeleteFuture
 type GetPrivateDNSZoneSuffixClient = original.GetPrivateDNSZoneSuffixClient
 type GetPrivateDNSZoneSuffixResponse = original.GetPrivateDNSZoneSuffixResponse
 type HighAvailability = original.HighAvailability
+type Identity = original.Identity
 type LocationBasedCapabilitiesClient = original.LocationBasedCapabilitiesClient
 type MaintenanceWindow = original.MaintenanceWindow
 type NameAvailability = original.NameAvailability
@@ -212,6 +227,7 @@ type Storage = original.Storage
 type StorageEditionCapability = original.StorageEditionCapability
 type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VirtualNetworkSubnetUsageParameter = original.VirtualNetworkSubnetUsageParameter
 type VirtualNetworkSubnetUsageResult = original.VirtualNetworkSubnetUsageResult
 
@@ -338,6 +354,9 @@ func PossibleCreateModeValues() []CreateMode {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleDataEncryptionTypeValues() []DataEncryptionType {
+	return original.PossibleDataEncryptionTypeValues()
+}
 func PossibleEnableStatusEnumValues() []EnableStatusEnum {
 	return original.PossibleEnableStatusEnumValues()
 }
@@ -355,6 +374,9 @@ func PossibleIsDynamicConfigValues() []IsDynamicConfig {
 }
 func PossibleIsReadOnlyValues() []IsReadOnly {
 	return original.PossibleIsReadOnlyValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
 }
 func PossibleReplicationRoleValues() []ReplicationRole {
 	return original.PossibleReplicationRoleValues()

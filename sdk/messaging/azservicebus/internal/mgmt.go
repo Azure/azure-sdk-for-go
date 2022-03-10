@@ -31,36 +31,9 @@ const (
 	DeferredDisposition  DispositionStatus = "defered"
 )
 
-type mgmtError struct {
-	Resp    *RPCResponse
-	Message string
-}
-
-func (me mgmtError) Error() string {
-	return me.Message
-}
-
-func (me mgmtError) RPCCode() int {
-	return me.Resp.Code
-}
-
 // creates a new link and sends the RPC request, recovering and retrying on certain AMQP errors
 func doRPC(ctx context.Context, name string, rpcLink RPCLink, msg *amqp.Message) (*RPCResponse, error) {
-	res, err := rpcLink.RPC(ctx, msg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if res.Code >= 200 && res.Code < 300 {
-		tab.For(ctx).Debug(fmt.Sprintf("rpc: success, status code %d and description: %s", res.Code, res.Description))
-		return res, nil
-	}
-
-	return nil, mgmtError{
-		Message: fmt.Sprintf("rpc: failed, status code %d and description: %s", res.Code, res.Description),
-		Resp:    res,
-	}
+	return rpcLink.RPC(ctx, msg)
 }
 
 func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {

@@ -171,10 +171,14 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 	}
 
-	var me mgmtError
+	var me rpcError
 
 	if errors.As(err, &me) {
 		code := me.RPCCode()
+
+		if code == 404 {
+			return RecoveryKindFatal
+		}
 
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.

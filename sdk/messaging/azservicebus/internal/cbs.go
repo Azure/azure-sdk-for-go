@@ -1,5 +1,6 @@
-// Package cbs provides the functionality for negotiating claims-based security over AMQP for use in Azure Service Bus
-// and Event Hubs.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package internal
 
 import (

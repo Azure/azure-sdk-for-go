@@ -7,6 +7,8 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.13.1/go.mod h1:+nVKciyKD2J9T
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.3/go.mod h1:KLF4gFr6DcKFZwSuH8w8yEK6DpFl3LP5rhdvAb7Yz5I=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1 h1:sLZ/Y+P/5RRtsXWylBjB5lkgixYfm0MQPiwrSX//JSo=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1/go.mod h1:KLF4gFr6DcKFZwSuH8w8yEK6DpFl3LP5rhdvAb7Yz5I=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v0.1.0 h1:/hWqo5bAXoNK7svf5GvgpXFPzOCpM29/Eu+WqcE34Uk=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v0.1.0/go.mod h1:wXFq4k1znCwV7Bw70gw4UDNYKv/nrCUr70hjUmOj1Jo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi v0.3.1 h1:BBbQ9XBvmXKzw4eL9uChPyNZgf+i/liXDCk9eLNlFss=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi v0.3.1/go.mod h1:I8zxpW5dgsUDURn73KC7cexI2WC8QIsjwfJ5n+1O3Ls=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v0.3.1 h1:EXTDtCSTfPauGawsG+Ae/W46B1PkrgzuKNrcFqy4ljM=

@@ -171,10 +171,10 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 	}
 
-	var me rpcError
+	var rpcErr rpcError
 
-	if errors.As(err, &me) {
-		code := me.RPCCode()
+	if errors.As(err, &rpcErr) {
+		code := rpcErr.RPCCode()
 
 		if code == 404 {
 			return RecoveryKindFatal
@@ -189,13 +189,13 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 
 		// simple timeouts
-		if me.Resp.Code == 408 || me.Resp.Code == 503 ||
+		if rpcErr.Resp.Code == 408 || rpcErr.Resp.Code == 503 ||
 			// internal server errors are worth retrying (they will typically lead
 			// to a more actionable error). A simple example of this is when you're
 			// in the middle of an operation and the link is detached. Sometimes you'll get
 			// the detached event immediately, but sometimes you'll get an intermediate 500
 			// indicating your original operation was cancelled.
-			me.Resp.Code == 500 {
+			rpcErr.Resp.Code == 500 {
 			return RecoveryKindNone
 		}
 	}

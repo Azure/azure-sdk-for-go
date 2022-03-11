@@ -89,6 +89,9 @@ func MustCreateStressContext(testName string) *StressContext {
 		Nano:             testRunID, // the same for now
 		ConnectionString: cs,
 		TelemetryClient:  telemetryClient,
+		// you could always change the interval here. A minute feels like often enough
+		// to know things are running, while not so often that you end up flooding logging
+		// with duplicate information.
 		statsPrinter:     newStatsPrinter(ctx, testName, time.Minute, telemetryClient),
 		logMessages:      logMessages,
 		Context:          ctx,

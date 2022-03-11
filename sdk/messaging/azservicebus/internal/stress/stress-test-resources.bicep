@@ -5,6 +5,7 @@ param baseName string = resourceGroup().name
 param testApplicationOid string
 
 var apiVersion = '2017-04-01'
+// Uncomment this if you want to test against the southeastasia nodes.
 //var location = 'southeastasia'
 var location = resourceGroup().location
 var authorizationRuleName_var = '${baseName}/RootManageSharedAccessKey'

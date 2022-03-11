@@ -168,7 +168,7 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 	return setSecretResponseFromGenerated(resp), err
 }
 
-// DeletedSecretResponse contains the response for a Client.DeleteSecret operation.
+// DeleteSecretResponse contains the response for a Client.DeleteSecret operation.
 type DeleteSecretResponse struct {
 	DeletedSecret
 }
@@ -211,7 +211,7 @@ func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteS
 	return &internal.KeyVaultClientDeleteSecretOptions{}
 }
 
-// The poller returned by the Client.StartDeleteSecret operation
+// DeleteSecretPoller is the poller returned by the Client.StartDeleteSecret operation
 type DeleteSecretPoller struct {
 	secretName     string // This is the secret to Poll for in GetDeletedSecret
 	vaultUrl       string
@@ -268,6 +268,7 @@ func (s *DeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Duration)
 	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
 }
 
+// DeleteSecretPollerResponse contains Response fields for Client.BeginDeleteSecret
 type DeleteSecretPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
 	PollUntilDone func(context.Context, time.Duration) (DeleteSecretResponse, error)
@@ -540,6 +541,7 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, opti
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
+// RecoverDeletedSecretPoller is the poller returned by Client.BeginRecoverDeletedSecret
 type RecoverDeletedSecretPoller struct {
 	secretName      string
 	vaultUrl        string
@@ -837,7 +839,7 @@ type ListSecretVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The secret list result
+// ListSecretVersionsPageResponse contains response field for ListSecretVersionsPager.NextPage
 type ListSecretVersionsPageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response

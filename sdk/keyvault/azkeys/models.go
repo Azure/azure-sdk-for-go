@@ -298,6 +298,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 	}
 }
 
+// ReleasePolicy represents the release policy for a Key Vault Key
 type ReleasePolicy struct {
 	// Content type and version of key release policy
 	ContentType *string `json:"contentType,omitempty"`

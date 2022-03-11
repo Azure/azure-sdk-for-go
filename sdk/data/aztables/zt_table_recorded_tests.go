@@ -13,11 +13,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type EndpointType string
+type endpointType string
 
 const (
-	storageEndpoint EndpointType = "storage"
-	cosmosEndpoint  EndpointType = "cosmos"
+	storageEndpoint endpointType = "storage"
+	cosmosEndpoint  endpointType = "cosmos"
 )
 
 var ctx = context.Background()

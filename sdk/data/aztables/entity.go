@@ -135,12 +135,12 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 // EDMBinary will also receive the correct odata annotation for round-trip accuracy.
 type EDMBinary []byte
 
-// MarshalText implements the json.Marshal method
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMBinary) MarshalText() ([]byte, error) {
 	return ([]byte)(base64.StdEncoding.EncodeToString(([]byte)(e))), nil
 }
 
-// UnmarshalText implements the json.Unmarshal method
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMBinary) UnmarshalText(data []byte) error {
 	decoded, err := base64.StdEncoding.DecodeString(string(data))
 	if err != nil {
@@ -154,12 +154,12 @@ func (e *EDMBinary) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMInt64 int64
 
-// MarshalText implements the json.Marshal method
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMInt64) MarshalText() ([]byte, error) {
 	return []byte(strconv.FormatInt(int64(e), 10)), nil
 }
 
-// UnmarshalText implements the json.Unmarshal method
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMInt64) UnmarshalText(data []byte) error {
 	i, err := strconv.ParseInt(string(data), 10, 64)
 	if err != nil {
@@ -173,12 +173,12 @@ func (e *EDMInt64) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMGUID string
 
-// MarshalText implements the json.Marshal method
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMGUID) MarshalText() ([]byte, error) {
 	return ([]byte)(e), nil
 }
 
-// UnmarshalText implements the json.Unmarshal method
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMGUID) UnmarshalText(data []byte) error {
 	*e = EDMGUID(string(data))
 	return nil
@@ -188,12 +188,12 @@ func (e *EDMGUID) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMDateTime time.Time
 
-// MarshalText implements the json.Marshal method
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMDateTime) MarshalText() ([]byte, error) {
 	return ([]byte)(time.Time(e).Format(rfc3339)), nil
 }
 
-// UnmarshalText implements the json.Unmarshal method
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMDateTime) UnmarshalText(data []byte) error {
 	t, err := time.Parse(rfc3339, string(data))
 	if err != nil {

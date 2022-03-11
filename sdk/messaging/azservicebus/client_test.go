@@ -9,6 +9,7 @@ import (
 	"net"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -120,6 +121,75 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	require.EqualValues(t, "hello world", string(bytes))
 }
 
+const fastNotFoundDuration = 10 * time.Second
+
+func TestNewClientNewSenderNotFound(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	defer client.Close(context.Background())
+
+	sender, err := client.NewSender("non-existent-queue", nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
+	defer cancel()
+
+	err = sender.SendMessage(ctx, &Message{Body: []byte("hello")})
+	assertRPCNotFound(t, err)
+}
+
+func TestNewClientNewReceiverNotFound(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	defer client.Close(context.Background())
+
+	receiver, err := client.NewReceiverForQueue("non-existent-queue", nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
+	defer cancel()
+
+	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
+	require.Nil(t, messages)
+	assertRPCNotFound(t, err)
+
+	receiver, err = client.NewReceiverForSubscription("non-existent-topic", "non-existent-subscription", nil)
+	require.NoError(t, err)
+
+	ctx, cancel = context.WithTimeout(context.Background(), fastNotFoundDuration)
+	defer cancel()
+
+	messages, err = receiver.PeekMessages(ctx, 1, nil)
+	require.Nil(t, messages)
+	assertRPCNotFound(t, err)
+}
+
+func TestNewClientNewSessionReceiverNotFound(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	defer client.Close(context.Background())
+
+	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
+	defer cancel()
+
+	receiver, err := client.AcceptSessionForQueue(ctx, "non-existent-queue", "session-id", nil)
+	require.Nil(t, receiver)
+	assertRPCNotFound(t, err)
+
+	ctx, cancel = context.WithTimeout(context.Background(), fastNotFoundDuration)
+	defer cancel()
+
+	receiver, err = client.AcceptNextSessionForQueue(ctx, "non-existent-queue", nil)
+	require.Nil(t, receiver)
+	assertRPCNotFound(t, err)
+}
+
 func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}
@@ -198,4 +268,16 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.Empty(t, client.links)
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 	})
+}
+
+func assertRPCNotFound(t *testing.T, err error) {
+	require.NotNil(t, err)
+
+	var rpcError interface {
+		RPCCode() int
+		error
+	}
+
+	require.ErrorAs(t, err, &rpcError)
+	require.Equal(t, 404, rpcError.RPCCode())
 }

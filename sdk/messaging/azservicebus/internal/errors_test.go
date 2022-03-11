@@ -171,9 +171,9 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
-		mgmtError{Resp: &RPCResponse{Code: 408}},
-		mgmtError{Resp: &RPCResponse{Code: 503}},
-		mgmtError{Resp: &RPCResponse{Code: 500}},
+		rpcError{Resp: &RPCResponse{Code: 408}},
+		rpcError{Resp: &RPCResponse{Code: 503}},
+		rpcError{Resp: &RPCResponse{Code: 500}},
 	}
 
 	for i, err := range tempErrors {
@@ -212,10 +212,10 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
 		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		// we lost the session lock, attempt link recovery
-		mgmtError{Resp: &RPCResponse{Code: 410}},
+		rpcError{Resp: &RPCResponse{Code: 410}},
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		mgmtError{Resp: &RPCResponse{Code: 401}},
+		rpcError{Resp: &RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
@@ -239,4 +239,6 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		rk := GetSBErrInfo(&amqp.Error{Condition: cond}).RecoveryKind
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
+
+	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: 404}}).RecoveryKind)
 }

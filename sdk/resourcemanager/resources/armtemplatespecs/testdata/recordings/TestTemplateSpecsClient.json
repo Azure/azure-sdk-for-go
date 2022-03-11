@@ -1,0 +1,513 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "225",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:20:46 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1164",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072047Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
+        "name": "go-sdk-test-rg",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "eastus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template?api-version=2021-05-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "90",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "template spec properties description."
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "676",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:20:50 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1163",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072051Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "template spec properties description."
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:49.7714605Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:20:49.7714605Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template",
+        "type": "Microsoft.Resources/templateSpecs",
+        "name": "go-test-template"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version?api-version=2021-05-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "243",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "\u003Cdescription\u003E",
+          "mainTemplate": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {},
+            "resources": []
+          }
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "919",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:20:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1162",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072054Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "\u003Cdescription\u003E",
+          "mainTemplate": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {},
+            "resources": []
+          }
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:53.2402078Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:20:53.2402078Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version",
+        "type": "Microsoft.Resources/templateSpecs/versions",
+        "name": "go-test-template-version"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version?api-version=2021-05-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "24",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "tags": {
+          "test": "live"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:20:56 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1161",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072057Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "tags": {
+          "test": "live"
+        },
+        "properties": {
+          "description": "\u003Cdescription\u003E",
+          "mainTemplate": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {},
+            "resources": []
+          }
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:53.2402078Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:20:55.1464602Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version",
+        "type": "Microsoft.Resources/templateSpecs/versions",
+        "name": "go-test-template-version"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version?api-version=2021-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:20:56 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11995",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072057Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "tags": {
+          "test": "live"
+        },
+        "properties": {
+          "description": "\u003Cdescription\u003E",
+          "mainTemplate": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {},
+            "resources": []
+          }
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:53.2402078Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:20:55.1464602Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version",
+        "type": "Microsoft.Resources/templateSpecs/versions",
+        "name": "go-test-template-version"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template/versions/go-test-template-version?api-version=2021-05-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Mar 2022 07:21:00 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14983",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072101Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template?api-version=2021-05-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "90",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "template spec properties description."
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "676",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:21:00 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1160",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072101Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "properties": {
+          "description": "template spec properties description."
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:49.7714605Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:21:01.1777044Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template",
+        "type": "Microsoft.Resources/templateSpecs",
+        "name": "go-test-template"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template?api-version=2021-05-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "24",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "tags": {
+          "test": "live"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:21:03 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1159",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072104Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "tags": {
+          "test": "live"
+        },
+        "properties": {
+          "description": "template spec properties description."
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:49.7714605Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:21:01.8495826Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template",
+        "type": "Microsoft.Resources/templateSpecs",
+        "name": "go-test-template"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template?api-version=2021-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 11 Mar 2022 07:21:03 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11994",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072104Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "location": "eastus",
+        "tags": {
+          "test": "live"
+        },
+        "properties": {
+          "description": "template spec properties description."
+        },
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-03-11T07:20:49.7714605Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-03-11T07:21:01.8495826Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template",
+        "type": "Microsoft.Resources/templateSpecs",
+        "name": "go-test-template"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/templateSpecs/go-test-template?api-version=2021-05-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armtemplatespecs/v0.2.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Mar 2022 07:21:07 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14982",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072107Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Mar 2022 07:21:10 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ5NTItRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14981",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220311T072110Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

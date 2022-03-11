@@ -15,6 +15,7 @@ import (
 
 type requestIdPolicy struct{}
 
+// NewRequestIdPolicy returns a policy that add the x-ms-client-request-id header
 func NewRequestIdPolicy() policy.Policy {
 	return &requestIdPolicy{}
 }

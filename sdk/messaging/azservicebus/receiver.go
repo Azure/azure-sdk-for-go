@@ -274,7 +274,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 	return receivedMessages, nil
 }
 
-// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
+// RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
 	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{

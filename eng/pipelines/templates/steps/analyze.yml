@@ -18,7 +18,7 @@ steps:
       pwsh: true
       filePath: eng/scripts/Invoke-DependencyCheck.ps1
       arguments: 'sdk/${{ parameters.ServiceDirectory }}'
-      
+
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
@@ -83,6 +83,12 @@ steps:
     parameters:
       Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
+
+  - script: |
+      go run . --directory '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}'
+    displayName: 'Validate Documentation'
+    condition: succeededOrFailed()
+    workingDirectory: 'eng/tools/doccheck'
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 

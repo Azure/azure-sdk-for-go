@@ -74,10 +74,12 @@ type TopicRuntimeProperties struct {
 	ScheduledMessageCount int32
 }
 
+// CreateTopicResult contains the result for Client.CreateTopic
 type CreateTopicResult struct {
 	TopicProperties
 }
 
+// CreateTopicResponse contains response fields for Client.CreateTopic
 type CreateTopicResponse struct {
 	CreateTopicResult
 
@@ -85,6 +87,7 @@ type CreateTopicResponse struct {
 	RawResponse *http.Response
 }
 
+// CreateTopicOptions contains optional parameters for Client.CreateTopic
 type CreateTopicOptions struct {
 	// For future expansion
 }
@@ -105,10 +108,12 @@ func (ac *Client) CreateTopic(ctx context.Context, topicName string, properties 
 	}, nil
 }
 
+// GetTopicResult contains the result for Client.GetTopic
 type GetTopicResult struct {
 	TopicProperties
 }
 
+// GetTopicResponse contains response fields for Client.GetTopic
 type GetTopicResponse struct {
 	GetTopicResult
 
@@ -116,6 +121,7 @@ type GetTopicResponse struct {
 	RawResponse *http.Response
 }
 
+// GetTopicOptions contains optional parameters for Client.GetTopic
 type GetTopicOptions struct {
 	// For future expansion
 }
@@ -148,11 +154,13 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	}, nil
 }
 
+// GetTopicRuntimePropertiesResult contains the result for Client.GetTopicRuntimeProperties
 type GetTopicRuntimePropertiesResult struct {
 	// Value is the result of the request.
 	TopicRuntimeProperties
 }
 
+// GetTopicRuntimePropertiesResponse contains response fields for Client.GetTopicRuntimeProperties
 type GetTopicRuntimePropertiesResponse struct {
 	GetTopicRuntimePropertiesResult
 
@@ -160,6 +168,7 @@ type GetTopicRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
+// GetTopicRuntimePropertiesOptions contains optional parameters for Client.GetTopicRuntimeProperties
 type GetTopicRuntimePropertiesOptions struct {
 	// For future expansion
 }
@@ -192,12 +201,14 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	}, nil
 }
 
+// TopicItem is the data returned by the Client.ListTopics pager
 type TopicItem struct {
 	TopicProperties
 
 	TopicName string
 }
 
+// ListTopicsResponse contains response fields for the Client.PageResponse method
 type ListTopicsResponse struct {
 	// Items is the result of the request.
 	Items []*TopicItem
@@ -280,12 +291,14 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) *TopicsPager {
 	}
 }
 
+// TopicRuntimePropertiesItem contains fields for the Client.ListTopicsRuntimeProperties method
 type TopicRuntimePropertiesItem struct {
 	TopicRuntimeProperties
 
 	TopicName string
 }
 
+// ListTopicsRuntimePropertiesResponse contains response fields for TopicRuntimePropertiesPager.PageResponse
 type ListTopicsRuntimePropertiesResponse struct {
 	// Items is the result of the request.
 	Items []*TopicRuntimePropertiesItem
@@ -367,10 +380,12 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 	}
 }
 
+// UpdateTopicResult contains the result of Client.UpdateTopic
 type UpdateTopicResult struct {
 	TopicProperties
 }
 
+// UpdateTopicResponse contains response fields for Client.UpdateTopic
 type UpdateTopicResponse struct {
 	UpdateTopicResult
 
@@ -378,6 +393,7 @@ type UpdateTopicResponse struct {
 	RawResponse *http.Response
 }
 
+// UpdateTopicOptions contains optional parameters for Client.UpdateTopic
 type UpdateTopicOptions struct {
 	// For future expansion
 }
@@ -398,6 +414,7 @@ func (ac *Client) UpdateTopic(ctx context.Context, topicName string, properties 
 	}, nil
 }
 
+// DeleteTopicResponse contains the response fields for Client.DeleteTopic
 type DeleteTopicResponse struct {
 	// Value is the result of the request.
 	Value *TopicProperties
@@ -405,6 +422,7 @@ type DeleteTopicResponse struct {
 	RawResponse *http.Response
 }
 
+// DeleteTopicOptions contains optional parameters for Client.DeleteTopic
 type DeleteTopicOptions struct {
 	// For future expansion
 }

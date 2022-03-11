@@ -6,9 +6,9 @@ scenarios:
 - "constantDetachmentSender"
 - "finitePeeks"
 - "finiteSendAndReceive"
+- "idleFastReconnect"
 - "infiniteSendAndReceive"
 - "longRunningRenewLock"
+- "mostlyIdleReceiver"
 - "rapidOpenClose"
 - "receiveCancellation"
-- "idleFastReconnect"
-

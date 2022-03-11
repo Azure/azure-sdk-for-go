@@ -20,6 +20,8 @@ type Stats struct {
 	Sent     int32
 	Received int32
 	Errors   int32
+
+	Completed int32
 }
 
 func NewStats(name string) *Stats {
@@ -44,27 +46,34 @@ func (s *Stats) AddError(reason string, err error) {
 	atomic.AddInt32(&s.Errors, 1)
 }
 
+func (s *Stats) AddCompleted(add int32) {
+	atomic.AddInt32(&s.Completed, add)
+}
+
 func (s *Stats) String() string {
 	sent := atomic.LoadInt32(&s.Sent)
 	received := atomic.LoadInt32(&s.Received)
 	errors := atomic.LoadInt32(&s.Errors)
+	completed := atomic.LoadInt32(&s.Completed)
 
 	if s.name == "" {
-		return fmt.Sprintf("(s:%d, r:%d, err:%d)", sent, received, errors)
+		return fmt.Sprintf("(s:%d, r:%d, comp:%d, err:%d)", sent, received, completed, errors)
 	} else {
-		return fmt.Sprintf("(n:%s, s:%d, r:%d, err:%d)", s.name, sent, received, errors)
+		return fmt.Sprintf("(n:%s, s:%d, r:%d, comp:%d, err:%d)", s.name, sent, received, completed, errors)
 	}
 }
 
 type statsPrinter struct {
-	tc  appinsights.TelemetryClient
-	mu  sync.RWMutex
-	all []*Stats
+	tc    appinsights.TelemetryClient
+	mu    sync.RWMutex
+	all   []*Stats
+	start time.Time
 }
 
 func newStatsPrinter(ctx context.Context, prefix string, interval time.Duration, telemetryClient appinsights.TelemetryClient) *statsPrinter {
 	sp := &statsPrinter{
-		tc: telemetryClient,
+		tc:    telemetryClient,
+		start: time.Now(),
 	}
 
 	go func(ctx context.Context) {
@@ -104,6 +113,8 @@ func (sp *statsPrinter) PrintStats() {
 
 		sp.tc.TrackMetric(fmt.Sprintf("%s.TotalErrors", stats.name), float64(stats.Errors))
 	}
+
+	log.Printf(" Running for %s", time.Since(sp.start))
 }
 
 // NewStat creates a new stat with `name` and adds it to the list of statistics that will

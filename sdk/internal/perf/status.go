@@ -5,151 +5,116 @@ package perf
 
 import (
 	"fmt"
+	"os"
 	"text/tabwriter"
+	"time"
 
 	"golang.org/x/text/message"
 )
 
-var perSecondCount [][]int
-var elapsedTimes [][]float64
-
-var perSecondCountWarmup [][]int
-var elapsedTimesWarmup [][]float64
-
-var printedWarmupResults bool = false
-
 var messagePrinter *message.Printer = message.NewPrinter(message.MatchLanguage("en"))
 
-// helper function for handling status updates
-func handleMessage(w *tabwriter.Writer, msg runResult) {
-	if msg.warmup {
-		handleWarmupMessage(w, msg)
-		return
-	}
+// statusRunner is the struct responsible for handling messages
+type statusRunner struct {
+	// results is a slice of all results from the goroutines
+	results []runResult
 
-	// Check if we need to print out results from warmup. Results come in a channel, so we
-	// need to check if all N channels (N = Parallel) have reported final results
-	if warmUpDuration > 0 {
-		if len(elapsedTimesWarmup[warmUpDuration-1]) == parallelInstances && !printedWarmupResults {
-			printFinalResults(elapsedTimesWarmup, perSecondCountWarmup, true)
-			printedWarmupResults = true
-		}
-	}
+	// start is the time the statusRunner was started
+	start time.Time
 
-	if len(perSecondCount) == 0 {
-		// Initialize the slice of slices
-		for i := 0; i < duration; i++ {
-			perSecondCount = append(perSecondCount, []int{})
-			elapsedTimes = append(elapsedTimes, []float64{})
-		}
-	}
+	// perRoutineResults map the parallel index to a slice of runResults
+	perRoutineResults map[int][]runResult
 
-	updateSecond := int(msg.timeInSeconds) - 1
-	perSecondCount[updateSecond] = append(perSecondCount[updateSecond], msg.count)
-	elapsedTimes[updateSecond] = append(elapsedTimes[updateSecond], msg.timeInSeconds)
+	// lastPrint holds when the last information was printed to stdout
+	// the initial value is the same as start. When this value exceeds
+	// is more than 1 second after time.Now(), a new update is printed.
+	lastPrint time.Time
 
-	if len(perSecondCount[updateSecond]) == parallelInstances {
-		if updateSecond == 0 {
-			fmt.Println("\n=== Test ===")
-			fmt.Fprintln(w, "Current\tTotal\tAverage\t")
-		}
+	// total is a running count of the count of performance tests run
+	total int
 
-		thisCount := sumInts(perSecondCount[updateSecond])
-		totalCount := 0
-		for _, c := range perSecondCount {
-			totalCount += sumInts(c)
-		}
+	// prevTotal is the total of the last output
+	prevTotal int
 
-		avg := computeAverageOpsPerSecond(perSecondCount, elapsedTimes)
+	// hasFinished indicates if the final results have been printed out
+	totalRunTime int
 
-		_, err := fmt.Fprintf(
-			w,
-			"%s\t%s\t%s\t\n",
-			messagePrinter.Sprintf("%d", thisCount),
-			messagePrinter.Sprintf("%d", totalCount),
-			messagePrinter.Sprintf("%.2f", avg),
-		)
-		if err != nil {
-			panic(err)
-		}
-		w.Flush()
+	// routinesFinished indicates how many routines have sent a message
+	// indicating they have completed execution
+	routinesFinished int
+
+	// isWarmup indicates whether the messages are from warmup
+	isWarmup bool
+}
+
+func newStatusRunner(t time.Time, runTime int) *statusRunner {
+	return &statusRunner{
+		results:           make([]runResult, 0),
+		start:             t,
+		perRoutineResults: map[int][]runResult{},
+		lastPrint:         t,
+		totalRunTime:      runTime,
 	}
 }
 
-func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
-	if len(perSecondCountWarmup) == 0 {
-		// Initialize the slice of slices for warmups
-		for i := 0; i < warmUpDuration; i++ {
-			perSecondCountWarmup = append(perSecondCountWarmup, []int{})
-			elapsedTimesWarmup = append(elapsedTimesWarmup, []float64{})
-		}
+func (s *statusRunner) handleMessage(msg runResult, w *tabwriter.Writer) {
+	s.results = append(s.results, msg)
+
+	if msg.completed {
+		s.routinesFinished += 1
 	}
 
-	updateSecond := int(msg.timeInSeconds) - 1
-	perSecondCountWarmup[updateSecond] = append(perSecondCountWarmup[updateSecond], msg.count)
-	elapsedTimesWarmup[updateSecond] = append(elapsedTimesWarmup[updateSecond], msg.timeInSeconds)
+	s.total += msg.count
 
-	if len(perSecondCountWarmup[updateSecond]) == parallelInstances {
-		if updateSecond == 0 {
-			fmt.Println("\n=== Warmup ===")
-			fmt.Fprintln(w, "Current\tTotal\tAverage\t")
-		}
-
-		thisCount := sumInts(perSecondCountWarmup[updateSecond])
-		totalCount := 0
-		for _, c := range perSecondCountWarmup {
-			totalCount += sumInts(c)
-		}
-
-		avg := computeAverageOpsPerSecond(perSecondCountWarmup, elapsedTimesWarmup)
-
-		p := message.NewPrinter(message.MatchLanguage("en"))
-
-		_, err := fmt.Fprintf(
-			w,
-			"%s\t%s\t%s\t\n",
-			p.Sprintf("%d", thisCount),
-			p.Sprintf("%d", totalCount),
-			p.Sprintf("%.2f", avg),
-		)
-		if err != nil {
-			panic(err)
-		}
-		w.Flush()
-	}
+	s.perRoutineResults[msg.parallelIndex] = append(s.perRoutineResults[msg.parallelIndex], msg)
 }
 
-func computeAverageOpsPerSecond(perSecondCount [][]int, elapsedTimes [][]float64) float64 {
-	var avg float64
+func (s *statusRunner) printUpdates() {
+	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
+	firstPrint := false
+	for s.routinesFinished != parallelInstances {
+		// Poll and print
+		if time.Since(s.lastPrint).Seconds() > 1.0 {
 
-	for p := 0; p < parallelInstances; p++ {
-		threadOps := 0
-		timeElapsed := 0.0
-		for i := 0; i < len(perSecondCount); i++ {
-			if len(perSecondCount[i]) == 0 || len(elapsedTimes[i]) == 0 {
-				break
+			if !firstPrint {
+				if s.isWarmup {
+					fmt.Println("\n=== Warm Up ===")
+				} else {
+					fmt.Println("\n=== Test ===")
+				}
+				fmt.Fprintln(w, "Current\tTotal\tAverage\t")
+				w.Flush()
+				firstPrint = true
 			}
-			threadOps += perSecondCount[i][p]
-			timeElapsed = elapsedTimes[i][p]
+
+			avg := float64(s.total) / time.Since(s.start).Seconds()
+			_, err := fmt.Fprintf(
+				w,
+				"%s\t%s\t%s\t\n",
+				messagePrinter.Sprintf("%d", s.total-s.prevTotal),
+				messagePrinter.Sprintf("%d", s.total),
+				messagePrinter.Sprintf("%.2f", avg),
+			)
+			if err != nil {
+				panic(err)
+			}
+
+			w.Flush()
+
+			s.lastPrint = time.Now()
+			s.prevTotal = s.total
 		}
-
-		avg += float64(threadOps) / timeElapsed
 	}
-
-	return avg
 }
 
-func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup bool) {
+func (s *statusRunner) printFinalUpdate() {
 	opsPerRoutine := make([]int, parallelInstances)
 	secondsPerRoutine := make([]float64, parallelInstances)
-	innerLoop := duration
-	if warmup {
-		innerLoop = warmUpDuration
-	}
-	for i := 0; i < parallelInstances; i++ {
-		secondsPerRoutine[i] = elapsedTimes[innerLoop-1][i]
-		for j := 0; j < innerLoop; j++ {
-			opsPerRoutine[i] += perSecondCount[j][i]
+
+	for pIdx, msgs := range s.perRoutineResults {
+		secondsPerRoutine[pIdx] = msgs[len(msgs)-1].timeInSeconds
+		for _, msg := range msgs {
+			opsPerRoutine[pIdx] += msg.count
 		}
 	}
 
@@ -158,14 +123,12 @@ func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup 
 		opsPerSecond += float64(opsPerRoutine[i]) / secondsPerRoutine[i]
 	}
 
-	totalOperations := sumInts(opsPerRoutine)
-
 	fmt.Println("\n=== Results ===")
 	secondsPerOp := 1.0 / opsPerSecond
-	weightedAvgSec := float64(totalOperations) / opsPerSecond
+	weightedAvgSec := float64(s.total) / opsPerSecond
 	fmt.Printf(
 		"Completed %s operations in a weighted-average of %ss (%s ops/s, %s s/op)\n",
-		messagePrinter.Sprintf("%d", totalOperations),
+		messagePrinter.Sprintf("%d", s.total),
 		messagePrinter.Sprintf("%.2f", weightedAvgSec),
 		messagePrinter.Sprintf("%.2f", opsPerSecond),
 		messagePrinter.Sprintf("%.3f", secondsPerOp),

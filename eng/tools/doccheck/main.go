@@ -17,13 +17,15 @@ func filter(f fs.FileInfo) bool {
 }
 
 func findAllSubDirectories(root string) []string {
-	ret := make([]string, 0)
+	var ret []string
 
 	filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			panic(err)
 		}
-		if info.IsDir() && !strings.Contains(path, "internal") {
+		if info.IsDir() && strings.HasSuffix(path, "internal") {
+			return filepath.SkipDir
+		} else if info.IsDir() && !strings.Contains(path, "internal") {
 			ret = append(ret, path)
 		}
 		return nil

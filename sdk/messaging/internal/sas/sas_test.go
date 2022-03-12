@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -43,6 +44,20 @@ func TestNewSigner(t *testing.T) {
 	assert.Equal(t, keyName, sig.skn)
 	assert.Equal(t, expiry, sig.se)
 	assert.NotNil(t, sig.sig)
+}
+
+func TestTokenProviderWithSAS(t *testing.T) {
+	tp, err := NewTokenProvider(TokenProviderWithSAS("hello"))
+	require.NoError(t, err)
+
+	token, err := tp.GetToken("audience")
+	require.NoError(t, err)
+
+	require.Equal(t, &auth.Token{
+		TokenType: auth.CBSTokenTypeSAS,
+		Expiry:    "0",
+		Token:     "hello",
+	}, token)
 }
 
 func parseSig(sigStr string) (*sig, error) {

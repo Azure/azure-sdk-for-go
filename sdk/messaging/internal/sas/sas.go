@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 )
 
 type (
@@ -28,6 +29,7 @@ type (
 	// TokenProvider is a SAS claims-based security token provider
 	TokenProvider struct {
 		signer *Signer
+		sas    string
 	}
 
 	// TokenProviderOption provides configuration options for SAS Token Providers
@@ -38,6 +40,14 @@ type (
 func TokenProviderWithKey(keyName, key string) TokenProviderOption {
 	return func(provider *TokenProvider) error {
 		provider.signer = NewSigner(keyName, key)
+		return nil
+	}
+}
+
+// TokenProviderWithSAS configures the token provider with a pre-created SharedAccessSignature.
+func TokenProviderWithSAS(sas string) TokenProviderOption {
+	return func(provider *TokenProvider) error {
+		provider.sas = sas
 		return nil
 	}
 }
@@ -56,6 +66,11 @@ func NewTokenProvider(opts ...TokenProviderOption) (*TokenProvider, error) {
 
 // GetToken gets a CBS SAS token
 func (t *TokenProvider) GetToken(audience string) (*auth.Token, error) {
+	if t.sas != "" {
+		// the expiration date doesn't matter here so we'll just set it 0.
+		return auth.NewToken(auth.CBSTokenTypeSAS, t.sas, "0"), nil
+	}
+
 	signature, expiry, err := t.signer.SignWithDuration(audience, 2*time.Hour)
 
 	if err != nil {
@@ -96,6 +111,27 @@ func (s *Signer) SignWithExpiry(uri, expiry string) (string, error) {
 	}
 
 	return fmt.Sprintf("SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s", audience, sig, expiry, s.KeyName), nil
+}
+
+// CreateConnectionStringWithSharedAccessSignature generates a new connection string with
+// an embedded SharedAccessSignature and expiration.
+// Ex: Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
+func CreateConnectionStringWithSAS(connectionString string, duration time.Duration) (string, error) {
+	parsed, err := conn.ParsedConnectionFromStr(connectionString)
+
+	if err != nil {
+		return "", err
+	}
+
+	signer := NewSigner(parsed.KeyName, parsed.Key)
+
+	sig, _, err := signer.SignWithDuration(parsed.Namespace, duration)
+
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", parsed.Namespace, sig), nil
 }
 
 func signatureExpiry(from time.Time, interval time.Duration) string {

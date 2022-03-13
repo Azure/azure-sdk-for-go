@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"os"
 	"strings"
 	"time"
 
@@ -52,7 +53,14 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
+	var managedClientID ClientID
+	if s := os.Getenv("AZURE_CLIENT_ID"); s != "" {
+		managedClientID = ClientID(s)
+	}
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+		ClientOptions: options.ClientOptions,
+		ID:            managedClientID,
+	})
 	if err == nil {
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second

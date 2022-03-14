@@ -58,7 +58,7 @@ const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/res
 
 func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server) pipeline.Pipeline {
 	opts := testRPRegistrationOptions(srv)
-	rp, err := NewRPRegistrationPolicy(srv.URL(), mockCredential{}, testRPRegistrationOptions(srv))
+	rp, err := NewRPRegistrationPolicy(mockCredential{}, testRPRegistrationOptions(srv))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -343,7 +343,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	rp, err := NewRPRegistrationPolicy(srv.URL(), mockCredential{}, ops)
+	rp, err := NewRPRegistrationPolicy(mockCredential{}, ops)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -406,7 +406,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 	}}
 	opts := azpolicy.ClientOptions{Cloud: conf, Transport: srv}
-	rp, err := NewRPRegistrationPolicy(srv.URL(), cred, &armpolicy.RegistrationOptions{ClientOptions: opts})
+	rp, err := NewRPRegistrationPolicy(cred, &armpolicy.RegistrationOptions{ClientOptions: opts})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -425,22 +425,20 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 }
 
 func TestRPRegistrationPolicyWithIncompleteCloudConfig(t *testing.T) {
-	t.Skip("this test can't pass without a breaking change to arm/runtime.NewRPRegistrationPolicy")
-	// TODO: uncomment after adding error return to NewRPRegistrationPolicy
-	// partialConfigs := []cloud.Configuration{
-	// 	{Name: "..."},
-	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
-	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-	// 		cloud.ResourceManager: {Audience: "..."},
-	// 	}},
-	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-	// 		cloud.ResourceManager: {Endpoint: "http://localhost"},
-	// 	}},
-	// }
-	// for _, c := range partialConfigs {
-	// opts := azpolicy.ClientOptions{Cloud: c}
-	// _, err := NewRPRegistrationPolicy(mockCredential{}, &armpolicy.RegistrationOptions{ClientOptions: opts})
-	// if err == nil {
-	// 	t.Fatal("expected an error")
-	// }
+	partialConfigs := []cloud.Configuration{
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			cloud.ResourceManager: {Audience: "..."},
+		}},
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			cloud.ResourceManager: {Endpoint: "http://localhost"},
+		}},
+	}
+	for _, c := range partialConfigs {
+		opts := azpolicy.ClientOptions{Cloud: c}
+		_, err := NewRPRegistrationPolicy(mockCredential{}, &armpolicy.RegistrationOptions{ClientOptions: opts})
+		if err == nil {
+			t.Fatal("expected an error")
+		}
+	}
 }

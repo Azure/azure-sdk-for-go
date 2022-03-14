@@ -218,10 +218,9 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 	for _, c := range partialConfigs {
 		opts := &arm.ClientOptions{}
 		opts.Cloud = c
-		// TODO: uncomment after adding error return to NewPipeline
-		// _, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
-		// if err == nil {
-		// 	t.Fatal("expected an error")
-		// }
+		_, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
 	}
 }

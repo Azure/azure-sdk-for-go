@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -39,7 +40,7 @@ var testInvalidCPKByValue = CpkInfo{
 	EncryptionAlgorithm: &testEncryptionAlgorithm,
 }
 
-var testEncryptedScope = "blobgokeytestscope"
+var testEncryptedScope = os.Getenv("AZURE_STORAGE_ENCRYPTION_SCOPE")
 var testCPKByScope = CpkScopeInfo{
 	EncryptionScope: &testEncryptedScope,
 }

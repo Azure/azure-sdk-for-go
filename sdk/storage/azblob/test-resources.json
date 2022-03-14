@@ -538,11 +538,11 @@
       "type": "string",
       "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).primaryEndpoints.table)]"
     },
-    "SECONDARY_STORAGE_ACCOUNT_NAME": {
+    "SECONDARY_AZURE_STORAGE_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('secondaryAccountName')]"
     },
-    "SECONDARY_STORAGE_ACCOUNT_KEY": {
+    "SECONDARY_AZURE_STORAGE_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('mgmtApiVersion')).keys[0].value]"
     },
@@ -570,11 +570,11 @@
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('mgmtApiVersion')).keys[0].value]"
     },
-    "PREMIUM_STORAGE_ACCOUNT_NAME": {
+    "PREMIUM_AZURE_STORAGE_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('premiumAccountName')]"
     },
-    "PREMIUM_STORAGE_ACCOUNT_KEY": {
+    "PREMIUM_AZURE_STORAGE_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('mgmtApiVersion')).keys[0].value]"
     },

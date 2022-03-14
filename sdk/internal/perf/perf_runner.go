@@ -2,6 +2,7 @@ package perf
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -60,6 +61,7 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 		ticker:                       time.NewTicker(time.Second),
 		done:                         make(chan bool),
 		name:                         name,
+		proxyTransports:              map[string]*RecordingHTTPClient{},
 		perfToRun:                    p,
 		operationStatusTracker:       -1,
 		warmupOperationStatusTracker: -1,
@@ -90,6 +92,12 @@ func (r *perfRunner) Run() error {
 	if err != nil {
 		return err
 	}
+	defer func() {
+		err = r.globalInstance.GlobalCleanup(context.Background())
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	err = r.createPerfTests()
 	if err != nil {
@@ -99,10 +107,6 @@ func (r *perfRunner) Run() error {
 
 	r.printFinalUpdate(false)
 	err = r.cleanup()
-	if err != nil {
-		panic(err)
-	}
-	err = r.globalInstance.GlobalCleanup(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -320,7 +324,11 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		r.proxyTransports[ID].SetMode("live")
 		err := p.Run(context.Background())
 		if err != nil {
-			panic(err)
+			if errors.Is(err, context.DeadlineExceeded) {
+				return
+			} else {
+				panic(err)
+			}
 		}
 
 		// 2nd request goes through in Record mode
@@ -328,10 +336,16 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		err = r.proxyTransports[ID].start()
 		if err != nil {
 			panic(err)
+
 		}
+
 		err = p.Run(context.Background())
 		if err != nil {
-			panic(err)
+			if errors.Is(err, context.DeadlineExceeded) {
+				return
+			} else {
+				panic(err)
+			}
 		}
 		err = r.proxyTransports[ID].stop()
 		if err != nil {
@@ -356,7 +370,11 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		for time.Since(opts.warmupStart).Seconds() < float64(warmUpDuration) {
 			err := p.Run(ctx)
 			if err != nil {
-				panic(err)
+				if errors.Is(err, context.DeadlineExceeded) {
+					return
+				} else {
+					panic(err)
+				}
 			}
 			opts.incrememt(true)
 
@@ -381,7 +399,11 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 	for time.Since(opts.runStart).Seconds() < float64(duration) {
 		err := p.Run(ctx)
 		if err != nil {
-			panic(err)
+			if errors.Is(err, context.DeadlineExceeded) {
+				return
+			} else {
+				panic(err)
+			}
 		}
 		opts.incrememt(false)
 

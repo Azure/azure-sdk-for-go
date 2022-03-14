@@ -60,6 +60,29 @@ func TestTokenProviderWithSAS(t *testing.T) {
 	}, token)
 }
 
+func TestTokenProviderWithKey(t *testing.T) {
+	tp, err := NewTokenProvider(TokenProviderWithKey("keyName", "key", 3*24*time.Hour))
+	require.NoError(t, err)
+
+	now, err := time.Parse(time.RFC3339, "2020-01-01T01:02:03Z")
+	require.NoError(t, err)
+
+	// hardcodes a particular date so our test is consistent.
+	tp.signer.getNow = func() time.Time {
+		return now
+	}
+
+	token, err := tp.GetToken("audience")
+	require.NoError(t, err)
+
+	require.Equal(t, &auth.Token{
+		TokenType: auth.CBSTokenTypeSAS,
+		Expiry:    fmt.Sprintf("%d", now.UTC().Add(3*24*time.Hour).Unix()),
+		// NOTE: this is just literally the signature, using the key "key". Nothing secret or interesting here.
+		Token: "SharedAccessSignature sr=audience&sig=8UM0iIfFCfeBSqxSdBMW8pUbhAm7mnjSUaIZTZx8V0g%3D&se=1578099723&skn=keyName",
+	}, token)
+}
+
 func parseSig(sigStr string) (*sig, error) {
 	if !strings.HasPrefix(sigStr, sas+" ") {
 		return nil, errors.New("should start with " + sas)

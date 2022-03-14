@@ -24,12 +24,23 @@ type (
 	Signer struct {
 		KeyName string
 		Key     string
+
+		// getNow is stubabble for unit tests and is just an alias for time.Now()
+		getNow func() time.Time
 	}
 
 	// TokenProvider is a SAS claims-based security token provider
 	TokenProvider struct {
+		// expiryDuration is only used when we're generating SAS tokens. It gets used
+		// to calculate the expiration timestamp for a token. Pre-computed SAS tokens
+		// passed in TokenProviderWithSAS() are not affected.
+		expiryDuration time.Duration
+
 		signer *Signer
-		sas    string
+
+		// sas is a precomputed SAS token. This implies that the caller has some other
+		// method for generating tokens.
+		sas string
 	}
 
 	// TokenProviderOption provides configuration options for SAS Token Providers
@@ -37,14 +48,22 @@ type (
 )
 
 // TokenProviderWithKey configures a SAS TokenProvider to use the given key name and key (secret) for signing
-func TokenProviderWithKey(keyName, key string) TokenProviderOption {
+func TokenProviderWithKey(keyName, key string, expiryDuration time.Duration) TokenProviderOption {
 	return func(provider *TokenProvider) error {
+
+		if expiryDuration == 0 {
+			expiryDuration = 2 * time.Hour
+		}
+
+		provider.expiryDuration = expiryDuration
 		provider.signer = NewSigner(keyName, key)
 		return nil
 	}
 }
 
 // TokenProviderWithSAS configures the token provider with a pre-created SharedAccessSignature.
+// auth.Token's coming back from this TokenProvider instance will always have '0' as the expiration
+// date.
 func TokenProviderWithSAS(sas string) TokenProviderOption {
 	return func(provider *TokenProvider) error {
 		provider.sas = sas
@@ -55,6 +74,7 @@ func TokenProviderWithSAS(sas string) TokenProviderOption {
 // NewTokenProvider builds a SAS claims-based security token provider
 func NewTokenProvider(opts ...TokenProviderOption) (*TokenProvider, error) {
 	provider := new(TokenProvider)
+
 	for _, opt := range opts {
 		err := opt(provider)
 		if err != nil {
@@ -71,7 +91,7 @@ func (t *TokenProvider) GetToken(audience string) (*auth.Token, error) {
 		return auth.NewToken(auth.CBSTokenTypeSAS, t.sas, "0"), nil
 	}
 
-	signature, expiry, err := t.signer.SignWithDuration(audience, 2*time.Hour)
+	signature, expiry, err := t.signer.SignWithDuration(audience, t.expiryDuration)
 
 	if err != nil {
 		return nil, err
@@ -85,12 +105,14 @@ func NewSigner(keyName, key string) *Signer {
 	return &Signer{
 		KeyName: keyName,
 		Key:     key,
+
+		getNow: time.Now,
 	}
 }
 
 // SignWithDuration signs a given for a period of time from now
 func (s *Signer) SignWithDuration(uri string, interval time.Duration) (signature, expiry string, err error) {
-	expiry = signatureExpiry(time.Now().UTC(), interval)
+	expiry = signatureExpiry(s.getNow().UTC(), interval)
 	sig, err := s.SignWithExpiry(uri, expiry)
 
 	if err != nil {

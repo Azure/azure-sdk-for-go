@@ -71,14 +71,11 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (b BlobClient) WithVersionID(versionID string) BlockBlobClient {
+func (b BlobClient) WithVersionID(versionID string) BlobClient {
 	p, _ := NewBlobURLParts(b.URL())
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: b.client.con.p}
-	return BlockBlobClient{
-		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+	return BlobClient{client: &blobClient{con: con}}
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

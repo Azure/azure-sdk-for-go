@@ -1,0 +1,215 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifnonematchtrue?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:11:06 GMT
+      Etag:
+      - '"0x8DA05E602D33210"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - ee492138-d01e-0066-2bce-37c058000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Blob-Content-Length:
+      - "5120"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifnonematchtrue/srcgotestblobblobsetsequencenumberifnonematchtrue
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Etag:
+      - '"0x8DA05E602FA2DD6"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - ee49226e-d01e-0066-39ce-37c058000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2022-03-14T18:11:07.6913622Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      If-None-Match:
+      - garbage
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      X-Ms-Sequence-Number-Action:
+      - increment
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifnonematchtrue/srcgotestblobblobsetsequencenumberifnonematchtrue?comp=properties
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Etag:
+      - '"0x8DA05E6031F6391"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "1"
+      X-Ms-Request-Id:
+      - ee49234a-d01e-0066-80ce-37c058000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifnonematchtrue/srcgotestblobblobsetsequencenumberifnonematchtrue
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Etag:
+      - '"0x8DA05E6031F6391"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "1"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - ee49243d-d01e-0066-5ace-37c058000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2022-03-14T18:11:07.6913622Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:11:08 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifnonematchtrue?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:11:07 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - ee49253f-d01e-0066-38ce-37c058000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

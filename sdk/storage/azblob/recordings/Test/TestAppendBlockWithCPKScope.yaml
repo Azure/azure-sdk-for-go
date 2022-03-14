@@ -1,0 +1,333 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:55 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:55 GMT
+      Etag:
+      - '"0x8DA05E56D18CCD9"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - ee44a904-d01e-0066-39ce-37c058000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Blob-Type:
+      - AppendBlob
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope/gotestblobappendblockwithcpkscope
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      Etag:
+      - '"0x8DA05E56D854EE4"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Request-Id:
+      - ee44a9df-d01e-0066-7dce-37c058000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2022-03-14T18:06:56.9449188Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'AAA '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "4"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope/gotestblobappendblockwithcpkscope?comp=appendblock
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      Etag:
+      - '"0x8DA05E56DAAABB1"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Append-Offset:
+      - "0"
+      X-Ms-Blob-Committed-Block-Count:
+      - "1"
+      X-Ms-Content-Crc64:
+      - 6dmbGE8Kwf0=
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Request-Id:
+      - ee44ad06-d01e-0066-39ce-37c058000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'BBB '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "4"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope/gotestblobappendblockwithcpkscope?comp=appendblock
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      Etag:
+      - '"0x8DA05E56DCF6C55"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Append-Offset:
+      - "4"
+      X-Ms-Blob-Committed-Block-Count:
+      - "2"
+      X-Ms-Content-Crc64:
+      - 8ccByT85Asc=
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Request-Id:
+      - ee44ae0a-d01e-0066-28ce-37c058000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'CCC '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "4"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope/gotestblobappendblockwithcpkscope?comp=appendblock
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Etag:
+      - '"0x8DA05E56DF58C61"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Append-Offset:
+      - "8"
+      X-Ms-Blob-Committed-Block-Count:
+      - "3"
+      X-Ms-Content-Crc64:
+      - IEMFTiHKCz0=
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Request-Id:
+      - ee44af0b-d01e-0066-0fce-37c058000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope/gotestblobappendblockwithcpkscope
+    method: GET
+  response:
+    body: 'AAA BBB CCC '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "12"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Etag:
+      - '"0x8DA05E56DF58C61"'
+      Last-Modified:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Committed-Block-Count:
+      - "3"
+      X-Ms-Blob-Type:
+      - AppendBlob
+      X-Ms-Creation-Time:
+      - Mon, 14 Mar 2022 18:06:56 GMT
+      X-Ms-Encryption-Scope:
+      - blobgokeytestscope
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - ee44afeb-d01e-0066-58ce-37c058000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2022-03-14T18:06:56.9449188Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      X-Ms-Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocappendblockwithcpkscope?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 14 Mar 2022 18:06:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - ee44b177-d01e-0066-45ce-37c058000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

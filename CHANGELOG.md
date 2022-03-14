@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v62.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform`
+
 ## `v62.1.0`
 
 ### New Packages

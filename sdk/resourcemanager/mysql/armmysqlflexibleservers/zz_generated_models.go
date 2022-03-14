@@ -126,12 +126,6 @@ type CheckVirtualNetworkSubnetUsageClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from the Batch service.
-type CloudError struct {
-	// The resource management error response.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // Configuration - Represents a Configuration.
 type Configuration struct {
 	// The properties of a configuration.
@@ -260,6 +254,24 @@ type ConfigurationsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DataEncryption - The date encryption for cmk.
+type DataEncryption struct {
+	// Geo backup key uri as key vault can't cross region, need cmk in same region as geo backup
+	GeoBackupKeyURI *string `json:"geoBackupKeyUri,omitempty"`
+
+	// Geo backup user identity resource id as identity can't cross region, need identity in same region as geo backup
+	GeoBackupUserAssignedIdentityID *string `json:"geoBackupUserAssignedIdentityId,omitempty"`
+
+	// Primary key uri
+	PrimaryKeyURI *string `json:"primaryKeyUri,omitempty"`
+
+	// Primary user identity resource id
+	PrimaryUserAssignedIdentityID *string `json:"primaryUserAssignedIdentityId,omitempty"`
+
+	// The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
+	Type *DataEncryptionType `json:"type,omitempty"`
+}
+
 // Database - Represents a Database.
 type Database struct {
 	// The properties of a database.
@@ -332,45 +344,6 @@ type DelegatedSubnetUsage struct {
 
 	// READ-ONLY; Number of used delegated subnets
 	Usage *int64 `json:"usage,omitempty" azure:"ro"`
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.)
-type ErrorResponse struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // FirewallRule - Represents a server firewall rule.
@@ -462,6 +435,31 @@ type HighAvailability struct {
 	State *HighAvailabilityState `json:"state,omitempty" azure:"ro"`
 }
 
+// Identity - Properties to configure Identity for Bring your Own Keys
+type Identity struct {
+	// Type of managed service identity.
+	Type *string `json:"type,omitempty"`
+
+	// Metadata of user assigned identity.
+	UserAssignedIdentities map[string]interface{} `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; ObjectId from the KeyVault
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; TenantId from the KeyVault
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "principalId", i.PrincipalID)
+	populate(objectMap, "tenantId", i.TenantID)
+	populate(objectMap, "type", i.Type)
+	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
+	return json.Marshal(objectMap)
+}
+
 // LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.List
 // method.
 type LocationBasedCapabilitiesClientListOptions struct {
@@ -528,7 +526,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Additional descriptions for the operation.
-	Properties map[string]map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Operation.
@@ -637,6 +635,9 @@ type Server struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
+	// The cmk identity for the server.
+	Identity *Identity `json:"identity,omitempty"`
+
 	// Properties of the server.
 	Properties *ServerProperties `json:"properties,omitempty"`
 
@@ -663,6 +664,7 @@ type Server struct {
 func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "id", s.ID)
+	populate(objectMap, "identity", s.Identity)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
@@ -778,6 +780,9 @@ func (s ServerEditionCapability) MarshalJSON() ([]byte, error) {
 
 // ServerForUpdate - Parameters allowed to update for a server.
 type ServerForUpdate struct {
+	// The cmk identity for the server.
+	Identity *Identity `json:"identity,omitempty"`
+
 	// The properties that can be updated for a server.
 	Properties *ServerPropertiesForUpdate `json:"properties,omitempty"`
 
@@ -791,6 +796,7 @@ type ServerForUpdate struct {
 // MarshalJSON implements the json.Marshaller interface for type ServerForUpdate.
 func (s ServerForUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", s.Identity)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
 	populate(objectMap, "tags", s.Tags)
@@ -831,6 +837,9 @@ type ServerProperties struct {
 
 	// The mode to create a new MySQL server.
 	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// The Data Encryption for CMK.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
 	// High availability related properties of a server.
 	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`
@@ -874,6 +883,7 @@ func (s ServerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "availabilityZone", s.AvailabilityZone)
 	populate(objectMap, "backup", s.Backup)
 	populate(objectMap, "createMode", s.CreateMode)
+	populate(objectMap, "dataEncryption", s.DataEncryption)
 	populate(objectMap, "fullyQualifiedDomainName", s.FullyQualifiedDomainName)
 	populate(objectMap, "highAvailability", s.HighAvailability)
 	populate(objectMap, "maintenanceWindow", s.MaintenanceWindow)
@@ -911,6 +921,9 @@ func (s *ServerProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "createMode":
 			err = unpopulate(val, &s.CreateMode)
+			delete(rawMsg, key)
+		case "dataEncryption":
+			err = unpopulate(val, &s.DataEncryption)
 			delete(rawMsg, key)
 		case "fullyQualifiedDomainName":
 			err = unpopulate(val, &s.FullyQualifiedDomainName)
@@ -960,6 +973,9 @@ type ServerPropertiesForUpdate struct {
 
 	// Backup related properties of a server.
 	Backup *Backup `json:"backup,omitempty"`
+
+	// The Data Encryption for CMK.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
 	// High availability related properties of a server.
 	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`

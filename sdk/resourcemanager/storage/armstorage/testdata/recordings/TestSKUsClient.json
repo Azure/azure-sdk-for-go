@@ -1,6 +1,45 @@
 {
   "Entries": [
     {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "225",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 14 Mar 2022 08:49:18 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1187",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220314T084919Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
+        "name": "go-sdk-test-rg",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "eastus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
       "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/skus?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
@@ -8,25 +47,25 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armstorage/v0.4.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armstorage/v0.4.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Length": "1027814",
+        "Content-Length": "1036316",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 28 Feb 2022 08:48:10 GMT",
+        "Date": "Mon, 14 Mar 2022 08:49:19 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "c572045b-24ed-4d84-af6f-e94c35407f95",
-        "x-ms-ratelimit-remaining-subscription-reads": "11975",
-        "x-ms-request-id": "c572045b-24ed-4d84-af6f-e94c35407f95",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220228T084811Z:c572045b-24ed-4d84-af6f-e94c35407f95"
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11991",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220314T084919Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
@@ -15533,6 +15572,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -15657,6 +15700,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -15795,6 +15842,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -15923,6 +15974,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -16061,6 +16116,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -16181,6 +16240,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -16314,6 +16377,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -16442,6 +16509,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -16577,6 +16648,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -16716,6 +16791,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -16991,6 +17070,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -17130,6 +17213,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -17266,6 +17353,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -17916,6 +18007,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -18040,6 +18135,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -18174,6 +18273,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -18312,6 +18415,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -18443,6 +18550,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -18564,6 +18675,10 @@
               {
                 "name": "supportsPrivateEndpointConnections",
                 "value": "true"
+              },
+              {
+                "name": "supportsSftp",
+                "value": "true"
               }
             ],
             "restrictions": []
@@ -18682,6 +18797,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -18819,6 +18938,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -18947,6 +19070,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -19085,6 +19212,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -19217,6 +19348,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -19355,6 +19490,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -19479,6 +19618,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -19608,6 +19751,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -19732,6 +19879,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -19867,6 +20018,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -20120,6 +20275,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -20251,6 +20410,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -20376,6 +20539,10 @@
               {
                 "name": "supportsPrivateEndpointConnections",
                 "value": "true"
+              },
+              {
+                "name": "supportsSftp",
+                "value": "true"
               }
             ],
             "restrictions": []
@@ -20494,6 +20661,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -20621,6 +20792,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -20755,6 +20930,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -20879,6 +21058,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -21010,6 +21193,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -21148,6 +21335,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -21276,6 +21467,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -21553,6 +21748,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -21677,6 +21876,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -21812,6 +22015,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -21954,6 +22161,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -22078,6 +22289,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -25507,6 +25722,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -25643,6 +25862,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -25793,6 +26016,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -25933,6 +26160,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -26083,6 +26314,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -26215,6 +26450,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -26361,6 +26600,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -26511,6 +26754,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -26655,6 +26902,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -26806,6 +27057,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -27109,6 +27364,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -27264,6 +27523,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -27412,6 +27675,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -28138,6 +28405,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -28274,6 +28545,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -28420,6 +28695,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -28570,6 +28849,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -28713,6 +28996,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -28848,6 +29135,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -28976,6 +29267,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -29125,6 +29420,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -29265,6 +29564,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -29415,6 +29718,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -29559,6 +29866,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -29709,6 +30020,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -29845,6 +30160,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -29986,6 +30305,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -30122,6 +30445,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -30273,6 +30600,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -30550,6 +30881,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -30693,6 +31028,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -30832,6 +31171,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -30960,6 +31303,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -31099,6 +31446,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -31245,6 +31596,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -31381,6 +31736,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -31524,6 +31883,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -31674,6 +32037,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -31814,6 +32181,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -32115,6 +32486,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -32251,6 +32626,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -32398,6 +32777,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -32552,6 +32935,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -32691,6 +33078,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -32826,6 +33217,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -32958,6 +33353,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -33100,6 +33499,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -33232,6 +33635,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -33374,6 +33781,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -33506,6 +33917,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -33652,6 +34067,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -33788,6 +34207,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -34212,6 +34635,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -34344,6 +34771,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -34482,6 +34913,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -34614,6 +35049,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -34752,6 +35191,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -34884,6 +35327,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -35030,6 +35477,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -35162,6 +35613,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -35300,6 +35755,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -35428,6 +35887,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -35563,6 +36026,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -35705,6 +36172,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -35837,6 +36308,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -54137,6 +54612,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -54261,6 +54740,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -54399,6 +54882,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -54527,6 +55014,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -54665,6 +55156,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -54785,6 +55280,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -54918,6 +55417,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -55046,6 +55549,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -55181,6 +55688,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -55320,6 +55831,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -55595,6 +56110,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -55734,6 +56253,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -55870,6 +56393,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -56520,6 +57047,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -56644,6 +57175,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -56778,6 +57313,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -56916,6 +57455,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -57047,6 +57590,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -57168,6 +57715,10 @@
               {
                 "name": "supportsPrivateEndpointConnections",
                 "value": "true"
+              },
+              {
+                "name": "supportsSftp",
+                "value": "true"
               }
             ],
             "restrictions": []
@@ -57286,6 +57837,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -57423,6 +57978,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -57551,6 +58110,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -57689,6 +58252,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -57821,6 +58388,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -57959,6 +58530,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -58083,6 +58658,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -58212,6 +58791,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -58336,6 +58919,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -58471,6 +59058,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -58724,6 +59315,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -58855,6 +59450,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -58980,6 +59579,10 @@
               {
                 "name": "supportsPrivateEndpointConnections",
                 "value": "true"
+              },
+              {
+                "name": "supportsSftp",
+                "value": "true"
               }
             ],
             "restrictions": []
@@ -59098,6 +59701,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               }
             ],
@@ -59225,6 +59832,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -59359,6 +59970,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -59483,6 +60098,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -59614,6 +60233,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -59752,6 +60375,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -59880,6 +60507,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -60157,6 +60788,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -60281,6 +60916,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -60416,6 +61055,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -60558,6 +61201,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsthreatdetection",
                 "value": "true"
               }
@@ -60682,6 +61329,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -64111,6 +64762,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -64247,6 +64902,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -64397,6 +65056,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -64537,6 +65200,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -64687,6 +65354,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -64819,6 +65490,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -64965,6 +65640,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -65115,6 +65794,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -65259,6 +65942,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -65410,6 +66097,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -65713,6 +66404,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -65868,6 +66563,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -66016,6 +66715,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -66742,6 +67445,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -66878,6 +67585,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -67024,6 +67735,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -67174,6 +67889,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -67317,6 +68036,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -67452,6 +68175,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -67580,6 +68307,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -67729,6 +68460,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -67869,6 +68604,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -68019,6 +68758,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -68163,6 +68906,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -68313,6 +69060,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -68449,6 +69200,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -68590,6 +69345,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -68726,6 +69485,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -68877,6 +69640,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -69154,6 +69921,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -69297,6 +70068,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -69436,6 +70211,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -69564,6 +70343,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -69703,6 +70486,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -69849,6 +70636,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -69985,6 +70776,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -70128,6 +70923,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -70278,6 +71077,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -70418,6 +71221,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -70719,6 +71526,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -70855,6 +71666,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -71002,6 +71817,10 @@
               },
               {
                 "name": "supportsRoutingPreferences",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -71156,6 +71975,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -71295,6 +72118,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -71430,6 +72257,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -71562,6 +72393,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -71704,6 +72539,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -71836,6 +72675,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -71978,6 +72821,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -72110,6 +72957,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -72256,6 +73107,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -72392,6 +73247,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -72816,6 +73675,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -72948,6 +73811,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -73086,6 +73953,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -73218,6 +74089,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -73356,6 +74231,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -73488,6 +74367,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -73634,6 +74517,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -73766,6 +74653,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -73904,6 +74795,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               }
@@ -74032,6 +74927,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -74167,6 +75066,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -74309,6 +75212,10 @@
                 "value": "true"
               },
               {
+                "name": "supportsSftp",
+                "value": "true"
+              },
+              {
                 "name": "supportsstaticwebsite",
                 "value": "true"
               },
@@ -74441,6 +75348,10 @@
               },
               {
                 "name": "supportsPrivateEndpointConnections",
+                "value": "true"
+              },
+              {
+                "name": "supportsSftp",
                 "value": "true"
               },
               {
@@ -81096,6 +82007,34 @@
           }
         ]
       }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.3.1 azsdk-go-azcore/v0.22.0 (go1.17.1; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Mon, 14 Mar 2022 08:49:20 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ5MTAtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14993",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220314T084921Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
     }
   ],
   "Variables": {}

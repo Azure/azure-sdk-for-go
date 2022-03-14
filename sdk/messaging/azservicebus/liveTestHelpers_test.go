@@ -27,6 +27,11 @@ func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(),
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
 		cleanupQueue()
+
+		// just a simple sanity check that closing twice doesn't cause errors.
+		// it's basically zero cost since all the links and connection are gone from the
+		// first Close().
+		require.NoError(t, serviceBusClient.Close(context.Background()))
 	}
 
 	return serviceBusClient, testCleanup, queueName

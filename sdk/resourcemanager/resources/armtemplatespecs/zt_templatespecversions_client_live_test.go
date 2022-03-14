@@ -50,7 +50,7 @@ func TestTemplateSpecVersionsClient(t *testing.T) {
 	suite.Run(t, new(TemplateSpecVersionsClientTestSuite))
 }
 
-func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecVersionsCRUD() {
+func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCRUD() {
 	// create template spec
 	templateSpecName := "go-test-template"
 	templateSpecsClient := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)

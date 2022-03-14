@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// SASVersion is the default SAS Service Version
+// SASVersion is the default SAS Version
 var SASVersion = "2019-02-02"
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.

@@ -51,7 +51,7 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // registered. See https://aka.ms/rps-not-found for more information.
 // This method panics when the RegistrationOptions.Cloud field is set with a Configuration object
 // that's missing Azure Resource Manager settings. A future version will return an error instead.
-func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
+func NewRPRegistrationPolicy(cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}
@@ -61,7 +61,7 @@ func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *ar
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{conf.Audience + "/.default"}})
 	p := &rpRegistrationPolicy{
-		endpoint: endpoint,
+		endpoint: conf.Endpoint,
 		pipeline: runtime.NewPipeline(shared.Module, shared.Version, runtime.PipelineOptions{PerRetry: []pipeline.Policy{authPolicy}}, &o.ClientOptions),
 		options:  *o,
 	}

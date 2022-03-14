@@ -40,7 +40,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
-		regPolicy, err := NewRPRegistrationPolicy(conf.Endpoint, cred, &regRPOpts)
+		regPolicy, err := NewRPRegistrationPolicy(cred, &regRPOpts)
 		if err != nil {
 			return pipeline.Pipeline{}, err
 		}

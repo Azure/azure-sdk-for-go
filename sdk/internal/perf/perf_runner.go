@@ -5,12 +5,19 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"sync/atomic"
 	"text/tabwriter"
 	"time"
 
 	"golang.org/x/text/message"
 )
+
+// optionsSlice 
+type optionsSlice struct {
+	opts []*PerfTestOptions
+	mu   sync.Mutex
+}
 
 type perfRunner struct {
 	// ticker is the runner for giving updates every second
@@ -22,7 +29,7 @@ type perfRunner struct {
 
 	// the perf test, options, and transports being tested/used
 	perfToRun       PerfMethods
-	allOptions      []*PerfTestOptions
+	allOptions      optionsSlice
 	proxyTransports map[string]*RecordingHTTPClient
 
 	// All created tests
@@ -134,7 +141,9 @@ func (r *perfRunner) createPerfTests() error {
 			return err
 		}
 		r.tests = append(r.tests, perfTest)
-		r.allOptions = append(r.allOptions, options)
+		r.allOptions.mu.Lock()
+		r.allOptions.opts = append(r.allOptions.opts, options)
+		r.allOptions.mu.Unlock()
 	}
 
 	for idx, test := range r.tests {
@@ -220,7 +229,9 @@ func (r *perfRunner) printWarmupStatus() bool {
 func (r *perfRunner) totalOperations(warmup bool) int64 {
 	var ret int64
 
-	for _, opt := range r.allOptions {
+	r.allOptions.mu.Lock()
+	defer r.allOptions.mu.Unlock()
+	for _, opt := range r.allOptions.opts {
 		if warmup {
 			ret += atomic.LoadInt64(&opt.warmupCount)
 		} else {
@@ -233,7 +244,10 @@ func (r *perfRunner) totalOperations(warmup bool) int64 {
 
 func (r *perfRunner) opsPerSecond(warmup bool) float64 {
 	var ret float64
-	for _, opt := range r.allOptions {
+
+	r.allOptions.mu.Lock()
+	defer r.allOptions.mu.Unlock()
+	for _, opt := range r.allOptions.opts {
 		if warmup {
 			ret += float64(atomic.LoadInt64(&opt.warmupCount)) / opt.warmupElapsed.GetFloat()
 		} else {
@@ -272,7 +286,9 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		log.Printf("number of proxies %d", len(r.proxyTransports))
 	}
 
-	opts := r.allOptions[index]
+	r.allOptions.mu.Lock()
+	opts := r.allOptions.opts[index]
+	r.allOptions.mu.Unlock()
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	if testProxyURLs != "" {

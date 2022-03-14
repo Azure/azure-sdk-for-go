@@ -6,7 +6,6 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"net"
 	"os"
 	"testing"
 	"time"
@@ -16,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
-	"nhooyr.io/websocket"
 )
 
 func TestNewClientWithAzureIdentity(t *testing.T) {
@@ -72,53 +70,6 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	}
 
 	client.Close(context.TODO())
-}
-
-func TestNewClientWithWebsockets(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-
-	queue, cleanup := createQueue(t, connectionString, nil)
-	defer cleanup()
-
-	webSocketCreateCalled := false
-
-	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
-		NewWebSocketConn: func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
-			webSocketCreateCalled = true
-			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
-
-			if err != nil {
-				return nil, err
-			}
-
-			return websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary), nil
-		},
-	})
-	require.NoError(t, err)
-
-	sender, err := client.NewSender(queue, nil)
-	require.NoError(t, err)
-
-	err = sender.SendMessage(context.Background(), &Message{
-		Body: []byte("hello world"),
-	})
-	require.NoError(t, err)
-
-	// we have to test this down here since the connection is lazy initialized.
-	require.True(t, webSocketCreateCalled)
-
-	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
-		ReceiveMode: ReceiveModeReceiveAndDelete,
-	})
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.NoError(t, err)
-
-	bytes, err := messages[0].Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "hello world", string(bytes))
 }
 
 const fastNotFoundDuration = 10 * time.Second

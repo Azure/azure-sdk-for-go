@@ -47,13 +47,14 @@ type statusRunner struct {
 	isWarmup bool
 }
 
-func newStatusRunner(t time.Time, runTime int) *statusRunner {
+func newStatusRunner(t time.Time, runTime int, warmup bool) *statusRunner {
 	return &statusRunner{
 		results:           make([]runResult, 0),
 		start:             t,
 		perRoutineResults: map[int][]runResult{},
 		lastPrint:         t,
 		totalRunTime:      runTime,
+		isWarmup:          warmup,
 	}
 }
 

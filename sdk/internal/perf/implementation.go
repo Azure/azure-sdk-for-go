@@ -248,14 +248,13 @@ func runPerfTest(name string, p NewPerfTest) error {
 		go runTest(perfTest, idx, messages, IDs[idx])
 	}
 
-	warmUpStatus := newStatusRunner(time.Now(), warmUpDuration)
-	durationStatus := newStatusRunner(time.Now().Add(time.Duration(warmUpDuration)*time.Second), duration)
+	warmUpStatus := newStatusRunner(time.Now(), warmUpDuration, true)
+	durationStatus := newStatusRunner(time.Now().Add(time.Duration(warmUpDuration)*time.Second), duration, false)
 	// Read incoming messages and handle status updates
 
 	if warmUpDuration > 0 {
 		wg.Add(1)
 		go func() {
-			warmUpStatus.isWarmup = true
 			warmUpStatus.printUpdates()
 			warmUpStatus.printFinalUpdate()
 			wg.Done()

@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetDiskRestorePointResources.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetDiskRestorePointResources.json
 func ExampleDiskRestorePointClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleDiskRestorePointClient_Get() {
 	log.Printf("Response result: %#v\n", res.DiskRestorePointClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskRestorePointsInVmRestorePoint.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskRestorePointsInVmRestorePoint.json
 func ExampleDiskRestorePointClient_ListByRestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleDiskRestorePointClient_ListByRestorePoint() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/BeginGetAccessDiskRestorePoint.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/BeginGetAccessDiskRestorePoint.json
 func ExampleDiskRestorePointClient_BeginGrantAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleDiskRestorePointClient_BeginGrantAccess() {
 	log.Printf("Response result: %#v\n", res.DiskRestorePointClientGrantAccessResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/EndGetAccessDiskRestorePoint.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/EndGetAccessDiskRestorePoint.json
 func ExampleDiskRestorePointClient_BeginRevokeAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

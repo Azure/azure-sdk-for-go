@@ -4,31 +4,30 @@
 package azblob
 
 import (
+	"github.com/stretchr/testify/assert"
 	"sort"
-	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 // tests general functionality
-func TestBlobListWrapper(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobListWrapper() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(t, files, containerClient)
+	createNewBlobs(_assert, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -41,32 +40,33 @@ func TestBlobListWrapper(t *testing.T) {
 			found = append(found, *blob.Name)
 		}
 	}
-	require.NoError(t, pager.Err())
+	_assert.Nil(pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
 
-	require.EqualValues(t, found, files)
+	_assert.EqualValues(found, files)
 }
 
 // tests that the buffer filling isn't a problem
-func TestBlobListWrapperFullBuffer(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	require.NoError(t, err)
-	defer deleteContainer(t, containerClient)
+	_assert.Nil(err)
+	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(t, files, containerClient)
+	createNewBlobs(_assert, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -79,26 +79,27 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 			found = append(found, *blob.Name)
 		}
 	}
-	require.NoError(t, pager.Err())
+	_assert.Nil(pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
 
-	require.EqualValues(t, files, found)
+	_assert.EqualValues(files, found)
 }
 
-func TestBlobListWrapperListingError(t *testing.T) {
-	stop := start(t)
-	defer stop()
-
-	testName := t.Name()
-	svcClient, err := createServiceClient(t, testAccountDefault)
-	require.NoError(t, err)
+func (s *azblobTestSuite) TestBlobListWrapperListingError() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
-	require.False(t, pager.NextPage(ctx))
-	require.Error(t, pager.Err())
+	_assert.Equal(pager.NextPage(ctx), false)
+	_assert.NotNil(pager.Err())
 }

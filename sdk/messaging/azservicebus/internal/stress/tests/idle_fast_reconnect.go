@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -23,16 +22,10 @@ func IdleFastReconnect(remainingArgs []string) {
 	startEvent := appinsights.NewEventTelemetry("Start")
 	startEvent.Properties["Topic"] = topicName
 	sc.Track(startEvent)
-
 	defer sc.End()
 
-	ac, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
-	sc.PanicOnError("Failed to create a topic manager", err)
-
-	_, err = ac.CreateTopic(context.Background(), topicName, nil, nil)
-	sc.PanicOnError("Failed to create topic", err)
-
-	defer func() { _, _ = ac.DeleteTopic(context.Background(), topicName, nil) }()
+	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"subscriptionA"})
+	defer cleanup()
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, &azservicebus.ClientOptions{
 		RetryOptions: azservicebus.RetryOptions{
@@ -63,6 +56,27 @@ func IdleFastReconnect(remainingArgs []string) {
 		panic(err)
 	}
 
+	// start up a receiver too
+	receiver, err := client.NewReceiverForSubscription(topicName, "subscriptionA", nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if len(messages) != 1 {
+		panic("no messages received")
+	}
+
+	if err := receiver.AbandonMessage(context.Background(), messages[0], nil); err != nil {
+		panic(err)
+	}
+
 	// let the link idle out
 	log.Printf("Sleeping for 11 minutes to trigger the idle link detaching")
 	time.Sleep(11 * time.Minute)
@@ -75,8 +89,26 @@ func IdleFastReconnect(remainingArgs []string) {
 	})
 
 	if err != nil {
-		log.Printf("%#v", err)
 		panic(err)
+	}
+
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err = receiver.ReceiveMessages(ctx, 1, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	messages, err = receiver.ReceiveMessages(ctx, 1, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if len(messages) != 1 {
+		panic("no messages received")
 	}
 
 	log.Printf("Quicker reconnect worked")

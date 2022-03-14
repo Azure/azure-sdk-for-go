@@ -1,6 +1,10 @@
 {
     "Packages": [
         {
+            "Name": "azappconfig",
+            "CoverageGoal": 0.20
+        },
+        {
             "Name": "azblob",
             "CoverageGoal": 0.45
         },
@@ -56,6 +60,10 @@
         {
             "Name": "messaging/internal",
             "CoverageGoal": 0.40
+        },
+        {
+            "Name": "resourcemanager",
+            "CoverageGoal": 0.0
         }
     ]
 }

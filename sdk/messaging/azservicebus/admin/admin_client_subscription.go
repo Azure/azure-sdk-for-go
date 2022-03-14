@@ -5,10 +5,12 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
@@ -91,10 +93,12 @@ type SubscriptionRuntimeProperties struct {
 	UpdatedAt time.Time
 }
 
+// CreateSubscriptionResult contains the result for Client.CreateSubscription
 type CreateSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// CreateSubscriptionResponse contains response fields for Client.CreateSubscription
 type CreateSubscriptionResponse struct {
 	// Value is the result of the request.
 	CreateSubscriptionResult
@@ -102,6 +106,7 @@ type CreateSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// CreateSubscriptionOptions contains optional parameters for Client.CreateSubscription
 type CreateSubscriptionOptions struct {
 	// For future expansion
 }
@@ -122,10 +127,12 @@ func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subs
 	}, nil
 }
 
+// GetSubscriptionResult contains the result for Client.GetSubscription
 type GetSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// GetSubscriptionResponse contains response fields for Client.GetSubscription
 type GetSubscriptionResponse struct {
 	GetSubscriptionResult
 
@@ -133,16 +140,28 @@ type GetSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// GetSubscriptionOptions contains optional parameters for Client.GetSubscription
 type GetSubscriptionOptions struct {
 	// For future expansion
 }
 
 // GetSubscription gets a subscription by name.
+// If the entity does not exist this function will return a nil GetSubscriptionResponse and a nil error.
 func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionOptions) (*GetSubscriptionResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
+		var respError *azcore.ResponseError
+
+		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
@@ -160,26 +179,40 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	}, nil
 }
 
+// GetSubscriptionRuntimePropertiesResult contains the result for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesResult struct {
 	SubscriptionRuntimeProperties
 }
 
+// GetSubscriptionRuntimePropertiesResponse contains response fields for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesResponse struct {
 	GetSubscriptionRuntimePropertiesResult
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response
 }
 
+// GetSubscriptionRuntimePropertiesOptions contains optional parameters for Client.GetSubscriptionRuntimeProperties
 type GetSubscriptionRuntimePropertiesOptions struct {
 	// For future expansion
 }
 
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
+// If the entity does not exist this function will return a nil GetSubscriptionRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionRuntimePropertiesOptions) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
+		if errors.Is(err, atom.ErrFeedEmpty) {
+			return nil, nil
+		}
+
+		var respError *azcore.ResponseError
+
+		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 
@@ -203,6 +236,7 @@ type ListSubscriptionsOptions struct {
 	MaxPageSize int32
 }
 
+// SubscriptionPropertiesItem contains a single item for SubscriptionPager.PageResponse
 type SubscriptionPropertiesItem struct {
 	SubscriptionProperties
 
@@ -210,6 +244,7 @@ type SubscriptionPropertiesItem struct {
 	SubscriptionName string
 }
 
+// ListSubscriptionsResponse contains the response fields for SubscriptionPager.PageResponse
 type ListSubscriptionsResponse struct {
 	// Value is the result of the request.
 	Items []*SubscriptionPropertiesItem
@@ -293,6 +328,7 @@ type ListSubscriptionsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
+// SubscriptionRuntimePropertiesItem contains the data from a SubscriptionRuntimePropertiesPager.PageResponse method
 type SubscriptionRuntimePropertiesItem struct {
 	SubscriptionRuntimeProperties
 
@@ -300,6 +336,7 @@ type SubscriptionRuntimePropertiesItem struct {
 	SubscriptionName string
 }
 
+// ListSubscriptionsRuntimePropertiesResponse contains the response fields for SubscriptionRuntimePropertiesPager.PageResponse
 type ListSubscriptionsRuntimePropertiesResponse struct {
 	// Value is the result of the request.
 	Items []*SubscriptionRuntimePropertiesItem
@@ -376,10 +413,12 @@ func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *
 	}
 }
 
+// UpdateSubscriptionResult contains the result of Client.UpdateSubscription
 type UpdateSubscriptionResult struct {
 	SubscriptionProperties
 }
 
+// UpdateSubscriptionResponse contains the response fields for Client.UpdateSubscription
 type UpdateSubscriptionResponse struct {
 	UpdateSubscriptionResult
 
@@ -387,6 +426,7 @@ type UpdateSubscriptionResponse struct {
 	RawResponse *http.Response
 }
 
+// UpdateSubscriptionOptions contains the optional parameters for Client.UpdateSubscription
 type UpdateSubscriptionOptions struct {
 	// For future expansion
 }
@@ -407,10 +447,12 @@ func (ac *Client) UpdateSubscription(ctx context.Context, topicName string, subs
 	}, nil
 }
 
+// DeleteSubscriptionOptions contains optional parameters for Client.DeleteSubscription
 type DeleteSubscriptionOptions struct {
 	// For future expansion
 }
 
+// DeleteSubscriptionResponse contains response fields for Client.DeleteSubscription
 type DeleteSubscriptionResponse struct {
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response

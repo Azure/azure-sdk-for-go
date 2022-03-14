@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateADiskAccess.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateADiskAccess.json
 func ExampleDiskAccessesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleDiskAccessesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateADiskAccess.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskAccess.json
 func ExampleDiskAccessesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleDiskAccessesClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetInformationAboutADiskAccessWithPrivateEndpoints.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutADiskAccessWithPrivateEndpoints.json
 func ExampleDiskAccessesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleDiskAccessesClient_Get() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/DeleteADiskAccess.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteADiskAccess.json
 func ExampleDiskAccessesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleDiskAccessesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskAccessesInAResourceGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskAccessesInAResourceGroup.json
 func ExampleDiskAccessesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleDiskAccessesClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskAccessesInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskAccessesInASubscription.json
 func ExampleDiskAccessesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleDiskAccessesClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetDiskAccessPrivateLinkResources.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetDiskAccessPrivateLinkResources.json
 func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientGetPrivateLinkResourcesResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ApprovePrivateEndpointConnection.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ApprovePrivateEndpointConnection.json
 func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientUpdateAPrivateEndpointConnectionResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetInformationAboutAPrivateEndpointConnection.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutAPrivateEndpointConnection.json
 func ExampleDiskAccessesClient_GetAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleDiskAccessesClient_GetAPrivateEndpointConnection() {
 	log.Printf("Response result: %#v\n", res.DiskAccessesClientGetAPrivateEndpointConnectionResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/DeleteAPrivateEndpointConnection.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteAPrivateEndpointConnection.json
 func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListPrivateEndpointConnectionsInADiskAccess.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListPrivateEndpointConnectionsInADiskAccess.json
 func ExampleDiskAccessesClient_ListPrivateEndpointConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

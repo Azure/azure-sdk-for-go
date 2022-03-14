@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateADiskEncryptionSetWithKeyVaultFromADifferentSubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateADiskEncryptionSetWithKeyVaultFromADifferentSubscription.json
 func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.DiskEncryptionSetsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateADiskEncryptionSetWithRotationToLatestKeyVersionEnabled.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskEncryptionSetWithRotationToLatestKeyVersionEnabled.json
 func ExampleDiskEncryptionSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.DiskEncryptionSetsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetInformationAboutADiskEncryptionSetWithAutoKeyRotationError.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutADiskEncryptionSetWithAutoKeyRotationError.json
 func ExampleDiskEncryptionSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleDiskEncryptionSetsClient_Get() {
 	log.Printf("Response result: %#v\n", res.DiskEncryptionSetsClientGetResult)
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/DeleteADiskEncryptionSet.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteADiskEncryptionSet.json
 func ExampleDiskEncryptionSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleDiskEncryptionSetsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskEncryptionSetsInAResourceGroup.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetsInAResourceGroup.json
 func ExampleDiskEncryptionSetsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleDiskEncryptionSetsClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskEncryptionSetsInASubscription.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetsInASubscription.json
 func ExampleDiskEncryptionSetsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleDiskEncryptionSetsClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskEncryptionSetAssociatedResources.json
+// x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetAssociatedResources.json
 func ExampleDiskEncryptionSetsClient_ListAssociatedResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

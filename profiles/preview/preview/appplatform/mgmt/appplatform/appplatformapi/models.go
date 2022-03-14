@@ -9,7 +9,7 @@
 
 package appplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform/appplatformapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform/appplatformapi"
 
 type APIPortalCustomDomainsClientAPI = original.APIPortalCustomDomainsClientAPI
 type APIPortalsClientAPI = original.APIPortalsClientAPI

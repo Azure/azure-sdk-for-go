@@ -130,7 +130,7 @@ func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int,
 	return r.inner.PeekMessages(ctx, maxMessageCount, options)
 }
 
-// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
+// RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *SessionReceiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
 	return r.inner.RenewMessageLock(ctx, msg)
 }

@@ -65,6 +65,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: TestRunTime
+    type: string
+    default: '600s'
 
 
 stages:
@@ -113,11 +116,11 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(vm.image)
           GoVersion: $(go.version)
-          TestProxy: true # Do we need this conditional if it's always true? @benbp
+          TestProxy: true
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
-    - ${{ if startsWith(parameters.ServiceDirectory, 'resourcemanager') }}:
+    - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal')) }}:
       - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}

@@ -5,6 +5,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"sync/atomic"
@@ -12,7 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
 // test metrics
@@ -22,36 +22,32 @@ const (
 
 func InfiniteSendAndReceiveRun(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("InfiniteSendAndReceiveRun")
+	defer sc.End()
 
 	topicName := fmt.Sprintf("topic-%s", sc.Nano)
+	sc.Start(topicName, nil)
 
-	startEvent := appinsights.NewEventTelemetry("Start")
-	startEvent.Properties["Topic"] = topicName
-	sc.Track(startEvent)
+	stats := sc.NewStat("infinite")
 
 	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"batch"})
 	defer cleanup()
 
-	for i := 0; i < 4; i++ {
-		go func(i int) {
-			// give it a bunch of iterations if it should fail.
-			for attempt := 0; attempt < 10000; attempt++ {
-				runBatchReceiver(sc, fmt.Sprintf("%d-%d", i, attempt), topicName, "batch")
-			}
-		}(i)
-	}
+	time.AfterFunc(5*24*time.Hour, func() {
+		sc.End()
+	})
 
 	go func() {
-		for {
-			continuallySend(sc, topicName)
-		}
+		runBatchReceiver(sc, topicName, "batch", stats)
 	}()
 
-	ch := make(chan struct{})
-	<-ch
+	go func() {
+		continuallySend(sc, topicName)
+	}()
+
+	<-sc.Context.Done()
 }
 
-func runBatchReceiver(sc *shared.StressContext, id string, topicName string, subscriptionName string) {
+func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionName string, stats *shared.Stats) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create a client", err)
 
@@ -61,14 +57,15 @@ func runBatchReceiver(sc *shared.StressContext, id string, topicName string, sub
 		log.Fatalf("Failed to create receiver: %s", err.Error())
 	}
 
-	stats := sc.NewStat("receiver[" + id + "]")
-
 	for {
 		messages, err := receiver.ReceiveMessages(sc.Context, 20, nil)
 
 		if err != nil {
-			sc.LogIfFailed("failed to receive messages", err, stats)
-			continue
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+				break
+			}
+
+			sc.PanicOnError("failed when receiving", err)
 		}
 
 		stats.AddReceived(int32(len(messages)))
@@ -77,6 +74,10 @@ func runBatchReceiver(sc *shared.StressContext, id string, topicName string, sub
 			go func(msg *azservicebus.ReceivedMessage) {
 				err := receiver.CompleteMessage(sc.Context, msg)
 				sc.LogIfFailed("complete failed", err, stats)
+
+				if err == nil {
+					stats.AddCompleted(1)
+				}
 			}(msg)
 		}
 	}

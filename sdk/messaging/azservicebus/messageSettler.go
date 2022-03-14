@@ -66,6 +66,7 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 	})
 }
 
+// AbandonMessageOptions contains optional parameters for Client.AbandonMessage
 type AbandonMessageOptions struct {
 	// PropertiesToModify specifies properties to modify in the message when it is abandoned.
 	PropertiesToModify map[string]interface{}
@@ -100,6 +101,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 	})
 }
 
+// DeferMessageOptions contains optional parameters for Client.DeferMessage
 type DeferMessageOptions struct {
 	// PropertiesToModify specifies properties to modify in the message when it is deferred
 	PropertiesToModify map[string]interface{}

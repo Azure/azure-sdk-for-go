@@ -1,5 +1,29 @@
 # Release History
 
+## 0.4.0 (2022-03-14)
+### Breaking Changes
+
+- Type of `Operation.Properties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Struct `CloudError` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New const `DataEncryptionTypeSystemManaged`
+- New const `DataEncryptionTypeAzureKeyVault`
+- New function `PossibleDataEncryptionTypeValues() []DataEncryptionType`
+- New function `Identity.MarshalJSON() ([]byte, error)`
+- New function `DataEncryptionType.ToPtr() *DataEncryptionType`
+- New struct `DataEncryption`
+- New struct `Identity`
+- New field `DataEncryption` in struct `ServerPropertiesForUpdate`
+- New field `Identity` in struct `Server`
+- New field `DataEncryption` in struct `ServerProperties`
+- New field `Identity` in struct `ServerForUpdate`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

@@ -4,6 +4,9 @@ metadata:
   labels:
     testName: "go-servicebus"
 spec:
+  # uncomment to deploy to the southeastasia region.
+  # nodeSelector:
+  #   sku: 'southeastasia'
   containers:
     - name: main
       # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"

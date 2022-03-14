@@ -28,6 +28,9 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
+  - name: TestRunTime
+    type: string
+    default: '600s'
 
 jobs:
   - job:
@@ -84,6 +87,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
+          TestRunTime: ${{ parameters.TestRunTime }}
           EnvVars:
             AZURE_RECORD_MODE: 'live'
             ${{ insert }}: ${{ parameters.EnvVars }}

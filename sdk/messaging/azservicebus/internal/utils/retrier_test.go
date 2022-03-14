@@ -8,9 +8,13 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"regexp"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -234,4 +238,139 @@ func TestCalcDelay(t *testing.T) {
 	d = calcDelay(ro, 1)
 	require.LessOrEqual(t, d, 6*time.Second)
 	require.GreaterOrEqual(t, d, time.Second)
+}
+
+func TestRetryLogging(t *testing.T) {
+	var logs []string
+
+	azlog.SetListener(func(e azlog.Event, s string) {
+		logs = append(logs, fmt.Sprintf("[%-10s] %s", e, s))
+	})
+
+	defer azlog.SetListener(nil)
+
+	t.Run("normal error", func(t *testing.T) {
+		logs = nil
+
+		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+			log.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)
+			return errors.New("hello")
+		}, func(err error) bool {
+			return false
+		}, RetryOptions{
+			RetryDelay: time.Microsecond,
+		})
+		require.EqualError(t, err, "hello")
+
+		require.Equal(t, []string{
+			"[TestFunc  ] Attempt 0, within test func, returning error hello",
+
+			"[azsb.Retry] (retry) Attempt 0 returned retryable error: hello",
+			"[azsb.Retry] (retry) Attempt 1 sleeping for <time elided>",
+			"[TestFunc  ] Attempt 1, within test func, returning error hello",
+			"[azsb.Retry] (retry) Attempt 1 returned retryable error: hello",
+
+			"[azsb.Retry] (retry) Attempt 2 sleeping for <time elided>",
+			"[TestFunc  ] Attempt 2, within test func, returning error hello",
+			"[azsb.Retry] (retry) Attempt 2 returned retryable error: hello",
+
+			"[azsb.Retry] (retry) Attempt 3 sleeping for <time elided>",
+			"[TestFunc  ] Attempt 3, within test func, returning error hello",
+			"[azsb.Retry] (retry) Attempt 3 returned retryable error: hello",
+		}, normalizeRetryLogLines(logs))
+	})
+
+	t.Run("cancellation error", func(t *testing.T) {
+		logs = nil
+
+		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+			log.Writef("TestFunc",
+				"Attempt %d, within test func", args.I)
+			return context.Canceled
+		}, func(err error) bool {
+			return errors.Is(err, context.Canceled)
+		}, RetryOptions{
+			RetryDelay: time.Microsecond,
+		})
+		require.ErrorIs(t, err, context.Canceled)
+
+		require.Equal(t, []string{
+			"[TestFunc  ] Attempt 0, within test func",
+			"[azsb.Retry] (retry) Attempt 0 was cancelled, stopping: context canceled",
+		}, normalizeRetryLogLines(logs))
+	})
+
+	t.Run("custom fatal error", func(t *testing.T) {
+		logs = nil
+
+		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+			log.Writef("TestFunc",
+				"Attempt %d, within test func", args.I)
+			return errors.New("custom fatal error")
+		}, func(err error) bool {
+			return true
+		}, RetryOptions{
+			RetryDelay: time.Microsecond,
+		})
+		require.EqualError(t, err, "custom fatal error")
+
+		require.Equal(t, []string{
+			"[TestFunc  ] Attempt 0, within test func",
+			"[azsb.Retry] (retry) Attempt 0 returned non-retryable error: custom fatal error",
+		}, normalizeRetryLogLines(logs))
+	})
+
+	t.Run("with reset attempts", func(t *testing.T) {
+		logs = nil
+
+		reset := false
+
+		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+			log.Writef("TestFunc", "Attempt %d, within test func", args.I)
+
+			if !reset {
+				log.Writef("TestFunc", "Attempt %d, resetting", args.I)
+				args.ResetAttempts()
+				reset = true
+				return &amqp.DetachError{}
+			}
+
+			if reset {
+				log.Writef("TestFunc", "Attempt %d, return nil", args.I)
+				return nil
+			}
+
+			return errors.New("custom fatal error")
+		}, func(err error) bool {
+			var de amqp.DetachError
+			return errors.Is(err, &de)
+		}, RetryOptions{
+			RetryDelay: time.Microsecond,
+		})
+		require.Nil(t, err)
+
+		require.Equal(t, []string{
+			"[TestFunc  ] Attempt 0, within test func",
+			"[TestFunc  ] Attempt 0, resetting",
+			"[azsb.Retry] (retry) Resetting attempts",
+			"[azsb.Retry] (retry) Attempt -1 returned retryable error: link detached, reason: *Error(nil)",
+			"[TestFunc  ] Attempt 0, within test func",
+			"[TestFunc  ] Attempt 0, return nil",
+		}, normalizeRetryLogLines(logs))
+	})
+}
+
+// retryRE is used to replace the 'retry time' with a consistent string to make
+// unit tests against logging simpler
+// A typical string: "[azsb.Retry] (retry) Attempt 1 sleeping for 1.10233ms"
+var retryRE = regexp.MustCompile(`[\d.]+(µs|ms|ns)`)
+
+func normalizeRetryLogLines(msgs []string) []string {
+	var newLogs []string
+
+	for i := 0; i < len(msgs); i++ {
+		newLogs = append(newLogs, retryRE.ReplaceAllString(msgs[i], "<time elided>"))
+	}
+
+	return newLogs
 }

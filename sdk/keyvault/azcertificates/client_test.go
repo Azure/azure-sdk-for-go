@@ -12,6 +12,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/big"
@@ -19,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -758,11 +760,19 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 			require.NotNil(t, resp.Policy)
 			break
 		}
+		var respErr *azcore.ResponseError
+		if errors.As(err, &respErr) {
+			if respErr.RawResponse.StatusCode != 409 {
+				require.NoError(t, err)
+			}
+		} else {
+			require.NoError(t, err)
+		}
 		count += 1
 		if count > 25 {
 			require.NoError(t, err)
 		}
-		longDelay()
+		recording.Sleep(5 * time.Second)
 	}
 }
 

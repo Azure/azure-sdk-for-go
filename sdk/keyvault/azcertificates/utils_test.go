@@ -137,13 +137,6 @@ func delay() time.Duration {
 	return time.Second
 }
 
-func longDelay() time.Duration {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return 1 * time.Microsecond
-	}
-	return 3 * time.Second
-}
-
 type FakeCredential struct {
 	accountName string
 	accountKey  string

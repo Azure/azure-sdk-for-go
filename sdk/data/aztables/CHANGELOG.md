@@ -1,5 +1,15 @@
 # Release History
 
+## 0.6.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.6.0 (2022-03-08)
 
 ### Breaking Changes
@@ -13,6 +23,7 @@
     * The `More` method checks whether there are more pages to retrieve.
     * The `NextPage(context.Context)` method gets the next page and returns a response and an `error`.
 * Removed `RawResponse` from all Response structs
+* `TransactionResponse` is an empty struct
 
 ## 0.5.0 (2022-01-12)
 

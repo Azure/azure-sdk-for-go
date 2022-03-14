@@ -12,7 +12,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform"
 )
 
 const (
@@ -27,6 +27,12 @@ const (
 	APIPortalProvisioningStateFailed    APIPortalProvisioningState = original.APIPortalProvisioningStateFailed
 	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = original.APIPortalProvisioningStateSucceeded
 	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = original.APIPortalProvisioningStateUpdating
+)
+
+type ActionType = original.ActionType
+
+const (
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
 type AppResourceProvisioningState = original.AppResourceProvisioningState
@@ -208,6 +214,8 @@ const (
 	ProvisioningStateMoved      ProvisioningState = original.ProvisioningStateMoved
 	ProvisioningStateMoveFailed ProvisioningState = original.ProvisioningStateMoveFailed
 	ProvisioningStateMoving     ProvisioningState = original.ProvisioningStateMoving
+	ProvisioningStateStarting   ProvisioningState = original.ProvisioningStateStarting
+	ProvisioningStateStopping   ProvisioningState = original.ProvisioningStateStopping
 	ProvisioningStateSucceeded  ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateUpdating   ProvisioningState = original.ProvisioningStateUpdating
 )
@@ -599,6 +607,7 @@ type TestKeys = original.TestKeys
 type TrackedResource = original.TrackedResource
 type TriggeredBuildResult = original.TriggeredBuildResult
 type UploadedUserSourceInfo = original.UploadedUserSourceInfo
+type UserAssignedManagedIdentity = original.UserAssignedManagedIdentity
 type UserSourceInfo = original.UserSourceInfo
 type ValidationMessages = original.ValidationMessages
 
@@ -880,6 +889,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
 	return original.PossibleAPIPortalProvisioningStateValues()
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
 }
 func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
 	return original.PossibleAppResourceProvisioningStateValues()

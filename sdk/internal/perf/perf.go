@@ -147,11 +147,4 @@ func Run(tests map[string]PerfMethods) {
 	if err != nil {
 		panic(err)
 	}
-
-	if false {
-		err := runPerfTest(testNameToRun, perfTestToRun.New)
-		if err != nil {
-			panic(err)
-		}
-	}
 }

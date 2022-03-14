@@ -8,6 +8,8 @@ import (
 	"sync/atomic"
 	"text/tabwriter"
 	"time"
+
+	"golang.org/x/text/message"
 )
 
 type perfRunner struct {
@@ -33,7 +35,8 @@ type perfRunner struct {
 	operationStatusTracker       int64
 
 	// writer
-	w *tabwriter.Writer
+	w              *tabwriter.Writer
+	messagePrinter *message.Printer
 
 	// tracker for whether the warmup has finished
 	warmupFinished int32
@@ -49,6 +52,7 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 		operationStatusTracker:       -1,
 		warmupOperationStatusTracker: -1,
 		w:                            tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight),
+		messagePrinter:               message.NewPrinter(message.MatchLanguage("en")),
 		warmupFinished:               0,
 		warmupPrinted:                false,
 	}
@@ -153,60 +157,60 @@ func (r *perfRunner) cleanup() error {
 	return nil
 }
 
-func (n *perfRunner) printStatus() error {
-	if !n.warmupPrinted {
-		finishedWarmup := n.printWarmupStatus()
+func (r *perfRunner) printStatus() error {
+	if !r.warmupPrinted {
+		finishedWarmup := r.printWarmupStatus()
 		if !finishedWarmup {
 			return nil
 		}
 	}
 
-	if n.operationStatusTracker == -1 {
-		n.printFinalUpdate(true)
-		n.operationStatusTracker = 0
-		fmt.Fprintln(n.w, "Current\tTotal\tAverage\t")
+	if r.operationStatusTracker == -1 {
+		r.printFinalUpdate(true)
+		r.operationStatusTracker = 0
+		fmt.Fprintln(r.w, "Current\tTotal\tAverage\t")
 	}
-	totalOperations := n.totalOperations(false)
+	totalOperations := r.totalOperations(false)
 
 	_, err := fmt.Fprintf(
-		n.w,
+		r.w,
 		"%s\t%s\t%s\t\n",
-		messagePrinter.Sprintf("%d", totalOperations-n.operationStatusTracker),
-		messagePrinter.Sprintf("%d", totalOperations),
-		messagePrinter.Sprintf("%.2f", n.opsPerSecond(false)),
+		r.messagePrinter.Sprintf("%d", totalOperations-r.operationStatusTracker),
+		r.messagePrinter.Sprintf("%d", totalOperations),
+		r.messagePrinter.Sprintf("%.2f", r.opsPerSecond(false)),
 	)
 	if err != nil {
 		return err
 	}
-	n.operationStatusTracker = totalOperations
-	return n.w.Flush()
+	r.operationStatusTracker = totalOperations
+	return r.w.Flush()
 }
 
 // return true if all warmup information has been printed
-func (n *perfRunner) printWarmupStatus() bool {
-	if n.warmupOperationStatusTracker == -1 {
-		n.warmupOperationStatusTracker = 0
+func (r *perfRunner) printWarmupStatus() bool {
+	if r.warmupOperationStatusTracker == -1 {
+		r.warmupOperationStatusTracker = 0
 		fmt.Println("===== WARMUP =====")
-		fmt.Fprintln(n.w, "Current\tTotal\tAverage\t")
+		fmt.Fprintln(r.w, "Current\tTotal\tAverage\t")
 	}
-	totalOperations := n.totalOperations(true)
+	totalOperations := r.totalOperations(true)
 
-	if n.warmupOperationStatusTracker == totalOperations {
+	if r.warmupOperationStatusTracker == totalOperations {
 		return true
 	}
 
 	_, err := fmt.Fprintf(
-		n.w,
+		r.w,
 		"%s\t%s\t%s\t\n",
-		messagePrinter.Sprintf("%d", totalOperations-n.warmupOperationStatusTracker),
-		messagePrinter.Sprintf("%d", totalOperations),
-		messagePrinter.Sprintf("%.2f", n.opsPerSecond(true)),
+		r.messagePrinter.Sprintf("%d", totalOperations-r.warmupOperationStatusTracker),
+		r.messagePrinter.Sprintf("%d", totalOperations),
+		r.messagePrinter.Sprintf("%.2f", r.opsPerSecond(true)),
 	)
 	if err != nil {
 		panic(err)
 	}
-	n.warmupOperationStatusTracker = totalOperations
-	err = n.w.Flush()
+	r.warmupOperationStatusTracker = totalOperations
+	err = r.w.Flush()
 	if err != nil {
 		panic(err)
 	}
@@ -252,10 +256,10 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 	fmt.Println("\n=== Results ===")
 	fmt.Printf(
 		"Completed %s operations in a weighted-average of %ss (%s ops/s, %s s/op)\n",
-		messagePrinter.Sprintf("%d", totalOperations),
-		messagePrinter.Sprintf("%.2f", weightedAvg),
-		messagePrinter.Sprintf("%.3f", opsPerSecond),
-		messagePrinter.Sprintf("%.3f", secondsPerOp),
+		r.messagePrinter.Sprintf("%d", totalOperations),
+		r.messagePrinter.Sprintf("%.2f", weightedAvg),
+		r.messagePrinter.Sprintf("%.3f", opsPerSecond),
+		r.messagePrinter.Sprintf("%.3f", secondsPerOp),
 	)
 	return nil
 }

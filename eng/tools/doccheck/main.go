@@ -30,7 +30,7 @@ func findAllSubDirectories(root string) []string {
 		}
 		if info.IsDir() && strings.HasSuffix(path, "internal") {
 			return filepath.SkipDir
-		} else if info.IsDir() && !strings.Contains(path, "internal") {
+		} else if info.IsDir() {
 			ret = append(ret, path)
 		}
 		return nil
@@ -68,15 +68,6 @@ func validateDirectory(directory string) int {
 					fmt.Println("missing or invalid doc comment. all docs should start with the function they are documenting")
 					fmt.Printf("type: '%s' method: '%s' docs: '%s'\n", t.Name, m.Name, m.Doc)
 					missingDocCount += 1
-				}
-			}
-		}
-
-		if len(p.Vars) > 0 {
-			for _, v := range p.Vars {
-				if !strings.HasPrefix(v.Doc, v.Names[0]) {
-					fmt.Println("type", v.Names)
-					fmt.Println("docs:", v.Doc)
 				}
 			}
 		}

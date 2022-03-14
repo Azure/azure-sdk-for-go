@@ -38,11 +38,14 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) SetupSuite() {
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.subscriptionID = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/compute/armcompute/testdata")
-	testsuite.resourceGroupName = *testutil.CreateResourceGroup(testsuite.T(), testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location).Name
+	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
+	testsuite.Require().NoError(err)
+	testsuite.resourceGroupName = *resourceGroup.Name
 }
 
 func (testsuite *VirtualMachineScaleSetsClientTestSuite) TearDownSuite() {
-	testutil.DeleteResourceGroup(testsuite.T(), testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 

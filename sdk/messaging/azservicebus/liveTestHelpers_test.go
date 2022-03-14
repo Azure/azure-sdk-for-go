@@ -27,15 +27,12 @@ func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(),
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
 		cleanupQueue()
-		require.NoError(t, serviceBusClient.Close(context.Background()))
 	}
 
 	return serviceBusClient, testCleanup, queueName
 }
 
-// createQueue creates a queue using a subset of entries in 'queueDescription':
-// - EnablePartitioning
-// - RequiresSession
+// createQueue creates a queue, automatically setting it to delete on idle in 5 minutes.
 func createQueue(t *testing.T, connectionString string, queueProperties *admin.QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)

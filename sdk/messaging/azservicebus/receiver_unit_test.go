@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 
@@ -293,4 +294,26 @@ func TestReceiverOptions(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
 	require.EqualValues(t, 101, receiver.retryOptions.MaxRetries)
+}
+
+func TestReceiverDeferUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			Err: errors.New("links are dead"),
+		},
+	}
+
+	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "links are dead")
+	require.Nil(t, messages)
+
+	r = &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			RPC: &badRPCLink{},
+		},
+	}
+
+	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "receive deferred messages failed")
+	require.Nil(t, messages)
 }

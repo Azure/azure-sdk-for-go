@@ -3,6 +3,7 @@
 ## 0.22.1 (Unreleased)
 
 ### Features Added
+* Added `runtime.Pager[T any]` and supporting types for a central, generic, pager implementation.
 
 ### Breaking Changes
 

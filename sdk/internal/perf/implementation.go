@@ -9,25 +9,29 @@ import (
 )
 
 var (
+	// debug is true if --debug is specified
 	debug             bool
+	// duration is the -d/--duration flag
 	duration          int
+	// testProxyURLs is the -x/--test-proxy flag, a semi-colon separated list
 	testProxyURLs     string
+	// warmUpDuration is the -w/--warmup flag
 	warmUpDuration    int
+	// parallelInstances is the -p/--parallel flag
 	parallelInstances int
-	wg                sync.WaitGroup
-	numProcesses      int
+
+	// wg is used to keep track of the number of goroutines created
+	wg           sync.WaitGroup
+	numProcesses int
 )
 
-// parse the TestProxy input into a slice of strings
+// parseProxyURLs splits the --test-proxy input with the delimiter ';'
 func parseProxyURLS() []string {
-	var ret []string
 	if testProxyURLs == "" {
-		return ret
+		return []string{}
 	}
 
 	testProxyURLs = strings.TrimSuffix(testProxyURLs, ";")
 
-	ret = strings.Split(testProxyURLs, ";")
-
-	return ret
+	return strings.Split(testProxyURLs, ";")
 }

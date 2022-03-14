@@ -13,7 +13,7 @@ import (
 	"golang.org/x/text/message"
 )
 
-// optionsSlice 
+// optionsSlice is a way to access the options in a thread safe way
 type optionsSlice struct {
 	opts []*PerfTestOptions
 	mu   sync.Mutex
@@ -35,13 +35,14 @@ type perfRunner struct {
 	// All created tests
 	tests []PerfTest
 
+	// globalInstance is the single globalInstance for GlobalCleanup
 	globalInstance GlobalPerfTest
 
 	// this is the previous prints total
 	warmupOperationStatusTracker int64
 	operationStatusTracker       int64
 
-	// writer
+	// writer and messagePrinter
 	w              *tabwriter.Writer
 	messagePrinter *message.Printer
 
@@ -51,6 +52,10 @@ type perfRunner struct {
 }
 
 func newPerfRunner(p PerfMethods, name string) *perfRunner {
+	warmupFinished, warmupPrinted := 0, false
+	if warmUpDuration == 0 {
+		warmupFinished, warmupPrinted = parallelInstances, true
+	}
 	return &perfRunner{
 		ticker:                       time.NewTicker(time.Second),
 		done:                         make(chan bool),
@@ -60,8 +65,8 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 		warmupOperationStatusTracker: -1,
 		w:                            tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight),
 		messagePrinter:               message.NewPrinter(message.MatchLanguage("en")),
-		warmupFinished:               0,
-		warmupPrinted:                false,
+		warmupFinished:               int32(warmupFinished),
+		warmupPrinted:                warmupPrinted,
 	}
 }
 
@@ -114,6 +119,7 @@ func (r *perfRunner) globalSetup() error {
 	return nil
 }
 
+// createPerfTests spins up `parallelInstances` (specified by --parallel flag) goroutines
 func (r *perfRunner) createPerfTests() error {
 	var IDs []string
 	proxyURLS := parseProxyURLS()
@@ -152,10 +158,10 @@ func (r *perfRunner) createPerfTests() error {
 	}
 
 	wg.Wait()
-
 	return nil
 }
 
+// cleanup runs the Cleanup on each of the r.tests
 func (r *perfRunner) cleanup() error {
 	for _, t := range r.tests {
 		err := t.Cleanup(context.Background())
@@ -166,6 +172,7 @@ func (r *perfRunner) cleanup() error {
 	return nil
 }
 
+// print an update for the last second
 func (r *perfRunner) printStatus() error {
 	if !r.warmupPrinted {
 		finishedWarmup := r.printWarmupStatus()
@@ -226,6 +233,7 @@ func (r *perfRunner) printWarmupStatus() bool {
 	return false
 }
 
+// totalOperations iterates over all options structs to get the number of operations completed
 func (r *perfRunner) totalOperations(warmup bool) int64 {
 	var ret int64
 
@@ -242,6 +250,7 @@ func (r *perfRunner) totalOperations(warmup bool) int64 {
 	return ret
 }
 
+// opsPerSecond calculates the average number of operations per second
 func (r *perfRunner) opsPerSecond(warmup bool) float64 {
 	var ret float64
 
@@ -249,15 +258,25 @@ func (r *perfRunner) opsPerSecond(warmup bool) float64 {
 	defer r.allOptions.mu.Unlock()
 	for _, opt := range r.allOptions.opts {
 		if warmup {
-			ret += float64(atomic.LoadInt64(&opt.warmupCount)) / opt.warmupElapsed.GetFloat()
+			e := opt.warmupElapsed.GetFloat()
+			if e != 0 {
+				ret += float64(atomic.LoadInt64(&opt.warmupCount)) / e
+			}
 		} else {
-			ret += float64(atomic.LoadInt64(&opt.runCount)) / opt.runElapsed.GetFloat()
+			e := opt.runElapsed.GetFloat()
+			if e != 0 {
+				ret += float64(atomic.LoadInt64(&opt.runCount)) / e
+			}
 		}
 	}
 	return ret
 }
 
+// printFinalUpdate prints the final update for the warmup/test run
 func (r *perfRunner) printFinalUpdate(warmup bool) error {
+	if r.warmupPrinted && warmup {
+		return nil
+	}
 	totalOperations := r.totalOperations(warmup)
 	opsPerSecond := r.opsPerSecond(warmup)
 	if opsPerSecond == 0.0 {
@@ -267,7 +286,11 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvg := float64(totalOperations) / opsPerSecond
 
-	fmt.Println("\n=== Results ===")
+	if warmup {
+		fmt.Println("\n=== Warm Up Results ===")
+	} else {
+		fmt.Println("\n=== Results ===")
+	}
 	fmt.Printf(
 		"Completed %s operations in a weighted-average of %ss (%s ops/s, %s s/op)\n",
 		r.messagePrinter.Sprintf("%d", totalOperations),
@@ -278,8 +301,9 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 	return nil
 }
 
-// runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
-// of seconds the test ran as a float64, and any errors.
+// runTest takes care of the semantics of running a single iteration.
+// It changes configuration on the proxy, increments counters, and
+// updates the running-time.
 func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 	defer wg.Done()
 	if debug {
@@ -344,7 +368,10 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 
 		opts.warmupElapsed.SetFloat(time.Since(opts.warmupStart).Seconds())
 	}
-	_ = atomic.AddInt32(&r.warmupFinished, 1)
+	val := atomic.AddInt32(&r.warmupFinished, 1)
+	if debug {
+		fmt.Printf("finished %d warmups\n", val)
+	}
 
 	opts.runStart = time.Now()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(duration))

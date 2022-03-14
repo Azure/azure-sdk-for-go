@@ -629,34 +629,107 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 	}, actualProps)
 }
 
+func TestReceiverMultiReceiver(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	sender2, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	receiver2, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+
+	err = sender2.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world 2"),
+	})
+	require.NoError(t, err)
+
+	messages, err = receiver2.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello world 2"}, getSortedBodies(messages))
+	require.NoError(t, receiver2.CompleteMessage(context.Background(), messages[0]))
+}
+
+func TestReceiverMultiTopic(t *testing.T) {
+	otherQueueName, cleanupOtherQueue := createQueue(t, test.GetConnectionString(t), nil)
+	defer cleanupOtherQueue()
+
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	queueSender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	queueReceiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	otherQueueSender, err := client.NewSender(otherQueueName, nil)
+	require.NoError(t, err)
+
+	otherQueueReceiver, err := client.NewReceiverForQueue(otherQueueName, nil)
+	require.NoError(t, err)
+
+	err = queueSender.SendMessage(context.Background(), &Message{
+		Body: []byte("sent to queue"),
+	})
+	require.NoError(t, err)
+
+	err = otherQueueSender.SendMessage(context.Background(), &Message{
+		Body: []byte("sent to other queue"),
+	})
+	require.NoError(t, err)
+
+	messages, err := queueReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"sent to queue"}, getSortedBodies(messages))
+	require.NoError(t, queueReceiver.CompleteMessage(context.Background(), messages[0]))
+
+	otherMessages, err := otherQueueReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"sent to other queue"}, getSortedBodies(otherMessages))
+	require.NoError(t, otherQueueReceiver.CompleteMessage(context.Background(), otherMessages[0]))
+
+	err = otherQueueSender.SendMessage(context.Background(), &Message{
+		Body: []byte("sent to other queue2"),
+	})
+	require.NoError(t, err)
+
+	err = queueSender.SendMessage(context.Background(), &Message{
+		Body: []byte("sent to queue2"),
+	})
+	require.NoError(t, err)
+
+	messages, err = queueReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"sent to queue2"}, getSortedBodies(messages))
+
+	otherMessages, err = otherQueueReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"sent to other queue2"}, getSortedBodies(otherMessages))
+}
+
 type badRPCLink struct {
 	internal.RPCLink
 }
 
 func (br *badRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*internal.RPCResponse, error) {
 	return nil, errors.New("receive deferred messages failed")
-}
-
-func TestReceiverDeferUnitTests(t *testing.T) {
-	r := &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			Err: errors.New("links are dead"),
-		},
-	}
-
-	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
-	require.EqualError(t, err, "links are dead")
-	require.Nil(t, messages)
-
-	r = &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			RPC: &badRPCLink{},
-		},
-	}
-
-	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
-	require.EqualError(t, err, "receive deferred messages failed")
-	require.Nil(t, messages)
 }
 
 type receivedMessageSlice []*ReceivedMessage

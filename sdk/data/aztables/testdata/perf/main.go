@@ -9,6 +9,7 @@ import (
 
 func main() {
 	perf.Run(map[string]perf.PerfMethods{
-		"InsertEntityTest":   {Register: downloadTestRegister, New: NewInsertEntityTest},
+		"InsertEntity": {Register: insertTestRegister, New: NewInsertEntityTest},
+		"ListEntities": {Register: listTestRegister, New: NewListEntitiesTest},
 	})
 }

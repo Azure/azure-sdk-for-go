@@ -73,21 +73,6 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 }
 
 func (r *perfRunner) Run() error {
-	// Poller for printing
-	go func() {
-		for {
-			select {
-			case <-r.done:
-				return
-			case <-r.ticker.C:
-				err := r.printStatus()
-				if err != nil {
-					panic(err)
-				}
-			}
-		}
-	}()
-
 	err := r.globalSetup()
 	if err != nil {
 		return err
@@ -103,6 +88,27 @@ func (r *perfRunner) Run() error {
 	if err != nil {
 		return err
 	}
+
+	r.ticker = time.NewTicker(time.Second)
+
+	// Poller for printing
+	go func() {
+		for {
+			if r.ticker != nil {
+				select {
+				case <-r.done:
+					return
+				case <-r.ticker.C:
+					err := r.printStatus()
+					if err != nil {
+						panic(err)
+					}
+				}
+			}
+		}
+	}()
+	wg.Wait()
+
 	r.done <- true
 
 	r.printFinalUpdate(false)
@@ -115,7 +121,7 @@ func (r *perfRunner) Run() error {
 
 // global setup by instantiating a single global instance
 func (r *perfRunner) globalSetup() error {
-	globalInst, err := r.perfToRun.New(context.TODO(), PerfTestOptions{Name: r.name})
+	globalInst, err := r.perfToRun.New(context.TODO(), newPerfTestOptions(r.name))
 	if err != nil {
 		return err
 	}
@@ -129,8 +135,8 @@ func (r *perfRunner) createPerfTests() error {
 	proxyURLS := parseProxyURLS()
 
 	for idx := 0; idx < parallelInstances; idx++ {
-		options := &PerfTestOptions{}
 		ID := fmt.Sprintf("%s-%d", r.name, idx)
+		options := newPerfTestOptions(ID)
 		IDs = append(IDs, ID)
 
 		if testProxyURLs != "" {
@@ -146,13 +152,13 @@ func (r *perfRunner) createPerfTests() error {
 		}
 		options.parallelIndex = idx
 
-		perfTest, err := r.globalInstance.NewPerfTest(context.TODO(), options)
+		perfTest, err := r.globalInstance.NewPerfTest(context.TODO(), &options)
 		if err != nil {
 			return err
 		}
 		r.tests = append(r.tests, perfTest)
 		r.allOptions.mu.Lock()
-		r.allOptions.opts = append(r.allOptions.opts, options)
+		r.allOptions.opts = append(r.allOptions.opts, &options)
 		r.allOptions.mu.Unlock()
 	}
 
@@ -160,8 +166,6 @@ func (r *perfRunner) createPerfTests() error {
 		wg.Add(1)
 		go r.runTest(test, idx, IDs[idx])
 	}
-
-	wg.Wait()
 	return nil
 }
 

@@ -22,6 +22,13 @@ type randomStream struct {
 	remaining        int
 }
 
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func (r *randomStream) Read(p []byte) (int, error) {
 	if r.remaining == 0 {
 		return 0, io.EOF

@@ -46,24 +46,23 @@ var fullEdm = aztables.EDMEntity{
 	},
 }
 
-type downloadTestOptions struct {
+type insertEntityTestOptions struct {
 	fullEDM       bool
 	clientSharing bool
 }
 
-//nolint
-var downloadTestOpts downloadTestOptions = downloadTestOptions{
+var insertTestOpts insertEntityTestOptions = insertEntityTestOptions{
 	fullEDM:       false,
 	clientSharing: false,
 }
 
-// downloadTestRegister is called once per process
-func downloadTestRegister() {
-	flag.BoolVar(&downloadTestOpts.fullEDM, "full-edm", false, "whether to use entities that utiliza all EDM types for serialization/deserialization, or only strings. Default is only strings")
-	flag.BoolVar(&downloadTestOpts.clientSharing, "no-client-share", false, "create one ServiceClient per test instance. Default is to share a single ServiceClient")
+// insertTestRegister is called once per process
+func insertTestRegister() {
+	flag.BoolVar(&insertTestOpts.fullEDM, "full-edm", false, "whether to use entities that utiliza all EDM types for serialization/deserialization, or only strings. Default is only strings")
+	flag.BoolVar(&insertTestOpts.clientSharing, "no-client-share", false, "create one ServiceClient per test instance. Default is to share a single ServiceClient")
 }
 
-type downloadTestGlobal struct {
+type insertEntityTestGlobal struct {
 	perf.PerfTestOptions
 	tableName string
 }
@@ -75,7 +74,7 @@ func NewInsertEntityTest(ctx context.Context, options perf.PerfTestOptions) (per
 		return nil, err
 	}
 	tableName := fmt.Sprintf("table%s", strings.ReplaceAll(guid.String(), "-", ""))
-	d := &downloadTestGlobal{
+	d := &insertEntityTestGlobal{
 		PerfTestOptions: options,
 		tableName:       tableName,
 	}
@@ -97,7 +96,7 @@ func NewInsertEntityTest(ctx context.Context, options perf.PerfTestOptions) (per
 	return d, nil
 }
 
-func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
+func (d *insertEntityTestGlobal) GlobalCleanup(ctx context.Context) error {
 	connStr, ok := os.LookupEnv("AZURE_TABLES_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZURE_TABLES_CONNECTION_STRING' could not be found")
@@ -112,18 +111,18 @@ func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type downloadPerfTest struct {
-	*downloadTestGlobal
+type insertEntityPerfTest struct {
+	*insertEntityTestGlobal
 	perf.PerfTestOptions
 	entity      []byte
 	tableClient *aztables.Client
 }
 
 // NewPerfTest is called once per goroutine
-func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	d := &downloadPerfTest{
-		downloadTestGlobal: g,
-		PerfTestOptions:    *options,
+func (g *insertEntityTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	d := &insertEntityPerfTest{
+		insertEntityTestGlobal: g,
+		PerfTestOptions:        *options,
 	}
 
 	connStr, ok := os.LookupEnv("AZURE_TABLES_CONNECTION_STRING")
@@ -164,13 +163,13 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	return d, nil
 }
 
-func (d *downloadPerfTest) Run(ctx context.Context) error {
+func (d *insertEntityPerfTest) Run(ctx context.Context) error {
 	_, err := d.tableClient.InsertEntity(ctx, d.entity, &aztables.InsertEntityOptions{
 		UpdateMode: aztables.EntityUpdateModeMerge,
 	})
 	return err
 }
 
-func (*downloadPerfTest) Cleanup(ctx context.Context) error {
+func (*insertEntityPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

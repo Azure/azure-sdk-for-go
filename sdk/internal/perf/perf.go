@@ -68,16 +68,24 @@ type PerfTestOptions struct {
 	parallelIndex int
 
 	// number of warmup operations completed
-	warmupCount int64
-	warmupStart     time.Time
-	warmupElapsed   atomicFloat64
+	warmupCount   int64
+	warmupStart   time.Time
+	warmupElapsed *atomicFloat64
 
 	// number of operations runCount
 	runCount   int64
 	runStart   time.Time
-	runElapsed atomicFloat64
+	runElapsed *atomicFloat64
 
 	finished bool
+}
+
+func newPerfTestOptions(name string) PerfTestOptions {
+	return PerfTestOptions{
+		Name:          name,
+		runElapsed:    newAtomicFloat64(0),
+		warmupElapsed: newAtomicFloat64(0),
+	}
 }
 
 // increment does an atomic increment of the warmup or non-warmup performance test
@@ -100,7 +108,6 @@ type PerfMethods struct {
 
 // Run runs an individual test, registers, and parses command line flags
 func Run(tests map[string]PerfMethods) {
-
 	if len(os.Args) < 2 {
 		// Error out and show available perf tests
 		fmt.Println("Available performance tests:")

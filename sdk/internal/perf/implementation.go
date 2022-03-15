@@ -10,18 +10,20 @@ import (
 
 var (
 	// debug is true if --debug is specified
-	debug             bool
+	debug bool
 	// duration is the -d/--duration flag
-	duration          int
+	duration int
 	// testProxyURLs is the -x/--test-proxy flag, a semi-colon separated list
-	testProxyURLs     string
+	testProxyURLs string
 	// warmUpDuration is the -w/--warmup flag
-	warmUpDuration    int
+	warmUpDuration int
 	// parallelInstances is the -p/--parallel flag
 	parallelInstances int
 
 	// wg is used to keep track of the number of goroutines created
-	wg           sync.WaitGroup
+	wg sync.WaitGroup
+
+	// number of processes to use, the --maxprocs flag
 	numProcesses int
 )
 

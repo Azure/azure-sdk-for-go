@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// VolumesClient is the microsoft NetApp Azure Resource Provider specification
+// VolumesClient is the microsoft NetApp Files Azure Resource Provider specification
 type VolumesClient struct {
 	BaseClient
 }

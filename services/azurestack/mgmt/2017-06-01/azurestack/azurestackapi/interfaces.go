@@ -32,7 +32,7 @@ var _ CloudManifestFileClientAPI = (*azurestack.CloudManifestFileClient)(nil)
 type ProductsClientAPI interface {
 	Get(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.Product, err error)
 	GetProduct(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.Product, err error)
-	GetProducts(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.ProductList, err error)
+	GetProducts(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.ProductList, err error)
 	List(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ProductListPage, err error)
 	ListComplete(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ProductListIterator, err error)
 	ListDetails(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.ExtendedProduct, err error)
@@ -45,10 +45,13 @@ var _ ProductsClientAPI = (*azurestack.ProductsClient)(nil)
 type RegistrationsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroup string, registrationName string, tokenParameter azurestack.RegistrationParameter) (result azurestack.Registration, err error)
 	Delete(ctx context.Context, resourceGroup string, registrationName string) (result autorest.Response, err error)
+	EnableRemoteManagement(ctx context.Context, resourceGroup string, registrationName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.Registration, err error)
 	GetActivationKey(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ActivationKeyResult, err error)
 	List(ctx context.Context, resourceGroup string) (result azurestack.RegistrationListPage, err error)
 	ListComplete(ctx context.Context, resourceGroup string) (result azurestack.RegistrationListIterator, err error)
+	ListBySubscription(ctx context.Context) (result azurestack.RegistrationListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result azurestack.RegistrationListIterator, err error)
 	Update(ctx context.Context, resourceGroup string, registrationName string, tokenParameter azurestack.RegistrationParameter) (result azurestack.Registration, err error)
 }
 

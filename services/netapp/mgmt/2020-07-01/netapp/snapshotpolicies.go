@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// SnapshotPoliciesClient is the microsoft NetApp Azure Resource Provider specification
+// SnapshotPoliciesClient is the microsoft NetApp Files Azure Resource Provider specification
 type SnapshotPoliciesClient struct {
 	BaseClient
 }
@@ -37,7 +37,7 @@ func NewSnapshotPoliciesClientWithBaseURI(baseURI string, subscriptionID string)
 // body - snapshot policy object supplied in the body of the operation.
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
-// snapshotPolicyName - the name of the snapshot policy target
+// snapshotPolicyName - the name of the snapshot policy
 func (client SnapshotPoliciesClient) Create(ctx context.Context, body SnapshotPolicy, resourceGroupName string, accountName string, snapshotPolicyName string) (result SnapshotPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotPoliciesClient.Create")
@@ -131,7 +131,7 @@ func (client SnapshotPoliciesClient) CreateResponder(resp *http.Response) (resul
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
-// snapshotPolicyName - the name of the snapshot policy target
+// snapshotPolicyName - the name of the snapshot policy
 func (client SnapshotPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string) (result SnapshotPoliciesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotPoliciesClient.Delete")
@@ -219,7 +219,7 @@ func (client SnapshotPoliciesClient) DeleteResponder(resp *http.Response) (resul
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
-// snapshotPolicyName - the name of the snapshot policy target
+// snapshotPolicyName - the name of the snapshot policy
 func (client SnapshotPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string) (result SnapshotPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotPoliciesClient.Get")
@@ -389,7 +389,7 @@ func (client SnapshotPoliciesClient) ListResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
-// snapshotPolicyName - the name of the snapshot policy target
+// snapshotPolicyName - the name of the snapshot policy
 func (client SnapshotPoliciesClient) ListVolumes(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string) (result SnapshotPolicyVolumeList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotPoliciesClient.ListVolumes")
@@ -476,7 +476,7 @@ func (client SnapshotPoliciesClient) ListVolumesResponder(resp *http.Response) (
 // body - snapshot policy object supplied in the body of the operation.
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
-// snapshotPolicyName - the name of the snapshot policy target
+// snapshotPolicyName - the name of the snapshot policy
 func (client SnapshotPoliciesClient) Update(ctx context.Context, body SnapshotPolicyPatch, resourceGroupName string, accountName string, snapshotPolicyName string) (result SnapshotPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotPoliciesClient.Update")

@@ -193,6 +193,75 @@ func (client RegistrationsClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
+// EnableRemoteManagement enables remote management for device under the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+func (client RegistrationsClient) EnableRemoteManagement(ctx context.Context, resourceGroup string, registrationName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationsClient.EnableRemoteManagement")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.EnableRemoteManagementPreparer(ctx, resourceGroup, registrationName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EnableRemoteManagementSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EnableRemoteManagementResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "EnableRemoteManagement", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// EnableRemoteManagementPreparer prepares the EnableRemoteManagement request.
+func (client RegistrationsClient) EnableRemoteManagementPreparer(ctx context.Context, resourceGroup string, registrationName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registrationName": autorest.Encode("path", registrationName),
+		"resourceGroup":    autorest.Encode("path", resourceGroup),
+		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/enableRemoteManagement", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EnableRemoteManagementSender sends the EnableRemoteManagement request. The method will close the
+// http.Response Body if it receives an error.
+func (client RegistrationsClient) EnableRemoteManagementSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// EnableRemoteManagementResponder handles the response to the EnableRemoteManagement request. The method always
+// closes the http.Response Body.
+func (client RegistrationsClient) EnableRemoteManagementResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get returns the properties of an Azure Stack registration.
 // Parameters:
 // resourceGroup - name of the resource group.
@@ -458,6 +527,119 @@ func (client RegistrationsClient) ListComplete(ctx context.Context, resourceGrou
 		}()
 	}
 	result.page, err = client.List(ctx, resourceGroup)
+	return
+}
+
+// ListBySubscription returns a list of all registrations under current subscription.
+func (client RegistrationsClient) ListBySubscription(ctx context.Context) (result RegistrationListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.rl.Response.Response != nil {
+				sc = result.rl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listBySubscriptionNextResults
+	req, err := client.ListBySubscriptionPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "ListBySubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.rl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "ListBySubscription", resp, "Failure sending request")
+		return
+	}
+
+	result.rl, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
+	}
+	if result.rl.hasNextLink() && result.rl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client RegistrationsClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.AzureStack/registrations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client RegistrationsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
+// closes the http.Response Body.
+func (client RegistrationsClient) ListBySubscriptionResponder(resp *http.Response) (result RegistrationList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listBySubscriptionNextResults retrieves the next set of results, if any.
+func (client RegistrationsClient) listBySubscriptionNextResults(ctx context.Context, lastResults RegistrationList) (result RegistrationList, err error) {
+	req, err := lastResults.registrationListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.RegistrationsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client RegistrationsClient) ListBySubscriptionComplete(ctx context.Context) (result RegistrationListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySubscription(ctx)
 	return
 }
 

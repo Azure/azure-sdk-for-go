@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Support for using a SharedAccessSignature in a connection string. Ex: `Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>` (#TBD)
+
 ### Breaking Changes
 
 ### Bugs Fixed

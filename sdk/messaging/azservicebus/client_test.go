@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/sas"
 	"github.com/stretchr/testify/require"
 	"nhooyr.io/websocket"
 )
@@ -107,6 +108,40 @@ func TestNewClientWithWebsockets(t *testing.T) {
 
 	// we have to test this down here since the connection is lazy initialized.
 	require.True(t, webSocketCreateCalled)
+
+	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	bytes, err := messages[0].Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "hello world", string(bytes))
+}
+
+func TestNewClientUsingSharedAccessSignature(t *testing.T) {
+	sasCS, err := sas.CreateConnectionStringWithSAS(test.GetConnectionString(t), time.Hour)
+	require.NoError(t, err)
+
+	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
+	require.Contains(t, sasCS, "SharedAccessSignature=SharedAccessSignature")
+
+	queue, cleanup := createQueue(t, sasCS, nil)
+	defer cleanup()
+
+	client, err := NewClientFromConnectionString(sasCS, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queue, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,

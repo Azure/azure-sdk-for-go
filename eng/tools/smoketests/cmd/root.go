@@ -60,7 +60,7 @@ func getVersion() string {
 	}
 
 	// Default, go is not from a tag
-	return "go 1.17"
+	return "go 1.18"
 }
 
 func inIgnoredDirectories(path string) bool {

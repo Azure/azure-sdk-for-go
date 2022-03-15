@@ -28,10 +28,10 @@ type widget struct {
 
 func TestNewPollerFail(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
-	p, err := NewPoller("fake.poller", &http.Response{
+	p, err := NewPoller[widget]("fake.poller", &http.Response{
 		Body:       body,
 		StatusCode: http.StatusBadRequest,
-	}, newTestPipeline(nil))
+	}, newTestPipeline(nil), nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -57,7 +57,7 @@ func TestNewPollerFromResumeTokenFail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			p, err := NewPollerFromResumeToken("fake.poller", test.token, newTestPipeline(nil))
+			p, err := NewPollerFromResumeToken[widget]("fake.poller", test.token, newTestPipeline(nil), nil)
 			if err == nil {
 				t.Fatal("unexpected nil error")
 			}
@@ -85,7 +85,7 @@ func TestLocPollerSimple(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,15 +94,12 @@ func TestLocPollerSimple(t *testing.T) {
 	}
 	var respFromCtx *http.Response
 	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
-	resp, err := lro.PollUntilDone(ctxWithResp, time.Second, nil)
+	_, err = lro.PollUntilDone(ctxWithResp, time.Second)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
-	if respFromCtx != resp {
-		t.Fatal("response from context doesn't match returned response")
+	if respFromCtx.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d", respFromCtx.StatusCode)
 	}
 }
 
@@ -123,20 +120,16 @@ func TestLocPollerWithWidget(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	if w.Size != 3 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -160,23 +153,19 @@ func TestLocPollerCancelled(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
 	if _, ok := err.(*shared.ResponseError); !ok {
 		t.Fatal("expected pollerError")
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
 	}
 	if w.Size != 0 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -200,23 +189,19 @@ func TestLocPollerWithError(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: policy.RetryOptions{MaxRetries: -1}})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
 	if e := err.Error(); e != "oops" {
 		t.Fatalf("expected error %s", e)
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
 	}
 	if w.Size != 0 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -240,7 +225,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -257,27 +242,21 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	if lro.Done() {
 		t.Fatal("poller shouldn't be done yet")
 	}
-	resp, err = lro.FinalResponse(context.Background(), nil)
+	_, err = lro.Result(context.Background())
 	if err == nil {
 		t.Fatal("unexpected nil error")
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
 	}
 	tk, err := lro.ResumeToken()
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl)
+	lro, err = NewPollerFromResumeToken[struct{}]("fake.poller", tk, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err = lro.PollUntilDone(context.Background(), time.Second, nil)
+	_, err = lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 }
 
@@ -297,7 +276,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -305,13 +284,10 @@ func TestLocPollerWithTimeout(t *testing.T) {
 		t.Fatal("initial response body wasn't closed")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	resp, err := lro.PollUntilDone(ctx, time.Second, nil)
+	_, err = lro.PollUntilDone(ctx, time.Second)
 	cancel()
 	if err == nil {
 		t.Fatal("unexpected nil error")
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
 	}
 }
 
@@ -340,19 +316,16 @@ func TestOpPollerSimple(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, nil)
+	_, err = lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 }
 
@@ -383,20 +356,16 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -431,20 +400,16 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -477,20 +442,16 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -526,20 +487,16 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[widget]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	var w widget
-	resp, err := lro.PollUntilDone(context.Background(), time.Second, &w)
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
@@ -571,7 +528,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -588,27 +545,21 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if lro.Done() {
 		t.Fatal("poller shouldn't be done yet")
 	}
-	resp, err = lro.FinalResponse(context.Background(), nil)
+	_, err = lro.Result(context.Background())
 	if err == nil {
 		t.Fatal("unexpected nil error")
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
 	}
 	tk, err := lro.ResumeToken()
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl)
+	lro, err = NewPollerFromResumeToken[struct{}]("fake.poller", tk, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err = lro.PollUntilDone(context.Background(), time.Second, nil)
+	_, err = lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 }
 
@@ -619,39 +570,29 @@ func TestNopPoller(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(nil)
-	lro, err := NewPoller("fake.poller", firstResp, pl)
+	lro, err := NewPoller[struct{}]("fake.poller", firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(lro); pt != reflect.TypeOf(&pollers.NopPoller{}) {
+	if pt := pollers.PollerType(lro.pt); pt != reflect.TypeOf(&pollers.NopPoller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	if !lro.Done() {
 		t.Fatal("expected Done() for nopPoller")
 	}
-	resp, err := lro.FinalResponse(context.Background(), nil)
+	resp, err := lro.Poll(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp != firstResp {
 		t.Fatal("unexpected response")
 	}
-	resp, err = lro.Poll(context.Background())
+	_, err = lro.PollUntilDone(context.Background(), time.Second)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if resp != firstResp {
-		t.Fatal("unexpected response")
-	}
-	resp, err = lro.PollUntilDone(context.Background(), time.Second, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp != firstResp {
-		t.Fatal("unexpected response")
 	}
 	tk, err := lro.ResumeToken()
 	if err == nil {

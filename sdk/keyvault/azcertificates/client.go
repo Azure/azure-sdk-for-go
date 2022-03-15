@@ -84,7 +84,7 @@ type CreateCertificateResponse struct {
 	CertificateOperation
 }
 
-// the poller returned by the Client.BeginCreateCertificate
+// CreateCertificatePoller is the poller returned by the Client.BeginCreateCertificate
 type CreateCertificatePoller struct {
 	certName       string
 	certVersion    string
@@ -311,7 +311,7 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 	}
 }
 
-// The poller returned by the Client.BeginDeleteCertificate operation
+// DeleteCertificatePoller is the poller returned by the Client.BeginDeleteCertificate operation
 type DeleteCertificatePoller struct {
 	certificateName string // This is the certificate to Poll for in GetDeletedCertificate
 	vaultURL        string
@@ -1189,7 +1189,7 @@ type SetContactsResponse struct {
 	Contacts
 }
 
-// SetCertificateContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
+// SetContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
 func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *SetContactsOptions) (SetContactsResponse, error) {
 	resp, err := c.genClient.SetCertificateContacts(
 		ctx,
@@ -1224,7 +1224,7 @@ type GetContactsResponse struct {
 	Contacts
 }
 
-// GetCertificateContacts returns the set of certificate contact resources in the specified key vault. This operation
+// GetContacts returns the set of certificate contact resources in the specified key vault. This operation
 // requires the certificates/managecontacts permission.
 func (c *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (GetContactsResponse, error) {
 	resp, err := c.genClient.GetCertificateContacts(ctx, c.vaultURL, options.toGenerated())
@@ -1357,7 +1357,7 @@ type UpdateCertificatePropertiesResponse struct {
 	KeyVaultCertificate
 }
 
-// UpdateCertificate applies the specified update on the given certificate; the only elements updated are the certificate's
+// UpdateCertificateProperties applies the specified update on the given certificate; the only elements updated are the certificate's
 // attributes. This operation requires the certificates/update permission.
 func (c *Client) UpdateCertificateProperties(ctx context.Context, certName string, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
 	if options == nil {
@@ -1401,7 +1401,7 @@ type MergeCertificateResponse struct {
 	KeyVaultCertificateWithPolicy
 }
 
-// The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
+// MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
 func (c *Client) MergeCertificate(ctx context.Context, certName string, certificates [][]byte, options *MergeCertificateOptions) (MergeCertificateResponse, error) {
 	if options == nil {
 		options = &MergeCertificateOptions{}
@@ -1449,7 +1449,7 @@ type RestoreCertificateBackupResponse struct {
 	KeyVaultCertificateWithPolicy
 }
 
-// The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults
+// RestoreCertificateBackup performs the reversal of the Delete operation. The operation is applicable in vaults
 // enabled for soft-delete, and must be issued during the retention interval (available in the deleted certificate's attributes).
 // This operation requires the certificates/recover permission.
 func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup []byte, options *RestoreCertificateBackupOptions) (RestoreCertificateBackupResponse, error) {
@@ -1730,7 +1730,7 @@ func (c *Client) CancelCertificateOperation(ctx context.Context, certName string
 	}, nil
 }
 
-// DeleteCertificateOperationsOptions contains optional parameters for Client.DeleteCertificateOperation
+// DeleteCertificateOperationOptions contains optional parameters for Client.DeleteCertificateOperation
 type DeleteCertificateOperationOptions struct {
 	// placeholder for future optional parameters.
 }

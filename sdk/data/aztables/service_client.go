@@ -17,7 +17,8 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
-// A ServiceClient represents a client to the table service. It can be used to query the available tables, create/delete tables, and various other service level operations.
+// ServiceClient represents a client to the table service. It can be used to query
+// the available tables, create/delete tables, and various other service level operations.
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
@@ -97,8 +98,8 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 	return &generated.TableClientCreateOptions{}
 }
 
-// Create creates a table with the specified name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
-// Specify nil for options if you want to use the default options.
+// CreateTable creates a table with the specified name. If the service returns a non-successful HTTP status code,
+// the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
@@ -125,14 +126,14 @@ func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTab
 	return DeleteTableResponse{}
 }
 
-// Delete deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
+// DeleteTable deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
 	return deleteTableResponseFromGen(resp), err
 }
 
-// ListEntitiesOptions contains optional parameters for ServiceClient.QueryTables
+// ListTablesOptions contains optional parameters for ServiceClient.QueryTables
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
@@ -265,7 +266,7 @@ func (p *ListTablesPager) More() bool {
 	return true
 }
 
-// List queries the existing tables using the specified ListTablesOptions.
+// ListTables queries the existing tables using the specified ListTablesOptions.
 // listOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those tables that satisfy the filter expression.

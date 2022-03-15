@@ -8,6 +8,7 @@ package azsecrets
 
 import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 
+// DeletionRecoveryLevel represents the deletion recovery level for a secret
 type DeletionRecoveryLevel string
 
 const (

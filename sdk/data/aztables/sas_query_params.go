@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// SASVersion indicates the SAS version.
+// SASProtocol indicates the SAS protocol
 type SASProtocol string
 
 const (
@@ -60,7 +60,7 @@ func formatSASTime(t *time.Time, format string) string {
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-// A SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
+// SASQueryParameters represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
@@ -89,66 +89,82 @@ type SASQueryParameters struct {
 	seTimeFormat string
 }
 
+// SignedVersion gets the signed version of a SASQueryParameter
 func (p *SASQueryParameters) SignedVersion() string {
 	return p.signedVersion
 }
 
+// Version gets the version of a SASQueryParameter
 func (p *SASQueryParameters) Version() string {
 	return p.version
 }
 
+// Services gets the services of a SASQueryParameter
 func (p *SASQueryParameters) Services() string {
 	return p.services
 }
 
+// ResourceTypes gets the resource types of a SASQueryParameter
 func (p *SASQueryParameters) ResourceTypes() string {
 	return p.resourceTypes
 }
 
+// Protocol gets the protocol of a SASQueryParameter
 func (p *SASQueryParameters) Protocol() SASProtocol {
 	return p.protocol
 }
 
+// StartTime gets the start time of a SASQueryParameter
 func (p *SASQueryParameters) StartTime() time.Time {
 	return p.startTime
 }
 
+// ExpiryTime gets the expiry time of a SASQueryParameter
 func (p *SASQueryParameters) ExpiryTime() time.Time {
 	return p.expiryTime
 }
 
+// IPRange gets the IP Range of a SASQueryParameter
 func (p *SASQueryParameters) IPRange() IPRange {
 	return p.ipRange
 }
 
+// Identifier gets the identifier of a SASQueryParameter
 func (p *SASQueryParameters) Identifier() string {
 	return p.identifier
 }
 
+// Resource gets the resource of a SASQueryParameter
 func (p *SASQueryParameters) Resource() string {
 	return p.resource
 }
 
+// Permissions gets the permissions of a SASQueryParameter
 func (p *SASQueryParameters) Permissions() string {
 	return p.permissions
 }
 
+// Signature gets the signature of a SASQueryParameter
 func (p *SASQueryParameters) Signature() string {
 	return p.signature
 }
 
+// StartPartitionKey gets the start PartitionKey of a SASQueryParameter
 func (p *SASQueryParameters) StartPartitionKey() string {
 	return p.startPk
 }
 
+// StartRowKey gets the start RowKey of a SASQueryParameter
 func (p *SASQueryParameters) StartRowKey() string {
 	return p.startRk
 }
 
+// EndPartitionKey gets the end PartitionKey of a SASQueryParameter
 func (p *SASQueryParameters) EndPartitionKey() string {
 	return p.endPk
 }
 
+// EndRowKey gets the end RowKey of a SASQueryParameter
 func (p *SASQueryParameters) EndRowKey() string {
 	return p.endRk
 }

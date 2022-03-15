@@ -17,7 +17,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
-// A Client represents a client to the tables service affinitized to a specific table.
+// Client represents a client to the tables service affinitized to a specific table.
 type Client struct {
 	client  *generated.TableClient
 	service *ServiceClient
@@ -212,6 +212,7 @@ type ListEntitiesPager struct {
 	nextRK      *string
 }
 
+// More returns true if there are more pages to fetch, false otherwise.
 func (p *ListEntitiesPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {

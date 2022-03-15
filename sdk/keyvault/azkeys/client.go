@@ -118,7 +118,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 	}
 }
 
-// KeyVaultClientCreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
+// CreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type CreateKeyResponse struct {
 	Key
 }
@@ -562,7 +562,7 @@ func (c *Client) PurgeDeletedKey(ctx context.Context, keyName string, options *P
 	return purgeDeletedKeyResponseFromGenerated(resp), err
 }
 
-// DeletedKeyResponse contains the response for a Client.BeginDeleteKey operation.
+// DeleteKeyResponse contains the response for a Client.BeginDeleteKey operation.
 type DeleteKeyResponse struct {
 	DeletedKey
 }
@@ -596,7 +596,7 @@ func (b *BeginDeleteKeyOptions) toGenerated() *generated.KeyVaultClientDeleteKey
 	return &generated.KeyVaultClientDeleteKeyOptions{}
 }
 
-// The poller returned by the Client.StartDeleteKey operation
+// DeleteKeyPoller is the poller returned by the Client.StartDeleteKey operation
 type DeleteKeyPoller struct {
 	keyName        string // This is the key to Poll for in GetDeletedKey
 	vaultUrl       string
@@ -939,7 +939,7 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 	}
 }
 
-// UpdateKey updates the parameters of a key, but cannot be used to update the cryptographic material
+// UpdateKeyProperties updates the parameters of a key, but cannot be used to update the cryptographic material
 // of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
 // This operation requires the keys/update permission. Pass nil to use the default options.
 func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
@@ -1246,6 +1246,7 @@ func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOption
 	return &generated.KeyVaultClientRotateKeyOptions{}
 }
 
+// RotateKeyResponse contains response fields for Client.RotateKey
 type RotateKeyResponse struct {
 	Key
 }
@@ -1315,7 +1316,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	}
 }
 
-// The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation requires
+// GetKeyRotationPolicy returns the specified key policy resources in the specified key vault. This operation requires
 // the keys/get permission. Pass nil to use the default options.
 func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
 	if options == nil {
@@ -1335,6 +1336,7 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options 
 	return getKeyRotationPolicyResponseFromGenerated(resp), nil
 }
 
+// ReleaseKeyOptions contains optional parameters for Client.ReleaseKey
 type ReleaseKeyOptions struct {
 	// The version of the key to release
 	Version string

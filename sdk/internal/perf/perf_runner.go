@@ -189,7 +189,10 @@ func (r *perfRunner) printStatus() error {
 	}
 
 	if r.operationStatusTracker == -1 {
-		r.printFinalUpdate(true)
+		err := r.printFinalUpdate(true)
+		if err != nil {
+			return err
+		}
 		r.operationStatusTracker = 0
 		fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t")
 	}

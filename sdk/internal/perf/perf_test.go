@@ -66,7 +66,7 @@ func TestRun(t *testing.T) {
 func TestParseProxyURLs(t *testing.T) {
 	testProxyURLs = ""
 	result := parseProxyURLS()
-	require.Nil(t, result)
+	require.Equal(t, result, []string{})
 
 	testProxyURLs = "https://localhost:5001"
 	result = parseProxyURLS()

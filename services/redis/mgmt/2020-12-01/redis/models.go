@@ -64,7 +64,7 @@ type CheckNameAvailabilityParameters struct {
 // CommonProperties create/Update/Get common properties of the redis cache.
 type CommonProperties struct {
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
-	RedisConfiguration map[string]*string `json:"redisConfiguration"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
 	// RedisVersion - Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)
 	RedisVersion *string `json:"redisVersion,omitempty"`
 	// EnableNonSslPort - Specifies whether the non-ssl Redis server port (6379) is enabled.
@@ -114,6 +114,212 @@ func (cp CommonProperties) MarshalJSON() ([]byte, error) {
 		objectMap["publicNetworkAccess"] = cp.PublicNetworkAccess
 	}
 	return json.Marshal(objectMap)
+}
+
+// CommonPropertiesRedisConfiguration all Redis Settings. Few possible keys:
+// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+// etc.
+type CommonPropertiesRedisConfiguration struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]*string `json:""`
+	// RdbBackupEnabled - Specifies whether the rdb backup is enabled
+	RdbBackupEnabled *string `json:"rdb-backup-enabled,omitempty"`
+	// RdbBackupFrequency - Specifies the frequency for creating rdb backup
+	RdbBackupFrequency *string `json:"rdb-backup-frequency,omitempty"`
+	// RdbBackupMaxSnapshotCount - Specifies the maximum number of snapshots for rdb backup
+	RdbBackupMaxSnapshotCount *string `json:"rdb-backup-max-snapshot-count,omitempty"`
+	// RdbStorageConnectionString - The storage account connection string for storing rdb file
+	RdbStorageConnectionString *string `json:"rdb-storage-connection-string,omitempty"`
+	// AofStorageConnectionString0 - First storage account connection string
+	AofStorageConnectionString0 *string `json:"aof-storage-connection-string-0,omitempty"`
+	// AofStorageConnectionString1 - Second storage account connection string
+	AofStorageConnectionString1 *string `json:"aof-storage-connection-string-1,omitempty"`
+	// MaxfragmentationmemoryReserved - Value in megabytes reserved for fragmentation per shard
+	MaxfragmentationmemoryReserved *string `json:"maxfragmentationmemory-reserved,omitempty"`
+	// MaxmemoryPolicy - The eviction strategy used when your data won't fit within its memory limit.
+	MaxmemoryPolicy *string `json:"maxmemory-policy,omitempty"`
+	// MaxmemoryReserved - Value in megabytes reserved for non-cache usage per shard e.g. failover.
+	MaxmemoryReserved *string `json:"maxmemory-reserved,omitempty"`
+	// MaxmemoryDelta - Value in megabytes reserved for non-cache usage per shard e.g. failover.
+	MaxmemoryDelta *string `json:"maxmemory-delta,omitempty"`
+	// Maxclients - READ-ONLY; The max clients config
+	Maxclients *string `json:"maxclients,omitempty"`
+	// ZonalConfiguration - READ-ONLY; Zonal Configuration
+	ZonalConfiguration *string `json:"zonal-configuration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CommonPropertiesRedisConfiguration.
+func (cpC CommonPropertiesRedisConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cpC.RdbBackupEnabled != nil {
+		objectMap["rdb-backup-enabled"] = cpC.RdbBackupEnabled
+	}
+	if cpC.RdbBackupFrequency != nil {
+		objectMap["rdb-backup-frequency"] = cpC.RdbBackupFrequency
+	}
+	if cpC.RdbBackupMaxSnapshotCount != nil {
+		objectMap["rdb-backup-max-snapshot-count"] = cpC.RdbBackupMaxSnapshotCount
+	}
+	if cpC.RdbStorageConnectionString != nil {
+		objectMap["rdb-storage-connection-string"] = cpC.RdbStorageConnectionString
+	}
+	if cpC.AofStorageConnectionString0 != nil {
+		objectMap["aof-storage-connection-string-0"] = cpC.AofStorageConnectionString0
+	}
+	if cpC.AofStorageConnectionString1 != nil {
+		objectMap["aof-storage-connection-string-1"] = cpC.AofStorageConnectionString1
+	}
+	if cpC.MaxfragmentationmemoryReserved != nil {
+		objectMap["maxfragmentationmemory-reserved"] = cpC.MaxfragmentationmemoryReserved
+	}
+	if cpC.MaxmemoryPolicy != nil {
+		objectMap["maxmemory-policy"] = cpC.MaxmemoryPolicy
+	}
+	if cpC.MaxmemoryReserved != nil {
+		objectMap["maxmemory-reserved"] = cpC.MaxmemoryReserved
+	}
+	if cpC.MaxmemoryDelta != nil {
+		objectMap["maxmemory-delta"] = cpC.MaxmemoryDelta
+	}
+	for k, v := range cpC.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CommonPropertiesRedisConfiguration struct.
+func (cpC *CommonPropertiesRedisConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties string
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if cpC.AdditionalProperties == nil {
+					cpC.AdditionalProperties = make(map[string]*string)
+				}
+				cpC.AdditionalProperties[k] = &additionalProperties
+			}
+		case "rdb-backup-enabled":
+			if v != nil {
+				var rdbBackupEnabled string
+				err = json.Unmarshal(*v, &rdbBackupEnabled)
+				if err != nil {
+					return err
+				}
+				cpC.RdbBackupEnabled = &rdbBackupEnabled
+			}
+		case "rdb-backup-frequency":
+			if v != nil {
+				var rdbBackupFrequency string
+				err = json.Unmarshal(*v, &rdbBackupFrequency)
+				if err != nil {
+					return err
+				}
+				cpC.RdbBackupFrequency = &rdbBackupFrequency
+			}
+		case "rdb-backup-max-snapshot-count":
+			if v != nil {
+				var rdbBackupMaxSnapshotCount string
+				err = json.Unmarshal(*v, &rdbBackupMaxSnapshotCount)
+				if err != nil {
+					return err
+				}
+				cpC.RdbBackupMaxSnapshotCount = &rdbBackupMaxSnapshotCount
+			}
+		case "rdb-storage-connection-string":
+			if v != nil {
+				var rdbStorageConnectionString string
+				err = json.Unmarshal(*v, &rdbStorageConnectionString)
+				if err != nil {
+					return err
+				}
+				cpC.RdbStorageConnectionString = &rdbStorageConnectionString
+			}
+		case "aof-storage-connection-string-0":
+			if v != nil {
+				var aofStorageConnectionString0 string
+				err = json.Unmarshal(*v, &aofStorageConnectionString0)
+				if err != nil {
+					return err
+				}
+				cpC.AofStorageConnectionString0 = &aofStorageConnectionString0
+			}
+		case "aof-storage-connection-string-1":
+			if v != nil {
+				var aofStorageConnectionString1 string
+				err = json.Unmarshal(*v, &aofStorageConnectionString1)
+				if err != nil {
+					return err
+				}
+				cpC.AofStorageConnectionString1 = &aofStorageConnectionString1
+			}
+		case "maxfragmentationmemory-reserved":
+			if v != nil {
+				var maxfragmentationmemoryReserved string
+				err = json.Unmarshal(*v, &maxfragmentationmemoryReserved)
+				if err != nil {
+					return err
+				}
+				cpC.MaxfragmentationmemoryReserved = &maxfragmentationmemoryReserved
+			}
+		case "maxmemory-policy":
+			if v != nil {
+				var maxmemoryPolicy string
+				err = json.Unmarshal(*v, &maxmemoryPolicy)
+				if err != nil {
+					return err
+				}
+				cpC.MaxmemoryPolicy = &maxmemoryPolicy
+			}
+		case "maxmemory-reserved":
+			if v != nil {
+				var maxmemoryReserved string
+				err = json.Unmarshal(*v, &maxmemoryReserved)
+				if err != nil {
+					return err
+				}
+				cpC.MaxmemoryReserved = &maxmemoryReserved
+			}
+		case "maxmemory-delta":
+			if v != nil {
+				var maxmemoryDelta string
+				err = json.Unmarshal(*v, &maxmemoryDelta)
+				if err != nil {
+					return err
+				}
+				cpC.MaxmemoryDelta = &maxmemoryDelta
+			}
+		case "maxclients":
+			if v != nil {
+				var maxclients string
+				err = json.Unmarshal(*v, &maxclients)
+				if err != nil {
+					return err
+				}
+				cpC.Maxclients = &maxclients
+			}
+		case "zonal-configuration":
+			if v != nil {
+				var zonalConfiguration string
+				err = json.Unmarshal(*v, &zonalConfiguration)
+				if err != nil {
+					return err
+				}
+				cpC.ZonalConfiguration = &zonalConfiguration
+			}
+		}
+	}
+
+	return nil
 }
 
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -245,10 +451,10 @@ type CreateProperties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.
 	StaticIP *string `json:"staticIP,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
-	RedisConfiguration map[string]*string `json:"redisConfiguration"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
 	// RedisVersion - Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)
 	RedisVersion *string `json:"redisVersion,omitempty"`
 	// EnableNonSslPort - Specifies whether the non-ssl Redis server port (6379) is enabled.
@@ -1737,6 +1943,8 @@ type PatchSchedule struct {
 	autorest.Response `json:"-"`
 	// ScheduleEntries - List of patch schedules for a Redis cache.
 	*ScheduleEntries `json:"properties,omitempty"`
+	// Location - READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1771,6 +1979,15 @@ func (ps *PatchSchedule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ps.ScheduleEntries = &scheduleEntries
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ps.Location = &location
 			}
 		case "id":
 			if v != nil {
@@ -2250,10 +2467,10 @@ type Properties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.
 	StaticIP *string `json:"staticIP,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
-	RedisConfiguration map[string]*string `json:"redisConfiguration"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
 	// RedisVersion - Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)
 	RedisVersion *string `json:"redisVersion,omitempty"`
 	// EnableNonSslPort - Specifies whether the non-ssl Redis server port (6379) is enabled.
@@ -2589,7 +2806,7 @@ type UpdateProperties struct {
 	// Sku - The SKU of the Redis cache to deploy.
 	Sku *Sku `json:"sku,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
-	RedisConfiguration map[string]*string `json:"redisConfiguration"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
 	// RedisVersion - Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)
 	RedisVersion *string `json:"redisVersion,omitempty"`
 	// EnableNonSslPort - Specifies whether the non-ssl Redis server port (6379) is enabled.

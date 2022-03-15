@@ -9470,47 +9470,6 @@ func (etr *EntityTimelineResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorAdditionalInfo the resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// Type - READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty"`
-	// Info - READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
-func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// ErrorDetail the error detail.
-type ErrorDetail struct {
-	// Code - READ-ONLY; The error code.
-	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; The error message.
-	Message *string `json:"message,omitempty"`
-	// Target - READ-ONLY; The error target.
-	Target *string `json:"target,omitempty"`
-	// Details - READ-ONLY; The error details.
-	Details *[]ErrorDetail `json:"details,omitempty"`
-	// AdditionalInfo - READ-ONLY; The error additional info.
-	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ErrorDetail.
-func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
-// failed operations. (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// Error - The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
-}
-
 // EventGroupingSettings event grouping settings property bag.
 type EventGroupingSettings struct {
 	// AggregationKind - Possible values include: 'EventGroupingAggregationKindSingleAlert', 'EventGroupingAggregationKindAlertPerResult'

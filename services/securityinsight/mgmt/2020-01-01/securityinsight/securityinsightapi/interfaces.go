@@ -12,14 +12,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result securityinsight.OperationsListPage, err error)
-	ListComplete(ctx context.Context) (result securityinsight.OperationsListIterator, err error)
-}
-
-var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
-
 // AlertRulesClientAPI contains the set of methods on the AlertRulesClient type.
 type AlertRulesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, alertRule securityinsight.BasicAlertRule) (result securityinsight.AlertRuleModel, err error)
@@ -72,6 +64,14 @@ type DataConnectorsClientAPI interface {
 }
 
 var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result securityinsight.OperationsListPage, err error)
+	ListComplete(ctx context.Context) (result securityinsight.OperationsListIterator, err error)
+}
+
+var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
 
 // IncidentsClientAPI contains the set of methods on the IncidentsClient type.
 type IncidentsClientAPI interface {

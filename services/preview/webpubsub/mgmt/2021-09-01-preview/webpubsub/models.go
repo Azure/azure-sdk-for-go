@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-09-01-preview/webpubsub"
 
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
@@ -152,8 +152,23 @@ type ErrorResponse struct {
 	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// EventHandler properties of event handler.
-type EventHandler struct {
+// EventHandlerSettings the settings for event handler in webpubsub service
+type EventHandlerSettings struct {
+	// Items - Get or set the EventHandler items. The key is the hub name and the value is the corresponding EventHandlerTemplate.
+	Items map[string][]EventHandlerTemplate `json:"items"`
+}
+
+// MarshalJSON is the custom marshaler for EventHandlerSettings.
+func (ehs EventHandlerSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehs.Items != nil {
+		objectMap["items"] = ehs.Items
+	}
+	return json.Marshal(objectMap)
+}
+
+// EventHandlerTemplate eventHandler template item settings.
+type EventHandlerTemplate struct {
 	// URLTemplate - Gets or sets the EventHandler URL template. You can use a predefined parameter {hub} and {event} inside the template, the value of the EventHandler URL is dynamically calculated when the client request comes in.
 	// For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part can't contains parameters.
 	URLTemplate *string `json:"urlTemplate,omitempty"`
@@ -163,288 +178,13 @@ type EventHandler struct {
 	//     2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
 	//     3. The single event name, for example, "event1", it matches "event1"
 	UserEventPattern *string `json:"userEventPattern,omitempty"`
-	// SystemEvents - Gets ot sets the list of system events.
-	SystemEvents *[]string             `json:"systemEvents,omitempty"`
-	Auth         *UpstreamAuthSettings `json:"auth,omitempty"`
-}
-
-// Hub a hub setting
-type Hub struct {
-	autorest.Response `json:"-"`
-	// SystemData - READ-ONLY
-	SystemData *SystemData    `json:"systemData,omitempty"`
-	Properties *HubProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Hub.
-func (h Hub) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if h.Properties != nil {
-		objectMap["properties"] = h.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// HubList hub setting list
-type HubList struct {
-	autorest.Response `json:"-"`
-	// Value - List of hub settings to this resource.
-	Value *[]Hub `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URL the client should use to fetch the next page (per server side paging).
-	// It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for HubList.
-func (hl HubList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if hl.Value != nil {
-		objectMap["value"] = hl.Value
-	}
-	return json.Marshal(objectMap)
-}
-
-// HubListIterator provides access to a complete listing of Hub values.
-type HubListIterator struct {
-	i    int
-	page HubListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *HubListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/HubListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *HubListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter HubListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter HubListIterator) Response() HubList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter HubListIterator) Value() Hub {
-	if !iter.page.NotDone() {
-		return Hub{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the HubListIterator type.
-func NewHubListIterator(page HubListPage) HubListIterator {
-	return HubListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (hl HubList) IsEmpty() bool {
-	return hl.Value == nil || len(*hl.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (hl HubList) hasNextLink() bool {
-	return hl.NextLink != nil && len(*hl.NextLink) != 0
-}
-
-// hubListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (hl HubList) hubListPreparer(ctx context.Context) (*http.Request, error) {
-	if !hl.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(hl.NextLink)))
-}
-
-// HubListPage contains a page of Hub values.
-type HubListPage struct {
-	fn func(context.Context, HubList) (HubList, error)
-	hl HubList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *HubListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/HubListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.hl)
-		if err != nil {
-			return err
-		}
-		page.hl = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *HubListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page HubListPage) NotDone() bool {
-	return !page.hl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page HubListPage) Response() HubList {
-	return page.hl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page HubListPage) Values() []Hub {
-	if page.hl.IsEmpty() {
-		return nil
-	}
-	return *page.hl.Value
-}
-
-// Creates a new instance of the HubListPage type.
-func NewHubListPage(cur HubList, getNextPage func(context.Context, HubList) (HubList, error)) HubListPage {
-	return HubListPage{
-		fn: getNextPage,
-		hl: cur,
-	}
-}
-
-// HubProperties properties of a hub.
-type HubProperties struct {
-	// EventHandlers - Event handler of a hub.
-	EventHandlers *[]EventHandler `json:"eventHandlers,omitempty"`
-	// AnonymousConnectPolicy - The settings for configuring if anonymous connections are allowed for this hub: "allow" or "deny". Default to "deny".
-	AnonymousConnectPolicy *string `json:"anonymousConnectPolicy,omitempty"`
-}
-
-// HubsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type HubsCreateOrUpdateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(HubsClient) (Hub, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *HubsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for HubsCreateOrUpdateFuture.Result.
-func (future *HubsCreateOrUpdateFuture) result(client HubsClient) (h Hub, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webpubsub.HubsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		h.Response.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("webpubsub.HubsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if h.Response.Response, err = future.GetResult(sender); err == nil && h.Response.Response.StatusCode != http.StatusNoContent {
-		h, err = client.CreateOrUpdateResponder(h.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "webpubsub.HubsCreateOrUpdateFuture", "Result", h.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// HubsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type HubsDeleteFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(HubsClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *HubsDeleteFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for HubsDeleteFuture.Result.
-func (future *HubsDeleteFuture) result(client HubsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webpubsub.HubsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("webpubsub.HubsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
+	// SystemEventPattern - Gets ot sets the system event pattern.
+	// There are 2 kind of patterns supported:
+	//     1. The single event name, for example, "connect", it matches "connect"
+	//     2. Combine multiple events with ",", for example "connect,disconnected", it matches event "connect" and "disconnected"
+	SystemEventPattern *string `json:"systemEventPattern,omitempty"`
+	// Auth - Gets or sets the auth settings for an event handler. If not set, no auth is used.
+	Auth *UpstreamAuthSettings `json:"auth,omitempty"`
 }
 
 // Keys a class represents the access keys of the resource.
@@ -462,11 +202,11 @@ type Keys struct {
 
 // LiveTraceCategory live trace category configuration of a Microsoft.SignalRService resource.
 type LiveTraceCategory struct {
-	// Name - Gets or sets the live trace category's name.
+	// Name - Gets or sets the log category's name.
 	// Available values: ConnectivityLogs, MessagingLogs.
 	// Case insensitive.
 	Name *string `json:"name,omitempty"`
-	// Enabled - Indicates whether or the live trace category is enabled.
+	// Enabled - Indicates whether or the log category is enabled.
 	// Available values: true, false.
 	// Case insensitive.
 	Enabled *string `json:"enabled,omitempty"`
@@ -494,7 +234,7 @@ type LogSpecification struct {
 
 // ManagedIdentity a class represent managed identities used for request and response
 type ManagedIdentity struct {
-	// Type - Possible values include: 'ManagedIdentityTypeNone', 'ManagedIdentityTypeSystemAssigned', 'ManagedIdentityTypeUserAssigned'
+	// Type - Represent the identity type: systemAssigned, userAssigned, None. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
 	Type ManagedIdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - Get or set the user assigned identities
 	UserAssignedIdentities map[string]*UserAssignedIdentityProperty `json:"userAssignedIdentities"`
@@ -577,8 +317,9 @@ type NetworkACL struct {
 
 // NetworkACLs network ACLs for the resource
 type NetworkACLs struct {
-	// DefaultAction - Possible values include: 'ACLActionAllow', 'ACLActionDeny'
-	DefaultAction ACLAction   `json:"defaultAction,omitempty"`
+	// DefaultAction - Default action when no other rule matches. Possible values include: 'Allow', 'Deny'
+	DefaultAction ACLAction `json:"defaultAction,omitempty"`
+	// PublicNetwork - ACL for requests from public network
 	PublicNetwork *NetworkACL `json:"publicNetwork,omitempty"`
 	// PrivateEndpoints - ACLs for requests from private endpoints
 	PrivateEndpoints *[]PrivateEndpointACL `json:"privateEndpoints,omitempty"`
@@ -589,10 +330,12 @@ type Operation struct {
 	// Name - Name of the operation with format: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// IsDataAction - If the operation is a data action. (for data plane rbac)
-	IsDataAction *bool             `json:"isDataAction,omitempty"`
-	Display      *OperationDisplay `json:"display,omitempty"`
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Display - The object that describes the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - Optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
-	Origin     *string              `json:"origin,omitempty"`
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Extra properties for the operation.
 	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
@@ -770,6 +513,7 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 
 // OperationProperties extra Operation properties.
 type OperationProperties struct {
+	// ServiceSpecification - The service specifications.
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
@@ -792,8 +536,9 @@ type PrivateEndpointACL struct {
 // PrivateEndpointConnection a private endpoint connection to an azure resource
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
-	// SystemData - READ-ONLY
-	SystemData                           *SystemData `json:"systemData,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// PrivateEndpointConnectionProperties - Properties of the private endpoint connection
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -1034,11 +779,11 @@ func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, get
 
 // PrivateEndpointConnectionProperties private endpoint connection properties
 type PrivateEndpointConnectionProperties struct {
-	// ProvisioningState - READ-ONLY; Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the private endpoint connection. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	PrivateEndpoint   *PrivateEndpoint  `json:"privateEndpoint,omitempty"`
-	// GroupIds - READ-ONLY; Group IDs
-	GroupIds                          *[]string                          `json:"groupIds,omitempty"`
+	// PrivateEndpoint - Private endpoint associated with the private endpoint connection
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - Connection state
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 }
 
@@ -1093,6 +838,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 
 // PrivateLinkResource private link resource
 type PrivateLinkResource struct {
+	// PrivateLinkResourceProperties - Properties of a private link resource
 	*PrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -1336,7 +1082,7 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkServiceConnectionState connection state of the private endpoint connection
 type PrivateLinkServiceConnectionState struct {
-	// Status - Possible values include: 'PrivateLinkServiceConnectionStatusPending', 'PrivateLinkServiceConnectionStatusApproved', 'PrivateLinkServiceConnectionStatusRejected', 'PrivateLinkServiceConnectionStatusDisconnected'
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
 	Status PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
@@ -1346,7 +1092,7 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties a class that describes the properties of the resource
 type Properties struct {
-	// ProvisioningState - READ-ONLY; Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExternalIP - READ-ONLY; The publicly accessible IP of the resource.
 	ExternalIP *string `json:"externalIP,omitempty"`
@@ -1362,12 +1108,14 @@ type Properties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// SharedPrivateLinkResources - READ-ONLY; The list of shared private link resources.
 	SharedPrivateLinkResources *[]SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty"`
-	TLS                        *TLSSettings                 `json:"tls,omitempty"`
-	// HostNamePrefix - READ-ONLY; Deprecated.
-	HostNamePrefix           *string                   `json:"hostNamePrefix,omitempty"`
-	LiveTraceConfiguration   *LiveTraceConfiguration   `json:"liveTraceConfiguration,omitempty"`
-	ResourceLogConfiguration *ResourceLogConfiguration `json:"resourceLogConfiguration,omitempty"`
-	NetworkACLs              *NetworkACLs              `json:"networkACLs,omitempty"`
+	// TLS - TLS settings.
+	TLS *TLSSettings `json:"tls,omitempty"`
+	// LiveTraceConfiguration - Live trace configuration of a Microsoft.SignalRService resource.
+	LiveTraceConfiguration *LiveTraceConfiguration `json:"liveTraceConfiguration,omitempty"`
+	// EventHandler - The settings for event handler in webpubsub service.
+	EventHandler *EventHandlerSettings `json:"eventHandler,omitempty"`
+	// NetworkACLs - Network ACLs
+	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
 	// PublicNetworkAccess - Enable or disable public network access. Default to "Enabled".
 	// When it's Enabled, network ACLs still apply.
 	// When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
@@ -1391,8 +1139,8 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	if p.LiveTraceConfiguration != nil {
 		objectMap["liveTraceConfiguration"] = p.LiveTraceConfiguration
 	}
-	if p.ResourceLogConfiguration != nil {
-		objectMap["resourceLogConfiguration"] = p.ResourceLogConfiguration
+	if p.EventHandler != nil {
+		objectMap["eventHandler"] = p.EventHandler
 	}
 	if p.NetworkACLs != nil {
 		objectMap["networkACLs"] = p.NetworkACLs
@@ -1471,7 +1219,7 @@ func (future *RegenerateKeyFuture) result(client Client) (kVar Keys, err error) 
 
 // RegenerateKeyParameters parameters describes the request to regenerate access keys
 type RegenerateKeyParameters struct {
-	// KeyType - Possible values include: 'KeyTypePrimary', 'KeyTypeSecondary', 'KeyTypeSalt'
+	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
@@ -1651,31 +1399,15 @@ func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, Res
 	}
 }
 
-// ResourceLogCategory resource log category configuration of a Microsoft.SignalRService resource.
-type ResourceLogCategory struct {
-	// Name - Gets or sets the resource log category's name.
-	// Available values: ConnectivityLogs, MessagingLogs.
-	// Case insensitive.
-	Name *string `json:"name,omitempty"`
-	// Enabled - Indicates whether or the resource log category is enabled.
-	// Available values: true, false.
-	// Case insensitive.
-	Enabled *string `json:"enabled,omitempty"`
-}
-
-// ResourceLogConfiguration resource log configuration of a Microsoft.SignalRService resource.
-type ResourceLogConfiguration struct {
-	// Categories - Gets or sets the list of category configurations.
-	Categories *[]ResourceLogCategory `json:"categories,omitempty"`
-}
-
 // ResourceSku the billing information of the resource.
 type ResourceSku struct {
 	// Name - The name of the SKU. Required.
 	//
 	// Allowed values: Standard_S1, Free_F1
 	Name *string `json:"name,omitempty"`
-	// Tier - Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	// Tier - Optional tier of this particular SKU. 'Standard' or 'Free'.
+	//
+	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// Size - READ-ONLY; Not used. Retained for future use.
 	Size *string `json:"size,omitempty"`
@@ -1707,10 +1439,13 @@ func (rs ResourceSku) MarshalJSON() ([]byte, error) {
 // ResourceType a class represent a resource.
 type ResourceType struct {
 	autorest.Response `json:"-"`
-	Sku               *ResourceSku `json:"sku,omitempty"`
-	*Properties       `json:"properties,omitempty"`
-	Identity          *ManagedIdentity `json:"identity,omitempty"`
-	// SystemData - READ-ONLY
+	// Sku - The billing information of the resource.(e.g. Free, Standard)
+	Sku *ResourceSku `json:"sku,omitempty"`
+	// Properties - Settings used to provision or configure the resource
+	*Properties `json:"properties,omitempty"`
+	// Identity - The managed identity response
+	Identity *ManagedIdentity `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
 	Location *string `json:"location,omitempty"`
@@ -1900,15 +1635,17 @@ type ShareablePrivateLinkResourceProperties struct {
 // service
 type ShareablePrivateLinkResourceType struct {
 	// Name - The name of the resource type that has been onboarded to private link service
-	Name       *string                                 `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Properties - Describes the properties of a resource type that has been onboarded to private link service
 	Properties *ShareablePrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
 // SharedPrivateLinkResource describes a Shared Private Link Resource
 type SharedPrivateLinkResource struct {
 	autorest.Response `json:"-"`
-	// SystemData - READ-ONLY
-	SystemData                           *SystemData `json:"systemData,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// SharedPrivateLinkResourceProperties - Describes the properties of a Shared Private Link Resource
 	*SharedPrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -2153,11 +1890,11 @@ type SharedPrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// PrivateLinkResourceID - The resource id of the resource the shared private link resource is for
 	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
-	// ProvisioningState - READ-ONLY; Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the shared private link resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RequestMessage - The request message for requesting approval of the shared private link resource
 	RequestMessage *string `json:"requestMessage,omitempty"`
-	// Status - READ-ONLY; Possible values include: 'SharedPrivateLinkResourceStatusPending', 'SharedPrivateLinkResourceStatusApproved', 'SharedPrivateLinkResourceStatusRejected', 'SharedPrivateLinkResourceStatusDisconnected', 'SharedPrivateLinkResourceStatusTimeout'
+	// Status - READ-ONLY; Status of the shared private link resource. Possible values include: 'SharedPrivateLinkResourceStatusPending', 'SharedPrivateLinkResourceStatusApproved', 'SharedPrivateLinkResourceStatusRejected', 'SharedPrivateLinkResourceStatusDisconnected', 'SharedPrivateLinkResourceStatusTimeout'
 	Status SharedPrivateLinkResourceStatus `json:"status,omitempty"`
 }
 
@@ -2263,8 +2000,9 @@ type SignalRServiceUsage struct {
 	// CurrentValue - Current value for the usage quota.
 	CurrentValue *int64 `json:"currentValue,omitempty"`
 	// Limit - The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
-	Limit *int64                   `json:"limit,omitempty"`
-	Name  *SignalRServiceUsageName `json:"name,omitempty"`
+	Limit *int64 `json:"limit,omitempty"`
+	// Name - Localizable String object containing the name and a localized value.
+	Name *SignalRServiceUsageName `json:"name,omitempty"`
 	// Unit - Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
 	Unit *string `json:"unit,omitempty"`
 }
@@ -2442,9 +2180,9 @@ type SignalRServiceUsageName struct {
 type Sku struct {
 	// ResourceType - READ-ONLY; The resource type that this object applies to
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Sku - READ-ONLY
+	// Sku - READ-ONLY; The exact set of keys that define this sku.
 	Sku *ResourceSku `json:"sku,omitempty"`
-	// Capacity - READ-ONLY
+	// Capacity - READ-ONLY; Specifies the unit of the resource.
 	Capacity *SkuCapacity `json:"capacity,omitempty"`
 }
 
@@ -2464,7 +2202,7 @@ type SkuCapacity struct {
 	Default *int32 `json:"default,omitempty"`
 	// AllowedValues - READ-ONLY; Allows capacity value list.
 	AllowedValues *[]int32 `json:"allowedValues,omitempty"`
-	// ScaleType - READ-ONLY; Possible values include: 'ScaleTypeNone', 'ScaleTypeManual', 'ScaleTypeAutomatic'
+	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'ScaleTypeNone', 'ScaleTypeManual', 'ScaleTypeAutomatic'
 	ScaleType ScaleType `json:"scaleType,omitempty"`
 }
 
@@ -2580,10 +2318,11 @@ func (future *UpdateFuture) result(client Client) (rt ResourceType, err error) {
 	return
 }
 
-// UpstreamAuthSettings upstream auth settings. If not set, no auth is used for upstream messages.
+// UpstreamAuthSettings upstream auth settings.
 type UpstreamAuthSettings struct {
-	// Type - Possible values include: 'UpstreamAuthTypeNone', 'UpstreamAuthTypeManagedIdentity'
-	Type            UpstreamAuthType         `json:"type,omitempty"`
+	// Type - Gets or sets the type of auth. None or ManagedIdentity is supported now. Possible values include: 'UpstreamAuthTypeNone', 'UpstreamAuthTypeManagedIdentity'
+	Type UpstreamAuthType `json:"type,omitempty"`
+	// ManagedIdentity - Gets or sets the managed identity settings. It's required if the auth type is set to ManagedIdentity.
 	ManagedIdentity *ManagedIdentitySettings `json:"managedIdentity,omitempty"`
 }
 

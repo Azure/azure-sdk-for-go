@@ -111,12 +111,11 @@ func (r *perfRunner) Run() error {
 
 	r.done <- true
 
-	r.printFinalUpdate(false)
-	err = r.cleanup()
+	err = r.printFinalUpdate(false)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return nil
+	return r.cleanup()
 }
 
 // global setup by instantiating a single global instance
@@ -192,7 +191,7 @@ func (r *perfRunner) printStatus() error {
 	if r.operationStatusTracker == -1 {
 		r.printFinalUpdate(true)
 		r.operationStatusTracker = 0
-		fmt.Fprintln(r.w, "Current\tTotal\tAverage\t")
+		fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t")
 	}
 	totalOperations := r.totalOperations(false)
 
@@ -215,7 +214,7 @@ func (r *perfRunner) printWarmupStatus() bool {
 	if r.warmupOperationStatusTracker == -1 {
 		r.warmupOperationStatusTracker = 0
 		fmt.Println("===== WARMUP =====")
-		fmt.Fprintln(r.w, "Current\tTotal\tAverage\t")
+		fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t")
 	}
 	totalOperations := r.totalOperations(true)
 
@@ -328,9 +327,7 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		r.proxyTransports[ID].SetMode("live")
 		err := p.Run(context.Background())
 		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) {
-				return
-			} else {
+			if err != nil {
 				panic(err)
 			}
 		}
@@ -345,9 +342,7 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 
 		err = p.Run(context.Background())
 		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) {
-				return
-			} else {
+			if err != nil {
 				panic(err)
 			}
 		}
@@ -375,7 +370,7 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 			err := p.Run(ctx)
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) {
-					return
+					break
 				} else {
 					panic(err)
 				}
@@ -404,7 +399,7 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		err := p.Run(ctx)
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) {
-				return
+				break
 			} else {
 				panic(err)
 			}

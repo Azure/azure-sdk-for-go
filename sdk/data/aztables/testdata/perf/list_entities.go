@@ -26,7 +26,7 @@ type listEntitiesTestOptions struct {
 var listTestOpts listEntitiesTestOptions = listEntitiesTestOptions{
 	fullEDM:       false,
 	clientSharing: false,
-	count:         0,
+	count:         100,
 }
 
 // listTestRegister is called once per process

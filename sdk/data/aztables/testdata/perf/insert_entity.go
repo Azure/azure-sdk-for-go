@@ -6,9 +6,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
@@ -28,14 +30,37 @@ var stringEntity = map[string]string{
 	"StringTypeProperty7": "5",
 }
 
-type downloadTestOptions struct{}
+var fullEdm = aztables.EDMEntity{
+	Entity: aztables.Entity{
+		PartitionKey: "",
+		RowKey:       "",
+	},
+	Properties: map[string]interface{}{
+		"StringTypeProperty":   "StringTypeProperty",
+		"DatetimeTypeProperty": aztables.EDMDateTime(time.Now()),
+		"GuidTypeProperty":     aztables.EDMGUID("c9da6455-213d-42c9-9a79-3e9149a57833"),
+		"BinaryTypeProperty":   aztables.EDMBinary([]byte("BinaryTypeProperty")),
+		"Int64TypeProperty":    aztables.EDMInt64(2 ^ 32 + 1),
+		"DoubleTypeProperty":   200.23,
+		"IntTypeProperty":      5,
+	},
+}
+
+type downloadTestOptions struct {
+	fullEDM       bool
+	clientSharing bool
+}
 
 //nolint
-var downloadTestOpts downloadTestOptions = downloadTestOptions{}
+var downloadTestOpts downloadTestOptions = downloadTestOptions{
+	fullEDM:       false,
+	clientSharing: false,
+}
 
 // downloadTestRegister is called once per process
 func downloadTestRegister() {
-
+	flag.BoolVar(&downloadTestOpts.fullEDM, "full-edm", false, "whether to use entities that utiliza all EDM types for serialization/deserialization, or only strings. Default is only strings")
+	flag.BoolVar(&downloadTestOpts.clientSharing, "no-client-share", false, "create one ServiceClient per test instance. Default is to share a single ServiceClient")
 }
 
 type downloadTestGlobal struct {
@@ -49,7 +74,7 @@ func NewInsertEntityTest(ctx context.Context, options perf.PerfTestOptions) (per
 	if err != nil {
 		return nil, err
 	}
-	tableName := fmt.Sprintf("table%s",strings.ReplaceAll(guid.String(), "-", ""))
+	tableName := fmt.Sprintf("table%s", strings.ReplaceAll(guid.String(), "-", ""))
 	d := &downloadTestGlobal{
 		PerfTestOptions: options,
 		tableName:       tableName,

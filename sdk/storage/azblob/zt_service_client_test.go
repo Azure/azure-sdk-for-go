@@ -56,7 +56,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
 	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)
@@ -115,7 +115,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
 	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)

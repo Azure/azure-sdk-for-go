@@ -71,9 +71,11 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 		return ServiceClient{}, err
 	}
 	authPolicy := newSharedKeyCredPolicy(cred)
-	return ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
-	}, u: *u, sharedKey: cred}, nil
+	return ServiceClient{
+		client:    &serviceClient{con: newConnection(serviceURL, authPolicy, options.getConnectionOptions())},
+		u:         *u,
+		sharedKey: cred,
+	}, nil
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
@@ -91,7 +93,7 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // To change the pipeline, create the ContainerClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
-func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
+func (s ServiceClient) NewContainerClient(containerName string) (ContainerClient, error) {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
 	containerConnection := &connection{containerURL, s.client.con.p}
 	return ContainerClient{
@@ -99,7 +101,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 			con: containerConnection,
 		},
 		sharedKey: s.sharedKey,
-	}
+	}, nil
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
@@ -107,7 +109,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 // be raised. This method returns a client with which to interact with the newly
 // created container.
 func (s ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
-	containerClient := s.NewContainerClient(containerName)
+	containerClient, _ := s.NewContainerClient(containerName)
 	containerCreateResp, err := containerClient.Create(ctx, options)
 	return containerCreateResp, err
 }
@@ -116,7 +118,7 @@ func (s ServiceClient) CreateContainer(ctx context.Context, containerName string
 // The container and any blobs contained within it are later deleted during garbage collection.
 // If the container is not found, a ResourceNotFoundError will be raised.
 func (s ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
-	containerClient := s.NewContainerClient(containerName)
+	containerClient, _ := s.NewContainerClient(containerName)
 	containerDeleteResp, err := containerClient.Delete(ctx, options)
 	return containerDeleteResp, err
 }

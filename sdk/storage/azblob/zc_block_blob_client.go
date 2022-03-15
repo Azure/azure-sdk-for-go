@@ -5,11 +5,10 @@ package azblob
 
 import (
 	"context"
-	"io"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"io"
 )
 
 const (
@@ -60,28 +59,38 @@ func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, 
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
-	p, _ := NewBlobURLParts(bb.URL())
+func (bb BlockBlobClient) WithSnapshot(snapshot string) (BlockBlobClient, error) {
+	p, err := NewBlobURLParts(bb.URL())
+	if err != nil {
+		return BlockBlobClient{}, err
+	}
 	p.Snapshot = snapshot
 	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return BlockBlobClient{
-		client: &blockBlobClient{
-			con: con,
+		client: &blockBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: bb.sharedKey,
 		},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+	}, nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (bb BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
-	p, _ := NewBlobURLParts(bb.URL())
+func (bb BlockBlobClient) WithVersionID(versionID string) (BlockBlobClient, error) {
+	p, err := NewBlobURLParts(bb.URL())
+	if err != nil {
+		return BlockBlobClient{}, err
+	}
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return BlockBlobClient{
-		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+		client: &blockBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: bb.sharedKey,
+		},
+	}, nil
 }
 
 // Upload creates a new block blob or overwrites an existing block blob.

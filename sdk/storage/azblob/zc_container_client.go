@@ -53,7 +53,7 @@ func NewContainerClientFromConnectionString(connectionString string, containerNa
 	if err != nil {
 		return ContainerClient{}, err
 	}
-	return svcClient.NewContainerClient(containerName), nil
+	return svcClient.NewContainerClient(containerName)
 }
 
 // NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
@@ -61,13 +61,14 @@ func NewContainerClientFromConnectionString(connectionString string, containerNa
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
+func (c ContainerClient) NewBlobClient(blobName string) (BlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{u: blobURL, p: c.client.con.p}
 
 	return BlobClient{
-		client: &blobClient{newCon, nil},
-	}
+		client:    &blobClient{newCon, nil},
+		sharedKey: c.sharedKey,
+	}, nil
 }
 
 // NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
@@ -75,14 +76,17 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 // To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
 // NewAppendBlobClient method.
-func (c ContainerClient) NewAppendBlobClient(blobName string) AppendBlobClient {
+func (c ContainerClient) NewAppendBlobClient(blobName string) (AppendBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
 	return AppendBlobClient{
-		client:     &appendBlobClient{newCon},
-		BlobClient: BlobClient{client: &blobClient{con: newCon}},
-	}
+		client: &appendBlobClient{newCon},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: newCon},
+			sharedKey: c.sharedKey,
+		},
+	}, nil
 }
 
 // NewBlockBlobClient creates a new BlockBlobClient object by concatenating blobName to the end of
@@ -90,28 +94,34 @@ func (c ContainerClient) NewAppendBlobClient(blobName string) AppendBlobClient {
 // To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlockBlobClient instead of calling this object's
 // NewBlockBlobClient method.
-func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
+func (c ContainerClient) NewBlockBlobClient(blobName string) (BlockBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
 	return BlockBlobClient{
-		client:     &blockBlobClient{newCon},
-		BlobClient: BlobClient{client: &blobClient{con: newCon}},
-	}
+		client: &blockBlobClient{newCon},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: newCon},
+			sharedKey: c.sharedKey,
+		},
+	}, nil
 }
 
 // NewPageBlobClient creates a new PageBlobURL object by concatenating blobName to the end of ContainerClient's URL. The new PageBlobURL uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the PageBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewPageBlobClient instead of calling this object's
 // NewPageBlobClient method.
-func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
+func (c ContainerClient) NewPageBlobClient(blobName string) (PageBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
 	return PageBlobClient{
-		client:     &pageBlobClient{newCon},
-		BlobClient: BlobClient{client: &blobClient{con: newCon}},
-	}
+		client: &pageBlobClient{newCon},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: newCon},
+			sharedKey: c.sharedKey,
+		},
+	}, nil
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
@@ -234,13 +244,10 @@ func (c ContainerClient) GetSASToken(permissions ContainerSASPermissions, start 
 	urlParts, _ := NewBlobURLParts(c.URL())
 
 	// Containers do not have snapshots, nor versions.
-
 	return BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
-
-		Permissions: permissions.String(),
-
-		StartTime:  start.UTC(),
-		ExpiryTime: expiry.UTC(),
+		Permissions:   permissions.String(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
 	}.NewSASQueryParameters(c.sharedKey)
 }

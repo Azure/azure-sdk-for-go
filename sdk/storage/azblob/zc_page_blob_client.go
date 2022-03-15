@@ -49,35 +49,50 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return PageBlobClient{
-		client:     &pageBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
+		client: &pageBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: cred,
+		},
 	}, nil
 }
 
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
-	p, _ := NewBlobURLParts(pb.URL())
+func (pb PageBlobClient) WithSnapshot(snapshot string) (PageBlobClient, error) {
+	p, err := NewBlobURLParts(pb.URL())
+	if err != nil {
+		return PageBlobClient{}, err
+	}
 	p.Snapshot = snapshot
 
 	con := &connection{p.URL(), pb.client.con.p}
 	return PageBlobClient{
-		client:     &pageBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+		client: &pageBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: pb.sharedKey,
+		},
+	}, nil
 }
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the version returning a URL to the base blob.
-func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
-	p, _ := NewBlobURLParts(pb.URL())
+func (pb PageBlobClient) WithVersionID(versionID string) (PageBlobClient, error) {
+	p, err := NewBlobURLParts(pb.URL())
+	if err != nil {
+		return PageBlobClient{}, err
+	}
 	p.VersionID = versionID
 
 	con := &connection{p.URL(), pb.client.con.p}
 	return PageBlobClient{
-		client:     &pageBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+		client: &pageBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: pb.sharedKey,
+		},
+	}, nil
 }
 
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.

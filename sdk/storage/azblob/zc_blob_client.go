@@ -48,7 +48,7 @@ func NewBlobClientFromConnectionString(connectionString, containerName, blobName
 	if err != nil {
 		return BlobClient{}, err
 	}
-	return containerClient.NewBlobClient(blobName), nil
+	return containerClient.NewBlobClient(blobName)
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
@@ -58,27 +58,30 @@ func (b BlobClient) URL() string {
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
-	p, _ := NewBlobURLParts(b.URL())
+func (b BlobClient) WithSnapshot(snapshot string) (BlobClient, error) {
+	p, err := NewBlobURLParts(b.URL())
+	if err != nil {
+		return BlobClient{}, err
+	}
 	p.Snapshot = snapshot
 	return BlobClient{
 		client: &blobClient{
 			&connection{u: p.URL(), p: b.client.con.p},
 			b.client.pathRenameMode,
 		},
-	}
+	}, nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (b BlobClient) WithVersionID(versionID string) BlockBlobClient {
-	p, _ := NewBlobURLParts(b.URL())
+func (b BlobClient) WithVersionID(versionID string) (BlobClient, error) {
+	p, err := NewBlobURLParts(b.URL())
+	if err != nil {
+		return BlobClient{}, err
+	}
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: b.client.con.p}
-	return BlockBlobClient{
-		client:     &blockBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+	return BlobClient{client: &blobClient{con: con}, sharedKey: b.sharedKey}, nil
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

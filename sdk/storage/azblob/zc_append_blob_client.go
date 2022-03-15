@@ -47,28 +47,40 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
-	p, _ := NewBlobURLParts(ab.URL())
+func (ab AppendBlobClient) WithSnapshot(snapshot string) (AppendBlobClient, error) {
+	p, err := NewBlobURLParts(ab.URL())
+	if err != nil {
+		return AppendBlobClient{}, err
+	}
 	p.Snapshot = snapshot
 	con := &connection{u: p.URL(), p: ab.client.con.p}
 
 	return AppendBlobClient{
-		client:     &appendBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+		client: &appendBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: ab.sharedKey,
+		},
+	}, nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
-	p, _ := NewBlobURLParts(ab.URL())
+func (ab AppendBlobClient) WithVersionID(versionID string) (AppendBlobClient, error) {
+	p, err := NewBlobURLParts(ab.URL())
+	if err != nil {
+		return AppendBlobClient{}, err
+	}
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: ab.client.con.p}
 
 	return AppendBlobClient{
-		client:     &appendBlobClient{con: con},
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+		client: &appendBlobClient{con: con},
+		BlobClient: BlobClient{
+			client:    &blobClient{con: con},
+			sharedKey: ab.sharedKey,
+		},
+	}, nil
 }
 
 // Create creates a 0-size append blob. Call AppendBlock to append data to an append blob.

@@ -6,7 +6,7 @@
 
 package crypto
 
-// Key wrapping algorithms
+// WrapAlgorithm represents the key wrapping algorithms
 type WrapAlgorithm string
 
 const (
@@ -18,7 +18,7 @@ const (
 	WrapAlgorithmRSA15      WrapAlgorithm = "RSA1_5"
 )
 
-// Returns a pointer to a KeyWrapAlgorithm constant
+// ToPtr returns a pointer to WrapAlgorithm
 func (k WrapAlgorithm) ToPtr() *WrapAlgorithm {
 	return &k
 }

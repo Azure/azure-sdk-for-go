@@ -10,7 +10,7 @@ package azblob
 
 const (
 	module  = "azblob"
-	version = "v0.3.1"
+	version = "v0.3.0"
 )
 
 type AccessTier string

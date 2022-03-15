@@ -11,12 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/template/aztemplate/internal"
 )
 
+// ClientOptions contains optional parameters for NewClient
 type ClientOptions struct{}
 
+// Client is the client to interact with
 type Client struct {
 	client *internal.TemplateClient
 }
 
+// NewClient returns a pointer to a Client
 func NewClient(cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 
 	//if options == nil {
@@ -28,6 +31,7 @@ func NewClient(cred azcore.TokenCredential, options *ClientOptions) (*Client, er
 
 }
 
+// SomeServiceAction does some service action
 func (c *Client) SomeServiceAction() {
 	c.client.PrintInfo()
 }

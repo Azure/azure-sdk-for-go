@@ -55,9 +55,18 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 	req.Body = ioutil.NopCloser(bytes.NewBuffer(content))
 
 	timestamp := time.Now().UTC().Format(http.TimeFormat)
-	contentHash := getContentHashBase64(content)
+
+	contentHash, err1 := getContentHashBase64(content)
+	if err1 != nil {
+		return nil, err1
+	}
+
 	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(method), pathAndQuery, timestamp, host, contentHash)
-	signature := getHmac(stringToSign, key)
+
+	signature, err2 := getHmac(stringToSign, key)
+	if err2 != nil {
+		return nil, err2
+	}
 
 	req.Header.Set("x-ms-content-sha256", contentHash)
 	req.Header.Set("x-ms-date", timestamp)
@@ -66,16 +75,26 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 	return request.Next()
 }
 
-func getContentHashBase64(content []byte) string {
+func getContentHashBase64(content []byte) (string, error) {
 	hasher := sha256.New()
-	hasher.Write(content)
-	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
+
+	_, err := hasher.Write(content)
+	if err != nil {
+		return "", err
+	}
+
+	return base64.StdEncoding.EncodeToString(hasher.Sum(nil)), nil
 }
 
-func getHmac(content string, key []byte) string {
+func getHmac(content string, key []byte) (string, error) {
 	hmac := hmac.New(sha256.New, key)
-	hmac.Write([]byte(content))
-	return base64.StdEncoding.EncodeToString(hmac.Sum(nil))
+
+	_, err := hmac.Write([]byte(content))
+	if err != nil {
+		return "", err
+	}
+
+	return base64.StdEncoding.EncodeToString(hmac.Sum(nil)), nil
 }
 
 func parseConnectionString(connectionString string) (endpoint string, credential string, secret []byte, err error) {

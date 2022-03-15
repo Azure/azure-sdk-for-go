@@ -20,7 +20,7 @@ import (
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
-// The Client performs cryptographic operations using Azure Key Vault Keys. This client
+// Client performs cryptographic operations using Azure Key Vault Keys. This client
 // will perform operations locally when it's initialized with the necessary key material or
 // is able to get that material from Key Vault. When the required key material is unavailable,
 // cryptographic operations are performed by the Key Vault service.
@@ -118,7 +118,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}, nil
 }
 
-// Optional parameters for the crypto.Client.EncryptOptions method
+// EncryptOptions contains optional parameters for Client.EncryptOptions
 type EncryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AAD []byte `json:"aad,omitempty"`
@@ -140,6 +140,7 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 	}
 }
 
+// EncryptResponse contains response fields for Client.EncryptResponse
 type EncryptResponse struct {
 	KeyOperationResult
 
@@ -160,7 +161,7 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) Enc
 	}
 }
 
-// The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in
+// Encrypt encrypts an arbitrary sequence of bytes using an encryption key that is stored in
 // Azure Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which
 // is dependent on the target key and the encryption algorithm to be used. The ENCRYPT operation is only
 // strictly necessary for symmetric keys stored in Azure Key Vault since protection with an asymmetric key
@@ -209,6 +210,7 @@ func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 	}
 }
 
+// DecryptResponse contains response fields for Client.Decrypt
 type DecryptResponse struct {
 	KeyOperationResult
 	// RawResponse contains the underlying HTTP response.
@@ -228,7 +230,7 @@ func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) Dec
 	}
 }
 
-// The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and
+// Decrypt decrypts a well-formed block of ciphertext using the target encryption key and
 // specified algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of
 // data may be decrypted, the size of this block is dependent on the target key and the algorithm to be
 // used. The DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key Vault since
@@ -296,9 +298,9 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) Wra
 	}
 }
 
-// The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously
+// WrapKey supports encryption of a symmetric key using a key encryption key that has previously
 // been stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored
-//in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
+// in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
 // the key. This operation is supported for asymmetric keys as a convenience for callers that have a
 // key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.
 func (c *Client) WrapKey(ctx context.Context, alg WrapAlgorithm, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
@@ -364,7 +366,7 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse)
 	}
 }
 
-// UnwrapKey - The UNWRAP operation supports decryption of a symmetric key using the target key encryption key.
+// UnwrapKey supports decryption of a symmetric key using the target key encryption key.
 // This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric
 // keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
 // keys/unwrapKey permission.
@@ -415,7 +417,7 @@ func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignRespo
 	}
 }
 
-// The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since
+// Sign is applicable to asymmetric and symmetric keys stored in Azure Key Vault since
 // this operation uses the private portion of the key. This operation requires the keys/sign permission.
 func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, options *SignOptions) (SignResponse, error) {
 	if options == nil {
@@ -463,7 +465,7 @@ func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) Verif
 	}
 }
 
-// The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+// Verify is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
 // necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed
 // using the public portion of the key but this operation is supported as a convenience for callers that
 // only have a key-reference and not the public portion of the key. This operation requires the keys/verify permission.

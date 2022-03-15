@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/cbs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -220,7 +219,10 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 		return nil, err
 	}
 
-	return NewRPCLink(client, managementPath)
+	return NewRPCLink(RPCLinkArgs{
+		Client:  client,
+		Address: managementPath,
+	})
 }
 
 // NewAMQPLinks creates an AMQPLinks struct, which groups together the commonly needed links for
@@ -288,7 +290,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
 	return ns.startNegotiateClaimRenewer(ctx,
 		entityPath,
-		cbs.NegotiateClaim,
+		NegotiateClaim,
 		ns.GetAMQPClientImpl,
 		nextClaimRefreshDuration)
 }
@@ -327,12 +329,10 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		err = cbsNegotiateClaim(ctx, audience, amqpClient, token)
 		ns.negotiateClaimMu.Unlock()
 
-		sbe := GetSBErrInfo(err)
-
-		if sbe != nil {
+		if err != nil {
 			// Note we only handle connection recovery here since (currently)
 			// the negotiateClaim code creates it's own link each time.
-			if sbe.RecoveryKind == RecoveryKindConn {
+			if GetRecoveryKind(err) == RecoveryKindConn {
 				if _, err := ns.Recover(ctx, clientRevision); err != nil {
 					log.Writef(EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
 				}

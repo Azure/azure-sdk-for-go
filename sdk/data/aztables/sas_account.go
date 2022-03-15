@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// SASVersion is the default SAS Version
 var SASVersion = "2019-02-02"
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
@@ -80,7 +81,7 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 	return p, nil
 }
 
-// The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
 	Read    bool
@@ -154,7 +155,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 	return nil
 }
 
-// The AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type AccountSASResourceTypes struct {
 	Service   bool

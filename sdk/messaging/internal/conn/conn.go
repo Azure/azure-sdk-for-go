@@ -9,41 +9,39 @@ import (
 	"strings"
 )
 
-const (
-	endpointKey            = "Endpoint"
-	sharedAccessKeyNameKey = "SharedAccessKeyName"
-	sharedAccessKeyKey     = "SharedAccessKey"
-	entityPathKey          = "EntityPath"
-)
-
 type (
 	// ParsedConn is the structure of a parsed Service Bus or Event Hub connection string.
 	ParsedConn struct {
 		Namespace string
 		HubName   string
-		KeyName   string
-		Key       string
+
+		KeyName string
+		Key     string
+
+		SAS string
 	}
 )
-
-// newParsedConnection is a constructor for a parsedConn and verifies each of the inputs is non-null.
-// namespace is the FQDN of the namespace
-func newParsedConnection(namespace, hubName, keyName, key string) *ParsedConn {
-	return &ParsedConn{
-		Namespace: namespace,
-		KeyName:   keyName,
-		Key:       key,
-		HubName:   hubName,
-	}
-}
 
 // ParsedConnectionFromStr takes a string connection string from the Azure portal and returns the parsed representation.
 // The method will return an error if the Endpoint, SharedAccessKeyName or SharedAccessKey is empty.
 func ParsedConnectionFromStr(connStr string) (*ParsedConn, error) {
-	var namespace, hubName, keyName, secret string
+	const (
+		endpointKey              = "Endpoint"
+		sharedAccessKeyNameKey   = "SharedAccessKeyName"
+		sharedAccessKeyKey       = "SharedAccessKey"
+		entityPathKey            = "EntityPath"
+		sharedAccessSignatureKey = "SharedAccessSignature"
+	)
+
+	// We can parse two types of connection strings.
+	// 1. Connection strings generated from the portal (or elsewhere) that contain an embedded key and keyname.
+	// 2. A specially formatted connection string with an embedded SharedAccessSignature:
+	//   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
+	var namespace, hubName, keyName, secret, sas string
 	splits := strings.Split(connStr, ";")
+
 	for _, split := range splits {
-		keyAndValue := strings.Split(split, "=")
+		keyAndValue := strings.SplitN(split, "=", 2)
 		if len(keyAndValue) < 2 {
 			return nil, errors.New("failed parsing connection string due to unmatched key value separated by '='")
 		}
@@ -64,20 +62,29 @@ func ParsedConnectionFromStr(connStr string) (*ParsedConn, error) {
 			secret = value
 		case strings.EqualFold(entityPathKey, key):
 			hubName = value
+		case strings.EqualFold(sharedAccessSignatureKey, key):
+			sas = value
 		}
 	}
 
-	parsed := newParsedConnection(namespace, hubName, keyName, secret)
+	parsed := &ParsedConn{
+		Namespace: namespace,
+		KeyName:   keyName,
+		Key:       secret,
+		HubName:   hubName,
+		SAS:       sas,
+	}
+
 	if namespace == "" {
 		return parsed, fmt.Errorf("key %q must not be empty", endpointKey)
 	}
 
-	if keyName == "" {
+	if sas == "" && keyName == "" {
 		return parsed, fmt.Errorf("key %q must not be empty", sharedAccessKeyNameKey)
 	}
 
-	if secret == "" {
-		return parsed, fmt.Errorf("key %q must not be empty", sharedAccessKeyKey)
+	if secret == "" && sas == "" {
+		return parsed, fmt.Errorf("key %q or %q cannot both be empty", sharedAccessKeyKey, sharedAccessSignatureKey)
 	}
 
 	return parsed, nil

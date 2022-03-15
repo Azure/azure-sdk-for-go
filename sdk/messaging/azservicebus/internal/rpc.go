@@ -10,10 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/devigned/tab"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 )
 
@@ -73,18 +70,32 @@ type (
 	}
 )
 
-// NewLink will build a new request response link
-func NewRPCLink(conn *amqp.Client, address string, opts ...RPCLinkOption) (*rpcLink, error) {
-	authSession, err := conn.NewSession()
+type rpcError struct {
+	Resp    *RPCResponse
+	Message string
+}
+
+func (e rpcError) Error() string {
+	return e.Message
+}
+
+func (e rpcError) RPCCode() int {
+	return e.Resp.Code
+}
+
+type RPCLinkArgs struct {
+	Client  *amqp.Client
+	Address string
+}
+
+// NewRPCLink will build a new request response link
+func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
+	session, err := args.Client.NewSession()
+
 	if err != nil {
 		return nil, err
 	}
 
-	return newRPCLinkWithSession(authSession, address, opts...)
-}
-
-// NewLinkWithSession will build a new request response link, but will reuse an existing AMQP session
-func newRPCLinkWithSession(session *amqp.Session, address string, opts ...RPCLinkOption) (*rpcLink, error) {
 	linkID, err := uuid.New()
 	if err != nil {
 		return nil, err
@@ -93,7 +104,7 @@ func newRPCLinkWithSession(session *amqp.Session, address string, opts ...RPCLin
 	id := linkID.String()
 	link := &rpcLink{
 		session:       session,
-		clientAddress: strings.Replace("$", "", address, -1) + replyPostfix + id,
+		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
 		id:            id,
 
 		uuidNewV4:               uuid.New,
@@ -101,21 +112,15 @@ func newRPCLinkWithSession(session *amqp.Session, address string, opts ...RPCLin
 		startResponseRouterOnce: &sync.Once{},
 	}
 
-	for _, opt := range opts {
-		if err := opt(link); err != nil {
-			return nil, err
-		}
-	}
-
 	sender, err := session.NewSender(
-		amqp.LinkTargetAddress(address),
+		amqp.LinkTargetAddress(args.Address),
 	)
 	if err != nil {
 		return nil, err
 	}
 
 	receiverOpts := []amqp.LinkOption{
-		amqp.LinkSourceAddress(address),
+		amqp.LinkSourceAddress(args.Address),
 		amqp.LinkTargetAddress(link.clientAddress),
 		amqp.LinkCredit(defaultReceiverCredits),
 	}
@@ -201,10 +206,6 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 
 	const altStatusCodeKey, altDescriptionKey = "statusCode", "statusDescription"
 
-	ctx, span := tab.StartSpan(ctx, "rpc.RPC")
-	tracing.ApplyComponentInfo(span, Version)
-	defer span.End()
-
 	msg.Properties.ReplyTo = &l.clientAddress
 
 	if msg.ApplicationProperties == nil {
@@ -227,8 +228,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 
 	if err != nil {
 		l.deleteChannelFromMap(messageID)
-		tab.For(ctx).Error(err)
-		return nil, err
+		return nil, fmt.Errorf("Failed to send message with ID %s: %w", messageID, err)
 	}
 
 	var res *amqp.Message
@@ -244,7 +244,6 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 	}
 
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -257,15 +256,11 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 				break
 			}
 
-			err := errors.New("status code was not of expected type int32")
-			tab.For(ctx).Error(err)
-			return nil, err
+			return nil, errors.New("status code was not of expected type int32")
 		}
 	}
 	if statusCode == 0 {
-		err := errors.New("status codes was not found on rpc message")
-		tab.For(ctx).Error(err)
-		return nil, err
+		return nil, errors.New("status codes was not found on rpc message")
 	}
 
 	var description string
@@ -280,8 +275,6 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 		}
 	}
 
-	span.AddAttributes(tab.StringAttribute("http.status_code", fmt.Sprintf("%d", statusCode)))
-
 	response := &RPCResponse{
 		Code:        int(statusCode),
 		Description: description,
@@ -289,8 +282,13 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 	}
 
 	if err := l.messageAccept(ctx, res); err != nil {
-		tab.For(ctx).Error(err)
-		return response, err
+		return response, fmt.Errorf("failed accepting message on rpc link: %w", err)
+	}
+
+	var rpcErr rpcError
+
+	if asRPCError(response, &rpcErr) {
+		return nil, rpcErr
 	}
 
 	return response, err
@@ -298,9 +296,6 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 
 // Close the link receiver, sender and session
 func (l *rpcLink) Close(ctx context.Context) error {
-	ctx, span := startRPCSpan(ctx, "rpc.Close")
-	defer span.End()
-
 	if err := l.closeReceiver(ctx); err != nil {
 		_ = l.closeSender(ctx)
 		_ = l.closeSession(ctx)
@@ -316,9 +311,6 @@ func (l *rpcLink) Close(ctx context.Context) error {
 }
 
 func (l *rpcLink) closeReceiver(ctx context.Context) error {
-	ctx, span := startRPCSpan(ctx, "rpc.closeReceiver")
-	defer span.End()
-
 	if l.receiver != nil {
 		return l.receiver.Close(ctx)
 	}
@@ -326,9 +318,6 @@ func (l *rpcLink) closeReceiver(ctx context.Context) error {
 }
 
 func (l *rpcLink) closeSender(ctx context.Context) error {
-	ctx, span := startRPCSpan(ctx, "rpc.closeSender")
-	defer span.End()
-
 	if l.sender != nil {
 		return l.sender.Close(ctx)
 	}
@@ -336,9 +325,6 @@ func (l *rpcLink) closeSender(ctx context.Context) error {
 }
 
 func (l *rpcLink) closeSession(ctx context.Context) error {
-	ctx, span := startRPCSpan(ctx, "rpc.closeSession")
-	defer span.End()
-
 	if l.session != nil {
 		return l.session.Close(ctx)
 	}
@@ -438,8 +424,22 @@ func isClosedError(err error) bool {
 		errors.Is(err, amqp.ErrSessionClosed)
 }
 
-func startRPCSpan(ctx context.Context, operation string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operation)
-	tracing.ApplyComponentInfo(span, Version)
-	return ctx, span
+// asRPCError checks to see if the res is actually a failed request
+// (where failed means the status code was non-2xx). If so,
+// it returns true and updates the struct pointed to by err.
+func asRPCError(res *RPCResponse, err *rpcError) bool {
+	if res == nil {
+		return false
+	}
+
+	if res.Code >= 200 && res.Code < 300 {
+		return false
+	}
+
+	*err = rpcError{
+		Message: fmt.Sprintf("rpc: failed, status code %d and description: %s", res.Code, res.Description),
+		Resp:    res,
+	}
+
+	return true
 }

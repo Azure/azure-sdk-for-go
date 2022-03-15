@@ -14,6 +14,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: TestRunTime
+    type: string
+    default: '600s'
 
 steps:
   - task: Powershell@2
@@ -51,7 +54,7 @@ steps:
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/run_tests.ps1
-      arguments: '${{ parameters.ServiceDirectory }}'
+      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }}'
       pwsh: true
     env:
       GO111MODULE: 'on'

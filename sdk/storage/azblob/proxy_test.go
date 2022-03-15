@@ -16,12 +16,12 @@ func TestMain(m *testing.M) {
 	// 1. Set up session level sanitizers
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			ExcludedHeaders: []string{"x-ms-tags", "x-ms-copy-source"},
-		})
-		if err != nil {
-			panic(err)
-		}
+		// err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+		// 	ExcludedHeaders: []string{"x-ms-tags", "x-ms-copy-source"},
+		// })
+		// if err != nil {
+		// 	panic(err)
+		// }
 	case recording.RecordingMode:
 		vals := [][]string{
 			{"STORAGE_ACCOUNT_NAME", "fakestorageaccount"},

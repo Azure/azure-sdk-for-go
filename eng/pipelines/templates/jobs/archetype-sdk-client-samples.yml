@@ -1,5 +1,10 @@
 parameters:
-  ServiceDirectory: ''
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: TestRunTime
+    type: string
+    default: '600s'
 
 stages:
   - stage: Build
@@ -46,6 +51,7 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(vm.image)
           GoVersion: $(go.version)
+          TestRunTime: ${{ parameters.TestRunTime }}
 
     - job: Analyze
       displayName: Analyze

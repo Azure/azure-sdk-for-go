@@ -9,12 +9,15 @@ package azappconfig
 import (
 	"context"
 	"errors"
+	"net/http"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig/internal/generated"
 )
@@ -401,36 +404,61 @@ func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRev
 }
 
 // ListRevisionsPager is a Pager for revision list operations.
-//
-// NextPage should be called first. It fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-type ListRevisionsPager interface {
-	// PageResponse returns the current ListRevisionsPage.
-	PageResponse() ListRevisionsPage
-
-	// Err returns an error if there was an error on the last request.
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not.
-	NextPage(context.Context) bool
+type ListRevisionsPager struct {
+	options   *generated.AzureAppConfigurationClientGetRevisionsOptions
+	genClient *generated.AzureAppConfigurationClient
+	nextLink  *string
 }
 
-type listRevisionsPager struct {
-	genPager *generated.AzureAppConfigurationClientGetRevisionsPager
+// More returns true if there are more pages to return
+func (l *ListRevisionsPager) More() bool {
+	if !reflect.ValueOf(l.nextLink).IsZero() {
+		if l.nextLink == nil || len(*l.nextLink) == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-func (p listRevisionsPager) PageResponse() ListRevisionsPage {
-	return fromGeneratedGetRevisionsPage(p.genPager.PageResponse())
-}
-
-func (p listRevisionsPager) Err() error {
-	return p.genPager.Err()
-}
-
-func (p listRevisionsPager) NextPage(ctx context.Context) bool {
-	return p.genPager.NextPage(ctx)
+// NextPage returns the current page of results
+func (l *ListRevisionsPager) NextPage(ctx context.Context) (ListRevisionsPage, error) {
+	var resp *http.Response
+	var err error
+	if l.nextLink == nil {
+		req, err := l.genClient.GetRevisionsCreateRequest(
+			ctx,
+			l.options,
+		)
+		if err != nil {
+			return ListRevisionsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListRevisionsPage{}, err
+		}
+	} else {
+		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
+		if err != nil {
+			return ListRevisionsPage{}, err
+		}
+		resp, err = l.genClient.Pl.Do(req)
+		if err != nil {
+			return ListRevisionsPage{}, err
+		}
+	}
+	if err != nil {
+		return ListRevisionsPage{}, err
+	}
+	result, err := l.genClient.GetRevisionsHandleResponse(resp)
+	if err != nil {
+		return ListRevisionsPage{}, err
+	}
+	if result.NextLink == nil {
+		// Set it to the zero value
+		result.NextLink = to.StringPtr("")
+	}
+	l.nextLink = result.NextLink
+	return fromGeneratedGetRevisionsPage(result), nil
 }
 
 // ListRevisionsOptions contains the optional parameters for the ListRevisions method.
@@ -440,5 +468,5 @@ type ListRevisionsOptions struct {
 
 // ListRevisions retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
 func (c *Client) ListRevisions(selector SettingSelector, options *ListRevisionsOptions) ListRevisionsPager {
-	return listRevisionsPager{genPager: c.appConfigClient.GetRevisions(selector.toGenerated())}
+	return ListRevisionsPager{options: selector.toGenerated(), genClient: c.appConfigClient, nextLink: nil}
 }

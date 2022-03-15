@@ -5,10 +5,12 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -261,4 +263,57 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 	msgs, err := r.ReceiveMessages(ctx, 95, nil)
 	require.Empty(t, msgs)
 	require.True(t, internal.IsCancelError(err))
+}
+
+func TestReceiverOptions(t *testing.T) {
+	// defaults
+	receiver := &Receiver{}
+	e := &entity{Topic: "topic", Subscription: "subscription"}
+
+	require.NoError(t, applyReceiverOptions(receiver, e, nil))
+
+	require.EqualValues(t, ReceiveModePeekLock, receiver.receiveMode)
+	path, err := e.String()
+	require.NoError(t, err)
+	require.EqualValues(t, "topic/Subscriptions/subscription", path)
+
+	// using options
+	receiver = &Receiver{}
+	e = &entity{Topic: "topic", Subscription: "subscription"}
+
+	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+		SubQueue:    SubQueueTransfer,
+		retryOptions: utils.RetryOptions{
+			MaxRetries: 101,
+		},
+	}))
+
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
+	path, err = e.String()
+	require.NoError(t, err)
+	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
+	require.EqualValues(t, 101, receiver.retryOptions.MaxRetries)
+}
+
+func TestReceiverDeferUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			Err: errors.New("links are dead"),
+		},
+	}
+
+	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "links are dead")
+	require.Nil(t, messages)
+
+	r = &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			RPC: &badRPCLink{},
+		},
+	}
+
+	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "receive deferred messages failed")
+	require.Nil(t, messages)
 }

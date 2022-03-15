@@ -31,38 +31,6 @@ const (
 	DeferredDisposition  DispositionStatus = "defered"
 )
 
-type mgmtError struct {
-	Resp    *RPCResponse
-	Message string
-}
-
-func (me mgmtError) Error() string {
-	return me.Message
-}
-
-func (me mgmtError) RPCCode() int {
-	return me.Resp.Code
-}
-
-// creates a new link and sends the RPC request, recovering and retrying on certain AMQP errors
-func doRPC(ctx context.Context, name string, rpcLink RPCLink, msg *amqp.Message) (*RPCResponse, error) {
-	res, err := rpcLink.RPC(ctx, msg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if res.Code >= 200 && res.Code < 300 {
-		tab.For(ctx).Debug(fmt.Sprintf("rpc: success, status code %d and description: %s", res.Code, res.Description))
-		return res, nil
-	}
-
-	return nil, mgmtError{
-		Message: fmt.Sprintf("rpc: failed, status code %d and description: %s", res.Code, res.Description),
-		Resp:    res,
-	}
-}
-
 func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
 	defer span.End()
@@ -86,7 +54,7 @@ func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode ReceiveMode, seq
 		Value: values,
 	}
 
-	rsp, err := doRPC(ctx, "receiveDeferred", rpcLink, msg)
+	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +132,7 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	rsp, err := doRPC(ctx, "peek", rpcLink, msg)
+	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return nil, err
@@ -272,7 +240,7 @@ func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockToken
 		renewRequestMsg.ApplicationProperties["associated-link-name"] = linkName
 	}
 
-	response, err := doRPC(ctx, "renewlocks", rpcLink, renewRequestMsg)
+	response, err := rpcLink.RPC(ctx, renewRequestMsg)
 
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -321,7 +289,7 @@ func RenewSessionLock(ctx context.Context, rpcLink RPCLink, sessionID string) (t
 		},
 	}
 
-	resp, err := doRPC(ctx, "renewsessionlock", rpcLink, msg)
+	resp, err := rpcLink.RPC(ctx, msg)
 
 	if err != nil {
 		return time.Time{}, err
@@ -353,7 +321,7 @@ func GetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string) ([]
 		},
 	}
 
-	resp, err := doRPC(ctx, "getsessionstate", rpcLink, amqpMsg)
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return nil, err
@@ -404,7 +372,7 @@ func SetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string, sta
 		},
 	}
 
-	resp, err := doRPC(ctx, "setsessionstate", rpcLink, amqpMsg)
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return err
@@ -455,7 +423,7 @@ func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID,
 	}
 
 	// no error, then it was successful
-	_, err := doRPC(ctx, "senddisposition", rpcLink, msg)
+	_, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -534,7 +502,7 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Tim
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	resp, err := doRPC(ctx, "schedule", rpcLink, msg)
+	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return nil, err
@@ -580,7 +548,7 @@ func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) 
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	resp, err := doRPC(ctx, "cancelscheduled", rpcLink, msg)
+	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

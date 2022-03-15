@@ -51,6 +51,7 @@ func (c CertificateKeyType) ToPtr() *CertificateKeyType {
 	return &c
 }
 
+// CerificateKeyUsage is the key usage for a certificate
 type CerificateKeyUsage string
 
 const (

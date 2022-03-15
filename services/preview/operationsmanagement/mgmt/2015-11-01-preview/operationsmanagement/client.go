@@ -23,25 +23,19 @@ type BaseClient struct {
 	autorest.Client
 	BaseURI        string
 	SubscriptionID string
-	ProviderName   string
-	ResourceType   string
-	ResourceName   string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, providerName, resourceType, resourceName)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
-		ProviderName:   providerName,
-		ResourceType:   resourceType,
-		ResourceName:   resourceName,
 	}
 }

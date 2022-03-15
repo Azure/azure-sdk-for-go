@@ -21,15 +21,15 @@ type ManagementConfigurationsClient struct {
 }
 
 // NewManagementConfigurationsClient creates an instance of the ManagementConfigurationsClient client.
-func NewManagementConfigurationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return NewManagementConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, providerName, resourceType, resourceName)
+func NewManagementConfigurationsClient(subscriptionID string) ManagementConfigurationsClient {
+	return NewManagementConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewManagementConfigurationsClientWithBaseURI creates an instance of the ManagementConfigurationsClient client using
 // a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
 // clouds, Azure stack).
-func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return ManagementConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)}
+func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ManagementConfigurationsClient {
+	return ManagementConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates the ManagementConfiguration.

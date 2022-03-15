@@ -21,14 +21,14 @@ type SolutionsClient struct {
 }
 
 // NewSolutionsClient creates an instance of the SolutionsClient client.
-func NewSolutionsClient(subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return NewSolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, providerName, resourceType, resourceName)
+func NewSolutionsClient(subscriptionID string) SolutionsClient {
+	return NewSolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSolutionsClientWithBaseURI creates an instance of the SolutionsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return SolutionsClient{NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)}
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string) SolutionsClient {
+	return SolutionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates the Solution.

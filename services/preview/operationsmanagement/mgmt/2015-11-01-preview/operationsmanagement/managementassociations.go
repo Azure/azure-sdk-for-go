@@ -21,23 +21,26 @@ type ManagementAssociationsClient struct {
 }
 
 // NewManagementAssociationsClient creates an instance of the ManagementAssociationsClient client.
-func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
-	return NewManagementAssociationsClientWithBaseURI(DefaultBaseURI, subscriptionID, providerName, resourceType, resourceName)
+func NewManagementAssociationsClient(subscriptionID string) ManagementAssociationsClient {
+	return NewManagementAssociationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewManagementAssociationsClientWithBaseURI creates an instance of the ManagementAssociationsClient client using a
 // custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
 // Azure stack).
-func NewManagementAssociationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
-	return ManagementAssociationsClient{NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)}
+func NewManagementAssociationsClientWithBaseURI(baseURI string, subscriptionID string) ManagementAssociationsClient {
+	return ManagementAssociationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates the ManagementAssociation.
 // Parameters:
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// providerName - provider name for the parent resource.
+// resourceType - resource type for the parent resource
+// resourceName - parent resource name.
 // managementAssociationName - user ManagementAssociation Name.
 // parameters - the parameters required to create ManagementAssociation extension.
-func (client ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managementAssociationName string, parameters ManagementAssociation) (result ManagementAssociation, err error) {
+func (client ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, parameters ManagementAssociation) (result ManagementAssociation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementAssociationsClient.CreateOrUpdate")
 		defer func() {
@@ -59,7 +62,7 @@ func (client ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, r
 		return result, validation.NewError("operationsmanagement.ManagementAssociationsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, managementAssociationName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationsmanagement.ManagementAssociationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -82,13 +85,13 @@ func (client ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, r
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ManagementAssociationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, managementAssociationName string, parameters ManagementAssociation) (*http.Request, error) {
+func (client ManagementAssociationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, parameters ManagementAssociation) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managementAssociationName": autorest.Encode("path", managementAssociationName),
-		"providerName":              autorest.Encode("path", client.ProviderName),
+		"providerName":              autorest.Encode("path", providerName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
-		"resourceName":              autorest.Encode("path", client.ResourceName),
-		"resourceType":              autorest.Encode("path", client.ResourceType),
+		"resourceName":              autorest.Encode("path", resourceName),
+		"resourceType":              autorest.Encode("path", resourceType),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -131,8 +134,11 @@ func (client ManagementAssociationsClient) CreateOrUpdateResponder(resp *http.Re
 // Delete deletes the ManagementAssociation in the subscription.
 // Parameters:
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// providerName - provider name for the parent resource.
+// resourceType - resource type for the parent resource
+// resourceName - parent resource name.
 // managementAssociationName - user ManagementAssociation Name.
-func (client ManagementAssociationsClient) Delete(ctx context.Context, resourceGroupName string, managementAssociationName string) (result autorest.Response, err error) {
+func (client ManagementAssociationsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementAssociationsClient.Delete")
 		defer func() {
@@ -151,7 +157,7 @@ func (client ManagementAssociationsClient) Delete(ctx context.Context, resourceG
 		return result, validation.NewError("operationsmanagement.ManagementAssociationsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, managementAssociationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationsmanagement.ManagementAssociationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -174,13 +180,13 @@ func (client ManagementAssociationsClient) Delete(ctx context.Context, resourceG
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ManagementAssociationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, managementAssociationName string) (*http.Request, error) {
+func (client ManagementAssociationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managementAssociationName": autorest.Encode("path", managementAssociationName),
-		"providerName":              autorest.Encode("path", client.ProviderName),
+		"providerName":              autorest.Encode("path", providerName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
-		"resourceName":              autorest.Encode("path", client.ResourceName),
-		"resourceType":              autorest.Encode("path", client.ResourceType),
+		"resourceName":              autorest.Encode("path", resourceName),
+		"resourceType":              autorest.Encode("path", resourceType),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -217,8 +223,11 @@ func (client ManagementAssociationsClient) DeleteResponder(resp *http.Response) 
 // Get retrieves the user ManagementAssociation.
 // Parameters:
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// providerName - provider name for the parent resource.
+// resourceType - resource type for the parent resource
+// resourceName - parent resource name.
 // managementAssociationName - user ManagementAssociation Name.
-func (client ManagementAssociationsClient) Get(ctx context.Context, resourceGroupName string, managementAssociationName string) (result ManagementAssociation, err error) {
+func (client ManagementAssociationsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (result ManagementAssociation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementAssociationsClient.Get")
 		defer func() {
@@ -237,7 +246,7 @@ func (client ManagementAssociationsClient) Get(ctx context.Context, resourceGrou
 		return result, validation.NewError("operationsmanagement.ManagementAssociationsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, managementAssociationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationsmanagement.ManagementAssociationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -260,13 +269,13 @@ func (client ManagementAssociationsClient) Get(ctx context.Context, resourceGrou
 }
 
 // GetPreparer prepares the Get request.
-func (client ManagementAssociationsClient) GetPreparer(ctx context.Context, resourceGroupName string, managementAssociationName string) (*http.Request, error) {
+func (client ManagementAssociationsClient) GetPreparer(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managementAssociationName": autorest.Encode("path", managementAssociationName),
-		"providerName":              autorest.Encode("path", client.ProviderName),
+		"providerName":              autorest.Encode("path", providerName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
-		"resourceName":              autorest.Encode("path", client.ResourceName),
-		"resourceType":              autorest.Encode("path", client.ResourceType),
+		"resourceName":              autorest.Encode("path", resourceName),
+		"resourceType":              autorest.Encode("path", resourceType),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 

@@ -26,9 +26,9 @@ var _ SolutionsClientAPI = (*operationsmanagement.SolutionsClient)(nil)
 
 // ManagementAssociationsClientAPI contains the set of methods on the ManagementAssociationsClient type.
 type ManagementAssociationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managementAssociationName string, parameters operationsmanagement.ManagementAssociation) (result operationsmanagement.ManagementAssociation, err error)
-	Delete(ctx context.Context, resourceGroupName string, managementAssociationName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, managementAssociationName string) (result operationsmanagement.ManagementAssociation, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, parameters operationsmanagement.ManagementAssociation) (result operationsmanagement.ManagementAssociation, err error)
+	Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string) (result operationsmanagement.ManagementAssociation, err error)
 	ListBySubscription(ctx context.Context) (result operationsmanagement.ManagementAssociationPropertiesList, err error)
 }
 

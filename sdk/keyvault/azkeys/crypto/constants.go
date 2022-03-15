@@ -6,7 +6,7 @@
 
 package crypto
 
-// WrapAlgorthm represents the key wrapping algorithms
+// WrapAlgorithm represents the key wrapping algorithms
 type WrapAlgorithm string
 
 const (

@@ -69,27 +69,27 @@ type PerfTestOptions struct {
 
 	// number of warmup operations completed
 	warmupCount   int64
-	warmupStart   time.Time
-	warmupElapsed *atomicFloat64
+	warmupStart   *time.Time
+	warmupElapsed time.Duration
 
 	// number of operations runCount
 	runCount   int64
-	runStart   time.Time
-	runElapsed *atomicFloat64
+	runStart   *time.Time
+	runElapsed time.Duration
 
 	finished bool
 }
 
 func newPerfTestOptions(name string) PerfTestOptions {
 	return PerfTestOptions{
-		Name:          name,
-		runElapsed:    newAtomicFloat64(0),
-		warmupElapsed: newAtomicFloat64(0),
+		Name:        name,
+		warmupStart: &time.Time{},
+		runStart:    &time.Time{},
 	}
 }
 
 // increment does an atomic increment of the warmup or non-warmup performance test
-func (p *PerfTestOptions) incrememt(warmup bool) {
+func (p *PerfTestOptions) increment(warmup bool) {
 	if warmup {
 		atomic.AddInt64(&p.warmupCount, 1)
 	} else {

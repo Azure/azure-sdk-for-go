@@ -271,12 +271,12 @@ func (r *perfRunner) opsPerSecond(warmup bool) float64 {
 	defer r.allOptions.mu.Unlock()
 	for _, opt := range r.allOptions.opts {
 		if warmup {
-			e := opt.warmupElapsed.GetFloat()
+			e := float64(atomic.LoadInt64((*int64)(&opt.warmupElapsed))) / float64(time.Second)
 			if e != 0 {
 				ret += float64(atomic.LoadInt64(&opt.warmupCount)) / e
 			}
 		} else {
-			e := opt.runElapsed.GetFloat()
+			e := float64(atomic.LoadInt64((*int64)(&opt.runElapsed))) / float64(time.Second)
 			if e != 0 {
 				ret += float64(atomic.LoadInt64(&opt.runCount)) / e
 			}
@@ -365,60 +365,23 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		}
 	}
 
-	if warmUpDuration > 0 {
-		opts.warmupStart = time.Now()
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(warmUpDuration))
-		defer cancel()
-
-		lastSavedTime := time.Now()
-		for time.Since(opts.warmupStart).Seconds() < float64(warmUpDuration) {
-			err := p.Run(ctx)
-			if err != nil {
-				if errors.Is(err, context.DeadlineExceeded) {
-					break
-				} else {
-					panic(err)
-				}
-			}
-			opts.incrememt(true)
-
-			if time.Since(lastSavedTime).Seconds() > 0.3 {
-				opts.warmupElapsed.SetFloat(time.Since(opts.warmupStart).Seconds())
-				lastSavedTime = time.Now()
-			}
-		}
-
-		opts.warmupElapsed.SetFloat(time.Since(opts.warmupStart).Seconds())
+	// true parameter indicates were running the warmup here
+	err := r.runTestForDuration(p, opts, true)
+	if err != nil {
+		panic(err)
 	}
+
+	// increment the warmupFinished counter that one goroutine has finished warmup
 	val := atomic.AddInt32(&r.warmupFinished, 1)
 	if debug {
 		fmt.Printf("finished %d warmups\n", val)
 	}
 
-	opts.runStart = time.Now()
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(duration))
-	defer cancel()
-
-	lastSavedTime := time.Now()
-	for time.Since(opts.runStart).Seconds() < float64(duration) {
-		err := p.Run(ctx)
-		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) {
-				break
-			} else {
-				panic(err)
-			}
-		}
-		opts.incrememt(false)
-
-		if time.Since(lastSavedTime).Seconds() > 0.1 {
-			opts.runElapsed.SetFloat(time.Since(opts.runStart).Seconds())
-			lastSavedTime = time.Now()
-		}
+	// run the actual test
+	err = r.runTestForDuration(p, opts, false)
+	if err != nil {
+		panic(err)
 	}
-
-	opts.runElapsed.SetFloat(time.Since(opts.runStart).Seconds())
 
 	if testProxyURLs != "" {
 		// Stop the proxy now
@@ -429,4 +392,66 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 		proxyTransportsSuite[ID].SetMode("live")
 	}
 	opts.finished = true
+}
+
+func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmup bool) error {
+	if warmup && warmUpDuration <= 0 {
+		return nil
+	}
+
+	// startPtr is our base time for keeping track of how long a test has run
+	var startPtr *time.Time
+	if warmup {
+		t := time.Now()
+		opts.warmupStart = &t
+		startPtr = opts.warmupStart
+	} else {
+		t := time.Now()
+		opts.runStart = &t
+		startPtr = opts.runStart
+	}
+
+	var runDuration int
+	if warmup {
+		runDuration = warmUpDuration
+	} else {
+		runDuration = duration
+	}
+
+	var ctx context.Context
+	var cancel context.CancelFunc
+	ctx, cancel = context.WithTimeout(context.Background(), time.Second*time.Duration(runDuration))
+	defer cancel()
+
+	lastSavedTime := time.Now()
+	for time.Since(*startPtr).Seconds() < float64(runDuration) {
+		err := p.Run(ctx)
+		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) {
+				break
+			} else {
+				return err
+			}
+		}
+		opts.increment(warmup)
+
+		if time.Since(lastSavedTime).Seconds() > 0.3 {
+			duration := time.Since(*startPtr)
+			if warmup {
+				atomic.StoreInt64((*int64)(&opts.warmupElapsed), int64(duration))
+			} else {
+				atomic.StoreInt64((*int64)(&opts.runElapsed), int64(duration))
+			}
+			lastSavedTime = time.Now()
+		}
+	}
+
+	duration := time.Since(*startPtr)
+	if warmup {
+		atomic.StoreInt64((*int64)(&opts.warmupElapsed), int64(duration))
+	} else {
+		atomic.StoreInt64((*int64)(&opts.runElapsed), int64(duration))
+	}
+
+	return nil
 }

@@ -139,9 +139,7 @@ func (d *batchEntityPerfTest) Run(ctx context.Context) error {
 	for i := 0; i < batchTestOpts.count; i++ {
 
 		if batchTestOpts.fullEDM {
-
 			d.baseEDMEntity.RowKey = fmt.Sprint(i)
-
 			marshalled, err := json.Marshal(d.baseEDMEntity)
 			if err != nil {
 				return err
@@ -151,11 +149,8 @@ func (d *batchEntityPerfTest) Run(ctx context.Context) error {
 				Entity:     marshalled,
 				ActionType: aztables.TransactionTypeUpdateMerge,
 			}
-
 		} else {
-
 			d.baseStringEntity["RowKey"] = fmt.Sprint(i)
-
 			marshalled, err := json.Marshal(d.baseStringEntity)
 			if err != nil {
 				return err
@@ -165,7 +160,6 @@ func (d *batchEntityPerfTest) Run(ctx context.Context) error {
 				Entity:     marshalled,
 				ActionType: aztables.TransactionTypeUpdateMerge,
 			}
-
 		}
 
 	}

@@ -30,7 +30,7 @@ var (
 // parseProxyURLs splits the --test-proxy input with the delimiter ';'
 func parseProxyURLS() []string {
 	if testProxyURLs == "" {
-		return []string{}
+		return nil
 	}
 
 	testProxyURLs = strings.TrimSuffix(testProxyURLs, ";")

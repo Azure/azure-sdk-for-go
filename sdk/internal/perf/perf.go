@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"sync/atomic"
+	"time"
 )
 
 func init() {
@@ -64,6 +66,35 @@ type PerfTestOptions struct {
 
 	// parallelIndex is the index of the goroutine
 	parallelIndex int
+
+	// number of warmup operations completed
+	warmupCount   int64
+	warmupStart   *time.Time
+	warmupElapsed time.Duration
+
+	// number of operations runCount
+	runCount   int64
+	runStart   *time.Time
+	runElapsed time.Duration
+
+	finished bool
+}
+
+func newPerfTestOptions(name string) PerfTestOptions {
+	return PerfTestOptions{
+		Name:        name,
+		warmupStart: &time.Time{},
+		runStart:    &time.Time{},
+	}
+}
+
+// increment does an atomic increment of the warmup or non-warmup performance test
+func (p *PerfTestOptions) increment(warmup bool) {
+	if warmup {
+		atomic.AddInt64(&p.warmupCount, 1)
+	} else {
+		atomic.AddInt64(&p.runCount, 1)
+	}
 }
 
 // NewPerfTest returns an instance of PerfTest and embeds the given `options` in the struct
@@ -77,7 +108,6 @@ type PerfMethods struct {
 
 // Run runs an individual test, registers, and parses command line flags
 func Run(tests map[string]PerfMethods) {
-
 	if len(os.Args) < 2 {
 		// Error out and show available perf tests
 		fmt.Println("Available performance tests:")
@@ -119,7 +149,8 @@ func Run(tests map[string]PerfMethods) {
 
 	fmt.Printf("\tRunning %s\n", testNameToRun)
 
-	err := runPerfTest(testNameToRun, perfTestToRun.New)
+	runner := newPerfRunner(perfTestToRun, testNameToRun)
+	err := runner.Run()
 	if err != nil {
 		panic(err)
 	}

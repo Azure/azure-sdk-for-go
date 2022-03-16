@@ -58,8 +58,13 @@ func (g *globalSleepPerfTest) NewPerfTest(ctx context.Context, options *perf.Per
 }
 
 func (s *sleepPerfTest) Run(ctx context.Context) error {
-	time.Sleep(s.sleepInterval)
-	s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds())*sleepTestOpts.iterationGrowthFactor) * time.Nanosecond
+	select {
+	case <-ctx.Done():
+		return nil
+	default:
+		time.Sleep(s.sleepInterval)
+		s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds()) * sleepTestOpts.iterationGrowthFactor)
+	}
 	return nil
 }
 

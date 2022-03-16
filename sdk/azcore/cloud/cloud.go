@@ -6,30 +6,20 @@
 
 package cloud
 
-import "encoding/json"
-
 var (
 	// AzureChina contains configuration for Azure China.
-	AzureChina Configuration
-	// AzureGovernment contains configuration for Azure Government.
-	AzureGovernment Configuration
-	// AzurePublicCloud contains configuration for Azure Public Cloud.
-	AzurePublicCloud Configuration
-)
-
-func init() {
-	clouds, _ := getConfigurationsFromMetadata(armMetadata)
-	for _, cloud := range clouds {
-		switch cloud.name {
-		case "AzureChinaCloud":
-			AzureChina = cloud
-		case "AzureCloud":
-			AzurePublicCloud = cloud
-		case "AzureUSGovernment":
-			AzureGovernment = cloud
-		}
+	AzureChina = Configuration{
+		LoginEndpoint: "https://login.chinacloudapi.cn/", Services: map[ServiceName]ServiceConfiguration{},
 	}
-}
+	// AzureGovernment contains configuration for Azure Government.
+	AzureGovernment = Configuration{
+		LoginEndpoint: "https://login.microsoftonline.us/", Services: map[ServiceName]ServiceConfiguration{},
+	}
+	// AzurePublicCloud contains configuration for Azure Public Cloud.
+	AzurePublicCloud = Configuration{
+		LoginEndpoint: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
+	}
+)
 
 // ServiceName identifies a cloud service.
 type ServiceName string
@@ -47,141 +37,8 @@ type ServiceConfiguration struct {
 
 // Configuration configures a cloud.
 type Configuration struct {
-	name string
-
 	// LoginEndpoint is the base URL of the cloud's Azure Active Directory.
 	LoginEndpoint string
 	// Services contains configuration for the cloud's services.
 	Services map[ServiceName]ServiceConfiguration
 }
-
-// getConfigurationsFromMetadata unmarshals Configuration objects from ARM endpoint metadata
-func getConfigurationsFromMetadata(b []byte) ([]Configuration, error) {
-	var raw []cloudConfiguration
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return nil, err
-	}
-
-	ret := make([]Configuration, 0, len(raw))
-	for _, r := range raw {
-		c := Configuration{
-			LoginEndpoint: r.Authentication.LoginEndpoint,
-			name:          r.Name,
-			Services: map[ServiceName]ServiceConfiguration{
-				ResourceManager: {
-					// ARM metadata contains 2 audiences having no functional distinction, so we arbitrarily choose one
-					Audience: r.Authentication.Audiences[0], Endpoint: r.ResourceManager,
-				},
-			},
-		}
-		ret = append(ret, c)
-	}
-
-	return ret, nil
-}
-
-// types for unmarshaling ARM metadata
-type authentication struct {
-	Audiences        []string `json:"audiences"`
-	IdentityProvider string   `json:"identityProvider,omitempty"`
-	LoginEndpoint    string   `json:"loginEndpoint"`
-	Tenant           string   `json:"tenant,omitempty"`
-}
-
-type cloudConfiguration struct {
-	Authentication  authentication    `json:"authentication,omitempty"`
-	Name            string            `json:"name,omitempty"`
-	ResourceManager string            `json:"resourceManager,omitempty"`
-	Suffixes        map[string]string `json:"suffixes,omitempty"`
-}
-
-// https://management.azure.com/metadata/endpoints?api-version=2019-05-01 (minus Azure Germany)
-var armMetadata = []byte(`[
-    {
-        "portal": "https://portal.azure.com",
-        "authentication": {
-            "loginEndpoint": "https://login.microsoftonline.com/",
-            "audiences": [
-                "https://management.core.windows.net/",
-                "https://management.azure.com/"
-            ],
-            "tenant": "common",
-            "identityProvider": "AAD"
-        },
-        "media": "https://rest.media.azure.net",
-        "graphAudience": "https://graph.windows.net/",
-        "graph": "https://graph.windows.net/",
-        "name": "AzureCloud",
-        "suffixes": {
-            "azureDataLakeStoreFileSystem": "azuredatalakestore.net",
-            "acrLoginServer": "azurecr.io",
-            "sqlServerHostname": "database.windows.net",
-            "azureDataLakeAnalyticsCatalogAndJob": "azuredatalakeanalytics.net",
-            "keyVaultDns": "vault.azure.net",
-            "storage": "core.windows.net",
-            "azureFrontDoorEndpointSuffix": "azurefd.net"
-        },
-        "batch": "https://batch.core.windows.net/",
-        "resourceManager": "https://management.azure.com/",
-        "vmImageAliasDoc": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-compute/quickstart-templates/aliases.json",
-        "activeDirectoryDataLake": "https://datalake.azure.net/",
-        "sqlManagement": "https://management.core.windows.net:8443/",
-        "gallery": "https://gallery.azure.com/"
-    },
-    {
-        "portal": "https://portal.azure.cn",
-        "authentication": {
-            "loginEndpoint": "https://login.chinacloudapi.cn",
-            "audiences": [
-                "https://management.core.chinacloudapi.cn",
-                "https://management.chinacloudapi.cn"
-            ],
-            "tenant": "common",
-            "identityProvider": "AAD"
-        },
-        "media": "https://rest.media.chinacloudapi.cn",
-        "graphAudience": "https://graph.chinacloudapi.cn",
-        "graph": "https://graph.chinacloudapi.cn",
-        "name": "AzureChinaCloud",
-        "suffixes": {
-            "acrLoginServer": "azurecr.cn",
-            "sqlServerHostname": "database.chinacloudapi.cn",
-            "keyVaultDns": "vault.azure.cn",
-            "storage": "core.chinacloudapi.cn",
-            "azureFrontDoorEndpointSuffix": ""
-        },
-        "batch": "https://batch.chinacloudapi.cn",
-        "resourceManager": "https://management.chinacloudapi.cn",
-        "vmImageAliasDoc": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-compute/quickstart-templates/aliases.json",
-        "sqlManagement": "https://management.core.chinacloudapi.cn:8443",
-        "gallery": "https://gallery.chinacloudapi.cn"
-    },
-    {
-        "portal": "https://portal.azure.us",
-        "authentication": {
-            "loginEndpoint": "https://login.microsoftonline.us",
-            "audiences": [
-                "https://management.core.usgovcloudapi.net",
-                "https://management.usgovcloudapi.net"
-            ],
-            "tenant": "common",
-            "identityProvider": "AAD"
-        },
-        "media": "https://rest.media.usgovcloudapi.net",
-        "graphAudience": "https://graph.windows.net",
-        "graph": "https://graph.windows.net",
-        "name": "AzureUSGovernment",
-        "suffixes": {
-            "acrLoginServer": "azurecr.us",
-            "sqlServerHostname": "database.usgovcloudapi.net",
-            "keyVaultDns": "vault.usgovcloudapi.net",
-            "storage": "core.usgovcloudapi.net",
-            "azureFrontDoorEndpointSuffix": ""
-        },
-        "batch": "https://batch.core.usgovcloudapi.net",
-        "resourceManager": "https://management.usgovcloudapi.net",
-        "vmImageAliasDoc": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-compute/quickstart-templates/aliases.json",
-        "sqlManagement": "https://management.core.usgovcloudapi.net:8443",
-        "gallery": "https://gallery.usgovcloudapi.net"
-    }
-]`)

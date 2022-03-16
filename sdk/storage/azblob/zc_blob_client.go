@@ -19,34 +19,34 @@ type BlobClient struct {
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
-func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlobClient, error) {
+func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*BlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 
-	return BlobClient{client: &blobClient{con, nil}}, nil
+	return &BlobClient{client: &blobClient{con, nil}}, nil
 }
 
 // NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
-func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (BlobClient, error) {
+func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlobClient, error) {
 	con := newConnection(blobURL, nil, options.getConnectionOptions())
 
-	return BlobClient{client: &blobClient{con, nil}}, nil
+	return &BlobClient{client: &blobClient{con, nil}}, nil
 }
 
 // NewBlobClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
-func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlobClient, error) {
+func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*BlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 
-	return BlobClient{client: &blobClient{con, nil}, sharedKey: cred}, nil
+	return &BlobClient{client: &blobClient{con, nil}, sharedKey: cred}, nil
 }
 
 // NewBlobClientFromConnectionString creates BlobClient from a Connection String
 //nolint
-func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (BlobClient, error) {
+func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*BlobClient, error) {
 	containerClient, err := NewContainerClientFromConnectionString(connectionString, containerName, options)
 	if err != nil {
-		return BlobClient{}, err
+		return nil, err
 	}
 	return containerClient.NewBlobClient(blobName)
 }

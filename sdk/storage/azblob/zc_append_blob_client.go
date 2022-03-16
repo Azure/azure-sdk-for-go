@@ -17,29 +17,29 @@ type AppendBlobClient struct {
 }
 
 // NewAppendBlobClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
-func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (AppendBlobClient, error) {
+func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*AppendBlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return AppendBlobClient{
+	return &AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
 // NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
-func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (AppendBlobClient, error) {
+func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*AppendBlobClient, error) {
 	con := newConnection(blobURL, nil, options.getConnectionOptions())
-	return AppendBlobClient{
+	return &AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
 // NewAppendBlobClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
-func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (AppendBlobClient, error) {
+func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*AppendBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return AppendBlobClient{
+	return &AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
@@ -47,15 +47,15 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (ab AppendBlobClient) WithSnapshot(snapshot string) (AppendBlobClient, error) {
+func (ab AppendBlobClient) WithSnapshot(snapshot string) (*AppendBlobClient, error) {
 	p, err := NewBlobURLParts(ab.URL())
 	if err != nil {
-		return AppendBlobClient{}, err
+		return nil, err
 	}
 	p.Snapshot = snapshot
 	con := &connection{u: p.URL(), p: ab.client.con.p}
 
-	return AppendBlobClient{
+	return &AppendBlobClient{
 		client: &appendBlobClient{con: con},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: con},

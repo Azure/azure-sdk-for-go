@@ -416,7 +416,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
 	_assert.EqualValues(h, basicHeaders)
 }
 
-func validateAppendBlobPut(_assert *assert.Assertions, abClient AppendBlobClient) {
+func validateAppendBlobPut(_assert *assert.Assertions, abClient *AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.NotNil(resp.Metadata)
@@ -775,7 +775,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(_assert *assert.Assertions, abClient *AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(expectedSize))

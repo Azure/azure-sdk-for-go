@@ -379,7 +379,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
 
-func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
+func validateContainerDeleted(_assert *assert.Assertions, containerClient *ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	_assert.NotNil(err)
 

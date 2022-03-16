@@ -38,40 +38,40 @@ func (s ServiceClient) URL() string {
 
 // NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
-	return ServiceClient{client: &serviceClient{
+	return &ServiceClient{client: &serviceClient{
 		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
 	}, u: *u}, nil
 }
 
 // NewServiceClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
-func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 
-	return ServiceClient{client: &serviceClient{
+	return &ServiceClient{client: &serviceClient{
 		con: newConnection(serviceURL, nil, options.getConnectionOptions()),
 	}, u: *u}, nil
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 	authPolicy := newSharedKeyCredPolicy(cred)
-	return ServiceClient{
+	return &ServiceClient{
 		client:    &serviceClient{con: newConnection(serviceURL, authPolicy, options.getConnectionOptions())},
 		u:         *u,
 		sharedKey: cred,
@@ -80,10 +80,10 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
 //nolint
-func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 	return NewServiceClientWithSharedKey(endpoint, credential, options)
 }
@@ -93,10 +93,10 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // To change the pipeline, create the ContainerClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
-func (s ServiceClient) NewContainerClient(containerName string) (ContainerClient, error) {
+func (s ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
 	containerConnection := &connection{containerURL, s.client.con.p}
-	return ContainerClient{
+	return &ContainerClient{
 		client: &containerClient{
 			con: containerConnection,
 		},

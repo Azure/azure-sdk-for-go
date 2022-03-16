@@ -192,7 +192,7 @@ stages:
                   Cloud: ${{ cloud.key }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-go-release.yml
       parameters:
         DependsOn:

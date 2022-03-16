@@ -153,6 +153,44 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	require.Nil(t, cancel)
 }
 
+func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
+	ns := &Namespace{
+		retryOptions: retryOptionsOnlyOnce,
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{
+			// credentials that don't renew return a zero-initialized time.
+			expires: time.Time{},
+		}),
+	}
+
+	cbsNegotiateClaimCalled := 0
+
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+		cbsNegotiateClaimCalled++
+		return nil
+	}
+
+	// since the token is non-renewable we will just do the single cbsNegotiateClaim call and never renew.
+	cancel, err := ns.startNegotiateClaimRenewer(
+		context.Background(),
+		"my entity path",
+		cbsNegotiateClaim, func(ctx context.Context) (*amqp.Client, uint64, error) { return &amqp.Client{}, 0, nil },
+		func(expirationTimeParam, currentTime time.Time) time.Duration {
+			panic("Won't be called, no refreshing of claims will be done")
+		})
+	defer cancel()
+
+	time.Sleep(3 * time.Second) // make sure, even given additional time, that we never attempted to renew the token
+
+	require.NoError(t, err)
+	require.Equal(t, 1, cbsNegotiateClaimCalled)
+
+	select {
+	case <-cancel():
+	default:
+		require.Fail(t, "cancel() returns a channel that is already Done()")
+	}
+}
+
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),

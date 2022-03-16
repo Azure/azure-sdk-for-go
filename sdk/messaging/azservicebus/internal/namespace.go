@@ -83,7 +83,7 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			ns.FQDN = parsed.Namespace
 		}
 
-		provider, err := sbauth.NewTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
+		provider, err := sbauth.NewTokenProviderWithConnectionString(parsed)
 		if err != nil {
 			return err
 		}
@@ -352,7 +352,18 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	}
 
 	// start the periodic refresh of credentials
-	refreshCtx, cancel := context.WithCancel(context.Background())
+	refreshCtx, cancelRefreshCtx := context.WithCancel(context.Background())
+
+	// connection strings with embedded SAS tokens will return a zero expiration time since they can't be renewed.
+	if expiresOn.IsZero() {
+		// cancel the refresh context now so (if a person calling is waiting on it it just
+		// immediately resolves)
+		cancelRefreshCtx()
+
+		return func() <-chan struct{} {
+			return refreshCtx.Done()
+		}, nil
+	}
 
 	go func() {
 	TokenRefreshLoop:
@@ -393,7 +404,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	}()
 
 	cancelRefresh := func() <-chan struct{} {
-		cancel()
+		cancelRefreshCtx()
 		return refreshCtx.Done()
 	}
 

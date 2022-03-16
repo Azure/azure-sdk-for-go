@@ -6,28 +6,43 @@ Param(
 
 Push-Location sdk/$serviceDirectory
 
-if (Test-Path -Path testdata/perf) {
-    Push-Location testdata/perf
-    Write-Host "##[command] Building and vetting performance tests in sdk/$serviceDirectory/testdata/perf"
+# Find all 'testdata' directories
+$perfDirectories = Get-ChildItem -Path . -Filter testdata -Recurse
 
-    Write-Host "##[command] Executing 'go build .' in sdk/$serviceDirectory/testdata/perf"
-    go build .
-    if ($LASTEXITCODE) {
+if ($perfDirectories.Length -eq 0) {
+    Write-Host "Did not find any performance tests in the directory $(pwd)"
+    exit 0
+}
+
+$failed = $false
+
+foreach ($perfDir in $perfDirectories) {
+    Push-Location $perfDir
+
+    if (Test-Path -Path perf) {
+        Push-Location perf
+        Write-Host "##[command] Building and vetting performance tests in $perfDir/testdata/perf"
+
+        Write-Host "##[command] Executing 'go build .' in $perfDir/testdata/perf"
+        go build .
+        if ($LASTEXITCODE) {
+            $failed = $true
+        }
+
+        Write-Host "##[command] Executing 'go vet .' in $perfDir/testdata/perf"
+        go vet .
+        if ($LASTEXITCODE) {
+            $failed = $true
+        }
         Pop-Location
-        Pop-Location
-        exit $LASTEXITCODE
     }
 
-    Write-Host "##[command] Executing 'go vet .' in sdk/$serviceDirectory/testdata/perf"
-    go vet .
-    if ($LASTEXITCODE) {
-        Pop-Location
-        Pop-Location
-        exit $LASTEXITCODE
-    }
     Pop-Location
-} else {
-    Write-Host "##[command] Did not find performance tests in sdk/$serviceDirectory/testdata/perf"
 }
 
 Pop-Location
+
+if ($failed) {
+    Write-Host "##[command] a failure occurred vetting/building one or more performance tests"
+    exit 1
+}

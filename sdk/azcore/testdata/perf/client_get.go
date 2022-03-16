@@ -5,7 +5,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -17,11 +19,11 @@ type clientGETTestOptions struct {
 	url string
 }
 
-var clientGetOpts clientGETTestOptions = clientGETTestOptions{url: "https://bing.com"}
+var clientGetOpts clientGETTestOptions = clientGETTestOptions{url: ""}
 
 // sleepTestRegister is called once per process
 func clientTestRegister() {
-	flag.StringVar(&clientGetOpts.url, "url", "https://bing.com", "URL to send a GET request")
+	flag.StringVar(&clientGetOpts.url, "url", "", "URL to send a GET request")
 }
 
 type globalClientGETTest struct {
@@ -30,6 +32,10 @@ type globalClientGETTest struct {
 }
 
 func NewClientGETTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	if clientGetOpts.url == "" {
+		fmt.Println("--url/-u flag is required")
+		return nil, errors.New("--url/-u flag is required")
+	}
 	req, err := runtime.NewRequest(ctx, "GET", clientGetOpts.url)
 	if err != nil {
 		return nil, err

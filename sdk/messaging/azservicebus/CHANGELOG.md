@@ -4,11 +4,13 @@
 
 ### Features Added
 
-- Support for using a SharedAccessSignature in a connection string. Ex: `Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>` (#TBD)
+- Support for using a SharedAccessSignature in a connection string. Ex: `Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>` (#17314)
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed bug where message batch size calculation was inaccurate, resulting in batches that were too large to be sent. (#17318)
 
 ### Other Changes
 

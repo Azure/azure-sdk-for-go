@@ -26,6 +26,7 @@ func DataTypeValues() []DataType {
 	return []DataType{DataTypeString, DataTypeNumber, DataTypePoint, DataTypePolygon, DataTypeLineString, DataTypeMultiPolygon}
 }
 
+// ToPtr returns a *DataType
 func (c DataType) ToPtr() *DataType {
 	return &c
 }

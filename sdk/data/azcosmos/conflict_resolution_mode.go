@@ -18,6 +18,7 @@ func ConflictResolutionModeValues() []ConflictResolutionMode {
 	return []ConflictResolutionMode{ConflictResolutionModeLastWriteWins, ConflictResolutionModeCustom}
 }
 
+// ToPtr returns a *ConflictResolution(mode)
 func (c ConflictResolutionMode) ToPtr() *ConflictResolutionMode {
 	return &c
 }

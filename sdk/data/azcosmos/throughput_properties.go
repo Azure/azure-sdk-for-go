@@ -62,6 +62,7 @@ func NewAutoscaleThroughputProperties(startingMaxThroughput int32) ThroughputPro
 	}
 }
 
+// MarshalJSON implements the json.Marshaler interface
 func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	offer, err := json.Marshal(tp.offer)
 	if err != nil {
@@ -104,6 +105,7 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface
 func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)

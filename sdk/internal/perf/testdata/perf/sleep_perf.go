@@ -63,7 +63,7 @@ func (s *sleepPerfTest) Run(ctx context.Context) error {
 		return nil
 	default:
 		time.Sleep(s.sleepInterval)
-		s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds())*sleepTestOpts.iterationGrowthFactor)
+		s.sleepInterval = time.Duration(float64(s.sleepInterval.Nanoseconds()) * sleepTestOpts.iterationGrowthFactor)
 	}
 	return nil
 }

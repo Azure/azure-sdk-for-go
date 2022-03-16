@@ -37,3 +37,37 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	require.NoError(t, err)
 	StopRecording(t)
 }
+
+func TestCreateDeployment(t *testing.T) {
+	ctx := context.Background()
+	cred, options := GetCredAndClientOptions(t)
+	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	StartRecording(t, pathToPackage)
+	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
+	require.NoError(t, err)
+	template := map[string]interface{}{
+		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion": "1.0.0.0",
+		"outputs": map[string]interface{}{
+			"resourceName": map[string]interface{}{
+				"type":  "string",
+				"value": "[variables('name').value]",
+			},
+		},
+		"resources": []interface{}{},
+		"variables": map[string]interface{}{
+			"name": map[string]interface{}{
+				"type": "string",
+				"metadata": map[string]interface{}{
+					"description": "Name of the SignalR service.",
+				},
+				"value": "[concat('sw',uniqueString(resourceGroup().id))]",
+			},
+		},
+	}
+	params := map[string]interface{}{}
+	deploymentExtend, err := CreateDeployment(ctx, subscriptionID, cred, options, *resourceGroup.Name, "Generate_Unique_Name", template, params)
+	require.NoError(t, err)
+	require.NotEmpty(t, deploymentExtend.Properties.Outputs["resourceName"].(map[string]interface{})["value"].(string))
+	StopRecording(t)
+}

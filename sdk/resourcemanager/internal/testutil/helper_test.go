@@ -30,20 +30,19 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
 	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	StartRecording(t, pathToPackage)
+	defer StartRecording(t, pathToPackage)()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
 	require.Equal(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"), true)
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
-	StopRecording(t)
 }
 
 func TestCreateDeployment(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
 	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	StartRecording(t, pathToPackage)
+	defer StartRecording(t, pathToPackage)()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
 	template := map[string]interface{}{
@@ -79,5 +78,4 @@ func TestCreateDeployment(t *testing.T) {
 	require.NotEmpty(t, deploymentExtend.Properties.Outputs["resourceName"].(map[string]interface{})["value"].(string))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
-	StopRecording(t)
 }

@@ -53,14 +53,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
-	var managedClientID ClientID
-	if s := os.Getenv("AZURE_CLIENT_ID"); s != "" {
-		managedClientID = ClientID(s)
+	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
+	if ID, ok := os.LookupEnv("AZURE_CLIENT_ID"); ok {
+		o.ID = ClientID(ID)
 	}
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-		ClientOptions: options.ClientOptions,
-		ID:            managedClientID,
-	})
+	msiCred, err := NewManagedIdentityCredential(o)
 	if err == nil {
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second

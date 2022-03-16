@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 
 Param(
-    [string] $serviceDirectory,
+    [string] $serviceDirectory
 )
 
 Push-Location sdk/$serviceDirectory
@@ -12,12 +12,14 @@ if (Test-Path -Path testdata/perf) {
     Write-Host "##[command] Executing 'go build .' in sdk/$serviceDirectory/testdata/perf"
     go build .
     if ($LASTEXITCODE) {
+        Pop-Location
         exit $LASTEXITCODE
     }
 
     Write-Host "##[command] Executing 'go vet .' in sdk/$serviceDirectory/testdata/perf"
     go vet .
     if ($LASTEXITCODE) {
+        Pop-Location
         exit $LASTEXITCODE
     }
 } else {

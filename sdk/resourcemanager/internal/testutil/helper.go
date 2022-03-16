@@ -57,19 +57,13 @@ func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 
 // CreateDeployment will create a resource using arm template.
 // It will return the deployment result entity.
-func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, template, params map[string]interface{}) (*armresources.DeploymentExtended, error) {
+func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armresources.Deployment) (*armresources.DeploymentExtended, error) {
 	deployClient := armresources.NewDeploymentsClient(subscriptionId, cred, options)
 	poller, err := deployClient.BeginCreateOrUpdate(
 		ctx,
 		resourceGroupName,
 		deploymentName,
-		armresources.Deployment{
-			Properties: &armresources.DeploymentProperties{
-				Template:   template,
-				Parameters: params,
-				Mode:       armresources.DeploymentModeIncremental.ToPtr(),
-			},
-		},
+		*deployment,
 		&armresources.DeploymentsClientBeginCreateOrUpdateOptions{},
 	)
 	if err != nil {

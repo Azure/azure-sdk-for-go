@@ -12,6 +12,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
 )
 
@@ -66,8 +67,17 @@ func TestCreateDeployment(t *testing.T) {
 		},
 	}
 	params := map[string]interface{}{}
-	deploymentExtend, err := CreateDeployment(ctx, subscriptionID, cred, options, *resourceGroup.Name, "Generate_Unique_Name", template, params)
+	deployment := armresources.Deployment{
+		Properties: &armresources.DeploymentProperties{
+			Template:   template,
+			Parameters: params,
+			Mode:       armresources.DeploymentModeIncremental.ToPtr(),
+		},
+	}
+	deploymentExtend, err := CreateDeployment(ctx, subscriptionID, cred, options, *resourceGroup.Name, "Generate_Unique_Name", &deployment)
 	require.NoError(t, err)
 	require.NotEmpty(t, deploymentExtend.Properties.Outputs["resourceName"].(map[string]interface{})["value"].(string))
+	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
+	require.NoError(t, err)
 	StopRecording(t)
 }

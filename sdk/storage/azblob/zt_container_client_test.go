@@ -1211,7 +1211,7 @@ func (s *azblobTestSuite) TestContainerNewBlobURL() {
 	bbClient, _ := containerClient.NewBlobClient(blobPrefix)
 
 	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
+	_assert.IsTypef(bbClient, &BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
 func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
@@ -1228,7 +1228,7 @@ func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 	bbClient, _ := containerClient.NewBlockBlobClient(blobPrefix)
 
 	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
+	_assert.IsTypef(bbClient, &BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
 }
 
 func (s *azblobTestSuite) TestListBlobIncludeMetadata() {

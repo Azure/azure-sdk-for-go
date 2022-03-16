@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig/internal/generated"
 )
 
-// Fields to retrieve from a configuration setting.
+// SettingFields are fields to retrieve from a configuration setting.
 type SettingFields string
 
 const (

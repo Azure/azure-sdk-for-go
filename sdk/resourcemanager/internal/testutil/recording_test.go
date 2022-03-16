@@ -32,6 +32,6 @@ func TestRecordingPolicy(t *testing.T) {
 }
 
 func TestStartStopRecording(t *testing.T) {
-	StartRecording(t, pathToPackage)
-	StopRecording(t)
+	stop := StartRecording(t, pathToPackage)
+	defer stop()
 }

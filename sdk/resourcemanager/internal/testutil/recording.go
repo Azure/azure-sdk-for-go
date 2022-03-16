@@ -75,7 +75,8 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 }
 
 // StartRecording starts the recording with the path to store recording file.
-func StartRecording(t *testing.T, pathToPackage string) {
+// It will return a delegate function to stop recording.
+func StartRecording(t *testing.T, pathToPackage string) func() {
 	// sanitizer for any uuid string, e.g., subscriptionID
 	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
 	if err != nil {
@@ -90,6 +91,7 @@ func StartRecording(t *testing.T, pathToPackage string) {
 	if err != nil {
 		t.Fatalf("Failed to start recording: %v", err)
 	}
+	return func() { StopRecording(t) }
 }
 
 // StopRecording stops the recording.

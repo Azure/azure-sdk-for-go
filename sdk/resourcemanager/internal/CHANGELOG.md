@@ -1,14 +1,10 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 0.2.0 (2022-03-16)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Add helper method for ARM template deployment
+* Add delegate stop method return for start recording
 
 ## 0.1.0 (2022-03-10)
 

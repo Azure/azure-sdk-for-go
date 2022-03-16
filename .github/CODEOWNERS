@@ -47,7 +47,7 @@
 /sdk/messaging/internal       @richardpark-msft @jhendrixMSFT 
 
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
 /sdk/storage/                 @jhendrixMSFT @seankane-msft

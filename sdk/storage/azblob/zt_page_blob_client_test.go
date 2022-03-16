@@ -7,11 +7,12 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"io/ioutil"
+	"time"
+
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
-	"time"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {
@@ -271,7 +272,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 }
 
 //nolint
-func waitForIncrementalCopy(_assert *assert.Assertions, copyBlobClient PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
+func waitForIncrementalCopy(_assert *assert.Assertions, copyBlobClient *PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
 	var getPropertiesAndMetadataResult GetBlobPropertiesResponse
 	// Wait for the copy to finish
@@ -640,7 +641,7 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	_assert.EqualValues(h, basicHeaders)
 }
 
-func validatePageBlobPut(_assert *assert.Assertions, pbClient PageBlobClient) {
+func validatePageBlobPut(_assert *assert.Assertions, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.NotNil(resp.Metadata)
@@ -1022,7 +1023,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateUploadPages(_assert *assert.Assertions, pbClient PageBlobClient) {
+func validateUploadPages(_assert *assert.Assertions, pbClient *PageBlobClient) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
 	_assert.Nil(err)
@@ -1647,7 +1648,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	_assert.Nil(err)
 //}
 
-func setupClearPagesTest(_assert *assert.Assertions, testName string) (ContainerClient, PageBlobClient) {
+func setupClearPagesTest(_assert *assert.Assertions, testName string) (*ContainerClient, *PageBlobClient) {
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
@@ -1671,7 +1672,7 @@ func setupClearPagesTest(_assert *assert.Assertions, testName string) (Container
 	return containerClient, pbClient
 }
 
-func validateClearPagesTest(_assert *assert.Assertions, pbClient PageBlobClient) {
+func validateClearPagesTest(_assert *assert.Assertions, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	_assert.Nil(err)
 	pageListResp := resp.PageList.PageRange
@@ -2065,7 +2066,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidInput)
 }
 
-func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient, pbClient PageBlobClient) {
+func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient) {
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
@@ -2375,8 +2376,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 }
 
 //nolint
-func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
-	pbClient PageBlobClient, snapshot string) {
+func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient, snapshot string) {
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
 	if _context != nil {
@@ -2686,7 +2686,7 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
 	_assert.NotNil(err)
 }
 
-func validateResize(_assert *assert.Assertions, pbClient PageBlobClient) {
+func validateResize(_assert *assert.Assertions, pbClient *PageBlobClient) {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 	_assert.Equal(*resp.ContentLength, int64(PageBlobPageBytes))
 }
@@ -3018,7 +3018,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
 }
 
-func validateSequenceNumberSet(_assert *assert.Assertions, pbClient PageBlobClient) {
+func validateSequenceNumberSet(_assert *assert.Assertions, pbClient *PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(*resp.BlobSequenceNumber, int64(1))

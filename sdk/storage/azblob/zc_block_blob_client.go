@@ -29,29 +29,29 @@ type BlockBlobClient struct {
 }
 
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL, Azure AD credential, and options.
-func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlockBlobClient, error) {
+func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*BlockBlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
 // NewBlockBlobClientWithNoCredential creates a BlockBlobClient object using the specified URL and options.
-func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) (BlockBlobClient, error) {
+func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlockBlobClient, error) {
 	con := newConnection(blobURL, nil, options.getConnectionOptions())
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
 // NewBlockBlobClientWithSharedKey creates a BlockBlobClient object using the specified URL, shared key, and options.
-func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlockBlobClient, error) {
+func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*BlockBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
@@ -59,14 +59,14 @@ func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, 
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (bb BlockBlobClient) WithSnapshot(snapshot string) (BlockBlobClient, error) {
+func (bb BlockBlobClient) WithSnapshot(snapshot string) (*BlockBlobClient, error) {
 	p, err := NewBlobURLParts(bb.URL())
 	if err != nil {
-		return BlockBlobClient{}, err
+		return nil, err
 	}
 	p.Snapshot = snapshot
 	con := &connection{u: p.URL(), p: bb.client.con.p}
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client: &blockBlobClient{con: con},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: con},
@@ -77,14 +77,14 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) (BlockBlobClient, error)
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (bb BlockBlobClient) WithVersionID(versionID string) (BlockBlobClient, error) {
+func (bb BlockBlobClient) WithVersionID(versionID string) (*BlockBlobClient, error) {
 	p, err := NewBlobURLParts(bb.URL())
 	if err != nil {
-		return BlockBlobClient{}, err
+		return nil, err
 	}
 	p.VersionID = versionID
 	con := &connection{u: p.URL(), p: bb.client.con.p}
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client: &blockBlobClient{con: con},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: con},

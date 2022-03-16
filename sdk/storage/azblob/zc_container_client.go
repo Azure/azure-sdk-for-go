@@ -25,33 +25,33 @@ func (c ContainerClient) URL() string {
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
-func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (ContainerClient, error) {
+func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*ContainerClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
-	return ContainerClient{client: &containerClient{
+	return &ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
 	}}, nil
 }
 
 // NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
-func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (ContainerClient, error) {
-	return ContainerClient{client: &containerClient{
+func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (*ContainerClient, error) {
+	return &ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, nil, options.getConnectionOptions()),
 	}}, nil
 }
 
 // NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
-func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (ContainerClient, error) {
+func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*ContainerClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
-	return ContainerClient{client: &containerClient{
+	return &ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
 	}, sharedKey: cred}, nil
 }
 
 // NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
-func NewContainerClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) (ContainerClient, error) {
+func NewContainerClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) (*ContainerClient, error) {
 	svcClient, err := NewServiceClientFromConnectionString(connectionString, options)
 	if err != nil {
-		return ContainerClient{}, err
+		return nil, err
 	}
 	return svcClient.NewContainerClient(containerName)
 }
@@ -61,11 +61,11 @@ func NewContainerClientFromConnectionString(connectionString string, containerNa
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c ContainerClient) NewBlobClient(blobName string) (BlobClient, error) {
+func (c ContainerClient) NewBlobClient(blobName string) (*BlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{u: blobURL, p: c.client.con.p}
 
-	return BlobClient{
+	return &BlobClient{
 		client:    &blobClient{newCon, nil},
 		sharedKey: c.sharedKey,
 	}, nil
@@ -76,11 +76,11 @@ func (c ContainerClient) NewBlobClient(blobName string) (BlobClient, error) {
 // To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
 // NewAppendBlobClient method.
-func (c ContainerClient) NewAppendBlobClient(blobName string) (AppendBlobClient, error) {
+func (c ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
-	return AppendBlobClient{
+	return &AppendBlobClient{
 		client: &appendBlobClient{newCon},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: newCon},
@@ -94,11 +94,11 @@ func (c ContainerClient) NewAppendBlobClient(blobName string) (AppendBlobClient,
 // To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlockBlobClient instead of calling this object's
 // NewBlockBlobClient method.
-func (c ContainerClient) NewBlockBlobClient(blobName string) (BlockBlobClient, error) {
+func (c ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
-	return BlockBlobClient{
+	return &BlockBlobClient{
 		client: &blockBlobClient{newCon},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: newCon},
@@ -111,11 +111,11 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) (BlockBlobClient, e
 // To change the pipeline, create the PageBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewPageBlobClient instead of calling this object's
 // NewPageBlobClient method.
-func (c ContainerClient) NewPageBlobClient(blobName string) (PageBlobClient, error) {
+func (c ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
-	return PageBlobClient{
+	return &PageBlobClient{
 		client: &pageBlobClient{newCon},
 		BlobClient: BlobClient{
 			client:    &blobClient{con: newCon},

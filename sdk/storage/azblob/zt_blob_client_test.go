@@ -135,7 +135,7 @@ import (
 //	_assert.Equal(blobURLParts, correctURL)
 //}
 
-func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
+func waitForCopy(_assert *assert.Assertions, copyBlobClient *BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()
@@ -461,7 +461,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	var svcClient ServiceClient
+	var svcClient *ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {
@@ -2694,7 +2694,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesEmptyValue() {
 	_assert.Nil(resp.ContentType)
 }
 
-func validatePropertiesSet(_assert *assert.Assertions, bbClient BlockBlobClient, disposition string) {
+func validatePropertiesSet(_assert *assert.Assertions, bbClient *BlockBlobClient, disposition string) {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentDisposition, disposition)
@@ -2982,7 +2982,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataInvalidField() {
 	//_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func validateMetadataSet(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateMetadataSet(_assert *assert.Assertions, bbClient *BlockBlobClient) {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(resp.Metadata, basicMetadata)
@@ -3213,7 +3213,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 }
 
 //nolint
-func testBlobServiceClientDeleteImpl(_ *assert.Assertions, _ ServiceClient) error {
+func testBlobServiceClientDeleteImpl(_ *assert.Assertions, _ *ServiceClient) error {
 	//containerClient := createNewContainer(_assert, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_assert, containerClient)
 	//bbClient := createNewBlockBlob(_assert, "goblobserviceclientdeleteimpl", containerClient)

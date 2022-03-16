@@ -9,13 +9,14 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestStageGetBlocks() {
@@ -560,7 +561,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 		},
 	})
 	_assert.Nil(err)
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
@@ -641,7 +642,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
@@ -712,7 +713,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	})
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
@@ -785,7 +786,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
@@ -822,14 +823,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateBlobCommitted(_assert *assert.Assertions, bbClient *BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
-func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
-	testName string) (ContainerClient, BlockBlobClient, []string) {
+func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext, testName string) (*ContainerClient, *BlockBlobClient, []string) {
 
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {

@@ -12,7 +12,7 @@ package graphrbac
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 )
 
 const (

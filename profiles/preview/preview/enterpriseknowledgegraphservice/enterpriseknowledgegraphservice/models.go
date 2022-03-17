@@ -12,7 +12,7 @@ package enterpriseknowledgegraphservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice"
 )
 
 const (

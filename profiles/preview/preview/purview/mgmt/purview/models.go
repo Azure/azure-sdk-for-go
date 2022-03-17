@@ -12,7 +12,7 @@ package purview
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
 )
 
 const (

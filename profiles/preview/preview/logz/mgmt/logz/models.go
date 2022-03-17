@@ -12,7 +12,7 @@ package logz
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/logz/mgmt/2020-10-01-preview/logz"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/logz/mgmt/2020-10-01-preview/logz"
 )
 
 const (

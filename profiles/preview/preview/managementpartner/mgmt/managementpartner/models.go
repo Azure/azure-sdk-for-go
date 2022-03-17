@@ -12,7 +12,7 @@ package managementpartner
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
 )
 
 const (

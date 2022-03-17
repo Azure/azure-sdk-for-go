@@ -9,7 +9,7 @@
 
 package cognitiveservices
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/mgmt/2016-02-01-preview/cognitiveservices"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/mgmt/2016-02-01-preview/cognitiveservices"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

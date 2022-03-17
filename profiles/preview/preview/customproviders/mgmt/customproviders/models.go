@@ -12,7 +12,7 @@ package customproviders
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders"
 )
 
 const (

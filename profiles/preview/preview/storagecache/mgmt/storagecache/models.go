@@ -12,7 +12,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/storagecache/mgmt/2019-08-01-preview/storagecache"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/storagecache/mgmt/2019-08-01-preview/storagecache"
 )
 
 const (

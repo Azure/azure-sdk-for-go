@@ -9,7 +9,7 @@
 
 package advisorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor/advisorapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor/advisorapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type RecommendationsClientAPI = original.RecommendationsClientAPI

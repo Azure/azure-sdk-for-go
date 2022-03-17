@@ -9,7 +9,7 @@
 
 package supportapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/support/mgmt/2019-05-01-preview/support/supportapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/support/mgmt/2019-05-01-preview/support/supportapi"
 
 type CommunicationsClientAPI = original.CommunicationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

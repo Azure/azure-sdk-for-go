@@ -9,6 +9,6 @@
 
 package monitoringapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/monitoring/monitoringapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/monitoring/monitoringapi"
 
 type ClientAPI = original.ClientAPI

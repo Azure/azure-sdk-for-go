@@ -9,7 +9,7 @@
 
 package formrecognizer
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer"
 
 type Status = original.Status
 

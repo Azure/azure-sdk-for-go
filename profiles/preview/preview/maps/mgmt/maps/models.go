@@ -9,7 +9,7 @@
 
 package maps
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/maps/mgmt/2020-02-01-preview/maps"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/maps/mgmt/2020-02-01-preview/maps"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

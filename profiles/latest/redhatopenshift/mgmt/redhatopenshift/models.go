@@ -12,7 +12,7 @@ package redhatopenshift
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift"
 )
 
 const (

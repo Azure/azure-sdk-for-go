@@ -12,7 +12,7 @@ package kubernetesconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2021-09-01/kubernetesconfiguration"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2021-09-01/kubernetesconfiguration"
 )
 
 const (

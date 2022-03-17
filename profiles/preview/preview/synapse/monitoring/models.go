@@ -9,7 +9,7 @@
 
 package monitoring
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/monitoring"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/monitoring"
 
 type BaseClient = original.BaseClient
 type Client = original.Client

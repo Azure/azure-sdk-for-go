@@ -12,7 +12,7 @@ package notificationhubs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
 )
 
 const (

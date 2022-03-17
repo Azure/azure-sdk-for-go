@@ -12,7 +12,7 @@ package iothub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub"
 )
 
 const (

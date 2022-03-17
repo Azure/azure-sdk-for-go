@@ -12,7 +12,7 @@ package dtl
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
 )
 
 const (

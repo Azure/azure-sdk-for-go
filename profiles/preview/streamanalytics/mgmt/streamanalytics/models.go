@@ -12,7 +12,7 @@ package streamanalytics
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 )
 
 const (
@@ -188,6 +188,7 @@ const (
 type TypeBasicOutputDataSource = original.TypeBasicOutputDataSource
 
 const (
+	TypeBasicOutputDataSourceTypeMicrosoftAzureFunction          TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftAzureFunction
 	TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts       TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts
 	TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub       TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub
 	TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub     TypeBasicOutputDataSource = original.TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub
@@ -229,6 +230,8 @@ const (
 type AvroSerialization = original.AvroSerialization
 type AzureDataLakeStoreOutputDataSource = original.AzureDataLakeStoreOutputDataSource
 type AzureDataLakeStoreOutputDataSourceProperties = original.AzureDataLakeStoreOutputDataSourceProperties
+type AzureFunctionOutputDataSource = original.AzureFunctionOutputDataSource
+type AzureFunctionOutputDataSourceProperties = original.AzureFunctionOutputDataSourceProperties
 type AzureMachineLearningWebServiceFunctionBinding = original.AzureMachineLearningWebServiceFunctionBinding
 type AzureMachineLearningWebServiceFunctionBindingProperties = original.AzureMachineLearningWebServiceFunctionBindingProperties
 type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties = original.AzureMachineLearningWebServiceFunctionBindingRetrievalProperties

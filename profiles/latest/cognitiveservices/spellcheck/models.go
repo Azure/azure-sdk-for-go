@@ -9,7 +9,7 @@
 
 package spellcheck
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck"
 
 const (
 	DefaultEndpoint = original.DefaultEndpoint

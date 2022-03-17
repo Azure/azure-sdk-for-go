@@ -9,7 +9,7 @@
 
 package reservationsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations/reservationsapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations/reservationsapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI

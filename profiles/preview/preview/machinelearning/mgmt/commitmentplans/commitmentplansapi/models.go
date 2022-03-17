@@ -9,7 +9,7 @@
 
 package commitmentplansapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans/commitmentplansapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans/commitmentplansapi"
 
 type ClientAPI = original.ClientAPI
 type CommitmentAssociationsClientAPI = original.CommitmentAssociationsClientAPI

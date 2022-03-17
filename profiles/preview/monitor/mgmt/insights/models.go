@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/insights"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/insights"
 )
 
 const (

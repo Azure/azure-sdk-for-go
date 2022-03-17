@@ -12,7 +12,7 @@ package job
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job"
 )
 
 const (

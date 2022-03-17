@@ -12,7 +12,7 @@ package mariadb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 )
 
 const (

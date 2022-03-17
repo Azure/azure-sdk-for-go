@@ -9,7 +9,7 @@
 
 package aad
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

@@ -12,7 +12,7 @@ package cdn
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
 const (

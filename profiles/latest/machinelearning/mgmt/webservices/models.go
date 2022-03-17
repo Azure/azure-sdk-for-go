@@ -12,7 +12,7 @@ package webservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-01-01/webservices"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-01-01/webservices"
 )
 
 const (

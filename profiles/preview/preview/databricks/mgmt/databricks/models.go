@@ -12,7 +12,7 @@ package databricks
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks"
 )
 
 const (

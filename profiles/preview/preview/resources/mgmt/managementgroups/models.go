@@ -12,7 +12,7 @@ package managementgroups
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups"
 )
 
 const (

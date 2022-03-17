@@ -12,7 +12,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 )
 
 const (

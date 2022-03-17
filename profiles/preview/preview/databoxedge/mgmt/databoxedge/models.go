@@ -12,7 +12,7 @@ package databoxedge
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/databoxedge/mgmt/2020-05-01-preview/databoxedge"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/databoxedge/mgmt/2020-05-01-preview/databoxedge"
 )
 
 const (

@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights"
 )
 
 const (
@@ -38,6 +38,14 @@ const (
 	Three AlertSeverity = original.Three
 	Two   AlertSeverity = original.Two
 	Zero  AlertSeverity = original.Zero
+)
+
+type BaselineSensitivity = original.BaselineSensitivity
+
+const (
+	High   BaselineSensitivity = original.High
+	Low    BaselineSensitivity = original.Low
+	Medium BaselineSensitivity = original.Medium
 )
 
 type CategoryType = original.CategoryType
@@ -83,6 +91,13 @@ const (
 	CriterionTypeStaticThresholdCriterion  CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
+type DataStatus = original.DataStatus
+
+const (
+	NotPresent DataStatus = original.NotPresent
+	Present    DataStatus = original.Present
+)
+
 type DynamicThresholdOperator = original.DynamicThresholdOperator
 
 const (
@@ -94,9 +109,9 @@ const (
 type DynamicThresholdSensitivity = original.DynamicThresholdSensitivity
 
 const (
-	High   DynamicThresholdSensitivity = original.High
-	Low    DynamicThresholdSensitivity = original.Low
-	Medium DynamicThresholdSensitivity = original.Medium
+	DynamicThresholdSensitivityHigh   DynamicThresholdSensitivity = original.DynamicThresholdSensitivityHigh
+	DynamicThresholdSensitivityLow    DynamicThresholdSensitivity = original.DynamicThresholdSensitivityLow
+	DynamicThresholdSensitivityMedium DynamicThresholdSensitivity = original.DynamicThresholdSensitivityMedium
 )
 
 type Enabled = original.Enabled
@@ -109,11 +124,11 @@ const (
 type EventLevel = original.EventLevel
 
 const (
-	Critical      EventLevel = original.Critical
-	Error         EventLevel = original.Error
-	Informational EventLevel = original.Informational
-	Verbose       EventLevel = original.Verbose
-	Warning       EventLevel = original.Warning
+	EventLevelCritical      EventLevel = original.EventLevelCritical
+	EventLevelError         EventLevel = original.EventLevelError
+	EventLevelInformational EventLevel = original.EventLevelInformational
+	EventLevelVerbose       EventLevel = original.EventLevelVerbose
+	EventLevelWarning       EventLevel = original.EventLevelWarning
 )
 
 type MetricStatisticType = original.MetricStatisticType
@@ -172,6 +187,14 @@ const (
 	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
 	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
+)
+
+type OnboardingStatus = original.OnboardingStatus
+
+const (
+	NotOnboarded OnboardingStatus = original.NotOnboarded
+	Onboarded    OnboardingStatus = original.Onboarded
+	Unknown      OnboardingStatus = original.Unknown
 )
 
 type Operator = original.Operator
@@ -323,6 +346,7 @@ type AlertRuleResourceCollection = original.AlertRuleResourceCollection
 type AlertRuleResourcePatch = original.AlertRuleResourcePatch
 type AlertRulesClient = original.AlertRulesClient
 type AlertingAction = original.AlertingAction
+type ArmRoleReceiver = original.ArmRoleReceiver
 type AutomationRunbookReceiver = original.AutomationRunbookReceiver
 type AutoscaleNotification = original.AutoscaleNotification
 type AutoscaleProfile = original.AutoscaleProfile
@@ -338,9 +362,11 @@ type AzureAppPushReceiver = original.AzureAppPushReceiver
 type AzureFunctionReceiver = original.AzureFunctionReceiver
 type BaseClient = original.BaseClient
 type Baseline = original.Baseline
+type BaselineMetadata = original.BaselineMetadata
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
+type BaselinesClient = original.BaselinesClient
 type BasicAction = original.BasicAction
 type BasicMetricAlertCriteria = original.BasicMetricAlertCriteria
 type BasicMultiMetricCriteria = original.BasicMultiMetricCriteria
@@ -349,6 +375,7 @@ type BasicRuleCondition = original.BasicRuleCondition
 type BasicRuleDataSource = original.BasicRuleDataSource
 type CalculateBaselineResponse = original.CalculateBaselineResponse
 type Criteria = original.Criteria
+type DataContainer = original.DataContainer
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
 type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
@@ -363,6 +390,7 @@ type DynamicThresholdFailingPeriods = original.DynamicThresholdFailingPeriods
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
+type Error = original.Error
 type ErrorResponse = original.ErrorResponse
 type EventCategoriesClient = original.EventCategoriesClient
 type EventCategoryCollection = original.EventCategoryCollection
@@ -409,12 +437,19 @@ type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
 type MetricBaselineClient = original.MetricBaselineClient
+type MetricBaselinesProperties = original.MetricBaselinesProperties
+type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
 type MetricDefinitionsClient = original.MetricDefinitionsClient
 type MetricDimension = original.MetricDimension
+type MetricNamespace = original.MetricNamespace
+type MetricNamespaceCollection = original.MetricNamespaceCollection
+type MetricNamespaceName = original.MetricNamespaceName
+type MetricNamespacesClient = original.MetricNamespacesClient
 type MetricSettings = original.MetricSettings
+type MetricSingleDimension = original.MetricSingleDimension
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
 type MetricsClient = original.MetricsClient
@@ -424,10 +459,12 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
+type ProxyResource = original.ProxyResource
 type Recurrence = original.Recurrence
 type RecurrentSchedule = original.RecurrentSchedule
 type Resource = original.Resource
 type Response = original.Response
+type ResponseWithError = original.ResponseWithError
 type RetentionPolicy = original.RetentionPolicy
 type RuleAction = original.RuleAction
 type RuleCondition = original.RuleCondition
@@ -444,18 +481,26 @@ type ScaleRuleMetricDimension = original.ScaleRuleMetricDimension
 type Schedule = original.Schedule
 type ScheduledQueryRulesClient = original.ScheduledQueryRulesClient
 type SenderAuthorization = original.SenderAuthorization
+type SingleBaseline = original.SingleBaseline
+type SingleMetricBaseline = original.SingleMetricBaseline
 type SmsReceiver = original.SmsReceiver
 type Source = original.Source
 type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
+type TimeSeriesBaseline = original.TimeSeriesBaseline
 type TimeSeriesElement = original.TimeSeriesElement
 type TimeSeriesInformation = original.TimeSeriesInformation
 type TimeWindow = original.TimeWindow
 type TriggerCondition = original.TriggerCondition
+type VMInsightsClient = original.VMInsightsClient
+type VMInsightsOnboardingStatus = original.VMInsightsOnboardingStatus
+type VMInsightsOnboardingStatusProperties = original.VMInsightsOnboardingStatusProperties
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
 type WebtestLocationAvailabilityCriteria = original.WebtestLocationAvailabilityCriteria
+type WorkspaceInfo = original.WorkspaceInfo
+type WorkspaceInfoProperties = original.WorkspaceInfoProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -501,6 +546,12 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 }
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBaselinesClient(subscriptionID string) BaselinesClient {
+	return original.NewBaselinesClient(subscriptionID)
+}
+func NewBaselinesClientWithBaseURI(baseURI string, subscriptionID string) BaselinesClient {
+	return original.NewBaselinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
 	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
@@ -556,6 +607,12 @@ func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
 func NewMetricDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) MetricDefinitionsClient {
 	return original.NewMetricDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewMetricNamespacesClient(subscriptionID string) MetricNamespacesClient {
+	return original.NewMetricNamespacesClient(subscriptionID)
+}
+func NewMetricNamespacesClientWithBaseURI(baseURI string, subscriptionID string) MetricNamespacesClient {
+	return original.NewMetricNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewMetricsClient(subscriptionID string) MetricsClient {
 	return original.NewMetricsClient(subscriptionID)
 }
@@ -580,6 +637,12 @@ func NewTenantActivityLogsClient(subscriptionID string) TenantActivityLogsClient
 func NewTenantActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) TenantActivityLogsClient {
 	return original.NewTenantActivityLogsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVMInsightsClient(subscriptionID string) VMInsightsClient {
+	return original.NewVMInsightsClient(subscriptionID)
+}
+func NewVMInsightsClientWithBaseURI(baseURI string, subscriptionID string) VMInsightsClient {
+	return original.NewVMInsightsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -588,6 +651,9 @@ func PossibleAggregationTypeValues() []AggregationType {
 }
 func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
+}
+func PossibleBaselineSensitivityValues() []BaselineSensitivity {
+	return original.PossibleBaselineSensitivityValues()
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
@@ -603,6 +669,9 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 }
 func PossibleCriterionTypeValues() []CriterionType {
 	return original.PossibleCriterionTypeValues()
+}
+func PossibleDataStatusValues() []DataStatus {
+	return original.PossibleDataStatusValues()
 }
 func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
 	return original.PossibleDynamicThresholdOperatorValues()
@@ -636,6 +705,9 @@ func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
+}
+func PossibleOnboardingStatusValues() []OnboardingStatus {
+	return original.PossibleOnboardingStatusValues()
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
@@ -677,7 +749,7 @@ func PossibleUnitValues() []Unit {
 	return original.PossibleUnitValues()
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/2019-03-01"
+	return original.UserAgent() + " profiles/2020-09-01"
 }
 func Version() string {
 	return original.Version()

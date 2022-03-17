@@ -12,7 +12,7 @@ package adhybridhealthservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 )
 
 const (

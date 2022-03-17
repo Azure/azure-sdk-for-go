@@ -9,7 +9,7 @@
 
 package avsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs/avsapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs/avsapi"
 
 type AuthorizationsClientAPI = original.AuthorizationsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI

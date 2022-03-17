@@ -9,7 +9,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network/networkapi"
+import original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network/networkapi"
 
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI

@@ -12,7 +12,7 @@ package azurestackhci
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2021-01-01-preview/azurestackhci"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2021-01-01-preview/azurestackhci"
 )
 
 const (

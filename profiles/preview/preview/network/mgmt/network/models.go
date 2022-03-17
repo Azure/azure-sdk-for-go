@@ -12,7 +12,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network"
 )
 
 const (

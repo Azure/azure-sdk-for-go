@@ -12,7 +12,7 @@ package search
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
 )
 
 const (

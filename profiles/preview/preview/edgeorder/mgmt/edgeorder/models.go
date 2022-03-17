@@ -12,7 +12,7 @@ package edgeorder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder"
+	original "github.com/Azure/temp/github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder"
 )
 
 const (

@@ -7,7 +7,6 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"fmt"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -308,8 +307,6 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 // Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
-	var lastError error
-
 	var links []internal.Closeable
 
 	client.linksMu.Lock()
@@ -322,15 +319,11 @@ func (client *Client) Close(ctx context.Context) error {
 
 	for _, link := range links {
 		if err := link.Close(ctx); err != nil {
-			log.Writef(internal.EventConn, "Failed to close links (error might be cached): %s", err.Error())
-			lastError = err
+			log.Writef(internal.EventConn, "Failed to close link (error might be cached): %s", err.Error())
 		}
 	}
 
-	if lastError != nil {
-		return fmt.Errorf("errors while closing links: %w", lastError)
-	}
-	return nil
+	return client.namespace.Close(ctx, true)
 }
 
 func (client *Client) addCloseable(id uint64, closeable internal.Closeable) {

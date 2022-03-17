@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -87,15 +88,23 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 // slice.
 // Returns a function that should be called to unregister our listener.
 func CaptureLogsForTest(logMessages *[]string) func() {
-	azlog.SetListener(func(e azlog.Event, s string) {
+	setAzLogListener(func(e azlog.Event, s string) {
 		*logMessages = append(*logMessages, fmt.Sprintf("[%s] %s", e, s))
 	})
-	return func() { azlog.SetListener(nil) }
+	return func() { setAzLogListener(nil) }
 }
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
 func EnableStdoutLogging() {
-	azlog.SetListener(func(e azlog.Event, s string) {
+	setAzLogListener(func(e azlog.Event, s string) {
 		log.Printf("%s %s", e, s)
 	})
+}
+
+var logMu sync.Mutex
+
+func setAzLogListener(listener func(e azlog.Event, s string)) {
+	logMu.Lock()
+	defer logMu.Unlock()
+	azlog.SetListener(listener)
 }

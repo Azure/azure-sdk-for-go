@@ -286,9 +286,7 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 
 func TestSender_SendMessagesDetach(t *testing.T) {
 	// NOTE: uncomment this to see some of the background reconnects
-	// azlog.SetListener(func(e azlog.Event, s string) {
-	// 	log.Printf("%s %s", e, s)
-	// })
+	// test.EnableStdoutLogging
 
 	sbc, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

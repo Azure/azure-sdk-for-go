@@ -122,6 +122,10 @@ type newReceiverArgs struct {
 }
 
 func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, error) {
+	if err := args.ns.Check(); err != nil {
+		return nil, err
+	}
+
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		cleanupOnClose:           args.cleanupOnClose,

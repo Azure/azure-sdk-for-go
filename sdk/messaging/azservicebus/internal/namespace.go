@@ -50,6 +50,9 @@ type (
 		clientMu         sync.RWMutex
 		client           *amqp.Client
 		negotiateClaimMu sync.Mutex
+		// indicates that the client was closed permanently, and not just
+		// for recovery.
+		closedPermanently bool
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -59,16 +62,17 @@ type (
 // NamespaceWithNewAMQPLinks is the Namespace surface for consumers of AMQPLinks.
 type NamespaceWithNewAMQPLinks interface {
 	NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks
+	Check() error
 }
 
 // NamespaceForAMQPLinks is the Namespace surface needed for the internals of AMQPLinks.
 type NamespaceForAMQPLinks interface {
-	NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error)
+	NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error)
 	NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64, error)
 	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, error)
 	GetEntityAudience(entityPath string) string
 	Recover(ctx context.Context, clientRevision uint64) (bool, error)
-	Close(ctx context.Context) error
+	Close(ctx context.Context, permanently bool) error
 }
 
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string
@@ -232,9 +236,13 @@ func (ns *Namespace) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFu
 }
 
 // Close closes the current cached client.
-func (ns *Namespace) Close(ctx context.Context) error {
+func (ns *Namespace) Close(ctx context.Context, permanently bool) error {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
+
+	if permanently {
+		ns.closedPermanently = true
+	}
 
 	if ns.client != nil {
 		return ns.client.Close()
@@ -243,13 +251,35 @@ func (ns *Namespace) Close(ctx context.Context) error {
 	return nil
 }
 
+// Check returns an error if the namespace cannot be used (ie, closed permanently), or nil otherwise.
+func (ns *Namespace) Check() error {
+	ns.clientMu.RLock()
+	defer ns.clientMu.RUnlock()
+
+	if ns.closedPermanently {
+		return ErrClientClosed
+	}
+
+	return nil
+}
+
+var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
+
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
 // If a new is actually created (rather than just cached) then the returned bool
 // will be true. Any links that were created from the original connection will need to
 // be recreated.
 func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
+	if err := ns.Check(); err != nil {
+		return false, err
+	}
+
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
+
+	if ns.closedPermanently {
+		return false, ErrClientClosed
+	}
 
 	_, span := tab.StartSpan(ctx, tracing.SpanRecoverClient)
 	defer span.End()
@@ -287,7 +317,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
 // the returned func is to cancel() the refresh goroutine.
-func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
+func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error) {
 	return ns.startNegotiateClaimRenewer(ctx,
 		entityPath,
 		NegotiateClaim,
@@ -295,11 +325,15 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (fun
 		nextClaimRefreshDuration)
 }
 
+// startNegotiateClaimRenewer does an initial claim request and then starts a goroutine that
+// continues to automatically refresh in the background.
+// Returns a func() that can be used to cancel the background renewal, a channel that will be closed
+// when the background renewal stops or an error.
 func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
 	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
 	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, uint64, error),
-	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func() <-chan struct{}, error) {
+	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func(), <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
 	refreshClaim := func(ctx context.Context) (time.Time, error) {
@@ -348,24 +382,26 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	expiresOn, err := refreshClaim(ctx)
 
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// start the periodic refresh of credentials
 	refreshCtx, cancelRefreshCtx := context.WithCancel(context.Background())
+	refreshStoppedCh := make(chan struct{})
 
 	// connection strings with embedded SAS tokens will return a zero expiration time since they can't be renewed.
 	if expiresOn.IsZero() {
-		// cancel the refresh context now so (if a person calling is waiting on it it just
-		// immediately resolves)
+		// cancel everything related to the claims refresh loop.
 		cancelRefreshCtx()
+		close(refreshStoppedCh)
 
-		return func() <-chan struct{} {
-			return refreshCtx.Done()
-		}, nil
+		return func() {}, refreshStoppedCh, nil
 	}
 
 	go func() {
+		defer cancelRefreshCtx()
+		defer close(refreshStoppedCh)
+
 	TokenRefreshLoop:
 		for {
 			nextClaimAt := nextClaimRefreshDurationFn(expiresOn, time.Now())
@@ -392,10 +428,8 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 						break
 					}
 
-					// if we fail our retries _and_ we've exceeded the window where our token would have
-					// been good we can just stop.
-					if time.Since(expiresOn) <= 0 {
-						log.Writef(EventAuth, "[%s] token has expired, stopping refresh loop", entityPath)
+					if GetRecoveryKind(err) == RecoveryKindFatal {
+						log.Writef(EventAuth, "[%s] fatal error, stopping token refresh loop: %s", entityPath, err.Error())
 						break TokenRefreshLoop
 					}
 				}
@@ -403,17 +437,23 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		}
 	}()
 
-	cancelRefresh := func() <-chan struct{} {
+	return func() {
 		cancelRefreshCtx()
-		return refreshCtx.Done()
-	}
-
-	return cancelRefresh, nil
+		<-refreshStoppedCh
+	}, refreshStoppedCh, nil
 }
 
 func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (*amqp.Client, uint64, error) {
+	if err := ns.Check(); err != nil {
+		return nil, 0, err
+	}
+
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
+
+	if ns.closedPermanently {
+		return nil, 0, ErrClientClosed
+	}
 
 	if ns.client != nil {
 		return ns.client, ns.connID, nil

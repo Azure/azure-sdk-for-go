@@ -93,7 +93,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -148,7 +148,7 @@ func TestAMQPLinksLive(t *testing.T) {
 }
 
 func TestAMQPLinksLiveRecoverLink(t *testing.T) {
-	// we're not going to use this client for tehse tests.
+	// we're not going to use this client for these tests.
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
@@ -156,7 +156,7 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -184,7 +184,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -218,7 +218,7 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -254,7 +254,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -286,7 +286,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
@@ -327,7 +327,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	go func() {
 		defer wg.Done()
 
-		err = links2.RecoverIfNeeded(context.Background(), lwr2.ID, &amqp.DetachError{})
+		err := links2.RecoverIfNeeded(context.Background(), lwr2.ID, &amqp.DetachError{})
 		require.NoError(t, err)
 	}()
 

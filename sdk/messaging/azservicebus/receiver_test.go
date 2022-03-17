@@ -445,9 +445,7 @@ func TestReceiverDetachWithPeekLock(t *testing.T) {
 
 func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
 	// NOTE: uncomment this to see some of the background reconnects
-	// azlog.SetListener(func(e azlog.Event, s string) {
-	// 	log.Printf("%s %s", e, s)
-	// })
+	// test.EnableStdoutLogging
 
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

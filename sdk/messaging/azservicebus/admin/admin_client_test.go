@@ -506,7 +506,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 
 		go func(i int) {
 			defer wg.Done()
-			_, err = adminClient.CreateTopic(context.Background(), topicName, &TopicProperties{
+			_, err := adminClient.CreateTopic(context.Background(), topicName, &TopicProperties{
 				DefaultMessageTimeToLive: toDurationPtr(time.Duration(i+1) * time.Minute),
 			}, nil)
 			require.NoError(t, err)

@@ -76,6 +76,11 @@ func TestAMQPLinksBasic(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
 	lwr, err := links.Get(context.Background())
 	require.NoError(t, err)
 
@@ -101,6 +106,11 @@ func TestAMQPLinksLive(t *testing.T) {
 		createLinksCalled++
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
 	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
@@ -165,6 +175,11 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
 	require.EqualValues(t, 0, createLinksCalled)
 	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
 	require.EqualValues(t, 1, createLinksCalled)
@@ -193,6 +208,11 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < 20; i++ {
@@ -211,6 +231,14 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 }
 
 func TestAMQPLinksLiveRaceLink(t *testing.T) {
+	endCapture := test.CaptureLogsForTest()
+	defer func() {
+		messages := endCapture()
+		for _, msg := range messages {
+			fmt.Printf("%s\n", msg)
+		}
+	}()
+
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
@@ -222,12 +250,15 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 
 	createLinksCalled := 0
 
-	test.EnableStdoutLogging()
-
 	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 		createLinksCalled++
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	wg := sync.WaitGroup{}
 
@@ -263,6 +294,11 @@ func TestAMQPLinksRetry(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
 	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
 		return amqp.ErrConnClosed
@@ -295,12 +331,20 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
+	defer func() {
+		_ = links.Close(context.Background(), true)
+	}()
+
 	createLinksCalled2 := 0
 
 	links2 := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 		createLinksCalled2++
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
+
+	defer func() {
+		_ = links2.Close(context.Background(), true)
+	}()
 
 	wg := sync.WaitGroup{}
 
@@ -371,6 +415,11 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 				return sender, receiver, nil
 			})
 
+			defer func() {
+				err := links.Close(context.Background(), true)
+				require.NoError(t, err)
+			}()
+
 			_, err := links.Get(context.Background())
 			require.NoError(t, err)
 
@@ -391,6 +440,11 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 			return sender, receiver, nil
 		})
 
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
+
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
 
@@ -410,6 +464,11 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 			return sender, receiver, nil
 		})
 
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
+
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
 
@@ -428,6 +487,11 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 			return sender, receiver, nil
 		})
+
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
@@ -471,6 +535,9 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		}
 
 		t.Run(testName, func(t *testing.T) {
+			endLogging := test.CaptureLogsForTest()
+			defer endLogging()
+
 			receiver := &FakeAMQPReceiver{}
 			sender := &FakeAMQPSender{}
 			ns := &FakeNS{}
@@ -479,11 +546,12 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 				return sender, receiver, nil
 			})
 
-			var attempts []int32
+			defer func() {
+				err := links.Close(context.Background(), true)
+				require.NoError(t, err)
+			}()
 
-			var logMessages []string
-			removeLogging := test.CaptureLogsForTest(&logMessages)
-			defer removeLogging()
+			var attempts []int32
 
 			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
@@ -494,6 +562,8 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			require.Equal(t, testData.Err, err)
 			require.Equal(t, testData.Attempts, attempts)
+
+			logMessages := endLogging()
 
 			if testData.ExpectReset {
 				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
@@ -515,13 +585,18 @@ func TestAMQPLinks_Logging(t *testing.T) {
 			return nil, receiver, nil
 		})
 
-		var messages []string
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
-		cleanup := test.CaptureLogsForTest(&messages)
-		defer cleanup()
+		endCapture := test.CaptureLogsForTest()
+		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.DetachError{})
 		require.NoError(t, err)
+
+		messages := endCapture()
 
 		require.Equal(t, []string{
 			"[azsb.Conn] Recovering link for error link detached, reason: *Error(nil)",
@@ -538,13 +613,18 @@ func TestAMQPLinks_Logging(t *testing.T) {
 			return nil, receiver, nil
 		})
 
-		var messages []string
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
-		cleanup := test.CaptureLogsForTest(&messages)
-		defer cleanup()
+		endCapture := test.CaptureLogsForTest()
+		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
 		require.NoError(t, err)
+
+		messages := endCapture()
 
 		require.Equal(t, []string{
 			"[azsb.Conn] Recovering link for error amqp: connection closed",

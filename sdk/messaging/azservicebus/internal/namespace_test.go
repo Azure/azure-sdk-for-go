@@ -228,9 +228,8 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 		return nil
 	}
 
-	var logs []string
-	cleanupLoggers := test.CaptureLogsForTest(&logs)
-	defer cleanupLoggers()
+	endCapture := test.CaptureLogsForTest()
+	defer endCapture()
 
 	_, done, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
@@ -246,6 +245,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 
 	select {
 	case <-done:
+		logs := endCapture()
 		// check the log messages - we should have one telling us why we stopped the claims loop
 		require.Contains(t, logs, "[azsb.Auth] [entity path] fatal error, stopping token refresh loop: non retriable error message")
 	case <-time.After(3 * time.Second):

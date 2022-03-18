@@ -43,7 +43,7 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
-	blobClient := getBlockBlobClient(blobName, containerClient)
+	blobClient, _ := getBlockBlobClient(blobName, containerClient)
 
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
@@ -147,7 +147,7 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	defer deleteContainer(_assert, containerClient)
 
 	// Set up test blob
-	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Upload the file to a block blob
 	response, err := bbClient.UploadFileToBlockBlob(context.Background(), file,
@@ -309,7 +309,7 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 	defer deleteContainer(_assert, containerClient)
 
 	// Set up test blob
-	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	response, err := bbClient.UploadBufferToBlockBlob(context.Background(), bytesToUpload,

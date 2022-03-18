@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// DeleteBlobOptions provides set of configurations for Delete blob operation
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
@@ -31,6 +32,7 @@ func (o *DeleteBlobOptions) pointers() (*BlobDeleteOptions, *LeaseAccessConditio
 	return &basics, o.BlobAccessConditions.LeaseAccessConditions, o.BlobAccessConditions.ModifiedAccessConditions
 }
 
+// DownloadBlobOptions provides set of configurations for Download blob operation
 type DownloadBlobOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
@@ -73,6 +75,7 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 	return &basics, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
 }
 
+// SetTierOptions provides set of configurations for SetTier on blob operation
 type SetTierOptions struct {
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
@@ -91,6 +94,7 @@ func (o *SetTierOptions) pointers() (blobSetTierOptions *BlobSetTierOptions,
 	return &basics, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// GetBlobPropertiesOptions provides set of configurations for GetProperties blob operation
 type GetBlobPropertiesOptions struct {
 	BlobAccessConditions *BlobAccessConditions
 	CpkInfo              *CpkInfo
@@ -106,6 +110,7 @@ func (o *GetBlobPropertiesOptions) pointers() (blobGetPropertiesOptions *BlobGet
 	return nil, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
 }
 
+// SetBlobHTTPHeadersOptions provides set of configurations for SetHTTPHeaders on blob operation
 type SetBlobHTTPHeadersOptions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -120,6 +125,7 @@ func (o *SetBlobHTTPHeadersOptions) pointers() (blobSetHttpHeadersOptions *BlobS
 	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// SetBlobMetadataOptions provides set of configurations for SetMetatdata on blob operation
 type SetBlobMetadataOptions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 	CpkInfo                  *CpkInfo
@@ -136,6 +142,7 @@ func (o *SetBlobMetadataOptions) pointers() (leaseAccessConditions *LeaseAccessC
 	return o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
 }
 
+// CreateBlobSnapshotOptions provides set of configurations for CreateSnapshot of blob operation
 type CreateBlobSnapshotOptions struct {
 	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions
@@ -157,6 +164,7 @@ func (o *CreateBlobSnapshotOptions) pointers() (blobSetMetadataOptions *BlobCrea
 	return &basics, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+// StartCopyBlobOptions provides set of configurations for StartCopyFromURL blob operation
 type StartCopyBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	TagsMap map[string]string
@@ -195,6 +203,7 @@ func (o *StartCopyBlobOptions) pointers() (blobStartCopyFromUrlOptions *BlobStar
 	return &basics, o.SourceModifiedAccessConditions, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+// AbortCopyBlobOptions provides set of configurations for AbortCopyFromURL operation
 type AbortCopyBlobOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -232,6 +241,7 @@ func serializeBlobTags(tagsMap map[string]string) *BlobTags {
 	return &BlobTags{BlobTagSet: blobTagSet}
 }
 
+// SetTagsBlobOptions provides set of configurations for SetTags operation
 type SetTagsBlobOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
@@ -267,6 +277,7 @@ func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessCon
 	return options, o.ModifiedAccessConditions
 }
 
+// GetTagsBlobOptions provides set of configurations for GetTags operation
 type GetTagsBlobOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
@@ -296,16 +307,19 @@ func (o *GetTagsBlobOptions) pointers() (*BlobGetTagsOptions, *ModifiedAccessCon
 	return options, o.ModifiedAccessConditions
 }
 
+// ObjectReplicationRules struct
 type ObjectReplicationRules struct {
 	RuleId string
 	Status string
 }
 
+// ObjectReplicationPolicy are deserialized attributes
 type ObjectReplicationPolicy struct {
 	PolicyId *string
 	Rules    *[]ObjectReplicationRules
 }
 
+// GetBlobPropertiesResponse reformat the GetPropertiesResponse object for easy consumption
 type GetBlobPropertiesResponse struct {
 	BlobGetPropertiesResponse
 

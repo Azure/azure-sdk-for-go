@@ -3,6 +3,7 @@
 
 package azblob
 
+// ListContainersOptions provides set of configurations for ListContainers operation
 type ListContainersOptions struct {
 	Include ListContainersDetail
 
@@ -44,7 +45,7 @@ type ListContainersDetail struct {
 	Deleted bool
 }
 
-// string produces the Include query parameter's value.
+// string produces the `Include` query parameter's value.
 func (o *ListContainersDetail) pointers() []ListContainersIncludeType {
 	if !o.Metadata && !o.Deleted {
 		return nil
@@ -61,6 +62,7 @@ func (o *ListContainersDetail) pointers() []ListContainersIncludeType {
 	return items
 }
 
+// ServiceFilterBlobsByTagsOptions provides set of configurations for ServiceFilterBlobsByTags operation
 type ServiceFilterBlobsByTagsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker
 	// value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value

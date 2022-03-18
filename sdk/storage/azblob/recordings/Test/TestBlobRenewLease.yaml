@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:18 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:36 GMT
       Etag:
-      - '"0x8DA02A5901ED2B4"'
+      - '"0x8DA0686506B698F"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f05f81-201e-0062-178e-344d5f000000
+      - 21b58467-001e-004a-156f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -50,11 +50,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:18 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease/gotestblobblobrenewlease
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:36 GMT
       Etag:
-      - '"0x8DA02A5904460AD"'
+      - '"0x8DA0686509E82A5"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - d6f0613b-201e-0062-2b8e-344d5f000000
+      - 21b585c3-001e-004a-4f6f-382cf7000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2022-03-10T14:52:13.9606189Z"
+      - "2022-03-15T13:18:37.4296229Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,9 +96,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:18 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       X-Ms-Lease-Action:
       - acquire
       X-Ms-Lease-Duration:
@@ -115,17 +115,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:36 GMT
       Etag:
-      - '"0x8DA02A5904460AD"'
+      - '"0x8DA0686509E82A5"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Request-Id:
-      - d6f062f2-201e-0062-348e-344d5f000000
+      - 21b586f2-001e-004a-616f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -140,9 +140,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:18 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       X-Ms-Lease-Action:
       - renew
       X-Ms-Lease-Id:
@@ -157,17 +157,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Etag:
-      - '"0x8DA02A5904460AD"'
+      - '"0x8DA0686509E82A5"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Request-Id:
-      - d6f06455-201e-0062-788e-344d5f000000
+      - 21b58833-001e-004a-0d6f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -182,9 +182,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:19 GMT
+      - Tue, 15 Mar 2022 13:18:38 GMT
       X-Ms-Lease-Action:
       - release
       X-Ms-Lease-Id:
@@ -199,15 +199,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:14 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Etag:
-      - '"0x8DA02A5904460AD"'
+      - '"0x8DA0686509E82A5"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:13 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f065d9-201e-0062-618e-344d5f000000
+      - 21b5895b-001e-004a-106f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -222,9 +222,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:19 GMT
+      - Tue, 15 Mar 2022 13:18:38 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease?restype=container
@@ -235,11 +235,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:14 GMT
+      - Tue, 15 Mar 2022 13:18:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f067d4-201e-0062-3a8e-344d5f000000
+      - 21b58aaa-001e-004a-396f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

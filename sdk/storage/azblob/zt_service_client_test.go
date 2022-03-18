@@ -56,9 +56,9 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)
@@ -115,9 +115,9 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)
@@ -421,7 +421,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 //nolint
 func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_assert := assert.New(s.T())
-	var svcClient ServiceClient
+	var svcClient *ServiceClient
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {

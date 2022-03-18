@@ -249,6 +249,7 @@ type BlobDownloadOptions struct {
 	VersionID *string
 }
 
+// BlobFlatListSegment for list segment
 type BlobFlatListSegment struct {
 	// REQUIRED
 	BlobItems []*BlobItemInternal `xml:"Blob"`
@@ -336,6 +337,7 @@ type BlobHTTPHeaders struct {
 	BlobContentType *string
 }
 
+// BlobHierarchyListSegment for listing API
 type BlobHierarchyListSegment struct {
 	// REQUIRED
 	BlobItems    []*BlobItemInternal `xml:"Blob"`
@@ -403,6 +405,7 @@ func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	return nil
 }
 
+// BlobPrefix to specify prefix in listing operation
 type BlobPrefix struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
@@ -679,6 +682,7 @@ type BlobStartCopyFromURLOptions struct {
 	Timeout *int32
 }
 
+// BlobTag is a key-value pair
 type BlobTag struct {
 	// REQUIRED
 	Key *string `xml:"Key"`
@@ -810,6 +814,7 @@ type BlockBlobUploadOptions struct {
 	TransactionalContentMD5 []byte
 }
 
+// BlockList object
 type BlockList struct {
 	CommittedBlocks   []*Block `xml:"CommittedBlocks>Block"`
 	UncommittedBlocks []*Block `xml:"UncommittedBlocks>Block"`
@@ -834,6 +839,7 @@ func (b BlockList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+//BlockLookupList may have committed, uncommitted, and latest blobs
 type BlockLookupList struct {
 	Committed   []*string `xml:"Committed"`
 	Latest      []*string `xml:"Latest"`
@@ -864,6 +870,7 @@ func (b BlockLookupList) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return e.EncodeElement(aux, start)
 }
 
+// ClearRange object
 type ClearRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -1193,7 +1200,7 @@ type CpkScopeInfo struct {
 	EncryptionScope *string
 }
 
-// Implements the error and azcore.HTTPResponse interfaces.
+// DataLakeStorageError Implements the error and azcore.HTTPResponse interfaces.
 type DataLakeStorageError struct {
 	raw string
 	// The service error response object.
@@ -1697,6 +1704,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// PageRange specified the range of page [start, end)
 type PageRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -1705,6 +1713,7 @@ type PageRange struct {
 	Start *int64 `xml:"Start"`
 }
 
+// QueryFormat struct
 type QueryFormat struct {
 	// Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
 	DelimitedTextConfiguration *DelimitedTextConfiguration `xml:"DelimitedTextConfiguration"`
@@ -1739,6 +1748,7 @@ func (q QueryRequest) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// QuerySerialization object to format query
 type QuerySerialization struct {
 	// REQUIRED
 	Format *QueryFormat `xml:"Format"`

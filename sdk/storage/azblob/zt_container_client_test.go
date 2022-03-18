@@ -49,7 +49,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	containerClient := svcClient.NewContainerClient("foo bar")
+	containerClient, _ := svcClient.NewContainerClient("foo bar")
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -70,7 +70,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerClient := svcClient.NewContainerClient("")
+	containerClient, _ := svcClient.NewContainerClient("")
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -103,7 +103,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 		Metadata: map[string]string{},
 	}
 
-	containerClient = svcClient.NewContainerClient(containerName)
+	containerClient, _ = svcClient.NewContainerClient(containerName)
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
 
@@ -119,7 +119,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -141,7 +141,7 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -167,7 +167,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -287,14 +287,14 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
-	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	bbClient, _ := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	}
@@ -311,7 +311,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	_assert.NotNil(pager.Err())
 
 	// Blob data is not public
-	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+	blobURL2, _ := containerClient2.NewBlockBlobClient(blobPrefix)
 	_, err = blobURL2.GetProperties(ctx, nil)
 	_assert.NotNil(err)
 
@@ -379,7 +379,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
 
-func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
+func validateContainerDeleted(_assert *assert.Assertions, containerClient *ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	_assert.NotNil(err)
 
@@ -452,7 +452,7 @@ func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
 	_assert.NotNil(err)
@@ -470,7 +470,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -498,7 +498,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -528,7 +528,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -557,7 +557,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -1005,7 +1005,7 @@ func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -1040,7 +1040,7 @@ func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.GetProperties(ctx, nil)
 	_assert.NotNil(err)
@@ -1057,7 +1057,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -1088,7 +1088,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
@@ -1136,7 +1136,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
 	_assert.NotNil(err)
@@ -1206,12 +1206,12 @@ func (s *azblobTestSuite) TestContainerNewBlobURL() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
-	bbClient := containerClient.NewBlobClient(blobPrefix)
+	bbClient, _ := containerClient.NewBlobClient(blobPrefix)
 
 	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
+	_assert.IsTypef(bbClient, &BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
 func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
@@ -1223,12 +1223,12 @@ func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
-	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	bbClient, _ := containerClient.NewBlockBlobClient(blobPrefix)
 
 	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
+	_assert.IsTypef(bbClient, &BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
 }
 
 func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
@@ -1246,7 +1246,7 @@ func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
 
 	blobName := generateBlobName(testName)
 	for i := 0; i < 6; i++ {
-		bbClient := getBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
+		bbClient, _ := getBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
 		cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &UploadBlockBlobOptions{Metadata: basicMetadata})
 		_assert.Nil(err)
 		_assert.Equal(cResp.RawResponse.StatusCode, 201)

@@ -3,6 +3,7 @@
 
 package azblob
 
+// UploadBlockBlobOptions provides set of configurations for UploadBlockBlob operation
 type UploadBlockBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	TagsMap map[string]string
@@ -39,6 +40,7 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPH
 	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// StageBlockOptions provides set of configurations for StageBlock operation
 type StageBlockOptions struct {
 	CpkInfo                    *CpkInfo
 	CpkScopeInfo               *CpkScopeInfo
@@ -54,6 +56,7 @@ func (o *StageBlockOptions) pointers() (*LeaseAccessConditions, *BlockBlobStageB
 	return o.LeaseAccessConditions, o.BlockBlobStageBlockOptions, o.CpkInfo, o.CpkScopeInfo
 }
 
+// StageBlockFromURLOptions provides set of configurations for StageBlockFromURL operation
 type StageBlockFromURLOptions struct {
 	LeaseAccessConditions          *LeaseAccessConditions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
@@ -90,6 +93,7 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 	return o.LeaseAccessConditions, o.SourceModifiedAccessConditions, options, o.CpkInfo, o.CpkScopeInfo
 }
 
+// CommitBlockListOptions provides set of configurations for CommitBlockList operation
 type CommitBlockListOptions struct {
 	BlobTagsMap               map[string]string
 	Metadata                  map[string]string
@@ -122,6 +126,7 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
+// GetBlockListOptions provides set of configurations for GetBlockList operation
 type GetBlockListOptions struct {
 	BlockBlobGetBlockListOptions *BlockBlobGetBlockListOptions
 	BlobAccessConditions         *BlobAccessConditions
@@ -136,6 +141,7 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 	return o.BlockBlobGetBlockListOptions, modifiedAccessConditions, leaseAccessConditions
 }
 
+// CopyBlockBlobFromURLOptions provides set of configurations for CopyBlockBlobFromURL operation
 type CopyBlockBlobFromURLOptions struct {
 	BlobTagsMap                    map[string]string
 	Metadata                       map[string]string

@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestErrorResponseUnmarshal() {
 	t := s.T()
 

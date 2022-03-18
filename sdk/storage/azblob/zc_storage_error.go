@@ -22,6 +22,7 @@ type InternalError struct {
 	cause error
 }
 
+// Error checks if InternalError can be cast as StorageError
 func (e *InternalError) Error() string {
 	if (errors.Is(e.cause, StorageError{})) {
 		return e.cause.Error()
@@ -30,12 +31,14 @@ func (e *InternalError) Error() string {
 	return fmt.Sprintf("===== INTERNAL ERROR =====\n%s", e.cause.Error())
 }
 
+// Is casts err into InternalError
 func (e *InternalError) Is(err error) bool {
 	_, ok := err.(*InternalError)
 
 	return ok
 }
 
+// As casts target interface into InternalError
 func (e *InternalError) As(target interface{}) bool {
 	nt, ok := target.(**InternalError)
 
@@ -138,6 +141,7 @@ func (e StorageError) Error() string {
 	// return e.ErrorNode.Error(b.String())
 }
 
+// Is checks if err can be cast as StorageError
 func (e StorageError) Is(err error) bool {
 	_, ok := err.(StorageError)
 	_, ok2 := err.(*StorageError)
@@ -145,6 +149,7 @@ func (e StorageError) Is(err error) bool {
 	return ok || ok2
 }
 
+// Response returns StorageError.response
 func (e StorageError) Response() *http.Response {
 	return e.response
 }

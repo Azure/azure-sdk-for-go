@@ -9,13 +9,14 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestStageGetBlocks() {
@@ -32,7 +33,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := containerClient.NewBlockBlobClient(blobName)
+	bbClient, _ := containerClient.NewBlockBlobClient(blobName)
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
@@ -114,9 +115,9 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	rsc := internal.NopCloser(body)
 
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+	srcBlob, _ := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
 
-	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+	destBlob, _ := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
@@ -213,8 +214,8 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	body := bytes.NewReader(content)
 	ctx := context.Background()
 
-	srcBlob := containerClient.NewBlockBlobClient("srcblob")
-	destBlob := containerClient.NewBlockBlobClient("destblob")
+	srcBlob, _ := containerClient.NewBlockBlobClient("srcblob")
+	destBlob, _ := containerClient.NewBlockBlobClient("destblob")
 
 	// Prepare source bbClient for copy.
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(body), nil)
@@ -310,7 +311,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 
 	ctx := context.Background()
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	uploadSrcResp, err := bbClient.Upload(ctx, internal.NopCloser(body), nil)
 	_assert.Nil(err)
@@ -372,7 +373,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := containerClient.NewBlockBlobClient(blobName)
+	bbClient, _ := containerClient.NewBlockBlobClient(blobName)
 
 	// test put block with valid MD5 value
 	contentSize := 8 * 1024 // 8 KB
@@ -541,7 +542,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
@@ -560,7 +561,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 		},
 	})
 	_assert.Nil(err)
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
@@ -577,7 +578,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
@@ -618,7 +619,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
@@ -641,7 +642,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
@@ -658,7 +659,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
@@ -712,7 +713,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	})
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
@@ -785,7 +786,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_assert.Nil(err)
 
-	validateUpload(_assert, bbClient.BlobClient)
+	validateUpload(_assert, &bbClient.BlobClient)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
@@ -822,14 +823,13 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateBlobCommitted(_assert *assert.Assertions, bbClient *BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
-func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
-	testName string) (ContainerClient, BlockBlobClient, []string) {
+func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext, testName string) (*ContainerClient, *BlockBlobClient, []string) {
 
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
@@ -840,7 +840,7 @@ func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
-	bbClient := getBlockBlobClient(blobName, containerClient)
+	bbClient, _ := getBlockBlobClient(blobName, containerClient)
 
 	blockIDs := generateBlockIDsList(1)
 	_, err = bbClient.StageBlock(ctx, blockIDs[0], internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
@@ -1095,7 +1095,7 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
-		bbClient := getBlockBlobClient(blobName, containerClient)
+		bbClient, _ := getBlockBlobClient(blobName, containerClient)
 
 		uploadBlockBlobOptions := UploadBlockBlobOptions{
 			HTTPHeaders: &basicHeaders,
@@ -1125,7 +1125,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 
 	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
-		bbClient := getBlockBlobClient(blobName, containerClient)
+		bbClient, _ := getBlockBlobClient(blobName, containerClient)
 
 		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 		_, err := bbClient.StageBlock(ctx, blockID, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
@@ -1162,7 +1162,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	contentReader, _ := getRandomDataAndReader(contentSize)
 
 	ctx := context.Background()
-	srcBlob := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	srcBlob, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &UploadBlockBlobOptions{Tier: &tier})
@@ -1192,7 +1192,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
 		destBlobName := strings.ToLower(string(tier)) + generateBlobName(testName)
-		destBlob := containerClient.NewBlockBlobClient(generateBlobName(destBlobName))
+		destBlob, _ := containerClient.NewBlockBlobClient(generateBlobName(destBlobName))
 
 		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
 			Tier:     &tier,
@@ -1227,8 +1227,8 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 	ctx := context.Background()
-	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
-	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+	srcBlob, _ := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+	destBlob, _ := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 	tier := AccessTierCool
 	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
 	_assert.Nil(err)
@@ -1366,7 +1366,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	blobName1 := "rehydration_test_blob_1"
 	blobName2 := "rehydration_test_blob_2"
 
-	bbClient1 := getBlockBlobClient(blobName1, containerClient)
+	bbClient1, _ := getBlockBlobClient(blobName1, containerClient)
 	reader1, _ := generateData(1024)
 	_, err = bbClient1.Upload(ctx, reader1, nil)
 	_assert.Nil(err)
@@ -1393,7 +1393,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 
 	// ------------------------------------------
 
-	bbClient2 := getBlockBlobClient(blobName2, containerClient)
+	bbClient2, _ := getBlockBlobClient(blobName2, containerClient)
 	reader2, _ := generateData(1024)
 	_, err = bbClient2.Upload(ctx, reader2, nil)
 	_assert.Nil(err)
@@ -1427,7 +1427,7 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 	blobTier, rehydratePriority := AccessTierArchive, RehydratePriorityHigh
 
 	copyBlobName := "copy" + sourceBlobName
-	destBBClient := getBlockBlobClient(copyBlobName, containerClient)
+	destBBClient, _ := getBlockBlobClient(copyBlobName, containerClient)
 	_, err = destBBClient.StartCopyFromURL(ctx, sourceBBClient.URL(), &StartCopyBlobOptions{
 		RehydratePriority: &rehydratePriority,
 		Tier:              &blobTier,

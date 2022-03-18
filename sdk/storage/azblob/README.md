@@ -2,8 +2,10 @@
 
 ## Introduction
 
-The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage.
-This is the new beta client module for Azure Blob Storage, which follows our [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) and replaces the previous beta [azblob package](https://github.com/azure/azure-storage-blob-go).
+The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud
+storage. This is the new beta client module for Azure Blob Storage, which follows
+our [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) and replaces the
+previous beta [azblob package](https://github.com/azure/azure-storage-blob-go).
 
 ## Getting Started
 
@@ -12,70 +14,76 @@ The Azure Blob SDK can access an Azure Storage account.
 ### Prerequisites
 
 * Go versions 1.16 or higher
-* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `my-resource-group` and `mystorageaccount` with your own unique names):
-	(Optional) if you want a new resource group to hold the Storage Account:
-	```
-	az group create --name my-resource-group --location westus2
-	```
-	Create the storage account:
-	```
-	az storage account create --resource-group my-resource-group --name mystorageaccount
-	```
+* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use
+  the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `my-resource-group`
+  and `mystorageaccount` with your own unique names):
+  (Optional) if you want a new resource group to hold the Storage Account:
+  ```
+  az group create --name my-resource-group --location westus2
+  ```
+  Create the storage account:
+  ```
+  az storage account create --resource-group my-resource-group --name mystorageaccount
+  ```
 
-	The storage account name can be queried with:
-	```
-	az storage account show -n mystorageaccount -g my-resource-group --query "primaryEndpoints.blob"
-	```
-	You can set this as an environment variable with:
-	```bash
-	# PowerShell
-	$ENV:AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
-	# bash
-	export AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
-	```
+  The storage account name can be queried with:
+  ```
+  az storage account show -n mystorageaccount -g my-resource-group --query "primaryEndpoints.blob"
+  ```
+  You can set this as an environment variable with:
+  ```bash
+  # PowerShell
+  $ENV:AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
+  # bash
+  export AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
+  ```
 
-	Query your storage account keys:
-	```
-	az storage account keys list --resource-group my-resource-group -n mystorageaccount
-	```
+  Query your storage account keys:
+  ```
+  az storage account keys list --resource-group my-resource-group -n mystorageaccount
+  ```
 
-	Output:
-	```json
-	[
-		{
-			"creationTime": "2022-02-07T17:18:44.088870+00:00",
-			"keyName": "key1",
-			"permissions": "FULL",
-			"value": "..."
-		},
-		{
-			"creationTime": "2022-02-07T17:18:44.088870+00:00",
-			"keyName": "key2",
-			"permissions": "FULL",
-			"value": "..."
-		}
-	]
-	```
+  Output:
+  ```json
+  [
+      {
+          "creationTime": "2022-02-07T17:18:44.088870+00:00",
+          "keyName": "key1",
+          "permissions": "FULL",
+          "value": "..."
+      },
+      {
+          "creationTime": "2022-02-07T17:18:44.088870+00:00",
+          "keyName": "key2",
+          "permissions": "FULL",
+          "value": "..."
+      }
+  ]
+  ```
 
-	```bash
-	# PowerShell
-	$ENV:AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
-	# Bash
-	export AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
-	```
-	> You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
+  ```bash
+  # PowerShell
+  $ENV:AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
+  # Bash
+  export AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
+  ```
+  > You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
 
 #### Create account
 
-* To create a new Storage account, you can use [Azure Portal][azure_portal_create_account], [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account].
+* To create a new Storage account, you can use [Azure Portal][azure_portal_create_account]
+  , [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account].
 
 ### Install the package
+
 * Install the Azure Blob Storage client module for Go with `go get`:
+
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 ```
 
 > Optional: If you are going to use AAD authentication, install the `azidentity` package:
+
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
@@ -86,11 +94,13 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * [Azure storage accounts][azure_storage_account].
 * [Containers](https://azure.microsoft.com/en-in/overview/what-is-a-container/#overview) within those storage accounts.
-* [Blobs](https://azure.microsoft.com/en-in/services/storage/blobs/#overview) (block blobs/ page blobs/ append blobs) within those containers.
+* [Blobs](https://azure.microsoft.com/en-in/services/storage/blobs/#overview) (block blobs/ page blobs/ append blobs)
+  within those containers.
 
-Interaction with these resources starts with an instance of a [client](#clients).
-To create a client object, you will need the account's blob service endpoint URL and a credential that allows you to access the account.
-The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
+Interaction with these resources starts with an instance of a [client](#clients). To create a client object, you will
+need the account's blob service endpoint URL and a credential that allows you to access the account. The `endpoint` can
+be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys"
+section or by running the following Azure CLI command:
 
 ```bash
 # Get the blob service URL for the account
@@ -98,6 +108,7 @@ az storage account show -n mystorageaccount -g my-resource-group --query "primar
 ```
 
 Once you have the account URL, it can be used to create the service client:
+
 ```golang
 cred, err := azblob.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
@@ -105,12 +116,13 @@ serviceClient, err := azblob.NewServiceClientWithSharedKey("https://<myAccountNa
 handle(err)
 ```
 
-For more information about blob service URL's and how to configure custom domain names for Azure Storage check out the [official documentation][azure_portal_account_url]
+For more information about blob service URL's and how to configure custom domain names for Azure Storage check out
+the [official documentation][azure_portal_account_url]
 
 #### Types of credentials
 
-The azblob clients support authentication via Shared Key Credential, Connection String, Shared Access Signature,
-or any of the `azidentity` types that implement the `azcore.TokenCredential` interface.
+The azblob clients support authentication via Shared Key Credential, Connection String, Shared Access Signature, or any
+of the `azidentity` types that implement the `azcore.TokenCredential` interface.
 
 ##### 1. Creating the client from a shared key
 
@@ -123,6 +135,7 @@ az storage account keys list -g my-resource-group -n mystorageaccount
 ```
 
 Use Shared Key authentication as the credential parameter to authenticate the client:
+
 ```golang
 credential, err := azblob.NewSharedKeyCredential("accountName", "accountKey")
 handle(err)
@@ -132,9 +145,10 @@ handle(err)
 
 ##### 2. Creating the client from a connection string
 
-You can use connection string, instead of providing the account URL and credential separately, for authentication as well.
-To do this, pass the connection string to the client's `NewServiceClientFromConnectionString` method.
-The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
+You can use connection string, instead of providing the account URL and credential separately, for authentication as
+well. To do this, pass the connection string to the client's `NewServiceClientFromConnectionString` method. The
+connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access
+Keys" section or with the following Azure CLI command:
 
 ```bash
 az storage account show-connection-string -g my-resource-group -n mystorageaccount
@@ -147,8 +161,9 @@ serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
 
 ##### 3. Creating the client from a SAS token
 
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string.
-You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. You can generate a SAS
+token from the Azure Portal
+under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
 the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 
 ```golang
@@ -188,6 +203,7 @@ Three different clients are provided to interact with the various components of 
     * `BlobLeaseClient` to support blob lease management.
 
 ### Example
+
 ```go
 	// Use your storage account's name and key to create a credential object, used to access your account.
 	// You can obtain these details from the Azure Portal.

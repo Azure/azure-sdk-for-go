@@ -217,19 +217,19 @@ func generateBlobName(testName string) string {
 	return blobPrefix + generateEntityName(testName)
 }
 
-func getContainerClient(containerName string, s ServiceClient) ContainerClient {
+func getContainerClient(containerName string, s *ServiceClient) (*ContainerClient, error) {
 	return s.NewContainerClient(containerName)
 }
 
-func getBlockBlobClient(blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+func getBlockBlobClient(blockBlobName string, containerClient *ContainerClient) (*BlockBlobClient, error) {
 	return containerClient.NewBlockBlobClient(blockBlobName)
 }
 
-func getAppendBlobClient(appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+func getAppendBlobClient(appendBlobName string, containerClient *ContainerClient) (*AppendBlobClient, error) {
 	return containerClient.NewAppendBlobClient(appendBlobName)
 }
 
-func getPageBlobClient(pageBlobName string, containerClient ContainerClient) PageBlobClient {
+func getPageBlobClient(pageBlobName string, containerClient *ContainerClient) (*PageBlobClient, error) {
 	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
@@ -262,8 +262,8 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
-	containerClient := getContainerClient(containerName, serviceClient)
+func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient *ServiceClient) *ContainerClient {
+	containerClient, _ := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -271,14 +271,14 @@ func createNewContainer(_assert *assert.Assertions, containerName string, servic
 	return containerClient
 }
 
-func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient) {
+func deleteContainer(_assert *assert.Assertions, containerClient *ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
-func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
-	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
+	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
@@ -288,14 +288,14 @@ func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, contai
 	return bbClient
 }
 
-func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerClient ContainerClient) {
+func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerClient *ContainerClient) {
 	for _, blobName := range blobNames {
 		createNewBlockBlob(_assert, blobName, containerClient)
 	}
 }
 
-func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
-	abClient := getAppendBlobClient(appendBlobName, containerClient)
+func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
+	abClient, _ := getAppendBlobClient(appendBlobName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -304,13 +304,13 @@ func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, cont
 	return abClient
 }
 
-func createNewPageBlob(_assert *assert.Assertions, pageBlobName string, containerClient ContainerClient) PageBlobClient {
+func createNewPageBlob(_assert *assert.Assertions, pageBlobName string, containerClient *ContainerClient) *PageBlobClient {
 	return createNewPageBlobWithSize(_assert, pageBlobName, containerClient, PageBlobPageBytes*10)
 }
 
 func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
-	containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
-	pbClient := getPageBlobClient(pageBlobName, containerClient)
+	containerClient *ContainerClient, sizeInBytes int64) *PageBlobClient {
+	pbClient, _ := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
 	_assert.Nil(err)
@@ -318,8 +318,8 @@ func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
 	return pbClient
 }
 
-func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
-	bbClient = getBlockBlobClient(blockBlobName, containerClient)
+func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient *ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient *BlockBlobClient) {
+	bbClient, _ = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		CpkInfo:      cpkInfo,
@@ -338,9 +338,8 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 	return
 }
 
-func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container ContainerClient,
-	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
-	pbClient = getPageBlobClient(pageBlobName, container)
+func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container *ContainerClient, sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient *PageBlobClient) {
+	pbClient, _ = getPageBlobClient(pageBlobName, container)
 
 	resp, err := pbClient.Create(ctx, sizeInBytes, &CreatePageBlobOptions{
 		CpkInfo:      cpkInfo,
@@ -407,7 +406,7 @@ func getConnectionString(recording *testframework.Recording, accountType testAcc
 }
 
 //nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (*ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
@@ -419,7 +418,7 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 	connectionString := getConnectionString(recording, accountType)
 	primaryURL, cred, err := parseConnectionString(connectionString)
 	if err != nil {
-		return ServiceClient{}, nil
+		return nil, err
 	}
 
 	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
@@ -435,7 +434,7 @@ const (
 	//testAccountBlobStorage testAccountType = "BLOB_"
 )
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (*ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
@@ -446,7 +445,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 
 	cred, err := getGenericCredential(recording, accountType)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 
 	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
@@ -477,10 +476,10 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 // those changes not being reflected yet, we will wait 30 seconds and try the test again. If it fails this time for any reason,
 // we fail the test. It is the responsibility of the the testImplFunc to determine which error string indicates the test should be retried.
 // There can only be one such string. All errors that cannot be due to this detail should be asserted and not returned as an error string.
-func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceClient, code string,
-	enableServicePropertyFunc func(*assert.Assertions, ServiceClient),
-	testImplFunc func(*assert.Assertions, ServiceClient) error,
-	disableServicePropertyFunc func(*assert.Assertions, ServiceClient)) {
+func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu *ServiceClient, code string,
+	enableServicePropertyFunc func(*assert.Assertions, *ServiceClient),
+	testImplFunc func(*assert.Assertions, *ServiceClient) error,
+	disableServicePropertyFunc func(*assert.Assertions, *ServiceClient)) {
 
 	enableServicePropertyFunc(_assert, bsu)
 	defer disableServicePropertyFunc(_assert, bsu)
@@ -494,19 +493,19 @@ func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceCl
 	}
 }
 
-func enableSoftDelete(_assert *assert.Assertions, serviceClient ServiceClient) {
+func enableSoftDelete(_assert *assert.Assertions, serviceClient *ServiceClient) {
 	days := int32(1)
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
 		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
 	_assert.Nil(err)
 }
 
-func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
+func disableSoftDelete(_assert *assert.Assertions, bsu *ServiceClient) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
 	_assert.Nil(err)
 }
 
-func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
+func validateUpload(_assert *assert.Assertions, blobClient *BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_assert.Nil(err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)

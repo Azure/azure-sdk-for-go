@@ -61,7 +61,7 @@ func Example() {
 	// ===== 2. Upload and Download a block blob =====
 	data := "Hello world!"
 
-	// Create a new BlockBlobClient from the ContainerClient
+	// Create a new blockBlobClient from the containerClient
 	blockBlob, _ := container.NewBlockBlobClient("HelloWorld.txt")
 
 	// Upload data to the block blob
@@ -655,7 +655,7 @@ func ExampleBlobHTTPHeaders() {
 func ExampleBlockBlobClient() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a ContainerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
+	// Create a containerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/MyBlockBlob.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
@@ -784,7 +784,7 @@ func ExamplePageBlobClient() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a ContainerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
+	// Create a containerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/MyPageBlob.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
@@ -870,7 +870,7 @@ func Example_blobSnapshots() {
 		log.Fatal(err)
 	}
 
-	// Create a BlockBlobClient object to a blob in the container.
+	// Create a blockBlobClient object to a blob in the container.
 	baseBlobClient, _ := containerClient.NewBlockBlobClient("Original.txt")
 
 	// Create the original blob:
@@ -1033,8 +1033,8 @@ func Example_progressUploadDownload() {
 func ExampleBlobClient_startCopy() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a ContainerClient object to a container where we'll create a blob and its snapshot.
-	// Create a BlockBlobClient object to a blob in the container.
+	// Create a containerClient object to a container where we'll create a blob and its snapshot.
+	// Create a blockBlobClient object to a blob in the container.
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/CopiedBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
@@ -1119,7 +1119,7 @@ func ExampleBlobClient_startCopy() {
 //	}(destFile)
 //
 //	// Perform download
-//	err = DownloadBlobToFile(context.TODO(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
+//	err = DownloadBlobToFile(context.TODO(), blockBlobURL.blobClient, 0, CountToEnd, destFile,
 //		HighLevelDownloadFromBlobOptions{
 //			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 //			Progress: func(bytesTransferred int64) {
@@ -1138,7 +1138,7 @@ func ExampleBlobClient_Download() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a BlobClient object to a blob in the container (we assume the container & blob already exist).
+	// Create a blobClient object to a blob in the container (we assume the container & blob already exist).
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {

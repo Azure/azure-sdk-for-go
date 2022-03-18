@@ -3,38 +3,36 @@
 
 package azblob
 
-// ListContainersOptions provides set of configurations for ListContainers operation
-type ListContainersOptions struct {
-	Include ListContainersDetail
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
-	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
-	// operation returns the NextMarker value within the response body if the listing operation did not return all containers
-	// remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in
-	// a subsequent call to request the next page of list items. The marker value is opaque to the client.
-	Marker *string
+// ---------------------------------------------------------------------------------------------------------------------
 
-	// Specifies the maximum number of containers to return. If the request does not specify max results, or specifies a value
-	// greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary,
-	// then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible
-	// that the service will return fewer results than specified by max results, or than the default of 5000.
-	MaxResults *int32
-
-	// Filters the results to return only containers whose name begins with the specified prefix.
-	Prefix *string
+func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	return options.toPolicyOptions()
 }
 
-func (o *ListContainersOptions) pointers() *ServiceListContainersSegmentOptions {
-	if o == nil {
-		return nil
-	}
+// ---------------------------------------------------------------------------------------------------------------------
 
-	return &ServiceListContainersSegmentOptions{
-		Include:    o.Include.pointers(),
-		Marker:     o.Marker,
-		Maxresults: o.MaxResults,
-		Prefix:     o.Prefix,
-	}
+type GetAccountInfoOptions struct {
+	// placeholder for future options
 }
+
+func (o *GetAccountInfoOptions) pointers() *serviceClientGetAccountInfoOptions {
+	return nil
+}
+
+type ServiceGetAccountInfoResponse struct {
+	serviceClientGetAccountInfoResponse
+}
+
+func toServiceGetAccountInfoResponse(resp serviceClientGetAccountInfoResponse) ServiceGetAccountInfoResponse {
+	return ServiceGetAccountInfoResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // ListContainersDetail indicates what additional information the service should return with each container.
 type ListContainersDetail struct {
@@ -62,6 +60,103 @@ func (o *ListContainersDetail) pointers() []ListContainersIncludeType {
 	return items
 }
 
+// ListContainersOptions provides set of configurations for ListContainers operation
+type ListContainersOptions struct {
+	Include ListContainersDetail
+
+	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// operation returns the NextMarker value within the response body if the listing operation did not return all containers
+	// remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in
+	// a subsequent call to request the next page of list items. The marker value is opaque to the client.
+	Marker *string
+
+	// Specifies the maximum number of containers to return. If the request does not specify max results, or specifies a value
+	// greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary,
+	// then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible
+	// that the service will return fewer results than specified by max results, or than the default of 5000.
+	MaxResults *int32
+
+	// Filters the results to return only containers whose name begins with the specified prefix.
+	Prefix *string
+}
+
+func (o *ListContainersOptions) pointers() *serviceClientListContainersSegmentOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &serviceClientListContainersSegmentOptions{
+		Include:    o.Include.pointers(),
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Prefix:     o.Prefix,
+	}
+}
+
+type ServiceListContainersSegmentPager struct {
+	serviceClientListContainersSegmentPager
+}
+
+func toServiceListContainersSegmentPager(resp serviceClientListContainersSegmentPager) *ServiceListContainersSegmentPager {
+	return &ServiceListContainersSegmentPager{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type GetPropertiesOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetPropertiesOptions) pointers() *serviceClientGetPropertiesOptions {
+	return nil
+}
+
+type ServiceGetPropertiesResponse struct {
+	serviceClientGetPropertiesResponse
+}
+
+func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) ServiceGetPropertiesResponse {
+	return ServiceGetPropertiesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type SetPropertiesOptions struct {
+	properties StorageServiceProperties
+}
+
+func (o *SetPropertiesOptions) pointers() (storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) {
+	return o.properties, nil
+}
+
+type ServiceSetPropertiesResponse struct {
+	serviceClientSetPropertiesResponse
+}
+
+func toServiceSetPropertiesResponse(resp serviceClientSetPropertiesResponse) ServiceSetPropertiesResponse {
+	return ServiceSetPropertiesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type GetStatisticsOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetStatisticsOptions) pointers() *serviceClientGetStatisticsOptions {
+	return nil
+}
+
+type ServiceGetStatisticsResponse struct {
+	serviceClientGetStatisticsResponse
+}
+
+func toServiceGetStatisticsResponse(resp serviceClientGetStatisticsResponse) ServiceGetStatisticsResponse {
+	return ServiceGetStatisticsResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // ServiceFilterBlobsByTagsOptions provides set of configurations for ServiceFilterBlobsByTags operation
 type ServiceFilterBlobsByTagsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker
@@ -77,13 +172,22 @@ type ServiceFilterBlobsByTagsOptions struct {
 	Where *string
 }
 
-func (o *ServiceFilterBlobsByTagsOptions) pointer() *ServiceFilterBlobsOptions {
+func (o *ServiceFilterBlobsByTagsOptions) pointer() *serviceClientFilterBlobsOptions {
 	if o == nil {
 		return nil
 	}
-	return &ServiceFilterBlobsOptions{
+	return &serviceClientFilterBlobsOptions{
 		Marker:     o.Marker,
 		Maxresults: o.Maxresults,
 		Where:      o.Where,
 	}
+}
+
+// ServiceFilterBlobsResponse provides wrapper on serviceClientFilterBlobsResponse
+type ServiceFilterBlobsResponse struct {
+	serviceClientFilterBlobsResponse
+}
+
+func toServiceFilterBlobsResponse(resp serviceClientFilterBlobsResponse) ServiceFilterBlobsResponse {
+	return ServiceFilterBlobsResponse{resp}
 }

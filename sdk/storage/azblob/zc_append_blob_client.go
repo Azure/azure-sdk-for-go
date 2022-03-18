@@ -29,7 +29,7 @@ func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *C
 
 // NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
 func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*AppendBlobClient, error) {
-	con := newConnection(blobURL, nil, options.getConnectionOptions())
+	con := azblob.newConnection(blobURL, nil, options.getConnectionOptions())
 	return &AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -39,7 +39,7 @@ func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions)
 // NewAppendBlobClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
 func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*AppendBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
-	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
+	con := azblob.newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -54,7 +54,7 @@ func (ab *AppendBlobClient) WithSnapshot(snapshot string) (*AppendBlobClient, er
 		return nil, err
 	}
 	p.Snapshot = snapshot
-	con := &connection{u: p.URL(), p: ab.client.con.p}
+	con := &azblob.connection{u: p.URL(), p: ab.client.con.p}
 
 	return &AppendBlobClient{
 		client: &appendBlobClient{con: con},
@@ -73,7 +73,7 @@ func (ab *AppendBlobClient) WithVersionID(versionID string) (AppendBlobClient, e
 		return AppendBlobClient{}, err
 	}
 	p.VersionID = versionID
-	con := &connection{u: p.URL(), p: ab.client.con.p}
+	con := &azblob.connection{u: p.URL(), p: ab.client.con.p}
 
 	return AppendBlobClient{
 		client: &appendBlobClient{con: con},

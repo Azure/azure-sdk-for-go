@@ -33,6 +33,7 @@ type connectionOptions struct {
 	PerRetryPolicies []policy.Policy
 }
 
+// connection Object
 type connection struct {
 	u string
 	p runtime.Pipeline
@@ -45,11 +46,11 @@ func newConnection(endpoint string, authPolicy policy.Policy, options *azcore.Cl
 	if options != nil {
 		cp = *options
 	}
-	perRetryPolicies := []policy.Policy{}
+	var perRetryPolicies []policy.Policy
 	if authPolicy != nil {
 		perRetryPolicies = append(perRetryPolicies, authPolicy)
 	}
-	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, runtime.PipelineOptions{
+	return &connection{u: endpoint, p: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{
 		PerRetry: perRetryPolicies,
 	}, &cp)}
 }

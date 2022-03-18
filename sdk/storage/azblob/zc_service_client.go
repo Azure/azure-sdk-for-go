@@ -27,53 +27,52 @@ const (
 // ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client    *serviceClient
-	u         url.URL
+	conn      *connection
 	sharedKey *SharedKeyCredential
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (s ServiceClient) URL() string {
-	return s.client.con.u
+	return s.conn.Endpoint()
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
-	u, err := url.Parse(serviceURL)
-	if err != nil {
-		return nil, err
-	}
-
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
-	return &ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
-	}, u: *u}, nil
+	conOptions := getConnectionOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	conn := newConnection(serviceURL, authPolicy, conOptions)
+
+	return &ServiceClient{
+		client: newServiceClient(serviceURL, conn.Pipeline()),
+		conn:   conn,
+	}, nil
 }
 
 // NewServiceClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
-	u, err := url.Parse(serviceURL)
-	if err != nil {
-		return nil, err
-	}
+	conOptions := getConnectionOptions(options)
+	conn := newConnection(serviceURL, nil, conOptions)
 
-	return &ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, nil, options.getConnectionOptions()),
-	}, u: *u}, nil
+	return &ServiceClient{
+		client: newServiceClient(serviceURL, conn.Pipeline()),
+		conn:   conn,
+	}, nil
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
-	u, err := url.Parse(serviceURL)
-	if err != nil {
-		return nil, err
-	}
 	authPolicy := newSharedKeyCredPolicy(cred)
+	conOptions := getConnectionOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	conn := newConnection(serviceURL, authPolicy, conOptions)
+
 	return &ServiceClient{
-		client:    &serviceClient{con: newConnection(serviceURL, authPolicy, options.getConnectionOptions())},
-		u:         *u,
+		client:    newServiceClient(serviceURL, conn.Pipeline()),
+		conn:      conn,
 		sharedKey: cred,
 	}, nil
 }
@@ -94,22 +93,22 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
 func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
-	containerURL := appendToURLPath(s.client.con.u, containerName)
-	containerConnection := &connection{containerURL, s.client.con.p}
+	containerURL := appendToURLPath(s.conn.Endpoint(), containerName)
 	return &ContainerClient{
-		client: &containerClient{
-			con: containerConnection,
-		},
+		client:    newContainerClient(containerURL, s.conn.Pipeline()),
+		conn:      s.conn,
 		sharedKey: s.sharedKey,
 	}, nil
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
-// If the container with the same name already exists, a ResourceExistsError will
-// be raised. This method returns a client with which to interact with the newly
-// created container.
+// If the container with the same name already exists, a ResourceExistsError will be raised.
+// This method returns a client with which to interact with the newly created container.
 func (s *ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
-	containerClient, _ := s.NewContainerClient(containerName)
+	containerClient, err := s.NewContainerClient(containerName)
+	if err != nil {
+		return ContainerCreateResponse{}, err
+	}
 	containerCreateResp, err := containerClient.Create(ctx, options)
 	return containerCreateResp, err
 }
@@ -146,10 +145,10 @@ func appendToURLPath(u string, name string) string {
 }
 
 // GetAccountInfo provides account level information
-func (s *ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
-	resp, err := s.client.GetAccountInfo(ctx, nil)
-
-	return resp, handleError(err)
+func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
+	getAccountInfoOptions := o.pointers()
+	resp, err := s.client.GetAccountInfo(ctx, getAccountInfoOptions)
+	return toServiceGetAccountInfoResponse(resp), handleError(err)
 }
 
 // ListContainers operation returns a pager of the containers under the specified account.
@@ -158,12 +157,13 @@ func (s *ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountIn
 func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListContainersSegmentPager {
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
-	// override the generated advancer, which is incorrect
-	if pager.Err() != nil {
-		return pager
-	}
+	//TODO: .Err()?
+	//// override the generated advancer, which is incorrect
+	//if pager.Err() != nil {
+	//	return pager
+	//}
 
-	pager.advancer = func(cxt context.Context, response ServiceListContainersSegmentResponse) (*policy.Request, error) {
+	pager.advancer = func(cxt context.Context, response serviceClientListContainersSegmentResponse) (*policy.Request, error) {
 		if response.ListContainersSegmentResponse.NextMarker == nil {
 			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}
@@ -172,29 +172,31 @@ func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListCon
 			return nil, handleError(err)
 		}
 		queryValues, _ := url.ParseQuery(req.Raw().URL.RawQuery)
-		queryValues.Set("marker", *response.ServiceListContainersSegmentResult.NextMarker)
+		queryValues.Set("marker", *response.ListContainersSegmentResponse.NextMarker)
 
 		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, nil
 	}
 
-	return pager
+	return toServiceListContainersSegmentPager(*pager)
 }
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (s *ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesResponse, error) {
-	resp, err := s.client.GetProperties(ctx, nil)
+func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
+	getPropertiesOptions := o.pointers()
+	resp, err := s.client.GetProperties(ctx, getPropertiesOptions)
 
-	return resp, handleError(err)
+	return ServiceGetPropertiesResponse{resp}, handleError(err)
 }
 
 // SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.
 // If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
-func (s *ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
-	resp, err := s.client.SetProperties(ctx, properties, nil)
+func (s *ServiceClient) SetProperties(ctx context.Context, o *SetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+	properties, setPropertiesOptions := o.pointers()
+	resp, err := s.client.SetProperties(ctx, properties, setPropertiesOptions)
 
-	return resp, handleError(err)
+	return toServiceSetPropertiesResponse(resp), handleError(err)
 }
 
 // GetStatistics Retrieves statistics related to replication for the Blob service.
@@ -211,10 +213,11 @@ func (s *ServiceClient) SetProperties(ctx context.Context, properties StorageSer
 // center that resides in the same region as the primary location. Read-only
 // access is available from the secondary location, if read-access geo-redundant
 // replication is enabled for your storage account.
-func (s *ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsResponse, error) {
-	resp, err := s.client.GetStatistics(ctx, nil)
+func (s *ServiceClient) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (ServiceGetStatisticsResponse, error) {
+	getStatisticsOptions := o.pointers()
+	resp, err := s.client.GetStatistics(ctx, getStatisticsOptions)
 
-	return resp, handleError(err)
+	return toServiceGetStatisticsResponse(resp), handleError(err)
 }
 
 // CanGetAccountSASToken checks if shared key in ServiceClient is nil
@@ -242,11 +245,13 @@ func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissio
 	if err != nil {
 		return "", err
 	}
-	endpoint := s.client.con.Endpoint()
+
+	endpoint := s.conn.Endpoint()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}
 	endpoint += "?" + qps.Encode()
+
 	return endpoint, nil
 }
 
@@ -255,8 +260,9 @@ func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissio
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-func (s *ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
+func (s *ServiceClient) FindBlobsByTags(ctx context.Context, o *ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
 	// TODO: Use pager here? Missing support from zz_generated_pagers.go
-	serviceFilterBlobsOptions := options.pointer()
-	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
+	serviceFilterBlobsOptions := o.pointer()
+	resp, err := s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
+	return toServiceFilterBlobsResponse(resp), err
 }

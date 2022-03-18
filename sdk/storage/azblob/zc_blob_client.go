@@ -15,6 +15,7 @@ import (
 // BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client    *blobClient
+	conn      *connection
 	sharedKey *SharedKeyCredential
 }
 
@@ -41,7 +42,7 @@ func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, optio
 	return &BlobClient{client: &blobClient{con, nil}, sharedKey: cred}, nil
 }
 
-// NewBlobClientFromConnectionString creates BlobClient from a Connection String
+// NewBlobClientFromConnectionString creates BlobClient from a connection String
 //nolint
 func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*BlobClient, error) {
 	containerClient, err := NewContainerClientFromConnectionString(connectionString, containerName, options)

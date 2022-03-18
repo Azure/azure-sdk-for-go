@@ -2,25 +2,32 @@
 
 ```bash
 cd swagger
-autorest README.md --use="https://github.com/Azure/autorest.go/releases/download/v4.0.0-preview.35/autorest-go-4.0.0-preview.35.tgz"
+autorest README.md
 gofmt -w generated/*
 ```
 
 ### Settings
 
 ```yaml
-clear-output-folder: true
+go: true
+clear-output-folder: false
+version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "./blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
 module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 credential-scope: "https://storage.azure.com/.default"
-output-folder: generated1/
+output-folder: ../internal/generated/
 file-prefix: "zz_generated_"
-modelerfour.lenient-model-deduplication: true
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
 module-version: "0.3.0"
+modelerfour:
+  group-parameters: false
+  seal-single-value-enum-by-default: true
+  lenient-model-deduplication: true
+export-clients: false
+use: "@autorest/go@4.0.0-preview.37"
 ```
 
 ### Fix BlobMetadata.
@@ -32,6 +39,25 @@ directive:
   transform: >
     delete $.BlobMetadata["properties"];
 
+```
+
+### Don't include container name or blob in path - we have direct URIs.
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const property in $)
+    {
+        if (property.includes('/{containerName}/{blob}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/ContainerName") && false == param['$ref'].endsWith("#/parameters/Blob"))});
+        } 
+        else if (property.includes('/{containerName}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/ContainerName"))});
+        }
+    }
 ```
 
 ### Remove DataLake stuff.

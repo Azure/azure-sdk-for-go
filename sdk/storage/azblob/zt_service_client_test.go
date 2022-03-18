@@ -175,7 +175,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //	maxResults := int32(2)
 //	const pagedContainersPrefix = "azcontainerpaged"
 //
-//	containers := make([]ContainerClient, numContainers)
+//	containers := make([]containerClient, numContainers)
 //	expectedResults := make(map[string]bool)
 //	for i := 0; i < numContainers; i++ {
 //		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)

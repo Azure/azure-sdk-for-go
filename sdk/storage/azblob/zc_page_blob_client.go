@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
 
@@ -27,7 +28,7 @@ type PageBlobClient struct {
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*PageBlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
-	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
+	con := azblob.newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -37,7 +38,7 @@ func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *Cli
 // NewPageBlobClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*PageBlobClient, error) {
-	con := newConnection(blobURL, nil, options.getConnectionOptions())
+	con := azblob.newConnection(blobURL, nil, options.getConnectionOptions())
 	return &PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -48,7 +49,7 @@ func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*PageBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
-	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
+	con := azblob.newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &PageBlobClient{
 		client: &pageBlobClient{con: con},
 		BlobClient: BlobClient{
@@ -67,7 +68,7 @@ func (pb *PageBlobClient) WithSnapshot(snapshot string) (*PageBlobClient, error)
 	}
 	p.Snapshot = snapshot
 
-	con := &connection{p.URL(), pb.client.con.p}
+	con := &azblob.connection{p.URL(), pb.client.con.p}
 	return &PageBlobClient{
 		client: &pageBlobClient{con: con},
 		BlobClient: BlobClient{
@@ -86,7 +87,7 @@ func (pb *PageBlobClient) WithVersionID(versionID string) (*PageBlobClient, erro
 	}
 	p.VersionID = versionID
 
-	con := &connection{p.URL(), pb.client.con.p}
+	con := &azblob.connection{p.URL(), pb.client.con.p}
 	return &PageBlobClient{
 		client: &pageBlobClient{con: con},
 		BlobClient: BlobClient{

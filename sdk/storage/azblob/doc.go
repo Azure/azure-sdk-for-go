@@ -105,13 +105,13 @@ There are three different clients provided to interact with the various componen
     * Get and set account settings.
     * Query, create, and delete containers within the account.
 
-2. **`ContainerClient`**
+2. **`containerClient`**
     * Get and set container access settings, properties, and metadata.
     * Create, delete, and query blobs within the container.
     * `ContainerLeaseClient` to support container lease management.
 
 3. **`BlobClient`**
-    * `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
+    * `appendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
     * Get and set blob properties.
     * Perform CRUD operations on a given blob.
     * `BlobLeaseClient` to support blob lease management.

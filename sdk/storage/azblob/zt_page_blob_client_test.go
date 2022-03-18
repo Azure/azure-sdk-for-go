@@ -3306,7 +3306,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-//func setupStartIncrementalCopyTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
+//func setupStartIncrementalCopyTest(_assert *assert.Assertions, testName string) (containerClient containerClient,
 //	pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
 //	_context := getTestContext(testName)
 //	var recording *testframework.Recording

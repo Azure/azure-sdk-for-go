@@ -1704,6 +1704,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// PageRange specified the range of page [start, end)
 type PageRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -1712,6 +1713,7 @@ type PageRange struct {
 	Start *int64 `xml:"Start"`
 }
 
+// QueryFormat struct
 type QueryFormat struct {
 	// Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
 	DelimitedTextConfiguration *DelimitedTextConfiguration `xml:"DelimitedTextConfiguration"`

@@ -18,16 +18,16 @@ type ContainerLeaseClient struct {
 }
 
 // NewContainerLeaseClient is constructor of ContainerLeaseClient
-func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (ContainerLeaseClient, error) {
+func (c *ContainerClient) NewContainerLeaseClient(leaseID *string) (*ContainerLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()
 		if err != nil {
-			return ContainerLeaseClient{}, err
+			return nil, err
 		}
 		leaseID = to.StringPtr(generatedUuid.String())
 	}
-	return ContainerLeaseClient{
-		ContainerClient: c,
+	return &ContainerLeaseClient{
+		ContainerClient: *c,
 		leaseID:         leaseID,
 	}, nil
 }

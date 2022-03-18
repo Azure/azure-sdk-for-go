@@ -93,7 +93,7 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // To change the pipeline, create the ContainerClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
-func (s ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
+func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
 	containerConnection := &connection{containerURL, s.client.con.p}
 	return &ContainerClient{
@@ -108,7 +108,7 @@ func (s ServiceClient) NewContainerClient(containerName string) (*ContainerClien
 // If the container with the same name already exists, a ResourceExistsError will
 // be raised. This method returns a client with which to interact with the newly
 // created container.
-func (s ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+func (s *ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
 	containerClient, _ := s.NewContainerClient(containerName)
 	containerCreateResp, err := containerClient.Create(ctx, options)
 	return containerCreateResp, err
@@ -117,7 +117,7 @@ func (s ServiceClient) CreateContainer(ctx context.Context, containerName string
 // DeleteContainer is a lifecycle method that marks the specified container for deletion.
 // The container and any blobs contained within it are later deleted during garbage collection.
 // If the container is not found, a ResourceNotFoundError will be raised.
-func (s ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
+func (s *ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
 	containerClient, _ := s.NewContainerClient(containerName)
 	containerDeleteResp, err := containerClient.Delete(ctx, options)
 	return containerDeleteResp, err
@@ -146,7 +146,7 @@ func appendToURLPath(u string, name string) string {
 }
 
 // GetAccountInfo provides account level information
-func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
+func (s *ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
 	resp, err := s.client.GetAccountInfo(ctx, nil)
 
 	return resp, handleError(err)
@@ -155,7 +155,7 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 // ListContainers operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListContainersSegmentPager {
+func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListContainersSegmentPager {
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
@@ -183,7 +183,7 @@ func (s ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListCont
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (s ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesResponse, error) {
+func (s *ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesResponse, error) {
 	resp, err := s.client.GetProperties(ctx, nil)
 
 	return resp, handleError(err)
@@ -191,7 +191,7 @@ func (s ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesR
 
 // SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.
 // If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
-func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
+func (s *ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
 	resp, err := s.client.SetProperties(ctx, properties, nil)
 
 	return resp, handleError(err)
@@ -211,21 +211,21 @@ func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServ
 // center that resides in the same region as the primary location. Read-only
 // access is available from the secondary location, if read-access geo-redundant
 // replication is enabled for your storage account.
-func (s ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsResponse, error) {
+func (s *ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsResponse, error) {
 	resp, err := s.client.GetStatistics(ctx, nil)
 
 	return resp, handleError(err)
 }
 
 // CanGetAccountSASToken checks if shared key in ServiceClient is nil
-func (s ServiceClient) CanGetAccountSASToken() bool {
+func (s *ServiceClient) CanGetAccountSASToken() bool {
 	return s.sharedKey != nil
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
+func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey == nil {
 		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
@@ -255,7 +255,7 @@ func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permission
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
+func (s *ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
 	// TODO: Use pager here? Missing support from zz_generated_pagers.go
 	serviceFilterBlobsOptions := options.pointer()
 	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)

@@ -59,7 +59,7 @@ func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, 
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (bb BlockBlobClient) WithSnapshot(snapshot string) (*BlockBlobClient, error) {
+func (bb *BlockBlobClient) WithSnapshot(snapshot string) (*BlockBlobClient, error) {
 	p, err := NewBlobURLParts(bb.URL())
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) (*BlockBlobClient, error
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (bb BlockBlobClient) WithVersionID(versionID string) (*BlockBlobClient, error) {
+func (bb *BlockBlobClient) WithVersionID(versionID string) (*BlockBlobClient, error) {
 	p, err := NewBlobURLParts(bb.URL())
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (bb BlockBlobClient) WithVersionID(versionID string) (*BlockBlobClient, err
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeekCloser, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
+func (bb *BlockBlobClient) Upload(ctx context.Context, body io.ReadSeekCloser, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobUploadResponse{}, err
@@ -116,7 +116,7 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeekCloser, op
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block.
-func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, body io.ReadSeekCloser, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
+func (bb *BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, body io.ReadSeekCloser, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobStageBlockResponse{}, err
@@ -131,7 +131,7 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // If count is CountToEnd (0), then data is read from specified offset to the end.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url.
-func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
+func (bb *BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
 	ac, smac, stageOptions, cpkInfo, cpkScope := options.pointers()
 
 	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageOptions, cpkInfo, cpkScope, ac, smac)
@@ -145,7 +145,7 @@ func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID s
 // by uploading only those blocks that have changed, then committing the new and existing
 // blocks together. Any blocks not specified in the block list and permanently deleted.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block-list.
-func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb *BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	commitOptions, headers, cpkInfo, cpkScope, modifiedAccess, leaseAccess := options.pointers()
 
 	// this is a code smell in the generated code
@@ -163,7 +163,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-block-list.
-func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (BlockBlobGetBlockListResponse, error) {
+func (bb *BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (BlockBlobGetBlockListResponse, error) {
 	o, mac, lac := options.pointers()
 
 	resp, err := bb.client.GetBlockList(ctx, listType, o, lac, mac)
@@ -173,7 +173,7 @@ func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListTy
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
-func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source string, options *CopyBlockBlobFromURLOptions) (BlobCopyFromURLResponse, error) {
+func (bb *BlockBlobClient) CopyFromURL(ctx context.Context, source string, options *CopyBlockBlobFromURLOptions) (BlobCopyFromURLResponse, error) {
 	copyOptions, smac, mac, lac := options.pointers()
 
 	bClient := blobClient{

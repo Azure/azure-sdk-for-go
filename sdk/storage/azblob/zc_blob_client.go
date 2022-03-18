@@ -52,13 +52,13 @@ func NewBlobClientFromConnectionString(connectionString, containerName, blobName
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
-func (b BlobClient) URL() string {
+func (b *BlobClient) URL() string {
 	return b.client.con.u
 }
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (b BlobClient) WithSnapshot(snapshot string) (BlobClient, error) {
+func (b *BlobClient) WithSnapshot(snapshot string) (BlobClient, error) {
 	p, err := NewBlobURLParts(b.URL())
 	if err != nil {
 		return BlobClient{}, err
@@ -74,7 +74,7 @@ func (b BlobClient) WithSnapshot(snapshot string) (BlobClient, error) {
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (b BlobClient) WithVersionID(versionID string) (BlobClient, error) {
+func (b *BlobClient) WithVersionID(versionID string) (BlobClient, error) {
 	p, err := NewBlobURLParts(b.URL())
 	if err != nil {
 		return BlobClient{}, err
@@ -86,11 +86,11 @@ func (b BlobClient) WithVersionID(versionID string) (BlobClient, error) {
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) (*DownloadResponse, error) {
+func (b *BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) (DownloadResponse, error) {
 	o, lease, cpk, accessConditions := options.pointers()
 	dr, err := b.client.Download(ctx, o, lease, cpk, accessConditions)
 	if err != nil {
-		return nil, handleError(err)
+		return DownloadResponse{}, handleError(err)
 	}
 
 	offset := int64(0)
@@ -103,7 +103,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	if options != nil && options.Count != nil {
 		count = *options.Count
 	}
-	return &DownloadResponse{
+	return DownloadResponse{
 		b:                      b,
 		BlobDownloadResponse:   dr,
 		ctx:                    ctx,
@@ -115,7 +115,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
-func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
+func (b *BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
 	basics, leaseInfo, accessConditions := options.pointers()
 	resp, err := b.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
@@ -124,7 +124,7 @@ func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (Blo
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
-func (b BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) {
+func (b *BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) {
 	resp, err := b.client.Undelete(ctx, nil)
 
 	return resp, handleError(err)
@@ -136,7 +136,7 @@ func (b BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) 
 // bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
-func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (BlobSetTierResponse, error) {
+func (b *BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (BlobSetTierResponse, error) {
 	basics, lease, accessConditions := options.pointers()
 	resp, err := b.client.SetTier(ctx, tier, basics, lease, accessConditions)
 
@@ -145,7 +145,7 @@ func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTi
 
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
-func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (GetBlobPropertiesResponse, error) {
+func (b *BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (GetBlobPropertiesResponse, error) {
 	basics, lease, cpk, access := options.pointers()
 	resp, err := b.client.GetProperties(ctx, basics, lease, cpk, access)
 
@@ -154,7 +154,7 @@ func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertie
 
 // SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTPHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
+func (b *BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTPHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
 	resp, err := b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 
@@ -163,7 +163,7 @@ func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTP
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
-func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetBlobMetadataOptions) (BlobSetMetadataResponse, error) {
+func (b *BlobClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetBlobMetadataOptions) (BlobSetMetadataResponse, error) {
 	lease, cpk, cpkScope, access := options.pointers()
 	basics := BlobSetMetadataOptions{
 		Metadata: metadata,
@@ -175,7 +175,7 @@ func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string,
 
 // CreateSnapshot creates a read-only snapshot of a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/snapshot-blob.
-func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnapshotOptions) (BlobCreateSnapshotResponse, error) {
+func (b *BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnapshotOptions) (BlobCreateSnapshotResponse, error) {
 	// CreateSnapshot does NOT panic if the user tries to create a snapshot using a URL that already has a snapshot query parameter
 	// because checking this would be a performance hit for a VERY unusual path and we don't think the common case should suffer this
 	// performance hit.
@@ -187,7 +187,7 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
-func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
+func (b *BlobClient) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
 	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 
@@ -196,7 +196,7 @@ func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource string, opt
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
-func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyBlobOptions) (BlobAbortCopyFromURLResponse, error) {
+func (b *BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyBlobOptions) (BlobAbortCopyFromURLResponse, error) {
 	basics, lease := options.pointers()
 	resp, err := b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
 
@@ -207,7 +207,7 @@ func (b BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, options
 // Each call to this operation replaces all existing tags attached to the blob.
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
-func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (BlobSetTagsResponse, error) {
+func (b *BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (BlobSetTagsResponse, error) {
 	blobSetTagsOptions, modifiedAccessConditions := options.pointers()
 	resp, err := b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions)
 
@@ -216,7 +216,7 @@ func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (B
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
-func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobGetTagsResponse, error) {
+func (b *BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobGetTagsResponse, error) {
 	blobGetTagsOptions, modifiedAccessConditions := options.pointers()
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 
@@ -226,7 +226,7 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (b *BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts, _ := NewBlobURLParts(b.URL())
 
 	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)

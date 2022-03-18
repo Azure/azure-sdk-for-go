@@ -441,7 +441,7 @@ func ExampleBlobAccessConditions() {
 	showResultUpload(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err := blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
@@ -450,10 +450,11 @@ func ExampleBlobAccessConditions() {
 				},
 			},
 		},
-	))
+	)
+	showResult(&downloadResp, err)
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err = blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
@@ -461,7 +462,8 @@ func ExampleBlobAccessConditions() {
 					IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))},
 			},
 		},
-	))
+	)
+	showResult(&downloadResp, err)
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
 	showResultUpload(blockBlob.Upload(
@@ -475,12 +477,13 @@ func ExampleBlobAccessConditions() {
 	))
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err = blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
-		}))
+		})
+	showResult(&downloadResp, err)
 
 	// Upload content if the blob doesn't already exist (fails):
 	showResultUpload(blockBlob.Upload(

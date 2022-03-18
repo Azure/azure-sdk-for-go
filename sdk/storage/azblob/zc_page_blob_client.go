@@ -60,7 +60,7 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
-func (pb PageBlobClient) WithSnapshot(snapshot string) (*PageBlobClient, error) {
+func (pb *PageBlobClient) WithSnapshot(snapshot string) (*PageBlobClient, error) {
 	p, err := NewBlobURLParts(pb.URL())
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) (*PageBlobClient, error) 
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the version returning a URL to the base blob.
-func (pb PageBlobClient) WithVersionID(versionID string) (*PageBlobClient, error) {
+func (pb *PageBlobClient) WithVersionID(versionID string) (*PageBlobClient, error) {
 	p, err := NewBlobURLParts(pb.URL())
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (pb PageBlobClient) WithVersionID(versionID string) (*PageBlobClient, error
 
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (pb PageBlobClient) Create(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {
+func (pb *PageBlobClient) Create(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {
 	creationOptions, httpHeaders, cpkInfo, cpkScope, lac, mac := options.pointers()
 
 	resp, err := pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, lac, cpkInfo, cpkScope, mac)
@@ -110,7 +110,7 @@ func (pb PageBlobClient) Create(ctx context.Context, size int64, options *Create
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *UploadPagesOptions) (PageBlobUploadPagesResponse, error) {
+func (pb *PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *UploadPagesOptions) (PageBlobUploadPagesResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 
 	if err != nil {
@@ -129,7 +129,7 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekCloser
 // The destOffset specifies the start offset of data in page blob will be written to.
 // The count must be a multiple of 512 bytes.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page-from-url.
-func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
+func (pb *PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
 	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
@@ -139,7 +139,7 @@ func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, 
 
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, options *ClearPagesOptions) (PageBlobClearPagesResponse, error) {
+func (pb *PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, options *ClearPagesOptions) (PageBlobClearPagesResponse, error) {
 	clearOptions := &PageBlobClearPagesOptions{
 		Range: pageRange.pointers(),
 	}
@@ -153,7 +153,7 @@ func (pb PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, op
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange, options *GetPageRangesOptions) (PageBlobGetPageRangesResponse, error) {
+func (pb *PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange, options *GetPageRangesOptions) (PageBlobGetPageRangesResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	getRangesOptions := &PageBlobGetPageRangesOptions{
@@ -182,7 +182,7 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange,
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRange, prevSnapshot string, options *GetPageRangesOptions) (PageBlobGetPageRangesDiffResponse, error) {
+func (pb *PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRange, prevSnapshot string, options *GetPageRangesOptions) (PageBlobGetPageRangesDiffResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	diffOptions := &PageBlobGetPageRangesDiffOptions{
@@ -198,7 +198,7 @@ func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRa
 
 // Resize resizes the page blob to the specified size (which must be a multiple of 512).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (pb PageBlobClient) Resize(ctx context.Context, size int64, options *ResizePageBlobOptions) (PageBlobResizeResponse, error) {
+func (pb *PageBlobClient) Resize(ctx context.Context, size int64, options *ResizePageBlobOptions) (PageBlobResizeResponse, error) {
 	cpkInfo, cpkScope, lac, mac := options.pointers()
 
 	resp, err := pb.client.Resize(ctx, size, nil, lac, cpkInfo, cpkScope, mac)
@@ -207,7 +207,7 @@ func (pb PageBlobClient) Resize(ctx context.Context, size int64, options *Resize
 }
 
 // UpdateSequenceNumber sets the page blob's sequence number.
-func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberPageBlob) (PageBlobUpdateSequenceNumberResponse, error) {
+func (pb *PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberPageBlob) (PageBlobUpdateSequenceNumberResponse, error) {
 	updateOptions, actionType, lac, mac := options.pointers()
 	resp, err := pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
 
@@ -219,7 +219,7 @@ func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *Upda
 // The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
 // https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
-func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source string, prevSnapshot string, options *CopyIncrementalPageBlobOptions) (PageBlobCopyIncrementalResponse, error) {
+func (pb *PageBlobClient) StartCopyIncremental(ctx context.Context, source string, prevSnapshot string, options *CopyIncrementalPageBlobOptions) (PageBlobCopyIncrementalResponse, error) {
 	srcURL, _ := url.Parse(source)
 
 	queryParams := srcURL.Query()

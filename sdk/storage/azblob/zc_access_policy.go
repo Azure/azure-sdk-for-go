@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-// The AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
+// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
 // Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
 type AccessPolicyPermission struct {
 	Read, Add, Create, Write, Delete, List bool

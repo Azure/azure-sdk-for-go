@@ -144,7 +144,7 @@ func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOpt
 
 // GetProperties returns the container's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
-func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOptionsContainer) (ContainerGetPropertiesResponse, error) {
+func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesContainerOptions) (ContainerGetPropertiesResponse, error) {
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetProperties method at all simplifying the API.
 	// The optionals are nil, like they were in track 1.5

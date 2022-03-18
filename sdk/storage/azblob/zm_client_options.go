@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+// ClientOptions adds additional client options while constructing connection
 type ClientOptions struct {
 	// Transporter sets the transport for making HTTP requests.
 	Transporter policy.Transporter

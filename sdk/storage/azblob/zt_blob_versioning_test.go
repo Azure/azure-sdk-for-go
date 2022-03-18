@@ -326,6 +326,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 
 	for i := 3; i < 5; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_assert.Nil(err)
 		downloadResp, err := bbClientWithVersionID.Download(ctx, nil)
 		_assert.Nil(err)
 		destData, err := ioutil.ReadAll(downloadResp.Body(nil))
@@ -495,6 +496,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

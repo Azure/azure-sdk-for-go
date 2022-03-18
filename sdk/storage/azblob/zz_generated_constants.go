@@ -58,6 +58,7 @@ func (c AccessTier) ToPtr() *AccessTier {
 	return &c
 }
 
+// AccountKind defines enum for kind of storage account
 type AccountKind string
 
 const (
@@ -245,6 +246,7 @@ func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 	return &c
 }
 
+// LeaseDurationType defines lease duration
 type LeaseDurationType string
 
 const (
@@ -265,6 +267,7 @@ func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
+// LeaseStateType defines lease state
 type LeaseStateType string
 
 const (

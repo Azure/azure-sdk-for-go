@@ -11,11 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
+// BlobLeaseClient represents lease client on blob
 type BlobLeaseClient struct {
 	BlobClient
 	leaseID *string
 }
 
+// NewBlobLeaseClient is constructor for BlobLeaseClient
 func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()

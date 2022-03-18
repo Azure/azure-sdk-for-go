@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
+// BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client    *blobClient
 	sharedKey *SharedKeyCredential

@@ -24,7 +24,7 @@ const (
 	ContainerNameLogs = "$logs"
 )
 
-// A ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
+// ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client    *serviceClient
 	u         url.URL
@@ -145,13 +145,14 @@ func appendToURLPath(u string, name string) string {
 	return uri.String()
 }
 
+// GetAccountInfo provides account level information
 func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
 	resp, err := s.client.GetAccountInfo(ctx, nil)
 
 	return resp, handleError(err)
 }
 
-// The ListContainers operation returns a pager of the containers under the specified account.
+// ListContainers operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
 func (s ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListContainersSegmentPager {
@@ -216,6 +217,7 @@ func (s ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsR
 	return resp, handleError(err)
 }
 
+// CanGetAccountSASToken checks if shared key in ServiceClient is nil
 func (s ServiceClient) CanGetAccountSASToken() bool {
 	return s.sharedKey != nil
 }

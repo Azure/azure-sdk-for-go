@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
+// ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client    *containerClient
 	sharedKey *SharedKeyCredential

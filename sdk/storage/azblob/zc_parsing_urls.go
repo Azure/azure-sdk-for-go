@@ -15,7 +15,7 @@ const (
 	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 )
 
-// A BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
+// BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
 // existing URL into its parts by calling NewBlobURLParts(). You construct a URL from parts by calling URL().
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
 type BlobURLParts struct {

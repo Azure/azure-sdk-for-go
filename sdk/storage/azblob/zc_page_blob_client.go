@@ -17,6 +17,7 @@ const (
 	PageBlobPageBytes = 512
 )
 
+// PageBlobClient represents a client to an Azure Storage page blob;
 type PageBlobClient struct {
 	BlobClient
 	client *pageBlobClient

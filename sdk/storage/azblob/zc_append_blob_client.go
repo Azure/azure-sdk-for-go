@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+// AppendBlobClient represents a client to an Azure Storage append blob;
 type AppendBlobClient struct {
 	BlobClient
 	client *appendBlobClient

@@ -138,6 +138,7 @@ func (e StorageError) Error() string {
 	// return e.ErrorNode.Error(b.String())
 }
 
+// Is checks if err can be cast as StorageError
 func (e StorageError) Is(err error) bool {
 	_, ok := err.(StorageError)
 	_, ok2 := err.(*StorageError)
@@ -145,6 +146,7 @@ func (e StorageError) Is(err error) bool {
 	return ok || ok2
 }
 
+// Response returns StorageError.response
 func (e StorageError) Response() *http.Response {
 	return e.response
 }

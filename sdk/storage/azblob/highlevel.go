@@ -547,6 +547,7 @@ func (s *syncPool) Close() {
 
 const _1MiB = 1024 * 1024
 
+// UploadStreamToBlockBlobOptions provides set of configurations for UploadStreamToBlockBlob operation
 type UploadStreamToBlockBlobOptions struct {
 	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.

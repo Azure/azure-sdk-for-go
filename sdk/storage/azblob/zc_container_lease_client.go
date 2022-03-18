@@ -11,11 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
+//ContainerLeaseClient represents lease client of container
 type ContainerLeaseClient struct {
 	ContainerClient
 	leaseID *string
 }
 
+// NewContainerLeaseClient is constructor of ContainerLeaseClient
 func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (ContainerLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()

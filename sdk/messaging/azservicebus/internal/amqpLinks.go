@@ -93,8 +93,8 @@ type AMQPLinksImpl struct {
 	// Recover() does not affect this value.
 	closedPermanently bool
 
-	cancelAuthRefreshLink     func() <-chan struct{}
-	cancelAuthRefreshMgmtLink func() <-chan struct{}
+	cancelAuthRefreshLink     func()
+	cancelAuthRefreshMgmtLink func()
 
 	ns NamespaceForAMQPLinks
 }
@@ -379,7 +379,7 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) recoveryKi
 		_ = l.closeWithoutLocking(ctx, false)
 		return rk
 	case RecoveryKindConn:
-		_ = l.ns.Close(ctx)
+		_ = l.ns.Close(ctx, false)
 		_ = l.closeWithoutLocking(ctx, false)
 		return rk
 	case RecoveryKindFatal:
@@ -399,7 +399,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	_ = l.closeWithoutLocking(ctx, false)
 
 	var err error
-	l.cancelAuthRefreshLink, err = l.ns.NegotiateClaim(ctx, l.entityPath)
+	l.cancelAuthRefreshLink, _, err = l.ns.NegotiateClaim(ctx, l.entityPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -408,7 +408,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	l.cancelAuthRefreshMgmtLink, err = l.ns.NegotiateClaim(ctx, l.managementPath)
+	l.cancelAuthRefreshMgmtLink, _, err = l.ns.NegotiateClaim(ctx, l.managementPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {

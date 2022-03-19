@@ -225,6 +225,38 @@ func TestNewClientNewSessionReceiverNotFound(t *testing.T) {
 	assertRPCNotFound(t, err)
 }
 
+func TestClientCloseVsClosePermanently(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, client.Close(context.Background()))
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	receiver, err = client.NewReceiverForSubscription("topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sender)
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptSessionForSubscription(context.Background(), "topic", "subscription", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), "topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+}
+
 func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}

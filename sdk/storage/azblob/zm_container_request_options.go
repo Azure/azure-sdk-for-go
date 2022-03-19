@@ -259,9 +259,12 @@ func (o *ContainerListBlobHierarchySegmentOptions) pointers() *containerClientLi
 }
 
 type ContainerListBlobHierarchySegmentPager struct {
-	*containerClientListBlobHierarchySegmentPager
+	containerClientListBlobHierarchySegmentPager
 }
 
 func toContainerListBlobHierarchySegmentPager(resp *containerClientListBlobHierarchySegmentPager) *ContainerListBlobHierarchySegmentPager {
-	return &ContainerListBlobHierarchySegmentPager{resp}
+	if resp == nil {
+		return nil
+	}
+	return &ContainerListBlobHierarchySegmentPager{*resp}
 }

@@ -1333,7 +1333,7 @@ func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
 	bbName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
 
-	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
+	_, err = bbClient.SetTier(ctx, standardTier, &BlobSetTierOptions{
 		RehydratePriority: &rehydratePriority,
 	})
 	_assert.Nil(err)
@@ -1428,7 +1428,7 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 
 	copyBlobName := "copy" + sourceBlobName
 	destBBClient, _ := getBlockBlobClient(copyBlobName, containerClient)
-	_, err = destBBClient.StartCopyFromURL(ctx, sourceBBClient.URL(), &StartCopyBlobOptions{
+	_, err = destBBClient.StartCopyFromURL(ctx, sourceBBClient.URL(), &BlobStartCopyOptions{
 		RehydratePriority: &rehydratePriority,
 		Tier:              &blobTier,
 	})

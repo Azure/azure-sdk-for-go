@@ -236,7 +236,7 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 	_assert.NotNil(err)
 
 	leaseID := blobLeaseClient.leaseID
-	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
+	_, err = blobLeaseClient.Delete(ctx, &BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			LeaseAccessConditions: &LeaseAccessConditions{
 				LeaseID: leaseID,

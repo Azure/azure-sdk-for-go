@@ -1314,7 +1314,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	validateStorageError(_assert, err, "BlobIsSealed")
 
 	copiedBlob2, _ := getAppendBlobClient("copy2"+abName, containerClient)
-	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &BlobStartCopyOptions{
 		SealBlob: to.BoolPtr(true),
 	})
 	_assert.Nil(err)
@@ -1328,7 +1328,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	validateStorageError(_assert, err, "BlobIsSealed")
 
 	copiedBlob3, _ := getAppendBlobClient("copy3"+abName, containerClient)
-	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &BlobStartCopyOptions{
 		SealBlob: to.BoolPtr(false),
 	})
 	_assert.Nil(err)
@@ -1361,7 +1361,7 @@ func (s *azblobTestSuite) TestCopyUnsealedBlob() {
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	copiedBlob, _ := getAppendBlobClient("copy"+abName, containerClient)
-	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &BlobStartCopyOptions{
 		SealBlob: to.BoolPtr(true),
 	})
 	_assert.Nil(err)

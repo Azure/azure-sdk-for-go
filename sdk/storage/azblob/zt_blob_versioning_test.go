@@ -539,7 +539,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert.Len(found, 2)
 
 	deleteSnapshotsOnly := DeleteSnapshotsOptionTypeOnly
-	deleteResp, err := bbClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	deleteResp, err := bbClient.Delete(ctx, &BlobDeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
 	_assert.Nil(err)
 	_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
 

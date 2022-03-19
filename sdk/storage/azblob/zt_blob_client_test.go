@@ -210,7 +210,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 
 	metadata := make(map[string]string)
 	metadata["Bla"] = "foo"
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		Metadata: metadata,
 	}
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
@@ -279,7 +279,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 	_assert.Nil(err)
 
 	metadata := make(map[string]string)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		Metadata: metadata,
 	}
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
@@ -313,7 +313,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 
 	metadata := make(map[string]string)
 	metadata["I nvalid."] = "foo"
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		Metadata: metadata,
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
@@ -443,7 +443,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 
 	waitForCopy(_assert, copyBlobClient, resp)
 
-	downloadBlobOptions := DownloadBlobOptions{
+	downloadBlobOptions := BlobDownloadOptions{
 		Offset: to.Int64Ptr(0),
 		Count:  to.Int64Ptr(int64(len(blockBlobDefaultData))),
 	}
@@ -502,7 +502,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfModifiedSince: &currentTime,
 		},
@@ -536,7 +536,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfModifiedSince: &currentTime,
 		},
@@ -567,7 +567,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfUnmodifiedSince: &currentTime,
 		},
@@ -601,7 +601,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfUnmodifiedSince: &currentTime,
 		},
@@ -630,7 +630,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfMatch: resp.ETag,
 		},
@@ -665,7 +665,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 	accessConditions := SourceModifiedAccessConditions{
 		SourceIfMatch: &randomEtag,
 	}
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &accessConditions,
 	}
 
@@ -695,7 +695,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 	_, err = bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfNoneMatch: to.StringPtr("a"),
 		},
@@ -729,7 +729,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
 			SourceIfNoneMatch: resp.ETag,
 		},
@@ -764,7 +764,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -800,7 +800,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 	destBlobClient := createNewBlockBlob(_assert, "dst"+bbName, containerClient) // The blob must exist to have a last-modified time
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -833,7 +833,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 
 	destBlobClient := createNewBlockBlob(_assert, "dst"+bbName, containerClient)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -868,7 +868,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	destBlobClient := createNewBlockBlob(_assert, "dst"+bbName, containerClient)
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -899,7 +899,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
 	resp, err := destBlobClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfMatch: resp.ETag,
 		},
@@ -933,7 +933,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 	resp, err := destBlobClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfMatch: resp.ETag,
 		},
@@ -969,7 +969,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 	resp, err := destBlobClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		},
@@ -1006,7 +1006,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	resp, err := destBlobClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := StartCopyBlobOptions{
+	options := BlobStartCopyOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		},
@@ -1116,7 +1116,7 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
+	createBlobSnapshotOptions := BlobCreateSnapshotOptions{
 		Metadata: basicMetadata,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
@@ -1205,7 +1205,7 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadataInvalid() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
+	createBlobSnapshotOptions := BlobCreateSnapshotOptions{
 		Metadata: map[string]string{"Invalid Field!": "value"},
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
@@ -1283,7 +1283,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceTrue() {
 	access := ModifiedAccessConditions{
 		IfModifiedSince: &currentTime,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &options)
@@ -1316,7 +1316,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceFalse() {
 	access := ModifiedAccessConditions{
 		IfModifiedSince: &currentTime,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &options)
@@ -1347,7 +1347,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceTrue() {
 	access := ModifiedAccessConditions{
 		IfUnmodifiedSince: &currentTime,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &options)
@@ -1379,7 +1379,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceFalse() {
 	access := ModifiedAccessConditions{
 		IfUnmodifiedSince: &currentTime,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &options)
@@ -1405,7 +1405,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfMatch: resp.ETag,
 		},
@@ -1435,7 +1435,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfMatchFalse() {
 	access := ModifiedAccessConditions{
 		IfMatch: &randomEtag,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &options)
@@ -1462,7 +1462,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchTrue() {
 	access := ModifiedAccessConditions{
 		IfNoneMatch: &randomEtag,
 	}
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &access,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &options)
@@ -1489,7 +1489,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := CreateBlobSnapshotOptions{
+	options := BlobCreateSnapshotOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		},
@@ -1534,7 +1534,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Offset: to.Int64Ptr(-1),
 	}
 	_, err = bbClient.Download(ctx, &options)
@@ -1557,7 +1557,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Offset: to.Int64Ptr(int64(len(blockBlobDefaultData))),
 	}
 	_, err = bbClient.Download(ctx, &options)
@@ -1581,7 +1581,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count: to.Int64Ptr(-2),
 	}
 	_, err = bbClient.Download(ctx, &options)
@@ -1604,7 +1604,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count: to.Int64Ptr(0),
 	}
 	resp, err := bbClient.Download(ctx, &options)
@@ -1633,7 +1633,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	count := int64(len(blockBlobDefaultData))
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count: &count,
 	}
 	resp, err := bbClient.Download(ctx, &options)
@@ -1660,7 +1660,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count: to.Int64Ptr(int64((len(blockBlobDefaultData)) * 2)),
 	}
 	resp, err := bbClient.Download(ctx, &options)
@@ -1687,7 +1687,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count:  to.Int64Ptr(0),
 		Offset: to.Int64Ptr(0),
 	}
@@ -1715,7 +1715,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		Count:              to.Int64Ptr(3),
 		Offset:             to.Int64Ptr(10),
 		RangeGetContentMD5: to.BoolPtr(true),
@@ -1751,7 +1751,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 	access := ModifiedAccessConditions{
 		IfModifiedSince: &currentTime,
 	}
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 
@@ -1785,7 +1785,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 	access := ModifiedAccessConditions{
 		IfModifiedSince: &currentTime,
 	}
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 	_, err = bbClient.Download(ctx, &options)
@@ -1814,7 +1814,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
@@ -1848,7 +1848,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 	access := ModifiedAccessConditions{
 		IfUnmodifiedSince: &currentTime,
 	}
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 	_, err = bbClient.Download(ctx, &options)
@@ -1874,7 +1874,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -1903,7 +1903,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -1937,7 +1937,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 	access := ModifiedAccessConditions{
 		IfNoneMatch: resp.ETag,
 	}
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 
@@ -1967,7 +1967,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
-	options := DownloadBlobOptions{
+	options := BlobDownloadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		},
@@ -2034,7 +2034,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	_assert.Nil(err)
 ////
 ////	deleteSnapshots := DeleteSnapshotsOptionInclude
-////	_, err = bbClient.Delete(ctx, &DeleteBlobOptions{
+////	_, err = bbClient.Delete(ctx, &BlobDeleteOptions{
 ////		DeleteSnapshots: &deleteSnapshots,
 ////	})
 ////	_assert.Nil(err)
@@ -2057,7 +2057,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	_, err := bbClient.CreateSnapshot(ctx, nil)
 ////	_assert.Nil(err)
 ////	deleteSnapshot := DeleteSnapshotsOptionOnly
-////	deleteBlobOptions := DeleteBlobOptions{
+////	deleteBlobOptions := BlobDeleteOptions{
 ////		DeleteSnapshots: &deleteSnapshot,
 ////	}
 ////	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
@@ -2126,7 +2126,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
@@ -2159,7 +2159,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
@@ -2190,7 +2190,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
@@ -2223,7 +2223,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
@@ -2250,7 +2250,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
 
 	resp, _ := bbClient.GetProperties(ctx, nil)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -2284,7 +2284,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 	_, err = bbClient.SetMetadata(ctx, nil, nil)
 	_assert.Nil(err)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: etag},
 		},
@@ -2314,7 +2314,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
 	_, err = bbClient.SetMetadata(ctx, nil, nil)
 	_assert.Nil(err)
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
 		},
@@ -2344,7 +2344,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 	resp, _ := bbClient.GetProperties(ctx, nil)
 	etag := resp.ETag
 
-	deleteBlobOptions := DeleteBlobOptions{
+	deleteBlobOptions := BlobDeleteOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
 		},
@@ -2378,7 +2378,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
 	_assert.Nil(err)
 
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
@@ -2413,7 +2413,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
 	_assert.Nil(err)
 
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
@@ -2450,7 +2450,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
 	_assert.Nil(err)
 
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
@@ -2487,7 +2487,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 //	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
 //	_assert.Nil(err)
 //
-//	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+//	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //	}
 //	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
@@ -2513,7 +2513,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 	resp, err := bbClient.SetMetadata(ctx, basicMetadata, nil)
 	_assert.Nil(err)
 
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -2563,7 +2563,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	eTag := "garbage"
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 		},
@@ -2596,7 +2596,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 	_assert.Nil(err)
 
 	eTag := "garbage"
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
 		},
@@ -2626,7 +2626,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 	resp, err := bbClient.SetMetadata(ctx, nil, nil)
 	_assert.Nil(err)
 
-	getBlobPropertiesOptions := GetBlobPropertiesOptions{
+	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		},
@@ -2723,7 +2723,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
 	_assert.Nil(err)
 
 	validatePropertiesSet(_assert, bbClient, "my_disposition")
@@ -2752,7 +2752,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
 	_assert.NotNil(err)
 }
 
@@ -2779,7 +2779,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
 	_assert.Nil(err)
 
 	validatePropertiesSet(_assert, bbClient, "my_disposition")
@@ -2808,7 +2808,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
 	_assert.NotNil(err)
 }
 
@@ -2832,7 +2832,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 	_assert.Nil(err)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
 	_assert.Nil(err)
 
 	validatePropertiesSet(_assert, bbClient, "my_disposition")
@@ -2855,7 +2855,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.StringPtr("garbage")}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.StringPtr("garbage")}})
 	_assert.NotNil(err)
 }
 
@@ -2876,7 +2876,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
 	_assert.Nil(err)
 
 	validatePropertiesSet(_assert, bbClient, "my_disposition")
@@ -2902,7 +2902,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 	_assert.Nil(err)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
+		&BlobSetHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
 	_assert.NotNil(err)
 }
 
@@ -3010,7 +3010,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3041,7 +3041,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3070,7 +3070,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3101,7 +3101,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3127,7 +3127,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3153,7 +3153,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfMatchFalse() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	eTag := "garbage"
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3177,7 +3177,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	eTag := "garbage"
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
@@ -3205,7 +3205,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	setBlobMetadataOptions := SetBlobMetadataOptions{
+	setBlobMetadataOptions := BlobSetMetadataOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)

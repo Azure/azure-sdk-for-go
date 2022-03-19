@@ -213,15 +213,15 @@ type HighLevelDownloadFromBlobOptions struct {
 	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPropertiesOptions {
-	return &GetBlobPropertiesOptions{
+func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *BlobGetPropertiesOptions {
+	return &BlobGetPropertiesOptions{
 		BlobAccessConditions: o.BlobAccessConditions,
 		CpkInfo:              o.CpkInfo,
 	}
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadBlobOptions {
-	return &DownloadBlobOptions{
+func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *BlobDownloadOptions {
+	return &BlobDownloadOptions{
 		BlobAccessConditions: o.BlobAccessConditions,
 		CpkInfo:              o.CpkInfo,
 		CpkScopeInfo:         o.CpkScopeInfo,

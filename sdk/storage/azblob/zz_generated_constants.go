@@ -9,10 +9,11 @@
 package azblob
 
 const (
-	moduleName    = ""
-	moduleVersion = "v0.3.0"
+	moduleName    = "azblob"
+	moduleVersion = "v0.4.0"
 )
 
+// AccessTier is a valid access tier for blob service
 type AccessTier string
 
 const (
@@ -57,6 +58,7 @@ func (c AccessTier) ToPtr() *AccessTier {
 	return &c
 }
 
+// AccountKind defines enum for kind of storage account
 type AccountKind string
 
 const (
@@ -83,6 +85,7 @@ func (c AccountKind) ToPtr() *AccountKind {
 	return &c
 }
 
+// ArchiveStatus defines enums for rehydrate status of a blob
 type ArchiveStatus string
 
 const (
@@ -103,6 +106,7 @@ func (c ArchiveStatus) ToPtr() *ArchiveStatus {
 	return &c
 }
 
+// BlobExpiryOptions provides enums for BlobExpiry - absolute, never, relative to creation time, and relative to current time.
 type BlobExpiryOptions string
 
 const (
@@ -149,6 +153,7 @@ func (c BlobImmutabilityPolicyMode) ToPtr() *BlobImmutabilityPolicyMode {
 	return &c
 }
 
+// BlobType defines enums for types of blobs - block, page, append
 type BlobType string
 
 const (
@@ -171,6 +176,7 @@ func (c BlobType) ToPtr() *BlobType {
 	return &c
 }
 
+// BlockListType defines enums for BlockList
 type BlockListType string
 
 const (
@@ -193,6 +199,7 @@ func (c BlockListType) ToPtr() *BlockListType {
 	return &c
 }
 
+// CopyStatusType defines enums for CopyStatus
 type CopyStatusType string
 
 const (
@@ -217,6 +224,7 @@ func (c CopyStatusType) ToPtr() *CopyStatusType {
 	return &c
 }
 
+// DeleteSnapshotsOptionType defines enum for DeleteSnapshots
 type DeleteSnapshotsOptionType string
 
 const (
@@ -260,6 +268,7 @@ func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 	return &c
 }
 
+// LeaseDurationType defines lease duration
 type LeaseDurationType string
 
 const (
@@ -280,6 +289,7 @@ func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
+// LeaseStateType defines lease state
 type LeaseStateType string
 
 const (
@@ -306,6 +316,7 @@ func (c LeaseStateType) ToPtr() *LeaseStateType {
 	return &c
 }
 
+// LeaseStatusType defines enums for lease status
 type LeaseStatusType string
 
 const (
@@ -326,6 +337,7 @@ func (c LeaseStatusType) ToPtr() *LeaseStatusType {
 	return &c
 }
 
+// ListBlobsIncludeItem defines enum to specify items to include in list blobs operation
 type ListBlobsIncludeItem string
 
 const (
@@ -362,6 +374,7 @@ func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
 	return &c
 }
 
+// ListContainersIncludeType enum
 type ListContainersIncludeType string
 
 const (
@@ -384,6 +397,28 @@ func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
 	return &c
 }
 
+// PathRenameMode - legacy, posix
+type PathRenameMode string
+
+const (
+	PathRenameModeLegacy PathRenameMode = "legacy"
+	PathRenameModePosix  PathRenameMode = "posix"
+)
+
+// PossiblePathRenameModeValues returns the possible values for the PathRenameMode const type.
+func PossiblePathRenameModeValues() []PathRenameMode {
+	return []PathRenameMode{
+		PathRenameModeLegacy,
+		PathRenameModePosix,
+	}
+}
+
+// ToPtr returns a *PathRenameMode pointing to the current value.
+func (c PathRenameMode) ToPtr() *PathRenameMode {
+	return &c
+}
+
+// PremiumPageBlobAccessTier defines enum for premium blob access tier
 type PremiumPageBlobAccessTier string
 
 const (
@@ -422,6 +457,7 @@ func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
 	return &c
 }
 
+// PublicAccessType defines enum for access type - none, blob only, container and blob both
 type PublicAccessType string
 
 const (
@@ -489,6 +525,7 @@ func (c RehydratePriority) ToPtr() *RehydratePriority {
 	return &c
 }
 
+// SKUName defines enum for replication type - Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS
 type SKUName string
 
 const (
@@ -515,6 +552,7 @@ func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
 
+// SequenceNumberActionType enum - max, update, increment
 type SequenceNumberActionType string
 
 const (

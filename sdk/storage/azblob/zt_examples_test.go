@@ -400,7 +400,7 @@ func ExampleBlobAccessConditions() {
 	}
 
 	// This function displays the results of an operation
-	showResult := func(response *azblob.DownloadResponse, err error) {
+	showResult := func(response *azblob.BlobDownloadResponse, err error) {
 		if err != nil {
 			var stgErr *azblob.StorageError
 			if errors.As(err, &stgErr) {
@@ -443,7 +443,7 @@ func ExampleBlobAccessConditions() {
 	// Download blob content if the blob has been modified since we uploaded it (fails):
 	downloadResp, err := blockBlob.Download(
 		context.TODO(),
-		&azblob.DownloadBlobOptions{
+		&azblob.BlobDownloadOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
 					IfModifiedSince: upload.LastModified,
@@ -456,7 +456,7 @@ func ExampleBlobAccessConditions() {
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
 	downloadResp, err = blockBlob.Download(
 		context.TODO(),
-		&azblob.DownloadBlobOptions{
+		&azblob.BlobDownloadOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
 					IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))},
@@ -479,7 +479,7 @@ func ExampleBlobAccessConditions() {
 	// Download content if it has changed since the version identified by ETag (fails):
 	downloadResp, err = blockBlob.Download(
 		context.TODO(),
-		&azblob.DownloadBlobOptions{
+		&azblob.BlobDownloadOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		})
@@ -960,7 +960,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobClient.Delete(context.TODO(), &azblob.DeleteBlobOptions{DeleteSnapshots: azblob.DeleteSnapshotsOptionTypeInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(context.TODO(), &azblob.BlobDeleteOptions{DeleteSnapshots: azblob.DeleteSnapshotsOptionTypeInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -8,7 +8,9 @@
 
 package azblob
 
-import "time"
+import (
+	"time"
+)
 
 // AccessPolicy - An Access policy
 type AccessPolicy struct {
@@ -50,6 +52,7 @@ type ArrowField struct {
 	Scale     *int32  `xml:"Scale"`
 }
 
+// BlobFlatListSegment for list segment
 type BlobFlatListSegment struct {
 	// REQUIRED
 	BlobItems []*BlobItemInternal `xml:"Blob"`
@@ -74,6 +77,7 @@ type BlobHTTPHeaders struct {
 	BlobContentType *string
 }
 
+// BlobHierarchyListSegment for listing API
 type BlobHierarchyListSegment struct {
 	// REQUIRED
 	BlobItems    []*BlobItemInternal `xml:"Blob"`
@@ -189,6 +193,90 @@ type Block struct {
 	Size *int64 `xml:"Size"`
 }
 
+// BlockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.
+type BlockBlobCommitBlockListOptions struct {
+	// Optional. Used to set blob tags in various blob operations.
+	BlobTagsString *string
+	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
+	// from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified
+	// metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming
+	// rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+	Metadata map[string]string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// Optional. Indicates the tier to be set on the blob.
+	Tier *AccessTier
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+	// Specify the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCRC64 []byte
+	// Specify the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMD5 []byte
+}
+
+// BlockBlobGetBlockListOptions contains the optional parameters for the BlockBlob.GetBlockList method.
+type BlockBlobGetBlockListOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with
+	// blob snapshots, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob">Creating a Snapshot
+	// of a Blob.</a>
+	Snapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
+// BlockBlobStageBlockFromURLOptions contains the optional parameters for the BlockBlob.StageBlockFromURL method.
+type BlockBlobStageBlockFromURLOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
+	SourceContentMD5 []byte
+	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+	SourceContentcrc64 []byte
+	// Bytes of source data in the specified range.
+	SourceRange *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
+// BlockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
+type BlockBlobStageBlockOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+	// Specify the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCRC64 []byte
+	// Specify the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMD5 []byte
+}
+
+// BlockBlobUploadOptions contains the optional parameters for the BlockBlob.Upload method.
+type BlockBlobUploadOptions struct {
+	// Optional. Used to set blob tags in various blob operations.
+	BlobTagsString *string
+	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
+	// from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified
+	// metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming
+	// rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+	Metadata map[string]string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// Optional. Indicates the tier to be set on the blob.
+	Tier *AccessTier
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+	// Specify the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMD5 []byte
+}
+
+// BlockList object
 type BlockList struct {
 	CommittedBlocks   []*Block `xml:"CommittedBlocks>Block"`
 	UncommittedBlocks []*Block `xml:"UncommittedBlocks>Block"`
@@ -300,7 +388,23 @@ type CpkScopeInfo struct {
 	EncryptionScope *string
 }
 
-// DelimitedTextConfiguration - Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
+// DataLakeStorageError Implements the error and azcore.HTTPResponse interfaces.
+type DataLakeStorageError struct {
+	raw string
+	// The service error response object.
+	DataLakeStorageErrorDetails *DataLakeStorageErrorError `json:"error,omitempty"`
+}
+
+// DataLakeStorageErrorError - The service error response object.
+type DataLakeStorageErrorError struct {
+	// The service error code.
+	Code *string `json:"Code,omitempty"`
+
+	// The service error message.
+	Message *string `json:"Message,omitempty"`
+}
+
+// DelimitedTextConfiguration - delimited text configuration
 type DelimitedTextConfiguration struct {
 	// The string used to separate columns.
 	ColumnSeparator *string `xml:"ColumnSeparator"`
@@ -483,6 +587,7 @@ type PageRange struct {
 	Start *int64 `xml:"Start"`
 }
 
+// QueryFormat struct
 type QueryFormat struct {
 	// REQUIRED; The quick query format type.
 	Type *QueryFormatType `xml:"Type"`

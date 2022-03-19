@@ -927,7 +927,7 @@ func (client *blobClient) downloadCreateRequest(ctx context.Context, blobClientD
 
 // downloadHandleResponse handles the Download response.
 func (client *blobClient) downloadHandleResponse(resp *http.Response) (blobClientDownloadResponse, error) {
-	result := blobClientDownloadResponse{Body: resp.Body}
+	result := blobClientDownloadResponse{Body: resp.Body, RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {

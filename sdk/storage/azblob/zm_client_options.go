@@ -7,7 +7,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// ClientOptions are the optional parameters for the NewClient method
+// ClientOptions adds additional client options while constructing connection
 type ClientOptions struct {
 	azcore.ClientOptions
 }

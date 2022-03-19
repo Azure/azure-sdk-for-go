@@ -10,6 +10,7 @@ package azblob
 
 import (
 	"io"
+	"net/http"
 	"time"
 )
 
@@ -458,6 +459,10 @@ type blobClientDownloadResponse struct {
 
 	// ObjectReplicationRules contains the information returned from the x-ms-or header response.
 	ObjectReplicationRules map[string]string
+
+	// RawResponse returns response as pointer
+	// TODO; Added this field here. Is it required in NewRetryReader?
+	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

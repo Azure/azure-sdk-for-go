@@ -8,7 +8,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 )
 
@@ -32,7 +31,7 @@ type BlockBlobClient struct {
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL, Azure AD credential, and options.
 func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*BlockBlobClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
-	con := azblob.newConnection(blobURL, authPolicy, options.getConnectionOptions())
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -41,7 +40,7 @@ func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *Cl
 
 // NewBlockBlobClientWithNoCredential creates a BlockBlobClient object using the specified URL and options.
 func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlockBlobClient, error) {
-	con := azblob.newConnection(blobURL, nil, options.getConnectionOptions())
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
 	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -51,7 +50,7 @@ func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) 
 // NewBlockBlobClientWithSharedKey creates a BlockBlobClient object using the specified URL, shared key, and options.
 func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*BlockBlobClient, error) {
 	authPolicy := newSharedKeyCredPolicy(cred)
-	con := azblob.newConnection(blobURL, authPolicy, options.getConnectionOptions())
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return &BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -66,7 +65,7 @@ func (bb *BlockBlobClient) WithSnapshot(snapshot string) (*BlockBlobClient, erro
 		return nil, err
 	}
 	p.Snapshot = snapshot
-	con := &azblob.connection{u: p.URL(), p: bb.client.con.p}
+	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return &BlockBlobClient{
 		client: &blockBlobClient{con: con},
 		BlobClient: BlobClient{
@@ -84,7 +83,7 @@ func (bb *BlockBlobClient) WithVersionID(versionID string) (*BlockBlobClient, er
 		return nil, err
 	}
 	p.VersionID = versionID
-	con := &azblob.connection{u: p.URL(), p: bb.client.con.p}
+	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return &BlockBlobClient{
 		client: &blockBlobClient{con: con},
 		BlobClient: BlobClient{

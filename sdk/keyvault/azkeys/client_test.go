@@ -534,8 +534,10 @@ func TestListDeletedKeys(t *testing.T) {
 
 			pager := client.ListDeletedKeys(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().DeletedKeys)
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.DeletedKeys)
 			}
 
 			require.GreaterOrEqual(t, count, 3)

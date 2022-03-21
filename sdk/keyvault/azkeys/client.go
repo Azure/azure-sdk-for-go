@@ -10,13 +10,11 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -352,58 +350,20 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 
 // ListPropertiesOfKeysPager implements the ListKeysPager interface
 type ListPropertiesOfKeysPager struct {
-	vaultURL  string
-	genClient *generated.KeyVaultClient
-	current   generated.KeyVaultClientGetKeysResponse
-	nextLink  *string
+	genPager *generated.KeyVaultClientGetKeysPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListPropertiesOfKeysPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage fetches the next available page of results from the service.
 func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) (ListKeysPage, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetKeysCreateRequest(ctx, l.vaultURL, &generated.KeyVaultClientGetKeysOptions{})
-		if err != nil {
-			return ListKeysPage{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListKeysPage{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListKeysPage{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListKeysPage{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
 		return ListKeysPage{}, err
 	}
-	result, err := l.genClient.GetKeysHandleResponse(resp)
-	if err != nil {
-		return ListKeysPage{}, err
-	}
-
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listKeysPageFromGenerated(result), nil
 
 }
@@ -440,9 +400,7 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 // key are not listed in the response. This operation requires the keys/list permission.
 func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *ListPropertiesOfKeysPager {
 	return &ListPropertiesOfKeysPager{
-		vaultURL:  c.vaultUrl,
-		genClient: c.kvClient,
-		current:   generated.KeyVaultClientGetKeysResponse{},
+		genPager: c.kvClient.GetKeys(c.vaultUrl, &generated.KeyVaultClientGetKeysOptions{}),
 	}
 }
 
@@ -966,9 +924,12 @@ type ListDeletedKeysPager struct {
 	genPager *generated.KeyVaultClientGetDeletedKeysPager
 }
 
-// PageResponse returns the current page of results
-func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
-	resp := l.genPager.PageResponse()
+// NextPage returns the current page of results
+func (l *ListDeletedKeysPager) NextPage(ctx context.Context) (ListDeletedKeysPage, error) {
+	resp, err := l.genPager.NextPage(ctx)
+	if err != nil {
+		return ListDeletedKeysPage{}, err
+	}
 
 	var values []*DeletedKeyItem
 	for _, d := range resp.Value {
@@ -978,17 +939,12 @@ func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	return ListDeletedKeysPage{
 		NextLink:    resp.NextLink,
 		DeletedKeys: values,
-	}
+	}, nil
 }
 
-// Err returns an error if the last operation resulted in an error.
-func (l *ListDeletedKeysPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next page of results.
-func (l *ListDeletedKeysPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+// More returns true if there are more pages to fetch from the service.
+func (l *ListDeletedKeysPager) More() bool {
+	return l.genPager.More()
 }
 
 // ListDeletedKeysPage holds the data for a single page.

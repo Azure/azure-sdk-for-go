@@ -127,7 +127,7 @@ func (client *pageBlobClient) clearPagesCreateRequest(ctx context.Context, conte
 
 // clearPagesHandleResponse handles the ClearPages response.
 func (client *pageBlobClient) clearPagesHandleResponse(resp *http.Response) (pageBlobClientClearPagesResponse, error) {
-	result := pageBlobClientClearPagesResponse{}
+	result := pageBlobClientClearPagesResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -243,7 +243,7 @@ func (client *pageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 
 // copyIncrementalHandleResponse handles the CopyIncremental response.
 func (client *pageBlobClient) copyIncrementalHandleResponse(resp *http.Response) (pageBlobClientCopyIncrementalResponse, error) {
-	result := pageBlobClientCopyIncrementalResponse{}
+	result := pageBlobClientCopyIncrementalResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -401,7 +401,7 @@ func (client *pageBlobClient) createCreateRequest(ctx context.Context, contentLe
 
 // createHandleResponse handles the Create response.
 func (client *pageBlobClient) createHandleResponse(resp *http.Response) (pageBlobClientCreateResponse, error) {
-	result := pageBlobClientCreateResponse{}
+	result := pageBlobClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -525,7 +525,7 @@ func (client *pageBlobClient) getPageRangesCreateRequest(ctx context.Context, pa
 
 // getPageRangesHandleResponse handles the GetPageRanges response.
 func (client *pageBlobClient) getPageRangesHandleResponse(resp *http.Response) (pageBlobClientGetPageRangesResponse, error) {
-	result := pageBlobClientGetPageRangesResponse{}
+	result := pageBlobClientGetPageRangesResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -642,7 +642,7 @@ func (client *pageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 
 // getPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
 func (client *pageBlobClient) getPageRangesDiffHandleResponse(resp *http.Response) (pageBlobClientGetPageRangesDiffResponse, error) {
-	result := pageBlobClientGetPageRangesDiffResponse{}
+	result := pageBlobClientGetPageRangesDiffResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -760,7 +760,7 @@ func (client *pageBlobClient) resizeCreateRequest(ctx context.Context, blobConte
 
 // resizeHandleResponse handles the Resize response.
 func (client *pageBlobClient) resizeHandleResponse(resp *http.Response) (pageBlobClientResizeResponse, error) {
-	result := pageBlobClientResizeResponse{}
+	result := pageBlobClientResizeResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -864,7 +864,7 @@ func (client *pageBlobClient) updateSequenceNumberCreateRequest(ctx context.Cont
 
 // updateSequenceNumberHandleResponse handles the UpdateSequenceNumber response.
 func (client *pageBlobClient) updateSequenceNumberHandleResponse(resp *http.Response) (pageBlobClientUpdateSequenceNumberResponse, error) {
-	result := pageBlobClientUpdateSequenceNumberResponse{}
+	result := pageBlobClientUpdateSequenceNumberResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1000,7 +1000,7 @@ func (client *pageBlobClient) uploadPagesCreateRequest(ctx context.Context, cont
 
 // uploadPagesHandleResponse handles the UploadPages response.
 func (client *pageBlobClient) uploadPagesHandleResponse(resp *http.Response) (pageBlobClientUploadPagesResponse, error) {
-	result := pageBlobClientUploadPagesResponse{}
+	result := pageBlobClientUploadPagesResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1185,7 +1185,7 @@ func (client *pageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 
 // uploadPagesFromURLHandleResponse handles the UploadPagesFromURL response.
 func (client *pageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Response) (pageBlobClientUploadPagesFromURLResponse, error) {
-	result := pageBlobClientUploadPagesFromURLResponse{}
+	result := pageBlobClientUploadPagesFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

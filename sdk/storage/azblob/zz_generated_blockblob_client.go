@@ -162,7 +162,7 @@ func (client *blockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 
 // commitBlockListHandleResponse handles the CommitBlockList response.
 func (client *blockBlobClient) commitBlockListHandleResponse(resp *http.Response) (blockBlobClientCommitBlockListResponse, error) {
-	result := blockBlobClientCommitBlockListResponse{}
+	result := blockBlobClientCommitBlockListResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -276,7 +276,7 @@ func (client *blockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 
 // getBlockListHandleResponse handles the GetBlockList response.
 func (client *blockBlobClient) getBlockListHandleResponse(resp *http.Response) (blockBlobClientGetBlockListResponse, error) {
-	result := blockBlobClientGetBlockListResponse{}
+	result := blockBlobClientGetBlockListResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -463,7 +463,7 @@ func (client *blockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 
 // putBlobFromURLHandleResponse handles the PutBlobFromURL response.
 func (client *blockBlobClient) putBlobFromURLHandleResponse(resp *http.Response) (blockBlobClientPutBlobFromURLResponse, error) {
-	result := blockBlobClientPutBlobFromURLResponse{}
+	result := blockBlobClientPutBlobFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -588,7 +588,7 @@ func (client *blockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 
 // stageBlockHandleResponse handles the StageBlock response.
 func (client *blockBlobClient) stageBlockHandleResponse(resp *http.Response) (blockBlobClientStageBlockResponse, error) {
-	result := blockBlobClientStageBlockResponse{}
+	result := blockBlobClientStageBlockResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -729,7 +729,7 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 
 // stageBlockFromURLHandleResponse handles the StageBlockFromURL response.
 func (client *blockBlobClient) stageBlockFromURLHandleResponse(resp *http.Response) (blockBlobClientStageBlockFromURLResponse, error) {
-	result := blockBlobClientStageBlockFromURLResponse{}
+	result := blockBlobClientStageBlockFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -899,7 +899,7 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 
 // uploadHandleResponse handles the Upload response.
 func (client *blockBlobClient) uploadHandleResponse(resp *http.Response) (blockBlobClientUploadResponse, error) {
-	result := blockBlobClientUploadResponse{}
+	result := blockBlobClientUploadResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

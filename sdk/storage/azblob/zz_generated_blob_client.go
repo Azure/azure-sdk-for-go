@@ -84,7 +84,7 @@ func (client *blobClient) abortCopyFromURLCreateRequest(ctx context.Context, cop
 
 // abortCopyFromURLHandleResponse handles the AbortCopyFromURL response.
 func (client *blobClient) abortCopyFromURLHandleResponse(resp *http.Response) (blobClientAbortCopyFromURLResponse, error) {
-	result := blobClientAbortCopyFromURLResponse{}
+	result := blobClientAbortCopyFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -168,7 +168,7 @@ func (client *blobClient) acquireLeaseCreateRequest(ctx context.Context, blobCli
 
 // acquireLeaseHandleResponse handles the AcquireLease response.
 func (client *blobClient) acquireLeaseHandleResponse(resp *http.Response) (blobClientAcquireLeaseResponse, error) {
-	result := blobClientAcquireLeaseResponse{}
+	result := blobClientAcquireLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -262,7 +262,7 @@ func (client *blobClient) breakLeaseCreateRequest(ctx context.Context, blobClien
 
 // breakLeaseHandleResponse handles the BreakLease response.
 func (client *blobClient) breakLeaseHandleResponse(resp *http.Response) (blobClientBreakLeaseResponse, error) {
-	result := blobClientBreakLeaseResponse{}
+	result := blobClientBreakLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -364,7 +364,7 @@ func (client *blobClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 
 // changeLeaseHandleResponse handles the ChangeLease response.
 func (client *blobClient) changeLeaseHandleResponse(resp *http.Response) (blobClientChangeLeaseResponse, error) {
-	result := blobClientChangeLeaseResponse{}
+	result := blobClientChangeLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -503,7 +503,7 @@ func (client *blobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 
 // copyFromURLHandleResponse handles the CopyFromURL response.
 func (client *blobClient) copyFromURLHandleResponse(resp *http.Response) (blobClientCopyFromURLResponse, error) {
-	result := blobClientCopyFromURLResponse{}
+	result := blobClientCopyFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -636,7 +636,7 @@ func (client *blobClient) createSnapshotCreateRequest(ctx context.Context, blobC
 
 // createSnapshotHandleResponse handles the CreateSnapshot response.
 func (client *blobClient) createSnapshotHandleResponse(resp *http.Response) (blobClientCreateSnapshotResponse, error) {
-	result := blobClientCreateSnapshotResponse{}
+	result := blobClientCreateSnapshotResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-snapshot"); val != "" {
 		result.Snapshot = &val
 	}
@@ -760,7 +760,7 @@ func (client *blobClient) deleteCreateRequest(ctx context.Context, blobClientDel
 
 // deleteHandleResponse handles the Delete response.
 func (client *blobClient) deleteHandleResponse(resp *http.Response) (blobClientDeleteResponse, error) {
-	result := blobClientDeleteResponse{}
+	result := blobClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -821,7 +821,7 @@ func (client *blobClient) deleteImmutabilityPolicyCreateRequest(ctx context.Cont
 
 // deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
 func (client *blobClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response) (blobClientDeleteImmutabilityPolicyResponse, error) {
-	result := blobClientDeleteImmutabilityPolicyResponse{}
+	result := blobClientDeleteImmutabilityPolicyResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -927,7 +927,7 @@ func (client *blobClient) downloadCreateRequest(ctx context.Context, blobClientD
 
 // downloadHandleResponse handles the Download response.
 func (client *blobClient) downloadHandleResponse(resp *http.Response) (blobClientDownloadResponse, error) {
-	result := blobClientDownloadResponse{Body: resp.Body, RawResponse: resp}
+	result := blobClientDownloadResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1170,7 +1170,7 @@ func (client *blobClient) getAccountInfoCreateRequest(ctx context.Context, optio
 
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
 func (client *blobClient) getAccountInfoHandleResponse(resp *http.Response) (blobClientGetAccountInfoResponse, error) {
-	result := blobClientGetAccountInfoResponse{}
+	result := blobClientGetAccountInfoResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -1273,7 +1273,7 @@ func (client *blobClient) getPropertiesCreateRequest(ctx context.Context, blobCl
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *blobClient) getPropertiesHandleResponse(resp *http.Response) (blobClientGetPropertiesResponse, error) {
-	result := blobClientGetPropertiesResponse{}
+	result := blobClientGetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1565,7 +1565,7 @@ func (client *blobClient) getTagsCreateRequest(ctx context.Context, blobClientGe
 
 // getTagsHandleResponse handles the GetTags response.
 func (client *blobClient) getTagsHandleResponse(resp *http.Response) (blobClientGetTagsResponse, error) {
-	result := blobClientGetTagsResponse{}
+	result := blobClientGetTagsResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -1665,7 +1665,7 @@ func (client *blobClient) queryCreateRequest(ctx context.Context, blobClientQuer
 
 // queryHandleResponse handles the Query response.
 func (client *blobClient) queryHandleResponse(resp *http.Response) (blobClientQueryResponse, error) {
-	result := blobClientQueryResponse{Body: resp.Body}
+	result := blobClientQueryResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1874,7 +1874,7 @@ func (client *blobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 
 // releaseLeaseHandleResponse handles the ReleaseLease response.
 func (client *blobClient) releaseLeaseHandleResponse(resp *http.Response) (blobClientReleaseLeaseResponse, error) {
-	result := blobClientReleaseLeaseResponse{}
+	result := blobClientReleaseLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1964,7 +1964,7 @@ func (client *blobClient) renewLeaseCreateRequest(ctx context.Context, leaseID s
 
 // renewLeaseHandleResponse handles the RenewLease response.
 func (client *blobClient) renewLeaseHandleResponse(resp *http.Response) (blobClientRenewLeaseResponse, error) {
-	result := blobClientRenewLeaseResponse{}
+	result := blobClientRenewLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -2042,7 +2042,7 @@ func (client *blobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 
 // setExpiryHandleResponse handles the SetExpiry response.
 func (client *blobClient) setExpiryHandleResponse(resp *http.Response) (blobClientSetExpiryResponse, error) {
-	result := blobClientSetExpiryResponse{}
+	result := blobClientSetExpiryResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -2152,7 +2152,7 @@ func (client *blobClient) setHTTPHeadersCreateRequest(ctx context.Context, blobC
 
 // setHTTPHeadersHandleResponse handles the SetHTTPHeaders response.
 func (client *blobClient) setHTTPHeadersHandleResponse(resp *http.Response) (blobClientSetHTTPHeadersResponse, error) {
-	result := blobClientSetHTTPHeadersResponse{}
+	result := blobClientSetHTTPHeadersResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -2240,7 +2240,7 @@ func (client *blobClient) setImmutabilityPolicyCreateRequest(ctx context.Context
 
 // setImmutabilityPolicyHandleResponse handles the SetImmutabilityPolicy response.
 func (client *blobClient) setImmutabilityPolicyHandleResponse(resp *http.Response) (blobClientSetImmutabilityPolicyResponse, error) {
-	result := blobClientSetImmutabilityPolicyResponse{}
+	result := blobClientSetImmutabilityPolicyResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -2312,7 +2312,7 @@ func (client *blobClient) setLegalHoldCreateRequest(ctx context.Context, legalHo
 
 // setLegalHoldHandleResponse handles the SetLegalHold response.
 func (client *blobClient) setLegalHoldHandleResponse(resp *http.Response) (blobClientSetLegalHoldResponse, error) {
-	result := blobClientSetLegalHoldResponse{}
+	result := blobClientSetLegalHoldResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -2420,7 +2420,7 @@ func (client *blobClient) setMetadataCreateRequest(ctx context.Context, blobClie
 
 // setMetadataHandleResponse handles the SetMetadata response.
 func (client *blobClient) setMetadataHandleResponse(resp *http.Response) (blobClientSetMetadataResponse, error) {
-	result := blobClientSetMetadataResponse{}
+	result := blobClientSetMetadataResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -2526,7 +2526,7 @@ func (client *blobClient) setTagsCreateRequest(ctx context.Context, blobClientSe
 
 // setTagsHandleResponse handles the SetTags response.
 func (client *blobClient) setTagsHandleResponse(resp *http.Response) (blobClientSetTagsResponse, error) {
-	result := blobClientSetTagsResponse{}
+	result := blobClientSetTagsResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -2608,7 +2608,7 @@ func (client *blobClient) setTierCreateRequest(ctx context.Context, tier AccessT
 
 // setTierHandleResponse handles the SetTier response.
 func (client *blobClient) setTierHandleResponse(resp *http.Response) (blobClientSetTierResponse, error) {
-	result := blobClientSetTierResponse{}
+	result := blobClientSetTierResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -2728,7 +2728,7 @@ func (client *blobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 
 // startCopyFromURLHandleResponse handles the StartCopyFromURL response.
 func (client *blobClient) startCopyFromURLHandleResponse(resp *http.Response) (blobClientStartCopyFromURLResponse, error) {
-	result := blobClientStartCopyFromURLResponse{}
+	result := blobClientStartCopyFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -2807,7 +2807,7 @@ func (client *blobClient) undeleteCreateRequest(ctx context.Context, options *bl
 
 // undeleteHandleResponse handles the Undelete response.
 func (client *blobClient) undeleteHandleResponse(resp *http.Response) (blobClientUndeleteResponse, error) {
-	result := blobClientUndeleteResponse{}
+	result := blobClientUndeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}

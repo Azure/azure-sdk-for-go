@@ -87,7 +87,7 @@ func (client *serviceClient) filterBlobsCreateRequest(ctx context.Context, optio
 
 // filterBlobsHandleResponse handles the FilterBlobs response.
 func (client *serviceClient) filterBlobsHandleResponse(resp *http.Response) (serviceClientFilterBlobsResponse, error) {
-	result := serviceClientFilterBlobsResponse{}
+	result := serviceClientFilterBlobsResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -145,7 +145,7 @@ func (client *serviceClient) getAccountInfoCreateRequest(ctx context.Context, op
 
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
 func (client *serviceClient) getAccountInfoHandleResponse(resp *http.Response) (serviceClientGetAccountInfoResponse, error) {
-	result := serviceClientGetAccountInfoResponse{}
+	result := serviceClientGetAccountInfoResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -220,7 +220,7 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (serviceClientGetPropertiesResponse, error) {
-	result := serviceClientGetPropertiesResponse{}
+	result := serviceClientGetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -278,7 +278,7 @@ func (client *serviceClient) getStatisticsCreateRequest(ctx context.Context, opt
 
 // getStatisticsHandleResponse handles the GetStatistics response.
 func (client *serviceClient) getStatisticsHandleResponse(resp *http.Response) (serviceClientGetStatisticsResponse, error) {
-	result := serviceClientGetStatisticsResponse{}
+	result := serviceClientGetStatisticsResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -345,7 +345,7 @@ func (client *serviceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
 func (client *serviceClient) getUserDelegationKeyHandleResponse(resp *http.Response) (serviceClientGetUserDelegationKeyResponse, error) {
-	result := serviceClientGetUserDelegationKeyResponse{}
+	result := serviceClientGetUserDelegationKeyResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -378,7 +378,7 @@ func (client *serviceClient) ListContainersSegment(options *serviceClientListCon
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listContainersSegmentCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListContainersSegmentResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp serviceClientListContainersSegmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListContainersSegmentResponse.NextMarker)
 		},
 	}
@@ -417,8 +417,8 @@ func (client *serviceClient) listContainersSegmentCreateRequest(ctx context.Cont
 }
 
 // listContainersSegmentHandleResponse handles the ListContainersSegment response.
-func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Response) (ServiceClientListContainersSegmentResponse, error) {
-	result := ServiceClientListContainersSegmentResponse{}
+func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Response) (serviceClientListContainersSegmentResponse, error) {
+	result := serviceClientListContainersSegmentResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -429,7 +429,7 @@ func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Resp
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListContainersSegmentResponse); err != nil {
-		return ServiceClientListContainersSegmentResponse{}, err
+		return serviceClientListContainersSegmentResponse{}, err
 	}
 	return result, nil
 }
@@ -477,7 +477,7 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, sto
 
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (serviceClientSetPropertiesResponse, error) {
-	result := serviceClientSetPropertiesResponse{}
+	result := serviceClientSetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -537,7 +537,7 @@ func (client *serviceClient) submitBatchCreateRequest(ctx context.Context, conte
 
 // submitBatchHandleResponse handles the SubmitBatch response.
 func (client *serviceClient) submitBatchHandleResponse(resp *http.Response) (serviceClientSubmitBatchResponse, error) {
-	result := serviceClientSubmitBatchResponse{Body: resp.Body}
+	result := serviceClientSubmitBatchResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}

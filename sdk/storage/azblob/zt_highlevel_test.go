@@ -538,3 +538,64 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 	mmf.isClosed = true
 	time.Sleep(time.Second * 5)
 }
+
+func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	// Set up test blob
+	blobName := generateBlobName(testName)
+	bbClient, err := getBlockBlobClient(blobName, containerClient)
+	_assert.Nil(err)
+	// Create some data to test the upload stream
+	blobContentReader, blobData := generateData(blobSize)
+
+	// Perform UploadStreamToBlockBlob
+	uploadResp, err := bbClient.UploadStreamToBlockBlob(ctx, blobContentReader,
+		UploadStreamToBlockBlobOptions{
+			BufferSize:  bufferSize,
+			MaxBuffers:  maxBuffers,
+			Metadata:    basicMetadata,
+			BlobTagsMap: basicBlobTagsMap,
+			HTTPHeaders: &basicHeaders,
+		})
+
+	// Assert that upload was successful
+	_assert.Equal(err, nil)
+	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
+	_assert.NoError(err)
+	_assert.EqualValues(getPropertiesResp.Metadata, basicMetadata)
+	_assert.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	_assert.Equal(getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+
+	getTagsResp, err := bbClient.GetTags(ctx, nil)
+	_assert.NoError(err)
+	_assert.Len(getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		_assert.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := bbClient.Download(ctx, nil)
+	_assert.NoError(err)
+
+	// Assert that the content is correct
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	_assert.NoError(err)
+	_assert.Equal(len(actualBlobData), blobSize)
+	_assert.EqualValues(actualBlobData, blobData)
+}

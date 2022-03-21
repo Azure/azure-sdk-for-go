@@ -1,8 +1,10 @@
 # Code Generation - Azure Blob SDK for Golang
 
+<!-- autorest --use=@autorest/go@4.0.0-preview.35 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=generated/ --module=azblob --openapi-type="data-plane" --credential-scope=none -->
+
 ```bash
 cd swagger
-autorest README.md
+autorest autorest.md
 gofmt -w generated/*
 ```
 
@@ -16,7 +18,7 @@ license-header: MICROSOFT_MIT_NO_VERSION
 input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
 module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 credential-scope: "https://storage.azure.com/.default"
-output-folder: ../internal/generated/
+output-folder: internal/
 file-prefix: "zz_generated_"
 openapi-type: "data-plane"
 verbose: true
@@ -27,7 +29,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: false
-use: "@autorest/go@4.0.0-preview.37"
+use: "@autorest/go@4.0.0-preview.35"
 ```
 
 ### Fix BlobMetadata.

@@ -129,7 +129,7 @@ func (client *appendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 
 // appendBlockHandleResponse handles the AppendBlock response.
 func (client *appendBlobClient) appendBlockHandleResponse(resp *http.Response) (appendBlobClientAppendBlockResponse, error) {
-	result := appendBlobClientAppendBlockResponse{}
+	result := appendBlobClientAppendBlockResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -315,7 +315,7 @@ func (client *appendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 
 // appendBlockFromURLHandleResponse handles the AppendBlockFromURL response.
 func (client *appendBlobClient) appendBlockFromURLHandleResponse(resp *http.Response) (appendBlobClientAppendBlockFromURLResponse, error) {
-	result := appendBlobClientAppendBlockFromURLResponse{}
+	result := appendBlobClientAppendBlockFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -493,7 +493,7 @@ func (client *appendBlobClient) createCreateRequest(ctx context.Context, content
 
 // createHandleResponse handles the Create response.
 func (client *appendBlobClient) createHandleResponse(resp *http.Response) (appendBlobClientCreateResponse, error) {
-	result := appendBlobClientCreateResponse{}
+	result := appendBlobClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -610,7 +610,7 @@ func (client *appendBlobClient) sealCreateRequest(ctx context.Context, appendBlo
 
 // sealHandleResponse handles the Seal response.
 func (client *appendBlobClient) sealHandleResponse(resp *http.Response) (appendBlobClientSealResponse, error) {
-	result := appendBlobClientSealResponse{}
+	result := appendBlobClientSealResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

@@ -75,7 +75,7 @@ func (r *BlobDownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
 	}
 
 	if options.MaxRetryRequests == 0 { // No additional retries
-		return r.blobClientDownloadResponse.Body
+		return r.RawResponse.Body
 	}
 	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, *options,
 		func(ctx context.Context, getInfo HTTPGetterInfo) (*http.Response, error) {

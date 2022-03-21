@@ -9,6 +9,7 @@
 package azblob
 
 import (
+	"encoding/xml"
 	"time"
 )
 
@@ -22,6 +23,39 @@ type AccessPolicy struct {
 
 	// the date-time the policy is active
 	Start *time.Time `xml:"Start"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
+func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias AccessPolicy
+	aux := &struct {
+		*alias
+		Expiry *timeRFC3339 `xml:"Expiry"`
+		Start  *timeRFC3339 `xml:"Start"`
+	}{
+		alias:  (*alias)(&a),
+		Expiry: (*timeRFC3339)(a.Expiry),
+		Start:  (*timeRFC3339)(a.Start),
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type AccessPolicy.
+func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias AccessPolicy
+	aux := &struct {
+		*alias
+		Expiry *timeRFC3339 `xml:"Expiry"`
+		Start  *timeRFC3339 `xml:"Start"`
+	}{
+		alias: (*alias)(a),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	a.Expiry = (*time.Time)(aux.Expiry)
+	a.Start = (*time.Time)(aux.Start)
+	return nil
 }
 
 // AppendPositionAccessConditions contains a group of parameters for the appendBlobClient.AppendBlock method.
@@ -43,6 +77,21 @@ type ArrowConfiguration struct {
 	Schema []*ArrowField `xml:"Schema>Field"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ArrowConfiguration.
+func (a ArrowConfiguration) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias ArrowConfiguration
+	aux := &struct {
+		*alias
+		Schema *[]*ArrowField `xml:"Schema>Field"`
+	}{
+		alias: (*alias)(&a),
+	}
+	if a.Schema != nil {
+		aux.Schema = &a.Schema
+	}
+	return e.EncodeElement(aux, start)
+}
+
 // ArrowField - Groups settings regarding specific field of an arrow schema
 type ArrowField struct {
 	// REQUIRED
@@ -52,10 +101,24 @@ type ArrowField struct {
 	Scale     *int32  `xml:"Scale"`
 }
 
-// BlobFlatListSegment for list segment
 type BlobFlatListSegment struct {
 	// REQUIRED
 	BlobItems []*BlobItemInternal `xml:"Blob"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobFlatListSegment.
+func (b BlobFlatListSegment) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias BlobFlatListSegment
+	aux := &struct {
+		*alias
+		BlobItems *[]*BlobItemInternal `xml:"Blob"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.BlobItems != nil {
+		aux.BlobItems = &b.BlobItems
+	}
+	return e.EncodeElement(aux, start)
 }
 
 // BlobHTTPHeaders contains a group of parameters for the blobClient.SetHTTPHeaders method.
@@ -77,11 +140,29 @@ type BlobHTTPHeaders struct {
 	BlobContentType *string
 }
 
-// BlobHierarchyListSegment for listing API
 type BlobHierarchyListSegment struct {
 	// REQUIRED
 	BlobItems    []*BlobItemInternal `xml:"Blob"`
 	BlobPrefixes []*BlobPrefix       `xml:"BlobPrefix"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobHierarchyListSegment.
+func (b BlobHierarchyListSegment) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias BlobHierarchyListSegment
+	aux := &struct {
+		*alias
+		BlobItems    *[]*BlobItemInternal `xml:"Blob"`
+		BlobPrefixes *[]*BlobPrefix       `xml:"BlobPrefix"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.BlobItems != nil {
+		aux.BlobItems = &b.BlobItems
+	}
+	if b.BlobPrefixes != nil {
+		aux.BlobPrefixes = &b.BlobPrefixes
+	}
+	return e.EncodeElement(aux, start)
 }
 
 // BlobItemInternal - An Azure Storage blob
@@ -109,6 +190,24 @@ type BlobItemInternal struct {
 	// Dictionary of
 	ObjectReplicationMetadata map[string]*string `xml:"OrMetadata"`
 	VersionID                 *string            `xml:"VersionId"`
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type BlobItemInternal.
+func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias BlobItemInternal
+	aux := &struct {
+		*alias
+		Metadata                  additionalProperties `xml:"Metadata"`
+		ObjectReplicationMetadata additionalProperties `xml:"OrMetadata"`
+	}{
+		alias: (*alias)(b),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	b.Metadata = (map[string]*string)(aux.Metadata)
+	b.ObjectReplicationMetadata = (map[string]*string)(aux.ObjectReplicationMetadata)
+	return nil
 }
 
 type BlobPrefix struct {
@@ -170,6 +269,68 @@ type BlobPropertiesInternal struct {
 	TagCount               *int32             `xml:"TagCount"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobPropertiesInternal.
+func (b BlobPropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias BlobPropertiesInternal
+	aux := &struct {
+		*alias
+		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5                  *[]byte      `xml:"Content-MD5"`
+		CopyCompletionTime          *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime                *timeRFC1123 `xml:"Creation-Time"`
+		DeletedTime                 *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn                   *timeRFC1123 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *timeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn              *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified                *timeRFC1123 `xml:"Last-Modified"`
+	}{
+		alias:                       (*alias)(&b),
+		AccessTierChangeTime:        (*timeRFC1123)(b.AccessTierChangeTime),
+		CopyCompletionTime:          (*timeRFC1123)(b.CopyCompletionTime),
+		CreationTime:                (*timeRFC1123)(b.CreationTime),
+		DeletedTime:                 (*timeRFC1123)(b.DeletedTime),
+		ExpiresOn:                   (*timeRFC1123)(b.ExpiresOn),
+		ImmutabilityPolicyExpiresOn: (*timeRFC1123)(b.ImmutabilityPolicyExpiresOn),
+		LastAccessedOn:              (*timeRFC1123)(b.LastAccessedOn),
+		LastModified:                (*timeRFC1123)(b.LastModified),
+	}
+	if b.ContentMD5 != nil {
+		aux.ContentMD5 = &b.ContentMD5
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type BlobPropertiesInternal.
+func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias BlobPropertiesInternal
+	aux := &struct {
+		*alias
+		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5                  *[]byte      `xml:"Content-MD5"`
+		CopyCompletionTime          *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime                *timeRFC1123 `xml:"Creation-Time"`
+		DeletedTime                 *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn                   *timeRFC1123 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *timeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn              *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified                *timeRFC1123 `xml:"Last-Modified"`
+	}{
+		alias: (*alias)(b),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	b.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
+	b.CopyCompletionTime = (*time.Time)(aux.CopyCompletionTime)
+	b.CreationTime = (*time.Time)(aux.CreationTime)
+	b.DeletedTime = (*time.Time)(aux.DeletedTime)
+	b.ExpiresOn = (*time.Time)(aux.ExpiresOn)
+	b.ImmutabilityPolicyExpiresOn = (*time.Time)(aux.ImmutabilityPolicyExpiresOn)
+	b.LastAccessedOn = (*time.Time)(aux.LastAccessedOn)
+	b.LastModified = (*time.Time)(aux.LastModified)
+	return nil
+}
+
 type BlobTag struct {
 	// REQUIRED
 	Key *string `xml:"Key"`
@@ -184,6 +345,22 @@ type BlobTags struct {
 	BlobTagSet []*BlobTag `xml:"TagSet>Tag"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobTags.
+func (b BlobTags) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Tags"
+	type alias BlobTags
+	aux := &struct {
+		*alias
+		BlobTagSet *[]*BlobTag `xml:"TagSet>Tag"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.BlobTagSet != nil {
+		aux.BlobTagSet = &b.BlobTagSet
+	}
+	return e.EncodeElement(aux, start)
+}
+
 // Block - Represents a single block in a block blob. It describes the block's ID and size.
 type Block struct {
 	// REQUIRED; The base64 encoded block ID.
@@ -193,99 +370,58 @@ type Block struct {
 	Size *int64 `xml:"Size"`
 }
 
-// blockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.
-type blockBlobCommitBlockListOptions struct {
-	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsString *string
-	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
-	// from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified
-	// metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming
-	// rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// Optional. Indicates the tier to be set on the blob.
-	Tier *AccessTier
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 []byte
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
-}
-
-// blockBlobGetBlockListOptions contains the optional parameters for the BlockBlob.GetBlockList method.
-type blockBlobGetBlockListOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with
-	// blob snapshots, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob">Creating a Snapshot
-	// of a Blob.</a>
-	Snapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-}
-
-// blockBlobStageBlockFromURLOptions contains the optional parameters for the BlockBlob.StageBlockFromURL method.
-type blockBlobStageBlockFromURLOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 []byte
-	// Bytes of source data in the specified range.
-	SourceRange *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-}
-
-// blockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
-type blockBlobStageBlockOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 []byte
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
-}
-
-// blockBlobUploadOptions contains the optional parameters for the BlockBlob.Upload method.
-type blockBlobUploadOptions struct {
-	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsString *string
-	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
-	// from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified
-	// metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming
-	// rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// Optional. Indicates the tier to be set on the blob.
-	Tier *AccessTier
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
-}
-
-// BlockList object
 type BlockList struct {
 	CommittedBlocks   []*Block `xml:"CommittedBlocks>Block"`
 	UncommittedBlocks []*Block `xml:"UncommittedBlocks>Block"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlockList.
+func (b BlockList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias BlockList
+	aux := &struct {
+		*alias
+		CommittedBlocks   *[]*Block `xml:"CommittedBlocks>Block"`
+		UncommittedBlocks *[]*Block `xml:"UncommittedBlocks>Block"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.CommittedBlocks != nil {
+		aux.CommittedBlocks = &b.CommittedBlocks
+	}
+	if b.UncommittedBlocks != nil {
+		aux.UncommittedBlocks = &b.UncommittedBlocks
+	}
+	return e.EncodeElement(aux, start)
 }
 
 type BlockLookupList struct {
 	Committed   []*string `xml:"Committed"`
 	Latest      []*string `xml:"Latest"`
 	Uncommitted []*string `xml:"Uncommitted"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlockLookupList.
+func (b BlockLookupList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "BlockList"
+	type alias BlockLookupList
+	aux := &struct {
+		*alias
+		Committed   *[]*string `xml:"Committed"`
+		Latest      *[]*string `xml:"Latest"`
+		Uncommitted *[]*string `xml:"Uncommitted"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Committed != nil {
+		aux.Committed = &b.Committed
+	}
+	if b.Latest != nil {
+		aux.Latest = &b.Latest
+	}
+	if b.Uncommitted != nil {
+		aux.Uncommitted = &b.Uncommitted
+	}
+	return e.EncodeElement(aux, start)
 }
 
 type ClearRange struct {
@@ -320,6 +456,22 @@ type ContainerItem struct {
 	Version  *string            `xml:"Version"`
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type ContainerItem.
+func (c *ContainerItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias ContainerItem
+	aux := &struct {
+		*alias
+		Metadata additionalProperties `xml:"Metadata"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	c.Metadata = (map[string]*string)(aux.Metadata)
+	return nil
+}
+
 // ContainerProperties - Properties of a container
 type ContainerProperties struct {
 	// REQUIRED
@@ -340,6 +492,39 @@ type ContainerProperties struct {
 	PreventEncryptionScopeOverride          *bool              `xml:"DenyEncryptionScopeOverride"`
 	PublicAccess                            *PublicAccessType  `xml:"PublicAccess"`
 	RemainingRetentionDays                  *int32             `xml:"RemainingRetentionDays"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type ContainerProperties.
+func (c ContainerProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias ContainerProperties
+	aux := &struct {
+		*alias
+		DeletedTime  *timeRFC1123 `xml:"DeletedTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
+	}{
+		alias:        (*alias)(&c),
+		DeletedTime:  (*timeRFC1123)(c.DeletedTime),
+		LastModified: (*timeRFC1123)(c.LastModified),
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type ContainerProperties.
+func (c *ContainerProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias ContainerProperties
+	aux := &struct {
+		*alias
+		DeletedTime  *timeRFC1123 `xml:"DeletedTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	c.DeletedTime = (*time.Time)(aux.DeletedTime)
+	c.LastModified = (*time.Time)(aux.LastModified)
+	return nil
 }
 
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
@@ -388,23 +573,7 @@ type CpkScopeInfo struct {
 	EncryptionScope *string
 }
 
-// DataLakeStorageError Implements the error and azcore.HTTPResponse interfaces.
-type DataLakeStorageError struct {
-	raw string
-	// The service error response object.
-	DataLakeStorageErrorDetails *DataLakeStorageErrorError `json:"error,omitempty"`
-}
-
-// DataLakeStorageErrorError - The service error response object.
-type DataLakeStorageErrorError struct {
-	// The service error code.
-	Code *string `json:"Code,omitempty"`
-
-	// The service error message.
-	Message *string `json:"Message,omitempty"`
-}
-
-// DelimitedTextConfiguration - delimited text configuration
+// DelimitedTextConfiguration - Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
 type DelimitedTextConfiguration struct {
 	// The string used to separate columns.
 	ColumnSeparator *string `xml:"ColumnSeparator"`
@@ -447,6 +616,21 @@ type FilterBlobSegment struct {
 	NextMarker *string `xml:"NextMarker"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type FilterBlobSegment.
+func (f FilterBlobSegment) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias FilterBlobSegment
+	aux := &struct {
+		*alias
+		Blobs *[]*FilterBlobItem `xml:"Blobs>Blob"`
+	}{
+		alias: (*alias)(&f),
+	}
+	if f.Blobs != nil {
+		aux.Blobs = &f.Blobs
+	}
+	return e.EncodeElement(aux, start)
+}
+
 // GeoReplication - Geo-Replication information for the Secondary Storage Service
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available
@@ -456,6 +640,35 @@ type GeoReplication struct {
 
 	// REQUIRED; The status of the secondary location
 	Status *GeoReplicationStatusType `xml:"Status"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type GeoReplication.
+func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias GeoReplication
+	aux := &struct {
+		*alias
+		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
+	}{
+		alias:        (*alias)(&g),
+		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type GeoReplication.
+func (g *GeoReplication) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias GeoReplication
+	aux := &struct {
+		*alias
+		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
+	}{
+		alias: (*alias)(g),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	g.LastSyncTime = (*time.Time)(aux.LastSyncTime)
+	return nil
 }
 
 // JSONTextConfiguration - json text configuration
@@ -525,6 +738,21 @@ type ListContainersSegmentResponse struct {
 	Prefix          *string `xml:"Prefix"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ListContainersSegmentResponse.
+func (l ListContainersSegmentResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias ListContainersSegmentResponse
+	aux := &struct {
+		*alias
+		ContainerItems *[]*ContainerItem `xml:"Containers>Container"`
+	}{
+		alias: (*alias)(&l),
+	}
+	if l.ContainerItems != nil {
+		aux.ContainerItems = &l.ContainerItems
+	}
+	return e.EncodeElement(aux, start)
+}
+
 // Logging - Azure Analytics Logging settings.
 type Logging struct {
 	// REQUIRED; Indicates whether all delete requests should be logged.
@@ -579,6 +807,25 @@ type PageList struct {
 	PageRange  []*PageRange  `xml:"PageRange"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type PageList.
+func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias PageList
+	aux := &struct {
+		*alias
+		ClearRange *[]*ClearRange `xml:"ClearRange"`
+		PageRange  *[]*PageRange  `xml:"PageRange"`
+	}{
+		alias: (*alias)(&p),
+	}
+	if p.ClearRange != nil {
+		aux.ClearRange = &p.ClearRange
+	}
+	if p.PageRange != nil {
+		aux.PageRange = &p.PageRange
+	}
+	return e.EncodeElement(aux, start)
+}
+
 type PageRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -587,7 +834,6 @@ type PageRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// QueryFormat struct
 type QueryFormat struct {
 	// REQUIRED; The quick query format type.
 	Type *QueryFormatType `xml:"Type"`
@@ -601,8 +847,8 @@ type QueryFormat struct {
 	// json text configuration
 	JSONTextConfiguration *JSONTextConfiguration `xml:"JsonTextConfiguration"`
 
-	// Anything
-	ParquetTextConfiguration interface{} `xml:"ParquetTextConfiguration"`
+	// Any object
+	ParquetTextConfiguration map[string]interface{} `xml:"ParquetTextConfiguration"`
 }
 
 // QueryRequest - Groups the set of query request settings.
@@ -614,6 +860,18 @@ type QueryRequest struct {
 	QueryType           *string             `xml:"QueryType"`
 	InputSerialization  *QuerySerialization `xml:"InputSerialization"`
 	OutputSerialization *QuerySerialization `xml:"OutputSerialization"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type QueryRequest.
+func (q QueryRequest) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "QueryRequest"
+	type alias QueryRequest
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&q),
+	}
+	return e.EncodeElement(aux, start)
 }
 
 type QuerySerialization struct {
@@ -682,13 +940,9 @@ type StaticWebsite struct {
 	IndexDocument *string `xml:"IndexDocument"`
 }
 
-//
-//// Implements the error and azcore.HTTPResponse interfaces.
-//type StorageError struct {
-//	raw     string
-//	Message *string `xml:"Message"`
-//}
-//
+type StorageError struct {
+	Message *string `json:"Message,omitempty"`
+}
 
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {
@@ -713,6 +967,21 @@ type StorageServiceProperties struct {
 
 	// The properties that enable an account to host a static website
 	StaticWebsite *StaticWebsite `xml:"StaticWebsite"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
+func (s StorageServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias StorageServiceProperties
+	aux := &struct {
+		*alias
+		Cors *[]*CorsRule `xml:"Cors>CorsRule"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.Cors != nil {
+		aux.Cors = &s.Cors
+	}
+	return e.EncodeElement(aux, start)
 }
 
 // StorageServiceStats - Stats for the storage service.
@@ -743,6 +1012,39 @@ type UserDelegationKey struct {
 
 	// REQUIRED; The key as a base64 string
 	Value *string `xml:"Value"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type UserDelegationKey.
+func (u UserDelegationKey) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias UserDelegationKey
+	aux := &struct {
+		*alias
+		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
+		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+	}{
+		alias:        (*alias)(&u),
+		SignedExpiry: (*timeRFC3339)(u.SignedExpiry),
+		SignedStart:  (*timeRFC3339)(u.SignedStart),
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type UserDelegationKey.
+func (u *UserDelegationKey) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias UserDelegationKey
+	aux := &struct {
+		*alias
+		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
+		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+	}{
+		alias: (*alias)(u),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	u.SignedExpiry = (*time.Time)(aux.SignedExpiry)
+	u.SignedStart = (*time.Time)(aux.SignedStart)
+	return nil
 }
 
 // appendBlobClientAppendBlockFromURLOptions contains the optional parameters for the appendBlobClient.AppendBlockFromURL

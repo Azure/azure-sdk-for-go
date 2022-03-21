@@ -1931,8 +1931,8 @@ type serviceClientGetUserDelegationKeyResponse struct {
 	Version *string `xml:"Version"`
 }
 
-// serviceClientListContainersSegmentResponse contains the response from method serviceClient.ListContainersSegment.
-type serviceClientListContainersSegmentResponse struct {
+// ServiceClientListContainersSegmentResponse contains the response from method serviceClient.ListContainersSegment.
+type ServiceClientListContainersSegmentResponse struct {
 	ListContainersSegmentResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`

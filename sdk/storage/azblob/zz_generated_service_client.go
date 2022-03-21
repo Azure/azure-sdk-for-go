@@ -378,7 +378,7 @@ func (client *serviceClient) ListContainersSegment(options *serviceClientListCon
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listContainersSegmentCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp serviceClientListContainersSegmentResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceClientListContainersSegmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListContainersSegmentResponse.NextMarker)
 		},
 	}
@@ -417,8 +417,8 @@ func (client *serviceClient) listContainersSegmentCreateRequest(ctx context.Cont
 }
 
 // listContainersSegmentHandleResponse handles the ListContainersSegment response.
-func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Response) (serviceClientListContainersSegmentResponse, error) {
-	result := serviceClientListContainersSegmentResponse{}
+func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Response) (ServiceClientListContainersSegmentResponse, error) {
+	result := ServiceClientListContainersSegmentResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -429,7 +429,7 @@ func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Resp
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListContainersSegmentResponse); err != nil {
-		return serviceClientListContainersSegmentResponse{}, err
+		return ServiceClientListContainersSegmentResponse{}, err
 	}
 	return result, nil
 }

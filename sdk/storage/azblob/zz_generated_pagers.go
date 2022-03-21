@@ -216,9 +216,9 @@ func (p *pageBlobClientGetPageRangesPager) NextPage(ctx context.Context) (pageBl
 // serviceClientListContainersSegmentPager provides operations for iterating over paged responses.
 type serviceClientListContainersSegmentPager struct {
 	client    *serviceClient
-	current   serviceClientListContainersSegmentResponse
+	current   ServiceClientListContainersSegmentResponse
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, serviceClientListContainersSegmentResponse) (*policy.Request, error)
+	advancer  func(context.Context, ServiceClientListContainersSegmentResponse) (*policy.Request, error)
 }
 
 // More returns true if there are more pages to retrieve.
@@ -232,31 +232,31 @@ func (p *serviceClientListContainersSegmentPager) More() bool {
 }
 
 // NextPage advances the pager to the next page.
-func (p *serviceClientListContainersSegmentPager) NextPage(ctx context.Context) (serviceClientListContainersSegmentResponse, error) {
+func (p *serviceClientListContainersSegmentPager) NextPage(ctx context.Context) (ServiceClientListContainersSegmentResponse, error) {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if !p.More() {
-			return serviceClientListContainersSegmentResponse{}, errors.New("no more pages")
+			return ServiceClientListContainersSegmentResponse{}, errors.New("no more pages")
 		}
 		req, err = p.advancer(ctx, p.current)
 	} else {
 		req, err = p.requester(ctx)
 	}
 	if err != nil {
-		return serviceClientListContainersSegmentResponse{}, err
+		return ServiceClientListContainersSegmentResponse{}, err
 	}
 	resp, err := p.client.pl.Do(req)
 	if err != nil {
-		return serviceClientListContainersSegmentResponse{}, err
+		return ServiceClientListContainersSegmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 
-		return serviceClientListContainersSegmentResponse{}, runtime.NewResponseError(resp)
+		return ServiceClientListContainersSegmentResponse{}, runtime.NewResponseError(resp)
 	}
 	result, err := p.client.listContainersSegmentHandleResponse(resp)
 	if err != nil {
-		return serviceClientListContainersSegmentResponse{}, err
+		return ServiceClientListContainersSegmentResponse{}, err
 	}
 	p.current = result
 	return p.current, nil

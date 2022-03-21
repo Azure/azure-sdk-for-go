@@ -122,11 +122,43 @@ func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) Ser
 // ---------------------------------------------------------------------------------------------------------------------
 
 type ServiceSetPropertiesOptions struct {
-	Properties StorageServiceProperties
+	// The set of CORS rules.
+	Cors []*CorsRule
+
+	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
+	// values include version 2008-10-27 and all more recent versions
+	DefaultServiceVersion *string
+
+	// the retention policy which determines how long the associated data should persist
+	DeleteRetentionPolicy *RetentionPolicy
+
+	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	HourMetrics *Metrics
+
+	// Azure Analytics Logging settings.
+	Logging *Logging
+
+	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	MinuteMetrics *Metrics
+
+	// The properties that enable an account to host a static website
+	StaticWebsite *StaticWebsite
 }
 
 func (o *ServiceSetPropertiesOptions) pointers() (StorageServiceProperties, *serviceClientSetPropertiesOptions) {
-	return o.Properties, nil
+	if o == nil {
+		return StorageServiceProperties{}, nil
+	}
+
+	return StorageServiceProperties{
+		Cors:                  o.Cors,
+		DefaultServiceVersion: o.DefaultServiceVersion,
+		DeleteRetentionPolicy: o.DeleteRetentionPolicy,
+		HourMetrics:           o.HourMetrics,
+		Logging:               o.Logging,
+		MinuteMetrics:         o.MinuteMetrics,
+		StaticWebsite:         o.StaticWebsite,
+	}, nil
 }
 
 type ServiceSetPropertiesResponse struct {

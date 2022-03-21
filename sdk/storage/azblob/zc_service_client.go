@@ -163,7 +163,7 @@ func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListCon
 	//	return pager
 	//}
 
-	pager.advancer = func(cxt context.Context, response serviceClientListContainersSegmentResponse) (*policy.Request, error) {
+	pager.advancer = func(cxt context.Context, response ServiceClientListContainersSegmentResponse) (*policy.Request, error) {
 		if response.ListContainersSegmentResponse.NextMarker == nil {
 			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}

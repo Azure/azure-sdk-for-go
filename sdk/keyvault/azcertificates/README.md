@@ -123,7 +123,7 @@ func main() {
 		panic(err)
 	}
 
-	client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err = azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -150,9 +150,10 @@ This section contains code snippets covering common tasks:
 creates a certificate to be stored in the Azure Key Vault. If a certificate with the same name already exists, a new
 version of the certificate is created. Before creating a certificate, a management policy for the certificate can be
 created or our default policy will be used. This method returns a long running operation poller.
+
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
@@ -161,7 +162,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err = azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -199,7 +200,7 @@ import (
 	"os"
 	"fmt"
 
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
@@ -239,8 +240,15 @@ func Example_GetCertificate() {
 updates a certificate previously stored in the Key Vault.
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
 
 func main() {
@@ -288,8 +296,15 @@ Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and yo
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
 
 func main() {
@@ -326,8 +341,14 @@ func main() {
 lists the properties of all certificates in the specified Key Vault.
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
 
 func main() {

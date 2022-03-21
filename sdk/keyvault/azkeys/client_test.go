@@ -568,10 +568,11 @@ func TestListKeyVersions(t *testing.T) {
 
 			pager := client.ListPropertiesOfKeyVersions(key, nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().Keys)
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Keys)
 			}
-			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 6)
 		})
 	}

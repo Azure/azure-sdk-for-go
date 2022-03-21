@@ -52,7 +52,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	containerClient, _ := svcClient.NewContainerClient("foo bar")
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
 	}
@@ -73,7 +73,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 	containerClient, _ := svcClient.NewContainerClient("")
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
 	}
@@ -98,7 +98,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
 	}
@@ -122,7 +122,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{"1 foo": "bar"},
 	}
@@ -144,7 +144,7 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
 	}
@@ -170,7 +170,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
 	}
@@ -199,7 +199,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerClient := getContainerClient(containerName, svcClient)
 //
 //	access := PublicAccessTypeBlob
-//	createContainerOptions := CreateContainerOptions{
+//	createContainerOptions := ContainerCreateOptions{
 //		Access: &access,
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
@@ -247,7 +247,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerClient := getContainerClient(containerName, svcClient)
 //
 //	access := PublicAccessTypeBlob
-//	createContainerOptions := CreateContainerOptions{
+//	createContainerOptions := ContainerCreateOptions{
 //		Access: &access,
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
@@ -337,7 +337,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	_assert.Nil(err)
 //
 //	access := PublicAccessTypeBlob
-//	createContainerOptions := CreateContainerOptions{
+//	createContainerOptions := ContainerCreateOptions{
 //		Access:   &access,
 //		Metadata: nil,
 //	}
@@ -364,7 +364,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	access := PublicAccessTypeBlob
-//	createContainerOptions := CreateContainerOptions{
+//	createContainerOptions := ContainerCreateOptions{
 //		Access:   &access,
 //		Metadata: basicMetadata,
 //	}
@@ -478,7 +478,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	deleteContainerOptions := DeleteContainerOptions{
+	deleteContainerOptions := ContainerDeleteOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -507,7 +507,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	deleteContainerOptions := DeleteContainerOptions{
+	deleteContainerOptions := ContainerDeleteOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -536,7 +536,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	deleteContainerOptions := DeleteContainerOptions{
+	deleteContainerOptions := ContainerDeleteOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -566,7 +566,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	deleteContainerOptions := DeleteContainerOptions{
+	deleteContainerOptions := ContainerDeleteOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -585,7 +585,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 ////	defer deleteContainer(_assert, containerClient)
 ////
 ////	invalidEtag := "invalid"
-////	deleteContainerOptions := SetMetadataContainerOptions{
+////	deleteContainerOptions := ContainerSetMetadataOptions{
 ////		Metadata: basicMetadata,
 ////		ModifiedAccessConditions: &ModifiedAccessConditions{
 ////			IfMatch: &invalidEtag,
@@ -1060,7 +1060,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Metadata: basicMetadata,
 		Access:   &access,
 	}
@@ -1068,7 +1068,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
-	setMetadataContainerOptions := SetMetadataContainerOptions{
+	setMetadataContainerOptions := ContainerSetMetadataOptions{
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
@@ -1090,7 +1090,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	containerName := generateContainerName(testName)
 	containerClient, _ := getContainerClient(containerName, svcClient)
 	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
+	createContainerOptions := ContainerCreateOptions{
 		Access:   &access,
 		Metadata: basicMetadata,
 	}
@@ -1119,7 +1119,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 
 	defer deleteContainer(_assert, containerClient)
 
-	setMetadataContainerOptions := SetMetadataContainerOptions{
+	setMetadataContainerOptions := ContainerSetMetadataOptions{
 		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
@@ -1153,7 +1153,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //
 //	defer deleteContainer(_assert, containerClient)
 //
-//	setMetadataContainerOptions := SetMetadataContainerOptions{
+//	setMetadataContainerOptions := ContainerSetMetadataOptions{
 //		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
@@ -1185,7 +1185,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	//currentTime, err := time.Parse(time.UnixDate, "Wed Jan 07 11:11:11 PST 2099")
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 //	_assert.Nil(err)
-//	setMetadataContainerOptions := SetMetadataContainerOptions{
+//	setMetadataContainerOptions := ContainerSetMetadataOptions{
 //		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,

@@ -1040,7 +1040,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_assert.Nil(err)
 
 	access := PublicAccessTypeBlob
-	setAccessPolicyOptions := SetAccessPolicyOptions{
+	setAccessPolicyOptions := ContainerSetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
 		},

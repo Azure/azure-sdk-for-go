@@ -5,8 +5,8 @@ package azblob
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// CreateContainerOptions provides set of configurations for CreateContainer operation
-type CreateContainerOptions struct {
+// ContainerCreateOptions provides set of configurations for CreateContainer operation
+type ContainerCreateOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
 
@@ -14,10 +14,10 @@ type CreateContainerOptions struct {
 	Metadata map[string]string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
-	cpkScope *ContainerCpkScopeInfo
+	CpkScope *ContainerCpkScopeInfo
 }
 
-func (o *CreateContainerOptions) pointers() (*containerClientCreateOptions, *ContainerCpkScopeInfo) {
+func (o *ContainerCreateOptions) pointers() (*containerClientCreateOptions, *ContainerCpkScopeInfo) {
 	if o == nil {
 		return nil, nil
 	}
@@ -27,7 +27,7 @@ func (o *CreateContainerOptions) pointers() (*containerClientCreateOptions, *Con
 		Metadata: o.Metadata,
 	}
 
-	return &basicOptions, o.cpkScope
+	return &basicOptions, o.CpkScope
 }
 
 // ContainerCreateResponse is wrapper around containerClientCreateResponse
@@ -41,13 +41,13 @@ func toContainerCreateResponse(resp containerClientCreateResponse) ContainerCrea
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DeleteContainerOptions provides set of configurations for DeleteContainer operation
-type DeleteContainerOptions struct {
+// ContainerDeleteOptions provides set of configurations for DeleteContainer operation
+type ContainerDeleteOptions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *DeleteContainerOptions) pointers() (*containerClientDeleteOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *ContainerDeleteOptions) pointers() (*containerClientDeleteOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}
@@ -65,12 +65,12 @@ func toContainerDeleteResponse(resp containerClientDeleteResponse) ContainerDele
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetPropertiesContainerOptions provides set of configurations for GetPropertiesContainer operation
-type GetPropertiesContainerOptions struct {
+// ContainerGetPropertiesOptions provides set of configurations for GetPropertiesContainer operation
+type ContainerGetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetPropertiesContainerOptions) pointers() (*containerClientGetPropertiesOptions, *LeaseAccessConditions) {
+func (o *ContainerGetPropertiesOptions) pointers() (*containerClientGetPropertiesOptions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -88,14 +88,14 @@ func toContainerGetPropertiesResponse(resp containerClientGetPropertiesResponse)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetMetadataContainerOptions provides set of configurations for SetMetadataContainer operation
-type SetMetadataContainerOptions struct {
+// ContainerSetMetadataOptions provides set of configurations for SetMetadataContainer operation
+type ContainerSetMetadataOptions struct {
 	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetMetadataContainerOptions) pointers() (*containerClientSetMetadataOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *ContainerSetMetadataOptions) pointers() (*containerClientSetMetadataOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}
@@ -113,12 +113,12 @@ func toContainerSetMetadataResponse(resp containerClientSetMetadataResponse) Con
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetAccessPolicyOptions provides set of configurations for GetAccessPolicy operation
-type GetAccessPolicyOptions struct {
+// ContainerGetAccessPolicyOptions provides set of configurations for GetAccessPolicy operation
+type ContainerGetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetAccessPolicyOptions) pointers() (*containerClientGetAccessPolicyOptions, *LeaseAccessConditions) {
+func (o *ContainerGetAccessPolicyOptions) pointers() (*containerClientGetAccessPolicyOptions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -136,8 +136,8 @@ func toContainerGetAccessPolicyResponse(resp containerClientGetAccessPolicyRespo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetAccessPolicyOptions provides set of configurations for SetAccessPolicy operation
-type SetAccessPolicyOptions struct {
+// ContainerSetAccessPolicyOptions provides set of configurations for SetAccessPolicy operation
+type ContainerSetAccessPolicyOptions struct {
 	AccessConditions *ContainerAccessConditions
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
@@ -145,7 +145,7 @@ type SetAccessPolicyOptions struct {
 	ContainerACL []*SignedIdentifier
 }
 
-func (o *SetAccessPolicyOptions) pointers() (*containerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *ContainerSetAccessPolicyOptions) pointers() (*containerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}

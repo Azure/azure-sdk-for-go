@@ -21,7 +21,7 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	}
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-	sAccInfo, err := svcClient.GetAccountInfo(context.Background())
+	sAccInfo, err := svcClient.GetAccountInfo(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.NotEqualValues(sAccInfo, ServiceGetAccountInfoResponse{})
 }
@@ -57,8 +57,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 
 	containerName := generateContainerName(testName)
 	containerClient, _ := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
+	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)
@@ -116,8 +116,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 
 	containerName := generateContainerName(testName)
 	containerClient, _ := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
+	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)

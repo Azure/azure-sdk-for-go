@@ -16,11 +16,11 @@ func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type GetAccountInfoOptions struct {
+type ServiceGetAccountInfoOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetAccountInfoOptions) pointers() *serviceClientGetAccountInfoOptions {
+func (o *ServiceGetAccountInfoOptions) pointers() *serviceClientGetAccountInfoOptions {
 	return nil
 }
 
@@ -103,11 +103,11 @@ func toServiceListContainersSegmentPager(resp serviceClientListContainersSegment
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type GetPropertiesOptions struct {
+type ServiceGetPropertiesOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetPropertiesOptions) pointers() *serviceClientGetPropertiesOptions {
+func (o *ServiceGetPropertiesOptions) pointers() *serviceClientGetPropertiesOptions {
 	return nil
 }
 
@@ -121,12 +121,12 @@ func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type SetPropertiesOptions struct {
-	properties StorageServiceProperties
+type ServiceSetPropertiesOptions struct {
+	Properties StorageServiceProperties
 }
 
-func (o *SetPropertiesOptions) pointers() (storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) {
-	return o.properties, nil
+func (o *ServiceSetPropertiesOptions) pointers() (StorageServiceProperties, *serviceClientSetPropertiesOptions) {
+	return o.Properties, nil
 }
 
 type ServiceSetPropertiesResponse struct {
@@ -139,11 +139,11 @@ func toServiceSetPropertiesResponse(resp serviceClientSetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type GetStatisticsOptions struct {
+type ServiceGetStatisticsOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetStatisticsOptions) pointers() *serviceClientGetStatisticsOptions {
+func (o *ServiceGetStatisticsOptions) pointers() *serviceClientGetStatisticsOptions {
 	return nil
 }
 
@@ -157,8 +157,8 @@ func toServiceGetStatisticsResponse(resp serviceClientGetStatisticsResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ServiceFilterBlobsByTagsOptions provides set of configurations for ServiceFilterBlobsByTags operation
-type ServiceFilterBlobsByTagsOptions struct {
+// ServiceFilterBlobsOptions provides set of configurations for ServiceFilterBlobsByTags operation
+type ServiceFilterBlobsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker
 	// value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value
 	// can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
@@ -167,18 +167,18 @@ type ServiceFilterBlobsByTagsOptions struct {
 	// will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for
 	// retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or
 	// than the default of 5000.
-	Maxresults *int32
+	MaxResults *int32
 	// Filters the results to return only to return only blobs whose tags match the specified expression.
 	Where *string
 }
 
-func (o *ServiceFilterBlobsByTagsOptions) pointer() *serviceClientFilterBlobsOptions {
+func (o *ServiceFilterBlobsOptions) pointer() *serviceClientFilterBlobsOptions {
 	if o == nil {
 		return nil
 	}
 	return &serviceClientFilterBlobsOptions{
 		Marker:     o.Marker,
-		Maxresults: o.Maxresults,
+		Maxresults: o.MaxResults,
 		Where:      o.Where,
 	}
 }

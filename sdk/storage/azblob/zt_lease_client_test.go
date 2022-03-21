@@ -65,7 +65,7 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	_assert.NotNil(err)
 
 	leaseID := containerLeaseClient.leaseID
-	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
+	_, err = containerClient.Delete(ctx, &ContainerDeleteOptions{
 		LeaseAccessConditions: &LeaseAccessConditions{
 			LeaseID: leaseID,
 		},

@@ -139,7 +139,7 @@ func (c *ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, e
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
-func (c *ContainerClient) Create(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+func (c *ContainerClient) Create(ctx context.Context, options *ContainerCreateOptions) (ContainerCreateResponse, error) {
 	basics, cpkInfo := options.pointers()
 	resp, err := c.client.Create(ctx, basics, cpkInfo)
 
@@ -148,7 +148,7 @@ func (c *ContainerClient) Create(ctx context.Context, options *CreateContainerOp
 
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
-func (c *ContainerClient) Delete(ctx context.Context, o *DeleteContainerOptions) (ContainerDeleteResponse, error) {
+func (c *ContainerClient) Delete(ctx context.Context, o *ContainerDeleteOptions) (ContainerDeleteResponse, error) {
 	basics, leaseInfo, accessConditions := o.pointers()
 	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
@@ -157,7 +157,7 @@ func (c *ContainerClient) Delete(ctx context.Context, o *DeleteContainerOptions)
 
 // GetProperties returns the container's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
-func (c *ContainerClient) GetProperties(ctx context.Context, o *GetPropertiesContainerOptions) (ContainerGetPropertiesResponse, error) {
+func (c *ContainerClient) GetProperties(ctx context.Context, o *ContainerGetPropertiesOptions) (ContainerGetPropertiesResponse, error) {
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetProperties method at all simplifying the API.
 	// The optionals are nil, like they were in track 1.5
@@ -169,7 +169,7 @@ func (c *ContainerClient) GetProperties(ctx context.Context, o *GetPropertiesCon
 
 // SetMetadata sets the container's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
-func (c *ContainerClient) SetMetadata(ctx context.Context, o *SetMetadataContainerOptions) (ContainerSetMetadataResponse, error) {
+func (c *ContainerClient) SetMetadata(ctx context.Context, o *ContainerSetMetadataOptions) (ContainerSetMetadataResponse, error) {
 	metadataOptions, lac, mac := o.pointers()
 	resp, err := c.client.SetMetadata(ctx, metadataOptions, lac, mac)
 
@@ -178,7 +178,7 @@ func (c *ContainerClient) SetMetadata(ctx context.Context, o *SetMetadataContain
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-acl.
-func (c *ContainerClient) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions) (ContainerGetAccessPolicyResponse, error) {
+func (c *ContainerClient) GetAccessPolicy(ctx context.Context, o *ContainerGetAccessPolicyOptions) (ContainerGetAccessPolicyResponse, error) {
 	options, ac := o.pointers()
 	resp, err := c.client.GetAccessPolicy(ctx, options, ac)
 
@@ -187,7 +187,7 @@ func (c *ContainerClient) GetAccessPolicy(ctx context.Context, o *GetAccessPolic
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
-func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
+func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *ContainerSetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
 	accessPolicy, mac, lac := o.pointers()
 	resp, err := c.client.SetAccessPolicy(ctx, accessPolicy, mac, lac)
 

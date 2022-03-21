@@ -302,7 +302,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	defer deleteContainer(_assert, containerClient)
 
 	accessType := PublicAccessTypeBlob
-	setAccessPolicyOptions := SetAccessPolicyOptions{
+	setAccessPolicyOptions := ContainerSetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -3323,7 +3323,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	defer deleteContainer(_assert, containerClient)
 //
 //	accessType := PublicAccessTypeBlob
-//	setAccessPolicyOptions := SetAccessPolicyOptions{
+//	setAccessPolicyOptions := ContainerSetAccessPolicyOptions{
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 //	}
 //	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)

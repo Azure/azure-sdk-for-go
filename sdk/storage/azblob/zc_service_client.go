@@ -104,7 +104,7 @@ func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClie
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
 // If the container with the same name already exists, a ResourceExistsError will be raised.
 // This method returns a client with which to interact with the newly created container.
-func (s *ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+func (s *ServiceClient) CreateContainer(ctx context.Context, containerName string, options *ContainerCreateOptions) (ContainerCreateResponse, error) {
 	containerClient, err := s.NewContainerClient(containerName)
 	if err != nil {
 		return ContainerCreateResponse{}, err
@@ -116,7 +116,7 @@ func (s *ServiceClient) CreateContainer(ctx context.Context, containerName strin
 // DeleteContainer is a lifecycle method that marks the specified container for deletion.
 // The container and any blobs contained within it are later deleted during garbage collection.
 // If the container is not found, a ResourceNotFoundError will be raised.
-func (s *ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
+func (s *ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *ContainerDeleteOptions) (ContainerDeleteResponse, error) {
 	containerClient, _ := s.NewContainerClient(containerName)
 	containerDeleteResp, err := containerClient.Delete(ctx, options)
 	return containerDeleteResp, err
@@ -145,7 +145,7 @@ func appendToURLPath(u string, name string) string {
 }
 
 // GetAccountInfo provides account level information
-func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
+func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *ServiceGetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
 	getAccountInfoOptions := o.pointers()
 	resp, err := s.client.GetAccountInfo(ctx, getAccountInfoOptions)
 	return toServiceGetAccountInfoResponse(resp), handleError(err)
@@ -183,7 +183,7 @@ func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListCon
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
+func (s *ServiceClient) GetProperties(ctx context.Context, o *ServiceGetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
 	getPropertiesOptions := o.pointers()
 	resp, err := s.client.GetProperties(ctx, getPropertiesOptions)
 
@@ -192,7 +192,7 @@ func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptio
 
 // SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.
 // If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
-func (s *ServiceClient) SetProperties(ctx context.Context, o *SetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
 	properties, setPropertiesOptions := o.pointers()
 	resp, err := s.client.SetProperties(ctx, properties, setPropertiesOptions)
 
@@ -213,7 +213,7 @@ func (s *ServiceClient) SetProperties(ctx context.Context, o *SetPropertiesOptio
 // center that resides in the same region as the primary location. Read-only
 // access is available from the secondary location, if read-access geo-redundant
 // replication is enabled for your storage account.
-func (s *ServiceClient) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (ServiceGetStatisticsResponse, error) {
+func (s *ServiceClient) GetStatistics(ctx context.Context, o *ServiceGetStatisticsOptions) (ServiceGetStatisticsResponse, error) {
 	getStatisticsOptions := o.pointers()
 	resp, err := s.client.GetStatistics(ctx, getStatisticsOptions)
 
@@ -260,7 +260,7 @@ func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissio
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-func (s *ServiceClient) FindBlobsByTags(ctx context.Context, o *ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
+func (s *ServiceClient) FindBlobsByTags(ctx context.Context, o *ServiceFilterBlobsOptions) (ServiceFilterBlobsResponse, error) {
 	// TODO: Use pager here? Missing support from zz_generated_pagers.go
 	serviceFilterBlobsOptions := o.pointer()
 	resp, err := s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)

@@ -360,7 +360,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		// Change the blob to be a public access blob
 		_, err := container.SetAccessPolicy(
 			context.TODO(),
-			&azblob.SetAccessPolicyOptions{
+			&azblob.ContainerSetAccessPolicyOptions{
 				ContainerSetAccessPolicyOptions: azblob.ContainerSetAccessPolicyOptions{
 					Access: azblob.PublicAccessTypeBlob.ToPtr(),
 				},
@@ -514,7 +514,7 @@ func ExampleContainerClient_SetMetadata() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = containerClient.Create(context.TODO(), &azblob.CreateContainerOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = containerClient.Create(context.TODO(), &azblob.ContainerCreateOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -535,7 +535,7 @@ func ExampleContainerClient_SetMetadata() {
 
 	// Update the metadata and write it back to the container
 	get.Metadata["author"] = "Aidan"
-	_, err = containerClient.SetMetadata(context.TODO(), &azblob.SetMetadataContainerOptions{Metadata: get.Metadata})
+	_, err = containerClient.SetMetadata(context.TODO(), &azblob.ContainerSetMetadataOptions{Metadata: get.Metadata})
 	if err != nil {
 		log.Fatal(err)
 	}

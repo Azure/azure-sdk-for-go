@@ -900,7 +900,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlob(c, containerClient)
 ////
 ////	maxResults := int32(0)
-////	resp, errChan := containerClient.ListBlobsFlat(ctx, 1, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
+////	resp, errChan := containerClient.ListBlobsFlat(ctx, 1, 0, &ContainerListBlobFlatSegmentOptions{MaxResults: &maxResults})
 ////
 ////	_assert(<-errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
@@ -915,7 +915,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlobWithPrefix(c, containerClient, "b")
 ////
 ////	maxResults := int32(1)
-////	resp, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
+////	resp, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &ContainerListBlobFlatSegmentOptions{MaxResults: &maxResults})
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
 ////	_assert((<- resp).Name, chk.Equals, blobName)

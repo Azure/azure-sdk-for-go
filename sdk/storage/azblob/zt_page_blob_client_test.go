@@ -33,7 +33,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 
 	contentSize := 1024
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	reader, _ := generateData(1024)
 	putResp, err := pbClient.UploadPages(context.Background(), reader, &uploadPagesOptions)
 	_assert.Nil(err)
@@ -87,7 +87,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	destBlob := createNewPageBlobWithSize(_assert, "dstblob", containerClient, int64(contentSize))
 
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
@@ -162,7 +162,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 
 	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
@@ -186,7 +186,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Upload page from URL with MD5.
-	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions := PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 	}
 	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -212,7 +212,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	// Upload page from URL with bad MD5
 	_, badMD5 := getRandomDataAndReader(16)
 	badContentMD5 := badMD5[:]
-	uploadPagesFromURLOptions = UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions = PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: badContentMD5,
 	}
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -240,7 +240,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_assert.Nil(err)
 
@@ -248,7 +248,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_assert.Nil(err)
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
+	uploadPagesOptions1 := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 	_assert.Nil(err)
 
@@ -313,7 +313,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	contentSize := 1024
 	r := getReaderToGeneratedBytes(contentSize)
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_assert.Nil(err)
 
@@ -389,7 +389,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 
 	sequenceNumber := int64(0)
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -399,7 +399,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 
 	sequenceNumber = int64(7)
 	actionType = SequenceNumberActionTypeMax
-	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob = PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -409,7 +409,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 
 	sequenceNumber = int64(11)
 	actionType = SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob = PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -441,7 +441,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	md5Value := md5.Sum(body)
 	_ = body
 	contentMD5 := md5Value[:]
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: contentMD5,
 	}
@@ -465,7 +465,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	_, badMD5 := getRandomDataAndReader(16)
 	basContentMD5 := badMD5[:]
 	_ = body
-	uploadPagesOptions = UploadPagesOptions{
+	uploadPagesOptions = PageBlobUploadPagesOptions{
 		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: basContentMD5,
 	}
@@ -492,7 +492,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 	}
 	_, err = pbClient.Create(ctx, 1, &createPageBlobOptions)
@@ -518,7 +518,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(-1)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
@@ -542,7 +542,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 	}
@@ -572,7 +572,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           map[string]string{},
 	}
@@ -601,7 +601,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           map[string]string{"In valid1": "bar"},
 	}
@@ -628,7 +628,7 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	pbClient, _ := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		HTTPHeaders:        &basicHeaders,
 	}
@@ -671,7 +671,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -709,7 +709,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -747,7 +747,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -785,7 +785,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -821,7 +821,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 	_assert.Nil(err)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -855,7 +855,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -889,7 +889,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -924,7 +924,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	sequenceNumber := int64(0)
-	createPageBlobOptions := CreatePageBlobOptions{
+	createPageBlobOptions := PageBlobCreateOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		HTTPHeaders:        &basicHeaders,
@@ -959,7 +959,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	contentSize := 1024
 	r := getReaderToGeneratedBytes(contentSize)
 	offset, count := int64(0), int64(contentSize/2)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_assert.NotNil(err)
 }
@@ -993,7 +993,7 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.NotNil(err)
 }
@@ -1016,7 +1016,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_assert.NotNil(err)
 
@@ -1058,7 +1058,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1096,7 +1096,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1134,7 +1134,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1172,7 +1172,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1210,7 +1210,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1247,7 +1247,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1284,7 +1284,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1322,7 +1322,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1355,7 +1355,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThan := int64(10)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
@@ -1385,7 +1385,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1395,7 +1395,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThan := int64(1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
@@ -1426,7 +1426,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1457,7 +1457,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1467,7 +1467,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1497,7 +1497,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1507,7 +1507,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1538,7 +1538,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1566,7 +1566,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1576,7 +1576,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberEqualTo := int64(1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1607,7 +1607,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberEqualTo := int64(1)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1638,7 +1638,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	r, _ := generateData(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
 //	ifSequenceNumberEqualTo := int64(-1)
-//	uploadPagesOptions := UploadPagesOptions{
+//	uploadPagesOptions := PageBlobUploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1663,7 +1663,7 @@ func setupClearPagesTest(_assert *assert.Assertions, testName string) (*Containe
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -1700,7 +1700,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1724,7 +1724,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1748,7 +1748,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1772,7 +1772,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1794,7 +1794,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: getPropertiesResp.ETag,
@@ -1814,7 +1814,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -1834,7 +1834,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -1855,7 +1855,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1875,7 +1875,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThan := int64(10)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1894,7 +1894,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1902,7 +1902,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 	_assert.Nil(err)
 
 	ifSequenceNumberLessThan := int64(1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1920,7 +1920,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThan := int64(-1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1938,7 +1938,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(10)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1957,7 +1957,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -1965,7 +1965,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 	_assert.Nil(err)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1983,7 +1983,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -2002,7 +2002,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -2010,7 +2010,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 	_assert.Nil(err)
 
 	ifSequenceNumberEqualTo := int64(10)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -2029,7 +2029,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -2037,7 +2037,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 	_assert.Nil(err)
 
 	ifSequenceNumberEqualTo := int64(1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -2055,7 +2055,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	defer deleteContainer(_assert, containerClient)
 
 	ifSequenceNumberEqualTo := int64(-1)
-	clearPageOptions := ClearPagesOptions{
+	clearPageOptions := PageBlobClearPagesOptions{
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -2081,7 +2081,7 @@ func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (contai
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2149,7 +2149,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2210,7 +2210,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2233,7 +2233,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2258,7 +2258,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2281,7 +2281,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2303,7 +2303,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -2322,7 +2322,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -2342,7 +2342,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -2362,7 +2362,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -2395,7 +2395,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 
 	r := getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2407,7 +2407,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 
 	r = getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count = int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions = UploadPagesOptions{
+	uploadPagesOptions = PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2461,7 +2461,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2482,7 +2482,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 
 	currentTime := getRelativeTimeGMT(10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2505,7 +2505,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 
 	currentTime := getRelativeTimeGMT(10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2526,7 +2526,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2548,7 +2548,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -2568,7 +2568,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -2589,7 +2589,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	eTag := "garbage"
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -2610,7 +2610,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	getPageRangesOptions := GetPageRangesOptions{
+	getPageRangesOptions := PageBlobGetPageRangesOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -2714,7 +2714,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2750,7 +2750,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -2786,7 +2786,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2822,7 +2822,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -2853,7 +2853,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -2883,7 +2883,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
 
 	eTag := "garbage"
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -2913,7 +2913,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
 
 	eTag := "garbage"
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -2944,7 +2944,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -2975,7 +2975,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionType("garbage")
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -3007,7 +3007,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 
 	sequenceNumber := int64(-1)
 	actionType := SequenceNumberActionTypeUpdate
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
 	}
@@ -3048,7 +3048,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3086,7 +3086,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3124,7 +3124,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3162,7 +3162,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3195,7 +3195,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3227,7 +3227,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3259,7 +3259,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3292,7 +3292,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	actionType := SequenceNumberActionTypeIncrement
-	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
+	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
 		ActionType: &actionType,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -3386,7 +3386,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	currentTime := getRelativeTimeGMT(-20)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
@@ -3406,7 +3406,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	currentTime := getRelativeTimeGMT(20)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
@@ -3426,7 +3426,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	currentTime := getRelativeTimeGMT(20)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfUnmodifiedSince: &currentTime,
 //		},
@@ -3446,7 +3446,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	currentTime := getRelativeTimeGMT(-20)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfUnmodifiedSince: &currentTime,
 //		},
@@ -3464,7 +3464,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, testName)
 //	resp, _ := copyPBClient.GetProperties(ctx, nil)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfMatch: resp.ETag,
 //		},
@@ -3486,7 +3486,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	defer deleteContainer(_assert, containerClient)
 //
 //	eTag := "garbage"
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfMatch: &eTag,
 //		},
@@ -3506,7 +3506,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	defer deleteContainer(_assert, containerClient)
 //
 //	eTag := "garbage"
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfNoneMatch: &eTag,
 //		},
@@ -3527,7 +3527,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //
 //	resp, _ := copyPBClient.GetProperties(ctx, nil)
 //
-//	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
+//	copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfNoneMatch: resp.ETag,
 //		},

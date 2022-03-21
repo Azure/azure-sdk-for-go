@@ -574,14 +574,14 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	blobURL11 := getBlockBlobClient(generateBlobName(testName) + "11", containerClient1)
 //	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap1,
+//		BlobTagsMap: blobTagsMap1,
 //	})
 //	_assert.Nil(err)
 //
 //	blobURL12 := getBlockBlobClient(generateBlobName(testName) + "12", containerClient1)
 //	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap2,
+//		BlobTagsMap: blobTagsMap2,
 //	})
 //	_assert.Nil(err)
 //
@@ -652,7 +652,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		s.T().Fail()
 //	}
 //
-//	blobTagsMap := TagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
+//	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
 //	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
 //	_assert.Nil(err)
 //	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
@@ -687,7 +687,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)

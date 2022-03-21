@@ -5,19 +5,24 @@ package azblob
 
 import (
 	"strconv"
+	"time"
 )
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 func rangeToString(offset, count int64) string {
 	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
 }
 
-// CreatePageBlobOptions provides set of configurations for CreatePageBlob operation
-type CreatePageBlobOptions struct {
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobCreateOptions provides set of configurations for CreatePageBlob operation
+type PageBlobCreateOptions struct {
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
 	// Optional. Used to set blob tags in various blob operations.
-	TagsMap map[string]string
+	BlobTagsMap map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -27,29 +32,48 @@ type CreatePageBlobOptions struct {
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
 
-	HTTPHeaders          *BlobHTTPHeaders
-	CpkInfo              *CpkInfo
-	CpkScopeInfo         *CpkScopeInfo
+	HTTPHeaders *BlobHTTPHeaders
+
+	CpkInfo *CpkInfo
+
+	CpkScopeInfo *CpkScopeInfo
+
 	BlobAccessConditions *BlobAccessConditions
+	// Specifies the date time when the blobs immutability policy is set to expire.
+	ImmutabilityPolicyExpiry *time.Time
+	// Specifies the immutability policy mode to set on the blob.
+	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	// Specified if a legal hold should be set on the blob.
+	LegalHold *bool
 }
 
-func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobCreateOptions) pointers() (*pageBlobClientCreateOptions, *BlobHTTPHeaders, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	options := &PageBlobCreateOptions{
+	options := &pageBlobClientCreateOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
-		BlobTagsString:     serializeBlobTagsToStrPtr(o.TagsMap),
+		BlobTagsString:     serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:           o.Metadata,
 		Tier:               o.Tier,
 	}
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.HTTPHeaders, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
+	return options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
-// UploadPagesOptions provides set of configurations for UploadPages operation
-type UploadPagesOptions struct {
+type PageBlobCreateResponse struct {
+	pageBlobClientCreateResponse
+}
+
+func toPageBlobCreateResponse(resp pageBlobClientCreateResponse) PageBlobCreateResponse {
+	return PageBlobCreateResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobUploadPagesOptions provides set of configurations for UploadPages operation
+type PageBlobUploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	PageRange                 *HttpRange
 	TransactionalContentCRC64 []byte
@@ -62,12 +86,13 @@ type UploadPagesOptions struct {
 	BlobAccessConditions           *BlobAccessConditions
 }
 
-func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobUploadPagesOptions) pointers() (*pageBlobClientUploadPagesOptions, *LeaseAccessConditions,
+	*CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	options := &PageBlobUploadPagesOptions{
+	options := &pageBlobClientUploadPagesOptions{
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
@@ -77,100 +102,250 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
+	return options, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
-// UploadPagesFromURLOptions provides set of configurations for UploadPagesFromURL operation
-type UploadPagesFromURLOptions struct {
+type PageBlobUploadPagesResponse struct {
+	pageBlobClientUploadPagesResponse
+}
+
+func toPageBlobUploadPagesResponse(resp pageBlobClientUploadPagesResponse) PageBlobUploadPagesResponse {
+	return PageBlobUploadPagesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobUploadPagesFromURLOptions provides set of configurations for UploadPagesFromURL operation
+type PageBlobUploadPagesFromURLOptions struct {
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 []byte
+	SourceContentCRC64 []byte
 
-	CpkInfo                        *CpkInfo
-	CpkScopeInfo                   *CpkScopeInfo
+	CpkInfo *CpkInfo
+
+	CpkScopeInfo *CpkScopeInfo
+
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
+
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions           *BlobAccessConditions
+
+	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptions, *CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *SourceModifiedAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobUploadPagesFromURLOptions) pointers() (*pageBlobClientUploadPagesFromURLOptions, *CpkInfo, *CpkScopeInfo,
+	*LeaseAccessConditions, *SequenceNumberAccessConditions, *ModifiedAccessConditions, *SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil, nil
 	}
 
-	options := &PageBlobUploadPagesFromURLOptions{
-		SourceContentMD5:   o.SourceContentMD5,
-		SourceContentcrc64: o.SourceContentcrc64,
+	options := &pageBlobClientUploadPagesFromURLOptions{
+		SourceContentMD5:        o.SourceContentMD5,
+		SourceContentcrc64:      o.SourceContentCRC64,
+		CopySourceAuthorization: o.CopySourceAuthorization,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.SourceModifiedAccessConditions, leaseAccessConditions, modifiedAccessConditions
+	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
-// ClearPagesOptions provides set of configurations for ClearPages operation
-type ClearPagesOptions struct {
+type PageBlobUploadPagesFromURLResponse struct {
+	pageBlobClientUploadPagesFromURLResponse
+}
+
+func toPageBlobUploadPagesFromURLResponse(resp pageBlobClientUploadPagesFromURLResponse) PageBlobUploadPagesFromURLResponse {
+	return PageBlobUploadPagesFromURLResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobClearPagesOptions provides set of configurations for ClearPages operation
+type PageBlobClearPagesOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	BlobAccessConditions           *BlobAccessConditions
 }
 
-func (o *ClearPagesOptions) pointers() (*CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobClearPagesOptions) pointers() (*LeaseAccessConditions, *CpkInfo,
+	*CpkScopeInfo, *SequenceNumberAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
-// GetPageRangesOptions provides set of configurations for GetPageRanges operation
-type GetPageRangesOptions struct {
+type PageBlobClearPagesResponse struct {
+	pageBlobClientClearPagesResponse
+}
+
+func toPageBlobClearPagesResponse(resp pageBlobClientClearPagesResponse) PageBlobClearPagesResponse {
+	return PageBlobClearPagesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobGetPageRangesOptions provides set of configurations for GetPageRanges operation
+type PageBlobGetPageRangesOptions struct {
+	Marker *string
+	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// greater than 5000, the server will return up to 5000 items. Note that if the
+	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
+	// of the results. For this reason, it is possible that the service will
+	// return fewer results than specified by maxresults, or than the default of 5000.
+	MaxResults *int32
+	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
+	// of the target blob. The response will only contain pages that were changed
+	// between the target blob and its previous snapshot.
+	PrevSnapshotURL *string
+	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// will contain only pages that were changed between target blob and previous
+	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
+	// specified by prevsnapshot is the older of the two. Note that incremental
+	// snapshots are currently supported only for blobs created on or after January 1, 2016.
+	PrevSnapshot *string
+	// Optional, you can specify whether a particular range of the blob is read
+	Offset *int64
+	Count  *int64
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
+	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
+	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob]
 	Snapshot *string
 
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *GetPageRangesOptions) pointers() (*string, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobGetPageRangesOptions) pointers() (*pageBlobClientGetPageRangesOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return o.Snapshot, leaseAccessConditions, modifiedAccessConditions
+	return &pageBlobClientGetPageRangesOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Range:      getSourceRange(o.Offset, o.Count),
+		Snapshot:   o.Snapshot,
+	}, leaseAccessConditions, modifiedAccessConditions
 }
 
-// ResizePageBlobOptions provides set of configurations for ResizePageBlob operation
-type ResizePageBlobOptions struct {
+type PageBlobGetPageRangesPager struct {
+	*pageBlobClientGetPageRangesPager
+}
+
+func toPageBlobGetPageRangesPager(resp *pageBlobClientGetPageRangesPager) *PageBlobGetPageRangesPager {
+	return &PageBlobGetPageRangesPager{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type PageBlobGetPageRangesDiffOptions struct {
+	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// operation returns the NextMarker value within the response body if the listing
+	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// as the value for the marker parameter in a subsequent call to request the next
+	// page of list items. The marker value is opaque to the client.
+	Marker *string
+	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// greater than 5000, the server will return up to 5000 items. Note that if the
+	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
+	// of the results. For this reason, it is possible that the service will
+	// return fewer results than specified by maxresults, or than the default of 5000.
+	MaxResults *int32
+	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
+	// of the target blob. The response will only contain pages that were changed
+	// between the target blob and its previous snapshot.
+	PrevSnapshotURL *string
+	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// will contain only pages that were changed between target blob and previous
+	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
+	// specified by prevsnapshot is the older of the two. Note that incremental
+	// snapshots are currently supported only for blobs created on or after January 1, 2016.
+	PrevSnapshot *string
+	// Optional, you can specify whether a particular range of the blob is read
+	Offset *int64
+	Count  *int64
+
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
+	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
+	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob]
+	Snapshot *string
+
+	BlobAccessConditions *BlobAccessConditions
+}
+
+func (o *PageBlobGetPageRangesDiffOptions) pointers() (pageBlobClientGetPageRangesDiffOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+	if o == nil {
+		return pageBlobClientGetPageRangesDiffOptions{}, nil, nil
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return pageBlobClientGetPageRangesDiffOptions{
+		Marker:          o.Marker,
+		Maxresults:      o.MaxResults,
+		PrevSnapshotURL: o.PrevSnapshotURL,
+		Prevsnapshot:    o.PrevSnapshot,
+		Range:           getSourceRange(o.Offset, o.Count),
+		Snapshot:        o.Snapshot,
+	}, leaseAccessConditions, modifiedAccessConditions
+
+}
+
+type PageBlobGetPageRangesDiffPager struct {
+	*pageBlobClientGetPageRangesDiffPager
+}
+
+func toPageBlobGetPageRangesDiffPager(resp *pageBlobClientGetPageRangesDiffPager) *PageBlobGetPageRangesDiffPager {
+	return &PageBlobGetPageRangesDiffPager{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobResizeOptions provides set of configurations for ResizePageBlob operation
+type PageBlobResizeOptions struct {
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobResizeOptions) pointers() (*pageBlobClientResizeOptions, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
+	return nil, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
-// UpdateSequenceNumberPageBlob provides set of configurations for UpdateSequenceNumber operation
-type UpdateSequenceNumberPageBlob struct {
-	ActionType         *SequenceNumberActionType
+type PageBlobResizeResponse struct {
+	pageBlobClientResizeResponse
+}
+
+func toPageBlobResizeResponse(resp pageBlobClientResizeResponse) PageBlobResizeResponse {
+	return PageBlobResizeResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobUpdateSequenceNumberOptions provides set of configurations for UpdateSequenceNumber operation
+type PageBlobUpdateSequenceNumberOptions struct {
+	ActionType *SequenceNumberActionType
+
 	BlobSequenceNumber *int64
 
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobUpdateSequenceNumberOptions) pointers() (*SequenceNumberActionType, *pageBlobClientUpdateSequenceNumberOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
 
-	options := &PageBlobUpdateSequenceNumberOptions{
+	options := &pageBlobClientUpdateSequenceNumberOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
 	}
 
@@ -179,18 +354,38 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.ActionType, leaseAccessConditions, modifiedAccessConditions
+	return o.ActionType, options, leaseAccessConditions, modifiedAccessConditions
 }
 
-// CopyIncrementalPageBlobOptions provides set of configurations for StartCopyIncremental operation
-type CopyIncrementalPageBlobOptions struct {
+type PageBlobUpdateSequenceNumberResponse struct {
+	pageBlobClientUpdateSequenceNumberResponse
+}
+
+func toPageBlobUpdateSequenceNumberResponse(resp pageBlobClientUpdateSequenceNumberResponse) PageBlobUpdateSequenceNumberResponse {
+	return PageBlobUpdateSequenceNumberResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PageBlobCopyIncrementalOptions provides set of configurations for StartCopyIncremental operation
+type PageBlobCopyIncrementalOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOptions, *ModifiedAccessConditions) {
+func (o *PageBlobCopyIncrementalOptions) pointers() (*pageBlobClientCopyIncrementalOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
 
 	return nil, o.ModifiedAccessConditions
 }
+
+type PageBlobCopyIncrementalResponse struct {
+	pageBlobClientCopyIncrementalResponse
+}
+
+func toPageBlobCopyIncrementalResponse(resp pageBlobClientCopyIncrementalResponse) PageBlobCopyIncrementalResponse {
+	return PageBlobCopyIncrementalResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

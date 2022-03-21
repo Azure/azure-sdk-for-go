@@ -575,7 +575,7 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)

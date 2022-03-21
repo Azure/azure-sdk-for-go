@@ -811,7 +811,7 @@ func ExamplePageBlobClient() {
 	_, err = blobClient.UploadPages(
 		context.TODO(),
 		streaming.NopCloser(bytes.NewReader(page)),
-		&azblob.UploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
+		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
 	)
 	if err != nil {
 		log.Fatal(err)

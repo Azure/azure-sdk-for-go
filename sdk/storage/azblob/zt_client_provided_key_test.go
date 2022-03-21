@@ -815,7 +815,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 		CpkInfo:   &testCPKByValue,
 	}
@@ -872,7 +872,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange:    &HttpRange{offset, count},
 		CpkScopeInfo: &testCPKByScope,
 	}
@@ -925,7 +925,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	destBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
@@ -947,7 +947,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
-	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions := PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
@@ -1010,7 +1010,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	dstPBBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
@@ -1032,7 +1032,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
-	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions := PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkScopeInfo:     &testCPKByScope,
 	}
@@ -1083,7 +1083,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	srcBlob := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
 
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
@@ -1108,7 +1108,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	dstPBName := "dst" + generateBlobName(testName)
 	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
-	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions := PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
@@ -1150,7 +1150,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 
 	_, badMD5 := getRandomDataAndReader(16)
 	badContentMD5 := badMD5[:]
-	uploadPagesFromURLOptions1 := UploadPagesFromURLOptions{
+	uploadPagesFromURLOptions1 := PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5: badContentMD5,
 	}
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
@@ -1176,7 +1176,7 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
+	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_assert.Nil(err)
 
@@ -1187,7 +1187,7 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	_assert.Nil(err)
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
+	uploadPagesOptions1 := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 	_assert.Nil(err)
 
@@ -1200,7 +1200,7 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	_assert.Equal(rawStart, offset1)
 	_assert.Equal(rawEnd, end1)
 
-	clearPagesOptions := ClearPagesOptions{
+	clearPagesOptions := PageBlobClearPagesOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, &clearPagesOptions)
@@ -1226,7 +1226,7 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 	pbName := generateBlobName(testName)
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
-	resizePageBlobOptions := ResizePageBlobOptions{
+	resizePageBlobOptions := PageBlobResizeOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)

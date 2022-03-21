@@ -9,7 +9,7 @@
 
 package msiapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2015-08-31-preview/msi/msiapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi/msiapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type SystemAssignedIdentitiesClientAPI = original.SystemAssignedIdentitiesClientAPI

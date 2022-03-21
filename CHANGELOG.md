@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## `v62.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2022-01-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2021-06-01/cdn`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-02-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi`
+- `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2022-01-01/storagecache`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+
 ## `v62.2.0`
 
 ### New Packages

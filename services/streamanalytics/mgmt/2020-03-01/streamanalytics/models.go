@@ -76,7 +76,7 @@ func (as AvroSerialization) AsBasicSerialization() (BasicSerialization, bool) {
 type AzureDataLakeStoreOutputDataSource struct {
 	// AzureDataLakeStoreOutputDataSourceProperties - The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests.
 	*AzureDataLakeStoreOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -110,6 +110,11 @@ func (adlsods AzureDataLakeStoreOutputDataSource) AsServiceBusTopicOutputDataSou
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for AzureDataLakeStoreOutputDataSource.
 func (adlsods AzureDataLakeStoreOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for AzureDataLakeStoreOutputDataSource.
+func (adlsods AzureDataLakeStoreOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -212,6 +217,145 @@ type AzureDataLakeStoreOutputDataSourceProperties struct {
 	TokenUserPrincipalName *string `json:"tokenUserPrincipalName,omitempty"`
 	// TokenUserDisplayName - The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
 	TokenUserDisplayName *string `json:"tokenUserDisplayName,omitempty"`
+}
+
+// AzureFunctionOutputDataSource defines the metadata of AzureFunctionOutputDataSource
+type AzureFunctionOutputDataSource struct {
+	// AzureFunctionOutputDataSourceProperties - The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests.
+	*AzureFunctionOutputDataSourceProperties `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	Type TypeBasicOutputDataSource `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) MarshalJSON() ([]byte, error) {
+	afods.Type = TypeBasicOutputDataSourceTypeMicrosoftAzureFunction
+	objectMap := make(map[string]interface{})
+	if afods.AzureFunctionOutputDataSourceProperties != nil {
+		objectMap["properties"] = afods.AzureFunctionOutputDataSourceProperties
+	}
+	if afods.Type != "" {
+		objectMap["type"] = afods.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureDataLakeStoreOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsAzureDataLakeStoreOutputDataSource() (*AzureDataLakeStoreOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsPowerBIOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsPowerBIOutputDataSource() (*PowerBIOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsServiceBusTopicOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsServiceBusTopicOutputDataSource() (*ServiceBusTopicOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
+	return &afods, true
+}
+
+// AsDocumentDbOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsDocumentDbOutputDataSource() (*DocumentDbOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureSynapseOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsAzureSynapseOutputDataSource() (*AzureSynapseOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDatabaseOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsAzureSQLDatabaseOutputDataSource() (*AzureSQLDatabaseOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubV2OutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsEventHubV2OutputDataSource() (*EventHubV2OutputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsEventHubOutputDataSource() (*EventHubOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsAzureTableOutputDataSource() (*AzureTableOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsBlobOutputDataSource() (*BlobOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsOutputDataSource() (*OutputDataSource, bool) {
+	return nil, false
+}
+
+// AsBasicOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsBasicOutputDataSource() (BasicOutputDataSource, bool) {
+	return &afods, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFunctionOutputDataSource struct.
+func (afods *AzureFunctionOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var azureFunctionOutputDataSourceProperties AzureFunctionOutputDataSourceProperties
+				err = json.Unmarshal(*v, &azureFunctionOutputDataSourceProperties)
+				if err != nil {
+					return err
+				}
+				afods.AzureFunctionOutputDataSourceProperties = &azureFunctionOutputDataSourceProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicOutputDataSource
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				afods.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AzureFunctionOutputDataSourceProperties the properties that are associated with an Azure Function
+// output.
+type AzureFunctionOutputDataSourceProperties struct {
+	// FunctionAppName - The name of your Azure Functions app.
+	FunctionAppName *string `json:"functionAppName,omitempty"`
+	// FunctionName - The name of the function in your Azure Functions app.
+	FunctionName *string `json:"functionName,omitempty"`
+	// APIKey - If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function.
+	APIKey *string `json:"apiKey,omitempty"`
+	// MaxBatchSize - A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
+	MaxBatchSize *float64 `json:"maxBatchSize,omitempty"`
+	// MaxBatchCount - A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The default value is 100.
+	MaxBatchCount *float64 `json:"maxBatchCount,omitempty"`
 }
 
 // AzureMachineLearningWebServiceFunctionBinding the binding to an Azure Machine Learning web service.
@@ -440,7 +584,7 @@ type AzureSQLDatabaseDataSourceProperties struct {
 type AzureSQLDatabaseOutputDataSource struct {
 	// AzureSQLDatabaseOutputDataSourceProperties - The properties that are associated with an Azure SQL database output. Required on PUT (CreateOrReplace) requests.
 	*AzureSQLDatabaseOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -474,6 +618,11 @@ func (asdods AzureSQLDatabaseOutputDataSource) AsServiceBusTopicOutputDataSource
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for AzureSQLDatabaseOutputDataSource.
 func (asdods AzureSQLDatabaseOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for AzureSQLDatabaseOutputDataSource.
+func (asdods AzureSQLDatabaseOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -692,7 +841,7 @@ type AzureSynapseDataSourceProperties struct {
 type AzureSynapseOutputDataSource struct {
 	// AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests.
 	*AzureSynapseOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -726,6 +875,11 @@ func (asods AzureSynapseOutputDataSource) AsServiceBusTopicOutputDataSource() (*
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for AzureSynapseOutputDataSource.
 func (asods AzureSynapseOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for AzureSynapseOutputDataSource.
+func (asods AzureSynapseOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -825,7 +979,7 @@ type AzureSynapseOutputDataSourceProperties struct {
 type AzureTableOutputDataSource struct {
 	// AzureTableOutputDataSourceProperties - The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
 	*AzureTableOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -859,6 +1013,11 @@ func (atods AzureTableOutputDataSource) AsServiceBusTopicOutputDataSource() (*Se
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for AzureTableOutputDataSource.
 func (atods AzureTableOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for AzureTableOutputDataSource.
+func (atods AzureTableOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -970,13 +1129,15 @@ type BlobDataSourceProperties struct {
 	DateFormat *string `json:"dateFormat,omitempty"`
 	// TimeFormat - The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
+	// AuthenticationMode - Authentication Mode. Possible values include: 'AuthenticationModeMsi', 'AuthenticationModeUserToken', 'AuthenticationModeConnectionString'
+	AuthenticationMode AuthenticationMode `json:"authenticationMode,omitempty"`
 }
 
 // BlobOutputDataSource describes a blob output data source.
 type BlobOutputDataSource struct {
 	// BlobOutputDataSourceProperties - The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests.
 	*BlobOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -1010,6 +1171,11 @@ func (bods BlobOutputDataSource) AsServiceBusTopicOutputDataSource() (*ServiceBu
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for BlobOutputDataSource.
 func (bods BlobOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for BlobOutputDataSource.
+func (bods BlobOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -1093,8 +1259,6 @@ func (bods *BlobOutputDataSource) UnmarshalJSON(body []byte) error {
 
 // BlobOutputDataSourceProperties the properties that are associated with a blob output.
 type BlobOutputDataSourceProperties struct {
-	// AuthenticationMode - Authentication Mode. Possible values include: 'AuthenticationModeMsi', 'AuthenticationModeUserToken', 'AuthenticationModeConnectionString'
-	AuthenticationMode AuthenticationMode `json:"authenticationMode,omitempty"`
 	// StorageAccounts - A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
 	StorageAccounts *[]StorageAccount `json:"storageAccounts,omitempty"`
 	// Container - The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
@@ -1105,6 +1269,8 @@ type BlobOutputDataSourceProperties struct {
 	DateFormat *string `json:"dateFormat,omitempty"`
 	// TimeFormat - The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
+	// AuthenticationMode - Authentication Mode. Possible values include: 'AuthenticationModeMsi', 'AuthenticationModeUserToken', 'AuthenticationModeConnectionString'
+	AuthenticationMode AuthenticationMode `json:"authenticationMode,omitempty"`
 }
 
 // BlobReferenceInputDataSource describes a blob input data source that contains reference data.
@@ -1194,6 +1360,8 @@ type BlobReferenceInputDataSourceProperties struct {
 	DateFormat *string `json:"dateFormat,omitempty"`
 	// TimeFormat - The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
+	// AuthenticationMode - Authentication Mode. Possible values include: 'AuthenticationModeMsi', 'AuthenticationModeUserToken', 'AuthenticationModeConnectionString'
+	AuthenticationMode AuthenticationMode `json:"authenticationMode,omitempty"`
 }
 
 // BlobStreamInputDataSource describes a blob input data source that contains stream data.
@@ -1283,7 +1451,7 @@ func (bsids *BlobStreamInputDataSource) UnmarshalJSON(body []byte) error {
 // BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing
 // stream data.
 type BlobStreamInputDataSourceProperties struct {
-	// SourcePartitionCount - The partition count of the blob input data source. Range 1 - 256.
+	// SourcePartitionCount - The partition count of the blob input data source. Range 1 - 1024.
 	SourcePartitionCount *int32 `json:"sourcePartitionCount,omitempty"`
 	// StorageAccounts - A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
 	StorageAccounts *[]StorageAccount `json:"storageAccounts,omitempty"`
@@ -1295,6 +1463,8 @@ type BlobStreamInputDataSourceProperties struct {
 	DateFormat *string `json:"dateFormat,omitempty"`
 	// TimeFormat - The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
+	// AuthenticationMode - Authentication Mode. Possible values include: 'AuthenticationModeMsi', 'AuthenticationModeUserToken', 'AuthenticationModeConnectionString'
+	AuthenticationMode AuthenticationMode `json:"authenticationMode,omitempty"`
 }
 
 // Cluster a Stream Analytics Cluster object
@@ -2065,7 +2235,7 @@ func (d Diagnostics) MarshalJSON() ([]byte, error) {
 type DocumentDbOutputDataSource struct {
 	// DocumentDbOutputDataSourceProperties - The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests.
 	*DocumentDbOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -2099,6 +2269,11 @@ func (ddods DocumentDbOutputDataSource) AsServiceBusTopicOutputDataSource() (*Se
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for DocumentDbOutputDataSource.
 func (ddods DocumentDbOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for DocumentDbOutputDataSource.
+func (ddods DocumentDbOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -2256,7 +2431,7 @@ type EventHubDataSourceProperties struct {
 type EventHubOutputDataSource struct {
 	// EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
 	*EventHubOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -2290,6 +2465,11 @@ func (ehods EventHubOutputDataSource) AsServiceBusTopicOutputDataSource() (*Serv
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for EventHubOutputDataSource.
 func (ehods EventHubOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for EventHubOutputDataSource.
+func (ehods EventHubOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -2494,7 +2674,7 @@ type EventHubStreamInputDataSourceProperties struct {
 type EventHubV2OutputDataSource struct {
 	// EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
 	*EventHubOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -2528,6 +2708,11 @@ func (ehvods EventHubV2OutputDataSource) AsServiceBusTopicOutputDataSource() (*S
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for EventHubV2OutputDataSource.
 func (ehvods EventHubV2OutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for EventHubV2OutputDataSource.
+func (ehvods EventHubV2OutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -4360,6 +4545,7 @@ type BasicOutputDataSource interface {
 	AsPowerBIOutputDataSource() (*PowerBIOutputDataSource, bool)
 	AsServiceBusTopicOutputDataSource() (*ServiceBusTopicOutputDataSource, bool)
 	AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool)
+	AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool)
 	AsDocumentDbOutputDataSource() (*DocumentDbOutputDataSource, bool)
 	AsAzureSynapseOutputDataSource() (*AzureSynapseOutputDataSource, bool)
 	AsAzureSQLDatabaseOutputDataSource() (*AzureSQLDatabaseOutputDataSource, bool)
@@ -4372,7 +4558,7 @@ type BasicOutputDataSource interface {
 
 // OutputDataSource describes the data source that output will be written to.
 type OutputDataSource struct {
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -4400,6 +4586,10 @@ func unmarshalBasicOutputDataSource(body []byte) (BasicOutputDataSource, error) 
 		var sbqods ServiceBusQueueOutputDataSource
 		err := json.Unmarshal(body, &sbqods)
 		return sbqods, err
+	case string(TypeBasicOutputDataSourceTypeMicrosoftAzureFunction):
+		var afods AzureFunctionOutputDataSource
+		err := json.Unmarshal(body, &afods)
+		return afods, err
 	case string(TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB):
 		var ddods DocumentDbOutputDataSource
 		err := json.Unmarshal(body, &ddods)
@@ -4480,6 +4670,11 @@ func (ods OutputDataSource) AsServiceBusTopicOutputDataSource() (*ServiceBusTopi
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for OutputDataSource.
 func (ods OutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for OutputDataSource.
+func (ods OutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -4888,7 +5083,7 @@ func (ps ParquetSerialization) AsBasicSerialization() (BasicSerialization, bool)
 type PowerBIOutputDataSource struct {
 	// PowerBIOutputDataSourceProperties - The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
 	*PowerBIOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -4922,6 +5117,11 @@ func (pbods PowerBIOutputDataSource) AsServiceBusTopicOutputDataSource() (*Servi
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for PowerBIOutputDataSource.
 func (pbods PowerBIOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for PowerBIOutputDataSource.
+func (pbods PowerBIOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 
@@ -5934,7 +6134,7 @@ type ServiceBusDataSourceProperties struct {
 type ServiceBusQueueOutputDataSource struct {
 	// ServiceBusQueueOutputDataSourceProperties - The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
 	*ServiceBusQueueOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -5969,6 +6169,11 @@ func (sbqods ServiceBusQueueOutputDataSource) AsServiceBusTopicOutputDataSource(
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for ServiceBusQueueOutputDataSource.
 func (sbqods ServiceBusQueueOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
 	return &sbqods, true
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for ServiceBusQueueOutputDataSource.
+func (sbqods ServiceBusQueueOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
+	return nil, false
 }
 
 // AsDocumentDbOutputDataSource is the BasicOutputDataSource implementation for ServiceBusQueueOutputDataSource.
@@ -6072,7 +6277,7 @@ type ServiceBusQueueOutputDataSourceProperties struct {
 type ServiceBusTopicOutputDataSource struct {
 	// ServiceBusTopicOutputDataSourceProperties - The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
 	*ServiceBusTopicOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
+	// Type - Possible values include: 'TypeBasicOutputDataSourceTypeOutputDataSource', 'TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts', 'TypeBasicOutputDataSourceTypePowerBI', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue', 'TypeBasicOutputDataSourceTypeMicrosoftAzureFunction', 'TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse', 'TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase', 'TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicOutputDataSourceTypeMicrosoftStorageTable', 'TypeBasicOutputDataSourceTypeMicrosoftStorageBlob'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -6106,6 +6311,11 @@ func (sbtods ServiceBusTopicOutputDataSource) AsServiceBusTopicOutputDataSource(
 
 // AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for ServiceBusTopicOutputDataSource.
 func (sbtods ServiceBusTopicOutputDataSource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for ServiceBusTopicOutputDataSource.
+func (sbtods ServiceBusTopicOutputDataSource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
 	return nil, false
 }
 

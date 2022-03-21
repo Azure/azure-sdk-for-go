@@ -562,7 +562,6 @@ type DeleteKeyPoller struct {
 	deleteResponse    generated.KeyVaultClientDeleteKeyResponse
 	deleteRawResponse *http.Response
 	lastResponse      generated.KeyVaultClientGetDeletedKeyResponse
-	// rawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -580,10 +579,10 @@ func (s *DeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
 	var deleteRawResponse *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &deleteRawResponse)
 	resp, err := s.client.GetDeletedKey(ctx, s.vaultUrl, s.keyName, nil)
+	s.deleteRawResponse = deleteRawResponse
 	if deleteRawResponse.StatusCode == http.StatusOK {
 		// Service recognizes DeletedKey, operation is done
 		s.lastResponse = resp
-		s.deleteRawResponse = deleteRawResponse
 		return s.deleteRawResponse, nil
 	}
 
@@ -747,6 +746,9 @@ func (p *RecoverDeletedKeyPoller) Poll(ctx context.Context) (*http.Response, err
 	resp, err := p.client.GetKey(ctx, p.vaultUrl, p.keyName, "", nil)
 	p.lastResponse = resp
 	p.lastRawResponse = rawResp
+	if rawResp.StatusCode == http.StatusOK || rawResp.StatusCode == http.StatusNotFound {
+		return rawResp, nil
+	}
 	return rawResp, err
 }
 

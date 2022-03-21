@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -27,7 +27,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -60,7 +60,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",

@@ -12,7 +12,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-09-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2022-01-01/storagecache"
 )
 
 const (
@@ -157,6 +157,7 @@ type APIOperationPropertiesServiceSpecification = original.APIOperationPropertie
 type AscOperation = original.AscOperation
 type AscOperationProperties = original.AscOperationProperties
 type AscOperationsClient = original.AscOperationsClient
+type AscUsagesClient = original.AscUsagesClient
 type BaseClient = original.BaseClient
 type BlobNfsTarget = original.BlobNfsTarget
 type Cache = original.Cache
@@ -205,11 +206,17 @@ type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type ResourceUsage = original.ResourceUsage
+type ResourceUsageName = original.ResourceUsageName
+type ResourceUsagesListResult = original.ResourceUsagesListResult
+type ResourceUsagesListResultIterator = original.ResourceUsagesListResultIterator
+type ResourceUsagesListResultPage = original.ResourceUsagesListResultPage
 type Restriction = original.Restriction
 type SkusClient = original.SkusClient
 type StorageTarget = original.StorageTarget
 type StorageTargetClient = original.StorageTargetClient
 type StorageTargetFlushFuture = original.StorageTargetFlushFuture
+type StorageTargetInvalidateFuture = original.StorageTargetInvalidateFuture
 type StorageTargetProperties = original.StorageTargetProperties
 type StorageTargetResource = original.StorageTargetResource
 type StorageTargetResumeFuture = original.StorageTargetResumeFuture
@@ -245,6 +252,12 @@ func NewAscOperationsClient(subscriptionID string) AscOperationsClient {
 func NewAscOperationsClientWithBaseURI(baseURI string, subscriptionID string) AscOperationsClient {
 	return original.NewAscOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAscUsagesClient(subscriptionID string) AscUsagesClient {
+	return original.NewAscUsagesClient(subscriptionID)
+}
+func NewAscUsagesClientWithBaseURI(baseURI string, subscriptionID string) AscUsagesClient {
+	return original.NewAscUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCachesClient(subscriptionID string) CachesClient {
 	return original.NewCachesClient(subscriptionID)
 }
@@ -268,6 +281,12 @@ func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResu
 }
 func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
 	return original.NewResourceSkusResultPage(cur, getNextPage)
+}
+func NewResourceUsagesListResultIterator(page ResourceUsagesListResultPage) ResourceUsagesListResultIterator {
+	return original.NewResourceUsagesListResultIterator(page)
+}
+func NewResourceUsagesListResultPage(cur ResourceUsagesListResult, getNextPage func(context.Context, ResourceUsagesListResult) (ResourceUsagesListResult, error)) ResourceUsagesListResultPage {
+	return original.NewResourceUsagesListResultPage(cur, getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)

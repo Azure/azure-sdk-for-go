@@ -166,11 +166,11 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
+	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{
 			Name: to.StringPtr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
 			Subject: to.StringPtr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -178,11 +178,12 @@ func main() {
 		panic(err)
 	}
 
-	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	finalResponse, err := resp.PollUntilDone(context.TODO(), time.Second)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*pollerResp.ID)
+
+	fmt.Println("Created a certificate with ID: ", *finalResponse.ID)
 }
 ```
 If you would like to check the status of your certificate creation, you can call `Poll(ctx context.Context)` on the poller or
@@ -194,6 +195,10 @@ with the name of the certificate.
 retrieves the latest version of a certificate previously stored in the Key Vault.
 ```go
 import (
+	"context"
+	"os"
+	"fmt"
+
     "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -219,7 +224,6 @@ func Example_GetCertificate() {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.Policy.IssuerParameters.Name)
 
 	// optionally you can get a specific version
 	resp, err = client.GetCertificate(context.TODO(), "myCertName", &azcertificates.GetCertificateOptions{Version: "myCertVersion"})
@@ -257,15 +261,21 @@ func main() {
 
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
-		CertificateAttributes: &azcertificates.CertificateAttributes{
-			Attributes: azcertificates.Attributes{Enabled: to.BoolPtr(false)},
+		CertificateAttributes: &azcertificates.CertificateProperties{
+			Enabled: to.BoolPtr(false),
+			Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
 		},
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			IssuerParameters: &azcertificates.IssuerParameters{
+				Name: to.StringPtr("Self"),
+			},
+		},
+		Tags: map[string]string{"Tag1": "Val1"},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.ID)
-	fmt.Println(*resp.Certificate.Attributes.Enabled)
+	fmt.Printf("Set Enabled to %v for certificate with name %s\n", *resp.KeyVaultCertificate.Properties.Enabled, *resp.ID)
 }
 ```
 
@@ -298,18 +308,16 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.BeginDeleteCertificate(context.TODO(), "myCertificateName", nil)
+	pollerResp, err := client.BeginDeleteCertificate(context.TODO(), "certToDelete", nil)
+	if err != nil {
+		panic(err)
+	}
+	finalResp, err := pollerResp.PollUntilDone(context.TODO(), time.Second)
 	if err != nil {
 		panic(err)
 	}
 
-	finalResponse, err := resp.PollUntilDone(context.TODO(), time.Second)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(*finalResponse.ID)
-	fmt.Println(*finalResponse.DeletedDate)
+	fmt.Println("Deleted certificate with ID: ", *finalResp.ID)
 }
 ```
 
@@ -338,14 +346,15 @@ func main() {
 		panic(err)
 	}
 
-	poller := client.ListCertificates(nil)
-	for poller.NextPage(context.TODO()) {
-		for _, cert := range poller.PageResponse().Certificates {
+	pager := client.ListCertificates(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, cert := range page.Certificates {
 			fmt.Println(*cert.ID)
 		}
-	}
-	if poller.Err() != nil {
-		panic(err)
 	}
 }
 
@@ -375,7 +384,7 @@ To obtain more detailed logging, including request/response bodies and header va
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 log.SetListener(func(cls log.Classification, msg string) {
-		fmt.Println(msg) // printing log out to the console
+	fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

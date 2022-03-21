@@ -185,10 +185,6 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 // CopyIncrementalPageBlobOptions provides set of configurations for StartCopyIncremental operation
 type CopyIncrementalPageBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
-
-	RequestID *string
-
-	Timeout *int32
 }
 
 func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOptions, *ModifiedAccessConditions) {
@@ -196,10 +192,5 @@ func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOpt
 		return nil, nil
 	}
 
-	options := PageBlobCopyIncrementalOptions{
-		RequestID: o.RequestID,
-		Timeout:   o.Timeout,
-	}
-
-	return &options, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }

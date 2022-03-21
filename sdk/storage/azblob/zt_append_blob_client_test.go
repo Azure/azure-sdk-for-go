@@ -79,7 +79,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	md5Value := md5.Sum(body)
 	_ = body
 	contentMD5 := md5Value[:]
-	appendBlockOptions := AppendBlockOptions{
+	appendBlockOptions := AppendBlobAppendBlockOptions{
 		TransactionalContentMD5: contentMD5,
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
@@ -100,7 +100,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
 	_ = body
-	appendBlockOptions = AppendBlockOptions{
+	appendBlockOptions = AppendBlobAppendBlockOptions{
 		TransactionalContentMD5: badMD5,
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
@@ -173,10 +173,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert.Nil(err)
 	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
 
-	//ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions)
+	//ctx context.Context, source url.URL, contentLength int64, options *AppendBlobAppendBlockFromURLOptions)
 	offset := int64(0)
 	count := int64(CountToEnd)
-	appendBlockURLOptions := AppendBlockURLOptions{
+	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 		Offset: &offset,
 		Count:  &count,
 	}
@@ -271,7 +271,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	offset := int64(0)
 	count := int64(contentSize)
 	contentMD5 := md5Value[:]
-	appendBlockURLOptions := AppendBlockURLOptions{
+	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 		Offset:           &offset,
 		Count:            &count,
 		SourceContentMD5: contentMD5,
@@ -300,7 +300,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 
 	// Test append block from URL with bad MD5 value
 	_, badMD5 := getRandomDataAndReader(16)
-	appendBlockURLOptions = AppendBlockURLOptions{
+	appendBlockURLOptions = AppendBlobAppendBlockFromURLOptions{
 		Offset:           &offset,
 		Count:            &count,
 		SourceContentMD5: badMD5,
@@ -326,7 +326,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataNonEmpty() {
 	abName := generateBlobName(testName)
 	abClient, _ := getAppendBlobClient(abName, containerClient)
 
-	_, err = abClient.Create(ctx, &CreateAppendBlobOptions{
+	_, err = abClient.Create(ctx, &AppendBlobCreateOptions{
 		Metadata: basicMetadata,
 	})
 	_assert.Nil(err)
@@ -353,7 +353,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataEmpty() {
 	abName := generateBlobName(testName)
 	abClient, _ := getAppendBlobClient(abName, containerClient)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		Metadata: map[string]string{},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
@@ -380,7 +380,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataInvalid() {
 	abName := generateBlobName(testName)
 	abClient, _ := getAppendBlobClient(abName, containerClient)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
@@ -404,7 +404,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
 	abName := generateBlobName(testName)
 	abClient, _ := getAppendBlobClient(abName, containerClient)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
@@ -448,7 +448,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -487,7 +487,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -526,7 +526,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -565,7 +565,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -598,7 +598,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -629,7 +629,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -661,7 +661,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	eTag := "garbage"
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -694,7 +694,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
@@ -805,7 +805,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
-	appendBlockOptions := AppendBlockOptions{
+	appendBlockOptions := AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -842,7 +842,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
-	appendBlockOptions := AppendBlockOptions{
+	appendBlockOptions := AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -879,7 +879,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
-	appendBlockOptions := AppendBlockOptions{
+	appendBlockOptions := AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -916,7 +916,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
-	appendBlockOptions := AppendBlockOptions{
+	appendBlockOptions := AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -947,7 +947,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -975,7 +975,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
@@ -1002,7 +1002,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: to.StringPtr("garbage"),
@@ -1031,7 +1031,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1050,7 +1050,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	appendPosition := int64(-1)
-////	appendBlockOptions := AppendBlockOptions{
+////	appendBlockOptions := AppendBlobAppendBlockOptions{
 ////		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 ////			AppendPosition: &appendPosition,
 ////		},
@@ -1071,7 +1071,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////	_assert.Nil(err)
 ////
 ////	appendPosition := int64(0)
-////	appendBlockOptions := AppendBlockOptions{
+////	appendBlockOptions := AppendBlobAppendBlockOptions{
 ////		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 ////			AppendPosition: &appendPosition,
 ////		},
@@ -1101,7 +1101,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(int64(len(blockBlobDefaultData))),
 		},
@@ -1130,7 +1130,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(-1),
 		},
@@ -1155,7 +1155,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(12),
 		},
@@ -1180,7 +1180,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) + 1)),
 		},
@@ -1205,7 +1205,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
 		},
@@ -1266,7 +1266,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_assert, abName, containerClient)
 //
-//	sealResp, err := abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//	sealResp, err := abClient.SealAppendBlob(ctx, &AppendBlobSealOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			AppendPosition: to.Int64Ptr(1),
 //		},
@@ -1274,7 +1274,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 //	_assert.NotNil(err)
 //	_ = sealResp
 //
-//	sealResp, err = abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//	sealResp, err = abClient.SealAppendBlob(ctx, &AppendBlobSealOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			AppendPosition: to.Int64Ptr(0),
 //		},

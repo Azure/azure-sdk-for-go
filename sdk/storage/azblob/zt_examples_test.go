@@ -469,7 +469,7 @@ func ExampleBlobAccessConditions() {
 	showResultUpload(blockBlob.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Text-2")),
-		&azblob.UploadBlockBlobOptions{
+		&azblob.BlockBlobUploadOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfMatch: upload.ETag},
 			},
@@ -489,7 +489,7 @@ func ExampleBlobAccessConditions() {
 	showResultUpload(blockBlob.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Text-3")),
-		&azblob.UploadBlockBlobOptions{
+		&azblob.BlockBlobUploadOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.StringPtr(string(azcore.ETagAny))},
 			},
@@ -568,7 +568,7 @@ func ExampleBlobClient_SetMetadata() {
 	_, err = blobClient.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Some text")),
-		&azblob.UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}},
+		&azblob.BlockBlobUploadOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}},
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -619,7 +619,7 @@ func ExampleBlobHTTPHeaders() {
 	_, err = blobClient.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Some text")),
-		&azblob.UploadBlockBlobOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
+		&azblob.BlockBlobUploadOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
 		}},
@@ -993,7 +993,7 @@ func Example_progressUploadDownload() {
 	requestProgress := streaming.NewRequestProgress(streaming.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody)
 	})
-	_, err = blobClient.Upload(context.TODO(), requestProgress, &azblob.UploadBlockBlobOptions{
+	_, err = blobClient.Upload(context.TODO(), requestProgress, &azblob.BlockBlobUploadOptions{
 		HTTPHeaders: &azblob.BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),

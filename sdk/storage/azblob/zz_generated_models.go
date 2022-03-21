@@ -193,8 +193,8 @@ type Block struct {
 	Size *int64 `xml:"Size"`
 }
 
-// BlockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.
-type BlockBlobCommitBlockListOptions struct {
+// blockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.
+type blockBlobCommitBlockListOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	BlobTagsString *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
@@ -215,8 +215,8 @@ type BlockBlobCommitBlockListOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-// BlockBlobGetBlockListOptions contains the optional parameters for the BlockBlob.GetBlockList method.
-type BlockBlobGetBlockListOptions struct {
+// blockBlobGetBlockListOptions contains the optional parameters for the BlockBlob.GetBlockList method.
+type blockBlobGetBlockListOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with
@@ -228,8 +228,8 @@ type BlockBlobGetBlockListOptions struct {
 	Timeout *int32
 }
 
-// BlockBlobStageBlockFromURLOptions contains the optional parameters for the BlockBlob.StageBlockFromURL method.
-type BlockBlobStageBlockFromURLOptions struct {
+// blockBlobStageBlockFromURLOptions contains the optional parameters for the BlockBlob.StageBlockFromURL method.
+type blockBlobStageBlockFromURLOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
@@ -243,8 +243,8 @@ type BlockBlobStageBlockFromURLOptions struct {
 	Timeout *int32
 }
 
-// BlockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
-type BlockBlobStageBlockOptions struct {
+// blockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
+type blockBlobStageBlockOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -256,8 +256,8 @@ type BlockBlobStageBlockOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-// BlockBlobUploadOptions contains the optional parameters for the BlockBlob.Upload method.
-type BlockBlobUploadOptions struct {
+// blockBlobUploadOptions contains the optional parameters for the BlockBlob.Upload method.
+type blockBlobUploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	BlobTagsString *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata

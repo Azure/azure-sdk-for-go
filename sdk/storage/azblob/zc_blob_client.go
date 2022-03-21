@@ -27,7 +27,7 @@ func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientO
 	conn := newConnection(blobURL, authPolicy, conOptions)
 
 	return &BlobClient{
-		client: newBlobClient(blobURL, conn.Pipeline()),
+		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
 		conn:   conn,
 	}, nil
 }
@@ -38,7 +38,7 @@ func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*Blo
 	conn := newConnection(blobURL, nil, conOptions)
 
 	return &BlobClient{
-		client: newBlobClient(blobURL, conn.Pipeline()),
+		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
 		conn:   conn,
 	}, nil
 }

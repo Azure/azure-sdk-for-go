@@ -207,7 +207,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	_assert.Nil(err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
+//	uploadBlockBlobOptions := BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
@@ -255,7 +255,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	_assert.Nil(err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
+//	uploadBlockBlobOptions := BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
@@ -295,7 +295,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	_assert.Nil(err)
 
 	bbClient, _ := containerClient.NewBlockBlobClient(blobPrefix)
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		Metadata: basicMetadata,
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
@@ -1247,7 +1247,7 @@ func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
 	blobName := generateBlobName(testName)
 	for i := 0; i < 6; i++ {
 		bbClient, _ := getBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
-		cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &UploadBlockBlobOptions{Metadata: basicMetadata})
+		cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &BlockBlobUploadOptions{Metadata: basicMetadata})
 		_assert.Nil(err)
 		_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	}

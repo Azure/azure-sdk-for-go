@@ -56,17 +56,17 @@ type HighLevelUploadToBlockBlobOption struct {
 	TransactionalContentMD5 *[]byte
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
+func (o *HighLevelUploadToBlockBlobOption) getStageBlockOptions() *BlockBlobStageBlockOptions {
 	leaseAccessConditions, _ := o.BlobAccessConditions.pointers()
-	return &StageBlockOptions{
+	return &BlockBlobStageBlockOptions{
 		CpkInfo:               o.CpkInfo,
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
 	}
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
-	return &UploadBlockBlobOptions{
+func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *BlockBlobUploadOptions {
+	return &BlockBlobUploadOptions{
 		TagsMap:              o.TagsMap,
 		Metadata:             o.Metadata,
 		Tier:                 o.AccessTier,
@@ -77,8 +77,8 @@ func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBl
 	}
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *CommitBlockListOptions {
-	return &CommitBlockListOptions{
+func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
+	return &BlockBlobCommitBlockListOptions{
 		BlobTagsMap:     o.TagsMap,
 		Metadata:        o.Metadata,
 		Tier:            o.AccessTier,
@@ -587,12 +587,12 @@ func (u *UploadStreamToBlockBlobOptions) defaults() error {
 	u.transferMangerNotSet = true
 	return nil
 }
-func (u *UploadStreamToBlockBlobOptions) getStageBlockOptions() *StageBlockOptions {
-	return &StageBlockOptions{}
+func (u *UploadStreamToBlockBlobOptions) getStageBlockOptions() *BlockBlobStageBlockOptions {
+	return &BlockBlobStageBlockOptions{}
 }
 
-func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBlockListOptions {
-	return &CommitBlockListOptions{}
+func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
+	return &BlockBlobCommitBlockListOptions{}
 }
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.

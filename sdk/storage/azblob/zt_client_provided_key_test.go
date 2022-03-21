@@ -67,14 +67,14 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	base64BlockIDs := make([]string, len(words))
 	for index, word := range words {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		stageBlockOptions := StageBlockOptions{
+		stageBlockOptions := BlockBlobStageBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
 		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_assert.Nil(err)
 	}
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
@@ -121,14 +121,14 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	base64BlockIDs := make([]string, len(words))
 	for index, word := range words {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		stageBlockOptions := StageBlockOptions{
+		stageBlockOptions := BlockBlobStageBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
 		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_assert.Nil(err)
 	}
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
@@ -203,7 +203,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
-	options1 := StageBlockFromURLOptions{
+	options1 := BlockBlobStageBlockFromURLOptions{
 		Offset:  &offset1,
 		Count:   &count1,
 		CpkInfo: &testCPKByValue,
@@ -218,7 +218,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
-	options2 := StageBlockFromURLOptions{
+	options2 := BlockBlobStageBlockFromURLOptions{
 		Offset:  &offset2,
 		Count:   &count2,
 		CpkInfo: &testCPKByValue,
@@ -241,7 +241,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
@@ -321,7 +321,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
-	options1 := StageBlockFromURLOptions{
+	options1 := BlockBlobStageBlockFromURLOptions{
 		Offset:       &offset1,
 		Count:        &count1,
 		CpkScopeInfo: &testCPKByScope,
@@ -336,7 +336,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
-	options2 := StageBlockFromURLOptions{
+	options2 := BlockBlobStageBlockFromURLOptions{
 		Offset:       &offset2,
 		Count:        &count2,
 		CpkScopeInfo: &testCPKByScope,
@@ -359,7 +359,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
@@ -409,7 +409,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	md5Val := md5.Sum(srcData)
 	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
@@ -455,7 +455,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	md5Val := md5.Sum(srcData)
 	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
@@ -490,7 +490,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 
 	abClient, _ := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
@@ -499,7 +499,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
-		appendBlockOptions := AppendBlockOptions{
+		appendBlockOptions := AppendBlobAppendBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
@@ -549,7 +549,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 
 	abClient, _ := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
@@ -558,7 +558,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
-		appendBlockOptions := AppendBlockOptions{
+		appendBlockOptions := AppendBlobAppendBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
@@ -645,7 +645,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
@@ -654,7 +654,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 
 	offset := int64(0)
 	count := int64(contentSize)
-	appendBlockURLOptions := AppendBlockURLOptions{
+	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 		Offset:  &offset,
 		Count:   &count,
 		CpkInfo: &testCPKByValue,
@@ -755,7 +755,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
@@ -764,7 +764,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 
 	offset := int64(0)
 	count := int64(contentSize)
-	appendBlockURLOptions := AppendBlockURLOptions{
+	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 		Offset:       &offset,
 		Count:        &count,
 		CpkScopeInfo: &testCPKByScope,

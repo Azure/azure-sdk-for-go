@@ -67,7 +67,6 @@ func toContainerDeleteResponse(resp containerClientDeleteResponse) ContainerDele
 
 // GetPropertiesContainerOptions provides set of configurations for GetPropertiesContainer operation
 type GetPropertiesContainerOptions struct {
-	containerClientGetPropertiesOptions
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
@@ -76,7 +75,7 @@ func (o *GetPropertiesContainerOptions) pointers() (*containerClientGetPropertie
 		return nil, nil
 	}
 
-	return &containerClientGetPropertiesOptions{RequestID: o.RequestID, Timeout: o.Timeout}, o.LeaseAccessConditions
+	return nil, o.LeaseAccessConditions
 }
 
 type ContainerGetPropertiesResponse struct {
@@ -116,7 +115,6 @@ func toContainerSetMetadataResponse(resp containerClientSetMetadataResponse) Con
 
 // GetAccessPolicyOptions provides set of configurations for GetAccessPolicy operation
 type GetAccessPolicyOptions struct {
-	containerClientGetAccessPolicyOptions
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
@@ -125,7 +123,7 @@ func (o *GetAccessPolicyOptions) pointers() (*containerClientGetAccessPolicyOpti
 		return nil, nil
 	}
 
-	return &containerClientGetAccessPolicyOptions{RequestID: o.RequestID, Timeout: o.Timeout}, o.LeaseAccessConditions
+	return nil, o.LeaseAccessConditions
 }
 
 type ContainerGetAccessPolicyResponse struct {
@@ -145,13 +143,6 @@ type SetAccessPolicyOptions struct {
 	Access *PublicAccessType
 	// the acls for the container
 	ContainerACL []*SignedIdentifier
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
-	Timeout *int32
 }
 
 func (o *SetAccessPolicyOptions) pointers() (*containerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -162,8 +153,7 @@ func (o *SetAccessPolicyOptions) pointers() (*containerClientSetAccessPolicyOpti
 	return &containerClientSetAccessPolicyOptions{
 		Access:       o.Access,
 		ContainerACL: o.ContainerACL,
-		RequestID:    o.RequestID,
-		Timeout:      o.Timeout}, lac, mac
+	}, lac, mac
 }
 
 type ContainerSetAccessPolicyResponse struct {
@@ -193,12 +183,6 @@ type ContainerListBlobFlatSegmentOptions struct {
 	Maxresults *int32
 	// Filters the results to return only containers whose name begins with the specified prefix.
 	Prefix *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
-	Timeout *int32
 }
 
 func (o *ContainerListBlobFlatSegmentOptions) pointers() *containerClientListBlobFlatSegmentOptions {
@@ -207,8 +191,6 @@ func (o *ContainerListBlobFlatSegmentOptions) pointers() *containerClientListBlo
 		Marker:     o.Marker,
 		Maxresults: o.Maxresults,
 		Prefix:     o.Prefix,
-		RequestID:  o.Prefix,
-		Timeout:    o.Timeout,
 	}
 }
 
@@ -239,12 +221,6 @@ type ContainerListBlobHierarchySegmentOptions struct {
 	Maxresults *int32
 	// Filters the results to return only containers whose name begins with the specified prefix.
 	Prefix *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
-	Timeout *int32
 }
 
 func (o *ContainerListBlobHierarchySegmentOptions) pointers() *containerClientListBlobHierarchySegmentOptions {
@@ -253,8 +229,6 @@ func (o *ContainerListBlobHierarchySegmentOptions) pointers() *containerClientLi
 		Marker:     o.Marker,
 		Maxresults: o.Maxresults,
 		Prefix:     o.Prefix,
-		RequestID:  o.RequestID,
-		Timeout:    o.Timeout,
 	}
 }
 

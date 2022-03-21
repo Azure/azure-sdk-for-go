@@ -12,6 +12,49 @@ import (
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// BlobDownloadOptions provides set of configurations for Download blob operation
+type BlobDownloadOptions struct {
+	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
+	// range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+
+	// Optional, you can specify whether a particular range of the blob is read
+	Offset *int64
+	Count  *int64
+
+	BlobAccessConditions *BlobAccessConditions
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
+}
+
+func (o *BlobDownloadOptions) pointers() (*blobClientDownloadOptions, *LeaseAccessConditions, *CpkInfo, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	offset := int64(0)
+	count := int64(CountToEnd)
+
+	if o.Offset != nil {
+		offset = *o.Offset
+	}
+
+	if o.Count != nil {
+		count = *o.Count
+	}
+
+	basics := blobClientDownloadOptions{
+		RangeGetContentMD5: o.RangeGetContentMD5,
+		Range: HttpRange{
+			Offset: offset,
+			Count:  count,
+		}.pointers(),
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return &basics, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
+}
+
 // BlobDownloadResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
 type BlobDownloadResponse struct {
 	blobClientDownloadResponse
@@ -55,58 +98,6 @@ func (r *BlobDownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
 	)
 }
 
-// BlobDownloadOptions provides set of configurations for Download blob operation
-type BlobDownloadOptions struct {
-	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
-	// range is less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
-
-	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
-
-	BlobAccessConditions *BlobAccessConditions
-	CpkInfo              *CpkInfo
-	CpkScopeInfo         *CpkScopeInfo
-}
-
-
-func (o *BlobDownloadOptions) pointers() (blobClientDownloadOptions *blobClientDownloadOptions,
-	leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil, nil, nil
-	}
-
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o.Count != nil {
-		count = *o.Count
-	}
-
-	basics := BlobDownloadOptions{
-		RangeGetContentMD5: o.RangeGetContentMD5,
-		Range: HttpRange{
-			Offset: offset,
-			Count:  count,
-		}.pointers(),
-	}
-	leaseAccessConditions, modifiedAccessConditions = o.BlobAccessConditions.pointers()
-	return &basics, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
-}
-
-type struct{
-blobClientDownloadResponse
-}
-
-func (resp blobClientDownloadResponse) {
-
-}
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // BlobDeleteOptions provides set of configurations for Delete blob operation
@@ -144,22 +135,10 @@ func toBlobDeleteResponse(resp blobClientDeleteResponse) BlobDeleteResponse {
 // ---------------------------------------------------------------------------------------------------------------------
 
 type BlobUndeleteOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
-	Timeout *int32
 }
 
 func (o *BlobUndeleteOptions) pointers() *blobClientUndeleteOptions {
-	if o == nil {
-		return nil
-	}
-	return &blobClientUndeleteOptions{
-		RequestID: o.RequestID,
-		Timeout:   o.Timeout,
-	}
+	return nil
 }
 
 type BlobUndeleteResponse struct {
@@ -239,7 +218,7 @@ type BlobGetPropertiesResponse struct {
 func toGetBlobPropertiesResponse(resp blobClientGetPropertiesResponse) BlobGetPropertiesResponse {
 	getResp := BlobGetPropertiesResponse{
 		blobClientGetPropertiesResponse: resp,
-		ObjectReplicationRules: deserializeORSPolicies(resp.ObjectReplicationRules),
+		ObjectReplicationRules:          deserializeORSPolicies(resp.ObjectReplicationRules),
 	}
 	return getResp
 }
@@ -248,8 +227,6 @@ func toGetBlobPropertiesResponse(resp blobClientGetPropertiesResponse) BlobGetPr
 
 // BlobSetHTTPHeadersOptions provides set of configurations for SetHTTPHeaders on blob operation
 type BlobSetHTTPHeadersOptions struct {
-	RequestID *string
-	Timeout *int32
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -259,11 +236,7 @@ func (o *BlobSetHTTPHeadersOptions) pointers() (*blobClientSetHTTPHeadersOptions
 		return nil, nil, nil
 	}
 
-	if o.RequestID == nil && o.Timeout == nil {
-		return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
-	}
-
-	return &blobClientSetHTTPHeadersOptions{RequestID: o.RequestID, Timeout: o.Timeout}, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
 type BlobSetHTTPHeadersResponse struct {
@@ -360,9 +333,9 @@ type BlobStartCopyOptions struct {
 
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 
-	ModifiedAccessConditions       *ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 
-	LeaseAccessConditions          *LeaseAccessConditions
+	LeaseAccessConditions *LeaseAccessConditions
 }
 
 func (o *BlobStartCopyOptions) pointers() (blobStartCopyFromUrlOptions *blobClientStartCopyFromURLOptions,
@@ -372,14 +345,14 @@ func (o *BlobStartCopyOptions) pointers() (blobStartCopyFromUrlOptions *blobClie
 	}
 
 	basics := blobClientStartCopyFromURLOptions{
-		BlobTagsString:    serializeBlobTagsToStrPtr(o.TagsMap),
-		Metadata:          o.Metadata,
-		RehydratePriority: o.RehydratePriority,
-		SealBlob:          o.SealBlob,
-		Tier:              o.Tier,
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.TagsMap),
+		Metadata:                 o.Metadata,
+		RehydratePriority:        o.RehydratePriority,
+		SealBlob:                 o.SealBlob,
+		Tier:                     o.Tier,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
-		ImmutabilityPolicyMode: o.ImmutabilityPolicyMode,
-		LegalHold: o.LegalHold,
+		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		LegalHold:                o.LegalHold,
 	}
 
 	return &basics, o.SourceModifiedAccessConditions, o.ModifiedAccessConditions, o.LeaseAccessConditions
@@ -420,10 +393,6 @@ func toBlobAbortCopyFromURLResponse(resp blobClientAbortCopyFromURLResponse) Blo
 
 // BlobSetTagsOptions provides set of configurations for SetTags operation
 type BlobSetTagsOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds.
-	Timeout *int32
 	// The version id parameter is an opaque DateTime value that, when present,
 	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
 	VersionID *string
@@ -435,7 +404,7 @@ type BlobSetTagsOptions struct {
 	TagsMap map[string]string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
 }
 
 func (o *BlobSetTagsOptions) pointers() (*blobClientSetTagsOptions, *ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -444,9 +413,7 @@ func (o *BlobSetTagsOptions) pointers() (*blobClientSetTagsOptions, *ModifiedAcc
 	}
 
 	options := &blobClientSetTagsOptions{
-		RequestID:                 o.RequestID,
 		Tags:                      serializeBlobTags(o.TagsMap),
-		Timeout:                   o.Timeout,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,
@@ -467,12 +434,8 @@ func toBlobSetTagsResponse(resp blobClientSetTagsResponse) BlobSetTagsResponse {
 
 // BlobGetTagsOptions provides set of configurations for GetTags operation
 type BlobGetTagsOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve.
 	Snapshot *string
-	// The timeout parameter is expressed in seconds.
-	Timeout *int32
 	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
 	// It's for service version 2019-10-10 and newer.
 	VersionID *string
@@ -486,9 +449,7 @@ func (o *BlobGetTagsOptions) pointers() (*blobClientGetTagsOptions, *ModifiedAcc
 	}
 
 	options := &blobClientGetTagsOptions{
-		RequestID: o.RequestID,
 		Snapshot:  o.Snapshot,
-		Timeout:   o.Timeout,
 		VersionID: o.VersionID,
 	}
 
@@ -497,11 +458,10 @@ func (o *BlobGetTagsOptions) pointers() (*blobClientGetTagsOptions, *ModifiedAcc
 	return options, modifiedAccessConditions, leaseAccessConditions
 }
 
-type BlobGetTagsResponse struct{
+type BlobGetTagsResponse struct {
 	blobClientGetTagsResponse
 }
 
-func toBlobGetTagsResponse(resp blobClientGetTagsResponse) BlobGetTagsResponse{
+func toBlobGetTagsResponse(resp blobClientGetTagsResponse) BlobGetTagsResponse {
 	return BlobGetTagsResponse{resp}
 }
-

@@ -3,8 +3,12 @@
 
 package azblob
 
-// UploadBlockBlobOptions provides set of configurations for UploadBlockBlob operation
-type UploadBlockBlobOptions struct {
+import "time"
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobUploadOptions provides set of configurations for UploadBlockBlob operation
+type BlockBlobUploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	TagsMap map[string]string
 
@@ -23,13 +27,13 @@ type UploadBlockBlobOptions struct {
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPHeaders, *LeaseAccessConditions,
+func (o *BlockBlobUploadOptions) pointers() (*blockBlobClientUploadOptions, *BlobHTTPHeaders, *LeaseAccessConditions,
 	*CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	basics := BlockBlobUploadOptions{
+	basics := blockBlobClientUploadOptions{
 		BlobTagsString:          serializeBlobTagsToStrPtr(o.TagsMap),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
@@ -40,61 +44,99 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPH
 	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
-// StageBlockOptions provides set of configurations for StageBlock operation
-type StageBlockOptions struct {
-	CpkInfo                    *CpkInfo
-	CpkScopeInfo               *CpkScopeInfo
-	LeaseAccessConditions      *LeaseAccessConditions
-	BlockBlobStageBlockOptions *BlockBlobStageBlockOptions
+type BlockBlobUploadResponse struct {
+	blockBlobClientUploadResponse
 }
 
-func (o *StageBlockOptions) pointers() (*LeaseAccessConditions, *BlockBlobStageBlockOptions, *CpkInfo, *CpkScopeInfo) {
+func toBlockBlobUploadResponse(resp blockBlobClientUploadResponse) BlockBlobUploadResponse {
+	return BlockBlobUploadResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobStageBlockOptions provides set of configurations for StageBlock operation
+type BlockBlobStageBlockOptions struct {
+	CpkInfo *CpkInfo
+
+	CpkScopeInfo *CpkScopeInfo
+
+	LeaseAccessConditions *LeaseAccessConditions
+	// Specify the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCRC64 []byte
+	// Specify the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMD5 []byte
+}
+
+func (o *BlockBlobStageBlockOptions) pointers() (*blockBlobClientStageBlockOptions, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
 
-	return o.LeaseAccessConditions, o.BlockBlobStageBlockOptions, o.CpkInfo, o.CpkScopeInfo
+	return &blockBlobClientStageBlockOptions{
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
+	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
-// StageBlockFromURLOptions provides set of configurations for StageBlockFromURL operation
-type StageBlockFromURLOptions struct {
-	LeaseAccessConditions          *LeaseAccessConditions
+type BlockBlobStageBlockResponse struct {
+	blockBlobClientStageBlockResponse
+}
+
+func toBlockBlobStageBlockResponse(resp blockBlobClientStageBlockResponse) BlockBlobStageBlockResponse {
+	return BlockBlobStageBlockResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobStageBlockFromURLOptions provides set of configurations for StageBlockFromURL operation
+type BlockBlobStageBlockFromURLOptions struct {
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
+
+	LeaseAccessConditions *LeaseAccessConditions
+
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 []byte
+	SourceContentCRC64 []byte
 
 	Offset *int64
 
 	Count *int64
-	// The timeout parameter is expressed in seconds.
-	Timeout *int32
 
-	CpkInfo      *CpkInfo
+	CpkInfo *CpkInfo
+
 	CpkScopeInfo *CpkScopeInfo
 }
 
-func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceModifiedAccessConditions, *BlockBlobStageBlockFromURLOptions, *CpkInfo, *CpkScopeInfo) {
+func (o *BlockBlobStageBlockFromURLOptions) pointers() (*blockBlobClientStageBlockFromURLOptions, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}
 
-	options := &BlockBlobStageBlockFromURLOptions{
-		RequestID:          o.RequestID,
-		SourceContentMD5:   o.SourceContentMD5,
-		SourceContentcrc64: o.SourceContentcrc64,
-		SourceRange:        getSourceRange(o.Offset, o.Count),
-		Timeout:            o.Timeout,
+	options := &blockBlobClientStageBlockFromURLOptions{
+		CopySourceAuthorization: o.CopySourceAuthorization,
+		SourceContentMD5:        o.SourceContentMD5,
+		SourceContentcrc64:      o.SourceContentCRC64,
+		SourceRange:             getSourceRange(o.Offset, o.Count),
 	}
 
-	return o.LeaseAccessConditions, o.SourceModifiedAccessConditions, options, o.CpkInfo, o.CpkScopeInfo
+	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
 }
 
-// CommitBlockListOptions provides set of configurations for CommitBlockList operation
-type CommitBlockListOptions struct {
+type BlockBlobStageBlockFromURLResponse struct {
+	blockBlobClientStageBlockFromURLResponse
+}
+
+func toBlockBlobStageBlockFromURLResponse(resp blockBlobClientStageBlockFromURLResponse) BlockBlobStageBlockFromURLResponse {
+	return BlockBlobStageBlockFromURLResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobCommitBlockListOptions provides set of configurations for CommitBlockList operation
+type BlockBlobCommitBlockListOptions struct {
 	BlobTagsMap               map[string]string
 	Metadata                  map[string]string
 	RequestID                 *string
@@ -108,12 +150,12 @@ type CommitBlockListOptions struct {
 	BlobAccessConditions      *BlobAccessConditions
 }
 
-func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
+func (o *BlockBlobCommitBlockListOptions) pointers() (*blockBlobClientCommitBlockListOptions, *BlobHTTPHeaders, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	options := &BlockBlobCommitBlockListOptions{
+	options := &blockBlobClientCommitBlockListOptions{
 		BlobTagsString:            serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:                  o.Metadata,
 		RequestID:                 o.RequestID,
@@ -123,50 +165,99 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
+	return options, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
-// GetBlockListOptions provides set of configurations for GetBlockList operation
-type GetBlockListOptions struct {
-	BlockBlobGetBlockListOptions *BlockBlobGetBlockListOptions
-	BlobAccessConditions         *BlobAccessConditions
+type BlockBlobCommitBlockListResponse struct {
+	blockBlobClientCommitBlockListResponse
 }
 
-func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *ModifiedAccessConditions, *LeaseAccessConditions) {
+func toBlockBlobCommitBlockListResponse(resp blockBlobClientCommitBlockListResponse) BlockBlobCommitBlockListResponse {
+	return BlockBlobCommitBlockListResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobGetBlockListOptions provides set of configurations for GetBlockList operation
+type BlockBlobGetBlockListOptions struct {
+	Snapshot             *string
+	BlobAccessConditions *BlobAccessConditions
+}
+
+func (o *BlockBlobGetBlockListOptions) pointers() (*blockBlobClientGetBlockListOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return o.BlockBlobGetBlockListOptions, modifiedAccessConditions, leaseAccessConditions
+	return &blockBlobClientGetBlockListOptions{Snapshot: o.Snapshot}, leaseAccessConditions, modifiedAccessConditions
 }
 
-// CopyBlockBlobFromURLOptions provides set of configurations for CopyBlockBlobFromURL operation
-type CopyBlockBlobFromURLOptions struct {
-	BlobTagsMap                    map[string]string
-	Metadata                       map[string]string
-	RequestID                      *string
-	SourceContentMD5               []byte
-	Tier                           *AccessTier
-	Timeout                        *int32
+type BlockBlobGetBlockListResponse struct {
+	blockBlobClientGetBlockListResponse
+}
+
+func toBlockBlobGetBlockListResponse(resp blockBlobClientGetBlockListResponse) BlockBlobGetBlockListResponse {
+	return BlockBlobGetBlockListResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BlockBlobCopyFromURLOptions provides set of configurations for CopyBlockBlobFromURL operation
+type BlockBlobCopyFromURLOptions struct {
+	// Optional. Used to set blob tags in various blob operations.
+	BlobTagsMap map[string]string
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
+	// Specifies the date time when the blobs immutability policy is set to expire.
+	ImmutabilityPolicyExpiry *time.Time
+	// Specifies the immutability policy mode to set on the blob.
+	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	// Specified if a legal hold should be set on the blob.
+	LegalHold *bool
+	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
+	// operation will copy the metadata from the source blob or file to the destination
+	// blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata
+	// is not copied from the source blob or file. Note that beginning with
+	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
+	// Blobs, and Metadata for more information.
+	Metadata map[string]string
+	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
+	SourceContentMD5 []byte
+	// Optional. Indicates the tier to be set on the blob.
+	Tier *AccessTier
+
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions           *BlobAccessConditions
+
+	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *CopyBlockBlobFromURLOptions) pointers() (*BlobCopyFromURLOptions, *SourceModifiedAccessConditions, *ModifiedAccessConditions, *LeaseAccessConditions) {
+func (o *BlockBlobCopyFromURLOptions) pointers() (*blobClientCopyFromURLOptions, *SourceModifiedAccessConditions, *ModifiedAccessConditions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
 
-	options := &BlobCopyFromURLOptions{
-		BlobTagsString:   serializeBlobTagsToStrPtr(o.BlobTagsMap),
-		Metadata:         o.Metadata,
-		RequestID:        o.RequestID,
-		SourceContentMD5: o.SourceContentMD5,
-		Tier:             o.Tier,
-		Timeout:          o.Timeout,
+	options := &blobClientCopyFromURLOptions{
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		CopySourceAuthorization:  o.CopySourceAuthorization,
+		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		LegalHold:                o.LegalHold,
+		Metadata:                 o.Metadata,
+		SourceContentMD5:         o.SourceContentMD5,
+		Tier:                     o.Tier,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
 	return options, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }
+
+type BlockBlobCopyFromURLResponse struct {
+	blobClientCopyFromURLResponse
+}
+
+func toBlockBlobCopyFromURLResponse(resp blobClientCopyFromURLResponse) BlockBlobCopyFromURLResponse {
+	return BlockBlobCopyFromURLResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

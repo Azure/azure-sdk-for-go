@@ -321,7 +321,7 @@ func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
 func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient *ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient *BlockBlobClient) {
 	bbClient, _ = getBlockBlobClient(blockBlobName, containerClient)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	}

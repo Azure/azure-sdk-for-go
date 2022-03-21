@@ -144,7 +144,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Stage blocks from URL.
 	blockIDs := generateBlockIDsList(2)
 
-	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
+	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
 		Offset: to.Int64Ptr(0),
 		Count:  to.Int64Ptr(int64(contentSize / 2)),
 	})
@@ -155,7 +155,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.NotEqual(stageResp1.Version, "")
 	_assert.Equal(stageResp1.Date.IsZero(), false)
 
-	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
+	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
 		Offset: to.Int64Ptr(int64(contentSize / 2)),
 		Count:  to.Int64Ptr(int64(CountToEnd)),
 	})
@@ -243,7 +243,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 
 	// Invoke copy bbClient from URL.
 	sourceContentMD5 := contentMD5[:]
-	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &CopyBlockBlobFromURLOptions{
+	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &BlockBlobCopyFromURLOptions{
 		Metadata:         map[string]string{"foo": "bar"},
 		SourceContentMD5: sourceContentMD5,
 	})
@@ -275,14 +275,14 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
-	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
+	copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
 		SourceContentMD5: badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	_assert.NotNil(err)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
-	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
+	copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
 		SourceContentMD5: sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
@@ -384,7 +384,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	contentMD5 := md5Value[:]
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &StageBlockOptions{
+	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &BlockBlobStageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
 			TransactionalContentMD5: contentMD5,
 		},
@@ -404,7 +404,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &StageBlockOptions{
+	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &BlockBlobStageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
 			TransactionalContentMD5: badContentMD5,
 		},
@@ -431,7 +431,7 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
 		HTTPHeaders: &basicHeaders,
 	})
 	_assert.Nil(err)
@@ -461,7 +461,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
 		Metadata: basicMetadata,
 	})
 	_assert.Nil(err)
@@ -521,7 +521,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
-	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
 	})
 	_assert.NotNil(err)
@@ -553,7 +553,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -591,7 +591,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -632,7 +632,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -668,7 +668,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -704,7 +704,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
-	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -739,7 +739,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	body := bytes.NewReader(content)
 
 	ifMatch := "garbage"
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &ifMatch,
@@ -775,7 +775,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	rsc := internal.NopCloser(body)
 
 	ifNoneMatch := "garbage"
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &ifNoneMatch,
@@ -812,7 +812,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 
-	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -855,7 +855,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
 	defer deleteContainer(_assert, containerClient)
 
-	_, err := bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+	_, err := bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
 		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
 	})
 	_assert.Nil(err)
@@ -881,7 +881,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
-	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
@@ -903,7 +903,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
 
-	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
@@ -925,7 +925,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -947,7 +947,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
@@ -966,7 +966,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
 	_assert.Nil(err)
 
-	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
 	})
@@ -986,7 +986,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 	_assert.Nil(err)
 
 	eTag := "garbage"
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -1005,7 +1005,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 	_assert.Nil(err)
 
 	eTag := "garbage"
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -1024,7 +1024,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	resp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
 	_assert.Nil(err)
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -1097,7 +1097,7 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
 		bbClient, _ := getBlockBlobClient(blobName, containerClient)
 
-		uploadBlockBlobOptions := UploadBlockBlobOptions{
+		uploadBlockBlobOptions := BlockBlobUploadOptions{
 			HTTPHeaders: &basicHeaders,
 			Tier:        &tier,
 		}
@@ -1131,7 +1131,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 		_, err := bbClient.StageBlock(ctx, blockID, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 		_assert.Nil(err)
 
-		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &CommitBlockListOptions{
+		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &BlockBlobCommitBlockListOptions{
 			Tier: &tier,
 		})
 		_assert.Nil(err)
@@ -1165,7 +1165,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	srcBlob, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	tier := AccessTierCool
-	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &UploadBlockBlobOptions{Tier: &tier})
+	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &BlockBlobUploadOptions{Tier: &tier})
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
@@ -1194,7 +1194,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		destBlobName := strings.ToLower(string(tier)) + generateBlobName(testName)
 		destBlob, _ := containerClient.NewBlockBlobClient(generateBlobName(destBlobName))
 
-		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
+		copyBlockBlobFromURLOptions := BlockBlobCopyFromURLOptions{
 			Tier:     &tier,
 			Metadata: map[string]string{"foo": "bar"},
 		}
@@ -1230,7 +1230,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	srcBlob, _ := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
 	destBlob, _ := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 	tier := AccessTierCool
-	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
+	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &BlockBlobUploadOptions{Tier: &tier})
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
@@ -1254,7 +1254,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
-	options1 := StageBlockFromURLOptions{
+	options1 := BlockBlobStageBlockFromURLOptions{
 		Offset: &offset1,
 		Count:  &count1,
 	}
@@ -1268,7 +1268,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
-	options2 := StageBlockFromURLOptions{
+	options2 := BlockBlobStageBlockFromURLOptions{
 		Offset: &offset2,
 		Count:  &count2,
 	}
@@ -1290,7 +1290,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
-	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &CommitBlockListOptions{
+	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &BlockBlobCommitBlockListOptions{
 		Tier: &tier,
 	})
 	_assert.Nil(err)

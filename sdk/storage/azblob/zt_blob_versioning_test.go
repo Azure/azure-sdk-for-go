@@ -30,7 +30,7 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
@@ -63,7 +63,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 
 	blobProp, _ := abClient.GetProperties(ctx, nil)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
@@ -173,14 +173,14 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &UploadBlockBlobOptions{
+//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
 //	versionID1 := uploadResp.VersionID
 //
-//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &UploadBlockBlobOptions{
+//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
@@ -283,7 +283,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
-		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &UploadBlockBlobOptions{
+		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &BlockBlobUploadOptions{
 			Metadata: basicMetadata,
 		})
 		_assert.Nil(err)

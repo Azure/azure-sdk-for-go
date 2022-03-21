@@ -3,8 +3,19 @@
 
 package azblob
 
-// CreateAppendBlobOptions provides set of configurations for Create Append Blob operation
-type CreateAppendBlobOptions struct {
+import "time"
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AppendBlobCreateOptions provides set of configurations for Create Append Blob operation
+type AppendBlobCreateOptions struct {
+	// Specifies the date time when the blobs immutability policy is set to expire.
+	ImmutabilityPolicyExpiry *time.Time
+	// Specifies the immutability policy mode to set on the blob.
+	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	// Specified if a legal hold should be set on the blob.
+	LegalHold *bool
+
 	BlobAccessConditions *BlobAccessConditions
 
 	HTTPHeaders *BlobHTTPHeaders
@@ -20,47 +31,59 @@ type CreateAppendBlobOptions struct {
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
 	Metadata map[string]string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-
-	Timeout *int32
 }
 
-func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTTPHeaders, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
+func (o *AppendBlobCreateOptions) pointers() (*appendBlobClientCreateOptions, *BlobHTTPHeaders, *LeaseAccessConditions,
+	*CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
+
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	options := AppendBlobCreateOptions{
-		BlobTagsString: serializeBlobTagsToStrPtr(o.TagsMap),
-		Metadata:       o.Metadata,
-		RequestID:      o.RequestID,
-		Timeout:        o.Timeout,
+	options := appendBlobClientCreateOptions{
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.TagsMap),
+		Metadata:                 o.Metadata,
+		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		LegalHold:                o.LegalHold,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
 	return &options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
-// AppendBlockOptions provides set of configurations for AppendBlock operation
-type AppendBlockOptions struct {
+type AppendBlobCreateResponse struct {
+	appendBlobClientCreateResponse
+}
+
+func toAppendBlobCreateResponse(resp appendBlobClientCreateResponse) AppendBlobCreateResponse {
+	return AppendBlobCreateResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AppendBlobAppendBlockOptions provides set of configurations for AppendBlock operation
+type AppendBlobAppendBlockOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
-	CpkInfo                        *CpkInfo
-	CpkScopeInfo                   *CpkScopeInfo
-	BlobAccessConditions           *BlobAccessConditions
+
+	CpkInfo *CpkInfo
+
+	CpkScopeInfo *CpkScopeInfo
+
+	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendPositionAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
+func (o *AppendBlobAppendBlockOptions) pointers() (*appendBlobClientAppendBlockOptions, *AppendPositionAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
-	options := &AppendBlobAppendBlockOptions{
+	options := &appendBlobClientAppendBlockOptions{
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
@@ -68,8 +91,18 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
-// AppendBlockURLOptions provides set of configurations for AppendBlockFromURL operation
-type AppendBlockURLOptions struct {
+type AppendBlobAppendBlockResponse struct {
+	appendBlobClientAppendBlockResponse
+}
+
+func toAppendBlobAppendBlockResponse(resp appendBlobClientAppendBlockResponse) AppendBlobAppendBlockResponse {
+	return AppendBlobAppendBlockResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AppendBlobAppendBlockFromURLOptions provides set of configurations for AppendBlockFromURL operation
+type AppendBlobAppendBlockFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
@@ -78,21 +111,26 @@ type AppendBlockURLOptions struct {
 	TransactionalContentMD5 []byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
-	CpkInfo                        *CpkInfo
-	CpkScopeInfo                   *CpkScopeInfo
+
+	CpkInfo *CpkInfo
+
+	CpkScopeInfo *CpkScopeInfo
+
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions           *BlobAccessConditions
+
+	BlobAccessConditions *BlobAccessConditions
 	// Optional, you can specify whether a particular range of the blob is read
 	Offset *int64
-	Count  *int64
+
+	Count *int64
 }
 
-func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions, *AppendPositionAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions, *SourceModifiedAccessConditions) {
+func (o *AppendBlobAppendBlockFromURLOptions) pointers() (*appendBlobClientAppendBlockFromURLOptions, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *AppendPositionAccessConditions, *ModifiedAccessConditions, *SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil, nil
 	}
 
-	options := &AppendBlobAppendBlockFromURLOptions{
+	options := &appendBlobClientAppendBlockFromURLOptions{
 		SourceRange:             getSourceRange(o.Offset, o.Count),
 		SourceContentMD5:        o.SourceContentMD5,
 		SourceContentcrc64:      o.SourceContentCRC64,
@@ -100,17 +138,26 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions,
-		leaseAccessConditions, o.SourceModifiedAccessConditions
+	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
-// SealAppendBlobOptions provides set of configurations for SealAppendBlob operation
-type SealAppendBlobOptions struct {
+type AppendBlobAppendBlockFromURLResponse struct {
+	appendBlobClientAppendBlockFromURLResponse
+}
+
+func toAppendBlobAppendBlockFromURLResponse(resp appendBlobClientAppendBlockFromURLResponse) AppendBlobAppendBlockFromURLResponse {
+	return AppendBlobAppendBlockFromURLResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AppendBlobSealOptions provides set of configurations for SealAppendBlob operation
+type AppendBlobSealOptions struct {
 	BlobAccessConditions           *BlobAccessConditions
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 }
 
-func (o *SealAppendBlobOptions) pointers() (leaseAccessConditions *LeaseAccessConditions,
+func (o *AppendBlobSealOptions) pointers() (leaseAccessConditions *LeaseAccessConditions,
 	modifiedAccessConditions *ModifiedAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
@@ -118,3 +165,13 @@ func (o *SealAppendBlobOptions) pointers() (leaseAccessConditions *LeaseAccessCo
 
 	return
 }
+
+type AppendBlobSealResponse struct {
+	appendBlobClientSealResponse
+}
+
+func toAppendBlobSealResponse(resp appendBlobClientSealResponse) AppendBlobSealResponse {
+	return AppendBlobSealResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

@@ -125,7 +125,6 @@ func ExampleNewClient() {
 	if err != nil {
 		panic(err)
 	}
-	_ = client
 }
 ```
 

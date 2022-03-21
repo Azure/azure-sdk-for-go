@@ -1257,7 +1257,7 @@ func ExampleContainerLeaseClient() {
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), &azblob.AcquireLeaseContainerOptions{Duration: &duration})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1279,7 +1279,7 @@ func ExampleContainerLeaseClient() {
 
 	// Acquire a lease again to perform other operations.
 	// Duration is still 60
-	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), &azblob.AcquireLeaseContainerOptions{Duration: &duration})
+	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1288,7 +1288,7 @@ func ExampleContainerLeaseClient() {
 	// We can change the ID of an existing lease.
 	newLeaseID := "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf"
 	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
-		&azblob.ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID)})
+		&azblob.ContainerChangeLeaseOptions{ProposedLeaseID: to.StringPtr(newLeaseID)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1302,7 +1302,7 @@ func ExampleContainerLeaseClient() {
 	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.BreakLeaseContainerOptions{BreakPeriod: to.Int32Ptr(60)})
+	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.ContainerBreakLeaseOptions{BreakPeriod: to.Int32Ptr(60)})
 	if err != nil {
 		log.Fatal(err)
 	}

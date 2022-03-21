@@ -360,8 +360,6 @@ func TestRecoverDeletedKey(t *testing.T) {
 			_, err = pollerResp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 
-			// recording.Sleep(30 * time.Second)
-
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 

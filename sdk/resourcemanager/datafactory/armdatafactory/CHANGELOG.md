@@ -3111,7 +3111,6 @@
 - Struct `DatasetSchemaDataElement` has been removed
 - Struct `GetDataFactoryOperationStatusResponse` has been removed
 - Struct `IntegrationRuntimeStatusListResponse` has been removed
-- Struct `TypeConversionSettings` has been removed
 - Field `PublicNetworkAccess` of struct `FactoryUpdateParameters` has been removed
 
 ### Features Added

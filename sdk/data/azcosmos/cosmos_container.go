@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// A ContainerClient lets you perform read, update, change throughput, and delete container operations.
+// ContainerClient lets you perform read, update, change throughput, and delete container operations.
 // It also lets you perform read, update, change throughput, and delete item operations.
 type ContainerClient struct {
 	// The Id of the Cosmos container
@@ -173,7 +173,7 @@ func (c *ContainerClient) ReplaceThroughput(
 	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
-// Creates an item in a Cosmos container.
+// CreateItem creates an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to create.
@@ -218,7 +218,7 @@ func (c *ContainerClient) CreateItem(
 	return newItemResponse(azResponse)
 }
 
-// Upserts (create or replace) an item in a Cosmos container.
+// UpsertItem creates or replaces an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to upsert.
@@ -267,7 +267,7 @@ func (c *ContainerClient) UpsertItem(
 	return newItemResponse(azResponse)
 }
 
-// Replaces an item in a Cosmos container.
+// ReplaceItem replaces an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key of the item to replace.
 // itemId - The id of the item to replace.
@@ -314,7 +314,7 @@ func (c *ContainerClient) ReplaceItem(
 	return newItemResponse(azResponse)
 }
 
-// Reads an item in a Cosmos container.
+// ReadItem reads an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to read.
@@ -355,7 +355,7 @@ func (c *ContainerClient) ReadItem(
 	return newItemResponse(azResponse)
 }
 
-// Deletes an item in a Cosmos container.
+// DeleteItem deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to delete.

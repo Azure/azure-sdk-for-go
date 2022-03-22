@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
-// Cosmos client is used to interact with the Azure Cosmos DB database service.
+// Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
 	endpoint string
 	pipeline azruntime.Pipeline

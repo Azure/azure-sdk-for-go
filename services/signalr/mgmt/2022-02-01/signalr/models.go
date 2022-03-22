@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-06-01-preview/signalr"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2022-02-01/signalr"
 
 // CorsSettings cross-Origin Resource Sharing (CORS) settings.
 type CorsSettings struct {
@@ -66,6 +66,663 @@ func (future *CreateOrUpdateFuture) result(client Client) (rt ResourceType, err 
 			err = autorest.NewErrorWithError(err, "signalr.CreateOrUpdateFuture", "Result", rt.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// CustomCertificate a custom certificate.
+type CustomCertificate struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY
+	SystemData                   *SystemData `json:"systemData,omitempty"`
+	*CustomCertificateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomCertificate.
+func (cc CustomCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.CustomCertificateProperties != nil {
+		objectMap["properties"] = cc.CustomCertificateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomCertificate struct.
+func (cc *CustomCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cc.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customCertificateProperties CustomCertificateProperties
+				err = json.Unmarshal(*v, &customCertificateProperties)
+				if err != nil {
+					return err
+				}
+				cc.CustomCertificateProperties = &customCertificateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomCertificateList custom certificates list.
+type CustomCertificateList struct {
+	autorest.Response `json:"-"`
+	// Value - List of custom certificates of this resource.
+	Value *[]CustomCertificate `json:"value,omitempty"`
+	// NextLink - The URL the client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CustomCertificateListIterator provides access to a complete listing of CustomCertificate values.
+type CustomCertificateListIterator struct {
+	i    int
+	page CustomCertificateListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomCertificateListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomCertificateListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomCertificateListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomCertificateListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomCertificateListIterator) Response() CustomCertificateList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomCertificateListIterator) Value() CustomCertificate {
+	if !iter.page.NotDone() {
+		return CustomCertificate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomCertificateListIterator type.
+func NewCustomCertificateListIterator(page CustomCertificateListPage) CustomCertificateListIterator {
+	return CustomCertificateListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ccl CustomCertificateList) IsEmpty() bool {
+	return ccl.Value == nil || len(*ccl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (ccl CustomCertificateList) hasNextLink() bool {
+	return ccl.NextLink != nil && len(*ccl.NextLink) != 0
+}
+
+// customCertificateListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ccl CustomCertificateList) customCertificateListPreparer(ctx context.Context) (*http.Request, error) {
+	if !ccl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ccl.NextLink)))
+}
+
+// CustomCertificateListPage contains a page of CustomCertificate values.
+type CustomCertificateListPage struct {
+	fn  func(context.Context, CustomCertificateList) (CustomCertificateList, error)
+	ccl CustomCertificateList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomCertificateListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomCertificateListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.ccl)
+		if err != nil {
+			return err
+		}
+		page.ccl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomCertificateListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomCertificateListPage) NotDone() bool {
+	return !page.ccl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomCertificateListPage) Response() CustomCertificateList {
+	return page.ccl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomCertificateListPage) Values() []CustomCertificate {
+	if page.ccl.IsEmpty() {
+		return nil
+	}
+	return *page.ccl.Value
+}
+
+// Creates a new instance of the CustomCertificateListPage type.
+func NewCustomCertificateListPage(cur CustomCertificateList, getNextPage func(context.Context, CustomCertificateList) (CustomCertificateList, error)) CustomCertificateListPage {
+	return CustomCertificateListPage{
+		fn:  getNextPage,
+		ccl: cur,
+	}
+}
+
+// CustomCertificateProperties custom certificate properties.
+type CustomCertificateProperties struct {
+	// ProvisioningState - READ-ONLY; Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// KeyVaultBaseURI - Base uri of the KeyVault that stores certificate.
+	KeyVaultBaseURI *string `json:"keyVaultBaseUri,omitempty"`
+	// KeyVaultSecretName - Certificate secret name.
+	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+	// KeyVaultSecretVersion - Certificate secret version.
+	KeyVaultSecretVersion *string `json:"keyVaultSecretVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomCertificateProperties.
+func (ccp CustomCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccp.KeyVaultBaseURI != nil {
+		objectMap["keyVaultBaseUri"] = ccp.KeyVaultBaseURI
+	}
+	if ccp.KeyVaultSecretName != nil {
+		objectMap["keyVaultSecretName"] = ccp.KeyVaultSecretName
+	}
+	if ccp.KeyVaultSecretVersion != nil {
+		objectMap["keyVaultSecretVersion"] = ccp.KeyVaultSecretVersion
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomCertificatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomCertificatesCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomCertificatesClient) (CustomCertificate, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomCertificatesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomCertificatesCreateOrUpdateFuture.Result.
+func (future *CustomCertificatesCreateOrUpdateFuture) result(client CustomCertificatesClient) (cc CustomCertificate, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.CustomCertificatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cc.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("signalr.CustomCertificatesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cc.Response.Response, err = future.GetResult(sender); err == nil && cc.Response.Response.StatusCode != http.StatusNoContent {
+		cc, err = client.CreateOrUpdateResponder(cc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "signalr.CustomCertificatesCreateOrUpdateFuture", "Result", cc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CustomDomain a custom domain
+type CustomDomain struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY
+	SystemData              *SystemData `json:"systemData,omitempty"`
+	*CustomDomainProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomain.
+func (cd CustomDomain) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cd.CustomDomainProperties != nil {
+		objectMap["properties"] = cd.CustomDomainProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomDomain struct.
+func (cd *CustomDomain) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cd.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var customDomainProperties CustomDomainProperties
+				err = json.Unmarshal(*v, &customDomainProperties)
+				if err != nil {
+					return err
+				}
+				cd.CustomDomainProperties = &customDomainProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomDomainList custom domains list
+type CustomDomainList struct {
+	autorest.Response `json:"-"`
+	// Value - List of custom domains that bind to this resource.
+	Value *[]CustomDomain `json:"value,omitempty"`
+	// NextLink - The URL the client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CustomDomainListIterator provides access to a complete listing of CustomDomain values.
+type CustomDomainListIterator struct {
+	i    int
+	page CustomDomainListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomDomainListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomDomainListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomDomainListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomDomainListIterator) Response() CustomDomainList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomDomainListIterator) Value() CustomDomain {
+	if !iter.page.NotDone() {
+		return CustomDomain{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomDomainListIterator type.
+func NewCustomDomainListIterator(page CustomDomainListPage) CustomDomainListIterator {
+	return CustomDomainListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cdl CustomDomainList) IsEmpty() bool {
+	return cdl.Value == nil || len(*cdl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cdl CustomDomainList) hasNextLink() bool {
+	return cdl.NextLink != nil && len(*cdl.NextLink) != 0
+}
+
+// customDomainListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cdl CustomDomainList) customDomainListPreparer(ctx context.Context) (*http.Request, error) {
+	if !cdl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cdl.NextLink)))
+}
+
+// CustomDomainListPage contains a page of CustomDomain values.
+type CustomDomainListPage struct {
+	fn  func(context.Context, CustomDomainList) (CustomDomainList, error)
+	cdl CustomDomainList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomDomainListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cdl)
+		if err != nil {
+			return err
+		}
+		page.cdl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomDomainListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomDomainListPage) NotDone() bool {
+	return !page.cdl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomDomainListPage) Response() CustomDomainList {
+	return page.cdl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomDomainListPage) Values() []CustomDomain {
+	if page.cdl.IsEmpty() {
+		return nil
+	}
+	return *page.cdl.Value
+}
+
+// Creates a new instance of the CustomDomainListPage type.
+func NewCustomDomainListPage(cur CustomDomainList, getNextPage func(context.Context, CustomDomainList) (CustomDomainList, error)) CustomDomainListPage {
+	return CustomDomainListPage{
+		fn:  getNextPage,
+		cdl: cur,
+	}
+}
+
+// CustomDomainProperties properties of a custom domain.
+type CustomDomainProperties struct {
+	// ProvisioningState - READ-ONLY; Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// DomainName - The custom domain name.
+	DomainName        *string            `json:"domainName,omitempty"`
+	CustomCertificate *ResourceReference `json:"customCertificate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomainProperties.
+func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.DomainName != nil {
+		objectMap["domainName"] = cdp.DomainName
+	}
+	if cdp.CustomCertificate != nil {
+		objectMap["customCertificate"] = cdp.CustomCertificate
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomDomainsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (CustomDomain, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsCreateOrUpdateFuture.Result.
+func (future *CustomDomainsCreateOrUpdateFuture) result(client CustomDomainsClient) (cd CustomDomain, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.CustomDomainsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cd.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("signalr.CustomDomainsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd, err = client.CreateOrUpdateResponder(cd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "signalr.CustomDomainsCreateOrUpdateFuture", "Result", cd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CustomDomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type CustomDomainsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsDeleteFuture.Result.
+func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.CustomDomainsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("signalr.CustomDomainsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -160,11 +817,7 @@ type ErrorResponse struct {
 
 // Feature feature of a resource, which controls the runtime behavior.
 type Feature struct {
-	// Flag - FeatureFlags is the supported features of Azure SignalR service.
-	// - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
-	// - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to enable/disable live trace feature. Possible values include: 'FeatureFlagsServiceMode', 'FeatureFlagsEnableConnectivityLogs', 'FeatureFlagsEnableMessagingLogs', 'FeatureFlagsEnableLiveTrace'
+	// Flag - Possible values include: 'ServiceMode', 'EnableConnectivityLogs', 'EnableMessagingLogs', 'EnableLiveTrace'
 	Flag FeatureFlags `json:"flag,omitempty"`
 	// Value - Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/ for allowed values.
 	Value *string `json:"value,omitempty"`
@@ -200,6 +853,30 @@ type Keys struct {
 	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
 }
 
+// LiveTraceCategory live trace category configuration of a Microsoft.SignalRService resource.
+type LiveTraceCategory struct {
+	// Name - Gets or sets the live trace category's name.
+	// Available values: ConnectivityLogs, MessagingLogs.
+	// Case insensitive.
+	Name *string `json:"name,omitempty"`
+	// Enabled - Indicates whether or the live trace category is enabled.
+	// Available values: true, false.
+	// Case insensitive.
+	Enabled *string `json:"enabled,omitempty"`
+}
+
+// LiveTraceConfiguration live trace configuration of a Microsoft.SignalRService resource.
+type LiveTraceConfiguration struct {
+	// Enabled - Indicates whether or not enable live trace.
+	// When it's set to true, live trace client can connect to the service.
+	// Otherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter what you configure in "categories".
+	// Available values: true, false.
+	// Case insensitive.
+	Enabled *string `json:"enabled,omitempty"`
+	// Categories - Gets or sets the list of category configurations.
+	Categories *[]LiveTraceCategory `json:"categories,omitempty"`
+}
+
 // LogSpecification specifications of the Logs for Azure Monitoring.
 type LogSpecification struct {
 	// Name - Name of the log.
@@ -210,7 +887,7 @@ type LogSpecification struct {
 
 // ManagedIdentity a class represent managed identities used for request and response
 type ManagedIdentity struct {
-	// Type - Represent the identity type: systemAssigned, userAssigned, None. Possible values include: 'ManagedIdentityTypeNone', 'ManagedIdentityTypeSystemAssigned', 'ManagedIdentityTypeUserAssigned'
+	// Type - Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
 	Type ManagedIdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - Get or set the user assigned identities
 	UserAssignedIdentities map[string]*UserAssignedIdentityProperty `json:"userAssignedIdentities"`
@@ -293,9 +970,8 @@ type NetworkACL struct {
 
 // NetworkACLs network ACLs for the resource
 type NetworkACLs struct {
-	// DefaultAction - Default action when no other rule matches. Possible values include: 'ACLActionAllow', 'ACLActionDeny'
-	DefaultAction ACLAction `json:"defaultAction,omitempty"`
-	// PublicNetwork - ACL for requests from public network
+	// DefaultAction - Possible values include: 'Allow', 'Deny'
+	DefaultAction ACLAction   `json:"defaultAction,omitempty"`
 	PublicNetwork *NetworkACL `json:"publicNetwork,omitempty"`
 	// PrivateEndpoints - ACLs for requests from private endpoints
 	PrivateEndpoints *[]PrivateEndpointACL `json:"privateEndpoints,omitempty"`
@@ -306,12 +982,10 @@ type Operation struct {
 	// Name - Name of the operation with format: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// IsDataAction - If the operation is a data action. (for data plane rbac)
-	IsDataAction *bool `json:"isDataAction,omitempty"`
-	// Display - The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	IsDataAction *bool             `json:"isDataAction,omitempty"`
+	Display      *OperationDisplay `json:"display,omitempty"`
 	// Origin - Optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
-	Origin *string `json:"origin,omitempty"`
-	// Properties - Extra properties for the operation.
+	Origin     *string              `json:"origin,omitempty"`
 	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
@@ -489,7 +1163,6 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 
 // OperationProperties extra Operation properties.
 type OperationProperties struct {
-	// ServiceSpecification - The service specifications.
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
@@ -512,9 +1185,8 @@ type PrivateEndpointACL struct {
 // PrivateEndpointConnection a private endpoint connection to an azure resource
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
-	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
-	// PrivateEndpointConnectionProperties - Properties of the private endpoint connection
+	// SystemData - READ-ONLY
+	SystemData                           *SystemData `json:"systemData,omitempty"`
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -755,11 +1427,11 @@ func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, get
 
 // PrivateEndpointConnectionProperties private endpoint connection properties
 type PrivateEndpointConnectionProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the private endpoint connection. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PrivateEndpoint - Private endpoint associated with the private endpoint connection
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
-	// PrivateLinkServiceConnectionState - Connection state
+	PrivateEndpoint   *PrivateEndpoint  `json:"privateEndpoint,omitempty"`
+	// GroupIds - READ-ONLY; Group IDs
+	GroupIds                          *[]string                          `json:"groupIds,omitempty"`
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 }
 
@@ -814,7 +1486,6 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 
 // PrivateLinkResource private link resource
 type PrivateLinkResource struct {
-	// PrivateLinkResourceProperties - Properties of a private link resource
 	*PrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -1058,7 +1729,7 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkServiceConnectionState connection state of the private endpoint connection
 type PrivateLinkServiceConnectionState struct {
-	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'PrivateLinkServiceConnectionStatusPending', 'PrivateLinkServiceConnectionStatusApproved', 'PrivateLinkServiceConnectionStatusRejected', 'PrivateLinkServiceConnectionStatusDisconnected'
+	// Status - Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
 	Status PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
@@ -1068,7 +1739,7 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties a class that describes the properties of the resource
 type Properties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExternalIP - READ-ONLY; The publicly accessible IP of the resource.
 	ExternalIP *string `json:"externalIP,omitempty"`
@@ -1084,21 +1755,21 @@ type Properties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// SharedPrivateLinkResources - READ-ONLY; The list of shared private link resources.
 	SharedPrivateLinkResources *[]SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty"`
-	// TLS - TLS settings.
-	TLS *TLSSettings `json:"tls,omitempty"`
+	TLS                        *TLSSettings                 `json:"tls,omitempty"`
+	// HostNamePrefix - READ-ONLY; Deprecated.
+	HostNamePrefix *string `json:"hostNamePrefix,omitempty"`
 	// Features - List of the featureFlags.
 	//
 	// FeatureFlags that are not included in the parameters for the update operation will not be modified.
 	// And the response will only include featureFlags that are explicitly set.
 	// When a featureFlag is not explicitly set, its globally default value will be used
 	// But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
-	Features *[]Feature `json:"features,omitempty"`
-	// Cors - Cross-Origin Resource Sharing (CORS) settings.
-	Cors *CorsSettings `json:"cors,omitempty"`
-	// Upstream - Upstream settings when the service is in server-less mode.
-	Upstream *ServerlessUpstreamSettings `json:"upstream,omitempty"`
-	// NetworkACLs - Network ACLs
-	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
+	Features                 *[]Feature                  `json:"features,omitempty"`
+	LiveTraceConfiguration   *LiveTraceConfiguration     `json:"liveTraceConfiguration,omitempty"`
+	ResourceLogConfiguration *ResourceLogConfiguration   `json:"resourceLogConfiguration,omitempty"`
+	Cors                     *CorsSettings               `json:"cors,omitempty"`
+	Upstream                 *ServerlessUpstreamSettings `json:"upstream,omitempty"`
+	NetworkACLs              *NetworkACLs                `json:"networkACLs,omitempty"`
 	// PublicNetworkAccess - Enable or disable public network access. Default to "Enabled".
 	// When it's Enabled, network ACLs still apply.
 	// When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
@@ -1121,6 +1792,12 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	}
 	if p.Features != nil {
 		objectMap["features"] = p.Features
+	}
+	if p.LiveTraceConfiguration != nil {
+		objectMap["liveTraceConfiguration"] = p.LiveTraceConfiguration
+	}
+	if p.ResourceLogConfiguration != nil {
+		objectMap["resourceLogConfiguration"] = p.ResourceLogConfiguration
 	}
 	if p.Cors != nil {
 		objectMap["cors"] = p.Cors
@@ -1205,7 +1882,7 @@ func (future *RegenerateKeyFuture) result(client Client) (kVar Keys, err error) 
 
 // RegenerateKeyParameters parameters describes the request to regenerate access keys
 type RegenerateKeyParameters struct {
-	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'KeyTypePrimary', 'KeyTypeSecondary'
+	// KeyType - Possible values include: 'Primary', 'Secondary', 'Salt'
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
@@ -1385,15 +2062,37 @@ func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, Res
 	}
 }
 
+// ResourceLogCategory resource log category configuration of a Microsoft.SignalRService resource.
+type ResourceLogCategory struct {
+	// Name - Gets or sets the resource log category's name.
+	// Available values: ConnectivityLogs, MessagingLogs.
+	// Case insensitive.
+	Name *string `json:"name,omitempty"`
+	// Enabled - Indicates whether or the resource log category is enabled.
+	// Available values: true, false.
+	// Case insensitive.
+	Enabled *string `json:"enabled,omitempty"`
+}
+
+// ResourceLogConfiguration resource log configuration of a Microsoft.SignalRService resource.
+type ResourceLogConfiguration struct {
+	// Categories - Gets or sets the list of category configurations.
+	Categories *[]ResourceLogCategory `json:"categories,omitempty"`
+}
+
+// ResourceReference reference to a resource.
+type ResourceReference struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
 // ResourceSku the billing information of the resource.
 type ResourceSku struct {
 	// Name - The name of the SKU. Required.
 	//
 	// Allowed values: Standard_S1, Free_F1
 	Name *string `json:"name,omitempty"`
-	// Tier - Optional tier of this particular SKU. 'Standard' or 'Free'.
-	//
-	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	// Tier - Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// Size - READ-ONLY; Not used. Retained for future use.
 	Size *string `json:"size,omitempty"`
@@ -1425,15 +2124,12 @@ func (rs ResourceSku) MarshalJSON() ([]byte, error) {
 // ResourceType a class represent a resource.
 type ResourceType struct {
 	autorest.Response `json:"-"`
-	// Sku - The billing information of the resource.(e.g. Free, Standard)
-	Sku *ResourceSku `json:"sku,omitempty"`
-	// Properties - Settings used to provision or configure the resource
-	*Properties `json:"properties,omitempty"`
-	// Kind - The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR". Possible values include: 'ServiceKindSignalR', 'ServiceKindRawWebSockets'
-	Kind ServiceKind `json:"kind,omitempty"`
-	// Identity - The managed identity response
+	Sku               *ResourceSku `json:"sku,omitempty"`
+	*Properties       `json:"properties,omitempty"`
+	// Kind - Possible values include: 'SignalR', 'RawWebSockets'
+	Kind     ServiceKind      `json:"kind,omitempty"`
 	Identity *ManagedIdentity `json:"identity,omitempty"`
-	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// SystemData - READ-ONLY
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
 	Location *string `json:"location,omitempty"`
@@ -1641,17 +2337,15 @@ type ShareablePrivateLinkResourceProperties struct {
 // service
 type ShareablePrivateLinkResourceType struct {
 	// Name - The name of the resource type that has been onboarded to private link service
-	Name *string `json:"name,omitempty"`
-	// Properties - Describes the properties of a resource type that has been onboarded to private link service
+	Name       *string                                 `json:"name,omitempty"`
 	Properties *ShareablePrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
 // SharedPrivateLinkResource describes a Shared Private Link Resource
 type SharedPrivateLinkResource struct {
 	autorest.Response `json:"-"`
-	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
-	// SharedPrivateLinkResourceProperties - Describes the properties of a Shared Private Link Resource
+	// SystemData - READ-ONLY
+	SystemData                           *SystemData `json:"systemData,omitempty"`
 	*SharedPrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
@@ -1896,11 +2590,11 @@ type SharedPrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// PrivateLinkResourceID - The resource id of the resource the shared private link resource is for
 	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the shared private link resource. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
+	// ProvisioningState - READ-ONLY; Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RequestMessage - The request message for requesting approval of the shared private link resource
 	RequestMessage *string `json:"requestMessage,omitempty"`
-	// Status - READ-ONLY; Status of the shared private link resource. Possible values include: 'SharedPrivateLinkResourceStatusPending', 'SharedPrivateLinkResourceStatusApproved', 'SharedPrivateLinkResourceStatusRejected', 'SharedPrivateLinkResourceStatusDisconnected', 'SharedPrivateLinkResourceStatusTimeout'
+	// Status - READ-ONLY; Possible values include: 'SharedPrivateLinkResourceStatusPending', 'SharedPrivateLinkResourceStatusApproved', 'SharedPrivateLinkResourceStatusRejected', 'SharedPrivateLinkResourceStatusDisconnected', 'SharedPrivateLinkResourceStatusTimeout'
 	Status SharedPrivateLinkResourceStatus `json:"status,omitempty"`
 }
 
@@ -1999,6 +2693,58 @@ func (future *SharedPrivateLinkResourcesDeleteFuture) result(client SharedPrivat
 	return
 }
 
+// Sku describes an available sku."
+type Sku struct {
+	// ResourceType - READ-ONLY; The resource type that this object applies to
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Sku - READ-ONLY
+	Sku *ResourceSku `json:"sku,omitempty"`
+	// Capacity - READ-ONLY
+	Capacity *SkuCapacity `json:"capacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SkuCapacity describes scaling information of a sku.
+type SkuCapacity struct {
+	// Minimum - READ-ONLY; The lowest permitted capacity for this resource
+	Minimum *int32 `json:"minimum,omitempty"`
+	// Maximum - READ-ONLY; The highest permitted capacity for this resource
+	Maximum *int32 `json:"maximum,omitempty"`
+	// Default - READ-ONLY; The default capacity.
+	Default *int32 `json:"default,omitempty"`
+	// AllowedValues - READ-ONLY; Allows capacity value list.
+	AllowedValues *[]int32 `json:"allowedValues,omitempty"`
+	// ScaleType - READ-ONLY; Possible values include: 'ScaleTypeNone', 'ScaleTypeManual', 'ScaleTypeAutomatic'
+	ScaleType ScaleType `json:"scaleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SkuList the list skus operation response
+type SkuList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of skus available for the resource.
+	Value *[]Sku `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL the client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuList.
+func (sl SkuList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SystemData metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
@@ -2089,11 +2835,10 @@ func (future *UpdateFuture) result(client Client) (rt ResourceType, err error) {
 	return
 }
 
-// UpstreamAuthSettings upstream auth settings.
+// UpstreamAuthSettings upstream auth settings. If not set, no auth is used for upstream messages.
 type UpstreamAuthSettings struct {
-	// Type - Gets or sets the type of auth. None or ManagedIdentity is supported now. Possible values include: 'UpstreamAuthTypeNone', 'UpstreamAuthTypeManagedIdentity'
-	Type UpstreamAuthType `json:"type,omitempty"`
-	// ManagedIdentity - Gets or sets the managed identity settings. It's required if the auth type is set to ManagedIdentity.
+	// Type - Possible values include: 'UpstreamAuthTypeNone', 'UpstreamAuthTypeManagedIdentity'
+	Type            UpstreamAuthType         `json:"type,omitempty"`
 	ManagedIdentity *ManagedIdentitySettings `json:"managedIdentity,omitempty"`
 }
 
@@ -2103,27 +2848,26 @@ type UpstreamAuthSettings struct {
 type UpstreamTemplate struct {
 	// HubPattern - Gets or sets the matching pattern for hub names. If not set, it matches any hub.
 	// There are 3 kind of patterns supported:
-	//     1. "*", it to matches any hub name
-	//     2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2"
-	//     3. The single hub name, for example, "hub1", it matches "hub1"
+	//     1. "*", it to matches any hub name.
+	//     2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
+	//     3. The single hub name, for example, "hub1", it matches "hub1".
 	HubPattern *string `json:"hubPattern,omitempty"`
 	// EventPattern - Gets or sets the matching pattern for event names. If not set, it matches any event.
 	// There are 3 kind of patterns supported:
-	//     1. "*", it to matches any event name
-	//     2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and "disconnect"
-	//     3. The single event name, for example, "connect", it matches "connect"
+	//     1. "*", it to matches any event name.
+	//     2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and "disconnect".
+	//     3. The single event name, for example, "connect", it matches "connect".
 	EventPattern *string `json:"eventPattern,omitempty"`
 	// CategoryPattern - Gets or sets the matching pattern for category names. If not set, it matches any category.
 	// There are 3 kind of patterns supported:
-	//     1. "*", it to matches any category name
-	//     2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections" and "messages"
-	//     3. The single category name, for example, "connections", it matches the category "connections"
+	//     1. "*", it to matches any category name.
+	//     2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections" and "messages".
+	//     3. The single category name, for example, "connections", it matches the category "connections".
 	CategoryPattern *string `json:"categoryPattern,omitempty"`
 	// URLTemplate - Gets or sets the Upstream URL template. You can use 3 predefined parameters {hub}, {category} {event} inside the template, the value of the Upstream URL is dynamically calculated when the client request comes in.
 	// For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client request from hub `chat` connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
-	URLTemplate *string `json:"urlTemplate,omitempty"`
-	// Auth - Gets or sets the auth settings for an upstream. If not set, no auth is used for upstream messages.
-	Auth *UpstreamAuthSettings `json:"auth,omitempty"`
+	URLTemplate *string               `json:"urlTemplate,omitempty"`
+	Auth        *UpstreamAuthSettings `json:"auth,omitempty"`
 }
 
 // Usage object that describes a specific usage of the resources.
@@ -2133,9 +2877,8 @@ type Usage struct {
 	// CurrentValue - Current value for the usage quota.
 	CurrentValue *int64 `json:"currentValue,omitempty"`
 	// Limit - The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
-	Limit *int64 `json:"limit,omitempty"`
-	// Name - Localizable String object containing the name and a localized value.
-	Name *UsageName `json:"name,omitempty"`
+	Limit *int64     `json:"limit,omitempty"`
+	Name  *UsageName `json:"name,omitempty"`
 	// Unit - Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
 	Unit *string `json:"unit,omitempty"`
 }

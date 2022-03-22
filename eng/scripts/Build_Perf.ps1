@@ -29,7 +29,7 @@ foreach ($perfDir in $perfDirectories) {
             $failed = $true
         }
 
-        Write-Host "##[command] Executing 'go vet .' in $perfDir/testdata/perf"
+        Write-Host "##[command] Executing 'go vet .' in $perfDir/perf"
         go vet .
         if ($LASTEXITCODE) {
             $failed = $true

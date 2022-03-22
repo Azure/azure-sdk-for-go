@@ -9,7 +9,6 @@ package crypto
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 
@@ -143,14 +142,10 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 // EncryptResponse contains response fields for Client.EncryptResponse
 type EncryptResponse struct {
 	KeyOperationResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) EncryptResponse {
 	return EncryptResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -213,13 +208,10 @@ func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 // DecryptResponse contains response fields for Client.Decrypt
 type DecryptResponse struct {
 	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) DecryptResponse {
 	return DecryptResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -281,13 +273,10 @@ func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, va
 // WrapKeyResponse contains the response for the Client.WrapKey method
 type WrapKeyResponse struct {
 	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) WrapKeyResponse {
 	return WrapKeyResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -349,13 +338,10 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, 
 // UnwrapKeyResponse contains the response for the Client.UnwrapKey method
 type UnwrapKeyResponse struct {
 	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) UnwrapKeyResponse {
 	return UnwrapKeyResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -400,13 +386,10 @@ func (s SignOptions) toGenerated() *generated.KeyVaultClientSignOptions {
 // SignResponse contains the response for the Client.Sign method.
 type SignResponse struct {
 	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignResponse {
 	return SignResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -453,15 +436,11 @@ func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 type VerifyResponse struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
 	IsValid *bool `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) VerifyResponse {
 	return VerifyResponse{
-		RawResponse: i.RawResponse,
-		IsValid:     i.Value,
+		IsValid: i.Value,
 	}
 }
 

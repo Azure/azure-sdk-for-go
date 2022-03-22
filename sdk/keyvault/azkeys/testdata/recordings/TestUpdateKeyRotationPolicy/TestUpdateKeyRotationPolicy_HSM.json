@@ -1,12 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key664229775/create?api-version=7.3-preview",
+        ":path": "/keys/key664229775/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -31,12 +31,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key664229775/create?api-version=7.3-preview",
+        ":path": "/keys/key664229775/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -88,12 +88,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/rotationpolicy?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/rotationpolicy?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "PUT",
-        ":path": "/keys/key664229775/rotationpolicy?api-version=7.3-preview",
+        ":path": "/keys/key664229775/rotationpolicy?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -137,12 +137,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key664229775?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/key664229775?api-version=7.3-preview",
+        ":path": "/keys/key664229775?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -193,12 +193,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key664229775?api-version=7.3-preview",
+        ":path": "/deletedkeys/key664229775?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -250,12 +250,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key664229775?api-version=7.3-preview",
+        ":path": "/deletedkeys/key664229775?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -307,12 +307,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/deletedkeys/key664229775?api-version=7.3-preview",
+        ":path": "/deletedkeys/key664229775?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",

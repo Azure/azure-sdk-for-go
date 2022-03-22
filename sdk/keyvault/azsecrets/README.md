@@ -167,10 +167,10 @@ func ExampleClient_SetSecret() {
 		panic(err)
 	}
 
-	secret := "mySecret"
-	value := "mySecretValue"
+	secretName := "mySecretName"
+	secretValue := "mySecretValue"
 
-	resp, err := client.SetSecret(context.TODO(), secret, value, nil)
+	resp, err := client.SetSecret(context.TODO(), secretName, secretValue, nil)
 	if err != nil {
 		panic(err)
 	}

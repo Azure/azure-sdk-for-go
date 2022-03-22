@@ -51,21 +51,6 @@ func TestFeaturesClient(t *testing.T) {
 func (testsuite *FeaturesClientTestSuite) TestFeaturesCRUD() {
 	featureClient := armfeatures.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 
-	// register
-	//featureName := "feature"
-	//register, err := featureClient.Register(testsuite.ctx, "Microsoft.Network", featureName, nil)
-	//testsuite.Require().NoError(err)
-	//testsuite.Require().Equal(featureName, *register.Name)
-	//
-	//// unregister
-	//unregister, err := featureClient.Unregister(testsuite.ctx, "Microsoft.Network", featureName, nil)
-	//testsuite.Require().NoError(err)
-	//testsuite.Require().Equal(featureName, *unregister.Name)
-
-	// get
-	//_, err := featureClient.Get(testsuite.ctx, "Microsoft.Network", featureName, nil)
-	//testsuite.Require().NoError(err)
-
 	// list
 	pager := featureClient.List("Microsoft.Network", nil)
 	testsuite.Require().NoError(pager.Err())

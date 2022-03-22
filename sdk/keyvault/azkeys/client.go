@@ -996,7 +996,7 @@ type ListPropertiesOfKeyVersionsPager struct {
 	genPager *generated.KeyVaultClientGetKeyVersionsPager
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
+// NextPage returns the results from the next page fetched from the service.
 func (l *ListPropertiesOfKeyVersionsPager) NextPage(ctx context.Context) (ListPropertiesOfKeyVersionsPage, error) {
 	resp, err := l.genPager.NextPage(ctx)
 	if err != nil {
@@ -1006,9 +1006,7 @@ func (l *ListPropertiesOfKeyVersionsPager) NextPage(ctx context.Context) (ListPr
 	return listKeyVersionsPageFromGenerated(resp), nil
 }
 
-// NextPage fetches the next available page of results from the service. If the fetched page
-// contains results, the return value is true, else false. Results fetched from the service
-// can be evaluated by calling PageResponse on this Pager.
+// More returns true if there are more pages to fetch, elsegit  false.
 func (l *ListPropertiesOfKeyVersionsPager) More() bool {
 	return l.genPager.More()
 }

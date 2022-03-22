@@ -110,7 +110,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleNewClient() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleCreateKeys() {
+func main() {
     vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
     cred, err := azidentity.NewDefaultAzureCredential(nil)
     if err != nil {
@@ -192,7 +192,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_GetKey() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_UpdateKeyProperties() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_BeginDeleteKey() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_UpdateKeyRotationPolicy() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ import (
 )
 
 
-func ExampleClient_ListPropertiesOfKeys() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_Encrypt() {
+func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -445,7 +445,7 @@ You can access the raw `*http.Response` returned by the service using the `runti
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func GetHTTPResponse() {
+func main() {
     var respFromCtx *http.Response
     ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
     _, err = client.GetKey(ctx, "myKeyName", nil)

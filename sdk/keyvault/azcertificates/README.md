@@ -204,7 +204,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func Example_GetCertificate() {
+func main_GetCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -421,7 +421,7 @@ You can access the raw `*http.Response` returned by the service using the `runti
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func GetHTTPResponse() {
+func main() {
 	var respFromCtx *http.Response
 	ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
 	_, err = client.GetCertificate(ctx, "myCertName", nil)

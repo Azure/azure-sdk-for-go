@@ -114,7 +114,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleNewClient() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleClient_SetSecret() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleClient_GetSecret() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleClient_UpdateSecretProperties() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleClient_BeginDeleteSecret() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
-func ExampleClient_ListSecrets() {
+func main() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ You can access the raw `*http.Response` returned by the service using the `runti
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func GetHTTPResponse() {
+func main() {
     var respFromCtx *http.Response
     ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
     _, err = client.GetSecret(ctx, "mySecretName", nil)

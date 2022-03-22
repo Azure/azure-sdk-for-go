@@ -122,66 +122,6 @@ func (testsuite *SubnetsClientTestSuite) TestSubnetsCRUD() {
 	}
 	testsuite.Require().Equal(subName, *subResp.Name)
 
-	/* need registered for feature Microsoft.Network/AllowPrepareNetworkPoliciesAction
-	// prepare network policy
-	pnpPoller, err := subClient.BeginPrepareNetworkPolicies(
-		testsuite.ctx,
-		testsuite.resourceGroupName,
-		vnName,
-		subName,
-		armnetwork.PrepareNetworkPoliciesRequest{
-			ServiceName: to.StringPtr("Microsoft.Sql/managedInstances"),
-		},
-		nil,
-	)
-	testsuite.Require().NoError(err)
-	var pnpResp armnetwork.SubnetsClientPrepareNetworkPoliciesResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = pnpPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if pnpPoller.Poller.Done() {
-				pnpResp, err = pnpPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		pnpResp, err = pnpPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, pnpResp.RawResponse.StatusCode)
-
-	// unprepare network policy
-	unPnpPoller, err := subClient.BeginUnprepareNetworkPolicies(
-		testsuite.ctx,
-		testsuite.resourceGroupName,
-		vnName,
-		subName,
-		armnetwork.UnprepareNetworkPoliciesRequest{
-			ServiceName: to.StringPtr("Microsoft.Sql/managedInstances"),
-		},
-		nil,
-	)
-	testsuite.Require().NoError(err)
-	var unPnpResp armnetwork.SubnetsClientUnprepareNetworkPoliciesResponse
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err = unPnpPoller.Poller.Poll(testsuite.ctx)
-			testsuite.Require().NoError(err)
-			if unPnpPoller.Poller.Done() {
-				unPnpResp, err = unPnpPoller.Poller.FinalResponse(testsuite.ctx)
-				testsuite.Require().NoError(err)
-				break
-			}
-		}
-	} else {
-		unPnpResp, err = unPnpPoller.PollUntilDone(testsuite.ctx, 30*time.Second)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().Equal(200, unPnpResp.RawResponse.StatusCode)
-	*/
-
 	// get subnet
 	getResp, err := subClient.Get(testsuite.ctx, testsuite.resourceGroupName, vnName, subName, nil)
 	testsuite.Require().NoError(err)

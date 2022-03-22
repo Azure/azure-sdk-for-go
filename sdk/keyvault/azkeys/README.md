@@ -110,9 +110,18 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+func main() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ## Key concepts
@@ -143,7 +152,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleCreateKeys() {
+func main() {
     vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
     cred, err := azidentity.NewDefaultAzureCredential(nil)
     if err != nil {
@@ -156,20 +165,20 @@ func ExampleCreateKeys() {
     }
 
     // Create RSA Key
-    resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{KeySize: to.Int32Ptr(2048)})
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(*resp.Key.ID)
-    fmt.Println(*resp.Key.KeyType)
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 
     // Create EC Key
-    resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.P256.ToPtr()})
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(*resp.Key.ID)
-    fmt.Println(*resp.Key.KeyType)
+	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.JSONWebKey.KeyType)
 }
 ```
 
@@ -183,15 +192,23 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleRetrieveKey() {
-    credential, err := azidentity.NewDefaultAzureCredential(nil)
-
-    client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-    resp, err := client.GetKey(context.TODO(), "key-to-retrieve", nil)
+func main() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.GetKey(context.TODO(), "key-to-retrieve", nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*resp.JSONWebKey.ID)
 }
 ```
 
@@ -204,7 +221,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_UpdateKeyProperties() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,14 +237,14 @@ func ExampleClient_UpdateKeyProperties() {
 		Tags: map[string]string{
 			"Tag1": "val1",
 		},
-		KeyAttributes: &azkeys.KeyAttributes{
-			RecoveryLevel: azkeys.CustomizedRecoverablePurgeable.ToPtr(),
+		Properties: &azkeys.Properties{
+			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Attributes.RecoveryLevel, *resp.Tags["Tag1"])
+	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
 }
 ```
 
@@ -240,7 +257,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_BeginDeleteKey() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +269,12 @@ func ExampleClient_BeginDeleteKey() {
 		panic(err)
 	}
 
-	pollResp, err := resp.PollUntilDone(context.TODO(), 1 * time.Second)
+	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
 	if err != nil {
 		panic(err)
 	}
@@ -261,8 +283,8 @@ func ExampleClient_BeginDeleteKey() {
 ```
 
 ### Configure automatic key rotation
-`update_key_rotation_policy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
-In addition, `rotate_key` allows you to rotate a key on-demand by creating a new version of the given key.
+`UpdateKeyRotationPolicy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
+In addition, `RotateKey` allows you to rotate a key on-demand by creating a new version of the given key.
 
 ```go
 import (
@@ -270,50 +292,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
-handle(err)
-
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-handle(err)
-
-// Set the key's automated rotation policy to rotate the key 30 days before the key expires
-resp, err = client.UpdateKeyRotationPolicy(ctx, "key-name", &UpdateKeyRotationPolicyOptions{
-    Attributes: &KeyRotationPolicyAttributes{
-        ExpiryTime: to.StringPtr("P90D"),
-    },
-    LifetimeActions: []*LifetimeActions{
-        {
-            Action: &LifetimeActionsType{
-                Type: ActionTypeNotify.ToPtr(),
-            },
-            Trigger: &LifetimeActionsTrigger{
-                TimeBeforeExpiry: to.StringPtr("P30D"),
-            },
-        },
-    },
-})
-handle(err)
-
-currentPolicyResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-name", nil)
-handle(err)
-
-// Finally, you can rotate a key on-demand by creating a new version of the key
-rotatedResp, err := client.RotateKey.rotate_key(context.TODO(), "key-name", nil)
-handle(err)
-```
-
-### List keys
-[`ListKeys`](https://aka.ms/azsdk/go/keyvault-keys) lists the properties of all of the keys in the client's vault.
-
-```go
-import (
-    "fmt"
-
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-)
-
-func ExampleClient_ListKeys() {
+func main() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,15 +304,69 @@ func ExampleClient_ListKeys() {
 		panic(err)
 	}
 
-	pager := client.ListKeys(nil)
-	for pager.NextPage(context.TODO()) {
-		for _, key := range pager.PageResponse().Keys {
-			fmt.Println(*key.KID)
-		}
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
+		Attributes: &azkeys.RotationPolicyAttributes{
+			ExpiryTime: to.StringPtr("P90D"),
+		},
+		LifetimeActions: []*azkeys.LifetimeActions{
+			{
+				Action: &azkeys.LifetimeActionsType{
+					Type: azkeys.ActionTypeNotify.ToPtr(),
+				},
+				Trigger: &azkeys.LifetimeActionsTrigger{
+					TimeBeforeExpiry: to.StringPtr("P30D"),
+				},
+			},
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Updated key rotation policy for: ", *resp.ID)
+
+    // To rotate a key
+	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
+	if err != nil {
+		panic(err)
+	}
+}
+```
+
+### List keys
+[`ListKeys`](https://aka.ms/azsdk/go/keyvault-keys) lists the properties of all of the keys in the client's vault.
+
+```go
+import (
+    "os"
+    "context"
+    "fmt"
+
+    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+)
+
+
+func main() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
 	}
 
-	if pager.Err() != nil {
-		panic(pager.Err())
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	pager := client.ListPropertiesOfKeys(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, key := range resp.Keys {
+			fmt.Println(*key.ID)
+		}
 	}
 }
 ```
@@ -348,11 +381,23 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-client, err = crypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>/<key-version>", credential, nil)
+	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
-encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)
+	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(encryptResponse.Result)
+}
 ```
 
 See the [package documentation][crypto_client_docs] for more details of the cryptography API.
@@ -365,9 +410,11 @@ All I/O operations will return an `error` that can be investigated to discover m
 ```golang
 resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
 if err != nil {
-    var httpErr azcore.HTTPResponse
+    var httpErr azcore.ResponseError
     if errors.As(err, &httpErr) {
-        // investigate httpErr.RawResponse()
+        // investigate httpErr.RawResponse
+    } else {
+        // not an HTTP error
     }
 }
 ```
@@ -382,7 +429,7 @@ To obtain more detailed logging, including request/response bodies and header va
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 log.SetListener(func(cls log.Classification, msg string) {
-		fmt.Println(msg) // printing log out to the console
+	fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs
@@ -398,7 +445,7 @@ You can access the raw `*http.Response` returned by the service using the `runti
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func GetHTTPResponse() {
+func main() {
     var respFromCtx *http.Response
     ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
     _, err = client.GetKey(ctx, "myKeyName", nil)

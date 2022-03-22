@@ -113,7 +113,7 @@ func ExampleClient_UpdateKeyProperties() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
+	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -160,5 +160,44 @@ func ExampleClient_ListPropertiesOfKeys() {
 		for _, key := range resp.Keys {
 			fmt.Println(*key.ID)
 		}
+	}
+}
+
+func ExampleClient_UpdateKeyRotationPolicy() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
+		Attributes: &azkeys.RotationPolicyAttributes{
+			ExpiryTime: to.StringPtr("P90D"),
+		},
+		LifetimeActions: []*azkeys.LifetimeActions{
+			{
+				Action: &azkeys.LifetimeActionsType{
+					Type: azkeys.ActionTypeNotify.ToPtr(),
+				},
+				Trigger: &azkeys.LifetimeActionsTrigger{
+					TimeBeforeExpiry: to.StringPtr("P30D"),
+				},
+			},
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Updated key rotation policy for: ", *resp.ID)
+
+	//
+	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
+	if err != nil {
+		panic(err)
 	}
 }

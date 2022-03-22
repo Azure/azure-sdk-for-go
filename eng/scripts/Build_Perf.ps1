@@ -21,7 +21,7 @@ foreach ($perfDir in $perfDirectories) {
 
     if (Test-Path -Path perf) {
         Push-Location perf
-        Write-Host "##[command] Building and vetting performance tests in $perfDir/testdata/perf"
+        Write-Host "##[command] Building and vetting performance tests in $perfDir/perf"
 
         Write-Host "##[command] Executing 'go build .' in $perfDir/testdata/perf"
         go build .

@@ -68124,6 +68124,27 @@ func (t *TumblingWindowTriggerTypeProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// TypeConversionSettings - Type conversion settings
+type TypeConversionSettings struct {
+	// Whether to allow data truncation when converting the data. Type: boolean (or Expression with resultType boolean).
+	AllowDataTruncation map[string]interface{} `json:"allowDataTruncation,omitempty"`
+
+	// The culture used to convert data from/to string. Type: string (or Expression with resultType string).
+	Culture map[string]interface{} `json:"culture,omitempty"`
+
+	// The format for DateTime values. Type: string (or Expression with resultType string).
+	DateTimeFormat map[string]interface{} `json:"dateTimeFormat,omitempty"`
+
+	// The format for DateTimeOffset values. Type: string (or Expression with resultType string).
+	DateTimeOffsetFormat map[string]interface{} `json:"dateTimeOffsetFormat,omitempty"`
+
+	// The format for TimeSpan values. Type: string (or Expression with resultType string).
+	TimeSpanFormat map[string]interface{} `json:"timeSpanFormat,omitempty"`
+
+	// Whether to treat boolean values as numbers. Type: boolean (or Expression with resultType boolean).
+	TreatBooleanAsNumber map[string]interface{} `json:"treatBooleanAsNumber,omitempty"`
+}
+
 // UntilActivity - This activity executes inner activities until the specified boolean expression results to true or timeout
 // is reached, whichever is earlier.
 type UntilActivity struct {

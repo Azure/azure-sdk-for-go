@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -65,7 +65,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Mon, 31 Jan 2022 22:14:11 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/pending?api-version=7.3-preview\u0026request_id=59e2d5bc769340028b92723880095de6",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/pending?api-version=7.3\u0026request_id=59e2d5bc769340028b92723880095de6",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -89,7 +89,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -178,7 +178,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -207,7 +207,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Mon, 31 Jan 2022 22:14:12 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/pending?api-version=7.3-preview\u0026request_id=58268d89ec584564b94b8e85301b7b1c",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/pending?api-version=7.3\u0026request_id=58268d89ec584564b94b8e85301b7b1c",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -231,7 +231,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -320,7 +320,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -349,7 +349,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Mon, 31 Jan 2022 22:14:13 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/pending?api-version=7.3-preview\u0026request_id=471882506439445ebf4d7868e844d1f1",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/pending?api-version=7.3\u0026request_id=471882506439445ebf4d7868e844d1f1",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -373,7 +373,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -462,7 +462,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -491,7 +491,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Mon, 31 Jan 2022 22:14:13 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/pending?api-version=7.3-preview\u0026request_id=6510a5c040484a48b3f5ed4e35721922",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/pending?api-version=7.3\u0026request_id=6510a5c040484a48b3f5ed4e35721922",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -515,7 +515,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -604,7 +604,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert01493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -699,7 +699,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -733,7 +733,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -767,7 +767,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -863,7 +863,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert11493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -958,7 +958,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -992,7 +992,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1026,7 +1026,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1122,7 +1122,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert21493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1217,7 +1217,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1251,7 +1251,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1285,7 +1285,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1381,7 +1381,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1476,7 +1476,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1510,7 +1510,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1544,7 +1544,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1674,7 +1674,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1771,7 +1771,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert01493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1797,7 +1797,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert11493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1823,7 +1823,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert21493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1849,7 +1849,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/delCert31493630328?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",

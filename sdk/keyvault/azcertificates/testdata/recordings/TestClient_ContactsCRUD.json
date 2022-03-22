@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -35,7 +35,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -92,7 +92,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -135,7 +135,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -177,7 +177,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/contacts?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",

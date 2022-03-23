@@ -3,6 +3,7 @@
 ## 0.7.0 (Unreleased)
 
 ### Features Added
+* Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values
 
 ### Breaking Changes
 * Removed `RawResponse` from pollers

@@ -195,7 +195,7 @@ func (client *KeyVaultClient) getDeletedSecretHandleResponse(resp *http.Response
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedSecretsOptions contains the optional parameters for the KeyVaultClient.GetDeletedSecrets
 // method.
-func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) (*KeyVaultClientGetDeletedSecretsPager) {
+func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) *KeyVaultClientGetDeletedSecretsPager {
 	return &KeyVaultClientGetDeletedSecretsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -298,7 +298,7 @@ func (client *KeyVaultClient) getSecretHandleResponse(resp *http.Response) (KeyV
 // secretName - The name of the secret.
 // options - KeyVaultClientGetSecretVersionsOptions contains the optional parameters for the KeyVaultClient.GetSecretVersions
 // method.
-func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) (*KeyVaultClientGetSecretVersionsPager) {
+func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) *KeyVaultClientGetSecretVersionsPager {
 	return &KeyVaultClientGetSecretVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -348,7 +348,7 @@ func (client *KeyVaultClient) getSecretVersionsHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetSecretsOptions contains the optional parameters for the KeyVaultClient.GetSecrets method.
-func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) (*KeyVaultClientGetSecretsPager) {
+func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) *KeyVaultClientGetSecretsPager {
 	return &KeyVaultClientGetSecretsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -635,4 +635,3 @@ func (client *KeyVaultClient) updateSecretHandleResponse(resp *http.Response) (K
 	}
 	return result, nil
 }
-

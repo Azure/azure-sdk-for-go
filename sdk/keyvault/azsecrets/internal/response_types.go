@@ -67,4 +67,3 @@ type KeyVaultClientSetSecretResponse struct {
 type KeyVaultClientUpdateSecretResponse struct {
 	SecretBundle
 }
-

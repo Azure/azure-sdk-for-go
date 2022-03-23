@@ -59,11 +59,11 @@ type DeletedSecretBundle struct {
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-// certificate.
+	// certificate.
 	Kid *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-// will be true.
+	// will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
@@ -91,7 +91,7 @@ type DeletedSecretItem struct {
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
-// will be true.
+	// will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
@@ -104,7 +104,7 @@ type DeletedSecretListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page
-// of deleted secrets
+	// of deleted secrets
 	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -208,8 +208,8 @@ type SecretAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable',
-// the secret can be permanently deleted by a privileged user; otherwise, only the
-// system can purge the secret, at the end of the retention interval.
+	// the secret can be permanently deleted by a privileged user; otherwise, only the
+	// system can purge the secret, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -234,11 +234,11 @@ type SecretBundle struct {
 	Value *string `json:"value,omitempty"`
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-// certificate.
+	// certificate.
 	Kid *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-// will be true.
+	// will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
@@ -257,7 +257,7 @@ type SecretItem struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
-// will be true.
+	// will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
@@ -308,4 +308,3 @@ type SecretUpdateParameters struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
-

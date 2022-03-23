@@ -19,10 +19,10 @@ import (
 
 // KeyVaultClientGetDeletedSecretsPager provides operations for iterating over paged responses.
 type KeyVaultClientGetDeletedSecretsPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetDeletedSecretsResponse
+	client    *KeyVaultClient
+	current   KeyVaultClientGetDeletedSecretsResponse
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetDeletedSecretsResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetDeletedSecretsResponse) (*policy.Request, error)
 }
 
 // More returns true if there are more pages to retrieve.
@@ -68,10 +68,10 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) (Ke
 
 // KeyVaultClientGetSecretVersionsPager provides operations for iterating over paged responses.
 type KeyVaultClientGetSecretVersionsPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetSecretVersionsResponse
+	client    *KeyVaultClient
+	current   KeyVaultClientGetSecretVersionsResponse
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetSecretVersionsResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetSecretVersionsResponse) (*policy.Request, error)
 }
 
 // More returns true if there are more pages to retrieve.
@@ -117,10 +117,10 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) (Ke
 
 // KeyVaultClientGetSecretsPager provides operations for iterating over paged responses.
 type KeyVaultClientGetSecretsPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetSecretsResponse
+	client    *KeyVaultClient
+	current   KeyVaultClientGetSecretsResponse
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetSecretsResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetSecretsResponse) (*policy.Request, error)
 }
 
 // More returns true if there are more pages to retrieve.
@@ -163,4 +163,3 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) (KeyVaultC
 	p.current = result
 	return p.current, nil
 }
-

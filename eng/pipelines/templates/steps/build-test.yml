@@ -61,6 +61,14 @@ steps:
       PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
       ${{ insert }}: ${{ parameters.EnvVars }}
 
+  - tast: PowerShell@2
+    display: 'Build Performance Tests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Build_Perf.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+      pwsh: true
+
   - ${{ if eq(parameters.TestProxy, true) }}:
     - pwsh: |
         # $(Build.SourcesDirectory)/test-proxy.log is the hardcoded output log location for the test-proxy-tool.yml

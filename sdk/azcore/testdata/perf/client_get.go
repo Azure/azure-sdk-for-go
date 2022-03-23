@@ -31,7 +31,7 @@ type globalClientGETTest struct {
 	req pipeline.Request
 }
 
-func NewClientGETTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+func newClientGETTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	if clientGetOpts.url == "" {
 		fmt.Println("--url/-u flag is required")
 		return nil, errors.New("--url/-u flag is required")

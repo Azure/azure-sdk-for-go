@@ -9,6 +9,6 @@ import (
 
 func main() {
 	perf.Run(map[string]perf.PerfMethods{
-		"ClientGET": {Register: clientTestRegister, New: NewClientGETTest},
+		"ClientGET": {Register: clientTestRegister, New: newClientGETTest},
 	})
 }

@@ -68,6 +68,9 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: AutoRelease
+    type: boolean
+    default: false
 
 
 stages:
@@ -192,8 +195,11 @@ stages:
                   Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
                   Cloud: ${{ cloud.key }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
+  # The Prerelease and Release stages are conditioned on:
+  # 1. Internal trigger
+  # 2. Not weekly build
+  # 3. Manual trigger (include manual defined Build.Reason param with empty) / Non-PR trigger with 'AutoRelease' flag
+  - ${{if and(or(in(variables['Build.Reason'], 'Manual', ''), and(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.AutoRelease, 'true'))), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-go-release.yml
       parameters:
         DependsOn:

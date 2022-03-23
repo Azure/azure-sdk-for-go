@@ -61,7 +61,7 @@ steps:
       PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
       ${{ insert }}: ${{ parameters.EnvVars }}
 
-  - tast: PowerShell@2
+  - task: PowerShell@2
     display: 'Build Performance Tests'
     inputs:
       targetType: 'filePath'

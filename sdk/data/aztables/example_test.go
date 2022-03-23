@@ -97,6 +97,33 @@ func ExampleNewServiceClientWithNoCredential() {
 	fmt.Println(client)
 }
 
+func ExampleServiceClient_GetAccountSASToken() {
+	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resources := aztables.AccountSASResourceTypes{Service: true}
+	permission := aztables.AccountSASPermissions{Read: true}
+	start := time.Now()
+	expiry := start.AddDate(1, 0, 0)
+	sasURL, err := service.GetAccountSASToken(resources, permission, start, expiry)
+	if err != nil {
+		panic(err)
+	}
+
+	serviceURL := fmt.Sprintf("https://<myAccountName>.table.core.windows.net/?%s", sasURL)
+	sasService, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
+	if err != nil {
+		panic(err)
+	}
+	_ = sasService
+}
+
 type MyEntity struct {
 	aztables.Entity
 	Value int

@@ -39,11 +39,21 @@ az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryE
 ```
 
 Once you have the account URL, it can be used to create the service client:
-```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
-handle(err)
-serviceClient, err := aztables.NewServiceClientWithSharedKeyCredential("https://<myAccountName>.table.core.windows.net/", cred, nil)
-handle(err)
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+
+func main() {
+	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+	if err != nil {
+		panic(err)
+	}
+	client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 For more information about table service URL's and how to configure custom domain names for Azure Storage check out the [official documentation][azure_portal_account_url]
@@ -55,11 +65,30 @@ The aztables package supports any of the types that implement the `azcore.TokenC
 
 ##### Creating the client with an AAD credential
 Use AAD authentication as the credential parameter to authenticate the client:
-```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
-handle(err)
+```go
+import (
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+
+func main() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	serviceClient, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ##### Creating the client from a shared key
@@ -69,11 +98,21 @@ To use an account [shared key][azure_shared_key] (aka account key or access key)
 az storage account keys list -g MyResourceGroup -n MyStorageAccount
 ```
 
-```golang
-cred, err := aztables.NewSharedKeyCredential("<accountName>", "<accountKey>")
-handle(err)
-client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
-handle(err)
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+
+func main() {
+	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+	if err != nil {
+		panic(err)
+	}
+	serviceClient, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ##### Creating the client from a connection string
@@ -84,39 +123,74 @@ connection string to the client's `NewServiceClientFromConnectionString` method.
 az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 ```
 
-```golang
-connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKey=<myAccountKey>;EndpointSuffix=core.windows.net"
-serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+
+func main() {
+	connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKey=<myAccountKey>;EndpointSuffix=core.windows.net"
+    serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ##### Creating the client from a SAS token
 To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use the `ServiceClient.GetAccountSASToken` or `Client.GetTableSASToken()` methods.
 
 ```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
-handle(err)
-service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
+import (
+    "fmt"
+    "time"
 
-resources := aztables.AccountSASResourceTypes{Service: true}
-permission := aztables.AccountSASPermissions{Read: true}
-start := time.Now()
-expiry := start.AddDate(1, 0, 0)
-sasUrl, err := service.GetAccountSASToken(resources, permission, start, expiry)
-handle(err)
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
 
-sasService, err := aztables.NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
-handle(err)
+func main() {
+	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
+
+	resources := aztables.AccountSASResourceTypes{Service: true}
+	permission := aztables.AccountSASPermissions{Read: true}
+	start := time.Now()
+	expiry := start.AddDate(1, 0, 0)
+	sasURL, err := service.GetAccountSASToken(resources, permission, start, expiry)
+	if err != nil {
+		panic(err)
+	}
+
+	serviceURL := fmt.Sprintf("https://<myAccountName>.table.core.windows.net/?%s", sasURL)
+	sasService, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ##### Creating the client for Azurite
 If you are using the [Azurite](https://github.com/Azure/Azurite) emulator you can authenticate a client with the default connection string:
-```golang
-connStr := "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
-svc, err := NewServiceClientFromConnectionString(connStr, nil)
-handle(err)
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
 
-client, err := svc.CreateTable(context.TODO(), "AzuriteTable", nil)
-handle(err)
+func main() {
+    connStr := "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
+    svc, err := NewServiceClientFromConnectionString(connStr, nil)
+    if err != nil {
+        panic(err)
+    }
+
+    client, err := svc.CreateTable(context.TODO(), "AzuriteTable", nil)
+    if err != nil {
+        panic(err)
+    }
+}
 ```
 
 
@@ -177,106 +251,208 @@ The following sections provide several code snippets covering some of the most c
 Create a table in your account and get a `Client` to perform operations on the newly created table:
 
 ```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
-handle(err)
-service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
-handle(err)
-resp, err := service.CreateTable("myTable")
+import (
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
+
+	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a table
+	_, err = service.CreateTable(context.TODO(), "fromServiceClient", nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ### Creating entities
 Create entities in the table:
 
-```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
-handle(err)
+```go
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"time"
 
-service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
-handle(err)
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
 
-client, err := service.NewClient("myTable")
-handle(err)
+func main() {
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
 
-myEntity := aztables.EDMEntity{
-    Entity: aztables.Entity{
-        PartitionKey: "001234",
-        RowKey: "RedMarker",
-    },
-    Properties: map[string]interface{}{
-        "Stock": 15,
-        "Price": 9.99,
-        "Comments": "great product",
-        "OnSale": true,
-        "ReducedPrice": 7.99,
-        "PurchaseDate": aztables.EDMDateTime(time.Date(2021, time.August, 21, 1, 1, 0, 0, time.UTC)),
-        "BinaryRepresentation": aztables.EDMBinary([]byte{"Bytesliceinfo"})
+    service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
+    if err != nil {
+        panic(err)
+    }
+
+    client, err := service.NewClient("myTable")
+    if err != nil {
+        panic(err)
+    }
+
+    myEntity := aztables.EDMEntity{
+        Entity: aztables.Entity{
+            PartitionKey: "001234",
+            RowKey: "RedMarker",
+        },
+        Properties: map[string]interface{}{
+            "Stock": 15,
+            "Price": 9.99,
+            "Comments": "great product",
+            "OnSale": true,
+            "ReducedPrice": 7.99,
+            "PurchaseDate": aztables.EDMDateTime(time.Date(2021, time.August, 21, 1, 1, 0, 0, time.UTC)),
+            "BinaryRepresentation": aztables.EDMBinary([]byte{"Bytesliceinfo"})
+        }
+    }
+    marshalled, err := json.Marshal(myEntity)
+    if err != nil {
+        panic(err)
+    }
+
+    resp, err := client.AddEntity(context.TODO(), marshalled, nil)
+    if err != nil {
+        panic(err)
     }
 }
-marshalled, err := json.Marshal(myEntity)
-handle(err)
-
-resp, err := client.AddEntity(context.TODO(), marshalled, nil)
-handle(err)
 ```
 
 ### Listing entities
 List entities in the table:
 
-```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
-handle(err)
-client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTable", cred, nil)
-handle(err)
+```go
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"time"
 
-filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
-options := &ListEntitiesOptions{
-    Filter: &filter,
-    Select: to.StringPtr("RowKey,Value,Product,Available"),
-    Top: to.Int32Ptr(15),
-}
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
 
-pager := client.List(options) // pass in "nil" if you want to list all entities
-for pager.NextPage(context.TODO()) {
-    resp := pager.PageResponse()
-    fmt.Printf("Received: %v entities\n", len(resp.Entities))
+func main() {
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
+    client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTable", cred, nil)
+    if err != nil {
+        panic(err)
+    }
 
-    for _, entity := range resp.Entities {
-        var myEntity aztables.EDMEntity
-        err = json.Unmarshal(entity, &myEntity)
-        handle(err)
+    filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
+    options := &ListEntitiesOptions{
+        Filter: &filter,
+        Select: to.StringPtr("RowKey,Value,Product,Available"),
+        Top: to.Int32Ptr(15),
+    }
 
-        fmt.Printf("Received: %v, %v, %v, %v\n", myEntity.RowKey, myEntity.Properties["Value"], myEntity.Properties["Product"], myEntity.Properties["Available"])
+	pager := client.List(options)
+	pageCount = 0
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
+		pageCount += 1
+
+        for _, entity := range response.Entities {
+            var myEntity aztables.EDMEntity
+            err = json.Unmarshal(entity, &myEntity)
+            if err != nil {
+                panic(err)
+            }
+
+            fmt.Printf("Received: %v, %v, %v, %v\n", myEntity.RowKey, myEntity.Properties["Value"], myEntity.Properties["Product"], myEntity.Properties["Available"])
+        }
     }
 }
-
-err := pager.Err()
-handle(err)
 ```
 
 The pager exposes continuation tokens that can be used by a new pager instance to begin listing entities from a specific point. For example:
-```golang
-pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
-count := 0
-for pager.NextPage(context.TODO()) {
-    count += len(pager.PageResponse().Entities)
+```go
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"time"
 
-    if count > 20 {
-        break
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+)
+func main() {
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
+    client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTable", cred, nil)
+    if err != nil {
+        panic(err)
+    }
+
+    pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+    count := 0
+	for pager.More() {
+		response, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+
+        count += len(response.Entities)
+
+        if count > 20 {
+            break
+        }
+    }
+
+    newPager := client.List(&ListEntitiesOptions{
+        Top:          to.Int32Ptr(10),
+        PartitionKey: pager.NextPagePartitionKey(),
+        RowKey:       pager.NextPageRowKey(),
+    })
+
+    for newPager.More() {
+        // begin paging where 'pager' left off
     }
 }
-handle(pager.Err())
-
-newPager := client.List(&ListEntitiesOptions{
-    Top:          to.Int32Ptr(10),
-    PartitionKey: pager.NextPagePartitionKey(),
-    RowKey:       pager.NextPageRowKey(),
-})
-
-for newPager.NextPage(context.TODO()) {
-    // begin paging where 'pager' left off
-}
-
-handle(newPager.Err())
 ```
 
 ## Troubleshooting
@@ -287,8 +463,10 @@ All I/O operations will return an `error` that can be investigated to discover m
 ```golang
 resp, err := client.CreateTable(context.TODO(), nil)
 if err != nil {
-    err = errors.As(err, azcore.HTTPResponse)
-    // handle err ...
+    var respErr azcore.ResponseError
+    if errors.As(err, &respErr) {
+        // handle err ...
+    }
 }
 ```
 
@@ -302,7 +480,7 @@ To obtain more detailed logging, including request/response bodies and header va
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 log.SetListener(func(cls log.Classification, msg string) {
-		fmt.Println(msg) // printing log out to the console
+	fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

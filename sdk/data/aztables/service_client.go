@@ -163,9 +163,6 @@ type ListTablesPageResponse struct {
 	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
 	ContinuationNextTableName *string
 
-	// The metadata response of the table.
-	ODataMetadata *string `json:"odata.metadata,omitempty"`
-
 	// List of tables.
 	Tables []*TableProperties `json:"value,omitempty"`
 }
@@ -179,22 +176,12 @@ func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryRespons
 
 	return ListTablesPageResponse{
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
-		ODataMetadata:             g.ODataMetadata,
 		Tables:                    value,
 	}
 }
 
 // TableProperties contains the properties for a single Table
 type TableProperties struct {
-	// The edit link of the table.
-	ODataEditLink *string `json:"odata.editLink,omitempty"`
-
-	// The ID of the table.
-	ODataID *string `json:"odata.id,omitempty"`
-
-	// The odata type of the table.
-	ODataType *string `json:"odata.type,omitempty"`
-
 	// The name of the table.
 	Name *string `json:"TableName,omitempty"`
 }
@@ -207,9 +194,6 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 
 	return &TableProperties{
 		Name:          g.TableName,
-		ODataEditLink: g.ODataEditLink,
-		ODataID:       g.ODataID,
-		ODataType:     g.ODataType,
 	}
 }
 

@@ -319,8 +319,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 
 // AddEntityOptions contains optional parameters for Client.AddEntity
 type AddEntityOptions struct {
-	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
-	ResponsePreference *ResponseFormat
+	// placeholder for future optional parameters
 }
 
 // AddEntityResponse contains response fields for Client.AddEntityResponse

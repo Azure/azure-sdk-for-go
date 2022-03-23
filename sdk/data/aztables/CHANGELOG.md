@@ -5,6 +5,9 @@
 ### Features Added
 
 ### Breaking Changes
+* Removed the `ODataID`, `ODataEditLink`, and `ODataType` on `TableProperties`
+* Removed `ODataMetadata` on `ListTablesPageResponse`
+* Removed `ResponsePreference` on `AddEntityOptions`
 
 ### Bugs Fixed
 

@@ -193,7 +193,7 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 
 	return &TableProperties{
-		Name:          g.TableName,
+		Name: g.TableName,
 	}
 }
 

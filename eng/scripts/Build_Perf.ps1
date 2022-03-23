@@ -23,7 +23,7 @@ foreach ($perfDir in $perfDirectories) {
         Push-Location perf
         Write-Host "##[command] Building and vetting performance tests in $perfDir/perf"
 
-        Write-Host "##[command] Executing 'go build .' in $perfDir/testdata/perf"
+        Write-Host "##[command] Executing 'go build .' in $perfDir/perf"
         go build .
         if ($LASTEXITCODE) {
             $failed = $true

@@ -234,16 +234,16 @@ func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	var rawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
 	resp, err := s.client.GetDeletedSecret(ctx, s.vaultUrl, s.secretName, nil)
-	s.rawResponse = rawResp
 	if err == nil {
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
+		s.rawResponse = rawResp
 		return rawResp, nil
 	}
-	if rawResp.StatusCode == http.StatusNotFound {
+	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
 		// This is the expected result
+		s.rawResponse = rawResp
 		return rawResp, nil
-
 	}
 	return rawResp, err
 }
@@ -568,17 +568,21 @@ func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, 
 	var rawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
-	b.lastResponse = resp
-	b.rawResponse = rawResp
 	if err == nil {
+		// secret has been recovered, finish
+		b.lastResponse = resp
+		b.rawResponse = rawResp
 		return b.rawResponse, nil
 	}
 
-	if b.rawResponse.StatusCode == http.StatusNotFound {
+	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
+		// this is the expected response
+		b.lastResponse = resp
+		b.rawResponse = rawResp
 		return b.rawResponse, nil
 	}
 
-	return b.rawResponse, nil
+	return rawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished

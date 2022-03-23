@@ -103,6 +103,9 @@ func ExampleServiceClient_GetAccountSASToken() {
 		panic(err)
 	}
 	service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
 	resources := aztables.AccountSASResourceTypes{Service: true}
 	permission := aztables.AccountSASPermissions{Read: true}

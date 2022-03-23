@@ -149,7 +149,7 @@ import (
 )
 
 func main() {
-	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
 	if err != nil {
 		panic(err)
 	}
@@ -303,7 +303,7 @@ import (
 )
 
 func main() {
-    cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
     if err != nil {
         panic(err)
     }
@@ -364,7 +364,7 @@ import (
 )
 
 func main() {
-    cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
     if err != nil {
         panic(err)
     }
@@ -419,7 +419,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 func main() {
-    cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
     if err != nil {
         panic(err)
     }

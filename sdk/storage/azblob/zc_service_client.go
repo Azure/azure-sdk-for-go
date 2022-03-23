@@ -33,7 +33,7 @@ type ServiceClient struct {
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (s ServiceClient) URL() string {
-	return s.conn.Endpoint()
+	return s.client.endpoint
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
@@ -94,6 +94,8 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // NewContainerClient method.
 func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
 	containerURL := appendToURLPath(s.conn.Endpoint(), containerName)
+	conn := s.conn
+	conn.u = containerURL
 	return &ContainerClient{
 		client:    newContainerClient(containerURL, s.conn.Pipeline()),
 		conn:      s.conn,
@@ -163,7 +165,7 @@ func (s *ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListCon
 	//	return pager
 	//}
 
-	pager.advancer = func(cxt context.Context, response ServiceClientListContainersSegmentResponse) (*policy.Request, error) {
+	pager.advancer = func(cxt context.Context, response serviceClientListContainersSegmentResponse) (*policy.Request, error) {
 		if response.ListContainersSegmentResponse.NextMarker == nil {
 			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}

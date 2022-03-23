@@ -385,9 +385,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &BlockBlobStageBlockOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMD5: contentMD5,
-		},
+		TransactionalContentMD5: contentMD5,
 	})
 	_assert.Nil(err)
 	_assert.Equal(putResp.RawResponse.StatusCode, 201)
@@ -405,9 +403,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &BlockBlobStageBlockOptions{
-		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMD5: badContentMD5,
-		},
+		TransactionalContentMD5: badContentMD5,
 	})
 	_assert.NotNil(err)
 	_assert.Contains(err.Error(), StorageErrorCodeMD5Mismatch)

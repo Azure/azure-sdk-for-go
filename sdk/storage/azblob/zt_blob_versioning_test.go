@@ -298,7 +298,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	found := make([]*BlobItemInternal, 0)
 	for listPager.NextPage(ctx) {
 		resp := listPager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(listPager.Err())
 	_assert.Len(found, 5)
@@ -319,7 +319,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	found = make([]*BlobItemInternal, 0)
 	for listPager.NextPage(ctx) {
 		resp := listPager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(listPager.Err())
 	_assert.Len(found, 2)
@@ -533,7 +533,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	found := make([]*BlobItemInternal, 0)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 	_assert.Len(found, 2)
@@ -550,7 +550,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	found = make([]*BlobItemInternal, 0)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 	_assert.NotEqual(len(found), 0)

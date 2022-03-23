@@ -22,7 +22,7 @@ type ContainerClient struct {
 
 // URL returns the URL endpoint used by the ContainerClient object.
 func (c *ContainerClient) URL() string {
-	return c.conn.Endpoint()
+	return c.client.endpoint
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
@@ -111,10 +111,12 @@ func (c *ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClien
 // NewBlockBlobClient method.
 func (c *ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
+	conn := c.conn
+	conn.u = blobURL
 	return &BlockBlobClient{
 		BlobClient: BlobClient{
 			client:    newBlobClient(blobURL, c.conn.Pipeline()),
-			conn:      c.conn,
+			conn:      conn,
 			sharedKey: c.sharedKey,
 		},
 		client: newBlockBlobClient(blobURL, c.conn.Pipeline()),
@@ -127,10 +129,12 @@ func (c *ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient,
 // NewPageBlobClient method.
 func (c *ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
+	conn := c.conn
+	conn.u = blobURL
 	return &PageBlobClient{
 		BlobClient: BlobClient{
 			client:    newBlobClient(blobURL, c.conn.Pipeline()),
-			conn:      c.conn,
+			conn:      conn,
 			sharedKey: c.sharedKey,
 		},
 		client: newPageBlobClient(blobURL, c.conn.Pipeline()),

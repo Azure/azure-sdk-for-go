@@ -940,9 +940,9 @@ type StaticWebsite struct {
 	IndexDocument *string `xml:"IndexDocument"`
 }
 
-type StorageError struct {
-	Message *string `json:"Message,omitempty"`
-}
+//type StorageError struct {
+//	Message *string `json:"Message,omitempty"`
+//}
 
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {

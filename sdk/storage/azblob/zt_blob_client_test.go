@@ -1041,9 +1041,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 
 	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := ContainerSetAccessPolicyOptions{
-		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
-			Access: &access,
-		},
+		Access: &access,
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_assert.Nil(err)

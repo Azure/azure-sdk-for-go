@@ -69,7 +69,7 @@ func NewBlobClientFromConnectionString(connectionString, containerName, blobName
 
 // URL returns the URL endpoint used by the BlobClient object.
 func (b *BlobClient) URL() string {
-	return b.conn.Endpoint()
+	return b.client.endpoint
 }
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.

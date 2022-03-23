@@ -530,7 +530,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 

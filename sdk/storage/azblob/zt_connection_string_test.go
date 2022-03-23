@@ -30,8 +30,8 @@ func (s *azblobTestSuite) TestConnectionStringParser() {
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "https://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
@@ -51,8 +51,8 @@ func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "http://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserBasic() {
@@ -71,8 +71,8 @@ func (s *azblobTestSuite) TestConnectionStringParserBasic() {
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "https://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
@@ -91,8 +91,8 @@ func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "www."))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "mydomain.com"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "www."))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "mydomain.com"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
@@ -126,8 +126,8 @@ func (s *azblobTestSuite) TestConnectionStringSAS() {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	_assert.Nil(err)
 	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "https://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
@@ -141,8 +141,8 @@ func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	_assert.Nil(err)
 	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.chinacloudapi.cn"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "http://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "core.chinacloudapi.cn"))
 
 	_assert.NotNil(client.sharedKey)
 	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")
@@ -160,8 +160,8 @@ func (s *azblobTestSuite) TestConnectionStringAzurite() {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	_assert.Nil(err)
 	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
+	_assert.True(strings.HasPrefix(client.conn.Endpoint(), "http://"))
+	_assert.True(strings.Contains(client.conn.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
 
 	_assert.NotNil(client.sharedKey)
 	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")

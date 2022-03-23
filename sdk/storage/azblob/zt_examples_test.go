@@ -103,7 +103,7 @@ func Example() {
 	for pager.NextPage(context.TODO()) {
 		resp := pager.PageResponse()
 
-		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
+		for _, v := range resp.Segment.BlobItems {
 			fmt.Println(*v.Name)
 		}
 	}
@@ -361,9 +361,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		_, err := container.SetAccessPolicy(
 			context.TODO(),
 			&azblob.ContainerSetAccessPolicyOptions{
-				ContainerSetAccessPolicyOptions: azblob.ContainerSetAccessPolicyOptions{
-					Access: azblob.PublicAccessTypeBlob.ToPtr(),
-				},
+				Access: azblob.PublicAccessTypeBlob.ToPtr(),
 			},
 		)
 		if err != nil {
@@ -780,80 +778,80 @@ func ExampleAppendBlobClient() {
 // ExamplePageBlobClient shows how to manipulate a page blob with PageBlobClient.
 // A page blob is a collection of 512-byte pages optimized for random read and write operations.
 // The maximum size for a page blob is 8 TB.
-func ExamplePageBlobClient() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
-
-	// Create a containerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/MyPageBlob.txt", accountName)
-	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blobClient, err := azblob.NewPageBlobClientWithSharedKey(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = blobClient.Create(context.TODO(), azblob.PageBlobPageBytes*4, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	page := make([]byte, azblob.PageBlobPageBytes)
-	copy(page, "Page 0")
-	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	copy(page, "Page 1")
-	_, err = blobClient.UploadPages(
-		context.TODO(),
-		streaming.NopCloser(bytes.NewReader(page)),
-		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	getPages, err := blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, pr := range getPages.PageList.PageRange {
-		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
-	}
-
-	_, err = blobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * azblob.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	getPages, err = blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, pr := range getPages.PageList.PageRange {
-		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
-	}
-
-	get, err := blobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blobData := &bytes.Buffer{}
-	reader := get.Body(nil)
-	_, err = blobData.ReadFrom(reader)
-	if err != nil {
-		return
-	}
-	err = reader.Close()
-	if err != nil {
-		return
-	}
-	fmt.Println(blobData.String())
-}
+//func ExamplePageBlobClient() {
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+//
+//	// Create a containerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/MyPageBlob.txt", accountName)
+//	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	blobClient, err := azblob.NewPageBlobClientWithSharedKey(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	_, err = blobClient.Create(context.TODO(), azblob.PageBlobPageBytes*4, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	page := make([]byte, azblob.PageBlobPageBytes)
+//	copy(page, "Page 0")
+//	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	copy(page, "Page 1")
+//	_, err = blobClient.UploadPages(
+//		context.TODO(),
+//		streaming.NopCloser(bytes.NewReader(page)),
+//		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
+//	)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	getPages, err := blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	for _, pr := range getPages.PageList.PageRange {
+//		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+//	}
+//
+//	_, err = blobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * azblob.PageBlobPageBytes}, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	getPages, err = blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	for _, pr := range getPages.PageList.PageRange {
+//		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+//	}
+//
+//	get, err := blobClient.Download(context.TODO(), nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	blobData := &bytes.Buffer{}
+//	reader := get.Body(nil)
+//	_, err = blobData.ReadFrom(reader)
+//	if err != nil {
+//		return
+//	}
+//	err = reader.Close()
+//	if err != nil {
+//		return
+//	}
+//	fmt.Println(blobData.String())
+//}
 
 // This example show how to create a blob, take a snapshot of it, update the base blob,
 // read from the blob snapshot, list blobs with their snapshots, and delete blob snapshots.
@@ -936,7 +934,7 @@ func Example_blobSnapshots() {
 
 	for pager.NextPage(context.TODO()) {
 		resp := pager.PageResponse()
-		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
+		for _, blob := range resp.Segment.BlobItems {
 			// Process the blobs returned
 			snapTime := "N/A"
 			if blob.Snapshot != nil {

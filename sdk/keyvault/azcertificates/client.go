@@ -109,23 +109,22 @@ func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 	var getRawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
-	b.getRawResponse = getRawResp
 	if err == nil {
+		b.getRawResponse = getRawResp
 		b.lastResponse = resp
 		b.createResponse.ID = b.lastResponse.ID
 		return getRawResp, nil
 	}
 
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) {
-		if respErr.RawResponse.StatusCode == http.StatusNotFound {
-			// The certificate has not been fully created yet
-			return b.getRawResponse, nil
-		}
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
+		// The certificate has not been fully created yet
+		b.getRawResponse = getRawResp
+		b.lastResponse = resp
+		return b.getRawResponse, nil
 	}
 
 	// There was an error in this operation, return the original raw response and the error
-	return nil, err
+	return getRawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -341,15 +340,16 @@ func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 	var getRawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.certificateName, nil)
-	s.lastRawResponse = getRawResp
 	if err == nil {
-		// Service recognizes DeletedKey, operation is done
+		// Service recognizes DeletedCertificate, operation is done
+		s.lastRawResponse = getRawResp
 		s.lastResponse = resp
 		return s.lastRawResponse, nil
 	}
 
-	if s.lastRawResponse.StatusCode == http.StatusNotFound {
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
 		// This is the expected result
+		s.lastRawResponse = getRawResp
 		return s.lastRawResponse, nil
 	}
 	return s.lastRawResponse, err
@@ -1391,9 +1391,20 @@ func (b *RecoverDeletedCertificatePoller) Poll(ctx context.Context) (*http.Respo
 	var getRawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := b.client.GetCertificate(ctx, b.vaultUrl, b.certName, "", nil)
-	b.lastResponse = resp
-	b.lastRawResponse = getRawResp
-	return b.lastRawResponse, err
+	if err == nil {
+		// Service has recovered certificate, operation is done
+		b.lastRawResponse = getRawResp
+		b.lastResponse = resp
+		return b.lastRawResponse, nil
+	}
+
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
+		// This is our expected result
+		b.lastRawResponse = getRawResp
+		return b.lastRawResponse, nil
+	}
+
+	return getRawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished

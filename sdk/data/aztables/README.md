@@ -244,7 +244,7 @@ The following sections provide several code snippets covering some of the most c
 
 * [Creating a table](#creating-a-table "Creating a table")
 * [Creating entities](#creating-entities "Creating entities")
-* [Listing entities](#querying-entities "Listing entities")
+* [Listing entities](#listing-entities "Listing entities")
 
 
 ### Creating a table

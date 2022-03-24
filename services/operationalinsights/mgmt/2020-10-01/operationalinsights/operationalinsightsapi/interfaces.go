@@ -9,7 +9,146 @@ package operationalinsightsapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights"
+	"github.com/Azure/go-autorest/autorest"
 )
+
+// DataExportsClientAPI contains the set of methods on the DataExportsClient type.
+type DataExportsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters operationalinsights.DataExport) (result operationalinsights.DataExport, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result operationalinsights.DataExport, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.DataExportListResult, err error)
+}
+
+var _ DataExportsClientAPI = (*operationalinsights.DataExportsClient)(nil)
+
+// DataSourcesClientAPI contains the set of methods on the DataSourcesClient type.
+type DataSourcesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters operationalinsights.DataSource) (result operationalinsights.DataSource, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result operationalinsights.DataSource, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result operationalinsights.DataSourceListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result operationalinsights.DataSourceListResultIterator, err error)
+}
+
+var _ DataSourcesClientAPI = (*operationalinsights.DataSourcesClient)(nil)
+
+// IntelligencePacksClientAPI contains the set of methods on the IntelligencePacksClient type.
+type IntelligencePacksClientAPI interface {
+	Disable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error)
+	Enable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.ListIntelligencePack, err error)
+}
+
+var _ IntelligencePacksClientAPI = (*operationalinsights.IntelligencePacksClient)(nil)
+
+// LinkedServicesClientAPI contains the set of methods on the LinkedServicesClient type.
+type LinkedServicesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters operationalinsights.LinkedService) (result operationalinsights.LinkedServicesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (result operationalinsights.LinkedServicesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (result operationalinsights.LinkedService, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.LinkedServiceListResult, err error)
+}
+
+var _ LinkedServicesClientAPI = (*operationalinsights.LinkedServicesClient)(nil)
+
+// LinkedStorageAccountsClientAPI contains the set of methods on the LinkedStorageAccountsClient type.
+type LinkedStorageAccountsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType operationalinsights.DataSourceType, parameters operationalinsights.LinkedStorageAccountsResource) (result operationalinsights.LinkedStorageAccountsResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType operationalinsights.DataSourceType) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType operationalinsights.DataSourceType) (result operationalinsights.LinkedStorageAccountsResource, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.LinkedStorageAccountsListResult, err error)
+}
+
+var _ LinkedStorageAccountsClientAPI = (*operationalinsights.LinkedStorageAccountsClient)(nil)
+
+// ManagementGroupsClientAPI contains the set of methods on the ManagementGroupsClient type.
+type ManagementGroupsClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.WorkspaceListManagementGroupsResult, err error)
+}
+
+var _ ManagementGroupsClientAPI = (*operationalinsights.ManagementGroupsClient)(nil)
+
+// OperationStatusesClientAPI contains the set of methods on the OperationStatusesClient type.
+type OperationStatusesClientAPI interface {
+	Get(ctx context.Context, location string, asyncOperationID string) (result operationalinsights.OperationStatus, err error)
+}
+
+var _ OperationStatusesClientAPI = (*operationalinsights.OperationStatusesClient)(nil)
+
+// SharedKeysClientAPI contains the set of methods on the SharedKeysClient type.
+type SharedKeysClientAPI interface {
+	GetSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.SharedKeys, err error)
+	Regenerate(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.SharedKeys, err error)
+}
+
+var _ SharedKeysClientAPI = (*operationalinsights.SharedKeysClient)(nil)
+
+// UsagesClientAPI contains the set of methods on the UsagesClient type.
+type UsagesClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.WorkspaceListUsagesResult, err error)
+}
+
+var _ UsagesClientAPI = (*operationalinsights.UsagesClient)(nil)
+
+// StorageInsightConfigsClientAPI contains the set of methods on the StorageInsightConfigsClient type.
+type StorageInsightConfigsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters operationalinsights.StorageInsight) (result operationalinsights.StorageInsight, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result operationalinsights.StorageInsight, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.StorageInsightListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.StorageInsightListResultIterator, err error)
+}
+
+var _ StorageInsightConfigsClientAPI = (*operationalinsights.StorageInsightConfigsClient)(nil)
+
+// SavedSearchesClientAPI contains the set of methods on the SavedSearchesClient type.
+type SavedSearchesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters operationalinsights.SavedSearch) (result operationalinsights.SavedSearch, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (result operationalinsights.SavedSearch, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.SavedSearchesListResult, err error)
+}
+
+var _ SavedSearchesClientAPI = (*operationalinsights.SavedSearchesClient)(nil)
+
+// AvailableServiceTiersClientAPI contains the set of methods on the AvailableServiceTiersClient type.
+type AvailableServiceTiersClientAPI interface {
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.ListAvailableServiceTier, err error)
+}
+
+var _ AvailableServiceTiersClientAPI = (*operationalinsights.AvailableServiceTiersClient)(nil)
+
+// GatewaysClientAPI contains the set of methods on the GatewaysClient type.
+type GatewaysClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string) (result autorest.Response, err error)
+}
+
+var _ GatewaysClientAPI = (*operationalinsights.GatewaysClient)(nil)
+
+// SchemaClientAPI contains the set of methods on the SchemaClient type.
+type SchemaClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.SearchGetSchemaResponse, err error)
+}
+
+var _ SchemaClientAPI = (*operationalinsights.SchemaClient)(nil)
+
+// WorkspacePurgeClientAPI contains the set of methods on the WorkspacePurgeClient type.
+type WorkspacePurgeClientAPI interface {
+	GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string) (result operationalinsights.WorkspacePurgeStatusResponse, err error)
+	Purge(ctx context.Context, resourceGroupName string, workspaceName string, body operationalinsights.WorkspacePurgeBody) (result operationalinsights.WorkspacePurgeResponse, err error)
+}
+
+var _ WorkspacePurgeClientAPI = (*operationalinsights.WorkspacePurgeClient)(nil)
+
+// TablesClientAPI contains the set of methods on the TablesClient type.
+type TablesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result operationalinsights.Table, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.TablesListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters operationalinsights.Table) (result operationalinsights.Table, err error)
+}
+
+var _ TablesClientAPI = (*operationalinsights.TablesClient)(nil)
 
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {

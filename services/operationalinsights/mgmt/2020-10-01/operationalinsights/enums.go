@@ -82,6 +82,102 @@ func PossibleDataIngestionStatusValues() []DataIngestionStatus {
 	return []DataIngestionStatus{ApproachingQuota, ForceOff, ForceOn, OverQuota, RespectQuota, SubscriptionSuspended}
 }
 
+// DataSourceKind enumerates the values for data source kind.
+type DataSourceKind string
+
+const (
+	// ApplicationInsights ...
+	ApplicationInsights DataSourceKind = "ApplicationInsights"
+	// AzureActivityLog ...
+	AzureActivityLog DataSourceKind = "AzureActivityLog"
+	// AzureAuditLog ...
+	AzureAuditLog DataSourceKind = "AzureAuditLog"
+	// ChangeTrackingContentLocation ...
+	ChangeTrackingContentLocation DataSourceKind = "ChangeTrackingContentLocation"
+	// ChangeTrackingCustomPath ...
+	ChangeTrackingCustomPath DataSourceKind = "ChangeTrackingCustomPath"
+	// ChangeTrackingDataTypeConfiguration ...
+	ChangeTrackingDataTypeConfiguration DataSourceKind = "ChangeTrackingDataTypeConfiguration"
+	// ChangeTrackingDefaultRegistry ...
+	ChangeTrackingDefaultRegistry DataSourceKind = "ChangeTrackingDefaultRegistry"
+	// ChangeTrackingLinuxPath ...
+	ChangeTrackingLinuxPath DataSourceKind = "ChangeTrackingLinuxPath"
+	// ChangeTrackingPath ...
+	ChangeTrackingPath DataSourceKind = "ChangeTrackingPath"
+	// ChangeTrackingRegistry ...
+	ChangeTrackingRegistry DataSourceKind = "ChangeTrackingRegistry"
+	// ChangeTrackingServices ...
+	ChangeTrackingServices DataSourceKind = "ChangeTrackingServices"
+	// CustomLog ...
+	CustomLog DataSourceKind = "CustomLog"
+	// CustomLogCollection ...
+	CustomLogCollection DataSourceKind = "CustomLogCollection"
+	// DNSAnalytics ...
+	DNSAnalytics DataSourceKind = "DnsAnalytics"
+	// GenericDataSource ...
+	GenericDataSource DataSourceKind = "GenericDataSource"
+	// IISLogs ...
+	IISLogs DataSourceKind = "IISLogs"
+	// ImportComputerGroup ...
+	ImportComputerGroup DataSourceKind = "ImportComputerGroup"
+	// Itsm ...
+	Itsm DataSourceKind = "Itsm"
+	// LinuxChangeTrackingPath ...
+	LinuxChangeTrackingPath DataSourceKind = "LinuxChangeTrackingPath"
+	// LinuxPerformanceCollection ...
+	LinuxPerformanceCollection DataSourceKind = "LinuxPerformanceCollection"
+	// LinuxPerformanceObject ...
+	LinuxPerformanceObject DataSourceKind = "LinuxPerformanceObject"
+	// LinuxSyslog ...
+	LinuxSyslog DataSourceKind = "LinuxSyslog"
+	// LinuxSyslogCollection ...
+	LinuxSyslogCollection DataSourceKind = "LinuxSyslogCollection"
+	// NetworkMonitoring ...
+	NetworkMonitoring DataSourceKind = "NetworkMonitoring"
+	// Office365 ...
+	Office365 DataSourceKind = "Office365"
+	// SecurityCenterSecurityWindowsBaselineConfiguration ...
+	SecurityCenterSecurityWindowsBaselineConfiguration DataSourceKind = "SecurityCenterSecurityWindowsBaselineConfiguration"
+	// SecurityEventCollectionConfiguration ...
+	SecurityEventCollectionConfiguration DataSourceKind = "SecurityEventCollectionConfiguration"
+	// SecurityInsightsSecurityEventCollectionConfiguration ...
+	SecurityInsightsSecurityEventCollectionConfiguration DataSourceKind = "SecurityInsightsSecurityEventCollectionConfiguration"
+	// SecurityWindowsBaselineConfiguration ...
+	SecurityWindowsBaselineConfiguration DataSourceKind = "SecurityWindowsBaselineConfiguration"
+	// SQLDataClassification ...
+	SQLDataClassification DataSourceKind = "SqlDataClassification"
+	// WindowsEvent ...
+	WindowsEvent DataSourceKind = "WindowsEvent"
+	// WindowsPerformanceCounter ...
+	WindowsPerformanceCounter DataSourceKind = "WindowsPerformanceCounter"
+	// WindowsTelemetry ...
+	WindowsTelemetry DataSourceKind = "WindowsTelemetry"
+)
+
+// PossibleDataSourceKindValues returns an array of possible values for the DataSourceKind const type.
+func PossibleDataSourceKindValues() []DataSourceKind {
+	return []DataSourceKind{ApplicationInsights, AzureActivityLog, AzureAuditLog, ChangeTrackingContentLocation, ChangeTrackingCustomPath, ChangeTrackingDataTypeConfiguration, ChangeTrackingDefaultRegistry, ChangeTrackingLinuxPath, ChangeTrackingPath, ChangeTrackingRegistry, ChangeTrackingServices, CustomLog, CustomLogCollection, DNSAnalytics, GenericDataSource, IISLogs, ImportComputerGroup, Itsm, LinuxChangeTrackingPath, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, NetworkMonitoring, Office365, SecurityCenterSecurityWindowsBaselineConfiguration, SecurityEventCollectionConfiguration, SecurityInsightsSecurityEventCollectionConfiguration, SecurityWindowsBaselineConfiguration, SQLDataClassification, WindowsEvent, WindowsPerformanceCounter, WindowsTelemetry}
+}
+
+// DataSourceType enumerates the values for data source type.
+type DataSourceType string
+
+const (
+	// Alerts ...
+	Alerts DataSourceType = "Alerts"
+	// AzureWatson ...
+	AzureWatson DataSourceType = "AzureWatson"
+	// CustomLogs ...
+	CustomLogs DataSourceType = "CustomLogs"
+	// Query ...
+	Query DataSourceType = "Query"
+)
+
+// PossibleDataSourceTypeValues returns an array of possible values for the DataSourceType const type.
+func PossibleDataSourceTypeValues() []DataSourceType {
+	return []DataSourceType{Alerts, AzureWatson, CustomLogs, Query}
+}
+
 // IdentityType enumerates the values for identity type.
 type IdentityType string
 
@@ -99,6 +195,25 @@ func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{None, SystemAssigned, UserAssigned}
 }
 
+// LinkedServiceEntityStatus enumerates the values for linked service entity status.
+type LinkedServiceEntityStatus string
+
+const (
+	// LinkedServiceEntityStatusDeleting ...
+	LinkedServiceEntityStatusDeleting LinkedServiceEntityStatus = "Deleting"
+	// LinkedServiceEntityStatusProvisioningAccount ...
+	LinkedServiceEntityStatusProvisioningAccount LinkedServiceEntityStatus = "ProvisioningAccount"
+	// LinkedServiceEntityStatusSucceeded ...
+	LinkedServiceEntityStatusSucceeded LinkedServiceEntityStatus = "Succeeded"
+	// LinkedServiceEntityStatusUpdating ...
+	LinkedServiceEntityStatusUpdating LinkedServiceEntityStatus = "Updating"
+)
+
+// PossibleLinkedServiceEntityStatusValues returns an array of possible values for the LinkedServiceEntityStatus const type.
+func PossibleLinkedServiceEntityStatusValues() []LinkedServiceEntityStatus {
+	return []LinkedServiceEntityStatus{LinkedServiceEntityStatusDeleting, LinkedServiceEntityStatusProvisioningAccount, LinkedServiceEntityStatusSucceeded, LinkedServiceEntityStatusUpdating}
+}
+
 // PublicNetworkAccessType enumerates the values for public network access type.
 type PublicNetworkAccessType string
 
@@ -112,6 +227,91 @@ const (
 // PossiblePublicNetworkAccessTypeValues returns an array of possible values for the PublicNetworkAccessType const type.
 func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	return []PublicNetworkAccessType{Disabled, Enabled}
+}
+
+// PurgeState enumerates the values for purge state.
+type PurgeState string
+
+const (
+	// Completed ...
+	Completed PurgeState = "completed"
+	// Pending ...
+	Pending PurgeState = "pending"
+)
+
+// PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
+func PossiblePurgeStateValues() []PurgeState {
+	return []PurgeState{Completed, Pending}
+}
+
+// SearchSortEnum enumerates the values for search sort enum.
+type SearchSortEnum string
+
+const (
+	// Asc ...
+	Asc SearchSortEnum = "asc"
+	// Desc ...
+	Desc SearchSortEnum = "desc"
+)
+
+// PossibleSearchSortEnumValues returns an array of possible values for the SearchSortEnum const type.
+func PossibleSearchSortEnumValues() []SearchSortEnum {
+	return []SearchSortEnum{Asc, Desc}
+}
+
+// SkuNameEnum enumerates the values for sku name enum.
+type SkuNameEnum string
+
+const (
+	// SkuNameEnumCapacityReservation ...
+	SkuNameEnumCapacityReservation SkuNameEnum = "CapacityReservation"
+	// SkuNameEnumFree ...
+	SkuNameEnumFree SkuNameEnum = "Free"
+	// SkuNameEnumPerGB2018 ...
+	SkuNameEnumPerGB2018 SkuNameEnum = "PerGB2018"
+	// SkuNameEnumPerNode ...
+	SkuNameEnumPerNode SkuNameEnum = "PerNode"
+	// SkuNameEnumPremium ...
+	SkuNameEnumPremium SkuNameEnum = "Premium"
+	// SkuNameEnumStandalone ...
+	SkuNameEnumStandalone SkuNameEnum = "Standalone"
+	// SkuNameEnumStandard ...
+	SkuNameEnumStandard SkuNameEnum = "Standard"
+)
+
+// PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return []SkuNameEnum{SkuNameEnumCapacityReservation, SkuNameEnumFree, SkuNameEnumPerGB2018, SkuNameEnumPerNode, SkuNameEnumPremium, SkuNameEnumStandalone, SkuNameEnumStandard}
+}
+
+// StorageInsightState enumerates the values for storage insight state.
+type StorageInsightState string
+
+const (
+	// ERROR ...
+	ERROR StorageInsightState = "ERROR"
+	// OK ...
+	OK StorageInsightState = "OK"
+)
+
+// PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
+func PossibleStorageInsightStateValues() []StorageInsightState {
+	return []StorageInsightState{ERROR, OK}
+}
+
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// TypeEventHub ...
+	TypeEventHub Type = "EventHub"
+	// TypeStorageAccount ...
+	TypeStorageAccount Type = "StorageAccount"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{TypeEventHub, TypeStorageAccount}
 }
 
 // WorkspaceEntityStatus enumerates the values for workspace entity status.

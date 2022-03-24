@@ -330,6 +330,8 @@ const (
 	WorkspaceSkuNameEnumCapacityReservation WorkspaceSkuNameEnum = "CapacityReservation"
 	// WorkspaceSkuNameEnumFree ...
 	WorkspaceSkuNameEnumFree WorkspaceSkuNameEnum = "Free"
+	// WorkspaceSkuNameEnumLACluster ...
+	WorkspaceSkuNameEnumLACluster WorkspaceSkuNameEnum = "LACluster"
 	// WorkspaceSkuNameEnumPerGB2018 ...
 	WorkspaceSkuNameEnumPerGB2018 WorkspaceSkuNameEnum = "PerGB2018"
 	// WorkspaceSkuNameEnumPerNode ...
@@ -344,5 +346,5 @@ const (
 
 // PossibleWorkspaceSkuNameEnumValues returns an array of possible values for the WorkspaceSkuNameEnum const type.
 func PossibleWorkspaceSkuNameEnumValues() []WorkspaceSkuNameEnum {
-	return []WorkspaceSkuNameEnum{WorkspaceSkuNameEnumCapacityReservation, WorkspaceSkuNameEnumFree, WorkspaceSkuNameEnumPerGB2018, WorkspaceSkuNameEnumPerNode, WorkspaceSkuNameEnumPremium, WorkspaceSkuNameEnumStandalone, WorkspaceSkuNameEnumStandard}
+	return []WorkspaceSkuNameEnum{WorkspaceSkuNameEnumCapacityReservation, WorkspaceSkuNameEnumFree, WorkspaceSkuNameEnumLACluster, WorkspaceSkuNameEnumPerGB2018, WorkspaceSkuNameEnumPerNode, WorkspaceSkuNameEnumPremium, WorkspaceSkuNameEnumStandalone, WorkspaceSkuNameEnumStandard}
 }

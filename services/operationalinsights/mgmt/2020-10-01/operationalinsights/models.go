@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -33,6 +34,30 @@ type AssociatedWorkspace struct {
 
 // MarshalJSON is the custom marshaler for AssociatedWorkspace.
 func (aw AssociatedWorkspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// AvailableServiceTier service Tier details.
+type AvailableServiceTier struct {
+	// ServiceTier - READ-ONLY; The name of the Service Tier. Possible values include: 'SkuNameEnumFree', 'SkuNameEnumStandard', 'SkuNameEnumPremium', 'SkuNameEnumPerNode', 'SkuNameEnumPerGB2018', 'SkuNameEnumStandalone', 'SkuNameEnumCapacityReservation'
+	ServiceTier SkuNameEnum `json:"serviceTier,omitempty"`
+	// Enabled - READ-ONLY; True if the Service Tier is enabled for the workspace.
+	Enabled *bool `json:"enabled,omitempty"`
+	// MinimumRetention - READ-ONLY; The minimum retention for the Service Tier, in days.
+	MinimumRetention *int64 `json:"minimumRetention,omitempty"`
+	// MaximumRetention - READ-ONLY; The maximum retention for the Service Tier, in days.
+	MaximumRetention *int64 `json:"maximumRetention,omitempty"`
+	// DefaultRetention - READ-ONLY; The default retention for the Service Tier, in days.
+	DefaultRetention *int64 `json:"defaultRetention,omitempty"`
+	// CapacityReservationLevel - READ-ONLY; The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
+	CapacityReservationLevel *int64 `json:"capacityReservationLevel,omitempty"`
+	// LastSkuUpdate - READ-ONLY; Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
+	LastSkuUpdate *string `json:"lastSkuUpdate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AvailableServiceTier.
+func (astVar AvailableServiceTier) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -61,8 +86,6 @@ type CapacityReservationProperties struct {
 	LastSkuUpdate *string `json:"lastSkuUpdate,omitempty"`
 	// MinCapacity - READ-ONLY; Minimum CapacityReservation value in GB.
 	MinCapacity *int64 `json:"minCapacity,omitempty"`
-	// MaxCapacity - READ-ONLY; Maximum CapacityReservation value in GB.
-	MaxCapacity *int64 `json:"maxCapacity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CapacityReservationProperties.
@@ -444,6 +467,8 @@ func (cp *ClusterPatch) UnmarshalJSON(body []byte) error {
 type ClusterPatchProperties struct {
 	// KeyVaultProperties - The associated key properties.
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	// BillingType - The cluster's billing type. Possible values include: 'BillingTypeCluster', 'BillingTypeWorkspaces'
+	BillingType BillingType `json:"billingType,omitempty"`
 }
 
 // ClusterProperties cluster properties.
@@ -456,7 +481,7 @@ type ClusterProperties struct {
 	IsDoubleEncryptionEnabled *bool `json:"isDoubleEncryptionEnabled,omitempty"`
 	// IsAvailabilityZonesEnabled - Sets whether the cluster will support availability zones. This can be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be modified after cluster creation. Default value is 'true' if region supports Availability Zones.
 	IsAvailabilityZonesEnabled *bool `json:"isAvailabilityZonesEnabled,omitempty"`
-	// BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional use. This does not change the overall billing, only how it will be distributed. Default value is 'Cluster'. Possible values include: 'BillingTypeCluster', 'BillingTypeWorkspaces'
+	// BillingType - The cluster's billing type. Possible values include: 'BillingTypeCluster', 'BillingTypeWorkspaces'
 	BillingType BillingType `json:"billingType,omitempty"`
 	// KeyVaultProperties - The associated key properties.
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
@@ -582,6 +607,475 @@ type ClusterSku struct {
 	Name ClusterSkuNameEnum `json:"name,omitempty"`
 }
 
+// CoreSummary the core summary of a search.
+type CoreSummary struct {
+	// Status - The status of a core summary.
+	Status *string `json:"status,omitempty"`
+	// NumberOfDocuments - The number of documents of a core summary.
+	NumberOfDocuments *int64 `json:"numberOfDocuments,omitempty"`
+}
+
+// DataExport the top level data export resource container.
+type DataExport struct {
+	autorest.Response `json:"-"`
+	// DataExportProperties - data export properties.
+	*DataExportProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataExport.
+func (de DataExport) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if de.DataExportProperties != nil {
+		objectMap["properties"] = de.DataExportProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataExport struct.
+func (de *DataExport) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataExportProperties DataExportProperties
+				err = json.Unmarshal(*v, &dataExportProperties)
+				if err != nil {
+					return err
+				}
+				de.DataExportProperties = &dataExportProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				de.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				de.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				de.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataExportListResult result of the request to list data exports.
+type DataExportListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of data export instances within a workspace..
+	Value *[]DataExport `json:"value,omitempty"`
+}
+
+// DataExportProperties data Export properties.
+type DataExportProperties struct {
+	// DataExportID - The data export rule ID.
+	DataExportID *string `json:"dataExportId,omitempty"`
+	// TableNames - An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
+	TableNames *[]string `json:"tableNames,omitempty"`
+	// Destination - destination properties.
+	*Destination `json:"destination,omitempty"`
+	// Enable - Active when enabled.
+	Enable *bool `json:"enable,omitempty"`
+	// CreatedDate - The latest data export rule modification time.
+	CreatedDate *string `json:"createdDate,omitempty"`
+	// LastModifiedDate - Date and time when the export was last modified.
+	LastModifiedDate *string `json:"lastModifiedDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataExportProperties.
+func (dep DataExportProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dep.DataExportID != nil {
+		objectMap["dataExportId"] = dep.DataExportID
+	}
+	if dep.TableNames != nil {
+		objectMap["tableNames"] = dep.TableNames
+	}
+	if dep.Destination != nil {
+		objectMap["destination"] = dep.Destination
+	}
+	if dep.Enable != nil {
+		objectMap["enable"] = dep.Enable
+	}
+	if dep.CreatedDate != nil {
+		objectMap["createdDate"] = dep.CreatedDate
+	}
+	if dep.LastModifiedDate != nil {
+		objectMap["lastModifiedDate"] = dep.LastModifiedDate
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataExportProperties struct.
+func (dep *DataExportProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "dataExportId":
+			if v != nil {
+				var dataExportID string
+				err = json.Unmarshal(*v, &dataExportID)
+				if err != nil {
+					return err
+				}
+				dep.DataExportID = &dataExportID
+			}
+		case "tableNames":
+			if v != nil {
+				var tableNames []string
+				err = json.Unmarshal(*v, &tableNames)
+				if err != nil {
+					return err
+				}
+				dep.TableNames = &tableNames
+			}
+		case "destination":
+			if v != nil {
+				var destination Destination
+				err = json.Unmarshal(*v, &destination)
+				if err != nil {
+					return err
+				}
+				dep.Destination = &destination
+			}
+		case "enable":
+			if v != nil {
+				var enable bool
+				err = json.Unmarshal(*v, &enable)
+				if err != nil {
+					return err
+				}
+				dep.Enable = &enable
+			}
+		case "createdDate":
+			if v != nil {
+				var createdDate string
+				err = json.Unmarshal(*v, &createdDate)
+				if err != nil {
+					return err
+				}
+				dep.CreatedDate = &createdDate
+			}
+		case "lastModifiedDate":
+			if v != nil {
+				var lastModifiedDate string
+				err = json.Unmarshal(*v, &lastModifiedDate)
+				if err != nil {
+					return err
+				}
+				dep.LastModifiedDate = &lastModifiedDate
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataSource datasources under OMS Workspace.
+type DataSource struct {
+	autorest.Response `json:"-"`
+	// Properties - The data source properties in raw json format, each kind of data source have it's own schema.
+	Properties interface{} `json:"properties,omitempty"`
+	// Etag - The ETag of the data source.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'WindowsEvent', 'WindowsPerformanceCounter', 'IISLogs', 'LinuxSyslog', 'LinuxSyslogCollection', 'LinuxPerformanceObject', 'LinuxPerformanceCollection', 'CustomLog', 'CustomLogCollection', 'AzureAuditLog', 'AzureActivityLog', 'GenericDataSource', 'ChangeTrackingCustomPath', 'ChangeTrackingPath', 'ChangeTrackingServices', 'ChangeTrackingDataTypeConfiguration', 'ChangeTrackingDefaultRegistry', 'ChangeTrackingRegistry', 'ChangeTrackingLinuxPath', 'LinuxChangeTrackingPath', 'ChangeTrackingContentLocation', 'WindowsTelemetry', 'Office365', 'SecurityWindowsBaselineConfiguration', 'SecurityCenterSecurityWindowsBaselineConfiguration', 'SecurityEventCollectionConfiguration', 'SecurityInsightsSecurityEventCollectionConfiguration', 'ImportComputerGroup', 'NetworkMonitoring', 'Itsm', 'DNSAnalytics', 'ApplicationInsights', 'SQLDataClassification'
+	Kind DataSourceKind `json:"kind,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataSource.
+func (ds DataSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ds.Properties != nil {
+		objectMap["properties"] = ds.Properties
+	}
+	if ds.Etag != nil {
+		objectMap["etag"] = ds.Etag
+	}
+	if ds.Kind != "" {
+		objectMap["kind"] = ds.Kind
+	}
+	if ds.Tags != nil {
+		objectMap["tags"] = ds.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// DataSourceFilter dataSource filter. Right now, only filter by kind is supported.
+type DataSourceFilter struct {
+	// Kind - Possible values include: 'WindowsEvent', 'WindowsPerformanceCounter', 'IISLogs', 'LinuxSyslog', 'LinuxSyslogCollection', 'LinuxPerformanceObject', 'LinuxPerformanceCollection', 'CustomLog', 'CustomLogCollection', 'AzureAuditLog', 'AzureActivityLog', 'GenericDataSource', 'ChangeTrackingCustomPath', 'ChangeTrackingPath', 'ChangeTrackingServices', 'ChangeTrackingDataTypeConfiguration', 'ChangeTrackingDefaultRegistry', 'ChangeTrackingRegistry', 'ChangeTrackingLinuxPath', 'LinuxChangeTrackingPath', 'ChangeTrackingContentLocation', 'WindowsTelemetry', 'Office365', 'SecurityWindowsBaselineConfiguration', 'SecurityCenterSecurityWindowsBaselineConfiguration', 'SecurityEventCollectionConfiguration', 'SecurityInsightsSecurityEventCollectionConfiguration', 'ImportComputerGroup', 'NetworkMonitoring', 'Itsm', 'DNSAnalytics', 'ApplicationInsights', 'SQLDataClassification'
+	Kind DataSourceKind `json:"kind,omitempty"`
+}
+
+// DataSourceListResult the list data source by workspace operation response.
+type DataSourceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of datasources.
+	Value *[]DataSource `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of datasources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DataSourceListResultIterator provides access to a complete listing of DataSource values.
+type DataSourceListResultIterator struct {
+	i    int
+	page DataSourceListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DataSourceListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourceListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DataSourceListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DataSourceListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DataSourceListResultIterator) Response() DataSourceListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DataSourceListResultIterator) Value() DataSource {
+	if !iter.page.NotDone() {
+		return DataSource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DataSourceListResultIterator type.
+func NewDataSourceListResultIterator(page DataSourceListResultPage) DataSourceListResultIterator {
+	return DataSourceListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dslr DataSourceListResult) IsEmpty() bool {
+	return dslr.Value == nil || len(*dslr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (dslr DataSourceListResult) hasNextLink() bool {
+	return dslr.NextLink != nil && len(*dslr.NextLink) != 0
+}
+
+// dataSourceListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dslr DataSourceListResult) dataSourceListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !dslr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dslr.NextLink)))
+}
+
+// DataSourceListResultPage contains a page of DataSource values.
+type DataSourceListResultPage struct {
+	fn   func(context.Context, DataSourceListResult) (DataSourceListResult, error)
+	dslr DataSourceListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DataSourceListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourceListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.dslr)
+		if err != nil {
+			return err
+		}
+		page.dslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DataSourceListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DataSourceListResultPage) NotDone() bool {
+	return !page.dslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DataSourceListResultPage) Response() DataSourceListResult {
+	return page.dslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DataSourceListResultPage) Values() []DataSource {
+	if page.dslr.IsEmpty() {
+		return nil
+	}
+	return *page.dslr.Value
+}
+
+// Creates a new instance of the DataSourceListResultPage type.
+func NewDataSourceListResultPage(cur DataSourceListResult, getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return DataSourceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
+}
+
+// Destination destination properties.
+type Destination struct {
+	// ResourceID - The destination resource ID. This can be copied from the Properties entry of the destination resource in Azure.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Type - READ-ONLY; The type of the destination resource. Possible values include: 'TypeStorageAccount', 'TypeEventHub'
+	Type Type `json:"type,omitempty"`
+	// DestinationMetaData - destination meta data.
+	*DestinationMetaData `json:"metaData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Destination.
+func (d Destination) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.ResourceID != nil {
+		objectMap["resourceId"] = d.ResourceID
+	}
+	if d.DestinationMetaData != nil {
+		objectMap["metaData"] = d.DestinationMetaData
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Destination struct.
+func (d *Destination) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				d.ResourceID = &resourceID
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = typeVar
+			}
+		case "metaData":
+			if v != nil {
+				var destinationMetaData DestinationMetaData
+				err = json.Unmarshal(*v, &destinationMetaData)
+				if err != nil {
+					return err
+				}
+				d.DestinationMetaData = &destinationMetaData
+			}
+		}
+	}
+
+	return nil
+}
+
+// DestinationMetaData destination meta data.
+type DestinationMetaData struct {
+	// EventHubName - Optional. Allows to define an Event Hub name. Not applicable when destination is Storage Account.
+	EventHubName *string `json:"eventHubName,omitempty"`
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Type - READ-ONLY; The additional info type.
@@ -629,7 +1123,7 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. Possible values include: 'SystemAssigned', 'UserAssigned', 'None'
+	// Type - Type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned', 'None'
 	Type IdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
@@ -647,6 +1141,16 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// IntelligencePack intelligence Pack containing a string name and boolean indicating if it's enabled.
+type IntelligencePack struct {
+	// Name - The name of the intelligence pack.
+	Name *string `json:"name,omitempty"`
+	// Enabled - The enabled boolean for the intelligence pack.
+	Enabled *bool `json:"enabled,omitempty"`
+	// DisplayName - The display name of the intelligence pack.
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // KeyVaultProperties the key vault properties.
 type KeyVaultProperties struct {
 	// KeyVaultURI - The Key Vault uri which holds they key associated with the Log Analytics cluster.
@@ -657,6 +1161,372 @@ type KeyVaultProperties struct {
 	KeyVersion *string `json:"keyVersion,omitempty"`
 	// KeyRsaSize - Selected key minimum required size.
 	KeyRsaSize *int32 `json:"keyRsaSize,omitempty"`
+}
+
+// LinkedService the top level Linked service resource container.
+type LinkedService struct {
+	autorest.Response `json:"-"`
+	// LinkedServiceProperties - The properties of the linked service.
+	*LinkedServiceProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedService.
+func (ls LinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ls.LinkedServiceProperties != nil {
+		objectMap["properties"] = ls.LinkedServiceProperties
+	}
+	if ls.Tags != nil {
+		objectMap["tags"] = ls.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LinkedService struct.
+func (ls *LinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var linkedServiceProperties LinkedServiceProperties
+				err = json.Unmarshal(*v, &linkedServiceProperties)
+				if err != nil {
+					return err
+				}
+				ls.LinkedServiceProperties = &linkedServiceProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ls.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ls.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ls.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ls.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// LinkedServiceListResult the list linked service operation response.
+type LinkedServiceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of linked service instances
+	Value *[]LinkedService `json:"value,omitempty"`
+}
+
+// LinkedServiceProperties linked service properties.
+type LinkedServiceProperties struct {
+	// ResourceID - The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require read access
+	ResourceID *string `json:"resourceId,omitempty"`
+	// WriteAccessResourceID - The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require write access
+	WriteAccessResourceID *string `json:"writeAccessResourceId,omitempty"`
+	// ProvisioningState - The provisioning state of the linked service. Possible values include: 'LinkedServiceEntityStatusSucceeded', 'LinkedServiceEntityStatusDeleting', 'LinkedServiceEntityStatusProvisioningAccount', 'LinkedServiceEntityStatusUpdating'
+	ProvisioningState LinkedServiceEntityStatus `json:"provisioningState,omitempty"`
+}
+
+// LinkedServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LinkedServicesCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LinkedServicesClient) (LinkedService, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LinkedServicesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LinkedServicesCreateOrUpdateFuture.Result.
+func (future *LinkedServicesCreateOrUpdateFuture) result(client LinkedServicesClient) (ls LinkedService, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ls.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.LinkedServicesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ls.Response.Response, err = future.GetResult(sender); err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
+		ls, err = client.CreateOrUpdateResponder(ls.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesCreateOrUpdateFuture", "Result", ls.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LinkedServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type LinkedServicesDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LinkedServicesClient) (LinkedService, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LinkedServicesDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LinkedServicesDeleteFuture.Result.
+func (future *LinkedServicesDeleteFuture) result(client LinkedServicesClient) (ls LinkedService, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ls.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.LinkedServicesDeleteFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ls.Response.Response, err = future.GetResult(sender); err == nil && ls.Response.Response.StatusCode != http.StatusNoContent {
+		ls, err = client.DeleteResponder(ls.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesDeleteFuture", "Result", ls.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LinkedStorageAccountsListResult the list linked storage accounts service operation response.
+type LinkedStorageAccountsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of linked storage accounts instances.
+	Value *[]LinkedStorageAccountsResource `json:"value,omitempty"`
+}
+
+// LinkedStorageAccountsProperties linked storage accounts properties.
+type LinkedStorageAccountsProperties struct {
+	// DataSourceType - READ-ONLY; Linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson', 'Query', 'Alerts'
+	DataSourceType DataSourceType `json:"dataSourceType,omitempty"`
+	// StorageAccountIds - Linked storage accounts resources ids.
+	StorageAccountIds *[]string `json:"storageAccountIds,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedStorageAccountsProperties.
+func (lsap LinkedStorageAccountsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsap.StorageAccountIds != nil {
+		objectMap["storageAccountIds"] = lsap.StorageAccountIds
+	}
+	return json.Marshal(objectMap)
+}
+
+// LinkedStorageAccountsResource linked storage accounts top level resource container.
+type LinkedStorageAccountsResource struct {
+	autorest.Response `json:"-"`
+	// LinkedStorageAccountsProperties - Linked storage accounts properties.
+	*LinkedStorageAccountsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedStorageAccountsResource.
+func (lsar LinkedStorageAccountsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsar.LinkedStorageAccountsProperties != nil {
+		objectMap["properties"] = lsar.LinkedStorageAccountsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LinkedStorageAccountsResource struct.
+func (lsar *LinkedStorageAccountsResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var linkedStorageAccountsProperties LinkedStorageAccountsProperties
+				err = json.Unmarshal(*v, &linkedStorageAccountsProperties)
+				if err != nil {
+					return err
+				}
+				lsar.LinkedStorageAccountsProperties = &linkedStorageAccountsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				lsar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				lsar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				lsar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ListAvailableServiceTier ...
+type ListAvailableServiceTier struct {
+	autorest.Response `json:"-"`
+	Value             *[]AvailableServiceTier `json:"value,omitempty"`
+}
+
+// ListIntelligencePack ...
+type ListIntelligencePack struct {
+	autorest.Response `json:"-"`
+	Value             *[]IntelligencePack `json:"value,omitempty"`
+}
+
+// ManagementGroup a management group that is connected to a workspace
+type ManagementGroup struct {
+	// ManagementGroupProperties - The properties of the management group.
+	*ManagementGroupProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagementGroup.
+func (mg ManagementGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mg.ManagementGroupProperties != nil {
+		objectMap["properties"] = mg.ManagementGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagementGroup struct.
+func (mg *ManagementGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managementGroupProperties ManagementGroupProperties
+				err = json.Unmarshal(*v, &managementGroupProperties)
+				if err != nil {
+					return err
+				}
+				mg.ManagementGroupProperties = &managementGroupProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagementGroupProperties management group properties.
+type ManagementGroupProperties struct {
+	// ServerCount - The number of servers connected to the management group.
+	ServerCount *int32 `json:"serverCount,omitempty"`
+	// IsGateway - Gets or sets a value indicating whether the management group is a gateway.
+	IsGateway *bool `json:"isGateway,omitempty"`
+	// Name - The name of the management group.
+	Name *string `json:"name,omitempty"`
+	// ID - The unique ID of the management group.
+	ID *string `json:"id,omitempty"`
+	// Created - The datetime that the management group was created.
+	Created *date.Time `json:"created,omitempty"`
+	// DataReceived - The last datetime that the management group received data.
+	DataReceived *date.Time `json:"dataReceived,omitempty"`
+	// Version - The version of System Center that is managing the management group.
+	Version *string `json:"version,omitempty"`
+	// Sku - The SKU of System Center that is managing the management group.
+	Sku *string `json:"sku,omitempty"`
+}
+
+// MetricName the name of a metric.
+type MetricName struct {
+	// Value - The system name of the metric.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - The localized name of the metric.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // Operation supported operation of OperationalInsights resource provider.
@@ -847,6 +1717,23 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 	}
 }
 
+// OperationStatus the status of operation.
+type OperationStatus struct {
+	autorest.Response `json:"-"`
+	// ID - The operation Id.
+	ID *string `json:"id,omitempty"`
+	// Name - The operation name.
+	Name *string `json:"name,omitempty"`
+	// StartTime - The start time of the operation.
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - The end time of the operation.
+	EndTime *string `json:"endTime,omitempty"`
+	// Status - The status of the operation.
+	Status *string `json:"status,omitempty"`
+	// Error - The error detail of the operation if any.
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // PrivateLinkScopedResource the private link scope resource reference.
 type PrivateLinkScopedResource struct {
 	// ResourceID - The full resource Id of the private link scope resource.
@@ -855,8 +1742,8 @@ type PrivateLinkScopedResource struct {
 	ScopeID *string `json:"scopeId,omitempty"`
 }
 
-// ProxyResource the resource model definition for an Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -888,7 +1775,607 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// SavedSearch value object for saved search results.
+type SavedSearch struct {
+	autorest.Response `json:"-"`
+	// Etag - The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag
+	Etag *string `json:"etag,omitempty"`
+	// SavedSearchProperties - The properties of the saved search.
+	*SavedSearchProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SavedSearch.
+func (ss SavedSearch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.Etag != nil {
+		objectMap["etag"] = ss.Etag
+	}
+	if ss.SavedSearchProperties != nil {
+		objectMap["properties"] = ss.SavedSearchProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SavedSearch struct.
+func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ss.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var savedSearchProperties SavedSearchProperties
+				err = json.Unmarshal(*v, &savedSearchProperties)
+				if err != nil {
+					return err
+				}
+				ss.SavedSearchProperties = &savedSearchProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ss.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ss.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ss.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SavedSearchesListResult the saved search list operation response.
+type SavedSearchesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The array of result values.
+	Value *[]SavedSearch `json:"value,omitempty"`
+}
+
+// SavedSearchProperties value object for saved search results.
+type SavedSearchProperties struct {
+	// Category - The category of the saved search. This helps the user to find a saved search faster.
+	Category *string `json:"category,omitempty"`
+	// DisplayName - Saved search display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Query - The query expression for the saved search.
+	Query *string `json:"query,omitempty"`
+	// FunctionAlias - The function alias if query serves as a function.
+	FunctionAlias *string `json:"functionAlias,omitempty"`
+	// FunctionParameters - The optional function parameters if query serves as a function. Value should be in the following format: 'param-name1:type1 = default_value1, param-name2:type2 = default_value2'. For more examples and proper syntax please refer to https://docs.microsoft.com/en-us/azure/kusto/query/functions/user-defined-functions.
+	FunctionParameters *string `json:"functionParameters,omitempty"`
+	// Version - The version number of the query language. The current version is 2 and is the default.
+	Version *int64 `json:"version,omitempty"`
+	// Tags - The tags attached to the saved search.
+	Tags *[]Tag `json:"tags,omitempty"`
+}
+
+// SearchGetSchemaResponse the get schema operation response.
+type SearchGetSchemaResponse struct {
+	autorest.Response `json:"-"`
+	// Metadata - The metadata from search results.
+	Metadata *SearchMetadata `json:"metadata,omitempty"`
+	// Value - The array of result values.
+	Value *[]SearchSchemaValue `json:"value,omitempty"`
+}
+
+// SearchMetadata metadata for search results.
+type SearchMetadata struct {
+	// SearchID - The request id of the search.
+	SearchID *string `json:"requestId,omitempty"`
+	// ResultType - The search result type.
+	ResultType *string `json:"resultType,omitempty"`
+	// Total - The total number of search results.
+	Total *int64 `json:"total,omitempty"`
+	// Top - The number of top search results.
+	Top *int64 `json:"top,omitempty"`
+	// ID - The id of the search results request.
+	ID *string `json:"id,omitempty"`
+	// CoreSummaries - The core summaries.
+	CoreSummaries *[]CoreSummary `json:"coreSummaries,omitempty"`
+	// Status - The status of the search results.
+	Status *string `json:"status,omitempty"`
+	// StartTime - The start time for the search.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// LastUpdated - The time of last update.
+	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
+	// ETag - The ETag of the search results.
+	ETag *string `json:"eTag,omitempty"`
+	// Sort - How the results are sorted.
+	Sort *[]SearchSort `json:"sort,omitempty"`
+	// RequestTime - The request time.
+	RequestTime *int64 `json:"requestTime,omitempty"`
+	// AggregatedValueField - The aggregated value field.
+	AggregatedValueField *string `json:"aggregatedValueField,omitempty"`
+	// AggregatedGroupingFields - The aggregated grouping fields.
+	AggregatedGroupingFields *string `json:"aggregatedGroupingFields,omitempty"`
+	// Sum - The sum of all aggregates returned in the result set.
+	Sum *int64 `json:"sum,omitempty"`
+	// Max - The max of all aggregates returned in the result set.
+	Max *int64 `json:"max,omitempty"`
+	// Schema - The schema.
+	Schema *SearchMetadataSchema `json:"schema,omitempty"`
+}
+
+// SearchMetadataSchema schema metadata for search.
+type SearchMetadataSchema struct {
+	// Name - The name of the metadata schema.
+	Name *string `json:"name,omitempty"`
+	// Version - The version of the metadata schema.
+	Version *int32 `json:"version,omitempty"`
+}
+
+// SearchSchemaValue value object for schema results.
+type SearchSchemaValue struct {
+	// Name - The name of the schema.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The display name of the schema.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Type - The type.
+	Type *string `json:"type,omitempty"`
+	// Indexed - The boolean that indicates the field is searchable as free text.
+	Indexed *bool `json:"indexed,omitempty"`
+	// Stored - The boolean that indicates whether or not the field is stored.
+	Stored *bool `json:"stored,omitempty"`
+	// Facet - The boolean that indicates whether or not the field is a facet.
+	Facet *bool `json:"facet,omitempty"`
+	// OwnerType - The array of workflows containing the field.
+	OwnerType *[]string `json:"ownerType,omitempty"`
+}
+
+// SearchSort the sort parameters for search.
+type SearchSort struct {
+	// Name - The name of the field the search query is sorted on.
+	Name *string `json:"name,omitempty"`
+	// Order - The sort order of the search. Possible values include: 'Asc', 'Desc'
+	Order SearchSortEnum `json:"order,omitempty"`
+}
+
+// SharedKeys the shared keys for a workspace.
+type SharedKeys struct {
+	autorest.Response `json:"-"`
+	// PrimarySharedKey - The primary shared key of a workspace.
+	PrimarySharedKey *string `json:"primarySharedKey,omitempty"`
+	// SecondarySharedKey - The secondary shared key of a workspace.
+	SecondarySharedKey *string `json:"secondarySharedKey,omitempty"`
+}
+
+// StorageAccount describes a storage account connection.
+type StorageAccount struct {
+	// ID - The Azure Resource Manager ID of the storage account resource.
+	ID *string `json:"id,omitempty"`
+	// Key - The storage account key.
+	Key *string `json:"key,omitempty"`
+}
+
+// StorageInsight the top level storage insight resource container.
+type StorageInsight struct {
+	autorest.Response `json:"-"`
+	// StorageInsightProperties - Storage insight properties.
+	*StorageInsightProperties `json:"properties,omitempty"`
+	// ETag - The ETag of the storage insight.
+	ETag *string `json:"eTag,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageInsight.
+func (si StorageInsight) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if si.StorageInsightProperties != nil {
+		objectMap["properties"] = si.StorageInsightProperties
+	}
+	if si.ETag != nil {
+		objectMap["eTag"] = si.ETag
+	}
+	if si.Tags != nil {
+		objectMap["tags"] = si.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for StorageInsight struct.
+func (si *StorageInsight) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var storageInsightProperties StorageInsightProperties
+				err = json.Unmarshal(*v, &storageInsightProperties)
+				if err != nil {
+					return err
+				}
+				si.StorageInsightProperties = &storageInsightProperties
+			}
+		case "eTag":
+			if v != nil {
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
+				if err != nil {
+					return err
+				}
+				si.ETag = &eTag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				si.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				si.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				si.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				si.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// StorageInsightListResult the list storage insights operation response.
+type StorageInsightListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of storage insight items.
+	Value *[]StorageInsight `json:"value,omitempty"`
+	// OdataNextLink - The link (url) to the next page of results.
+	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
+}
+
+// StorageInsightListResultIterator provides access to a complete listing of StorageInsight values.
+type StorageInsightListResultIterator struct {
+	i    int
+	page StorageInsightListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *StorageInsightListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *StorageInsightListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter StorageInsightListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter StorageInsightListResultIterator) Response() StorageInsightListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter StorageInsightListResultIterator) Value() StorageInsight {
+	if !iter.page.NotDone() {
+		return StorageInsight{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the StorageInsightListResultIterator type.
+func NewStorageInsightListResultIterator(page StorageInsightListResultPage) StorageInsightListResultIterator {
+	return StorageInsightListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (silr StorageInsightListResult) IsEmpty() bool {
+	return silr.Value == nil || len(*silr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (silr StorageInsightListResult) hasNextLink() bool {
+	return silr.OdataNextLink != nil && len(*silr.OdataNextLink) != 0
+}
+
+// storageInsightListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (silr StorageInsightListResult) storageInsightListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !silr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(silr.OdataNextLink)))
+}
+
+// StorageInsightListResultPage contains a page of StorageInsight values.
+type StorageInsightListResultPage struct {
+	fn   func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)
+	silr StorageInsightListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *StorageInsightListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.silr)
+		if err != nil {
+			return err
+		}
+		page.silr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *StorageInsightListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page StorageInsightListResultPage) NotDone() bool {
+	return !page.silr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page StorageInsightListResultPage) Response() StorageInsightListResult {
+	return page.silr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page StorageInsightListResultPage) Values() []StorageInsight {
+	if page.silr.IsEmpty() {
+		return nil
+	}
+	return *page.silr.Value
+}
+
+// Creates a new instance of the StorageInsightListResultPage type.
+func NewStorageInsightListResultPage(cur StorageInsightListResult, getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return StorageInsightListResultPage{
+		fn:   getNextPage,
+		silr: cur,
+	}
+}
+
+// StorageInsightProperties storage insight properties.
+type StorageInsightProperties struct {
+	// Containers - The names of the blob containers that the workspace should read
+	Containers *[]string `json:"containers,omitempty"`
+	// Tables - The names of the Azure tables that the workspace should read
+	Tables *[]string `json:"tables,omitempty"`
+	// StorageAccount - The storage account connection details
+	StorageAccount *StorageAccount `json:"storageAccount,omitempty"`
+	// Status - READ-ONLY; The status of the storage insight
+	Status *StorageInsightStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageInsightProperties.
+func (sip StorageInsightProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sip.Containers != nil {
+		objectMap["containers"] = sip.Containers
+	}
+	if sip.Tables != nil {
+		objectMap["tables"] = sip.Tables
+	}
+	if sip.StorageAccount != nil {
+		objectMap["storageAccount"] = sip.StorageAccount
+	}
+	return json.Marshal(objectMap)
+}
+
+// StorageInsightStatus the status of the storage insight.
+type StorageInsightStatus struct {
+	// State - The state of the storage insight connection to the workspace. Possible values include: 'OK', 'ERROR'
+	State StorageInsightState `json:"state,omitempty"`
+	// Description - Description of the state of the storage insight.
+	Description *string `json:"description,omitempty"`
+}
+
+// Table workspace data table definition.
+type Table struct {
+	autorest.Response `json:"-"`
+	// TableProperties - Table properties.
+	*TableProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Table.
+func (t Table) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.TableProperties != nil {
+		objectMap["properties"] = t.TableProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Table struct.
+func (t *Table) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tableProperties TableProperties
+				err = json.Unmarshal(*v, &tableProperties)
+				if err != nil {
+					return err
+				}
+				t.TableProperties = &tableProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// TableProperties table properties.
+type TableProperties struct {
+	// RetentionInDays - The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
+	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+}
+
+// TablesListResult the list tables operation response.
+type TablesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of data tables.
+	Value *[]Table `json:"value,omitempty"`
+}
+
+// Tag a tag of a saved search.
+type Tag struct {
+	// Name - The tag name.
+	Name *string `json:"name,omitempty"`
+	// Value - The tag value.
+	Value *string `json:"value,omitempty"`
+}
+
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -912,6 +2399,22 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["location"] = tr.Location
 	}
 	return json.Marshal(objectMap)
+}
+
+// UsageMetric a metric describing the usage of a resource.
+type UsageMetric struct {
+	// Name - The name of the metric.
+	Name *MetricName `json:"name,omitempty"`
+	// Unit - The units used for the metric.
+	Unit *string `json:"unit,omitempty"`
+	// CurrentValue - The current value of the metric.
+	CurrentValue *float64 `json:"currentValue,omitempty"`
+	// Limit - The quota limit for the metric.
+	Limit *float64 `json:"limit,omitempty"`
+	// NextResetTime - The time that the metric's value will reset.
+	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
+	// QuotaPeriod - The quota period that determines the length of time between value resets.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
 }
 
 // UserIdentityProperties user assigned identity properties.
@@ -1062,11 +2565,39 @@ func (wc WorkspaceCapping) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// WorkspaceFeatures workspace features.
+type WorkspaceFeatures struct {
+	// EnableDataExport - Flag that indicate if data should be exported.
+	EnableDataExport *bool `json:"enableDataExport,omitempty"`
+	// ImmediatePurgeDataOn30Days - Flag that describes if we want to remove the data after 30 days.
+	ImmediatePurgeDataOn30Days *bool `json:"immediatePurgeDataOn30Days,omitempty"`
+	// EnableLogAccessUsingOnlyResourcePermissions - Flag that indicate which permission to use - resource or workspace or both.
+	EnableLogAccessUsingOnlyResourcePermissions *bool `json:"enableLogAccessUsingOnlyResourcePermissions,omitempty"`
+	// ClusterResourceID - Dedicated LA cluster resourceId that is linked to the workspaces.
+	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
+	// DisableLocalAuth - Disable Non-AAD based Auth.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+}
+
+// WorkspaceListManagementGroupsResult the list workspace management groups operation response.
+type WorkspaceListManagementGroupsResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of management groups attached to the workspace.
+	Value *[]ManagementGroup `json:"value,omitempty"`
+}
+
 // WorkspaceListResult the list workspaces operation response.
 type WorkspaceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - A list of workspaces.
 	Value *[]Workspace `json:"value,omitempty"`
+}
+
+// WorkspaceListUsagesResult the list workspace usages operation response.
+type WorkspaceListUsagesResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of usage metrics for a workspace.
+	Value *[]UsageMetric `json:"value,omitempty"`
 }
 
 // WorkspacePatch the top level Workspace resource container.
@@ -1174,10 +2705,14 @@ type WorkspaceProperties struct {
 	CustomerID *string `json:"customerId,omitempty"`
 	// Sku - The SKU of the workspace.
 	Sku *WorkspaceSku `json:"sku,omitempty"`
-	// RetentionInDays - The workspace data retention in days, between 30 and 730.
+	// RetentionInDays - The workspace data retention in days. Allowed values are per pricing plan. See pricing tiers documentation for details.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 	// WorkspaceCapping - The daily volume cap for ingestion.
 	WorkspaceCapping *WorkspaceCapping `json:"workspaceCapping,omitempty"`
+	// CreatedDate - READ-ONLY; Workspace creation date.
+	CreatedDate *string `json:"createdDate,omitempty"`
+	// ModifiedDate - READ-ONLY; Workspace modification date.
+	ModifiedDate *string `json:"modifiedDate,omitempty"`
 	// PublicNetworkAccessForIngestion - The network access type for accessing Log Analytics ingestion. Possible values include: 'Enabled', 'Disabled'
 	PublicNetworkAccessForIngestion PublicNetworkAccessType `json:"publicNetworkAccessForIngestion,omitempty"`
 	// PublicNetworkAccessForQuery - The network access type for accessing Log Analytics query. Possible values include: 'Enabled', 'Disabled'
@@ -1186,6 +2721,8 @@ type WorkspaceProperties struct {
 	ForceCmkForQuery *bool `json:"forceCmkForQuery,omitempty"`
 	// PrivateLinkScopedResources - READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources *[]PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty"`
+	// Features - Workspace features.
+	Features *WorkspaceFeatures `json:"features,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -1212,7 +2749,44 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	if wp.ForceCmkForQuery != nil {
 		objectMap["forceCmkForQuery"] = wp.ForceCmkForQuery
 	}
+	if wp.Features != nil {
+		objectMap["features"] = wp.Features
+	}
 	return json.Marshal(objectMap)
+}
+
+// WorkspacePurgeBody describes the body of a purge request for an App Insights Workspace
+type WorkspacePurgeBody struct {
+	// Table - Table from which to purge data.
+	Table *string `json:"table,omitempty"`
+	// Filters - The set of columns and filters (queries) to run over them to purge the resulting data.
+	Filters *[]WorkspacePurgeBodyFilters `json:"filters,omitempty"`
+}
+
+// WorkspacePurgeBodyFilters user-defined filters to return data which will be purged from the table.
+type WorkspacePurgeBodyFilters struct {
+	// Column - The column of the table over which the given query should run
+	Column *string `json:"column,omitempty"`
+	// Operator - A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <, <=, between, and have the same behavior as they would in a KQL query.
+	Operator *string `json:"operator,omitempty"`
+	// Value - the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values.
+	Value interface{} `json:"value,omitempty"`
+	// Key - When filtering over custom dimensions, this key will be used as the name of the custom dimension.
+	Key *string `json:"key,omitempty"`
+}
+
+// WorkspacePurgeResponse response containing operationId for a specific purge action.
+type WorkspacePurgeResponse struct {
+	autorest.Response `json:"-"`
+	// OperationID - Id to use when querying for status for a particular purge operation.
+	OperationID *string `json:"operationId,omitempty"`
+}
+
+// WorkspacePurgeStatusResponse response containing status for a specific purge operation.
+type WorkspacePurgeStatusResponse struct {
+	autorest.Response `json:"-"`
+	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
+	Status PurgeState `json:"status,omitempty"`
 }
 
 // WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1301,8 +2875,6 @@ type WorkspaceSku struct {
 	Name WorkspaceSkuNameEnum `json:"name,omitempty"`
 	// CapacityReservationLevel - The capacity reservation level for this workspace, when CapacityReservation sku is selected.
 	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`
-	// MaxCapacityReservationLevel - READ-ONLY; The maximum capacity reservation level available for this workspace, when CapacityReservation sku is selected.
-	MaxCapacityReservationLevel *int32 `json:"maxCapacityReservationLevel,omitempty"`
 	// LastSkuUpdate - READ-ONLY; The last time when the sku was updated.
 	LastSkuUpdate *string `json:"lastSkuUpdate,omitempty"`
 }

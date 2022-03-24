@@ -191,13 +191,6 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterErrorResponse error response indicates that the service is not able to process the incoming
-// request. The reason is provided in the error message.
-type ClusterErrorResponse struct {
-	// Error - The details of the error.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // ClusterListResult the list clusters operation response.
 type ClusterListResult struct {
 	autorest.Response `json:"-"`
@@ -623,13 +616,6 @@ func (de *DataExport) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataExportErrorResponse error response indicates that the service is not able to process the incoming
-// request. The reason is provided in the error message.
-type DataExportErrorResponse struct {
-	// Error - The details of the error.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // DataExportListResult result of the request to list data exports.
 type DataExportListResult struct {
 	autorest.Response `json:"-"`
@@ -1032,15 +1018,8 @@ func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorContract contains details when the response code indicates an error.
-type ErrorContract struct {
-	// Error - The details of the error.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
-// failed operations. (This also follows the OData error response format.)
-type ErrorResponse struct {
+// ErrorDetail the error detail.
+type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
@@ -1048,15 +1027,22 @@ type ErrorResponse struct {
 	// Target - READ-ONLY; The error target.
 	Target *string `json:"target,omitempty"`
 	// Details - READ-ONLY; The error details.
-	Details *[]ErrorResponse `json:"details,omitempty"`
+	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ErrorResponse.
-func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Identity identity for the resource.
@@ -1713,7 +1699,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // SavedSearch value object for saved search results.
 type SavedSearch struct {
 	autorest.Response `json:"-"`
-	// Etag - The ETag of the saved search.
+	// Etag - The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag
 	Etag *string `json:"etag,omitempty"`
 	// SavedSearchProperties - The properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
@@ -2612,16 +2598,24 @@ type WorkspaceProperties struct {
 	CustomerID *string `json:"customerId,omitempty"`
 	// Sku - The SKU of the workspace.
 	Sku *WorkspaceSku `json:"sku,omitempty"`
-	// RetentionInDays - The workspace data retention in days, between 30 and 730.
+	// RetentionInDays - The workspace data retention in days. Allowed values are per pricing plan. See pricing tiers documentation for details.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 	// WorkspaceCapping - The daily volume cap for ingestion.
 	WorkspaceCapping *WorkspaceCapping `json:"workspaceCapping,omitempty"`
+	// CreatedDate - READ-ONLY; Workspace creation date.
+	CreatedDate *string `json:"createdDate,omitempty"`
+	// ModifiedDate - READ-ONLY; Workspace modification date.
+	ModifiedDate *string `json:"modifiedDate,omitempty"`
 	// PublicNetworkAccessForIngestion - The network access type for accessing Log Analytics ingestion. Possible values include: 'Enabled', 'Disabled'
 	PublicNetworkAccessForIngestion PublicNetworkAccessType `json:"publicNetworkAccessForIngestion,omitempty"`
 	// PublicNetworkAccessForQuery - The network access type for accessing Log Analytics query. Possible values include: 'Enabled', 'Disabled'
 	PublicNetworkAccessForQuery PublicNetworkAccessType `json:"publicNetworkAccessForQuery,omitempty"`
+	// ForceCmkForQuery - Indicates whether customer managed storage is mandatory for query management.
+	ForceCmkForQuery *bool `json:"forceCmkForQuery,omitempty"`
 	// PrivateLinkScopedResources - READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources *[]PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty"`
+	// Features - Workspace features.
+	Features map[string]interface{} `json:"features"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -2644,6 +2638,12 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.PublicNetworkAccessForQuery != "" {
 		objectMap["publicNetworkAccessForQuery"] = wp.PublicNetworkAccessForQuery
+	}
+	if wp.ForceCmkForQuery != nil {
+		objectMap["forceCmkForQuery"] = wp.ForceCmkForQuery
+	}
+	if wp.Features != nil {
+		objectMap["features"] = wp.Features
 	}
 	return json.Marshal(objectMap)
 }
@@ -2764,7 +2764,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 
 // WorkspaceSku the SKU (tier) of a workspace.
 type WorkspaceSku struct {
-	// Name - The name of the SKU. Possible values include: 'WorkspaceSkuNameEnumFree', 'WorkspaceSkuNameEnumStandard', 'WorkspaceSkuNameEnumPremium', 'WorkspaceSkuNameEnumPerNode', 'WorkspaceSkuNameEnumPerGB2018', 'WorkspaceSkuNameEnumStandalone', 'WorkspaceSkuNameEnumCapacityReservation'
+	// Name - The name of the SKU. Possible values include: 'WorkspaceSkuNameEnumFree', 'WorkspaceSkuNameEnumStandard', 'WorkspaceSkuNameEnumPremium', 'WorkspaceSkuNameEnumPerNode', 'WorkspaceSkuNameEnumPerGB2018', 'WorkspaceSkuNameEnumStandalone', 'WorkspaceSkuNameEnumCapacityReservation', 'WorkspaceSkuNameEnumLACluster'
 	Name WorkspaceSkuNameEnum `json:"name,omitempty"`
 	// CapacityReservationLevel - The capacity reservation level for this workspace, when CapacityReservation sku is selected.
 	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`

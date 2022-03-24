@@ -425,7 +425,7 @@ options := &aztables.ListEntitiesOptions{
 }
 ```
 
-##### String Comparison
+##### String Properties
 ```go
 options := &aztables.ListEntitiesOptions{
 	Filter: to.StringPtr("LastName ge 'A' and LastName lt 'B'"),

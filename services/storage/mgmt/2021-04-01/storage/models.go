@@ -22,10 +22,10 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-04-01
 
 // AccessPolicy ...
 type AccessPolicy struct {
-	// Start - Start time of the access policy
-	Start *date.Time `json:"start,omitempty"`
-	// Expiry - Expiry time of the access policy
-	Expiry *date.Time `json:"expiry,omitempty"`
+	// StartTime - Start time of the access policy
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// ExpiryTime - Expiry time of the access policy
+	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
 	// Permission - List of abbreviated permissions.
 	Permission *string `json:"permission,omitempty"`
 }

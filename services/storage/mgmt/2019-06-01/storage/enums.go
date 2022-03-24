@@ -121,6 +121,25 @@ func PossibleBypassValues() []Bypass {
 	return []Bypass{AzureServices, Logging, Metrics, None}
 }
 
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
+}
+
 // DefaultAction enumerates the values for default action.
 type DefaultAction string
 
@@ -461,6 +480,19 @@ const (
 // PossibleMinimumTLSVersionValues returns an array of possible values for the MinimumTLSVersion const type.
 func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	return []MinimumTLSVersion{TLS10, TLS11, TLS12}
+}
+
+// Name enumerates the values for name.
+type Name string
+
+const (
+	// AccessTimeTracking ...
+	AccessTimeTracking Name = "AccessTimeTracking"
+)
+
+// PossibleNameValues returns an array of possible values for the Name const type.
+func PossibleNameValues() []Name {
+	return []Name{AccessTimeTracking}
 }
 
 // Permissions enumerates the values for permissions.

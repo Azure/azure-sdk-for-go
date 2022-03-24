@@ -374,14 +374,14 @@ func main() {
     }
 
     filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
-    options := &ListEntitiesOptions{
+    options := &aztables.ListEntitiesOptions{
         Filter: &filter,
         Select: to.StringPtr("RowKey,Value,Product,Available"),
         Top: to.Int32Ptr(15),
     }
 
 	pager := client.List(options)
-	pageCount = 0
+	pageCount := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -428,7 +428,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Int32Ptr(10)})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -443,7 +443,7 @@ func main() {
         }
     }
 
-    newPager := client.List(&ListEntitiesOptions{
+    newPager := client.List(&aztables.ListEntitiesOptions{
         Top:          to.Int32Ptr(10),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),

@@ -19,30 +19,43 @@ import (
 )
 
 type serviceClient struct {
-	con *connection
+	endpoint string
+	pl runtime.Pipeline
 }
 
-// GetProperties - Gets the properties of a storage account's File service, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource
-// Sharing) rules.
-// If the operation fails it returns the *StorageError error type.
-func (client *serviceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
+// newServiceClient creates a new instance of serviceClient with the specified values.
+// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+// pl - the pipeline used for sending requests and handling responses.
+func newServiceClient(endpoint string, pl runtime.Pipeline) *serviceClient {
+	client := &serviceClient{
+		endpoint: endpoint,
+		pl: pl,
+	}
+	return client
+}
+
+// GetProperties - Gets the properties of a storage account's File service, including properties for Storage Analytics metrics
+// and CORS (Cross-Origin Resource Sharing) rules.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - serviceClientGetPropertiesOptions contains the optional parameters for the serviceClient.GetProperties method.
+func (client *serviceClient) GetProperties(ctx context.Context, options *serviceClientGetPropertiesOptions) (serviceClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
-		return ServiceGetPropertiesResponse{}, err
+		return serviceClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceGetPropertiesResponse{}, err
+		return serviceClientGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return serviceClientGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, options *ServiceGetPropertiesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, options *serviceClientGetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -53,14 +66,14 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (ServiceGetPropertiesResponse, error) {
-	result := ServiceGetPropertiesResponse{RawResponse: resp}
+func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (serviceClientGetPropertiesResponse, error) {
+	result := serviceClientGetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -68,41 +81,31 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (S
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
-		return ServiceGetPropertiesResponse{}, err
+		return serviceClientGetPropertiesResponse{}, err
 	}
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *serviceClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListSharesSegment - The List Shares Segment operation returns a list of the shares and share snapshots under the specified account.
-// If the operation fails it returns the *StorageError error type.
-func (client *serviceClient) ListSharesSegment(options *ServiceListSharesSegmentOptions) *ServiceListSharesSegmentPager {
-	return &ServiceListSharesSegmentPager{
+// ListSharesSegment - The List Shares Segment operation returns a list of the shares and share snapshots under the specified
+// account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - serviceClientListSharesSegmentOptions contains the optional parameters for the serviceClient.ListSharesSegment
+// method.
+func (client *serviceClient) ListSharesSegment(options *serviceClientListSharesSegmentOptions) (*serviceClientListSharesSegmentPager) {
+	return &serviceClientListSharesSegmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSharesSegmentCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServiceListSharesSegmentResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp serviceClientListSharesSegmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListSharesResponse.NextMarker)
 		},
 	}
 }
 
 // listSharesSegmentCreateRequest creates the ListSharesSegment request.
-func (client *serviceClient) listSharesSegmentCreateRequest(ctx context.Context, options *ServiceListSharesSegmentOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *serviceClient) listSharesSegmentCreateRequest(ctx context.Context, options *serviceClientListSharesSegmentOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -124,14 +127,14 @@ func (client *serviceClient) listSharesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // listSharesSegmentHandleResponse handles the ListSharesSegment response.
-func (client *serviceClient) listSharesSegmentHandleResponse(resp *http.Response) (ServiceListSharesSegmentResponse, error) {
-	result := ServiceListSharesSegmentResponse{RawResponse: resp}
+func (client *serviceClient) listSharesSegmentHandleResponse(resp *http.Response) (serviceClientListSharesSegmentResponse, error) {
+	result := serviceClientListSharesSegmentResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -139,45 +142,34 @@ func (client *serviceClient) listSharesSegmentHandleResponse(resp *http.Response
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListSharesResponse); err != nil {
-		return ServiceListSharesSegmentResponse{}, err
+		return serviceClientListSharesSegmentResponse{}, err
 	}
 	return result, nil
 }
 
-// listSharesSegmentHandleError handles the ListSharesSegment error response.
-func (client *serviceClient) listSharesSegmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// SetProperties - Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin
-// Resource Sharing) rules.
-// If the operation fails it returns the *StorageError error type.
-func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+// SetProperties - Sets properties for a storage account's File service endpoint, including properties for Storage Analytics
+// metrics and CORS (Cross-Origin Resource Sharing) rules.
+// If the operation fails it returns an *azcore.ResponseError type.
+// storageServiceProperties - The StorageService properties.
+// options - serviceClientSetPropertiesOptions contains the optional parameters for the serviceClient.SetProperties method.
+func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) (serviceClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
-		return ServiceSetPropertiesResponse{}, err
+		return serviceClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceSetPropertiesResponse{}, err
+		return serviceClientSetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ServiceSetPropertiesResponse{}, client.setPropertiesHandleError(resp)
+		return serviceClientSetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setPropertiesHandleResponse(resp)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceSetPropertiesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -188,14 +180,14 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, runtime.MarshalAsXML(req, storageServiceProperties)
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceSetPropertiesResponse, error) {
-	result := ServiceSetPropertiesResponse{RawResponse: resp}
+func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (serviceClientSetPropertiesResponse, error) {
+	result := serviceClientSetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -205,15 +197,3 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// setPropertiesHandleError handles the SetProperties error response.
-func (client *serviceClient) setPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}

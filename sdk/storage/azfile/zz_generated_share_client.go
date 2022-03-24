@@ -11,7 +11,6 @@ package azfile
 import (
 	"context"
 	"encoding/xml"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -21,29 +20,43 @@ import (
 )
 
 type shareClient struct {
-	con *connection
+	endpoint string
+	pl runtime.Pipeline
 }
 
-// AcquireLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) AcquireLease(ctx context.Context, options *ShareAcquireLeaseOptions) (ShareAcquireLeaseResponse, error) {
+// newShareClient creates a new instance of shareClient with the specified values.
+// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+// pl - the pipeline used for sending requests and handling responses.
+func newShareClient(endpoint string, pl runtime.Pipeline) *shareClient {
+	client := &shareClient{
+		endpoint: endpoint,
+		pl: pl,
+	}
+	return client
+}
+
+// AcquireLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
+// delete share operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - shareClientAcquireLeaseOptions contains the optional parameters for the shareClient.AcquireLease method.
+func (client *shareClient) AcquireLease(ctx context.Context, options *shareClientAcquireLeaseOptions) (shareClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, options)
 	if err != nil {
-		return ShareAcquireLeaseResponse{}, err
+		return shareClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareAcquireLeaseResponse{}, err
+		return shareClientAcquireLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ShareAcquireLeaseResponse{}, client.acquireLeaseHandleError(resp)
+		return shareClientAcquireLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.acquireLeaseHandleResponse(resp)
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *shareClient) acquireLeaseCreateRequest(ctx context.Context, options *ShareAcquireLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) acquireLeaseCreateRequest(ctx context.Context, options *shareClientAcquireLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +77,7 @@ func (client *shareClient) acquireLeaseCreateRequest(ctx context.Context, option
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -73,15 +86,15 @@ func (client *shareClient) acquireLeaseCreateRequest(ctx context.Context, option
 }
 
 // acquireLeaseHandleResponse handles the AcquireLease response.
-func (client *shareClient) acquireLeaseHandleResponse(resp *http.Response) (ShareAcquireLeaseResponse, error) {
-	result := ShareAcquireLeaseResponse{RawResponse: resp}
+func (client *shareClient) acquireLeaseHandleResponse(resp *http.Response) (shareClientAcquireLeaseResponse, error) {
+	result := shareClientAcquireLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareAcquireLeaseResponse{}, err
+			return shareClientAcquireLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -100,84 +113,75 @@ func (client *shareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareAcquireLeaseResponse{}, err
+			return shareClientAcquireLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// acquireLeaseHandleError handles the AcquireLease error response.
-func (client *shareClient) acquireLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// BreakLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
+// delete share operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientBreakLeaseOptions - shareClientBreakLeaseOptions contains the optional parameters for the shareClient.BreakLease
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) BreakLease(ctx context.Context, shareClientBreakLeaseOptions *shareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientBreakLeaseResponse, error) {
+	req, err := client.breakLeaseCreateRequest(ctx, shareClientBreakLeaseOptions, leaseAccessConditions)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return shareClientBreakLeaseResponse{}, err
 	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BreakLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) BreakLease(ctx context.Context, shareBreakLeaseOptions *ShareBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (ShareBreakLeaseResponse, error) {
-	req, err := client.breakLeaseCreateRequest(ctx, shareBreakLeaseOptions, leaseAccessConditions)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareBreakLeaseResponse{}, err
-	}
-	resp, err := client.con.Pipeline().Do(req)
-	if err != nil {
-		return ShareBreakLeaseResponse{}, err
+		return shareClientBreakLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ShareBreakLeaseResponse{}, client.breakLeaseHandleError(resp)
+		return shareClientBreakLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.breakLeaseHandleResponse(resp)
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
-func (client *shareClient) breakLeaseCreateRequest(ctx context.Context, shareBreakLeaseOptions *ShareBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) breakLeaseCreateRequest(ctx context.Context, shareClientBreakLeaseOptions *shareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "lease")
 	reqQP.Set("restype", "share")
-	if shareBreakLeaseOptions != nil && shareBreakLeaseOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareBreakLeaseOptions.Timeout), 10))
+	if shareClientBreakLeaseOptions != nil && shareClientBreakLeaseOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientBreakLeaseOptions.Timeout), 10))
 	}
-	if shareBreakLeaseOptions != nil && shareBreakLeaseOptions.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *shareBreakLeaseOptions.Sharesnapshot)
+	if shareClientBreakLeaseOptions != nil && shareClientBreakLeaseOptions.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *shareClientBreakLeaseOptions.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "break")
-	if shareBreakLeaseOptions != nil && shareBreakLeaseOptions.BreakPeriod != nil {
-		req.Raw().Header.Set("x-ms-lease-break-period", strconv.FormatInt(int64(*shareBreakLeaseOptions.BreakPeriod), 10))
+	if shareClientBreakLeaseOptions != nil && shareClientBreakLeaseOptions.BreakPeriod != nil {
+		req.Raw().Header.Set("x-ms-lease-break-period", strconv.FormatInt(int64(*shareClientBreakLeaseOptions.BreakPeriod), 10))
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if shareBreakLeaseOptions != nil && shareBreakLeaseOptions.RequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *shareBreakLeaseOptions.RequestID)
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if shareClientBreakLeaseOptions != nil && shareClientBreakLeaseOptions.RequestID != nil {
+		req.Raw().Header.Set("x-ms-client-request-id", *shareClientBreakLeaseOptions.RequestID)
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // breakLeaseHandleResponse handles the BreakLease response.
-func (client *shareClient) breakLeaseHandleResponse(resp *http.Response) (ShareBreakLeaseResponse, error) {
-	result := ShareBreakLeaseResponse{RawResponse: resp}
+func (client *shareClient) breakLeaseHandleResponse(resp *http.Response) (shareClientBreakLeaseResponse, error) {
+	result := shareClientBreakLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareBreakLeaseResponse{}, err
+			return shareClientBreakLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -185,7 +189,7 @@ func (client *shareClient) breakLeaseHandleResponse(resp *http.Response) (ShareB
 		leaseTime32, err := strconv.ParseInt(val, 10, 32)
 		leaseTime := int32(leaseTime32)
 		if err != nil {
-			return ShareBreakLeaseResponse{}, err
+			return shareClientBreakLeaseResponse{}, err
 		}
 		result.LeaseTime = &leaseTime
 	}
@@ -204,46 +208,36 @@ func (client *shareClient) breakLeaseHandleResponse(resp *http.Response) (ShareB
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareBreakLeaseResponse{}, err
+			return shareClientBreakLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// breakLeaseHandleError handles the BreakLease error response.
-func (client *shareClient) breakLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ChangeLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) ChangeLease(ctx context.Context, leaseID string, options *ShareChangeLeaseOptions) (ShareChangeLeaseResponse, error) {
+// ChangeLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
+// delete share operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+// leaseID - Specifies the current lease ID on the resource.
+// options - shareClientChangeLeaseOptions contains the optional parameters for the shareClient.ChangeLease method.
+func (client *shareClient) ChangeLease(ctx context.Context, leaseID string, options *shareClientChangeLeaseOptions) (shareClientChangeLeaseResponse, error) {
 	req, err := client.changeLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
-		return ShareChangeLeaseResponse{}, err
+		return shareClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareChangeLeaseResponse{}, err
+		return shareClientChangeLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareChangeLeaseResponse{}, client.changeLeaseHandleError(resp)
+		return shareClientChangeLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.changeLeaseHandleResponse(resp)
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
-func (client *shareClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareChangeLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *shareClientChangeLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +256,7 @@ func (client *shareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -271,15 +265,15 @@ func (client *shareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 }
 
 // changeLeaseHandleResponse handles the ChangeLease response.
-func (client *shareClient) changeLeaseHandleResponse(resp *http.Response) (ShareChangeLeaseResponse, error) {
-	result := ShareChangeLeaseResponse{RawResponse: resp}
+func (client *shareClient) changeLeaseHandleResponse(resp *http.Response) (shareClientChangeLeaseResponse, error) {
+	result := shareClientChangeLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareChangeLeaseResponse{}, err
+			return shareClientChangeLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -298,46 +292,35 @@ func (client *shareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareChangeLeaseResponse{}, err
+			return shareClientChangeLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// changeLeaseHandleError handles the ChangeLease error response.
-func (client *shareClient) changeLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Create - Creates a new share under the specified account. If the share with the same name already exists, the operation fails.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) Create(ctx context.Context, options *ShareCreateOptions) (ShareCreateResponse, error) {
+// Create - Creates a new share under the specified account. If the share with the same name already exists, the operation
+// fails.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - shareClientCreateOptions contains the optional parameters for the shareClient.Create method.
+func (client *shareClient) Create(ctx context.Context, options *shareClientCreateOptions) (shareClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
-		return ShareCreateResponse{}, err
+		return shareClientCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareCreateResponse{}, err
+		return shareClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ShareCreateResponse{}, client.createHandleError(resp)
+		return shareClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *shareClient) createCreateRequest(ctx context.Context, options *ShareCreateOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) createCreateRequest(ctx context.Context, options *shareClientCreateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -358,21 +341,27 @@ func (client *shareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.AccessTier != nil {
 		req.Raw().Header.Set("x-ms-access-tier", string(*options.AccessTier))
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if options != nil && options.EnabledProtocols != nil {
+		req.Raw().Header.Set("x-ms-enabled-protocols", *options.EnabledProtocols)
+	}
+	if options != nil && options.RootSquash != nil {
+		req.Raw().Header.Set("x-ms-root-squash", string(*options.RootSquash))
+	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *shareClient) createHandleResponse(resp *http.Response) (ShareCreateResponse, error) {
-	result := ShareCreateResponse{RawResponse: resp}
+func (client *shareClient) createHandleResponse(resp *http.Response) (shareClientCreateResponse, error) {
+	result := shareClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareCreateResponse{}, err
+			return shareClientCreateResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -385,46 +374,35 @@ func (client *shareClient) createHandleResponse(resp *http.Response) (ShareCreat
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareCreateResponse{}, err
+			return shareClientCreateResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *shareClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreatePermission - Create a permission (a security descriptor).
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) CreatePermission(ctx context.Context, sharePermission SharePermission, options *ShareCreatePermissionOptions) (ShareCreatePermissionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// sharePermission - A permission (a security descriptor) at the share level.
+// options - shareClientCreatePermissionOptions contains the optional parameters for the shareClient.CreatePermission method.
+func (client *shareClient) CreatePermission(ctx context.Context, sharePermission SharePermission, options *shareClientCreatePermissionOptions) (shareClientCreatePermissionResponse, error) {
 	req, err := client.createPermissionCreateRequest(ctx, sharePermission, options)
 	if err != nil {
-		return ShareCreatePermissionResponse{}, err
+		return shareClientCreatePermissionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareCreatePermissionResponse{}, err
+		return shareClientCreatePermissionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ShareCreatePermissionResponse{}, client.createPermissionHandleError(resp)
+		return shareClientCreatePermissionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createPermissionHandleResponse(resp)
 }
 
 // createPermissionCreateRequest creates the CreatePermission request.
-func (client *shareClient) createPermissionCreateRequest(ctx context.Context, sharePermission SharePermission, options *ShareCreatePermissionOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) createPermissionCreateRequest(ctx context.Context, sharePermission SharePermission, options *shareClientCreatePermissionOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -435,14 +413,14 @@ func (client *shareClient) createPermissionCreateRequest(ctx context.Context, sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, runtime.MarshalAsJSON(req, sharePermission)
 }
 
 // createPermissionHandleResponse handles the CreatePermission response.
-func (client *shareClient) createPermissionHandleResponse(resp *http.Response) (ShareCreatePermissionResponse, error) {
-	result := ShareCreatePermissionResponse{RawResponse: resp}
+func (client *shareClient) createPermissionHandleResponse(resp *http.Response) (shareClientCreatePermissionResponse, error) {
+	result := shareClientCreatePermissionResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -452,7 +430,7 @@ func (client *shareClient) createPermissionHandleResponse(resp *http.Response) (
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareCreatePermissionResponse{}, err
+			return shareClientCreatePermissionResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -462,39 +440,27 @@ func (client *shareClient) createPermissionHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// createPermissionHandleError handles the CreatePermission error response.
-func (client *shareClient) createPermissionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateSnapshot - Creates a read-only snapshot of a share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) CreateSnapshot(ctx context.Context, options *ShareCreateSnapshotOptions) (ShareCreateSnapshotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - shareClientCreateSnapshotOptions contains the optional parameters for the shareClient.CreateSnapshot method.
+func (client *shareClient) CreateSnapshot(ctx context.Context, options *shareClientCreateSnapshotOptions) (shareClientCreateSnapshotResponse, error) {
 	req, err := client.createSnapshotCreateRequest(ctx, options)
 	if err != nil {
-		return ShareCreateSnapshotResponse{}, err
+		return shareClientCreateSnapshotResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareCreateSnapshotResponse{}, err
+		return shareClientCreateSnapshotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ShareCreateSnapshotResponse{}, client.createSnapshotHandleError(resp)
+		return shareClientCreateSnapshotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createSnapshotHandleResponse(resp)
 }
 
 // createSnapshotCreateRequest creates the CreateSnapshot request.
-func (client *shareClient) createSnapshotCreateRequest(ctx context.Context, options *ShareCreateSnapshotOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) createSnapshotCreateRequest(ctx context.Context, options *shareClientCreateSnapshotOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -510,14 +476,14 @@ func (client *shareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // createSnapshotHandleResponse handles the CreateSnapshot response.
-func (client *shareClient) createSnapshotHandleResponse(resp *http.Response) (ShareCreateSnapshotResponse, error) {
-	result := ShareCreateSnapshotResponse{RawResponse: resp}
+func (client *shareClient) createSnapshotHandleResponse(resp *http.Response) (shareClientCreateSnapshotResponse, error) {
+	result := shareClientCreateSnapshotResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-snapshot"); val != "" {
 		result.Snapshot = &val
 	}
@@ -527,7 +493,7 @@ func (client *shareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareCreateSnapshotResponse{}, err
+			return shareClientCreateSnapshotResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -540,62 +506,51 @@ func (client *shareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareCreateSnapshotResponse{}, err
+			return shareClientCreateSnapshotResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// createSnapshotHandleError handles the CreateSnapshot error response.
-func (client *shareClient) createSnapshotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// Delete - Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
+// contained within it are later deleted during garbage collection.
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientDeleteOptions - shareClientDeleteOptions contains the optional parameters for the shareClient.Delete method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) Delete(ctx context.Context, shareClientDeleteOptions *shareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, shareClientDeleteOptions, leaseAccessConditions)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return shareClientDeleteResponse{}, err
 	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files contained within it are later
-// deleted during garbage collection.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) Delete(ctx context.Context, shareDeleteOptions *ShareDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (ShareDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, shareDeleteOptions, leaseAccessConditions)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareDeleteResponse{}, err
-	}
-	resp, err := client.con.Pipeline().Do(req)
-	if err != nil {
-		return ShareDeleteResponse{}, err
+		return shareClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ShareDeleteResponse{}, client.deleteHandleError(resp)
+		return shareClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *shareClient) deleteCreateRequest(ctx context.Context, shareDeleteOptions *ShareDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.con.Endpoint())
+func (client *shareClient) deleteCreateRequest(ctx context.Context, shareClientDeleteOptions *shareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
-	if shareDeleteOptions != nil && shareDeleteOptions.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *shareDeleteOptions.Sharesnapshot)
+	if shareClientDeleteOptions != nil && shareClientDeleteOptions.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *shareClientDeleteOptions.Sharesnapshot)
 	}
-	if shareDeleteOptions != nil && shareDeleteOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareDeleteOptions.Timeout), 10))
+	if shareClientDeleteOptions != nil && shareClientDeleteOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientDeleteOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if shareDeleteOptions != nil && shareDeleteOptions.DeleteSnapshots != nil {
-		req.Raw().Header.Set("x-ms-delete-snapshots", string(*shareDeleteOptions.DeleteSnapshots))
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if shareClientDeleteOptions != nil && shareClientDeleteOptions.DeleteSnapshots != nil {
+		req.Raw().Header.Set("x-ms-delete-snapshots", string(*shareClientDeleteOptions.DeleteSnapshots))
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
@@ -605,8 +560,8 @@ func (client *shareClient) deleteCreateRequest(ctx context.Context, shareDeleteO
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *shareClient) deleteHandleResponse(resp *http.Response) (ShareDeleteResponse, error) {
-	result := ShareDeleteResponse{RawResponse: resp}
+func (client *shareClient) deleteHandleResponse(resp *http.Response) (shareClientDeleteResponse, error) {
+	result := shareClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -616,57 +571,47 @@ func (client *shareClient) deleteHandleResponse(resp *http.Response) (ShareDelet
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareDeleteResponse{}, err
+			return shareClientDeleteResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *shareClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAccessPolicy - Returns information about stored access policies specified on the share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) GetAccessPolicy(ctx context.Context, shareGetAccessPolicyOptions *ShareGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareGetAccessPolicyResponse, error) {
-	req, err := client.getAccessPolicyCreateRequest(ctx, shareGetAccessPolicyOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientGetAccessPolicyOptions - shareClientGetAccessPolicyOptions contains the optional parameters for the shareClient.GetAccessPolicy
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) GetAccessPolicy(ctx context.Context, shareClientGetAccessPolicyOptions *shareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientGetAccessPolicyResponse, error) {
+	req, err := client.getAccessPolicyCreateRequest(ctx, shareClientGetAccessPolicyOptions, leaseAccessConditions)
 	if err != nil {
-		return ShareGetAccessPolicyResponse{}, err
+		return shareClientGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareGetAccessPolicyResponse{}, err
+		return shareClientGetAccessPolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareGetAccessPolicyResponse{}, client.getAccessPolicyHandleError(resp)
+		return shareClientGetAccessPolicyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAccessPolicyHandleResponse(resp)
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *shareClient) getAccessPolicyCreateRequest(ctx context.Context, shareGetAccessPolicyOptions *ShareGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *shareClient) getAccessPolicyCreateRequest(ctx context.Context, shareClientGetAccessPolicyOptions *shareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
 	reqQP.Set("comp", "acl")
-	if shareGetAccessPolicyOptions != nil && shareGetAccessPolicyOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareGetAccessPolicyOptions.Timeout), 10))
+	if shareClientGetAccessPolicyOptions != nil && shareClientGetAccessPolicyOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientGetAccessPolicyOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -675,15 +620,15 @@ func (client *shareClient) getAccessPolicyCreateRequest(ctx context.Context, sha
 }
 
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
-func (client *shareClient) getAccessPolicyHandleResponse(resp *http.Response) (ShareGetAccessPolicyResponse, error) {
-	result := ShareGetAccessPolicyResponse{RawResponse: resp}
+func (client *shareClient) getAccessPolicyHandleResponse(resp *http.Response) (shareClientGetAccessPolicyResponse, error) {
+	result := shareClientGetAccessPolicyResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetAccessPolicyResponse{}, err
+			return shareClientGetAccessPolicyResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -696,49 +641,38 @@ func (client *shareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetAccessPolicyResponse{}, err
+			return shareClientGetAccessPolicyResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
-		return ShareGetAccessPolicyResponse{}, err
+		return shareClientGetAccessPolicyResponse{}, err
 	}
 	return result, nil
 }
 
-// getAccessPolicyHandleError handles the GetAccessPolicy error response.
-func (client *shareClient) getAccessPolicyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPermission - Returns the permission (security descriptor) for a given key
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) GetPermission(ctx context.Context, filePermissionKey string, options *ShareGetPermissionOptions) (ShareGetPermissionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// filePermissionKey - Key of the permission to be set for the directory/file.
+// options - shareClientGetPermissionOptions contains the optional parameters for the shareClient.GetPermission method.
+func (client *shareClient) GetPermission(ctx context.Context, filePermissionKey string, options *shareClientGetPermissionOptions) (shareClientGetPermissionResponse, error) {
 	req, err := client.getPermissionCreateRequest(ctx, filePermissionKey, options)
 	if err != nil {
-		return ShareGetPermissionResponse{}, err
+		return shareClientGetPermissionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareGetPermissionResponse{}, err
+		return shareClientGetPermissionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareGetPermissionResponse{}, client.getPermissionHandleError(resp)
+		return shareClientGetPermissionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPermissionHandleResponse(resp)
 }
 
 // getPermissionCreateRequest creates the GetPermission request.
-func (client *shareClient) getPermissionCreateRequest(ctx context.Context, filePermissionKey string, options *ShareGetPermissionOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *shareClient) getPermissionCreateRequest(ctx context.Context, filePermissionKey string, options *shareClientGetPermissionOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -750,14 +684,14 @@ func (client *shareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-file-permission-key", filePermissionKey)
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPermissionHandleResponse handles the GetPermission response.
-func (client *shareClient) getPermissionHandleResponse(resp *http.Response) (ShareGetPermissionResponse, error) {
-	result := ShareGetPermissionResponse{RawResponse: resp}
+func (client *shareClient) getPermissionHandleResponse(resp *http.Response) (shareClientGetPermissionResponse, error) {
+	result := shareClientGetPermissionResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -767,63 +701,53 @@ func (client *shareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetPermissionResponse{}, err
+			return shareClientGetPermissionResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharePermission); err != nil {
-		return ShareGetPermissionResponse{}, err
+		return shareClientGetPermissionResponse{}, err
 	}
 	return result, nil
 }
 
-// getPermissionHandleError handles the GetPermission error response.
-func (client *shareClient) getPermissionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// GetProperties - Returns all user-defined metadata and system properties for the specified share or share snapshot. The
+// data returned does not include the share's list of files.
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientGetPropertiesOptions - shareClientGetPropertiesOptions contains the optional parameters for the shareClient.GetProperties
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) GetProperties(ctx context.Context, shareClientGetPropertiesOptions *shareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, shareClientGetPropertiesOptions, leaseAccessConditions)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return shareClientGetPropertiesResponse{}, err
 	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetProperties - Returns all user-defined metadata and system properties for the specified share or share snapshot. The data returned does not include
-// the share's list of files.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) GetProperties(ctx context.Context, shareGetPropertiesOptions *ShareGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, shareGetPropertiesOptions, leaseAccessConditions)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareGetPropertiesResponse{}, err
-	}
-	resp, err := client.con.Pipeline().Do(req)
-	if err != nil {
-		return ShareGetPropertiesResponse{}, err
+		return shareClientGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return shareClientGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *shareClient) getPropertiesCreateRequest(ctx context.Context, shareGetPropertiesOptions *ShareGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *shareClient) getPropertiesCreateRequest(ctx context.Context, shareClientGetPropertiesOptions *shareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
-	if shareGetPropertiesOptions != nil && shareGetPropertiesOptions.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *shareGetPropertiesOptions.Sharesnapshot)
+	if shareClientGetPropertiesOptions != nil && shareClientGetPropertiesOptions.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *shareClientGetPropertiesOptions.Sharesnapshot)
 	}
-	if shareGetPropertiesOptions != nil && shareGetPropertiesOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareGetPropertiesOptions.Timeout), 10))
+	if shareClientGetPropertiesOptions != nil && shareClientGetPropertiesOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientGetPropertiesOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -832,8 +756,8 @@ func (client *shareClient) getPropertiesCreateRequest(ctx context.Context, share
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (ShareGetPropertiesResponse, error) {
-	result := ShareGetPropertiesResponse{RawResponse: resp}
+func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (shareClientGetPropertiesResponse, error) {
+	result := shareClientGetPropertiesResponse{RawResponse: resp}
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
@@ -848,7 +772,7 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -861,7 +785,7 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -869,7 +793,7 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		quota32, err := strconv.ParseInt(val, 10, 32)
 		quota := int32(quota32)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.Quota = &quota
 	}
@@ -877,7 +801,7 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		provisionedIops32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIops := int32(provisionedIops32)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
@@ -885,7 +809,7 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		provisionedIngressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIngressMBps := int32(provisionedIngressMBps32)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.ProvisionedIngressMBps = &provisionedIngressMBps
 	}
@@ -893,14 +817,14 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		provisionedEgressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedEgressMBps := int32(provisionedEgressMBps32)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.ProvisionedEgressMBps = &provisionedEgressMBps
 	}
 	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
@@ -919,60 +843,56 @@ func (client *shareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
 		accessTierChangeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetPropertiesResponse{}, err
+			return shareClientGetPropertiesResponse{}, err
 		}
 		result.AccessTierChangeTime = &accessTierChangeTime
 	}
 	if val := resp.Header.Get("x-ms-access-tier-transition-state"); val != "" {
 		result.AccessTierTransitionState = &val
 	}
+	if val := resp.Header.Get("x-ms-enabled-protocols"); val != "" {
+		result.EnabledProtocols = &val
+	}
+	if val := resp.Header.Get("x-ms-root-squash"); val != "" {
+		result.RootSquash = (*ShareRootSquash)(&val)
+	}
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *shareClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStatistics - Retrieves statistics related to the share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) GetStatistics(ctx context.Context, shareGetStatisticsOptions *ShareGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (ShareGetStatisticsResponse, error) {
-	req, err := client.getStatisticsCreateRequest(ctx, shareGetStatisticsOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientGetStatisticsOptions - shareClientGetStatisticsOptions contains the optional parameters for the shareClient.GetStatistics
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) GetStatistics(ctx context.Context, shareClientGetStatisticsOptions *shareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientGetStatisticsResponse, error) {
+	req, err := client.getStatisticsCreateRequest(ctx, shareClientGetStatisticsOptions, leaseAccessConditions)
 	if err != nil {
-		return ShareGetStatisticsResponse{}, err
+		return shareClientGetStatisticsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareGetStatisticsResponse{}, err
+		return shareClientGetStatisticsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareGetStatisticsResponse{}, client.getStatisticsHandleError(resp)
+		return shareClientGetStatisticsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStatisticsHandleResponse(resp)
 }
 
 // getStatisticsCreateRequest creates the GetStatistics request.
-func (client *shareClient) getStatisticsCreateRequest(ctx context.Context, shareGetStatisticsOptions *ShareGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *shareClient) getStatisticsCreateRequest(ctx context.Context, shareClientGetStatisticsOptions *shareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
 	reqQP.Set("comp", "stats")
-	if shareGetStatisticsOptions != nil && shareGetStatisticsOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareGetStatisticsOptions.Timeout), 10))
+	if shareClientGetStatisticsOptions != nil && shareClientGetStatisticsOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientGetStatisticsOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -981,15 +901,15 @@ func (client *shareClient) getStatisticsCreateRequest(ctx context.Context, share
 }
 
 // getStatisticsHandleResponse handles the GetStatistics response.
-func (client *shareClient) getStatisticsHandleResponse(resp *http.Response) (ShareGetStatisticsResponse, error) {
-	result := ShareGetStatisticsResponse{RawResponse: resp}
+func (client *shareClient) getStatisticsHandleResponse(resp *http.Response) (shareClientGetStatisticsResponse, error) {
+	result := shareClientGetStatisticsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetStatisticsResponse{}, err
+			return shareClientGetStatisticsResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1002,49 +922,39 @@ func (client *shareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareGetStatisticsResponse{}, err
+			return shareClientGetStatisticsResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ShareStats); err != nil {
-		return ShareGetStatisticsResponse{}, err
+		return shareClientGetStatisticsResponse{}, err
 	}
 	return result, nil
 }
 
-// getStatisticsHandleError handles the GetStatistics error response.
-func (client *shareClient) getStatisticsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ReleaseLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) ReleaseLease(ctx context.Context, leaseID string, options *ShareReleaseLeaseOptions) (ShareReleaseLeaseResponse, error) {
+// ReleaseLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
+// delete share operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+// leaseID - Specifies the current lease ID on the resource.
+// options - shareClientReleaseLeaseOptions contains the optional parameters for the shareClient.ReleaseLease method.
+func (client *shareClient) ReleaseLease(ctx context.Context, leaseID string, options *shareClientReleaseLeaseOptions) (shareClientReleaseLeaseResponse, error) {
 	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
-		return ShareReleaseLeaseResponse{}, err
+		return shareClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareReleaseLeaseResponse{}, err
+		return shareClientReleaseLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareReleaseLeaseResponse{}, client.releaseLeaseHandleError(resp)
+		return shareClientReleaseLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.releaseLeaseHandleResponse(resp)
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
-func (client *shareClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareReleaseLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *shareClientReleaseLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1060,7 +970,7 @@ func (client *shareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "release")
 	req.Raw().Header.Set("x-ms-lease-id", leaseID)
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1069,15 +979,15 @@ func (client *shareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 }
 
 // releaseLeaseHandleResponse handles the ReleaseLease response.
-func (client *shareClient) releaseLeaseHandleResponse(resp *http.Response) (ShareReleaseLeaseResponse, error) {
-	result := ShareReleaseLeaseResponse{RawResponse: resp}
+func (client *shareClient) releaseLeaseHandleResponse(resp *http.Response) (shareClientReleaseLeaseResponse, error) {
+	result := shareClientReleaseLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareReleaseLeaseResponse{}, err
+			return shareClientReleaseLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1093,46 +1003,36 @@ func (client *shareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareReleaseLeaseResponse{}, err
+			return shareClientReleaseLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// releaseLeaseHandleError handles the ReleaseLease error response.
-func (client *shareClient) releaseLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RenewLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) RenewLease(ctx context.Context, leaseID string, options *ShareRenewLeaseOptions) (ShareRenewLeaseResponse, error) {
+// RenewLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
+// delete share operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+// leaseID - Specifies the current lease ID on the resource.
+// options - shareClientRenewLeaseOptions contains the optional parameters for the shareClient.RenewLease method.
+func (client *shareClient) RenewLease(ctx context.Context, leaseID string, options *shareClientRenewLeaseOptions) (shareClientRenewLeaseResponse, error) {
 	req, err := client.renewLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
-		return ShareRenewLeaseResponse{}, err
+		return shareClientRenewLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareRenewLeaseResponse{}, err
+		return shareClientRenewLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareRenewLeaseResponse{}, client.renewLeaseHandleError(resp)
+		return shareClientRenewLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.renewLeaseHandleResponse(resp)
 }
 
 // renewLeaseCreateRequest creates the RenewLease request.
-func (client *shareClient) renewLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareRenewLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) renewLeaseCreateRequest(ctx context.Context, leaseID string, options *shareClientRenewLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1148,7 +1048,7 @@ func (client *shareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "renew")
 	req.Raw().Header.Set("x-ms-lease-id", leaseID)
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1157,15 +1057,15 @@ func (client *shareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 }
 
 // renewLeaseHandleResponse handles the RenewLease response.
-func (client *shareClient) renewLeaseHandleResponse(resp *http.Response) (ShareRenewLeaseResponse, error) {
-	result := ShareRenewLeaseResponse{RawResponse: resp}
+func (client *shareClient) renewLeaseHandleResponse(resp *http.Response) (shareClientRenewLeaseResponse, error) {
+	result := shareClientRenewLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareRenewLeaseResponse{}, err
+			return shareClientRenewLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1184,46 +1084,34 @@ func (client *shareClient) renewLeaseHandleResponse(resp *http.Response) (ShareR
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareRenewLeaseResponse{}, err
+			return shareClientRenewLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// renewLeaseHandleError handles the RenewLease error response.
-func (client *shareClient) renewLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Restore - Restores a previously deleted Share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) Restore(ctx context.Context, options *ShareRestoreOptions) (ShareRestoreResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - shareClientRestoreOptions contains the optional parameters for the shareClient.Restore method.
+func (client *shareClient) Restore(ctx context.Context, options *shareClientRestoreOptions) (shareClientRestoreResponse, error) {
 	req, err := client.restoreCreateRequest(ctx, options)
 	if err != nil {
-		return ShareRestoreResponse{}, err
+		return shareClientRestoreResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareRestoreResponse{}, err
+		return shareClientRestoreResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ShareRestoreResponse{}, client.restoreHandleError(resp)
+		return shareClientRestoreResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.restoreHandleResponse(resp)
 }
 
 // restoreCreateRequest creates the Restore request.
-func (client *shareClient) restoreCreateRequest(ctx context.Context, options *ShareRestoreOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) restoreCreateRequest(ctx context.Context, options *shareClientRestoreOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1234,7 +1122,7 @@ func (client *shareClient) restoreCreateRequest(ctx context.Context, options *Sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1249,15 +1137,15 @@ func (client *shareClient) restoreCreateRequest(ctx context.Context, options *Sh
 }
 
 // restoreHandleResponse handles the Restore response.
-func (client *shareClient) restoreHandleResponse(resp *http.Response) (ShareRestoreResponse, error) {
-	result := ShareRestoreResponse{RawResponse: resp}
+func (client *shareClient) restoreHandleResponse(resp *http.Response) (shareClientRestoreResponse, error) {
+	result := shareClientRestoreResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareRestoreResponse{}, err
+			return shareClientRestoreResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1273,81 +1161,71 @@ func (client *shareClient) restoreHandleResponse(resp *http.Response) (ShareRest
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareRestoreResponse{}, err
+			return shareClientRestoreResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// restoreHandleError handles the Restore error response.
-func (client *shareClient) restoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetAccessPolicy - Sets a stored access policy for use with shared access signatures.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) SetAccessPolicy(ctx context.Context, shareSetAccessPolicyOptions *ShareSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareSetAccessPolicyResponse, error) {
-	req, err := client.setAccessPolicyCreateRequest(ctx, shareSetAccessPolicyOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientSetAccessPolicyOptions - shareClientSetAccessPolicyOptions contains the optional parameters for the shareClient.SetAccessPolicy
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) SetAccessPolicy(ctx context.Context, shareClientSetAccessPolicyOptions *shareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientSetAccessPolicyResponse, error) {
+	req, err := client.setAccessPolicyCreateRequest(ctx, shareClientSetAccessPolicyOptions, leaseAccessConditions)
 	if err != nil {
-		return ShareSetAccessPolicyResponse{}, err
+		return shareClientSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareSetAccessPolicyResponse{}, err
+		return shareClientSetAccessPolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareSetAccessPolicyResponse{}, client.setAccessPolicyHandleError(resp)
+		return shareClientSetAccessPolicyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setAccessPolicyHandleResponse(resp)
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *shareClient) setAccessPolicyCreateRequest(ctx context.Context, shareSetAccessPolicyOptions *ShareSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) setAccessPolicyCreateRequest(ctx context.Context, shareClientSetAccessPolicyOptions *shareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
 	reqQP.Set("comp", "acl")
-	if shareSetAccessPolicyOptions != nil && shareSetAccessPolicyOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareSetAccessPolicyOptions.Timeout), 10))
+	if shareClientSetAccessPolicyOptions != nil && shareClientSetAccessPolicyOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientSetAccessPolicyOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName  xml.Name             `xml:"SignedIdentifiers"`
+		XMLName xml.Name `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
-	if shareSetAccessPolicyOptions != nil && shareSetAccessPolicyOptions.ShareACL != nil {
-		return req, runtime.MarshalAsXML(req, wrapper{ShareACL: &shareSetAccessPolicyOptions.ShareACL})
+	if shareClientSetAccessPolicyOptions != nil && shareClientSetAccessPolicyOptions.ShareACL != nil {
+		return req, runtime.MarshalAsXML(req, wrapper{ShareACL: &shareClientSetAccessPolicyOptions.ShareACL})
 	}
 	return req, nil
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
-func (client *shareClient) setAccessPolicyHandleResponse(resp *http.Response) (ShareSetAccessPolicyResponse, error) {
-	result := ShareSetAccessPolicyResponse{RawResponse: resp}
+func (client *shareClient) setAccessPolicyHandleResponse(resp *http.Response) (shareClientSetAccessPolicyResponse, error) {
+	result := shareClientSetAccessPolicyResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetAccessPolicyResponse{}, err
+			return shareClientSetAccessPolicyResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1360,62 +1238,52 @@ func (client *shareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetAccessPolicyResponse{}, err
+			return shareClientSetAccessPolicyResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// setAccessPolicyHandleError handles the SetAccessPolicy error response.
-func (client *shareClient) setAccessPolicyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetMetadata - Sets one or more user-defined name-value pairs for the specified share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) SetMetadata(ctx context.Context, shareSetMetadataOptions *ShareSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (ShareSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, shareSetMetadataOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientSetMetadataOptions - shareClientSetMetadataOptions contains the optional parameters for the shareClient.SetMetadata
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) SetMetadata(ctx context.Context, shareClientSetMetadataOptions *shareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, shareClientSetMetadataOptions, leaseAccessConditions)
 	if err != nil {
-		return ShareSetMetadataResponse{}, err
+		return shareClientSetMetadataResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareSetMetadataResponse{}, err
+		return shareClientSetMetadataResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareSetMetadataResponse{}, client.setMetadataHandleError(resp)
+		return shareClientSetMetadataResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setMetadataHandleResponse(resp)
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *shareClient) setMetadataCreateRequest(ctx context.Context, shareSetMetadataOptions *ShareSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) setMetadataCreateRequest(ctx context.Context, shareClientSetMetadataOptions *shareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
 	reqQP.Set("comp", "metadata")
-	if shareSetMetadataOptions != nil && shareSetMetadataOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareSetMetadataOptions.Timeout), 10))
+	if shareClientSetMetadataOptions != nil && shareClientSetMetadataOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientSetMetadataOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if shareSetMetadataOptions != nil && shareSetMetadataOptions.Metadata != nil {
-		for k, v := range shareSetMetadataOptions.Metadata {
+	if shareClientSetMetadataOptions != nil && shareClientSetMetadataOptions.Metadata != nil {
+		for k, v := range shareClientSetMetadataOptions.Metadata {
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1424,15 +1292,15 @@ func (client *shareClient) setMetadataCreateRequest(ctx context.Context, shareSe
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
-func (client *shareClient) setMetadataHandleResponse(resp *http.Response) (ShareSetMetadataResponse, error) {
-	result := ShareSetMetadataResponse{RawResponse: resp}
+func (client *shareClient) setMetadataHandleResponse(resp *http.Response) (shareClientSetMetadataResponse, error) {
+	result := shareClientSetMetadataResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetMetadataResponse{}, err
+			return shareClientSetMetadataResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1445,80 +1313,73 @@ func (client *shareClient) setMetadataHandleResponse(resp *http.Response) (Share
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetMetadataResponse{}, err
+			return shareClientSetMetadataResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// setMetadataHandleError handles the SetMetadata error response.
-func (client *shareClient) setMetadataHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetProperties - Sets properties for the specified share.
-// If the operation fails it returns the *StorageError error type.
-func (client *shareClient) SetProperties(ctx context.Context, shareSetPropertiesOptions *ShareSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, shareSetPropertiesOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// shareClientSetPropertiesOptions - shareClientSetPropertiesOptions contains the optional parameters for the shareClient.SetProperties
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *shareClient) SetProperties(ctx context.Context, shareClientSetPropertiesOptions *shareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (shareClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, shareClientSetPropertiesOptions, leaseAccessConditions)
 	if err != nil {
-		return ShareSetPropertiesResponse{}, err
+		return shareClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ShareSetPropertiesResponse{}, err
+		return shareClientSetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ShareSetPropertiesResponse{}, client.setPropertiesHandleError(resp)
+		return shareClientSetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setPropertiesHandleResponse(resp)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *shareClient) setPropertiesCreateRequest(ctx context.Context, shareSetPropertiesOptions *ShareSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *shareClient) setPropertiesCreateRequest(ctx context.Context, shareClientSetPropertiesOptions *shareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "share")
 	reqQP.Set("comp", "properties")
-	if shareSetPropertiesOptions != nil && shareSetPropertiesOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*shareSetPropertiesOptions.Timeout), 10))
+	if shareClientSetPropertiesOptions != nil && shareClientSetPropertiesOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*shareClientSetPropertiesOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if shareSetPropertiesOptions != nil && shareSetPropertiesOptions.Quota != nil {
-		req.Raw().Header.Set("x-ms-share-quota", strconv.FormatInt(int64(*shareSetPropertiesOptions.Quota), 10))
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if shareClientSetPropertiesOptions != nil && shareClientSetPropertiesOptions.Quota != nil {
+		req.Raw().Header.Set("x-ms-share-quota", strconv.FormatInt(int64(*shareClientSetPropertiesOptions.Quota), 10))
 	}
-	if shareSetPropertiesOptions != nil && shareSetPropertiesOptions.AccessTier != nil {
-		req.Raw().Header.Set("x-ms-access-tier", string(*shareSetPropertiesOptions.AccessTier))
+	if shareClientSetPropertiesOptions != nil && shareClientSetPropertiesOptions.AccessTier != nil {
+		req.Raw().Header.Set("x-ms-access-tier", string(*shareClientSetPropertiesOptions.AccessTier))
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
+	}
+	if shareClientSetPropertiesOptions != nil && shareClientSetPropertiesOptions.RootSquash != nil {
+		req.Raw().Header.Set("x-ms-root-squash", string(*shareClientSetPropertiesOptions.RootSquash))
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *shareClient) setPropertiesHandleResponse(resp *http.Response) (ShareSetPropertiesResponse, error) {
-	result := ShareSetPropertiesResponse{RawResponse: resp}
+func (client *shareClient) setPropertiesHandleResponse(resp *http.Response) (shareClientSetPropertiesResponse, error) {
+	result := shareClientSetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetPropertiesResponse{}, err
+			return shareClientSetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1531,22 +1392,10 @@ func (client *shareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ShareSetPropertiesResponse{}, err
+			return shareClientSetPropertiesResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// setPropertiesHandleError handles the SetProperties error response.
-func (client *shareClient) setPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}

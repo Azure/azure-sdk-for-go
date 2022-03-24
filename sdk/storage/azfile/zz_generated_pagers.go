@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// DirectoryListFilesAndDirectoriesSegmentPager provides operations for iterating over paged responses.
-type DirectoryListFilesAndDirectoriesSegmentPager struct {
-	client    *directoryClient
-	current   DirectoryListFilesAndDirectoriesSegmentResponse
-	err       error
+// directoryClientListFilesAndDirectoriesSegmentPager provides operations for iterating over paged responses.
+type directoryClientListFilesAndDirectoriesSegmentPager struct {
+	client *directoryClient
+	current directoryClientListFilesAndDirectoriesSegmentResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DirectoryListFilesAndDirectoriesSegmentResponse) (*policy.Request, error)
+	advancer func(context.Context, directoryClientListFilesAndDirectoriesSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DirectoryListFilesAndDirectoriesSegmentPager) Err() error {
+func (p *directoryClientListFilesAndDirectoriesSegmentPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DirectoryListFilesAndDirectoriesSegmentPager) NextPage(ctx context.Context) bool {
+func (p *directoryClientListFilesAndDirectoriesSegmentPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -47,13 +47,13 @@ func (p *DirectoryListFilesAndDirectoriesSegmentPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listFilesAndDirectoriesSegmentHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listFilesAndDirectoriesSegmentHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *DirectoryListFilesAndDirectoriesSegmentPager) NextPage(ctx context.Cont
 	return true
 }
 
-// PageResponse returns the current DirectoryListFilesAndDirectoriesSegmentResponse page.
-func (p *DirectoryListFilesAndDirectoriesSegmentPager) PageResponse() DirectoryListFilesAndDirectoriesSegmentResponse {
+// PageResponse returns the current directoryClientListFilesAndDirectoriesSegmentResponse page.
+func (p *directoryClientListFilesAndDirectoriesSegmentPager) PageResponse() directoryClientListFilesAndDirectoriesSegmentResponse {
 	return p.current
 }
 
-// ServiceListSharesSegmentPager provides operations for iterating over paged responses.
-type ServiceListSharesSegmentPager struct {
-	client    *serviceClient
-	current   ServiceListSharesSegmentResponse
-	err       error
+// serviceClientListSharesSegmentPager provides operations for iterating over paged responses.
+type serviceClientListSharesSegmentPager struct {
+	client *serviceClient
+	current serviceClientListSharesSegmentResponse
+	err error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ServiceListSharesSegmentResponse) (*policy.Request, error)
+	advancer func(context.Context, serviceClientListSharesSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ServiceListSharesSegmentPager) Err() error {
+func (p *serviceClientListSharesSegmentPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ServiceListSharesSegmentPager) NextPage(ctx context.Context) bool {
+func (p *serviceClientListSharesSegmentPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -101,13 +101,13 @@ func (p *ServiceListSharesSegmentPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSharesSegmentHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSharesSegmentHandleResponse(resp)
@@ -119,7 +119,8 @@ func (p *ServiceListSharesSegmentPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ServiceListSharesSegmentResponse page.
-func (p *ServiceListSharesSegmentPager) PageResponse() ServiceListSharesSegmentResponse {
+// PageResponse returns the current serviceClientListSharesSegmentResponse page.
+func (p *serviceClientListSharesSegmentPager) PageResponse() serviceClientListSharesSegmentResponse {
 	return p.current
 }
+

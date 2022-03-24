@@ -11,7 +11,6 @@ package azfile
 import (
 	"context"
 	"encoding/base64"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -21,41 +20,56 @@ import (
 )
 
 type fileClient struct {
-	con *connection
+	endpoint string
+	pl runtime.Pipeline
+}
+
+// newFileClient creates a new instance of fileClient with the specified values.
+// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+// pl - the pipeline used for sending requests and handling responses.
+func newFileClient(endpoint string, pl runtime.Pipeline) *fileClient {
+	client := &fileClient{
+		endpoint: endpoint,
+		pl: pl,
+	}
+	return client
 }
 
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) AbortCopy(ctx context.Context, copyID string, fileAbortCopyOptions *FileAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (FileAbortCopyResponse, error) {
-	req, err := client.abortCopyCreateRequest(ctx, copyID, fileAbortCopyOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+// fileClientAbortCopyOptions - fileClientAbortCopyOptions contains the optional parameters for the fileClient.AbortCopy method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) AbortCopy(ctx context.Context, copyID string, fileClientAbortCopyOptions *fileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientAbortCopyResponse, error) {
+	req, err := client.abortCopyCreateRequest(ctx, copyID, fileClientAbortCopyOptions, leaseAccessConditions)
 	if err != nil {
-		return FileAbortCopyResponse{}, err
+		return fileClientAbortCopyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileAbortCopyResponse{}, err
+		return fileClientAbortCopyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return FileAbortCopyResponse{}, client.abortCopyHandleError(resp)
+		return fileClientAbortCopyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.abortCopyHandleResponse(resp)
 }
 
 // abortCopyCreateRequest creates the AbortCopy request.
-func (client *fileClient) abortCopyCreateRequest(ctx context.Context, copyID string, fileAbortCopyOptions *FileAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) abortCopyCreateRequest(ctx context.Context, copyID string, fileClientAbortCopyOptions *fileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "copy")
 	reqQP.Set("copyid", copyID)
-	if fileAbortCopyOptions != nil && fileAbortCopyOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileAbortCopyOptions.Timeout), 10))
+	if fileClientAbortCopyOptions != nil && fileClientAbortCopyOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientAbortCopyOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-copy-action", "abort")
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -64,8 +78,8 @@ func (client *fileClient) abortCopyCreateRequest(ctx context.Context, copyID str
 }
 
 // abortCopyHandleResponse handles the AbortCopy response.
-func (client *fileClient) abortCopyHandleResponse(resp *http.Response) (FileAbortCopyResponse, error) {
-	result := FileAbortCopyResponse{RawResponse: resp}
+func (client *fileClient) abortCopyHandleResponse(resp *http.Response) (fileClientAbortCopyResponse, error) {
+	result := fileClientAbortCopyResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -75,46 +89,34 @@ func (client *fileClient) abortCopyHandleResponse(resp *http.Response) (FileAbor
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileAbortCopyResponse{}, err
+			return fileClientAbortCopyResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// abortCopyHandleError handles the AbortCopy error response.
-func (client *fileClient) abortCopyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // AcquireLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) AcquireLease(ctx context.Context, options *FileAcquireLeaseOptions) (FileAcquireLeaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - fileClientAcquireLeaseOptions contains the optional parameters for the fileClient.AcquireLease method.
+func (client *fileClient) AcquireLease(ctx context.Context, options *fileClientAcquireLeaseOptions) (fileClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, options)
 	if err != nil {
-		return FileAcquireLeaseResponse{}, err
+		return fileClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileAcquireLeaseResponse{}, err
+		return fileClientAcquireLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return FileAcquireLeaseResponse{}, client.acquireLeaseHandleError(resp)
+		return fileClientAcquireLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.acquireLeaseHandleResponse(resp)
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *fileClient) acquireLeaseCreateRequest(ctx context.Context, options *FileAcquireLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) acquireLeaseCreateRequest(ctx context.Context, options *fileClientAcquireLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +133,7 @@ func (client *fileClient) acquireLeaseCreateRequest(ctx context.Context, options
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -140,15 +142,15 @@ func (client *fileClient) acquireLeaseCreateRequest(ctx context.Context, options
 }
 
 // acquireLeaseHandleResponse handles the AcquireLease response.
-func (client *fileClient) acquireLeaseHandleResponse(resp *http.Response) (FileAcquireLeaseResponse, error) {
-	result := FileAcquireLeaseResponse{RawResponse: resp}
+func (client *fileClient) acquireLeaseHandleResponse(resp *http.Response) (fileClientAcquireLeaseResponse, error) {
+	result := fileClientAcquireLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileAcquireLeaseResponse{}, err
+			return fileClientAcquireLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -167,77 +169,67 @@ func (client *fileClient) acquireLeaseHandleResponse(resp *http.Response) (FileA
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileAcquireLeaseResponse{}, err
+			return fileClientAcquireLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// acquireLeaseHandleError handles the AcquireLease error response.
-func (client *fileClient) acquireLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BreakLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) BreakLease(ctx context.Context, fileBreakLeaseOptions *FileBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileBreakLeaseResponse, error) {
-	req, err := client.breakLeaseCreateRequest(ctx, fileBreakLeaseOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientBreakLeaseOptions - fileClientBreakLeaseOptions contains the optional parameters for the fileClient.BreakLease
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) BreakLease(ctx context.Context, fileClientBreakLeaseOptions *fileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientBreakLeaseResponse, error) {
+	req, err := client.breakLeaseCreateRequest(ctx, fileClientBreakLeaseOptions, leaseAccessConditions)
 	if err != nil {
-		return FileBreakLeaseResponse{}, err
+		return fileClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileBreakLeaseResponse{}, err
+		return fileClientBreakLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return FileBreakLeaseResponse{}, client.breakLeaseHandleError(resp)
+		return fileClientBreakLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.breakLeaseHandleResponse(resp)
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
-func (client *fileClient) breakLeaseCreateRequest(ctx context.Context, fileBreakLeaseOptions *FileBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) breakLeaseCreateRequest(ctx context.Context, fileClientBreakLeaseOptions *fileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "lease")
-	if fileBreakLeaseOptions != nil && fileBreakLeaseOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileBreakLeaseOptions.Timeout), 10))
+	if fileClientBreakLeaseOptions != nil && fileClientBreakLeaseOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientBreakLeaseOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "break")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if fileBreakLeaseOptions != nil && fileBreakLeaseOptions.RequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *fileBreakLeaseOptions.RequestID)
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if fileClientBreakLeaseOptions != nil && fileClientBreakLeaseOptions.RequestID != nil {
+		req.Raw().Header.Set("x-ms-client-request-id", *fileClientBreakLeaseOptions.RequestID)
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // breakLeaseHandleResponse handles the BreakLease response.
-func (client *fileClient) breakLeaseHandleResponse(resp *http.Response) (FileBreakLeaseResponse, error) {
-	result := FileBreakLeaseResponse{RawResponse: resp}
+func (client *fileClient) breakLeaseHandleResponse(resp *http.Response) (fileClientBreakLeaseResponse, error) {
+	result := fileClientBreakLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileBreakLeaseResponse{}, err
+			return fileClientBreakLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -256,46 +248,35 @@ func (client *fileClient) breakLeaseHandleResponse(resp *http.Response) (FileBre
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileBreakLeaseResponse{}, err
+			return fileClientBreakLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// breakLeaseHandleError handles the BreakLease error response.
-func (client *fileClient) breakLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ChangeLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) ChangeLease(ctx context.Context, leaseID string, options *FileChangeLeaseOptions) (FileChangeLeaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// leaseID - Specifies the current lease ID on the resource.
+// options - fileClientChangeLeaseOptions contains the optional parameters for the fileClient.ChangeLease method.
+func (client *fileClient) ChangeLease(ctx context.Context, leaseID string, options *fileClientChangeLeaseOptions) (fileClientChangeLeaseResponse, error) {
 	req, err := client.changeLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
-		return FileChangeLeaseResponse{}, err
+		return fileClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileChangeLeaseResponse{}, err
+		return fileClientChangeLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileChangeLeaseResponse{}, client.changeLeaseHandleError(resp)
+		return fileClientChangeLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.changeLeaseHandleResponse(resp)
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
-func (client *fileClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *FileChangeLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *fileClientChangeLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +291,7 @@ func (client *fileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -319,15 +300,15 @@ func (client *fileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 }
 
 // changeLeaseHandleResponse handles the ChangeLease response.
-func (client *fileClient) changeLeaseHandleResponse(resp *http.Response) (FileChangeLeaseResponse, error) {
-	result := FileChangeLeaseResponse{RawResponse: resp}
+func (client *fileClient) changeLeaseHandleResponse(resp *http.Response) (fileClientChangeLeaseResponse, error) {
+	result := fileClientChangeLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileChangeLeaseResponse{}, err
+			return fileClientChangeLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -346,55 +327,50 @@ func (client *fileClient) changeLeaseHandleResponse(resp *http.Response) (FileCh
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileChangeLeaseResponse{}, err
+			return fileClientChangeLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// changeLeaseHandleError handles the ChangeLease error response.
-func (client *fileClient) changeLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Create - Creates a new file or replaces a file. Note it only initializes the file with no content.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileContentLength - Specifies the maximum size for the file, up to 4 TB.
+// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+// for directory. ‘None’ can also be specified as default.
+// fileCreationTime - Creation time for the file/directory. Default value: Now.
+// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+// fileClientCreateOptions - fileClientCreateOptions contains the optional parameters for the fileClient.Create method.
+// FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the fileClient.Create method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileClientCreateOptions *fileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (fileClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileClientCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
-		return FileCreateResponse{}, err
+		return fileClientCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileCreateResponse{}, err
+		return fileClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return FileCreateResponse{}, client.createHandleError(resp)
+		return fileClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileClientCreateOptions *fileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if fileCreateOptions != nil && fileCreateOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileCreateOptions.Timeout), 10))
+	if fileClientCreateOptions != nil && fileClientCreateOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientCreateOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("x-ms-content-length", strconv.FormatInt(fileContentLength, 10))
 	req.Raw().Header.Set("x-ms-type", "file")
 	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentType != nil {
@@ -415,16 +391,16 @@ func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentDisposition != nil {
 		req.Raw().Header.Set("x-ms-content-disposition", *fileHTTPHeaders.FileContentDisposition)
 	}
-	if fileCreateOptions != nil && fileCreateOptions.Metadata != nil {
-		for k, v := range fileCreateOptions.Metadata {
+	if fileClientCreateOptions != nil && fileClientCreateOptions.Metadata != nil {
+		for k, v := range fileClientCreateOptions.Metadata {
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	if fileCreateOptions != nil && fileCreateOptions.FilePermission != nil {
-		req.Raw().Header.Set("x-ms-file-permission", *fileCreateOptions.FilePermission)
+	if fileClientCreateOptions != nil && fileClientCreateOptions.FilePermission != nil {
+		req.Raw().Header.Set("x-ms-file-permission", *fileClientCreateOptions.FilePermission)
 	}
-	if fileCreateOptions != nil && fileCreateOptions.FilePermissionKey != nil {
-		req.Raw().Header.Set("x-ms-file-permission-key", *fileCreateOptions.FilePermissionKey)
+	if fileClientCreateOptions != nil && fileClientCreateOptions.FilePermissionKey != nil {
+		req.Raw().Header.Set("x-ms-file-permission-key", *fileClientCreateOptions.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
 	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
@@ -437,15 +413,15 @@ func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLe
 }
 
 // createHandleResponse handles the Create response.
-func (client *fileClient) createHandleResponse(resp *http.Response) (FileCreateResponse, error) {
-	result := FileCreateResponse{RawResponse: resp}
+func (client *fileClient) createHandleResponse(resp *http.Response) (fileClientCreateResponse, error) {
+	result := fileClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileCreateResponse{}, err
+			return fileClientCreateResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -458,14 +434,14 @@ func (client *fileClient) createHandleResponse(resp *http.Response) (FileCreateR
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileCreateResponse{}, err
+			return fileClientCreateResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileCreateResponse{}, err
+			return fileClientCreateResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -476,13 +452,25 @@ func (client *fileClient) createHandleResponse(resp *http.Response) (FileCreateR
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientCreateResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientCreateResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientCreateResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -493,48 +481,37 @@ func (client *fileClient) createHandleResponse(resp *http.Response) (FileCreateR
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *fileClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - removes the file from the storage account.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) Delete(ctx context.Context, fileDeleteOptions *FileDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, fileDeleteOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientDeleteOptions - fileClientDeleteOptions contains the optional parameters for the fileClient.Delete method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) Delete(ctx context.Context, fileClientDeleteOptions *fileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, fileClientDeleteOptions, leaseAccessConditions)
 	if err != nil {
-		return FileDeleteResponse{}, err
+		return fileClientDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileDeleteResponse{}, err
+		return fileClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return FileDeleteResponse{}, client.deleteHandleError(resp)
+		return fileClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *fileClient) deleteCreateRequest(ctx context.Context, fileDeleteOptions *FileDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.con.Endpoint())
+func (client *fileClient) deleteCreateRequest(ctx context.Context, fileClientDeleteOptions *fileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if fileDeleteOptions != nil && fileDeleteOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileDeleteOptions.Timeout), 10))
+	if fileClientDeleteOptions != nil && fileClientDeleteOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientDeleteOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -543,8 +520,8 @@ func (client *fileClient) deleteCreateRequest(ctx context.Context, fileDeleteOpt
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *fileClient) deleteHandleResponse(resp *http.Response) (FileDeleteResponse, error) {
-	result := FileDeleteResponse{RawResponse: resp}
+func (client *fileClient) deleteHandleResponse(resp *http.Response) (fileClientDeleteResponse, error) {
+	result := fileClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -554,61 +531,50 @@ func (client *fileClient) deleteHandleResponse(resp *http.Response) (FileDeleteR
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileDeleteResponse{}, err
+			return fileClientDeleteResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *fileClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Download - Reads or downloads a file from the system, including its metadata and properties.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) Download(ctx context.Context, fileDownloadOptions *FileDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileDownloadResponse, error) {
-	req, err := client.downloadCreateRequest(ctx, fileDownloadOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientDownloadOptions - fileClientDownloadOptions contains the optional parameters for the fileClient.Download method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) Download(ctx context.Context, fileClientDownloadOptions *fileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientDownloadResponse, error) {
+	req, err := client.downloadCreateRequest(ctx, fileClientDownloadOptions, leaseAccessConditions)
 	if err != nil {
-		return FileDownloadResponse{}, err
+		return fileClientDownloadResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileDownloadResponse{}, err
+		return fileClientDownloadResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusPartialContent) {
-		return FileDownloadResponse{}, client.downloadHandleError(resp)
+		return fileClientDownloadResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.downloadHandleResponse(resp)
 }
 
 // downloadCreateRequest creates the Download request.
-func (client *fileClient) downloadCreateRequest(ctx context.Context, fileDownloadOptions *FileDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *fileClient) downloadCreateRequest(ctx context.Context, fileClientDownloadOptions *fileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if fileDownloadOptions != nil && fileDownloadOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileDownloadOptions.Timeout), 10))
+	if fileClientDownloadOptions != nil && fileClientDownloadOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientDownloadOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if fileDownloadOptions != nil && fileDownloadOptions.Range != nil {
-		req.Raw().Header.Set("x-ms-range", *fileDownloadOptions.Range)
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if fileClientDownloadOptions != nil && fileClientDownloadOptions.Range != nil {
+		req.Raw().Header.Set("x-ms-range", *fileClientDownloadOptions.Range)
 	}
-	if fileDownloadOptions != nil && fileDownloadOptions.RangeGetContentMD5 != nil {
-		req.Raw().Header.Set("x-ms-range-get-content-md5", strconv.FormatBool(*fileDownloadOptions.RangeGetContentMD5))
+	if fileClientDownloadOptions != nil && fileClientDownloadOptions.RangeGetContentMD5 != nil {
+		req.Raw().Header.Set("x-ms-range-get-content-md5", strconv.FormatBool(*fileClientDownloadOptions.RangeGetContentMD5))
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
@@ -618,12 +584,12 @@ func (client *fileClient) downloadCreateRequest(ctx context.Context, fileDownloa
 }
 
 // downloadHandleResponse handles the Download response.
-func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownloadResponse, error) {
-	result := FileDownloadResponse{RawResponse: resp}
+func (client *fileClient) downloadHandleResponse(resp *http.Response) (fileClientDownloadResponse, error) {
+	result := fileClientDownloadResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -638,7 +604,7 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.ContentLength = &contentLength
 	}
@@ -654,7 +620,7 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.ContentMD5 = contentMD5
 	}
@@ -682,14 +648,14 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
 		copyCompletionTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.CopyCompletionTime = &copyCompletionTime
 	}
@@ -711,14 +677,14 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 	if val := resp.Header.Get("x-ms-content-md5"); val != "" {
 		fileContentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.FileContentMD5 = fileContentMD5
 	}
 	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileDownloadResponse{}, err
+			return fileClientDownloadResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -726,13 +692,25 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientDownloadResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientDownloadResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientDownloadResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -755,39 +733,29 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 	return result, nil
 }
 
-// downloadHandleError handles the Download error response.
-func (client *fileClient) downloadHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ForceCloseHandles - Closes all handles open for given file
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) ForceCloseHandles(ctx context.Context, handleID string, options *FileForceCloseHandlesOptions) (FileForceCloseHandlesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
+// all handles.
+// options - fileClientForceCloseHandlesOptions contains the optional parameters for the fileClient.ForceCloseHandles method.
+func (client *fileClient) ForceCloseHandles(ctx context.Context, handleID string, options *fileClientForceCloseHandlesOptions) (fileClientForceCloseHandlesResponse, error) {
 	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
-		return FileForceCloseHandlesResponse{}, err
+		return fileClientForceCloseHandlesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileForceCloseHandlesResponse{}, err
+		return fileClientForceCloseHandlesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileForceCloseHandlesResponse{}, client.forceCloseHandlesHandleError(resp)
+		return fileClientForceCloseHandlesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.forceCloseHandlesHandleResponse(resp)
 }
 
 // forceCloseHandlesCreateRequest creates the ForceCloseHandles request.
-func (client *fileClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *FileForceCloseHandlesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *fileClientForceCloseHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -804,14 +772,14 @@ func (client *fileClient) forceCloseHandlesCreateRequest(ctx context.Context, ha
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-handle-id", handleID)
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // forceCloseHandlesHandleResponse handles the ForceCloseHandles response.
-func (client *fileClient) forceCloseHandlesHandleResponse(resp *http.Response) (FileForceCloseHandlesResponse, error) {
-	result := FileForceCloseHandlesResponse{RawResponse: resp}
+func (client *fileClient) forceCloseHandlesHandleResponse(resp *http.Response) (fileClientForceCloseHandlesResponse, error) {
+	result := fileClientForceCloseHandlesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -821,7 +789,7 @@ func (client *fileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileForceCloseHandlesResponse{}, err
+			return fileClientForceCloseHandlesResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -832,7 +800,7 @@ func (client *fileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 		numberOfHandlesClosed32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesClosed := int32(numberOfHandlesClosed32)
 		if err != nil {
-			return FileForceCloseHandlesResponse{}, err
+			return fileClientForceCloseHandlesResponse{}, err
 		}
 		result.NumberOfHandlesClosed = &numberOfHandlesClosed
 	}
@@ -840,59 +808,49 @@ func (client *fileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 		numberOfHandlesFailedToClose32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesFailedToClose := int32(numberOfHandlesFailedToClose32)
 		if err != nil {
-			return FileForceCloseHandlesResponse{}, err
+			return fileClientForceCloseHandlesResponse{}, err
 		}
 		result.NumberOfHandlesFailedToClose = &numberOfHandlesFailedToClose
 	}
 	return result, nil
 }
 
-// forceCloseHandlesHandleError handles the ForceCloseHandles error response.
-func (client *fileClient) forceCloseHandlesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// GetProperties - Returns all user-defined metadata, standard HTTP properties, and system properties for the file. It does
+// not return the content of the file.
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientGetPropertiesOptions - fileClientGetPropertiesOptions contains the optional parameters for the fileClient.GetProperties
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) GetProperties(ctx context.Context, fileClientGetPropertiesOptions *fileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, fileClientGetPropertiesOptions, leaseAccessConditions)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return fileClientGetPropertiesResponse{}, err
 	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetProperties - Returns all user-defined metadata, standard HTTP properties, and system properties for the file. It does not return the content of the
-// file.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) GetProperties(ctx context.Context, fileGetPropertiesOptions *FileGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, fileGetPropertiesOptions, leaseAccessConditions)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileGetPropertiesResponse{}, err
-	}
-	resp, err := client.con.Pipeline().Do(req)
-	if err != nil {
-		return FileGetPropertiesResponse{}, err
+		return fileClientGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return fileClientGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *fileClient) getPropertiesCreateRequest(ctx context.Context, fileGetPropertiesOptions *FileGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodHead, client.con.Endpoint())
+func (client *fileClient) getPropertiesCreateRequest(ctx context.Context, fileClientGetPropertiesOptions *fileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodHead, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if fileGetPropertiesOptions != nil && fileGetPropertiesOptions.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *fileGetPropertiesOptions.Sharesnapshot)
+	if fileClientGetPropertiesOptions != nil && fileClientGetPropertiesOptions.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *fileClientGetPropertiesOptions.Sharesnapshot)
 	}
-	if fileGetPropertiesOptions != nil && fileGetPropertiesOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileGetPropertiesOptions.Timeout), 10))
+	if fileClientGetPropertiesOptions != nil && fileClientGetPropertiesOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientGetPropertiesOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -901,12 +859,12 @@ func (client *fileClient) getPropertiesCreateRequest(ctx context.Context, fileGe
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (FileGetPropertiesResponse, error) {
-	result := FileGetPropertiesResponse{RawResponse: resp}
+func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (fileClientGetPropertiesResponse, error) {
+	result := fileClientGetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -924,7 +882,7 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.ContentLength = &contentLength
 	}
@@ -937,7 +895,7 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.ContentMD5 = contentMD5
 	}
@@ -962,14 +920,14 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
 		copyCompletionTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.CopyCompletionTime = &copyCompletionTime
 	}
@@ -991,7 +949,7 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileGetPropertiesResponse{}, err
+			return fileClientGetPropertiesResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -999,13 +957,25 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientGetPropertiesResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientGetPropertiesResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientGetPropertiesResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -1028,57 +998,47 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *fileClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetRangeList - Returns the list of valid ranges for a file.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) GetRangeList(ctx context.Context, fileGetRangeListOptions *FileGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileGetRangeListResponse, error) {
-	req, err := client.getRangeListCreateRequest(ctx, fileGetRangeListOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientGetRangeListOptions - fileClientGetRangeListOptions contains the optional parameters for the fileClient.GetRangeList
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) GetRangeList(ctx context.Context, fileClientGetRangeListOptions *fileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientGetRangeListResponse, error) {
+	req, err := client.getRangeListCreateRequest(ctx, fileClientGetRangeListOptions, leaseAccessConditions)
 	if err != nil {
-		return FileGetRangeListResponse{}, err
+		return fileClientGetRangeListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileGetRangeListResponse{}, err
+		return fileClientGetRangeListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileGetRangeListResponse{}, client.getRangeListHandleError(resp)
+		return fileClientGetRangeListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getRangeListHandleResponse(resp)
 }
 
 // getRangeListCreateRequest creates the GetRangeList request.
-func (client *fileClient) getRangeListCreateRequest(ctx context.Context, fileGetRangeListOptions *FileGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *fileClient) getRangeListCreateRequest(ctx context.Context, fileClientGetRangeListOptions *fileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "rangelist")
-	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *fileGetRangeListOptions.Sharesnapshot)
+	if fileClientGetRangeListOptions != nil && fileClientGetRangeListOptions.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *fileClientGetRangeListOptions.Sharesnapshot)
 	}
-	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Prevsharesnapshot != nil {
-		reqQP.Set("prevsharesnapshot", *fileGetRangeListOptions.Prevsharesnapshot)
+	if fileClientGetRangeListOptions != nil && fileClientGetRangeListOptions.Prevsharesnapshot != nil {
+		reqQP.Set("prevsharesnapshot", *fileClientGetRangeListOptions.Prevsharesnapshot)
 	}
-	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileGetRangeListOptions.Timeout), 10))
+	if fileClientGetRangeListOptions != nil && fileClientGetRangeListOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientGetRangeListOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Range != nil {
-		req.Raw().Header.Set("x-ms-range", *fileGetRangeListOptions.Range)
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if fileClientGetRangeListOptions != nil && fileClientGetRangeListOptions.Range != nil {
+		req.Raw().Header.Set("x-ms-range", *fileClientGetRangeListOptions.Range)
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
@@ -1088,12 +1048,12 @@ func (client *fileClient) getRangeListCreateRequest(ctx context.Context, fileGet
 }
 
 // getRangeListHandleResponse handles the GetRangeList response.
-func (client *fileClient) getRangeListHandleResponse(resp *http.Response) (FileGetRangeListResponse, error) {
-	result := FileGetRangeListResponse{RawResponse: resp}
+func (client *fileClient) getRangeListHandleResponse(resp *http.Response) (fileClientGetRangeListResponse, error) {
+	result := fileClientGetRangeListResponse{RawResponse: resp}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileGetRangeListResponse{}, err
+			return fileClientGetRangeListResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1103,7 +1063,7 @@ func (client *fileClient) getRangeListHandleResponse(resp *http.Response) (FileG
 	if val := resp.Header.Get("x-ms-content-length"); val != "" {
 		fileContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return FileGetRangeListResponse{}, err
+			return fileClientGetRangeListResponse{}, err
 		}
 		result.FileContentLength = &fileContentLength
 	}
@@ -1116,49 +1076,37 @@ func (client *fileClient) getRangeListHandleResponse(resp *http.Response) (FileG
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileGetRangeListResponse{}, err
+			return fileClientGetRangeListResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ShareFileRangeList); err != nil {
-		return FileGetRangeListResponse{}, err
+		return fileClientGetRangeListResponse{}, err
 	}
 	return result, nil
 }
 
-// getRangeListHandleError handles the GetRangeList error response.
-func (client *fileClient) getRangeListHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListHandles - Lists handles for file
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) ListHandles(ctx context.Context, options *FileListHandlesOptions) (FileListHandlesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - fileClientListHandlesOptions contains the optional parameters for the fileClient.ListHandles method.
+func (client *fileClient) ListHandles(ctx context.Context, options *fileClientListHandlesOptions) (fileClientListHandlesResponse, error) {
 	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
-		return FileListHandlesResponse{}, err
+		return fileClientListHandlesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileListHandlesResponse{}, err
+		return fileClientListHandlesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileListHandlesResponse{}, client.listHandlesHandleError(resp)
+		return fileClientListHandlesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandlesHandleResponse(resp)
 }
 
 // listHandlesCreateRequest creates the ListHandles request.
-func (client *fileClient) listHandlesCreateRequest(ctx context.Context, options *FileListHandlesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *fileClient) listHandlesCreateRequest(ctx context.Context, options *fileClientListHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1177,14 +1125,14 @@ func (client *fileClient) listHandlesCreateRequest(ctx context.Context, options 
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // listHandlesHandleResponse handles the ListHandles response.
-func (client *fileClient) listHandlesHandleResponse(resp *http.Response) (FileListHandlesResponse, error) {
-	result := FileListHandlesResponse{RawResponse: resp}
+func (client *fileClient) listHandlesHandleResponse(resp *http.Response) (fileClientListHandlesResponse, error) {
+	result := fileClientListHandlesResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -1197,49 +1145,38 @@ func (client *fileClient) listHandlesHandleResponse(resp *http.Response) (FileLi
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileListHandlesResponse{}, err
+			return fileClientListHandlesResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListHandlesResponse); err != nil {
-		return FileListHandlesResponse{}, err
+		return fileClientListHandlesResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandlesHandleError handles the ListHandles error response.
-func (client *fileClient) listHandlesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ReleaseLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileReleaseLeaseOptions) (FileReleaseLeaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// leaseID - Specifies the current lease ID on the resource.
+// options - fileClientReleaseLeaseOptions contains the optional parameters for the fileClient.ReleaseLease method.
+func (client *fileClient) ReleaseLease(ctx context.Context, leaseID string, options *fileClientReleaseLeaseOptions) (fileClientReleaseLeaseResponse, error) {
 	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
-		return FileReleaseLeaseResponse{}, err
+		return fileClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileReleaseLeaseResponse{}, err
+		return fileClientReleaseLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileReleaseLeaseResponse{}, client.releaseLeaseHandleError(resp)
+		return fileClientReleaseLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.releaseLeaseHandleResponse(resp)
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
-func (client *fileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *FileReleaseLeaseOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *fileClientReleaseLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1251,7 +1188,7 @@ func (client *fileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "release")
 	req.Raw().Header.Set("x-ms-lease-id", leaseID)
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1260,15 +1197,15 @@ func (client *fileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 }
 
 // releaseLeaseHandleResponse handles the ReleaseLease response.
-func (client *fileClient) releaseLeaseHandleResponse(resp *http.Response) (FileReleaseLeaseResponse, error) {
-	result := FileReleaseLeaseResponse{RawResponse: resp}
+func (client *fileClient) releaseLeaseHandleResponse(resp *http.Response) (fileClientReleaseLeaseResponse, error) {
+	result := fileClientReleaseLeaseResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileReleaseLeaseResponse{}, err
+			return fileClientReleaseLeaseResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1284,58 +1221,53 @@ func (client *fileClient) releaseLeaseHandleResponse(resp *http.Response) (FileR
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileReleaseLeaseResponse{}, err
+			return fileClientReleaseLeaseResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// releaseLeaseHandleError handles the ReleaseLease error response.
-func (client *fileClient) releaseLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetHTTPHeaders - Sets HTTP headers on the file.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileSetHTTPHeadersResponse, error) {
-	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, fileSetHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+// for directory. ‘None’ can also be specified as default.
+// fileCreationTime - Creation time for the file/directory. Default value: Now.
+// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+// fileClientSetHTTPHeadersOptions - fileClientSetHTTPHeadersOptions contains the optional parameters for the fileClient.SetHTTPHeaders
+// method.
+// FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the fileClient.Create method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileClientSetHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (fileClientSetHTTPHeadersResponse, error) {
+	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, fileClientSetHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
-		return FileSetHTTPHeadersResponse{}, err
+		return fileClientSetHTTPHeadersResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileSetHTTPHeadersResponse{}, err
+		return fileClientSetHTTPHeadersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileSetHTTPHeadersResponse{}, client.setHTTPHeadersHandleError(resp)
+		return fileClientSetHTTPHeadersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setHTTPHeadersHandleResponse(resp)
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileClientSetHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "properties")
-	if fileSetHTTPHeadersOptions != nil && fileSetHTTPHeadersOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileSetHTTPHeadersOptions.Timeout), 10))
+	if fileClientSetHTTPHeadersOptions != nil && fileClientSetHTTPHeadersOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientSetHTTPHeadersOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if fileSetHTTPHeadersOptions != nil && fileSetHTTPHeadersOptions.FileContentLength != nil {
-		req.Raw().Header.Set("x-ms-content-length", strconv.FormatInt(*fileSetHTTPHeadersOptions.FileContentLength, 10))
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if fileClientSetHTTPHeadersOptions != nil && fileClientSetHTTPHeadersOptions.FileContentLength != nil {
+		req.Raw().Header.Set("x-ms-content-length", strconv.FormatInt(*fileClientSetHTTPHeadersOptions.FileContentLength, 10))
 	}
 	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentType != nil {
 		req.Raw().Header.Set("x-ms-content-type", *fileHTTPHeaders.FileContentType)
@@ -1355,11 +1287,11 @@ func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentDisposition != nil {
 		req.Raw().Header.Set("x-ms-content-disposition", *fileHTTPHeaders.FileContentDisposition)
 	}
-	if fileSetHTTPHeadersOptions != nil && fileSetHTTPHeadersOptions.FilePermission != nil {
-		req.Raw().Header.Set("x-ms-file-permission", *fileSetHTTPHeadersOptions.FilePermission)
+	if fileClientSetHTTPHeadersOptions != nil && fileClientSetHTTPHeadersOptions.FilePermission != nil {
+		req.Raw().Header.Set("x-ms-file-permission", *fileClientSetHTTPHeadersOptions.FilePermission)
 	}
-	if fileSetHTTPHeadersOptions != nil && fileSetHTTPHeadersOptions.FilePermissionKey != nil {
-		req.Raw().Header.Set("x-ms-file-permission-key", *fileSetHTTPHeadersOptions.FilePermissionKey)
+	if fileClientSetHTTPHeadersOptions != nil && fileClientSetHTTPHeadersOptions.FilePermissionKey != nil {
+		req.Raw().Header.Set("x-ms-file-permission-key", *fileClientSetHTTPHeadersOptions.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
 	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
@@ -1372,15 +1304,15 @@ func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 }
 
 // setHTTPHeadersHandleResponse handles the SetHTTPHeaders response.
-func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (FileSetHTTPHeadersResponse, error) {
-	result := FileSetHTTPHeadersResponse{RawResponse: resp}
+func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (fileClientSetHTTPHeadersResponse, error) {
+	result := fileClientSetHTTPHeadersResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
+			return fileClientSetHTTPHeadersResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1393,14 +1325,14 @@ func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
+			return fileClientSetHTTPHeadersResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
+			return fileClientSetHTTPHeadersResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -1411,13 +1343,25 @@ func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -1428,54 +1372,44 @@ func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 	return result, nil
 }
 
-// setHTTPHeadersHandleError handles the SetHTTPHeaders error response.
-func (client *fileClient) setHTTPHeadersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetMetadata - Updates user-defined metadata for the specified file.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) SetMetadata(ctx context.Context, fileSetMetadataOptions *FileSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, fileSetMetadataOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileClientSetMetadataOptions - fileClientSetMetadataOptions contains the optional parameters for the fileClient.SetMetadata
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) SetMetadata(ctx context.Context, fileClientSetMetadataOptions *fileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, fileClientSetMetadataOptions, leaseAccessConditions)
 	if err != nil {
-		return FileSetMetadataResponse{}, err
+		return fileClientSetMetadataResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileSetMetadataResponse{}, err
+		return fileClientSetMetadataResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FileSetMetadataResponse{}, client.setMetadataHandleError(resp)
+		return fileClientSetMetadataResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setMetadataHandleResponse(resp)
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *fileClient) setMetadataCreateRequest(ctx context.Context, fileSetMetadataOptions *FileSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) setMetadataCreateRequest(ctx context.Context, fileClientSetMetadataOptions *fileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "metadata")
-	if fileSetMetadataOptions != nil && fileSetMetadataOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileSetMetadataOptions.Timeout), 10))
+	if fileClientSetMetadataOptions != nil && fileClientSetMetadataOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientSetMetadataOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if fileSetMetadataOptions != nil && fileSetMetadataOptions.Metadata != nil {
-		for k, v := range fileSetMetadataOptions.Metadata {
+	if fileClientSetMetadataOptions != nil && fileClientSetMetadataOptions.Metadata != nil {
+		for k, v := range fileClientSetMetadataOptions.Metadata {
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1484,8 +1418,8 @@ func (client *fileClient) setMetadataCreateRequest(ctx context.Context, fileSetM
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
-func (client *fileClient) setMetadataHandleResponse(resp *http.Response) (FileSetMetadataResponse, error) {
-	result := FileSetMetadataResponse{RawResponse: resp}
+func (client *fileClient) setMetadataHandleResponse(resp *http.Response) (fileClientSetMetadataResponse, error) {
+	result := fileClientSetMetadataResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1498,79 +1432,82 @@ func (client *fileClient) setMetadataHandleResponse(resp *http.Response) (FileSe
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileSetMetadataResponse{}, err
+			return fileClientSetMetadataResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileSetMetadataResponse{}, err
+			return fileClientSetMetadataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return fileClientSetMetadataResponse{}, err
+		}
+		result.LastModified = &lastModified
 	}
 	return result, nil
 }
 
-// setMetadataHandleError handles the SetMetadata error response.
-func (client *fileClient) setMetadataHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // StartCopy - Copies a blob or file to a destination file within the storage account.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) StartCopy(ctx context.Context, copySource string, fileStartCopyOptions *FileStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileStartCopyResponse, error) {
-	req, err := client.startCopyCreateRequest(ctx, copySource, fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
+// the same storage account, you may use Shared Key to authenticate the source file. If you are
+// copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
+// account, then you must authenticate the source file or blob using a shared
+// access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
+// a share snapshot can also be specified as a copy source.
+// fileClientStartCopyOptions - fileClientStartCopyOptions contains the optional parameters for the fileClient.StartCopy method.
+// CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopy method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) StartCopy(ctx context.Context, copySource string, fileClientStartCopyOptions *fileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (fileClientStartCopyResponse, error) {
+	req, err := client.startCopyCreateRequest(ctx, copySource, fileClientStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
 	if err != nil {
-		return FileStartCopyResponse{}, err
+		return fileClientStartCopyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileStartCopyResponse{}, err
+		return fileClientStartCopyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return FileStartCopyResponse{}, client.startCopyHandleError(resp)
+		return fileClientStartCopyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.startCopyHandleResponse(resp)
 }
 
 // startCopyCreateRequest creates the StartCopy request.
-func (client *fileClient) startCopyCreateRequest(ctx context.Context, copySource string, fileStartCopyOptions *FileStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) startCopyCreateRequest(ctx context.Context, copySource string, fileClientStartCopyOptions *fileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if fileStartCopyOptions != nil && fileStartCopyOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileStartCopyOptions.Timeout), 10))
+	if fileClientStartCopyOptions != nil && fileClientStartCopyOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientStartCopyOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
-	if fileStartCopyOptions != nil && fileStartCopyOptions.Metadata != nil {
-		for k, v := range fileStartCopyOptions.Metadata {
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if fileClientStartCopyOptions != nil && fileClientStartCopyOptions.Metadata != nil {
+		for k, v := range fileClientStartCopyOptions.Metadata {
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
 	req.Raw().Header.Set("x-ms-copy-source", copySource)
-	if fileStartCopyOptions != nil && fileStartCopyOptions.FilePermission != nil {
-		req.Raw().Header.Set("x-ms-file-permission", *fileStartCopyOptions.FilePermission)
+	if fileClientStartCopyOptions != nil && fileClientStartCopyOptions.FilePermission != nil {
+		req.Raw().Header.Set("x-ms-file-permission", *fileClientStartCopyOptions.FilePermission)
 	}
-	if fileStartCopyOptions != nil && fileStartCopyOptions.FilePermissionKey != nil {
-		req.Raw().Header.Set("x-ms-file-permission-key", *fileStartCopyOptions.FilePermissionKey)
+	if fileClientStartCopyOptions != nil && fileClientStartCopyOptions.FilePermissionKey != nil {
+		req.Raw().Header.Set("x-ms-file-permission-key", *fileClientStartCopyOptions.FilePermissionKey)
 	}
 	if copyFileSmbInfo != nil && copyFileSmbInfo.FilePermissionCopyMode != nil {
 		req.Raw().Header.Set("x-ms-file-permission-copy-mode", string(*copyFileSmbInfo.FilePermissionCopyMode))
 	}
 	if copyFileSmbInfo != nil && copyFileSmbInfo.IgnoreReadOnly != nil {
-		req.Raw().Header.Set("x-ms-file-copy-ignore-read-only", strconv.FormatBool(*copyFileSmbInfo.IgnoreReadOnly))
+		req.Raw().Header.Set("x-ms-file-copy-ignore-readonly", strconv.FormatBool(*copyFileSmbInfo.IgnoreReadOnly))
 	}
 	if copyFileSmbInfo != nil && copyFileSmbInfo.FileAttributes != nil {
 		req.Raw().Header.Set("x-ms-file-attributes", *copyFileSmbInfo.FileAttributes)
@@ -1592,15 +1529,15 @@ func (client *fileClient) startCopyCreateRequest(ctx context.Context, copySource
 }
 
 // startCopyHandleResponse handles the StartCopy response.
-func (client *fileClient) startCopyHandleResponse(resp *http.Response) (FileStartCopyResponse, error) {
-	result := FileStartCopyResponse{RawResponse: resp}
+func (client *fileClient) startCopyHandleResponse(resp *http.Response) (fileClientStartCopyResponse, error) {
+	result := fileClientStartCopyResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileStartCopyResponse{}, err
+			return fileClientStartCopyResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1613,7 +1550,7 @@ func (client *fileClient) startCopyHandleResponse(resp *http.Response) (FileStar
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileStartCopyResponse{}, err
+			return fileClientStartCopyResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -1626,82 +1563,84 @@ func (client *fileClient) startCopyHandleResponse(resp *http.Response) (FileStar
 	return result, nil
 }
 
-// startCopyHandleError handles the StartCopy error response.
-func (client *fileClient) startCopyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UploadRange - Upload a range of bytes to a file.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, fileUploadRangeOptions *FileUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileUploadRangeResponse, error) {
-	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, fileUploadRangeOptions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
+// update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
+// up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
+// headers, and the byte range must be specified in the following format:
+// bytes=startByte-endByte.
+// fileRangeWrite - Specify one of the following options: - Update: Writes the bytes specified by the request body into the
+// specified range. The Range and Content-Length headers must match to perform the update. - Clear:
+// Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length
+// header to zero, and set the Range header to a value that indicates the range
+// to clear, up to maximum file size.
+// contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
+// to clear, the value of this header must be set to zero.
+// fileClientUploadRangeOptions - fileClientUploadRangeOptions contains the optional parameters for the fileClient.UploadRange
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, fileClientUploadRangeOptions *fileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (fileClientUploadRangeResponse, error) {
+	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, fileClientUploadRangeOptions, leaseAccessConditions)
 	if err != nil {
-		return FileUploadRangeResponse{}, err
+		return fileClientUploadRangeResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileUploadRangeResponse{}, err
+		return fileClientUploadRangeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return FileUploadRangeResponse{}, client.uploadRangeHandleError(resp)
+		return fileClientUploadRangeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.uploadRangeHandleResponse(resp)
 }
 
 // uploadRangeCreateRequest creates the UploadRange request.
-func (client *fileClient) uploadRangeCreateRequest(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, fileUploadRangeOptions *FileUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) uploadRangeCreateRequest(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, fileClientUploadRangeOptions *fileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "range")
-	if fileUploadRangeOptions != nil && fileUploadRangeOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileUploadRangeOptions.Timeout), 10))
+	if fileClientUploadRangeOptions != nil && fileClientUploadRangeOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientUploadRangeOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-range", rangeParam)
 	req.Raw().Header.Set("x-ms-write", string(fileRangeWrite))
 	req.Raw().Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
-	if fileUploadRangeOptions != nil && fileUploadRangeOptions.ContentMD5 != nil {
-		req.Raw().Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(fileUploadRangeOptions.ContentMD5))
+	if fileClientUploadRangeOptions != nil && fileClientUploadRangeOptions.ContentMD5 != nil {
+		req.Raw().Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(fileClientUploadRangeOptions.ContentMD5))
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
-	if fileUploadRangeOptions != nil && fileUploadRangeOptions.Optionalbody != nil {
-		return req, req.SetBody(fileUploadRangeOptions.Optionalbody, "application/octet-stream")
+	if fileClientUploadRangeOptions != nil && fileClientUploadRangeOptions.Optionalbody != nil {
+	return req, req.SetBody(fileClientUploadRangeOptions.Optionalbody, "application/octet-stream")
 	}
 	return req, nil
 }
 
 // uploadRangeHandleResponse handles the UploadRange response.
-func (client *fileClient) uploadRangeHandleResponse(resp *http.Response) (FileUploadRangeResponse, error) {
-	result := FileUploadRangeResponse{RawResponse: resp}
+func (client *fileClient) uploadRangeHandleResponse(resp *http.Response) (fileClientUploadRangeResponse, error) {
+	result := fileClientUploadRangeResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileUploadRangeResponse{}, err
+			return fileClientUploadRangeResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return FileUploadRangeResponse{}, err
+			return fileClientUploadRangeResponse{}, err
 		}
 		result.ContentMD5 = contentMD5
 	}
@@ -1714,71 +1653,72 @@ func (client *fileClient) uploadRangeHandleResponse(resp *http.Response) (FileUp
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileUploadRangeResponse{}, err
+			return fileClientUploadRangeResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileUploadRangeResponse{}, err
+			return fileClientUploadRangeResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
 	return result, nil
 }
 
-// uploadRangeHandleError handles the UploadRange error response.
-func (client *fileClient) uploadRangeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UploadRangeFromURL - Upload a range of bytes to a file where the contents are read from a URL.
-// If the operation fails it returns the *StorageError error type.
-func (client *fileClient) UploadRangeFromURL(ctx context.Context, rangeParam string, copySource string, contentLength int64, fileUploadRangeFromURLOptions *FileUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (FileUploadRangeFromURLResponse, error) {
-	req, err := client.uploadRangeFromURLCreateRequest(ctx, rangeParam, copySource, contentLength, fileUploadRangeFromURLOptions, sourceModifiedAccessConditions, leaseAccessConditions)
+// If the operation fails it returns an *azcore.ResponseError type.
+// rangeParam - Writes data to the specified byte range in the file.
+// copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
+// the same storage account, you may use Shared Key to authenticate the source file. If you are
+// copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
+// account, then you must authenticate the source file or blob using a shared
+// access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
+// a share snapshot can also be specified as a copy source.
+// contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
+// to clear, the value of this header must be set to zero.
+// fileClientUploadRangeFromURLOptions - fileClientUploadRangeFromURLOptions contains the optional parameters for the fileClient.UploadRangeFromURL
+// method.
+// SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the fileClient.UploadRangeFromURL
+// method.
+// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
+func (client *fileClient) UploadRangeFromURL(ctx context.Context, rangeParam string, copySource string, contentLength int64, fileClientUploadRangeFromURLOptions *fileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (fileClientUploadRangeFromURLResponse, error) {
+	req, err := client.uploadRangeFromURLCreateRequest(ctx, rangeParam, copySource, contentLength, fileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions, leaseAccessConditions)
 	if err != nil {
-		return FileUploadRangeFromURLResponse{}, err
+		return fileClientUploadRangeFromURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FileUploadRangeFromURLResponse{}, err
+		return fileClientUploadRangeFromURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return FileUploadRangeFromURLResponse{}, client.uploadRangeFromURLHandleError(resp)
+		return fileClientUploadRangeFromURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.uploadRangeFromURLHandleResponse(resp)
 }
 
 // uploadRangeFromURLCreateRequest creates the UploadRangeFromURL request.
-func (client *fileClient) uploadRangeFromURLCreateRequest(ctx context.Context, rangeParam string, copySource string, contentLength int64, fileUploadRangeFromURLOptions *FileUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *fileClient) uploadRangeFromURLCreateRequest(ctx context.Context, rangeParam string, copySource string, contentLength int64, fileClientUploadRangeFromURLOptions *fileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "range")
-	if fileUploadRangeFromURLOptions != nil && fileUploadRangeFromURLOptions.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*fileUploadRangeFromURLOptions.Timeout), 10))
+	if fileClientUploadRangeFromURLOptions != nil && fileClientUploadRangeFromURLOptions.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*fileClientUploadRangeFromURLOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-range", rangeParam)
 	req.Raw().Header.Set("x-ms-copy-source", copySource)
-	if fileUploadRangeFromURLOptions != nil && fileUploadRangeFromURLOptions.SourceRange != nil {
-		req.Raw().Header.Set("x-ms-source-range", *fileUploadRangeFromURLOptions.SourceRange)
+	if fileClientUploadRangeFromURLOptions != nil && fileClientUploadRangeFromURLOptions.SourceRange != nil {
+		req.Raw().Header.Set("x-ms-source-range", *fileClientUploadRangeFromURLOptions.SourceRange)
 	}
 	req.Raw().Header.Set("x-ms-write", "update")
 	req.Raw().Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
-	if fileUploadRangeFromURLOptions != nil && fileUploadRangeFromURLOptions.SourceContentCRC64 != nil {
-		req.Raw().Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(fileUploadRangeFromURLOptions.SourceContentCRC64))
+	if fileClientUploadRangeFromURLOptions != nil && fileClientUploadRangeFromURLOptions.SourceContentCRC64 != nil {
+		req.Raw().Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(fileClientUploadRangeFromURLOptions.SourceContentCRC64))
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatchCRC64 != nil {
 		req.Raw().Header.Set("x-ms-source-if-match-crc64", base64.StdEncoding.EncodeToString(sourceModifiedAccessConditions.SourceIfMatchCRC64))
@@ -1786,31 +1726,34 @@ func (client *fileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatchCRC64 != nil {
 		req.Raw().Header.Set("x-ms-source-if-none-match-crc64", base64.StdEncoding.EncodeToString(sourceModifiedAccessConditions.SourceIfNoneMatchCRC64))
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
+	}
+	if fileClientUploadRangeFromURLOptions != nil && fileClientUploadRangeFromURLOptions.CopySourceAuthorization != nil {
+		req.Raw().Header.Set("x-ms-copy-source-authorization", *fileClientUploadRangeFromURLOptions.CopySourceAuthorization)
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // uploadRangeFromURLHandleResponse handles the UploadRangeFromURL response.
-func (client *fileClient) uploadRangeFromURLHandleResponse(resp *http.Response) (FileUploadRangeFromURLResponse, error) {
-	result := FileUploadRangeFromURLResponse{RawResponse: resp}
+func (client *fileClient) uploadRangeFromURLHandleResponse(resp *http.Response) (fileClientUploadRangeFromURLResponse, error) {
+	result := fileClientUploadRangeFromURLResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileUploadRangeFromURLResponse{}, err
+			return fileClientUploadRangeFromURLResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return FileUploadRangeFromURLResponse{}, err
+			return fileClientUploadRangeFromURLResponse{}, err
 		}
 		result.XMSContentCRC64 = xMSContentCRC64
 	}
@@ -1823,29 +1766,24 @@ func (client *fileClient) uploadRangeFromURLHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileUploadRangeFromURLResponse{}, err
+			return fileClientUploadRangeFromURLResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return FileUploadRangeFromURLResponse{}, err
+			return fileClientUploadRangeFromURLResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return fileClientUploadRangeFromURLResponse{}, err
+		}
+		result.ContentMD5 = contentMD5
 	}
 	return result, nil
 }
 
-// uploadRangeFromURLHandleError handles the UploadRangeFromURL error response.
-func (client *fileClient) uploadRangeFromURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}

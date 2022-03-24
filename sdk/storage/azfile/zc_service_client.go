@@ -10,9 +10,9 @@ import (
 
 // A ServiceClient represents a URL to the Azure Storage File service allowing you to manipulate file share.
 type ServiceClient struct {
-	client *serviceClient
-	u      url.URL
-	cred   azcore.Credential
+	client    *serviceClient
+	u         url.URL
+	sharedKey *SharedKeyCredential
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.

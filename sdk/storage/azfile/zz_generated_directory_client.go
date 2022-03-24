@@ -20,29 +20,46 @@ import (
 )
 
 type directoryClient struct {
-	con *connection
+	endpoint string
+	pl runtime.Pipeline
+}
+
+// newDirectoryClient creates a new instance of directoryClient with the specified values.
+// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+// pl - the pipeline used for sending requests and handling responses.
+func newDirectoryClient(endpoint string, pl runtime.Pipeline) *directoryClient {
+	client := &directoryClient{
+		endpoint: endpoint,
+		pl: pl,
+	}
+	return client
 }
 
 // Create - Creates a new directory under the specified share or parent directory.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+// for directory. ‘None’ can also be specified as default.
+// fileCreationTime - Creation time for the file/directory. Default value: Now.
+// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+// options - directoryClientCreateOptions contains the optional parameters for the directoryClient.Create method.
+func (client *directoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *directoryClientCreateOptions) (directoryClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
-		return DirectoryCreateResponse{}, err
+		return directoryClientCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectoryCreateResponse{}, err
+		return directoryClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return DirectoryCreateResponse{}, client.createHandleError(resp)
+		return directoryClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryCreateOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *directoryClientCreateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +74,7 @@ func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttr
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
 	}
@@ -72,15 +89,15 @@ func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttr
 }
 
 // createHandleResponse handles the Create response.
-func (client *directoryClient) createHandleResponse(resp *http.Response) (DirectoryCreateResponse, error) {
-	result := DirectoryCreateResponse{RawResponse: resp}
+func (client *directoryClient) createHandleResponse(resp *http.Response) (directoryClientCreateResponse, error) {
+	result := directoryClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryCreateResponse{}, err
+			return directoryClientCreateResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -93,14 +110,14 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (Direct
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryCreateResponse{}, err
+			return directoryClientCreateResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return DirectoryCreateResponse{}, err
+			return directoryClientCreateResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -111,13 +128,25 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientCreateResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientCreateResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientCreateResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -128,39 +157,27 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (Direct
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *directoryClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) Delete(ctx context.Context, options *DirectoryDeleteOptions) (DirectoryDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - directoryClientDeleteOptions contains the optional parameters for the directoryClient.Delete method.
+func (client *directoryClient) Delete(ctx context.Context, options *directoryClientDeleteOptions) (directoryClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
-		return DirectoryDeleteResponse{}, err
+		return directoryClientDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectoryDeleteResponse{}, err
+		return directoryClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return DirectoryDeleteResponse{}, client.deleteHandleError(resp)
+		return directoryClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *directoryClient) deleteCreateRequest(ctx context.Context, options *DirectoryDeleteOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.con.Endpoint())
+func (client *directoryClient) deleteCreateRequest(ctx context.Context, options *directoryClientDeleteOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -170,14 +187,14 @@ func (client *directoryClient) deleteCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *directoryClient) deleteHandleResponse(resp *http.Response) (DirectoryDeleteResponse, error) {
-	result := DirectoryDeleteResponse{RawResponse: resp}
+func (client *directoryClient) deleteHandleResponse(resp *http.Response) (directoryClientDeleteResponse, error) {
+	result := directoryClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -187,46 +204,37 @@ func (client *directoryClient) deleteHandleResponse(resp *http.Response) (Direct
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryDeleteResponse{}, err
+			return directoryClientDeleteResponse{}, err
 		}
 		result.Date = &date
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *directoryClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ForceCloseHandles - Closes all handles open for given directory.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) ForceCloseHandles(ctx context.Context, handleID string, options *DirectoryForceCloseHandlesOptions) (DirectoryForceCloseHandlesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
+// all handles.
+// options - directoryClientForceCloseHandlesOptions contains the optional parameters for the directoryClient.ForceCloseHandles
+// method.
+func (client *directoryClient) ForceCloseHandles(ctx context.Context, handleID string, options *directoryClientForceCloseHandlesOptions) (directoryClientForceCloseHandlesResponse, error) {
 	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
-		return DirectoryForceCloseHandlesResponse{}, err
+		return directoryClientForceCloseHandlesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectoryForceCloseHandlesResponse{}, err
+		return directoryClientForceCloseHandlesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DirectoryForceCloseHandlesResponse{}, client.forceCloseHandlesHandleError(resp)
+		return directoryClientForceCloseHandlesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.forceCloseHandlesHandleResponse(resp)
 }
 
 // forceCloseHandlesCreateRequest creates the ForceCloseHandles request.
-func (client *directoryClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *DirectoryForceCloseHandlesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *directoryClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *directoryClientForceCloseHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -246,14 +254,14 @@ func (client *directoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // forceCloseHandlesHandleResponse handles the ForceCloseHandles response.
-func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Response) (DirectoryForceCloseHandlesResponse, error) {
-	result := DirectoryForceCloseHandlesResponse{RawResponse: resp}
+func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Response) (directoryClientForceCloseHandlesResponse, error) {
+	result := directoryClientForceCloseHandlesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -263,7 +271,7 @@ func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryForceCloseHandlesResponse{}, err
+			return directoryClientForceCloseHandlesResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -274,7 +282,7 @@ func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		numberOfHandlesClosed32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesClosed := int32(numberOfHandlesClosed32)
 		if err != nil {
-			return DirectoryForceCloseHandlesResponse{}, err
+			return directoryClientForceCloseHandlesResponse{}, err
 		}
 		result.NumberOfHandlesClosed = &numberOfHandlesClosed
 	}
@@ -282,48 +290,36 @@ func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		numberOfHandlesFailedToClose32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesFailedToClose := int32(numberOfHandlesFailedToClose32)
 		if err != nil {
-			return DirectoryForceCloseHandlesResponse{}, err
+			return directoryClientForceCloseHandlesResponse{}, err
 		}
 		result.NumberOfHandlesFailedToClose = &numberOfHandlesFailedToClose
 	}
 	return result, nil
 }
 
-// forceCloseHandlesHandleError handles the ForceCloseHandles error response.
-func (client *directoryClient) forceCloseHandlesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetProperties - Returns all system properties for the specified directory, and can also be used to check the existence of a directory. The data returned
-// does not include the files in the directory or any
+// GetProperties - Returns all system properties for the specified directory, and can also be used to check the existence
+// of a directory. The data returned does not include the files in the directory or any
 // subdirectories.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) GetProperties(ctx context.Context, options *DirectoryGetPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - directoryClientGetPropertiesOptions contains the optional parameters for the directoryClient.GetProperties method.
+func (client *directoryClient) GetProperties(ctx context.Context, options *directoryClientGetPropertiesOptions) (directoryClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
-		return DirectoryGetPropertiesResponse{}, err
+		return directoryClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectoryGetPropertiesResponse{}, err
+		return directoryClientGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DirectoryGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return directoryClientGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *directoryClient) getPropertiesCreateRequest(ctx context.Context, options *DirectoryGetPropertiesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *directoryClient) getPropertiesCreateRequest(ctx context.Context, options *directoryClientGetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -336,14 +332,14 @@ func (client *directoryClient) getPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) (DirectoryGetPropertiesResponse, error) {
-	result := DirectoryGetPropertiesResponse{RawResponse: resp}
+func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) (directoryClientGetPropertiesResponse, error) {
+	result := directoryClientGetPropertiesResponse{RawResponse: resp}
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
@@ -358,7 +354,7 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
+			return directoryClientGetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -371,14 +367,14 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
+			return directoryClientGetPropertiesResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
+			return directoryClientGetPropertiesResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -386,13 +382,25 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientGetPropertiesResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientGetPropertiesResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientGetPropertiesResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -406,37 +414,26 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *directoryClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListFilesAndDirectoriesSegment - Returns a list of files or directories under the specified share or directory. It lists the contents only for a single
-// level of the directory hierarchy.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) ListFilesAndDirectoriesSegment(options *DirectoryListFilesAndDirectoriesSegmentOptions) *DirectoryListFilesAndDirectoriesSegmentPager {
-	return &DirectoryListFilesAndDirectoriesSegmentPager{
+// ListFilesAndDirectoriesSegment - Returns a list of files or directories under the specified share or directory. It lists
+// the contents only for a single level of the directory hierarchy.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - directoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the directoryClient.ListFilesAndDirectoriesSegment
+// method.
+func (client *directoryClient) ListFilesAndDirectoriesSegment(options *directoryClientListFilesAndDirectoriesSegmentOptions) (*directoryClientListFilesAndDirectoriesSegmentPager) {
+	return &directoryClientListFilesAndDirectoriesSegmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DirectoryListFilesAndDirectoriesSegmentResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp directoryClientListFilesAndDirectoriesSegmentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListFilesAndDirectoriesSegmentResponse.NextMarker)
 		},
 	}
 }
 
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
-func (client *directoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *directoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *directoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -458,15 +455,21 @@ func (client *directoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
+	if options != nil && options.Include != nil {
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	if options != nil && options.IncludeExtendedInfo != nil {
+		req.Raw().Header.Set("x-ms-file-extended-info", strconv.FormatBool(*options.IncludeExtendedInfo))
+	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // listFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
-func (client *directoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryListFilesAndDirectoriesSegmentResponse, error) {
-	result := DirectoryListFilesAndDirectoriesSegmentResponse{RawResponse: resp}
+func (client *directoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (directoryClientListFilesAndDirectoriesSegmentResponse, error) {
+	result := directoryClientListFilesAndDirectoriesSegmentResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -479,49 +482,37 @@ func (client *directoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryListFilesAndDirectoriesSegmentResponse{}, err
+			return directoryClientListFilesAndDirectoriesSegmentResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListFilesAndDirectoriesSegmentResponse); err != nil {
-		return DirectoryListFilesAndDirectoriesSegmentResponse{}, err
+		return directoryClientListFilesAndDirectoriesSegmentResponse{}, err
 	}
 	return result, nil
 }
 
-// listFilesAndDirectoriesSegmentHandleError handles the ListFilesAndDirectoriesSegment error response.
-func (client *directoryClient) listFilesAndDirectoriesSegmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListHandles - Lists handles for directory.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) ListHandles(ctx context.Context, options *DirectoryListHandlesOptions) (DirectoryListHandlesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - directoryClientListHandlesOptions contains the optional parameters for the directoryClient.ListHandles method.
+func (client *directoryClient) ListHandles(ctx context.Context, options *directoryClientListHandlesOptions) (directoryClientListHandlesResponse, error) {
 	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
-		return DirectoryListHandlesResponse{}, err
+		return directoryClientListHandlesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectoryListHandlesResponse{}, err
+		return directoryClientListHandlesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DirectoryListHandlesResponse{}, client.listHandlesHandleError(resp)
+		return directoryClientListHandlesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandlesHandleResponse(resp)
 }
 
 // listHandlesCreateRequest creates the ListHandles request.
-func (client *directoryClient) listHandlesCreateRequest(ctx context.Context, options *DirectoryListHandlesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+func (client *directoryClient) listHandlesCreateRequest(ctx context.Context, options *directoryClientListHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -543,14 +534,14 @@ func (client *directoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // listHandlesHandleResponse handles the ListHandles response.
-func (client *directoryClient) listHandlesHandleResponse(resp *http.Response) (DirectoryListHandlesResponse, error) {
-	result := DirectoryListHandlesResponse{RawResponse: resp}
+func (client *directoryClient) listHandlesHandleResponse(resp *http.Response) (directoryClientListHandlesResponse, error) {
+	result := directoryClientListHandlesResponse{RawResponse: resp}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -563,49 +554,37 @@ func (client *directoryClient) listHandlesHandleResponse(resp *http.Response) (D
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectoryListHandlesResponse{}, err
+			return directoryClientListHandlesResponse{}, err
 		}
 		result.Date = &date
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListHandlesResponse); err != nil {
-		return DirectoryListHandlesResponse{}, err
+		return directoryClientListHandlesResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandlesHandleError handles the ListHandles error response.
-func (client *directoryClient) listHandlesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetMetadata - Updates user defined metadata for the specified directory.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) SetMetadata(ctx context.Context, options *DirectorySetMetadataOptions) (DirectorySetMetadataResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - directoryClientSetMetadataOptions contains the optional parameters for the directoryClient.SetMetadata method.
+func (client *directoryClient) SetMetadata(ctx context.Context, options *directoryClientSetMetadataOptions) (directoryClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options)
 	if err != nil {
-		return DirectorySetMetadataResponse{}, err
+		return directoryClientSetMetadataResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectorySetMetadataResponse{}, err
+		return directoryClientSetMetadataResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DirectorySetMetadataResponse{}, client.setMetadataHandleError(resp)
+		return directoryClientSetMetadataResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setMetadataHandleResponse(resp)
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *directoryClient) setMetadataCreateRequest(ctx context.Context, options *DirectorySetMetadataOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *directoryClient) setMetadataCreateRequest(ctx context.Context, options *directoryClientSetMetadataOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -621,14 +600,14 @@ func (client *directoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
-func (client *directoryClient) setMetadataHandleResponse(resp *http.Response) (DirectorySetMetadataResponse, error) {
-	result := DirectorySetMetadataResponse{RawResponse: resp}
+func (client *directoryClient) setMetadataHandleResponse(resp *http.Response) (directoryClientSetMetadataResponse, error) {
+	result := directoryClientSetMetadataResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -641,53 +620,45 @@ func (client *directoryClient) setMetadataHandleResponse(resp *http.Response) (D
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectorySetMetadataResponse{}, err
+			return directoryClientSetMetadataResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return DirectorySetMetadataResponse{}, err
+			return directoryClientSetMetadataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
 	return result, nil
 }
 
-// setMetadataHandleError handles the SetMetadata error response.
-func (client *directoryClient) setMetadataHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetProperties - Sets properties on the directory.
-// If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+// for directory. ‘None’ can also be specified as default.
+// fileCreationTime - Creation time for the file/directory. Default value: Now.
+// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+// options - directoryClientSetPropertiesOptions contains the optional parameters for the directoryClient.SetProperties method.
+func (client *directoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *directoryClientSetPropertiesOptions) (directoryClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
-		return DirectorySetPropertiesResponse{}, err
+		return directoryClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DirectorySetPropertiesResponse{}, err
+		return directoryClientSetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DirectorySetPropertiesResponse{}, client.setPropertiesHandleError(resp)
+		return directoryClientSetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setPropertiesHandleResponse(resp)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) (*policy.Request, error) {
-	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *directoryClientSetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -698,7 +669,7 @@ func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-02-10")
+	req.Raw().Header.Set("x-ms-version", "2020-10-02")
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
 	}
@@ -713,8 +684,8 @@ func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, f
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) (DirectorySetPropertiesResponse, error) {
-	result := DirectorySetPropertiesResponse{RawResponse: resp}
+func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) (directoryClientSetPropertiesResponse, error) {
+	result := directoryClientSetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -724,7 +695,7 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
+			return directoryClientSetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -734,14 +705,14 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
+			return directoryClientSetPropertiesResponse{}, err
 		}
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
+			return directoryClientSetPropertiesResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
@@ -752,13 +723,25 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientSetPropertiesResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientSetPropertiesResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return directoryClientSetPropertiesResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -769,15 +752,3 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// setPropertiesHandleError handles the SetProperties error response.
-func (client *directoryClient) setPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}

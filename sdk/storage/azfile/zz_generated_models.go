@@ -32,11 +32,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Start *timeRFC3339 `xml:"Start"`
 	}{
-		alias:  (*alias)(&a),
+		alias: (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start:  (*timeRFC3339)(a.Start),
+		Start: (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -47,7 +47,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Start *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -67,30 +67,31 @@ type ClearRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// CopyFileSmbInfo contains a group of parameters for the File.StartCopy method.
+// CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopy method.
 type CopyFileSmbInfo struct {
-	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes to set on a target file.
+	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
+// to set on a target file.
 	FileAttributes *string
-	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO 8601 format to set as creation
-	// time on a target file.
+	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
+// 8601 format to set as creation time on a target file.
 	FileCreationTime *string
-	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in ISO 8601 format to set as last
-	// write time on a target file.
+	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in
+// ISO 8601 format to set as last write time on a target file.
 	FileLastWriteTime *string
-	// Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by the header value of x-ms-file-permission
-	// or x-ms-file-permission-key.
+	// Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by
+// the header value of x-ms-file-permission or x-ms-file-permission-key.
 	FilePermissionCopyMode *PermissionCopyModeType
 	// Specifies the option to overwrite the target file if it already exists and has read-only attribute set.
 	IgnoreReadOnly *bool
-	// Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file despite attribute overrides
-	// or a source file state.
+	// Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file
+// despite attribute overrides or a source file state.
 	SetArchiveAttribute *bool
 }
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another domain. Web browsers implement
-// a security restriction known as same-origin policy that
-// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs in another
-// domain.
+// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// domain. Web browsers implement a security restriction known as same-origin policy that
+// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
+// domain) to call APIs in another domain.
 type CorsRule struct {
 	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
 	AllowedHeaders *string `xml:"AllowedHeaders"`
@@ -98,242 +99,33 @@ type CorsRule struct {
 	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
 	AllowedMethods *string `xml:"AllowedMethods"`
 
-	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain is the domain from which the
-	// request originates. Note that the origin must be an exact
-	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains
-	// to make requests via CORS.
+	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+// is the domain from which the request originates. Note that the origin must be an exact
+// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
+// to allow all origin domains to make requests via CORS.
 	AllowedOrigins *string `xml:"AllowedOrigins"`
 
-	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
+// issuer.
 	ExposedHeaders *string `xml:"ExposedHeaders"`
 
 	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-// DirectoryCreateOptions contains the optional parameters for the Directory.Create method.
-type DirectoryCreateOptions struct {
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
-	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	FilePermission *string
-	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectoryDeleteOptions contains the optional parameters for the Directory.Delete method.
-type DirectoryDeleteOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectoryForceCloseHandlesOptions contains the optional parameters for the Directory.ForceCloseHandles method.
-type DirectoryForceCloseHandlesOptions struct {
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
-	Recursive *bool
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectoryGetPropertiesOptions contains the optional parameters for the Directory.GetProperties method.
-type DirectoryGetPropertiesOptions struct {
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
 // DirectoryItem - A listed directory item.
 type DirectoryItem struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
+	Attributes *string `xml:"Attributes"`
+	FileID *string `xml:"FileId"`
+	PermissionKey *string `xml:"PermissionKey"`
+
+	// File properties.
+	Properties *FileProperty `xml:"Properties"`
 }
 
-// DirectoryListFilesAndDirectoriesSegmentOptions contains the optional parameters for the Directory.ListFilesAndDirectoriesSegment method.
-type DirectoryListFilesAndDirectoriesSegmentOptions struct {
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
-	// return up to 5,000 items.
-	Maxresults *int32
-	// Filters the results to return only entries whose name begins with the specified prefix.
-	Prefix *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectoryListHandlesOptions contains the optional parameters for the Directory.ListHandles method.
-type DirectoryListHandlesOptions struct {
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
-	// return up to 5,000 items.
-	Maxresults *int32
-	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
-	Recursive *bool
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectorySetMetadataOptions contains the optional parameters for the Directory.SetMetadata method.
-type DirectorySetMetadataOptions struct {
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// DirectorySetPropertiesOptions contains the optional parameters for the Directory.SetProperties method.
-type DirectorySetPropertiesOptions struct {
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
-	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	FilePermission *string
-	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileAbortCopyOptions contains the optional parameters for the File.AbortCopy method.
-type FileAbortCopyOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileAcquireLeaseOptions contains the optional parameters for the File.AcquireLease method.
-type FileAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
-	// A lease duration cannot be changed using renew or change.
-	Duration *int32
-	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
-	// Guid Constructor (String) for a list of valid GUID string formats.
-	ProposedLeaseID *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileBreakLeaseOptions contains the optional parameters for the File.BreakLease method.
-type FileBreakLeaseOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileChangeLeaseOptions contains the optional parameters for the File.ChangeLease method.
-type FileChangeLeaseOptions struct {
-	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
-	// Guid Constructor (String) for a list of valid GUID string formats.
-	ProposedLeaseID *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileCreateOptions contains the optional parameters for the File.Create method.
-type FileCreateOptions struct {
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
-	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	FilePermission *string
-	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileDeleteOptions contains the optional parameters for the File.Delete method.
-type FileDeleteOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileDownloadOptions contains the optional parameters for the File.Download method.
-type FileDownloadOptions struct {
-	// Return file data only from the specified byte range.
-	Range *string
-	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is
-	// less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileForceCloseHandlesOptions contains the optional parameters for the File.ForceCloseHandles method.
-type FileForceCloseHandlesOptions struct {
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileGetPropertiesOptions contains the optional parameters for the File.GetProperties method.
-type FileGetPropertiesOptions struct {
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileGetRangeListOptions contains the optional parameters for the File.GetRangeList method.
-type FileGetRangeListOptions struct {
-	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
-	Prevsharesnapshot *string
-	// Specifies the range of bytes over which to list ranges, inclusively.
-	Range *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileHTTPHeaders contains a group of parameters for the File.Create method.
+// FileHTTPHeaders contains a group of parameters for the fileClient.Create method.
 type FileHTTPHeaders struct {
 	// Sets the file's cache control. The File service stores this value but does not use or modify it.
 	FileCacheControl *string
@@ -356,30 +148,68 @@ type FileItem struct {
 
 	// REQUIRED; File properties.
 	Properties *FileProperty `xml:"Properties"`
-}
-
-// FileListHandlesOptions contains the optional parameters for the File.ListHandles method.
-type FileListHandlesOptions struct {
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
-	// return up to 5,000 items.
-	Maxresults *int32
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
+	Attributes *string `xml:"Attributes"`
+	FileID *string `xml:"FileId"`
+	PermissionKey *string `xml:"PermissionKey"`
 }
 
 // FileProperty - File properties.
 type FileProperty struct {
-	// REQUIRED; Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally. The value of Content-Length
-	// may not reflect that fact until the handle is closed or
-	// the op-lock is broken. To retrieve current property values, call Get File Properties.
+	// REQUIRED; Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally.
+// The value of Content-Length may not reflect that fact until the handle is closed or
+// the op-lock is broken. To retrieve current property values, call Get File Properties.
 	ContentLength *int64 `xml:"Content-Length"`
+	ChangeTime *time.Time `xml:"ChangeTime"`
+	CreationTime *time.Time `xml:"CreationTime"`
+	Etag *string `xml:"Etag"`
+	LastAccessTime *time.Time `xml:"LastAccessTime"`
+	LastModified *time.Time `xml:"Last-Modified"`
+	LastWriteTime *time.Time `xml:"LastWriteTime"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type FileProperty.
+func (f FileProperty) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias FileProperty
+	aux := &struct {
+		*alias
+		ChangeTime *timeRFC3339 `xml:"ChangeTime"`
+		CreationTime *timeRFC3339 `xml:"CreationTime"`
+		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		LastWriteTime *timeRFC3339 `xml:"LastWriteTime"`
+	}{
+		alias: (*alias)(&f),
+		ChangeTime: (*timeRFC3339)(f.ChangeTime),
+		CreationTime: (*timeRFC3339)(f.CreationTime),
+		LastAccessTime: (*timeRFC3339)(f.LastAccessTime),
+		LastModified: (*timeRFC1123)(f.LastModified),
+		LastWriteTime: (*timeRFC3339)(f.LastWriteTime),
+	}
+	return e.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type FileProperty.
+func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias FileProperty
+	aux := &struct {
+		*alias
+		ChangeTime *timeRFC3339 `xml:"ChangeTime"`
+		CreationTime *timeRFC3339 `xml:"CreationTime"`
+		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		LastWriteTime *timeRFC3339 `xml:"LastWriteTime"`
+	}{
+		alias: (*alias)(f),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	f.ChangeTime = (*time.Time)(aux.ChangeTime)
+	f.CreationTime = (*time.Time)(aux.CreationTime)
+	f.LastAccessTime = (*time.Time)(aux.LastAccessTime)
+	f.LastModified = (*time.Time)(aux.LastModified)
+	f.LastWriteTime = (*time.Time)(aux.LastWriteTime)
+	return nil
 }
 
 // FileRange - An Azure Storage file range.
@@ -389,79 +219,6 @@ type FileRange struct {
 
 	// REQUIRED; Start of the range.
 	Start *int64 `xml:"Start"`
-}
-
-// FileReleaseLeaseOptions contains the optional parameters for the File.ReleaseLease method.
-type FileReleaseLeaseOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileSetHTTPHeadersOptions contains the optional parameters for the File.SetHTTPHeaders method.
-type FileSetHTTPHeadersOptions struct {
-	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte
-	// value are cleared.
-	FileContentLength *int64
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
-	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	FilePermission *string
-	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileSetMetadataOptions contains the optional parameters for the File.SetMetadata method.
-type FileSetMetadataOptions struct {
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileStartCopyOptions contains the optional parameters for the File.StartCopy method.
-type FileStartCopyOptions struct {
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
-	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	FilePermission *string
-	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileUploadRangeFromURLOptions contains the optional parameters for the File.UploadRangeFromURL method.
-type FileUploadRangeFromURLOptions struct {
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
-	// Bytes of source data in the specified range.
-	SourceRange *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// FileUploadRangeOptions contains the optional parameters for the File.UploadRange method.
-type FileUploadRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5 header is specified, the File
-	// service compares the hash of the content that has arrived with the header value that was sent. If the two hashes do not match, the operation will fail
-	// with error code 400 (Bad Request).
-	ContentMD5 []byte
-	// Initial data.
-	Optionalbody io.ReadSeekCloser
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
 }
 
 // FilesAndDirectoriesListSegment - Abstract for entries that can be listed from Directory.
@@ -479,7 +236,7 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(e *xml.Encoder, start xml.Sta
 	aux := &struct {
 		*alias
 		DirectoryItems *[]*DirectoryItem `xml:"Directory"`
-		FileItems      *[]*FileItem      `xml:"File"`
+		FileItems *[]*FileItem `xml:"File"`
 	}{
 		alias: (*alias)(&f),
 	}
@@ -525,11 +282,11 @@ func (h HandleItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
+		OpenTime *timeRFC1123 `xml:"OpenTime"`
 	}{
-		alias:             (*alias)(&h),
+		alias: (*alias)(&h),
 		LastReconnectTime: (*timeRFC1123)(h.LastReconnectTime),
-		OpenTime:          (*timeRFC1123)(h.OpenTime),
+		OpenTime: (*timeRFC1123)(h.OpenTime),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -540,7 +297,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
+		OpenTime *timeRFC1123 `xml:"OpenTime"`
 	}{
 		alias: (*alias)(h),
 	}
@@ -552,7 +309,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	return nil
 }
 
-// LeaseAccessConditions contains a group of parameters for the Share.GetProperties method.
+// LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
 type LeaseAccessConditions struct {
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -576,16 +333,17 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`
 
 	// REQUIRED
-	ShareName     *string `xml:"ShareName,attr"`
-	Marker        *string `xml:"Marker"`
-	MaxResults    *int32  `xml:"MaxResults"`
+	ShareName *string `xml:"ShareName,attr"`
+	DirectoryID *string `xml:"DirectoryId"`
+	Marker *string `xml:"Marker"`
+	MaxResults *int32 `xml:"MaxResults"`
 	ShareSnapshot *string `xml:"ShareSnapshot,attr"`
 }
 
 // ListHandlesResponse - An enumeration of handles.
 type ListHandlesResponse struct {
 	// REQUIRED
-	NextMarker *string       `xml:"NextMarker"`
+	NextMarker *string `xml:"NextMarker"`
 	HandleList []*HandleItem `xml:"Entries>Handle"`
 }
 
@@ -610,11 +368,11 @@ type ListSharesResponse struct {
 	NextMarker *string `xml:"NextMarker"`
 
 	// REQUIRED
-	ServiceEndpoint *string      `xml:"ServiceEndpoint,attr"`
-	Marker          *string      `xml:"Marker"`
-	MaxResults      *int32       `xml:"MaxResults"`
-	Prefix          *string      `xml:"Prefix"`
-	ShareItems      []*ShareItem `xml:"Shares>Share"`
+	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`
+	Marker *string `xml:"Marker"`
+	MaxResults *int32 `xml:"MaxResults"`
+	Prefix *string `xml:"Prefix"`
+	ShareItems []*ShareItemInternal `xml:"Shares>Share"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ListSharesResponse.
@@ -622,7 +380,7 @@ func (l ListSharesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	type alias ListSharesResponse
 	aux := &struct {
 		*alias
-		ShareItems *[]*ShareItem `xml:"Shares>Share"`
+		ShareItems *[]*ShareItemInternal `xml:"Shares>Share"`
 	}{
 		alias: (*alias)(&l),
 	}
@@ -649,138 +407,19 @@ type Metrics struct {
 
 // RetentionPolicy - The retention policy.
 type RetentionPolicy struct {
-	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the user is responsible for deleting
-	// it.
+	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
+// the user is responsible for deleting it.
 	Enabled *bool `xml:"Enabled"`
 
-	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics data is deleted on a best-effort
-	// basis after the retention period expires.
+	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics
+// data is deleted on a best-effort basis after the retention period expires.
 	Days *int32 `xml:"Days"`
-}
-
-// ServiceGetPropertiesOptions contains the optional parameters for the Service.GetProperties method.
-type ServiceGetPropertiesOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ServiceListSharesSegmentOptions contains the optional parameters for the Service.ListSharesSegment method.
-type ServiceListSharesSegmentOptions struct {
-	// Include this parameter to specify one or more datasets to include in the response.
-	Include []ListSharesIncludeType
-	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response
-	// body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker
-	// value is opaque to the client.
-	Marker *string
-	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
-	// return up to 5,000 items.
-	Maxresults *int32
-	// Filters the results to return only entries whose name begins with the specified prefix.
-	Prefix *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ServiceSetPropertiesOptions contains the optional parameters for the Service.SetProperties method.
-type ServiceSetPropertiesOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareAcquireLeaseOptions contains the optional parameters for the Share.AcquireLease method.
-type ShareAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
-	// A lease duration cannot be changed using renew or change.
-	Duration *int32
-	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
-	// Guid Constructor (String) for a list of valid GUID string formats.
-	ProposedLeaseID *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareBreakLeaseOptions contains the optional parameters for the Share.BreakLease method.
-type ShareBreakLeaseOptions struct {
-	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used
-	// if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the
-	// break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration
-	// lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-	BreakPeriod *int32
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareChangeLeaseOptions contains the optional parameters for the Share.ChangeLease method.
-type ShareChangeLeaseOptions struct {
-	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
-	// Guid Constructor (String) for a list of valid GUID string formats.
-	ProposedLeaseID *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareCreateOptions contains the optional parameters for the Share.Create method.
-type ShareCreateOptions struct {
-	// Specifies the access tier of the share.
-	AccessTier *ShareAccessTier
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// Specifies the maximum size of the share, in gigabytes.
-	Quota *int32
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareCreatePermissionOptions contains the optional parameters for the Share.CreatePermission method.
-type ShareCreatePermissionOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareCreateSnapshotOptions contains the optional parameters for the Share.CreateSnapshot method.
-type ShareCreateSnapshotOptions struct {
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareDeleteOptions contains the optional parameters for the Share.Delete method.
-type ShareDeleteOptions struct {
-	// Specifies the option include to delete the base share and all of its snapshots.
-	DeleteSnapshots *DeleteSnapshotsOptionType
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
 }
 
 // ShareFileRangeList - The list of file ranges
 type ShareFileRangeList struct {
 	ClearRanges []*ClearRange `xml:"ClearRange"`
-	Ranges      []*FileRange  `xml:"Range"`
+	Ranges []*FileRange `xml:"Range"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ShareFileRangeList.
@@ -789,7 +428,7 @@ func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	aux := &struct {
 		*alias
 		ClearRanges *[]*ClearRange `xml:"ClearRange"`
-		Ranges      *[]*FileRange  `xml:"Range"`
+		Ranges *[]*FileRange `xml:"Range"`
 	}{
 		alias: (*alias)(&s),
 	}
@@ -802,54 +441,24 @@ func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	return e.EncodeElement(aux, start)
 }
 
-// ShareGetAccessPolicyOptions contains the optional parameters for the Share.GetAccessPolicy method.
-type ShareGetAccessPolicyOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareGetPermissionOptions contains the optional parameters for the Share.GetPermission method.
-type ShareGetPermissionOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareGetPropertiesOptions contains the optional parameters for the Share.GetProperties method.
-type ShareGetPropertiesOptions struct {
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareGetStatisticsOptions contains the optional parameters for the Share.GetStatistics method.
-type ShareGetStatisticsOptions struct {
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareItem - A listed Azure Storage share item.
-type ShareItem struct {
+// ShareItemInternal - A listed Azure Storage share item.
+type ShareItemInternal struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
 
 	// REQUIRED; Properties of a share.
-	Properties *ShareProperties `xml:"Properties"`
-	Deleted    *bool            `xml:"Deleted"`
+	Properties *SharePropertiesInternal `xml:"Properties"`
+	Deleted *bool `xml:"Deleted"`
 
 	// Dictionary of
 	Metadata map[string]*string `xml:"Metadata"`
-	Snapshot *string            `xml:"Snapshot"`
-	Version  *string            `xml:"Version"`
+	Snapshot *string `xml:"Snapshot"`
+	Version *string `xml:"Version"`
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type ShareItem.
-func (s *ShareItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias ShareItem
+// UnmarshalXML implements the xml.Unmarshaller interface for type ShareItemInternal.
+func (s *ShareItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias ShareItemInternal
 	aux := &struct {
 		*alias
 		Metadata additionalProperties `xml:"Metadata"`
@@ -869,8 +478,8 @@ type SharePermission struct {
 	Permission *string `json:"permission,omitempty"`
 }
 
-// ShareProperties - Properties of a share.
-type ShareProperties struct {
+// SharePropertiesInternal - Properties of a share.
+type SharePropertiesInternal struct {
 	// REQUIRED
 	Etag *string `xml:"Etag"`
 
@@ -878,11 +487,12 @@ type ShareProperties struct {
 	LastModified *time.Time `xml:"Last-Modified"`
 
 	// REQUIRED
-	Quota                     *int32     `xml:"Quota"`
-	AccessTier                *string    `xml:"AccessTier"`
-	AccessTierChangeTime      *time.Time `xml:"AccessTierChangeTime"`
-	AccessTierTransitionState *string    `xml:"AccessTierTransitionState"`
-	DeletedTime               *time.Time `xml:"DeletedTime"`
+	Quota *int32 `xml:"Quota"`
+	AccessTier *string `xml:"AccessTier"`
+	AccessTierChangeTime *time.Time `xml:"AccessTierChangeTime"`
+	AccessTierTransitionState *string `xml:"AccessTierTransitionState"`
+	DeletedTime *time.Time `xml:"DeletedTime"`
+	EnabledProtocols *string `xml:"EnabledProtocols"`
 
 	// When a share is leased, specifies whether the lease is of infinite or fixed duration.
 	LeaseDuration *LeaseDurationType `xml:"LeaseDuration"`
@@ -891,41 +501,42 @@ type ShareProperties struct {
 	LeaseState *LeaseStateType `xml:"LeaseState"`
 
 	// The current lease status of the share.
-	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
-	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
-	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
-	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`
-	ProvisionedIops               *int32           `xml:"ProvisionedIops"`
-	RemainingRetentionDays        *int32           `xml:"RemainingRetentionDays"`
+	LeaseStatus *LeaseStatusType `xml:"LeaseStatus"`
+	NextAllowedQuotaDowngradeTime *time.Time `xml:"NextAllowedQuotaDowngradeTime"`
+	ProvisionedEgressMBps *int32 `xml:"ProvisionedEgressMBps"`
+	ProvisionedIngressMBps *int32 `xml:"ProvisionedIngressMBps"`
+	ProvisionedIops *int32 `xml:"ProvisionedIops"`
+	RemainingRetentionDays *int32 `xml:"RemainingRetentionDays"`
+	RootSquash *ShareRootSquash `xml:"RootSquash"`
 }
 
-// MarshalXML implements the xml.Marshaller interface for type ShareProperties.
-func (s ShareProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias ShareProperties
+// MarshalXML implements the xml.Marshaller interface for type SharePropertiesInternal.
+func (s SharePropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
 		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
-		alias:                         (*alias)(&s),
-		AccessTierChangeTime:          (*timeRFC1123)(s.AccessTierChangeTime),
-		DeletedTime:                   (*timeRFC1123)(s.DeletedTime),
-		LastModified:                  (*timeRFC1123)(s.LastModified),
+		alias: (*alias)(&s),
+		AccessTierChangeTime: (*timeRFC1123)(s.AccessTierChangeTime),
+		DeletedTime: (*timeRFC1123)(s.DeletedTime),
+		LastModified: (*timeRFC1123)(s.LastModified),
 		NextAllowedQuotaDowngradeTime: (*timeRFC1123)(s.NextAllowedQuotaDowngradeTime),
 	}
 	return e.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type ShareProperties.
-func (s *ShareProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias ShareProperties
+// UnmarshalXML implements the xml.Unmarshaller interface for type SharePropertiesInternal.
+func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
 		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
 		alias: (*alias)(s),
@@ -946,70 +557,6 @@ type ShareProtocolSettings struct {
 	Smb *ShareSmbSettings `xml:"SMB"`
 }
 
-// ShareReleaseLeaseOptions contains the optional parameters for the Share.ReleaseLease method.
-type ShareReleaseLeaseOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareRenewLeaseOptions contains the optional parameters for the Share.RenewLease method.
-type ShareRenewLeaseOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Sharesnapshot *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareRestoreOptions contains the optional parameters for the Share.Restore method.
-type ShareRestoreOptions struct {
-	// Specifies the name of the preivously-deleted share.
-	DeletedShareName *string
-	// Specifies the version of the preivously-deleted share.
-	DeletedShareVersion *string
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestID *string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareSetAccessPolicyOptions contains the optional parameters for the Share.SetAccessPolicy method.
-type ShareSetAccessPolicyOptions struct {
-	// The ACL for the share.
-	ShareACL []*SignedIdentifier
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareSetMetadataOptions contains the optional parameters for the Share.SetMetadata method.
-type ShareSetMetadataOptions struct {
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
-// ShareSetPropertiesOptions contains the optional parameters for the Share.SetProperties method.
-type ShareSetPropertiesOptions struct {
-	// Specifies the access tier of the share.
-	AccessTier *ShareAccessTier
-	// Specifies the maximum size of the share, in gigabytes.
-	Quota *int32
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
-	// Timeouts for File Service Operations.</a>
-	Timeout *int32
-}
-
 // ShareSmbSettings - Settings for SMB protocol.
 type ShareSmbSettings struct {
 	// Settings for SMB Multichannel.
@@ -1018,8 +565,9 @@ type ShareSmbSettings struct {
 
 // ShareStats - Stats for the share.
 type ShareStats struct {
-	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or recently resized files.
-	ShareUsageBytes *int64 `xml:"ShareUsageBytes"`
+	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or
+// recently resized files.
+	ShareUsageBytes *int32 `xml:"ShareUsageBytes"`
 }
 
 // SignedIdentifier - Signed identifier.
@@ -1037,7 +585,7 @@ type SmbMultichannel struct {
 	Enabled *bool `xml:"Enabled"`
 }
 
-// SourceModifiedAccessConditions contains a group of parameters for the File.UploadRangeFromURL method.
+// SourceModifiedAccessConditions contains a group of parameters for the fileClient.UploadRangeFromURL method.
 type SourceModifiedAccessConditions struct {
 	// Specify the crc64 value to operate only on range with a matching crc64 checksum.
 	SourceIfMatchCRC64 []byte
@@ -1045,17 +593,9 @@ type SourceModifiedAccessConditions struct {
 	SourceIfNoneMatchCRC64 []byte
 }
 
-//// Implements the error and azcore.HTTPResponse interfaces.
-//type StorageError struct {
-//	raw     string
-//	Message *string `xml:"Message"`
-//}
-//
-//// Error implements the error interface for type StorageError.
-//// The contents of the error text are not contractual and subject to change.
-//func (e StorageError) Error() string {
-//	return e.raw
-//}
+type StorageError struct {
+	Message *string `json:"Message,omitempty"`
+}
 
 // StorageServiceProperties - Storage service properties.
 type StorageServiceProperties struct {
@@ -1086,3 +626,570 @@ func (s StorageServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElem
 	}
 	return e.EncodeElement(aux, start)
 }
+
+// directoryClientCreateOptions contains the optional parameters for the directoryClient.Create method.
+type directoryClientCreateOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+// should be specified.
+	FilePermissionKey *string
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientDeleteOptions contains the optional parameters for the directoryClient.Delete method.
+type directoryClientDeleteOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientForceCloseHandlesOptions contains the optional parameters for the directoryClient.ForceCloseHandles method.
+type directoryClientForceCloseHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+	Recursive *bool
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientGetPropertiesOptions contains the optional parameters for the directoryClient.GetProperties method.
+type directoryClientGetPropertiesOptions struct {
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the directoryClient.ListFilesAndDirectoriesSegment
+// method.
+type directoryClientListFilesAndDirectoriesSegmentOptions struct {
+	// Include this parameter to specify one or more datasets to include in the response.
+	Include []ListFilesIncludeType
+	// Include extended information.
+	IncludeExtendedInfo *bool
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+// than 5,000, the server will return up to 5,000 items.
+	Maxresults *int32
+	// Filters the results to return only entries whose name begins with the specified prefix.
+	Prefix *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientListHandlesOptions contains the optional parameters for the directoryClient.ListHandles method.
+type directoryClientListHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+// than 5,000, the server will return up to 5,000 items.
+	Maxresults *int32
+	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+	Recursive *bool
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientSetMetadataOptions contains the optional parameters for the directoryClient.SetMetadata method.
+type directoryClientSetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// directoryClientSetPropertiesOptions contains the optional parameters for the directoryClient.SetProperties method.
+type directoryClientSetPropertiesOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+// should be specified.
+	FilePermissionKey *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientAbortCopyOptions contains the optional parameters for the fileClient.AbortCopy method.
+type fileClientAbortCopyOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientAcquireLeaseOptions contains the optional parameters for the fileClient.AcquireLease method.
+type fileClientAcquireLeaseOptions struct {
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+// can be between 15 and 60 seconds. A lease duration cannot be changed using
+// renew or change.
+	Duration *int32
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
+// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+// string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientBreakLeaseOptions contains the optional parameters for the fileClient.BreakLease method.
+type fileClientBreakLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientChangeLeaseOptions contains the optional parameters for the fileClient.ChangeLease method.
+type fileClientChangeLeaseOptions struct {
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
+// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+// string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientCreateOptions contains the optional parameters for the fileClient.Create method.
+type fileClientCreateOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+// should be specified.
+	FilePermissionKey *string
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientDeleteOptions contains the optional parameters for the fileClient.Delete method.
+type fileClientDeleteOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientDownloadOptions contains the optional parameters for the fileClient.Download method.
+type fileClientDownloadOptions struct {
+	// Return file data only from the specified byte range.
+	Range *string
+	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
+// range, as long as the range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientForceCloseHandlesOptions contains the optional parameters for the fileClient.ForceCloseHandles method.
+type fileClientForceCloseHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientGetPropertiesOptions contains the optional parameters for the fileClient.GetProperties method.
+type fileClientGetPropertiesOptions struct {
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientGetRangeListOptions contains the optional parameters for the fileClient.GetRangeList method.
+type fileClientGetRangeListOptions struct {
+	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
+	Prevsharesnapshot *string
+	// Specifies the range of bytes over which to list ranges, inclusively.
+	Range *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientListHandlesOptions contains the optional parameters for the fileClient.ListHandles method.
+type fileClientListHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+// than 5,000, the server will return up to 5,000 items.
+	Maxresults *int32
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientReleaseLeaseOptions contains the optional parameters for the fileClient.ReleaseLease method.
+type fileClientReleaseLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientSetHTTPHeadersOptions contains the optional parameters for the fileClient.SetHTTPHeaders method.
+type fileClientSetHTTPHeadersOptions struct {
+	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges
+// above the specified byte value are cleared.
+	FileContentLength *int64
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+// should be specified.
+	FilePermissionKey *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientSetMetadataOptions contains the optional parameters for the fileClient.SetMetadata method.
+type fileClientSetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientStartCopyOptions contains the optional parameters for the fileClient.StartCopy method.
+type fileClientStartCopyOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+// should be specified.
+	FilePermissionKey *string
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientUploadRangeFromURLOptions contains the optional parameters for the fileClient.UploadRangeFromURL method.
+type fileClientUploadRangeFromURLOptions struct {
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
+	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+	SourceContentCRC64 []byte
+	// Bytes of source data in the specified range.
+	SourceRange *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// fileClientUploadRangeOptions contains the optional parameters for the fileClient.UploadRange method.
+type fileClientUploadRangeOptions struct {
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+// header is specified, the File service compares the hash of the content that has
+// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
+// (Bad Request).
+	ContentMD5 []byte
+	// Initial data.
+	Optionalbody io.ReadSeekCloser
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// serviceClientGetPropertiesOptions contains the optional parameters for the serviceClient.GetProperties method.
+type serviceClientGetPropertiesOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// serviceClientListSharesSegmentOptions contains the optional parameters for the serviceClient.ListSharesSegment method.
+type serviceClientListSharesSegmentOptions struct {
+	// Include this parameter to specify one or more datasets to include in the response.
+	Include []ListSharesIncludeType
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+// a marker value within the response body if the list returned was not complete.
+// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+// to the client.
+	Marker *string
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+// than 5,000, the server will return up to 5,000 items.
+	Maxresults *int32
+	// Filters the results to return only entries whose name begins with the specified prefix.
+	Prefix *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// serviceClientSetPropertiesOptions contains the optional parameters for the serviceClient.SetProperties method.
+type serviceClientSetPropertiesOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientAcquireLeaseOptions contains the optional parameters for the shareClient.AcquireLease method.
+type shareClientAcquireLeaseOptions struct {
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+// can be between 15 and 60 seconds. A lease duration cannot be changed using
+// renew or change.
+	Duration *int32
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
+// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+// string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientBreakLeaseOptions contains the optional parameters for the shareClient.BreakLease method.
+type shareClientBreakLeaseOptions struct {
+	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
+// break period is only used if it is shorter than the time remaining on the
+// lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has
+// expired, but the lease may be held for longer than the break period. If this
+// header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses,
+// and an infinite lease breaks immediately.
+	BreakPeriod *int32
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientChangeLeaseOptions contains the optional parameters for the shareClient.ChangeLease method.
+type shareClientChangeLeaseOptions struct {
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
+// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+// string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientCreateOptions contains the optional parameters for the shareClient.Create method.
+type shareClientCreateOptions struct {
+	// Specifies the access tier of the share.
+	AccessTier *ShareAccessTier
+	// Protocols to enable on the share.
+	EnabledProtocols *string
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// Specifies the maximum size of the share, in gigabytes.
+	Quota *int32
+	// Root squash to set on the share. Only valid for NFS shares.
+	RootSquash *ShareRootSquash
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientCreatePermissionOptions contains the optional parameters for the shareClient.CreatePermission method.
+type shareClientCreatePermissionOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientCreateSnapshotOptions contains the optional parameters for the shareClient.CreateSnapshot method.
+type shareClientCreateSnapshotOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientDeleteOptions contains the optional parameters for the shareClient.Delete method.
+type shareClientDeleteOptions struct {
+	// Specifies the option include to delete the base share and all of its snapshots.
+	DeleteSnapshots *DeleteSnapshotsOptionType
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientGetAccessPolicyOptions contains the optional parameters for the shareClient.GetAccessPolicy method.
+type shareClientGetAccessPolicyOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientGetPermissionOptions contains the optional parameters for the shareClient.GetPermission method.
+type shareClientGetPermissionOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientGetPropertiesOptions contains the optional parameters for the shareClient.GetProperties method.
+type shareClientGetPropertiesOptions struct {
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientGetStatisticsOptions contains the optional parameters for the shareClient.GetStatistics method.
+type shareClientGetStatisticsOptions struct {
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientReleaseLeaseOptions contains the optional parameters for the shareClient.ReleaseLease method.
+type shareClientReleaseLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientRenewLeaseOptions contains the optional parameters for the shareClient.RenewLease method.
+type shareClientRenewLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientRestoreOptions contains the optional parameters for the shareClient.Restore method.
+type shareClientRestoreOptions struct {
+	// Specifies the name of the previously-deleted share.
+	DeletedShareName *string
+	// Specifies the version of the previously-deleted share.
+	DeletedShareVersion *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientSetAccessPolicyOptions contains the optional parameters for the shareClient.SetAccessPolicy method.
+type shareClientSetAccessPolicyOptions struct {
+	// The ACL for the share.
+	ShareACL []*SignedIdentifier
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientSetMetadataOptions contains the optional parameters for the shareClient.SetMetadata method.
+type shareClientSetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
+// shareClientSetPropertiesOptions contains the optional parameters for the shareClient.SetProperties method.
+type shareClientSetPropertiesOptions struct {
+	// Specifies the access tier of the share.
+	AccessTier *ShareAccessTier
+	// Specifies the maximum size of the share, in gigabytes.
+	Quota *int32
+	// Root squash to set on the share. Only valid for NFS shares.
+	RootSquash *ShareRootSquash
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+

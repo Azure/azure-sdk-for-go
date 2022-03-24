@@ -62,7 +62,7 @@ steps:
       ${{ insert }}: ${{ parameters.EnvVars }}
 
   - task: PowerShell@2
-    display: 'Build Performance Tests'
+    displayName: 'Build Performance Tests'
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/Build_Perf.ps1

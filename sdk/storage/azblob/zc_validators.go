@@ -32,7 +32,7 @@ type HttpRange struct {
 	Count  int64
 }
 
-func (r HttpRange) pointers() *string {
+func (r HttpRange) format() *string {
 	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
 		return nil // No specified range
 	}
@@ -59,7 +59,7 @@ func getSourceRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return HttpRange{Offset: newOffset, Count: newCount}.pointers()
+	return HttpRange{Offset: newOffset, Count: newCount}.format()
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

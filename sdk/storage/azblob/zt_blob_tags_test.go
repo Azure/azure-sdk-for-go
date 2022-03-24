@@ -41,7 +41,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_assert.Nil(err)
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
-	setTagsBlobOptions := SetTagsBlobOptions{
+	setTagsBlobOptions := BlobSetTagsOptions{
 		TagsMap: blobTagsMap,
 	}
 	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
@@ -88,7 +88,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId2 := blockBlobUploadResp.VersionID
 
-	setTagsBlobOptions := SetTagsBlobOptions{
+	setTagsBlobOptions := BlobSetTagsOptions{
 		TagsMap:   blobTagsMap,
 		VersionID: versionId1,
 	}
@@ -96,7 +96,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_assert.Nil(err)
 	_assert.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
-	getTagsBlobOptions1 := GetTagsBlobOptions{
+	getTagsBlobOptions1 := BlobGetTagsOptions{
 		VersionID: versionId1,
 	}
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
@@ -108,7 +108,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 		_assert.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
 	}
 
-	getTagsBlobOptions2 := GetTagsBlobOptions{
+	getTagsBlobOptions2 := BlobGetTagsOptions{
 		VersionID: versionId2,
 	}
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
@@ -138,7 +138,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 		"+-./:=_1": "+-./:=_",
 	}
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		Metadata:    basicMetadata,
 		HTTPHeaders: &basicHeaders,
 		TagsMap:     blobTagsMap,
@@ -190,7 +190,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 		"sdk":      "go",
 	}
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobTagsMap: blobTagsMap,
 	}
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
@@ -204,7 +204,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
-	getTagsBlobOptions := GetTagsBlobOptions{
+	getTagsBlobOptions := BlobGetTagsOptions{
 		VersionID: versionId,
 	}
 	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
@@ -252,7 +252,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 		"Javascript": "Android",
 	}
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		TagsMap: blobTagsMap,
 	}
 	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
@@ -280,7 +280,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 
 	offset1, count1 := int64(0), int64(contentSize/2)
-	options1 := StageBlockFromURLOptions{
+	options1 := BlockBlobStageBlockFromURLOptions{
 		Offset: &offset1,
 		Count:  &count1,
 	}
@@ -293,7 +293,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_assert.Equal((*stageResp1.Date).IsZero(), false)
 
 	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
-	options2 := StageBlockFromURLOptions{
+	options2 := BlockBlobStageBlockFromURLOptions{
 		Offset: &offset2,
 		Count:  &count2,
 	}
@@ -311,7 +311,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
-	commitBlockListOptions := CommitBlockListOptions{
+	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobTagsMap: blobTagsMap,
 	}
 	listResp, err := destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
@@ -361,7 +361,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 		"Javascript": "Android",
 	}
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		TagsMap: blobTagsMap,
 	}
 	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
@@ -384,7 +384,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	sourceContentMD5 := sourceDataMD5Value[:]
-	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
+	copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
 		BlobTagsMap:      map[string]string{"foo": "bar"},
 		SourceContentMD5: sourceContentMD5,
 	}
@@ -407,14 +407,14 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_assert.Equal(*downloadResp.TagCount, int64(1))
 
 	_, badMD5 := getRandomDataAndReader(16)
-	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
+	copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
 		BlobTagsMap:      blobTagsMap,
 		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	_assert.NotNil(err)
 
-	copyBlockBlobFromURLOptions3 := CopyBlockBlobFromURLOptions{
+	copyBlockBlobFromURLOptions3 := BlockBlobCopyFromURLOptions{
 		BlobTagsMap: blobTagsMap,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
@@ -438,7 +438,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 
 	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		TagsMap:     basicBlobTagsMap,
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
@@ -477,7 +477,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 		"Storage+SDK":     "SDK/GO",
 		"GO ":             ".Net",
 	}
-	setTagsBlobOptions := SetTagsBlobOptions{
+	setTagsBlobOptions := BlobSetTagsOptions{
 		TagsMap: blobTagsMap,
 	}
 	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
@@ -515,7 +515,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 		"+-./:=_1": "+-./:=_",
 	}
 
-	resp, err := blobClient.SetTags(ctx, &SetTagsBlobOptions{
+	resp, err := blobClient.SetTags(ctx, &BlobSetTagsOptions{
 		TagsMap: blobTagsMap,
 	})
 	_assert.Nil(err)
@@ -530,7 +530,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 
@@ -572,16 +572,16 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	}
 //
 //	blobURL11 := getBlockBlobClient(generateBlobName(testName) + "11", containerClient1)
-//	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &UploadBlockBlobOptions{
+//	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap1,
+//		BlobTagsMap: blobTagsMap1,
 //	})
 //	_assert.Nil(err)
 //
 //	blobURL12 := getBlockBlobClient(generateBlobName(testName) + "12", containerClient1)
-//	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &UploadBlockBlobOptions{
+//	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
-//		TagsMap: blobTagsMap2,
+//		BlobTagsMap: blobTagsMap2,
 //	})
 //	_assert.Nil(err)
 //
@@ -652,7 +652,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		s.T().Fail()
 //	}
 //
-//	blobTagsMap := TagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
+//	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
 //	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
 //	_assert.Nil(err)
 //	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
@@ -687,7 +687,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
@@ -697,7 +697,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_assert.NotEqual(putResp.ETag, ETagNone)
 	_assert.NotEqual(putResp.Version, "")
 
-	setTagsBlobOptions := SetTagsBlobOptions{
+	setTagsBlobOptions := BlobSetTagsOptions{
 		TagsMap: basicBlobTagsMap,
 	}
 	setTagResp, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
@@ -724,7 +724,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 		"b0l1o2b3":   "s0d1k2",
 	}
 
-	setTagsBlobOptions2 := SetTagsBlobOptions{
+	setTagsBlobOptions2 := BlobSetTagsOptions{
 		TagsMap: modifiedBlobTags,
 	}
 	setTagResp, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
@@ -761,7 +761,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	pbClient := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
 
-	setTagsBlobOptions := SetTagsBlobOptions{
+	setTagsBlobOptions := BlobSetTagsOptions{
 		TagsMap: specialCharBlobTagsMap,
 	}
 	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
@@ -802,7 +802,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 
 	abClient, _ := getAppendBlobClient(generateBlobName(testName), containerClient)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		TagsMap: specialCharBlobTagsMap,
 	}
 	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)

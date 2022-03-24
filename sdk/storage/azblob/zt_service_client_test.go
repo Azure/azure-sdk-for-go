@@ -21,7 +21,7 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	}
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-	sAccInfo, err := svcClient.GetAccountInfo(context.Background())
+	sAccInfo, err := svcClient.GetAccountInfo(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.NotEqualValues(sAccInfo, ServiceGetAccountInfoResponse{})
 }
@@ -57,8 +57,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 
 	containerName := generateContainerName(testName)
 	containerClient, _ := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
+	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)
@@ -73,7 +73,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
+		for _, container := range resp.ContainerItems {
 			_assert.NotNil(container.Name)
 
 			if *container.Name == containerName {
@@ -116,8 +116,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 
 	containerName := generateContainerName(testName)
 	containerClient, _ := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer func(containerClient *ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
+	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
+	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_assert.Nil(err)
@@ -132,7 +132,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
+		for _, container := range resp.ContainerItems {
 			_assert.NotNil(container.Name)
 
 			if *container.Name == containerName {
@@ -175,7 +175,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //	maxResults := int32(2)
 //	const pagedContainersPrefix = "azcontainerpaged"
 //
-//	containers := make([]ContainerClient, numContainers)
+//	containers := make([]containerClient, numContainers)
 //	expectedResults := make(map[string]bool)
 //	for i := 0; i < numContainers; i++ {
 //		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)
@@ -248,7 +248,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
+		for _, container := range resp.ContainerItems {
 			count++
 			_assert.NotNil(container.Name)
 		}
@@ -312,25 +312,25 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
 
 	days := to.Int32Ptr(5)
 	enabled := to.BoolPtr(true)
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx)
+	resp, err := svcClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
 	_assert.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err = svcClient.GetProperties(ctx)
+	resp, err = svcClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
 	_assert.Nil(resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
@@ -347,19 +347,19 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
 
 	days := to.Int32Ptr(5)
 	enabled := to.BoolPtr(true)
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx)
+	resp, err := svcClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{}})
 	_assert.NotNil(err)
 }
 
@@ -374,32 +374,32 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 
 	days := to.Int32Ptr(5)
 	enabled := to.BoolPtr(true)
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx)
+	resp, err := svcClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{})
 	_assert.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
-	resp, err = svcClient.GetProperties(ctx)
+	resp, err = svcClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.BoolPtr(false)
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled}})
 	_assert.Nil(err)
 }
 
@@ -414,7 +414,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 
 	days := int32(0) // Minimum days is 1. Validated on the client.
 	enabled := true
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 	_assert.NotNil(err)
 }
 
@@ -433,7 +433,7 @@ func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge
 
 		days := int32(366) // Max days is 365. Left to the service for validation.
 		enabled := true
-		_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+		_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 		_assert.NotNil(err)
 
 		validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
@@ -451,7 +451,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
 
 	// Days is required if enabled is true.
 	enabled := true
-	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)

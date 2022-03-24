@@ -30,7 +30,7 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
@@ -63,7 +63,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 
 	blobProp, _ := abClient.GetProperties(ctx, nil)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
@@ -173,14 +173,14 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &UploadBlockBlobOptions{
+//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
 //	versionID1 := uploadResp.VersionID
 //
-//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &UploadBlockBlobOptions{
+//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
@@ -283,7 +283,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
-		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &UploadBlockBlobOptions{
+		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &BlockBlobUploadOptions{
 			Metadata: basicMetadata,
 		})
 		_assert.Nil(err)
@@ -298,7 +298,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	found := make([]*BlobItemInternal, 0)
 	for listPager.NextPage(ctx) {
 		resp := listPager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(listPager.Err())
 	_assert.Len(found, 5)
@@ -319,7 +319,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	found = make([]*BlobItemInternal, 0)
 	for listPager.NextPage(ctx) {
 		resp := listPager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(listPager.Err())
 	_assert.Len(found, 2)
@@ -533,13 +533,13 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	found := make([]*BlobItemInternal, 0)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 	_assert.Len(found, 2)
 
 	deleteSnapshotsOnly := DeleteSnapshotsOptionTypeOnly
-	deleteResp, err := bbClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	deleteResp, err := bbClient.Delete(ctx, &BlobDeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
 	_assert.Nil(err)
 	_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
 
@@ -550,7 +550,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	found = make([]*BlobItemInternal, 0)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
+		found = append(found, resp.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 	_assert.NotEqual(len(found), 0)
@@ -575,7 +575,7 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)

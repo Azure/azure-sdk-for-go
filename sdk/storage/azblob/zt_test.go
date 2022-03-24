@@ -10,6 +10,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"io/ioutil"
 	"log"
@@ -41,8 +42,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
+	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -321,7 +322,7 @@ func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
 func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient *ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient *BlockBlobClient) {
 	bbClient, _ = getBlockBlobClient(blockBlobName, containerClient)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	}
@@ -341,7 +342,7 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container *ContainerClient, sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient *PageBlobClient) {
 	pbClient, _ = getPageBlobClient(pageBlobName, container)
 
-	resp, err := pbClient.Create(ctx, sizeInBytes, &CreatePageBlobOptions{
+	resp, err := pbClient.Create(ctx, sizeInBytes, &PageBlobCreateOptions{
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	})
@@ -410,8 +411,10 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
+				ClientOptions: azcore.ClientOptions{
+					Transport: recording,
+					Retry:     policy.RetryOptions{MaxRetries: -1}},
+			}
 		}
 	}
 
@@ -438,8 +441,10 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
+				ClientOptions: azcore.ClientOptions{
+					Transport: recording,
+					Retry:     policy.RetryOptions{MaxRetries: -1}},
+			}
 		}
 	}
 
@@ -495,13 +500,13 @@ func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu *ServiceC
 
 func enableSoftDelete(_assert *assert.Assertions, serviceClient *ServiceClient) {
 	days := int32(1)
-	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
+	_, err := serviceClient.SetProperties(ctx, &ServiceSetPropertiesOptions{
 		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
 	_assert.Nil(err)
 }
 
 func disableSoftDelete(_assert *assert.Assertions, bsu *ServiceClient) {
-	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
+	_, err := bsu.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
 	_assert.Nil(err)
 }
 

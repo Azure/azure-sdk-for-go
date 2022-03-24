@@ -452,9 +452,10 @@ func ExampleClient_List() {
 
 			sp := myEntity.Properties["String"].(string)
 			dp := myEntity.Properties["Double"].(float64)
-			dt := myEntity.Properties["DateTime"].(time.Time)
+			dt := myEntity.Properties["DateTime"].(aztables.EDMDateTime)
+			t1 := time.Time(dt)
 
-			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, dt)
+			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, t1.String())
 		}
 		pageCount += 1
 	}

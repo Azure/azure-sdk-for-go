@@ -61,7 +61,7 @@ type (
 
 // NamespaceWithNewAMQPLinks is the Namespace surface for consumers of AMQPLinks.
 type NamespaceWithNewAMQPLinks interface {
-	NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks
+	NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc, getRecoveryKindFunc func(err error) RecoveryKind) AMQPLinks
 	Check() error
 }
 
@@ -231,8 +231,13 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 
 // NewAMQPLinks creates an AMQPLinks struct, which groups together the commonly needed links for
 // working with Service Bus.
-func (ns *Namespace) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
-	return NewAMQPLinks(ns, entityPath, createLinkFunc)
+func (ns *Namespace) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc, getRecoveryKindFunc func(err error) RecoveryKind) AMQPLinks {
+	return NewAMQPLinks(NewAMQPLinksArgs{
+		NS:                  ns,
+		EntityPath:          entityPath,
+		CreateLinkFunc:      createLinkFunc,
+		GetRecoveryKindFunc: getRecoveryKindFunc,
+	})
 }
 
 // Close closes the current cached client.

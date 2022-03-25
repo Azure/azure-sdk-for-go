@@ -45,6 +45,8 @@ type (
 
 	// RPCResponse is the simplified response structure from an RPC like call
 	RPCResponse struct {
+		// Code is the response code - these originate from Service Bus. Some
+		// common values are called out below, with the RPCResponseCode* constants.
 		Code        int
 		Description string
 		Message     *amqp.Message
@@ -68,6 +70,14 @@ type (
 		Send(ctx context.Context, msg *amqp.Message) error
 		Close(ctx context.Context) error
 	}
+)
+
+// Response codes that come back over the "RPC" style links like cbs or management.
+const (
+	// RPCResponseCodeNotFound comes back if the entity (queue, topic, subscription) is not found.
+	RPCResponseCodeNotFound = 404
+	// RPCResponseCodeLockLost comes back if you lose a message lock _or_ a session lock.
+	RPCResponseCodeLockLost = 410
 )
 
 type rpcError struct {

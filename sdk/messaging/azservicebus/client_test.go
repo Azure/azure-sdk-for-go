@@ -346,5 +346,5 @@ func assertRPCNotFound(t *testing.T, err error) {
 	}
 
 	require.ErrorAs(t, err, &rpcError)
-	require.Equal(t, 404, rpcError.RPCCode())
+	require.Equal(t, internal.RPCResponseCodeNotFound, rpcError.RPCCode())
 }

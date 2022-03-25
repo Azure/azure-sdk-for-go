@@ -55,10 +55,11 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	}
 
 	r, err := newReceiver(newReceiverArgs{
-		ns:             ns,
-		entity:         entity,
-		cleanupOnClose: cleanupOnClose,
-		newLinkFn:      sessionReceiver.newLink,
+		ns:                  ns,
+		entity:              entity,
+		cleanupOnClose:      cleanupOnClose,
+		newLinkFn:           sessionReceiver.newLink,
+		getRecoveryKindFunc: internal.GetRecoveryKindForSession,
 	}, options)
 
 	if err != nil {

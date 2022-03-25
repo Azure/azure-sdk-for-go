@@ -26,16 +26,18 @@ func NewErrNonRetriable(message string) error {
 
 func (e errNonRetriable) Error() string { return e.Message }
 
-type recoveryKind string
+// RecoveryKind dictates what kind of recovery is possible. Used with
+// GetRecoveryKind().
+type RecoveryKind string
 
-const RecoveryKindNone recoveryKind = ""
-const RecoveryKindFatal recoveryKind = "fatal"
-const RecoveryKindLink recoveryKind = "link"
-const RecoveryKindConn recoveryKind = "connection"
+const RecoveryKindNone RecoveryKind = ""
+const RecoveryKindFatal RecoveryKind = "fatal"
+const RecoveryKindLink RecoveryKind = "link"
+const RecoveryKindConn RecoveryKind = "connection"
 
 type SBErrInfo struct {
 	inner        error
-	RecoveryKind recoveryKind
+	RecoveryKind RecoveryKind
 }
 
 func (sbe *SBErrInfo) String() string {
@@ -93,7 +95,7 @@ func IsDrainingError(err error) bool {
 	return strings.Contains(err.Error(), "link is currently draining")
 }
 
-var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
+var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
 	// no recovery needed, these are temporary errors.
 	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
 	amqp.ErrorCondition("com.microsoft:timeout"):             RecoveryKindNone,
@@ -117,7 +119,19 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
 	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,
 }
 
-func GetRecoveryKind(err error) recoveryKind {
+// GetRecoveryKindForSession determines the recovery type for session-based links.
+func GetRecoveryKindForSession(err error) RecoveryKind {
+	// when a session is detached there's a delay before we can reacquire the
+	// lock. So a lock lost on a session _is_ retryable.
+	if isLockLostError(err) {
+		return RecoveryKindLink
+	}
+
+	return GetRecoveryKind(err)
+}
+
+// GetRecoveryKind determines the recovery type for non-session based links.
+func GetRecoveryKind(err error) RecoveryKind {
 	if err == nil {
 		return RecoveryKindNone
 	}
@@ -176,15 +190,13 @@ func GetRecoveryKind(err error) recoveryKind {
 	if errors.As(err, &rpcErr) {
 		code := rpcErr.RPCCode()
 
-		if code == 404 {
+		if code == RPCResponseCodeNotFound || code == RPCResponseCodeLockLost {
 			return RecoveryKindFatal
 		}
 
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == 401 ||
-			// we lost the session lock, attempt link recovery
-			code == 410 {
+		if code == 401 {
 			return RecoveryKindLink
 		}
 
@@ -283,4 +295,16 @@ func IsErrNotFound(err error) bool {
 
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
+}
+
+func isLockLostError(err error) bool {
+	var rpcErr rpcError
+
+	if errors.As(err, &rpcErr) {
+		if rpcErr.Resp.Code == RPCResponseCodeLockLost {
+			return true
+		}
+	}
+
+	return false
 }

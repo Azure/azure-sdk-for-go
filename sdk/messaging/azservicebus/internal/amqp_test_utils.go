@@ -168,7 +168,7 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
 	l.CloseIfNeededCalled++
 	return GetRecoveryKind(err)
 }
@@ -223,6 +223,6 @@ func (ns *FakeNS) Check() error {
 	return nil
 }
 
-func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
+func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc, getRecoveryKindFunc func(err error) RecoveryKind) AMQPLinks {
 	return ns.AMQPLinks
 }

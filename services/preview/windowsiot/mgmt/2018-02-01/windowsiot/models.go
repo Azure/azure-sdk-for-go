@@ -17,7 +17,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/windowsiot/mgmt/2018-02-01/windowsiot"
 
 // DeviceService the description of the Windows IoT Device Service.
 type DeviceService struct {
@@ -338,7 +338,7 @@ type DeviceServiceProperties struct {
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// Quantity - Windows IoT Device Service device allocation,
 	Quantity *int64 `json:"quantity,omitempty"`
-	// BillingDomainName - Windows IoT Device Service ODM AAD domain
+	// BillingDomainName - READ-ONLY; Windows IoT Device Service ODM AAD domain
 	BillingDomainName *string `json:"billingDomainName,omitempty"`
 	// AdminDomainName - Windows IoT Device Service OEM AAD domain
 	AdminDomainName *string `json:"adminDomainName,omitempty"`
@@ -353,9 +353,6 @@ func (dsp DeviceServiceProperties) MarshalJSON() ([]byte, error) {
 	if dsp.Quantity != nil {
 		objectMap["quantity"] = dsp.Quantity
 	}
-	if dsp.BillingDomainName != nil {
-		objectMap["billingDomainName"] = dsp.BillingDomainName
-	}
 	if dsp.AdminDomainName != nil {
 		objectMap["adminDomainName"] = dsp.AdminDomainName
 	}
@@ -364,12 +361,6 @@ func (dsp DeviceServiceProperties) MarshalJSON() ([]byte, error) {
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Error - The error object.
-	Error *ErrorDetailsError `json:"error,omitempty"`
-}
-
-// ErrorDetailsError the error object.
-type ErrorDetailsError struct {
 	// Code - One of a server-defined set of error codes.
 	Code *string `json:"code,omitempty"`
 	// Message - A human-readable representation of the error.
@@ -398,10 +389,6 @@ type OperationEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The operation supported by Azure Data Catalog Service.
 	Display *OperationDisplayInfo `json:"display,omitempty"`
-	// IsDataAction - Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
-	// Origin - Indicates the executor of the operation.
-	Origin *string `json:"origin,omitempty"`
 }
 
 // OperationListResult result of the request to list Windows IoT Device Service operations. It contains a

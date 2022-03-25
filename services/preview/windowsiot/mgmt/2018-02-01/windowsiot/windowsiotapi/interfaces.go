@@ -8,7 +8,7 @@ package windowsiotapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot"
+	"github.com/Azure/azure-sdk-for-go/services/preview/windowsiot/mgmt/2018-02-01/windowsiot"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.

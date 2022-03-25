@@ -27,7 +27,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request
 // and error information regarding the failure.
 type AzureAsyncOperationResult struct {
-	// Status - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'NetworkOperationStatusInProgress', 'NetworkOperationStatusSucceeded', 'NetworkOperationStatusFailed'
+	// Status - Status of the Azure async operation. Possible values include: 'NetworkOperationStatusInProgress', 'NetworkOperationStatusSucceeded', 'NetworkOperationStatusFailed'
 	Status NetworkOperationStatus `json:"status,omitempty"`
 	Error  *Error                 `json:"error,omitempty"`
 }

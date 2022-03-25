@@ -21,6 +21,18 @@
 | :--- | :---: |
 | `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
 
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-03-30/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-06-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-09-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-12-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-03-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-06-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-08-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2015-05-01-preview/network=`
+
 ## `v62.3.0`
 
 ### New Packages

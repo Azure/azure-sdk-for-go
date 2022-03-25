@@ -683,7 +683,7 @@ type X509CertificateProperties struct {
 	Ekus []*string `json:"ekus,omitempty"`
 
 	// List of key usages.
-	KeyUsage []*CerificateKeyUsage `json:"key_usage,omitempty"`
+	KeyUsage []*CertificateKeyUsage `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.
 	Subject *string `json:"subject,omitempty"`
@@ -719,9 +719,9 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		return nil
 	}
 
-	var ku []*CerificateKeyUsage
+	var ku []*CertificateKeyUsage
 	for _, k := range g.KeyUsage {
-		ku = append(ku, (*CerificateKeyUsage)(k))
+		ku = append(ku, (*CertificateKeyUsage)(k))
 	}
 
 	return &X509CertificateProperties{

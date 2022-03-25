@@ -31,9 +31,10 @@ stages:
         parameters:
           AgentImage: $(image.name)
 
-      - template: /eng/pipelines/templates/steps/install-go-prerelease.yml
-        parameters:
-          archive: '$(go.archive)'
+      - task: GoTool@0
+        inputs:
+          version: '$(go.version)'
+        displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml
 

@@ -1,12 +1,8 @@
 # Azure Key Vault Certificates client library for Go
-Azure Key Vault helps solve the following problems:
-- Certificate management (this library) - create, manage, and deploy public and private SSL/TLS certificates
-- Cryptographic key management
-([azkeys](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
-- Secrets management
-([azsecrets](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets)) -
-securely store and control access to tokens, passwords, certificates, API keys,
-and other secrets
+
+* Certificate management (this library) - create, manage, and deploy public and private SSL/TLS certificates
+* Cryptographic key management (([azkeys](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys))) - create, store, and control access to the keys used to encrypt your data
+* Secrets management ([azsecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
 [Source code][certificates_client_src] | [pkg.go.dev][pkggodev_azcerts] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][certificates_samples]
 

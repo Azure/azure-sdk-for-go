@@ -8,7 +8,7 @@ import (
 	"errors"
 )
 
-// A DatabaseClient lets you perform read, update, change throughput, and delete database operations.
+// DatabaseClient lets you perform read, update, change throughput, and delete database operations.
 type DatabaseClient struct {
 	// The Id of the Cosmos database
 	id string

@@ -3,7 +3,7 @@
 
 package azcosmos
 
-// Consistency levels supported by the Azure Cosmos DB service.
+// ConsistencyLevel supported by the Azure Cosmos DB service.
 type ConsistencyLevel string
 
 const (
@@ -19,6 +19,7 @@ func ConsistencyLevelValues() []ConsistencyLevel {
 	return []ConsistencyLevel{ConsistencyLevelStrong, ConsistencyLevelBoundedStaleness, ConsistencyLevelSession, ConsistencyLevelEventual, ConsistencyLevelConsistentPrefix}
 }
 
+// ToPtr returns a *ConsistencyLevel
 func (c ConsistencyLevel) ToPtr() *ConsistencyLevel {
 	return &c
 }

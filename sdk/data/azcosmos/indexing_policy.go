@@ -40,6 +40,7 @@ type SpatialIndex struct {
 	SpatialTypes []SpatialType `json:"types"`
 }
 
+// CompositeIndex is used when queries have an ORDER BY clause with two or more properties
 type CompositeIndex struct {
 	// Path for the index.
 	Path string `json:"path"`

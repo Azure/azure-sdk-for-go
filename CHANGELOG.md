@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## `v63.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-10-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-02-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/hardwaresecuritymodules/mgmt/2021-11-30/hardwaresecuritymodules`
+- `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2022-03-01/kubernetesconfiguration`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+
 ## `v62.3.0`
 
 ### New Packages
@@ -15,7 +36,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v62.3.0/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
 
 ## `v62.2.0`
 

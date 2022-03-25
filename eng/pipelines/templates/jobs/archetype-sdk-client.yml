@@ -68,7 +68,7 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
-  - name: AutoRelease
+  - name: IncludeRelease
     type: boolean
     default: false
 
@@ -196,18 +196,20 @@ stages:
                   Cloud: ${{ cloud.key }}
 
   # The Prerelease and Release stages are conditioned on:
-  # 1. Internal trigger
+  # 1. Internal trigger, not Pull Request trigger
   # 2. Not weekly build
-  # 3. Manual trigger (include manual defined Build.Reason param with empty) / Non-PR trigger with 'AutoRelease' flag
-  - ${{if and(or(in(variables['Build.Reason'], 'Manual', ''), and(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.AutoRelease, 'true'))), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-go-release.yml
-      parameters:
-        DependsOn:
-          - Build
-          # Copy cloud conditional logic from live test stage
-          - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
-            - ${{ each cloud in parameters.CloudConfig }}:
-              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-                - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-                  - ${{ cloud.key }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  # 3. Manual trigger or force IncludeRelease
+  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+    - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
+      - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+        - template: archetype-go-release.yml
+          parameters:
+            DependsOn:
+              - Build
+              # Copy cloud conditional logic from live test stage
+              - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+                - ${{ each cloud in parameters.CloudConfig }}:
+                  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                      - ${{ cloud.key }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}

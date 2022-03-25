@@ -11,13 +11,14 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/hardwaresecuritymodules/mgmt/2021-11-30/hardwaresecuritymodules"
 
 // APIEntityReference the API entity reference.
 type APIEntityReference struct {
@@ -28,6 +29,8 @@ type APIEntityReference struct {
 // DedicatedHsm resource information with extended details.
 type DedicatedHsm struct {
 	autorest.Response `json:"-"`
+	// SystemData - Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// DedicatedHsmProperties - Properties of the dedicated HSM
 	*DedicatedHsmProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The Azure Resource Manager resource ID for the dedicated HSM.
@@ -49,6 +52,9 @@ type DedicatedHsm struct {
 // MarshalJSON is the custom marshaler for DedicatedHsm.
 func (dh DedicatedHsm) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if dh.SystemData != nil {
+		objectMap["systemData"] = dh.SystemData
+	}
 	if dh.DedicatedHsmProperties != nil {
 		objectMap["properties"] = dh.DedicatedHsmProperties
 	}
@@ -76,6 +82,15 @@ func (dh *DedicatedHsm) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				dh.SystemData = &systemData
+			}
 		case "properties":
 			if v != nil {
 				var dedicatedHsmProperties DedicatedHsmProperties
@@ -236,7 +251,7 @@ func (future *DedicatedHsmDeleteFuture) result(client DedicatedHsmClient) (ar au
 
 // DedicatedHsmError the error exception.
 type DedicatedHsmError struct {
-	// Error - READ-ONLY
+	// Error - READ-ONLY; The error detail of the operation if any.
 	Error *Error `json:"error,omitempty"`
 }
 
@@ -410,8 +425,9 @@ type DedicatedHsmOperation struct {
 	// Name - The name of the Dedicated HSM Resource Provider Operation.
 	Name *string `json:"name,omitempty"`
 	// IsDataAction - READ-ONLY; Gets or sets a value indicating whether it is a data plane action
-	IsDataAction *string                       `json:"isDataAction,omitempty"`
-	Display      *DedicatedHsmOperationDisplay `json:"display,omitempty"`
+	IsDataAction *string `json:"isDataAction,omitempty"`
+	// Display - The display string.
+	Display *DedicatedHsmOperationDisplay `json:"display,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DedicatedHsmOperation.
@@ -426,7 +442,7 @@ func (dho DedicatedHsmOperation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DedicatedHsmOperationDisplay ...
+// DedicatedHsmOperationDisplay the display string.
 type DedicatedHsmOperationDisplay struct {
 	// Provider - The Resource Provider of the operation
 	Provider *string `json:"provider,omitempty"`
@@ -465,6 +481,8 @@ func (dhpp DedicatedHsmPatchParameters) MarshalJSON() ([]byte, error) {
 type DedicatedHsmProperties struct {
 	// NetworkProfile - Specifies the network interfaces of the dedicated hsm.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	// ManagementNetworkProfile - Specifies the management network interfaces of the dedicated hsm.
+	ManagementNetworkProfile *NetworkProfile `json:"managementNetworkProfile,omitempty"`
 	// StampID - This field will be used when RP does not support Availability zones.
 	StampID *string `json:"stampId,omitempty"`
 	// StatusMessage - READ-ONLY; Resource Status Message.
@@ -478,6 +496,9 @@ func (dhp DedicatedHsmProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dhp.NetworkProfile != nil {
 		objectMap["networkProfile"] = dhp.NetworkProfile
+	}
+	if dhp.ManagementNetworkProfile != nil {
+		objectMap["managementNetworkProfile"] = dhp.ManagementNetworkProfile
 	}
 	if dhp.StampID != nil {
 		objectMap["stampId"] = dhp.StampID
@@ -528,13 +549,33 @@ func (future *DedicatedHsmUpdateFuture) result(client DedicatedHsmClient) (dh De
 	return
 }
 
+// EndpointDependency a domain name that dedicated hsm services are reaching at.
+type EndpointDependency struct {
+	// DomainName - The domain name of the dependency.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The Ports and Protocols used when connecting to domainName.
+	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
+}
+
+// EndpointDetail connect information from the dedicated hsm service to a single endpoint.
+type EndpointDetail struct {
+	// IPAddress - An IP Address that Domain Name currently resolves to.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Port - The port an endpoint is connected to.
+	Port *int32 `json:"port,omitempty"`
+	// Protocol - The protocol used for connection
+	Protocol *string `json:"protocol,omitempty"`
+	// Description - Description of the detail
+	Description *string `json:"description,omitempty"`
+}
+
 // Error the key vault server error.
 type Error struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// InnerError - READ-ONLY
+	// InnerError - READ-ONLY; Contains more specific error that narrows down the cause. May be null.
 	InnerError *Error `json:"innererror,omitempty"`
 }
 
@@ -561,12 +602,189 @@ func (ni NetworkInterface) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NetworkProfile ...
+// NetworkProfile the network profile definition.
 type NetworkProfile struct {
 	// Subnet - Specifies the identifier of the subnet.
 	Subnet *APIEntityReference `json:"subnet,omitempty"`
 	// NetworkInterfaces - Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM.
 	NetworkInterfaces *[]NetworkInterface `json:"networkInterfaces,omitempty"`
+}
+
+// OutboundEnvironmentEndpoint egress endpoints which dedicated hsm service connects to for common purpose.
+type OutboundEnvironmentEndpoint struct {
+	// Category - The category of endpoints accessed by the dedicated hsm service, e.g. azure-resource-management, apiserver, etc.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoints that dedicated hsm service connects to
+	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
+}
+
+// OutboundEnvironmentEndpointCollection collection of OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OutboundEnvironmentEndpointCollection.
+func (oeec OutboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oeec.Value != nil {
+		objectMap["value"] = oeec.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// OutboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
+// OutboundEnvironmentEndpoint values.
+type OutboundEnvironmentEndpointCollectionIterator struct {
+	i    int
+	page OutboundEnvironmentEndpointCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OutboundEnvironmentEndpointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OutboundEnvironmentEndpointCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OutboundEnvironmentEndpointCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OutboundEnvironmentEndpointCollectionIterator) Response() OutboundEnvironmentEndpointCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OutboundEnvironmentEndpointCollectionIterator) Value() OutboundEnvironmentEndpoint {
+	if !iter.page.NotDone() {
+		return OutboundEnvironmentEndpoint{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OutboundEnvironmentEndpointCollectionIterator type.
+func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
+	return OutboundEnvironmentEndpointCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (oeec OutboundEnvironmentEndpointCollection) IsEmpty() bool {
+	return oeec.Value == nil || len(*oeec.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (oeec OutboundEnvironmentEndpointCollection) hasNextLink() bool {
+	return oeec.NextLink != nil && len(*oeec.NextLink) != 0
+}
+
+// outboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (oeec OutboundEnvironmentEndpointCollection) outboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !oeec.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(oeec.NextLink)))
+}
+
+// OutboundEnvironmentEndpointCollectionPage contains a page of OutboundEnvironmentEndpoint values.
+type OutboundEnvironmentEndpointCollectionPage struct {
+	fn   func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)
+	oeec OutboundEnvironmentEndpointCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OutboundEnvironmentEndpointCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.oeec)
+		if err != nil {
+			return err
+		}
+		page.oeec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OutboundEnvironmentEndpointCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OutboundEnvironmentEndpointCollectionPage) NotDone() bool {
+	return !page.oeec.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OutboundEnvironmentEndpointCollectionPage) Response() OutboundEnvironmentEndpointCollection {
+	return page.oeec
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OutboundEnvironmentEndpointCollectionPage) Values() []OutboundEnvironmentEndpoint {
+	if page.oeec.IsEmpty() {
+		return nil
+	}
+	return *page.oeec.Value
+}
+
+// Creates a new instance of the OutboundEnvironmentEndpointCollectionPage type.
+func NewOutboundEnvironmentEndpointCollectionPage(cur OutboundEnvironmentEndpointCollection, getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return OutboundEnvironmentEndpointCollectionPage{
+		fn:   getNextPage,
+		oeec: cur,
+	}
 }
 
 // Resource dedicated HSM resource
@@ -617,4 +835,20 @@ type ResourceListResult struct {
 type Sku struct {
 	// Name - SKU of the dedicated HSM. Possible values include: 'SafeNetLunaNetworkHSMA790', 'PayShield10KLMK1CPS60', 'PayShield10KLMK1CPS250', 'PayShield10KLMK1CPS2500', 'PayShield10KLMK2CPS60', 'PayShield10KLMK2CPS250', 'PayShield10KLMK2CPS2500'
 	Name SkuName `json:"name,omitempty"`
+}
+
+// SystemData metadata pertaining to creation and last modification of dedicated hsm resource.
+type SystemData struct {
+	// CreatedBy - The identity that created dedicated hsm resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created dedicated hsm resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType IdentityType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of dedicated hsm resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified dedicated hsm resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified dedicated hsm resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType IdentityType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of dedicated hsm resource last modification (UTC).
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }

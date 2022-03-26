@@ -223,6 +223,7 @@ const (
 	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
 
+// ToPtr returns a pointer to a KeyType
 func (k KeyType) ToPtr() *KeyType {
 	return &k
 }

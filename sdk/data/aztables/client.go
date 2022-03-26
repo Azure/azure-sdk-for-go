@@ -17,7 +17,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
-// A Client represents a client to the tables service affinitized to a specific table.
+// Client represents a client to the tables service affinitized to a specific table.
 type Client struct {
 	client  *generated.TableClient
 	service *ServiceClient
@@ -212,6 +212,7 @@ type ListEntitiesPager struct {
 	nextRK      *string
 }
 
+// More returns true if there are more pages to fetch, false otherwise.
 func (p *ListEntitiesPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {
@@ -251,6 +252,9 @@ func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPageRespo
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
 // List returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
+// For more information about writing query strings, check out:
+//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}

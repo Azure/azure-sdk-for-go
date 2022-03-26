@@ -3,7 +3,7 @@
 
 package azcosmos
 
-// Specifies whether or not the resource in the Azure Cosmos DB database is to be indexed.
+// IndexingDirective specifies whether the resource in the Azure Cosmos DB database is to be indexed.
 type IndexingDirective string
 
 const (
@@ -20,6 +20,7 @@ func IndexingDirectives() []IndexingDirective {
 	return []IndexingDirective{IndexingDirectiveDefault, IndexingDirectiveInclude, IndexingDirectiveExclude}
 }
 
+// ToPtr returns a *IndexingDirective
 func (c IndexingDirective) ToPtr() *IndexingDirective {
 	return &c
 }

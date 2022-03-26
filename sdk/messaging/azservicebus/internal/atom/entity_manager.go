@@ -163,7 +163,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 		return nil, err
 	}
 
-	provider, err := sbauth.NewTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
+	provider, err := sbauth.NewTokenProviderWithConnectionString(parsed)
 
 	if err != nil {
 		return nil, err

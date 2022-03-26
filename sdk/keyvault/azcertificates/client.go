@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -84,7 +83,7 @@ type CreateCertificateResponse struct {
 	CertificateOperation
 }
 
-// the poller returned by the Client.BeginCreateCertificate
+// CreateCertificatePoller is the poller returned by the Client.BeginCreateCertificate
 type CreateCertificatePoller struct {
 	certName       string
 	certVersion    string
@@ -92,35 +91,40 @@ type CreateCertificatePoller struct {
 	client         *generated.KeyVaultClient
 	createResponse CreateCertificateResponse
 	lastResponse   generated.KeyVaultClientGetCertificateResponse
-	rawResponse    *http.Response
+	getRawResponse *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
 func (b *CreateCertificatePoller) Done() bool {
-	return b.lastResponse.RawResponse.StatusCode == http.StatusOK
+	if b.getRawResponse == nil {
+		return false
+	}
+	return b.getRawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the operations. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
 func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	var getRawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
 	if err == nil {
+		b.getRawResponse = getRawResp
 		b.lastResponse = resp
 		b.createResponse.ID = b.lastResponse.ID
-		return resp.RawResponse, nil
+		return getRawResp, nil
 	}
 
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) {
-		if respErr.RawResponse.StatusCode == http.StatusNotFound {
-			// The certificate has not been fully created yet
-			return resp.RawResponse, nil
-		}
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
+		// The certificate has not been fully created yet
+		b.getRawResponse = getRawResp
+		b.lastResponse = resp
+		return b.getRawResponse, nil
 	}
 
 	// There was an error in this operation, return the original raw response and the error
-	return nil, err
+	return getRawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -135,7 +139,7 @@ func (b *CreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 		if err != nil {
 			return CreateCertificateResponse{}, err
 		}
-		b.rawResponse = resp
+		b.getRawResponse = resp
 		if b.Done() {
 			break
 		}
@@ -311,40 +315,44 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 	}
 }
 
-// The poller returned by the Client.BeginDeleteCertificate operation
+// DeleteCertificatePoller is the poller returned by the Client.BeginDeleteCertificate operation
 type DeleteCertificatePoller struct {
 	certificateName string // This is the certificate to Poll for in GetDeletedCertificate
 	vaultURL        string
 	client          *generated.KeyVaultClient
 	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
 	lastResponse    generated.KeyVaultClientGetDeletedCertificateResponse
-	rawResponse     *http.Response
+	lastRawResponse *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
 func (s *DeleteCertificatePoller) Done() bool {
-	return s.lastResponse.RawResponse != nil
+	if s.lastRawResponse == nil {
+		return false
+	}
+	return s.lastRawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
 func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	var getRawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.certificateName, nil)
 	if err == nil {
-		// Service recognizes DeletedKey, operation is done
+		// Service recognizes DeletedCertificate, operation is done
+		s.lastRawResponse = getRawResp
 		s.lastResponse = resp
-		return resp.RawResponse, nil
+		return s.lastRawResponse, nil
 	}
 
-	var httpResponseErr *azcore.ResponseError
-	if errors.As(err, &httpResponseErr) {
-		if httpResponseErr.RawResponse.StatusCode == http.StatusNotFound {
-			// This is the expected result
-			return s.deleteResponse.RawResponse, nil
-		}
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
+		// This is the expected result
+		s.lastRawResponse = getRawResp
+		return s.lastRawResponse, nil
 	}
-	return s.deleteResponse.RawResponse, err
+	return s.lastRawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -360,7 +368,7 @@ func (s *DeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 		if err != nil {
 			return DeleteCertificateResponse{}, err
 		}
-		s.rawResponse = resp
+		s.lastRawResponse = resp
 		if s.Done() {
 			break
 		}
@@ -570,60 +578,20 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 // ListCertificatesPager implements the ListCertificatesPager interface
 type ListCertificatesPager struct {
-	vaultURL  string
-	genClient *generated.KeyVaultClient
-	nextLink  *string
+	genPager *generated.KeyVaultClientGetCertificatesPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListCertificatesPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListCertificatesPager) NextPage(ctx context.Context) (ListCertificatesPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetCertificatesCreateRequest(
-			ctx,
-			l.vaultURL,
-			&generated.KeyVaultClientGetCertificatesOptions{},
-		)
-		if err != nil {
-			return ListCertificatesPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListCertificatesPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListCertificatesPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListCertificatesPageResponse{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
 		return ListCertificatesPageResponse{}, err
 	}
-	result, err := l.genClient.GetCertificatesHandleResponse(resp)
-	if err != nil {
-		return ListCertificatesPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listKeysPageFromGenerated(result), nil
 }
 
@@ -662,70 +630,26 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 // certificate are not listed in the response. This operation requires the certificates/list permission.
 func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertificatesPager {
 	return ListCertificatesPager{
-		vaultURL:  c.vaultURL,
-		genClient: c.genClient,
-		nextLink:  nil,
+		genPager: c.genClient.GetCertificates(c.vaultURL, &generated.KeyVaultClientGetCertificatesOptions{}),
 	}
 }
 
 // ListCertificateVersionsPager is the pager returned by Client.ListCertificateVersions
 type ListCertificateVersionsPager struct {
-	vaultURL  string
-	genClient *generated.KeyVaultClient
-	nextLink  *string
-	certName  string
+	genPager *generated.KeyVaultClientGetCertificateVersionsPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListCertificateVersionsPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) (ListCertificateVersionsPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetCertificateVersionsCreateRequest(
-			ctx,
-			l.vaultURL,
-			l.certName,
-			&generated.KeyVaultClientGetCertificateVersionsOptions{},
-		)
-		if err != nil {
-			return ListCertificateVersionsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListCertificateVersionsPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListCertificateVersionsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListCertificateVersionsPageResponse{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
 		return ListCertificateVersionsPageResponse{}, err
 	}
-	result, err := l.genClient.GetCertificateVersionsHandleResponse(resp)
-	if err != nil {
-		return ListCertificateVersionsPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listCertificateVersionsPageFromGenerated(result), nil
 }
 
@@ -762,10 +686,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 // requires the certificates/list permission.
 func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
 	return ListCertificateVersionsPager{
-		certName:  certificateName,
-		vaultURL:  c.vaultURL,
-		genClient: c.genClient,
-		nextLink:  nil,
+		genPager: c.genClient.GetCertificateVersions(c.vaultURL, certificateName, &generated.KeyVaultClientGetCertificateVersionsOptions{}),
 	}
 }
 
@@ -925,60 +846,20 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 
 // ListPropertiesOfIssuersPager is the pager returned by Client.ListIssuers
 type ListPropertiesOfIssuersPager struct {
-	vaultURL  string
-	genClient *generated.KeyVaultClient
-	nextLink  *string
+	genPager *generated.KeyVaultClientGetCertificateIssuersPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListPropertiesOfIssuersPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) (ListIssuersPropertiesOfIssuersPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetCertificateIssuersCreateRequest(
-			ctx,
-			l.vaultURL,
-			&generated.KeyVaultClientGetCertificateIssuersOptions{},
-		)
-		if err != nil {
-			return ListIssuersPropertiesOfIssuersPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListIssuersPropertiesOfIssuersPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListIssuersPropertiesOfIssuersPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListIssuersPropertiesOfIssuersPageResponse{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
-		return ListIssuersPropertiesOfIssuersPageResponse{}, err
+		return ListIssuersPropertiesOfIssuersPageResponse{}, nil
 	}
-	result, err := l.genClient.GetCertificateIssuersHandleResponse(resp)
-	if err != nil {
-		return ListIssuersPropertiesOfIssuersPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listIssuersPageFromGenerated(result), nil
 }
 
@@ -1008,9 +889,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) ListPropertiesOfIssuers(options *ListPropertiesOfIssuersOptions) ListPropertiesOfIssuersPager {
 	return ListPropertiesOfIssuersPager{
-		genClient: c.genClient,
-		vaultURL:  c.vaultURL,
-		nextLink:  nil,
+		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, &generated.KeyVaultClientGetCertificateIssuersOptions{}),
 	}
 }
 
@@ -1189,7 +1068,7 @@ type SetContactsResponse struct {
 	Contacts
 }
 
-// SetCertificateContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
+// SetContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
 func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *SetContactsOptions) (SetContactsResponse, error) {
 	resp, err := c.genClient.SetCertificateContacts(
 		ctx,
@@ -1224,7 +1103,7 @@ type GetContactsResponse struct {
 	Contacts
 }
 
-// GetCertificateContacts returns the set of certificate contact resources in the specified key vault. This operation
+// GetContacts returns the set of certificate contact resources in the specified key vault. This operation
 // requires the certificates/managecontacts permission.
 func (c *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (GetContactsResponse, error) {
 	resp, err := c.genClient.GetCertificateContacts(ctx, c.vaultURL, options.toGenerated())
@@ -1357,7 +1236,7 @@ type UpdateCertificatePropertiesResponse struct {
 	KeyVaultCertificate
 }
 
-// UpdateCertificate applies the specified update on the given certificate; the only elements updated are the certificate's
+// UpdateCertificateProperties applies the specified update on the given certificate; the only elements updated are the certificate's
 // attributes. This operation requires the certificates/update permission.
 func (c *Client) UpdateCertificateProperties(ctx context.Context, certName string, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
 	if options == nil {
@@ -1401,7 +1280,7 @@ type MergeCertificateResponse struct {
 	KeyVaultCertificateWithPolicy
 }
 
-// The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
+// MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
 func (c *Client) MergeCertificate(ctx context.Context, certName string, certificates [][]byte, options *MergeCertificateOptions) (MergeCertificateResponse, error) {
 	if options == nil {
 		options = &MergeCertificateOptions{}
@@ -1449,7 +1328,7 @@ type RestoreCertificateBackupResponse struct {
 	KeyVaultCertificateWithPolicy
 }
 
-// The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults
+// RestoreCertificateBackup performs the reversal of the Delete operation. The operation is applicable in vaults
 // enabled for soft-delete, and must be issued during the retention interval (available in the deleted certificate's attributes).
 // This operation requires the certificates/recover permission.
 func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup []byte, options *RestoreCertificateBackupOptions) (RestoreCertificateBackupResponse, error) {
@@ -1494,25 +1373,38 @@ type RecoverDeletedCertificatePoller struct {
 	client          *generated.KeyVaultClient
 	recoverResponse generated.KeyVaultClientRecoverDeletedCertificateResponse
 	lastResponse    generated.KeyVaultClientGetCertificateResponse
-	rawResponse     *http.Response
+	lastRawResponse *http.Response
 }
 
 // Done returns true when the polling operation is completed
 func (b *RecoverDeletedCertificatePoller) Done() bool {
-	return b.rawResponse.StatusCode == http.StatusOK
+	if b.lastRawResponse == nil {
+		return false
+	}
+	return b.lastRawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
 func (b *RecoverDeletedCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	var getRawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
 	resp, err := b.client.GetCertificate(ctx, b.vaultUrl, b.certName, "", nil)
-	b.lastResponse = resp
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse, err
+	if err == nil {
+		// Service has recovered certificate, operation is done
+		b.lastRawResponse = getRawResp
+		b.lastResponse = resp
+		return b.lastRawResponse, nil
 	}
-	return resp.RawResponse, nil
+
+	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
+		// This is our expected result
+		b.lastRawResponse = getRawResp
+		return b.lastRawResponse, nil
+	}
+
+	return getRawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -1525,12 +1417,12 @@ func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t t
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
-			b.rawResponse = resp
+			b.lastRawResponse = resp
 		}
 		if b.Done() {
 			break
 		}
-		b.rawResponse = resp
+		b.lastRawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
@@ -1582,7 +1474,6 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 		client:          c.genClient,
 		vaultUrl:        c.vaultURL,
 		recoverResponse: resp,
-		rawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedCertificatePollerResponse{
@@ -1593,60 +1484,20 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 
 // ListDeletedCertificatesPager is the pager returned by Client.ListDeletedCertificates
 type ListDeletedCertificatesPager struct {
-	vaultURL  string
-	genClient *generated.KeyVaultClient
-	nextLink  *string
+	genPager *generated.KeyVaultClientGetDeletedCertificatesPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListDeletedCertificatesPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListDeletedCertificatesPager) NextPage(ctx context.Context) (ListDeletedCertificatesPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetDeletedCertificatesCreateRequest(
-			ctx,
-			l.vaultURL,
-			&generated.KeyVaultClientGetDeletedCertificatesOptions{},
-		)
-		if err != nil {
-			return ListDeletedCertificatesPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListDeletedCertificatesPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListDeletedCertificatesPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListDeletedCertificatesPageResponse{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
 		return ListDeletedCertificatesPageResponse{}, err
 	}
-	result, err := l.genClient.GetDeletedCertificatesHandleResponse(resp)
-	if err != nil {
-		return ListDeletedCertificatesPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listDeletedCertsPageFromGenerated(result), nil
 }
 
@@ -1690,9 +1541,7 @@ type ListDeletedCertificatesOptions struct {
 // only be enabled on soft-delete enabled vaults.
 func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions) ListDeletedCertificatesPager {
 	return ListDeletedCertificatesPager{
-		vaultURL:  c.vaultURL,
-		genClient: c.genClient,
-		nextLink:  nil,
+		genPager: c.genClient.GetDeletedCertificates(c.vaultURL, &generated.KeyVaultClientGetDeletedCertificatesOptions{}),
 	}
 }
 
@@ -1730,7 +1579,7 @@ func (c *Client) CancelCertificateOperation(ctx context.Context, certName string
 	}, nil
 }
 
-// DeleteCertificateOperationsOptions contains optional parameters for Client.DeleteCertificateOperation
+// DeleteCertificateOperationOptions contains optional parameters for Client.DeleteCertificateOperation
 type DeleteCertificateOperationOptions struct {
 	// placeholder for future optional parameters.
 }

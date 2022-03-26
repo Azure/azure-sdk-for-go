@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -211,4 +212,34 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func ExampleClient_UpdateSecretProperties() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	options := &azsecrets.UpdateSecretPropertiesOptions{
+		ContentType: to.StringPtr("password"),
+		Tags: map[string]string{
+			"Tag1": "TagVal1",
+		},
+		Properties: &azsecrets.Properties{
+			Enabled:   to.BoolPtr(true),
+			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
+			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
+		},
+	}
+	resp, err := client.UpdateSecretProperties(context.Background(), "secret-to-update", options)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Updated secret with ID: %s\n", *resp.ID)
 }

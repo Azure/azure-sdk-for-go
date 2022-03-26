@@ -147,6 +147,10 @@ type newSenderArgs struct {
 }
 
 func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
+	if err := args.ns.Check(); err != nil {
+		return nil, err
+	}
+
 	sender := &Sender{
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,

@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -91,7 +91,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -144,7 +144,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -178,7 +178,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -212,7 +212,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -246,7 +246,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -280,7 +280,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -334,7 +334,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -389,7 +389,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -442,7 +442,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -476,7 +476,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -510,7 +510,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -544,7 +544,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -578,7 +578,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -612,7 +612,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -666,7 +666,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -721,7 +721,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -774,7 +774,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -808,7 +808,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -842,7 +842,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -876,7 +876,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -910,7 +910,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -944,7 +944,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -978,7 +978,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1032,7 +1032,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -1104,7 +1104,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key2762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1137,7 +1137,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key1762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1170,7 +1170,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-del-key0762797297?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",

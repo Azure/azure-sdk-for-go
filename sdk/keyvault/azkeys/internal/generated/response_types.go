@@ -8,286 +8,122 @@
 
 package generated
 
-import "net/http"
-
 // KeyVaultClientBackupKeyResponse contains the response from method KeyVaultClient.BackupKey.
 type KeyVaultClientBackupKeyResponse struct {
-	KeyVaultClientBackupKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientBackupKeyResult contains the result from method KeyVaultClient.BackupKey.
-type KeyVaultClientBackupKeyResult struct {
 	BackupKeyResult
 }
 
 // KeyVaultClientCreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type KeyVaultClientCreateKeyResponse struct {
-	KeyVaultClientCreateKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientCreateKeyResult contains the result from method KeyVaultClient.CreateKey.
-type KeyVaultClientCreateKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientDecryptResponse contains the response from method KeyVaultClient.Decrypt.
 type KeyVaultClientDecryptResponse struct {
-	KeyVaultClientDecryptResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientDecryptResult contains the result from method KeyVaultClient.Decrypt.
-type KeyVaultClientDecryptResult struct {
 	KeyOperationResult
 }
 
 // KeyVaultClientDeleteKeyResponse contains the response from method KeyVaultClient.DeleteKey.
 type KeyVaultClientDeleteKeyResponse struct {
-	KeyVaultClientDeleteKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientDeleteKeyResult contains the result from method KeyVaultClient.DeleteKey.
-type KeyVaultClientDeleteKeyResult struct {
 	DeletedKeyBundle
 }
 
 // KeyVaultClientEncryptResponse contains the response from method KeyVaultClient.Encrypt.
 type KeyVaultClientEncryptResponse struct {
-	KeyVaultClientEncryptResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientEncryptResult contains the result from method KeyVaultClient.Encrypt.
-type KeyVaultClientEncryptResult struct {
 	KeyOperationResult
 }
 
 // KeyVaultClientGetDeletedKeyResponse contains the response from method KeyVaultClient.GetDeletedKey.
 type KeyVaultClientGetDeletedKeyResponse struct {
-	KeyVaultClientGetDeletedKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedKeyResult contains the result from method KeyVaultClient.GetDeletedKey.
-type KeyVaultClientGetDeletedKeyResult struct {
 	DeletedKeyBundle
 }
 
 // KeyVaultClientGetDeletedKeysResponse contains the response from method KeyVaultClient.GetDeletedKeys.
 type KeyVaultClientGetDeletedKeysResponse struct {
-	KeyVaultClientGetDeletedKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedKeysResult contains the result from method KeyVaultClient.GetDeletedKeys.
-type KeyVaultClientGetDeletedKeysResult struct {
 	DeletedKeyListResult
 }
 
 // KeyVaultClientGetKeyResponse contains the response from method KeyVaultClient.GetKey.
 type KeyVaultClientGetKeyResponse struct {
-	KeyVaultClientGetKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetKeyResult contains the result from method KeyVaultClient.GetKey.
-type KeyVaultClientGetKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientGetKeyRotationPolicyResponse contains the response from method KeyVaultClient.GetKeyRotationPolicy.
 type KeyVaultClientGetKeyRotationPolicyResponse struct {
-	KeyVaultClientGetKeyRotationPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetKeyRotationPolicyResult contains the result from method KeyVaultClient.GetKeyRotationPolicy.
-type KeyVaultClientGetKeyRotationPolicyResult struct {
-	RotationPolicy
+	KeyRotationPolicy
 }
 
 // KeyVaultClientGetKeyVersionsResponse contains the response from method KeyVaultClient.GetKeyVersions.
 type KeyVaultClientGetKeyVersionsResponse struct {
-	KeyVaultClientGetKeyVersionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetKeyVersionsResult contains the result from method KeyVaultClient.GetKeyVersions.
-type KeyVaultClientGetKeyVersionsResult struct {
 	KeyListResult
 }
 
 // KeyVaultClientGetKeysResponse contains the response from method KeyVaultClient.GetKeys.
 type KeyVaultClientGetKeysResponse struct {
-	KeyVaultClientGetKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetKeysResult contains the result from method KeyVaultClient.GetKeys.
-type KeyVaultClientGetKeysResult struct {
 	KeyListResult
 }
 
 // KeyVaultClientGetRandomBytesResponse contains the response from method KeyVaultClient.GetRandomBytes.
 type KeyVaultClientGetRandomBytesResponse struct {
-	KeyVaultClientGetRandomBytesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetRandomBytesResult contains the result from method KeyVaultClient.GetRandomBytes.
-type KeyVaultClientGetRandomBytesResult struct {
 	RandomBytes
 }
 
 // KeyVaultClientImportKeyResponse contains the response from method KeyVaultClient.ImportKey.
 type KeyVaultClientImportKeyResponse struct {
-	KeyVaultClientImportKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientImportKeyResult contains the result from method KeyVaultClient.ImportKey.
-type KeyVaultClientImportKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientPurgeDeletedKeyResponse contains the response from method KeyVaultClient.PurgeDeletedKey.
 type KeyVaultClientPurgeDeletedKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // KeyVaultClientRecoverDeletedKeyResponse contains the response from method KeyVaultClient.RecoverDeletedKey.
 type KeyVaultClientRecoverDeletedKeyResponse struct {
-	KeyVaultClientRecoverDeletedKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRecoverDeletedKeyResult contains the result from method KeyVaultClient.RecoverDeletedKey.
-type KeyVaultClientRecoverDeletedKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientReleaseResponse contains the response from method KeyVaultClient.Release.
 type KeyVaultClientReleaseResponse struct {
-	KeyVaultClientReleaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientReleaseResult contains the result from method KeyVaultClient.Release.
-type KeyVaultClientReleaseResult struct {
 	KeyReleaseResult
 }
 
 // KeyVaultClientRestoreKeyResponse contains the response from method KeyVaultClient.RestoreKey.
 type KeyVaultClientRestoreKeyResponse struct {
-	KeyVaultClientRestoreKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRestoreKeyResult contains the result from method KeyVaultClient.RestoreKey.
-type KeyVaultClientRestoreKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientRotateKeyResponse contains the response from method KeyVaultClient.RotateKey.
 type KeyVaultClientRotateKeyResponse struct {
-	KeyVaultClientRotateKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRotateKeyResult contains the result from method KeyVaultClient.RotateKey.
-type KeyVaultClientRotateKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientSignResponse contains the response from method KeyVaultClient.Sign.
 type KeyVaultClientSignResponse struct {
-	KeyVaultClientSignResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientSignResult contains the result from method KeyVaultClient.Sign.
-type KeyVaultClientSignResult struct {
 	KeyOperationResult
 }
 
 // KeyVaultClientUnwrapKeyResponse contains the response from method KeyVaultClient.UnwrapKey.
 type KeyVaultClientUnwrapKeyResponse struct {
-	KeyVaultClientUnwrapKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientUnwrapKeyResult contains the result from method KeyVaultClient.UnwrapKey.
-type KeyVaultClientUnwrapKeyResult struct {
 	KeyOperationResult
 }
 
 // KeyVaultClientUpdateKeyResponse contains the response from method KeyVaultClient.UpdateKey.
 type KeyVaultClientUpdateKeyResponse struct {
-	KeyVaultClientUpdateKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientUpdateKeyResult contains the result from method KeyVaultClient.UpdateKey.
-type KeyVaultClientUpdateKeyResult struct {
 	KeyBundle
 }
 
 // KeyVaultClientUpdateKeyRotationPolicyResponse contains the response from method KeyVaultClient.UpdateKeyRotationPolicy.
 type KeyVaultClientUpdateKeyRotationPolicyResponse struct {
-	KeyVaultClientUpdateKeyRotationPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientUpdateKeyRotationPolicyResult contains the result from method KeyVaultClient.UpdateKeyRotationPolicy.
-type KeyVaultClientUpdateKeyRotationPolicyResult struct {
-	RotationPolicy
+	KeyRotationPolicy
 }
 
 // KeyVaultClientVerifyResponse contains the response from method KeyVaultClient.Verify.
 type KeyVaultClientVerifyResponse struct {
-	KeyVaultClientVerifyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientVerifyResult contains the result from method KeyVaultClient.Verify.
-type KeyVaultClientVerifyResult struct {
 	KeyVerifyResult
 }
 
 // KeyVaultClientWrapKeyResponse contains the response from method KeyVaultClient.WrapKey.
 type KeyVaultClientWrapKeyResponse struct {
-	KeyVaultClientWrapKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientWrapKeyResult contains the result from method KeyVaultClient.WrapKey.
-type KeyVaultClientWrapKeyResult struct {
 	KeyOperationResult
 }

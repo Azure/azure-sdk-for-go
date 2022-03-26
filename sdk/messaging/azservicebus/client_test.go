@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/sas"
 	"github.com/stretchr/testify/require"
 	"nhooyr.io/websocket"
 )
@@ -121,6 +122,40 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	require.EqualValues(t, "hello world", string(bytes))
 }
 
+func TestNewClientUsingSharedAccessSignature(t *testing.T) {
+	sasCS, err := sas.CreateConnectionStringWithSAS(test.GetConnectionString(t), time.Hour)
+	require.NoError(t, err)
+
+	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
+	require.Contains(t, sasCS, "SharedAccessSignature=SharedAccessSignature")
+
+	queue, cleanup := createQueue(t, sasCS, nil)
+	defer cleanup()
+
+	client, err := NewClientFromConnectionString(sasCS, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queue, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	bytes, err := messages[0].Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "hello world", string(bytes))
+}
+
 const fastNotFoundDuration = 10 * time.Second
 
 func TestNewClientNewSenderNotFound(t *testing.T) {
@@ -188,6 +223,38 @@ func TestNewClientNewSessionReceiverNotFound(t *testing.T) {
 	receiver, err = client.AcceptNextSessionForQueue(ctx, "non-existent-queue", nil)
 	require.Nil(t, receiver)
 	assertRPCNotFound(t, err)
+}
+
+func TestClientCloseVsClosePermanently(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, client.Close(context.Background()))
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	receiver, err = client.NewReceiverForSubscription("topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sender)
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptSessionForSubscription(context.Background(), "topic", "subscription", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), "topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
 }
 
 func TestNewClientUnitTests(t *testing.T) {

@@ -10,7 +10,7 @@ package armmysqlflexibleservers
 
 const (
 	moduleName    = "armmysqlflexibleservers"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // ConfigurationSource - Source of the configuration.
@@ -81,6 +81,27 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 
 // ToPtr returns a *CreatedByType pointing to the current value.
 func (c CreatedByType) ToPtr() *CreatedByType {
+	return &c
+}
+
+// DataEncryptionType - The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
+type DataEncryptionType string
+
+const (
+	DataEncryptionTypeAzureKeyVault DataEncryptionType = "AzureKeyVault"
+	DataEncryptionTypeSystemManaged DataEncryptionType = "SystemManaged"
+)
+
+// PossibleDataEncryptionTypeValues returns the possible values for the DataEncryptionType const type.
+func PossibleDataEncryptionTypeValues() []DataEncryptionType {
+	return []DataEncryptionType{
+		DataEncryptionTypeAzureKeyVault,
+		DataEncryptionTypeSystemManaged,
+	}
+}
+
+// ToPtr returns a *DataEncryptionType pointing to the current value.
+func (c DataEncryptionType) ToPtr() *DataEncryptionType {
 	return &c
 }
 

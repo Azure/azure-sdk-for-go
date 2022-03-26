@@ -12,6 +12,8 @@ import (
 	"strings"
 )
 
+var isMGMT = false
+
 func filter(f fs.FileInfo) bool {
 	return !strings.HasSuffix(f.Name(), "_test.go")
 }
@@ -23,9 +25,12 @@ func findAllSubDirectories(root string) []string {
 		if err != nil {
 			panic(err)
 		}
+		if strings.Contains(path, "resourcemanager") {
+			isMGMT = true
+		}
 		if info.IsDir() && strings.HasSuffix(path, "internal") {
 			return filepath.SkipDir
-		} else if info.IsDir() && !strings.Contains(path, "internal") {
+		} else if info.IsDir() {
 			ret = append(ret, path)
 		}
 		return nil
@@ -67,15 +72,6 @@ func validateDirectory(directory string) int {
 			}
 		}
 
-		if len(p.Vars) > 0 {
-			for _, v := range p.Vars {
-				if !strings.HasPrefix(v.Doc, v.Names[0]) {
-					fmt.Println("type", v.Names)
-					fmt.Println("docs:", v.Doc)
-				}
-			}
-		}
-
 		for _, f := range p.Funcs {
 			if strings.HasPrefix(f.Name, "Example") {
 				continue
@@ -107,7 +103,11 @@ func main() {
 
 	if totalMissing > 0 {
 		fmt.Printf("Found %d missing doc comments\n", totalMissing)
-		os.Exit(1)
+		if !isMGMT {
+			os.Exit(1)
+		}
+
+	} else {
+		fmt.Println("There are no public methods/functions/types with missing documentation")
 	}
-	fmt.Println("There are no public methods/functions/types with missing documentation")
 }

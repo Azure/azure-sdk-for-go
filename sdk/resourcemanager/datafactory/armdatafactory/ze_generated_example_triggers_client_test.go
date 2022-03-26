@@ -82,9 +82,9 @@ func ExampleTriggersClient_CreateOrUpdate() {
 				Type: to.StringPtr("<type>"),
 				Pipelines: []*armdatafactory.TriggerPipelineReference{
 					{
-						Parameters: map[string]map[string]interface{}{
-							"OutputBlobNameList": {
-								"0": "exampleoutput.csv",
+						Parameters: map[string]interface{}{
+							"OutputBlobNameList": []interface{}{
+								"exampleoutput.csv",
 							},
 						},
 						PipelineReference: &armdatafactory.PipelineReference{

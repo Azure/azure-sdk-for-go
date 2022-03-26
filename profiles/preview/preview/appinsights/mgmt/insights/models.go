@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-02-01-preview/insights"
 )
 
 const (

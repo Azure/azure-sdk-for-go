@@ -41,7 +41,7 @@ func (dr BlobDownloadResponse) GetHTTPHeaders() BlobHTTPHeaders {
 type DownloadResponse struct {
 	BlobDownloadResponse
 	ctx                    context.Context
-	b                      BlobClient
+	b                      *BlobClient
 	getInfo                HTTPGetterInfo
 	ObjectReplicationRules []ObjectReplicationPolicy
 }

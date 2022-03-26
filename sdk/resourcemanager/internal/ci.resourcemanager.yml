@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
     - sdk/resourcemanager/internal/
-    - eng/
 
 pr:
   branches:

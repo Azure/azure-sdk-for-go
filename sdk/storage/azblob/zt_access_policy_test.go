@@ -219,7 +219,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -661,7 +661,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -693,7 +693,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -723,7 +723,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -755,7 +755,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
+	containerClient, _ := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)

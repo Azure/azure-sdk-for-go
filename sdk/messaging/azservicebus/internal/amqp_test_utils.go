@@ -187,15 +187,13 @@ func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	return nil
 }
 
-func (ns *FakeNS) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
+func (ns *FakeNS) NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error) {
 	ch := make(chan struct{})
 	close(ch)
 
 	ns.claimNegotiated++
 
-	return func() <-chan struct{} {
-		return ch
-	}, nil
+	return func() {}, ch, nil
 }
 
 func (ns *FakeNS) GetEntityAudience(entityPath string) string {
@@ -216,8 +214,12 @@ func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, err
 	return true, nil
 }
 
-func (ns *FakeNS) Close(ctx context.Context) error {
+func (ns *FakeNS) Close(ctx context.Context, permanently bool) error {
 	ns.CloseCalled++
+	return nil
+}
+
+func (ns *FakeNS) Check() error {
 	return nil
 }
 

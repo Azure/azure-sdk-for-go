@@ -61,7 +61,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	base64BlockIDs := make([]string, len(words))
@@ -115,7 +115,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	base64BlockIDs := make([]string, len(words))
@@ -177,8 +177,8 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 	ctx := context.Background()
-	srcBlob := containerClient.NewBlockBlobClient("srcblob")
-	destBlob := containerClient.NewBlockBlobClient("destblob")
+	srcBlob, _ := containerClient.NewBlockBlobClient("srcblob")
+	destBlob, _ := containerClient.NewBlockBlobClient("destblob")
 	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
 	_assert.Nil(err)
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
@@ -295,8 +295,8 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	body := bytes.NewReader(content)
 	rsc := internal.NopCloser(body)
 	ctx := context.Background()
-	srcBlob := containerClient.NewBlockBlobClient("srcblob")
-	destBlob := containerClient.NewBlockBlobClient("destblob")
+	srcBlob, _ := containerClient.NewBlockBlobClient("srcblob")
+	destBlob, _ := containerClient.NewBlockBlobClient("destblob")
 	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
 	_assert.Nil(err)
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
@@ -407,7 +407,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
 	md5Val := md5.Sum(srcData)
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -453,7 +453,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
 	md5Val := md5.Sum(srcData)
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -488,7 +488,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abClient, _ := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -547,7 +547,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abClient, _ := containerClient.NewAppendBlobClient(generateBlobName(testName))
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -607,8 +607,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	ctx := context.Background()
-	srcABClient := containerClient.NewAppendBlobClient(generateName("src"))
-	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
+	srcABClient, _ := containerClient.NewAppendBlobClient(generateName("src"))
+	destBlob, _ := containerClient.NewAppendBlobClient(generateName("dest"))
 
 	cResp1, err := srcABClient.Create(context.Background(), nil)
 	_assert.Nil(err)
@@ -717,8 +717,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	ctx := context.Background()
-	srcClient := containerClient.NewAppendBlobClient(generateName("src"))
-	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
+	srcClient, _ := containerClient.NewAppendBlobClient(generateName("src"))
+	destBlob, _ := containerClient.NewAppendBlobClient(generateName("dest"))
 
 	cResp1, err := srcClient.Create(context.Background(), nil)
 	_assert.Nil(err)
@@ -1355,7 +1355,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	_assert.Nil(err)
 	_assert.Equal(*resp.IsServerEncrypted, false)
 
-	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
@@ -1404,7 +1404,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	_assert.Nil(err)
 	_assert.Equal(*resp.IsServerEncrypted, false)
 
-	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}

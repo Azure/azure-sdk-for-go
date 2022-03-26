@@ -56,7 +56,7 @@ type HighLevelUploadToBlockBlobOption struct {
 	TransactionalContentMD5 *[]byte
 }
 
-func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
+func (o *HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := o.BlobAccessConditions.pointers()
 	return &StageBlockOptions{
 		CpkInfo:               o.CpkInfo,
@@ -65,7 +65,7 @@ func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOpti
 	}
 }
 
-func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
+func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
 	return &UploadBlockBlobOptions{
 		TagsMap:              o.TagsMap,
 		Metadata:             o.Metadata,
@@ -89,7 +89,7 @@ func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *CommitBl
 }
 
 // uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (BlockBlobMaxStageBlockBytes * BlockBlobMaxBlocks), then error
 		if readerSize > BlockBlobMaxStageBlockBytes*BlockBlobMaxBlocks {
@@ -173,12 +173,12 @@ func (bb BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader 
 }
 
 // UploadBufferToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb BlockBlobClient) UploadBufferToBlockBlob(ctx context.Context, b []byte, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+func (bb *BlockBlobClient) UploadBufferToBlockBlob(ctx context.Context, b []byte, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), o)
 }
 
 // UploadFileToBlockBlob uploads a file in blocks to a block blob.
-func (bb BlockBlobClient) UploadFileToBlockBlob(ctx context.Context, file *os.File, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+func (bb *BlockBlobClient) UploadFileToBlockBlob(ctx context.Context, file *os.File, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 
 	stat, err := file.Stat()
 	if err != nil {
@@ -233,7 +233,7 @@ func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count 
 
 // DownloadBlobToWriterAt downloads an Azure blob to a WriterAt with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o HighLevelDownloadFromBlobOptions) error {
+func (b *BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o HighLevelDownloadFromBlobOptions) error {
 	if o.BlockSize == 0 {
 		o.BlockSize = BlobDefaultDownloadBlockSize
 	}
@@ -299,14 +299,14 @@ func (b BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, co
 
 // DownloadBlobToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b BlobClient) DownloadBlobToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o HighLevelDownloadFromBlobOptions) error {
+func (b *BlobClient) DownloadBlobToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o HighLevelDownloadFromBlobOptions) error {
 	return b.DownloadBlobToWriterAt(ctx, offset, count, newBytesWriter(_bytes), o)
 }
 
 // DownloadBlobToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b BlobClient) DownloadBlobToFile(ctx context.Context, offset int64, count int64, file *os.File, o HighLevelDownloadFromBlobOptions) error {
+func (b *BlobClient) DownloadBlobToFile(ctx context.Context, offset int64, count int64, file *os.File, o HighLevelDownloadFromBlobOptions) error {
 	// 1. Calculate the size of the destination file
 	var size int64
 
@@ -547,6 +547,7 @@ func (s *syncPool) Close() {
 
 const _1MiB = 1024 * 1024
 
+// UploadStreamToBlockBlobOptions provides set of configurations for UploadStreamToBlockBlob operation
 type UploadStreamToBlockBlobOptions struct {
 	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
@@ -596,7 +597,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.Reader, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb *BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.Reader, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}

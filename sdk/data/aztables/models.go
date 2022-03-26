@@ -174,6 +174,7 @@ func fromGeneratedLogging(g *generated.Logging) *Logging {
 	}
 }
 
+// Metrics are the metrics for a Table
 type Metrics struct {
 	// REQUIRED; Indicates whether metrics are enabled for the Table service.
 	Enabled *bool `xml:"Enabled"`
@@ -282,6 +283,7 @@ func fromGeneratedAccessPolicy(g *generated.AccessPolicy) *AccessPolicy {
 	}
 }
 
+// GeoReplication represents the GeoReplication status of an account
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary.
 	// Primary writes after this point in time may or may

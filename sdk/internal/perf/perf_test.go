@@ -58,20 +58,15 @@ func TestRun(t *testing.T) {
 	warmUpDuration = 0
 	parallelInstances = 1
 
-	err := runPerfTest("Sleep", NewNoOpTest)
+	runner := newPerfRunner(PerfMethods{New: NewNoOpTest, Register: nil}, "NoOpTest")
+	err := runner.Run()
 	require.NoError(t, err)
-
-	require.True(t, globalCleanup)
-	require.True(t, newnooptest)
-	require.True(t, newperftest)
-	require.True(t, run)
-	require.True(t, cleanup)
 }
 
 func TestParseProxyURLs(t *testing.T) {
 	testProxyURLs = ""
 	result := parseProxyURLS()
-	require.Nil(t, result)
+	require.Equal(t, 0, len(result))
 
 	testProxyURLs = "https://localhost:5001"
 	result = parseProxyURLS()

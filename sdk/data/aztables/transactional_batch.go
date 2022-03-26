@@ -49,6 +49,7 @@ func PossibleTransactionTypeValues() []TransactionType {
 	}
 }
 
+// TransactionAction represents a single action within a Transaction
 type TransactionAction struct {
 	ActionType TransactionType
 	Entity     []byte

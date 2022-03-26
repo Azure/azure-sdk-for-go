@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -27,7 +27,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -81,7 +81,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -135,7 +135,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -189,7 +189,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -243,7 +243,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -297,7 +297,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -351,7 +351,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/versions?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963/versions?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -448,7 +448,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2201827963?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -500,7 +500,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -554,7 +554,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -608,7 +608,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2201827963?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",

@@ -29,7 +29,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	resp, err := abClient.Create(context.Background(), nil)
 	_assert.Nil(err)
@@ -69,7 +69,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	defer deleteContainer(_assert, containerClient)
 
 	// set up abClient to test
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abClient, _ := containerClient.NewAppendBlobClient(generateBlobName(testName))
 	resp, err := abClient.Create(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
@@ -126,8 +126,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
+	srcBlob, _ := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob, _ := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
@@ -222,8 +222,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
+	srcBlob, _ := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob, _ := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
@@ -324,7 +324,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataNonEmpty() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.Create(ctx, &CreateAppendBlobOptions{
 		Metadata: basicMetadata,
@@ -351,7 +351,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataEmpty() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: map[string]string{},
@@ -378,7 +378,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataInvalid() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
@@ -402,7 +402,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		HTTPHeaders: &basicHeaders,
@@ -416,7 +416,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
 	_assert.EqualValues(h, basicHeaders)
 }
 
-func validateAppendBlobPut(_assert *assert.Assertions, abClient AppendBlobClient) {
+func validateAppendBlobPut(_assert *assert.Assertions, abClient *AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.NotNil(resp.Metadata)
@@ -438,7 +438,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -477,7 +477,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -516,7 +516,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -555,7 +555,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -767,7 +767,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.NotNil(err)
@@ -775,7 +775,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(_assert *assert.Assertions, abClient *AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(expectedSize))
@@ -795,7 +795,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -832,7 +832,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -869,7 +869,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -906,7 +906,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)
-	abClient := getAppendBlobClient(abName, containerClient)
+	abClient, _ := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -1300,7 +1300,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	_, err = abClient.SealAppendBlob(ctx, nil)
 	_assert.Nil(err)
 
-	copiedBlob1 := getAppendBlobClient("copy1"+abName, containerClient)
+	copiedBlob1, _ := getAppendBlobClient("copy1"+abName, containerClient)
 	// copy sealed blob will get a sealed blob
 	_, err = copiedBlob1.StartCopyFromURL(ctx, abClient.URL(), nil)
 	_assert.Nil(err)
@@ -1313,7 +1313,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	_assert.NotNil(err)
 	validateStorageError(_assert, err, "BlobIsSealed")
 
-	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
+	copiedBlob2, _ := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
 		SealBlob: to.BoolPtr(true),
 	})
@@ -1327,7 +1327,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	_assert.NotNil(err)
 	validateStorageError(_assert, err, "BlobIsSealed")
 
-	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
+	copiedBlob3, _ := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
 		SealBlob: to.BoolPtr(false),
 	})
@@ -1360,7 +1360,7 @@ func (s *azblobTestSuite) TestCopyUnsealedBlob() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	copiedBlob := getAppendBlobClient("copy"+abName, containerClient)
+	copiedBlob, _ := getAppendBlobClient("copy"+abName, containerClient)
 	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
 		SealBlob: to.BoolPtr(true),
 	})

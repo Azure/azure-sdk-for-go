@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -91,7 +91,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/sign?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/sign?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -126,7 +126,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/sign?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/sign?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -163,7 +163,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/verify?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1932710079/51c509f946e24f3aa86a25cc2b87c353/verify?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",

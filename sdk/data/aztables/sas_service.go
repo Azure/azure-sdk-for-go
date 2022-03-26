@@ -103,7 +103,7 @@ func (v SASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredentia
 	return p, err
 }
 
-// The SASPermissions type simplifies creating the permissions string for an Azure Table.
+// SASPermissions simplifies creating the permissions string for an Azure Table.
 // Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
 type SASPermissions struct {
 	Read              bool

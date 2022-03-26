@@ -24,6 +24,7 @@ module-version: "0.3.0"
 ```
 
 ### Fix BlobMetadata.
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -34,6 +35,7 @@ directive:
 ```
 
 ### Remove DataLake stuff.
+
 ``` yaml
 directive:
 - from: swagger-document

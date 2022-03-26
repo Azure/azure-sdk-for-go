@@ -10,7 +10,9 @@ import (
 	"sync"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/go-amqp"
 )
 
@@ -24,10 +26,9 @@ const (
 type (
 	// rpcLink is the bidirectional communication structure used for CBS negotiation
 	rpcLink struct {
-		session *amqp.Session
-
-		receiver amqpReceiver // *amqp.Receiver
-		sender   amqpSender   // *amqp.Sender
+		session  amqpwrap.AMQPSession
+		receiver amqpwrap.AMQPReceiverCloser // *amqp.Receiver
+		sender   amqpwrap.AMQPSenderCloser   // *amqp.Sender
 
 		clientAddress string
 		sessionID     *string
@@ -38,9 +39,10 @@ type (
 		responseMap             map[string]chan rpcResponse
 		broadcastErr            error // the error that caused the responseMap to be nil'd
 
+		logEvent azlog.Event
+
 		// for unit tests
-		uuidNewV4     func() (uuid.UUID, error)
-		messageAccept func(ctx context.Context, message *amqp.Message) error
+		uuidNewV4 func() (uuid.UUID, error)
 	}
 
 	// RPCResponse is the simplified response structure from an RPC like call
@@ -56,17 +58,6 @@ type (
 	rpcResponse struct {
 		message *amqp.Message
 		err     error
-	}
-
-	// Actually: *amqp.Receiver
-	amqpReceiver interface {
-		Receive(ctx context.Context) (*amqp.Message, error)
-		Close(ctx context.Context) error
-	}
-
-	amqpSender interface {
-		Send(ctx context.Context, msg *amqp.Message) error
-		Close(ctx context.Context) error
 	}
 )
 
@@ -84,8 +75,9 @@ func (e rpcError) RPCCode() int {
 }
 
 type RPCLinkArgs struct {
-	Client  *amqp.Client
-	Address string
+	Client   amqpwrap.AMQPClient
+	Address  string
+	LogEvent azlog.Event
 }
 
 // NewRPCLink will build a new request response link
@@ -110,6 +102,7 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 		uuidNewV4:               uuid.New,
 		responseMap:             map[string]chan rpcResponse{},
 		startResponseRouterOnce: &sync.Once{},
+		logEvent:                args.LogEvent,
 	}
 
 	sender, err := session.NewSender(
@@ -147,45 +140,57 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 
 	link.sender = sender
 	link.receiver = receiver
-	link.messageAccept = receiver.AcceptMessage
 
 	return link, nil
 }
+
+const responseRouterShutdownMessage = "Response router has shut down"
 
 // startResponseRouter is responsible for taking any messages received on the 'response'
 // link and forwarding it to the proper channel. The channel is being select'd by the
 // original `RPC` call.
 func (l *rpcLink) startResponseRouter() {
+	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
+
 	for {
 		res, err := l.receiver.Receive(context.Background())
 
-		// You'll see this when the link is shutting down (either
-		// service-initiated via 'detach' or a user-initiated shutdown)
-		if isClosedError(err) {
-			l.broadcastError(err)
-			break
+		if err != nil {
+			// if the link or connection has a malfunction that would require it to restart then
+			// we need to bail out, broadcasting to all affected callers/consumers.
+			if GetRecoveryKind(err) != RecoveryKindNone {
+				azlog.Writef(l.logEvent, "Error in RPCLink, stopping response router: %s", err.Error())
+				l.broadcastError(err)
+				break
+			}
+
+			azlog.Writef(l.logEvent, "Non-fatal error in RPCLink, starting to receive again: %s", err.Error())
+			continue
 		}
 
 		// I don't believe this should happen. The JS version of this same code
 		// ignores errors as well since responses should always be correlated
 		// to actual send requests. So this is just here for completeness.
 		if res == nil {
+			azlog.Writef(l.logEvent, "RPCLink received no error, but also got no response")
 			continue
 		}
 
 		autogenMessageId, ok := res.Properties.CorrelationID.(string)
 
 		if !ok {
-			// TODO: it'd be good to track these in some way. We don't have a good way to
-			// forward this on at this point.
+			azlog.Writef(l.logEvent, "RPCLink message received without a CorrelationID %v", res)
 			continue
 		}
 
 		ch := l.deleteChannelFromMap(autogenMessageId)
 
-		if ch != nil {
-			ch <- rpcResponse{message: res, err: err}
+		if ch == nil {
+			azlog.Writef(l.logEvent, "RPCLink had no response channel for correlation ID %v", autogenMessageId)
+			continue
 		}
+
+		ch <- rpcResponse{message: res, err: err}
 	}
 }
 
@@ -228,7 +233,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 
 	if err != nil {
 		l.deleteChannelFromMap(messageID)
-		return nil, fmt.Errorf("Failed to send message with ID %s: %w", messageID, err)
+		return nil, fmt.Errorf("failed to send message with ID %s: %w", messageID, err)
 	}
 
 	var res *amqp.Message
@@ -281,7 +286,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 		Message:     res,
 	}
 
-	if err := l.messageAccept(ctx, res); err != nil {
+	if err := l.receiver.AcceptMessage(ctx, res); err != nil {
 		return response, fmt.Errorf("failed accepting message on rpc link: %w", err)
 	}
 
@@ -413,15 +418,6 @@ func addMessageID(message *amqp.Message, uuidNewV4 func() (uuid.UUID, error)) (*
 	}
 
 	return &copiedMessage, autoGenMessageID, nil
-}
-
-func isClosedError(err error) bool {
-	var detachError *amqp.DetachError
-
-	return errors.Is(err, amqp.ErrLinkClosed) ||
-		errors.As(err, &detachError) ||
-		errors.Is(err, amqp.ErrConnClosed) ||
-		errors.Is(err, amqp.ErrSessionClosed)
 }
 
 // asRPCError checks to see if the res is actually a failed request

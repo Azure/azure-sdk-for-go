@@ -33,8 +33,7 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
-	var logMessages []string
-	endCapture := test.CaptureLogsForTest(&logMessages)
+	endCapture := test.CaptureLogsForTest()
 	defer endCapture()
 
 	responses := []*rpcTestResp{
@@ -55,6 +54,8 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 
 	var netOpError net.Error
 	require.ErrorAs(t, err, &netOpError)
+
+	logMessages := endCapture()
 	require.Contains(t, logMessages, "[rpctesting] "+responseRouterShutdownMessage)
 }
 
@@ -73,8 +74,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
-	var logMessages []string
-	cleanupLogs := test.CaptureLogsForTest(&logMessages)
+	cleanupLogs := test.CaptureLogsForTest()
 	defer cleanupLogs()
 
 	responses := []*rpcTestResp{
@@ -104,6 +104,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	acceptedMessage := <-tester.Accepted
 	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
 
+	logMessages := cleanupLogs()
 	require.Contains(t, logMessages, "[rpctesting] RPCLink had no response channel for correlation ID you've-never-seen-this", "exampleUncorrelatedMessage causes warning for uncorrelated message")
 	require.Contains(t, logMessages, "[rpctesting] Non-fatal error in RPCLink, starting to receive again: *Error{Condition: com.microsoft:server-busy, Description: , Info: map[]}")
 }
@@ -120,10 +121,6 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.NotNil(t, link)
-
-	var logMessages []string
-	endCapture := test.CaptureLogsForTest(&logMessages)
-	defer endCapture()
 
 	resp, err := link.RPC(context.Background(), &amqp.Message{
 		ApplicationProperties: map[string]interface{}{

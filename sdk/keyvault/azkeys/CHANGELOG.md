@@ -5,6 +5,9 @@
 ### Features Added
 
 ### Breaking Changes
+* `ListDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListDeletedKeysPage, error)` for paging over deleted keys.
+* `ListPropertiesOfKeyVersionssPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
+* Removing `RawResponse *http.Response` from `crypto` response types
 
 ### Bugs Fixed
 

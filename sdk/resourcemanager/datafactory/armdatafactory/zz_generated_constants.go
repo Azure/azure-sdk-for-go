@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 type AmazonRdsForOraclePartitionOption string
@@ -1964,6 +1964,112 @@ func (c SapTablePartitionOption) ToPtr() *SapTablePartitionOption {
 	return &c
 }
 
+// ScriptActivityLogDestination - The destination of logs. Type: string.
+type ScriptActivityLogDestination string
+
+const (
+	ScriptActivityLogDestinationActivityOutput ScriptActivityLogDestination = "ActivityOutput"
+	ScriptActivityLogDestinationExternalStore  ScriptActivityLogDestination = "ExternalStore"
+)
+
+// PossibleScriptActivityLogDestinationValues returns the possible values for the ScriptActivityLogDestination const type.
+func PossibleScriptActivityLogDestinationValues() []ScriptActivityLogDestination {
+	return []ScriptActivityLogDestination{
+		ScriptActivityLogDestinationActivityOutput,
+		ScriptActivityLogDestinationExternalStore,
+	}
+}
+
+// ToPtr returns a *ScriptActivityLogDestination pointing to the current value.
+func (c ScriptActivityLogDestination) ToPtr() *ScriptActivityLogDestination {
+	return &c
+}
+
+// ScriptActivityParameterDirection - The direction of the parameter.
+type ScriptActivityParameterDirection string
+
+const (
+	ScriptActivityParameterDirectionInput       ScriptActivityParameterDirection = "Input"
+	ScriptActivityParameterDirectionInputOutput ScriptActivityParameterDirection = "InputOutput"
+	ScriptActivityParameterDirectionOutput      ScriptActivityParameterDirection = "Output"
+)
+
+// PossibleScriptActivityParameterDirectionValues returns the possible values for the ScriptActivityParameterDirection const type.
+func PossibleScriptActivityParameterDirectionValues() []ScriptActivityParameterDirection {
+	return []ScriptActivityParameterDirection{
+		ScriptActivityParameterDirectionInput,
+		ScriptActivityParameterDirectionInputOutput,
+		ScriptActivityParameterDirectionOutput,
+	}
+}
+
+// ToPtr returns a *ScriptActivityParameterDirection pointing to the current value.
+func (c ScriptActivityParameterDirection) ToPtr() *ScriptActivityParameterDirection {
+	return &c
+}
+
+// ScriptActivityParameterType - The type of the parameter.
+type ScriptActivityParameterType string
+
+const (
+	ScriptActivityParameterTypeBoolean        ScriptActivityParameterType = "Boolean"
+	ScriptActivityParameterTypeDateTime       ScriptActivityParameterType = "DateTime"
+	ScriptActivityParameterTypeDateTimeOffset ScriptActivityParameterType = "DateTimeOffset"
+	ScriptActivityParameterTypeDecimal        ScriptActivityParameterType = "Decimal"
+	ScriptActivityParameterTypeDouble         ScriptActivityParameterType = "Double"
+	ScriptActivityParameterTypeGUID           ScriptActivityParameterType = "Guid"
+	ScriptActivityParameterTypeInt16          ScriptActivityParameterType = "Int16"
+	ScriptActivityParameterTypeInt32          ScriptActivityParameterType = "Int32"
+	ScriptActivityParameterTypeInt64          ScriptActivityParameterType = "Int64"
+	ScriptActivityParameterTypeSingle         ScriptActivityParameterType = "Single"
+	ScriptActivityParameterTypeString         ScriptActivityParameterType = "String"
+	ScriptActivityParameterTypeTimespan       ScriptActivityParameterType = "Timespan"
+)
+
+// PossibleScriptActivityParameterTypeValues returns the possible values for the ScriptActivityParameterType const type.
+func PossibleScriptActivityParameterTypeValues() []ScriptActivityParameterType {
+	return []ScriptActivityParameterType{
+		ScriptActivityParameterTypeBoolean,
+		ScriptActivityParameterTypeDateTime,
+		ScriptActivityParameterTypeDateTimeOffset,
+		ScriptActivityParameterTypeDecimal,
+		ScriptActivityParameterTypeDouble,
+		ScriptActivityParameterTypeGUID,
+		ScriptActivityParameterTypeInt16,
+		ScriptActivityParameterTypeInt32,
+		ScriptActivityParameterTypeInt64,
+		ScriptActivityParameterTypeSingle,
+		ScriptActivityParameterTypeString,
+		ScriptActivityParameterTypeTimespan,
+	}
+}
+
+// ToPtr returns a *ScriptActivityParameterType pointing to the current value.
+func (c ScriptActivityParameterType) ToPtr() *ScriptActivityParameterType {
+	return &c
+}
+
+// ScriptType - The type of the query. Type: string.
+type ScriptType string
+
+const (
+	ScriptTypeNonQuery ScriptType = "NonQuery"
+	ScriptTypeQuery    ScriptType = "Query"
+)
+
+// PossibleScriptTypeValues returns the possible values for the ScriptType const type.
+func PossibleScriptTypeValues() []ScriptType {
+	return []ScriptType{
+		ScriptTypeNonQuery,
+		ScriptTypeQuery,
+	}
+}
+
+// ToPtr returns a *ScriptType pointing to the current value.
+func (c ScriptType) ToPtr() *ScriptType {
+	return &c
+}
+
 // SelfHostedIntegrationRuntimeNodeStatus - Status of the integration runtime node.
 type SelfHostedIntegrationRuntimeNodeStatus string
 
@@ -2252,6 +2358,27 @@ func (c SybaseAuthenticationType) ToPtr() *SybaseAuthenticationType {
 	return &c
 }
 
+// TeamDeskAuthenticationType - The authentication type to use.
+type TeamDeskAuthenticationType string
+
+const (
+	TeamDeskAuthenticationTypeBasic TeamDeskAuthenticationType = "Basic"
+	TeamDeskAuthenticationTypeToken TeamDeskAuthenticationType = "Token"
+)
+
+// PossibleTeamDeskAuthenticationTypeValues returns the possible values for the TeamDeskAuthenticationType const type.
+func PossibleTeamDeskAuthenticationTypeValues() []TeamDeskAuthenticationType {
+	return []TeamDeskAuthenticationType{
+		TeamDeskAuthenticationTypeBasic,
+		TeamDeskAuthenticationTypeToken,
+	}
+}
+
+// ToPtr returns a *TeamDeskAuthenticationType pointing to the current value.
+func (c TeamDeskAuthenticationType) ToPtr() *TeamDeskAuthenticationType {
+	return &c
+}
+
 // TeradataAuthenticationType - AuthenticationType to be used for connection.
 type TeradataAuthenticationType string
 
@@ -2471,5 +2598,26 @@ func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
 
 // ToPtr returns a *WebHookActivityMethod pointing to the current value.
 func (c WebHookActivityMethod) ToPtr() *WebHookActivityMethod {
+	return &c
+}
+
+// ZendeskAuthenticationType - The authentication type to use.
+type ZendeskAuthenticationType string
+
+const (
+	ZendeskAuthenticationTypeBasic ZendeskAuthenticationType = "Basic"
+	ZendeskAuthenticationTypeToken ZendeskAuthenticationType = "Token"
+)
+
+// PossibleZendeskAuthenticationTypeValues returns the possible values for the ZendeskAuthenticationType const type.
+func PossibleZendeskAuthenticationTypeValues() []ZendeskAuthenticationType {
+	return []ZendeskAuthenticationType{
+		ZendeskAuthenticationTypeBasic,
+		ZendeskAuthenticationTypeToken,
+	}
+}
+
+// ToPtr returns a *ZendeskAuthenticationType pointing to the current value.
+func (c ZendeskAuthenticationType) ToPtr() *ZendeskAuthenticationType {
 	return &c
 }

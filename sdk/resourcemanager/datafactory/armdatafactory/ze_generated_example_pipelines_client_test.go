@@ -68,81 +68,26 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 									Inputs: []*armdatafactory.DatasetReference{
 										{
 											Type: armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
-											Parameters: map[string]map[string]interface{}{
-												"MyFileName": {
-													"0":  "e",
-													"1":  "x",
-													"2":  "a",
-													"3":  "m",
-													"4":  "p",
-													"5":  "l",
-													"6":  "e",
-													"7":  "c",
-													"8":  "o",
-													"9":  "n",
-													"10": "t",
-													"11": "a",
-													"12": "i",
-													"13": "n",
-													"14": "e",
-													"15": "r",
-													"16": ".",
-													"17": "c",
-													"18": "s",
-													"19": "v",
-												},
-												"MyFolderPath": {
-													"0":  "e",
-													"1":  "x",
-													"2":  "a",
-													"3":  "m",
-													"4":  "p",
-													"5":  "l",
-													"6":  "e",
-													"7":  "c",
-													"8":  "o",
-													"9":  "n",
-													"10": "t",
-													"11": "a",
-													"12": "i",
-													"13": "n",
-													"14": "e",
-													"15": "r",
-												},
+											Parameters: map[string]interface{}{
+												"MyFileName":   "examplecontainer.csv",
+												"MyFolderPath": "examplecontainer",
 											},
 											ReferenceName: to.StringPtr("<reference-name>"),
 										}},
 									Outputs: []*armdatafactory.DatasetReference{
 										{
 											Type: armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
-											Parameters: map[string]map[string]interface{}{
-												"MyFileName": {
+											Parameters: map[string]interface{}{
+												"MyFileName": map[string]interface{}{
 													"type":  "Expression",
 													"value": "@item()",
 												},
-												"MyFolderPath": {
-													"0":  "e",
-													"1":  "x",
-													"2":  "a",
-													"3":  "m",
-													"4":  "p",
-													"5":  "l",
-													"6":  "e",
-													"7":  "c",
-													"8":  "o",
-													"9":  "n",
-													"10": "t",
-													"11": "a",
-													"12": "i",
-													"13": "n",
-													"14": "e",
-													"15": "r",
-												},
+												"MyFolderPath": "examplecontainer",
 											},
 											ReferenceName: to.StringPtr("<reference-name>"),
 										}},
 									TypeProperties: &armdatafactory.CopyActivityTypeProperties{
-										DataIntegrationUnits: map[string]interface{}{},
+										DataIntegrationUnits: float64(32),
 										Sink: &armdatafactory.BlobSink{
 											Type: to.StringPtr("<type>"),
 										},
@@ -168,22 +113,11 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 				},
 				Policy: &armdatafactory.PipelinePolicy{
 					ElapsedTimeMetric: &armdatafactory.PipelineElapsedTimeMetricPolicy{
-						Duration: map[string]interface{}{
-							"0": "0",
-							"1": ".",
-							"2": "0",
-							"3": "0",
-							"4": ":",
-							"5": "1",
-							"6": "0",
-							"7": ":",
-							"8": "0",
-							"9": "0",
-						},
+						Duration: "0.00:10:00",
 					},
 				},
-				RunDimensions: map[string]map[string]interface{}{
-					"JobId": {
+				RunDimensions: map[string]interface{}{
+					"JobId": map[string]interface{}{
 						"type":  "Expression",
 						"value": "@pipeline().parameters.JobId",
 					},
@@ -255,9 +189,9 @@ func ExamplePipelinesClient_CreateRun() {
 			IsRecovery:        nil,
 			StartActivityName: nil,
 			StartFromFailure:  nil,
-			Parameters: map[string]map[string]interface{}{
-				"OutputBlobNameList": {
-					"0": "exampleoutput.csv",
+			Parameters: map[string]interface{}{
+				"OutputBlobNameList": []interface{}{
+					"exampleoutput.csv",
 				},
 			},
 		})

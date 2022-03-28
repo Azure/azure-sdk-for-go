@@ -276,6 +276,9 @@ func (p *ListTablesPager) More() bool {
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
 // List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
+// For more information about writing query strings, check out:
+//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return ListTablesPager{
 		client:            t.client,

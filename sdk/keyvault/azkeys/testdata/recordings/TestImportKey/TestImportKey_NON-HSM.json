@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/importedKey?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/importedKey?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -35,7 +35,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/importedKey?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/importedKey?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -107,7 +107,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/invalid?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/invalid?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",

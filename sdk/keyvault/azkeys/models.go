@@ -298,7 +298,10 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 	}
 }
 
-// ReleasePolicy represents the release policy for a Key Vault Key
+// ReleasePolicy represents the release policy for a Key Vault Key. For more information regarding
+// the release policy grammar for Azure Key Vault, please refer to:
+//  - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+//  - https://aka.ms/policygrammarhsm for Azure Managed HSM release policy grammar.
 type ReleasePolicy struct {
 	// Content type and version of key release policy
 	ContentType *string `json:"contentType,omitempty"`

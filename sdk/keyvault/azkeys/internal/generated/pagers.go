@@ -10,171 +10,156 @@ package generated
 
 import (
 	"context"
-	"net/http"
-	"reflect"
-
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // KeyVaultClientGetDeletedKeysPager provides operations for iterating over paged responses.
 type KeyVaultClientGetDeletedKeysPager struct {
 	client    *KeyVaultClient
 	current   KeyVaultClientGetDeletedKeysResponse
-	err       error
 	requester func(context.Context) (*policy.Request, error)
 	advancer  func(context.Context, KeyVaultClientGetDeletedKeysResponse) (*policy.Request, error)
 }
 
-// Err returns the last error encountered while paging.
-func (p *KeyVaultClientGetDeletedKeysPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *KeyVaultClientGetDeletedKeysPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
+// More returns true if there are more pages to retrieve.
+func (p *KeyVaultClientGetDeletedKeysPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DeletedKeyListResult.NextLink == nil || len(*p.current.DeletedKeyListResult.NextLink) == 0 {
 			return false
+		}
+	}
+	return true
+}
+
+// NextPage advances the pager to the next page.
+func (p *KeyVaultClientGetDeletedKeysPager) NextPage(ctx context.Context) (KeyVaultClientGetDeletedKeysResponse, error) {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if !p.More() {
+			return KeyVaultClientGetDeletedKeysResponse{}, errors.New("no more pages")
 		}
 		req, err = p.advancer(ctx, p.current)
 	} else {
 		req, err = p.requester(ctx)
 	}
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetDeletedKeysResponse{}, err
 	}
 	resp, err := p.client.Pl.Do(req)
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetDeletedKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = runtime.NewResponseError(resp)
-		return false
+
+		return KeyVaultClientGetDeletedKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	result, err := p.client.getDeletedKeysHandleResponse(resp)
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetDeletedKeysResponse{}, err
 	}
 	p.current = result
-	return true
-}
-
-// PageResponse returns the current KeyVaultClientGetDeletedKeysResponse page.
-func (p *KeyVaultClientGetDeletedKeysPager) PageResponse() KeyVaultClientGetDeletedKeysResponse {
-	return p.current
+	return p.current, nil
 }
 
 // KeyVaultClientGetKeyVersionsPager provides operations for iterating over paged responses.
 type KeyVaultClientGetKeyVersionsPager struct {
 	client    *KeyVaultClient
 	current   KeyVaultClientGetKeyVersionsResponse
-	err       error
 	requester func(context.Context) (*policy.Request, error)
 	advancer  func(context.Context, KeyVaultClientGetKeyVersionsResponse) (*policy.Request, error)
 }
 
-// Err returns the last error encountered while paging.
-func (p *KeyVaultClientGetKeyVersionsPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *KeyVaultClientGetKeyVersionsPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
+// More returns true if there are more pages to retrieve.
+func (p *KeyVaultClientGetKeyVersionsPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
 			return false
+		}
+	}
+	return true
+}
+
+// NextPage advances the pager to the next page.
+func (p *KeyVaultClientGetKeyVersionsPager) NextPage(ctx context.Context) (KeyVaultClientGetKeyVersionsResponse, error) {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if !p.More() {
+			return KeyVaultClientGetKeyVersionsResponse{}, errors.New("no more pages")
 		}
 		req, err = p.advancer(ctx, p.current)
 	} else {
 		req, err = p.requester(ctx)
 	}
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetKeyVersionsResponse{}, err
 	}
 	resp, err := p.client.Pl.Do(req)
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetKeyVersionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = runtime.NewResponseError(resp)
-		return false
+
+		return KeyVaultClientGetKeyVersionsResponse{}, runtime.NewResponseError(resp)
 	}
 	result, err := p.client.getKeyVersionsHandleResponse(resp)
 	if err != nil {
-		p.err = err
-		return false
+		return KeyVaultClientGetKeyVersionsResponse{}, err
 	}
 	p.current = result
-	return true
-}
-
-// PageResponse returns the current KeyVaultClientGetKeyVersionsResponse page.
-func (p *KeyVaultClientGetKeyVersionsPager) PageResponse() KeyVaultClientGetKeyVersionsResponse {
-	return p.current
+	return p.current, nil
 }
 
 // KeyVaultClientGetKeysPager provides operations for iterating over paged responses.
 type KeyVaultClientGetKeysPager struct {
-	Client    *KeyVaultClient
-	Current   KeyVaultClientGetKeysResponse
-	Error     error
-	Requester func(context.Context) (*policy.Request, error)
-	Advancer  func(context.Context, KeyVaultClientGetKeysResponse) (*policy.Request, error)
+	client    *KeyVaultClient
+	current   KeyVaultClientGetKeysResponse
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetKeysResponse) (*policy.Request, error)
 }
 
-// Err returns the last error encountered while paging.
-func (p *KeyVaultClientGetKeysPager) Err() error {
-	return p.Error
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *KeyVaultClientGetKeysPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.Current).IsZero() {
-		if p.Current.KeyListResult.NextLink == nil || len(*p.Current.KeyListResult.NextLink) == 0 {
+// More returns true if there are more pages to retrieve.
+func (p *KeyVaultClientGetKeysPager) More() bool {
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
 			return false
 		}
-		req, err = p.Advancer(ctx, p.Current)
-	} else {
-		req, err = p.Requester(ctx)
 	}
-	if err != nil {
-		p.Error = err
-		return false
-	}
-	resp, err := p.Client.Pl.Do(req)
-	if err != nil {
-		p.Error = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.Error = runtime.NewResponseError(resp)
-		return false
-	}
-	result, err := p.Client.GetKeysHandleResponse(resp)
-	if err != nil {
-		p.Error = err
-		return false
-	}
-	p.Current = result
 	return true
 }
 
-// PageResponse returns the current KeyVaultClientGetKeysResponse page.
-func (p *KeyVaultClientGetKeysPager) PageResponse() KeyVaultClientGetKeysResponse {
-	return p.Current
+// NextPage advances the pager to the next page.
+func (p *KeyVaultClientGetKeysPager) NextPage(ctx context.Context) (KeyVaultClientGetKeysResponse, error) {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if !p.More() {
+			return KeyVaultClientGetKeysResponse{}, errors.New("no more pages")
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		return KeyVaultClientGetKeysResponse{}, err
+	}
+	resp, err := p.client.Pl.Do(req)
+	if err != nil {
+		return KeyVaultClientGetKeysResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+
+		return KeyVaultClientGetKeysResponse{}, runtime.NewResponseError(resp)
+	}
+	result, err := p.client.GetKeysHandleResponse(resp)
+	if err != nil {
+		return KeyVaultClientGetKeysResponse{}, err
+	}
+	p.current = result
+	return p.current, nil
 }

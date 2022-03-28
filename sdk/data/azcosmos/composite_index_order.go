@@ -3,7 +3,7 @@
 
 package azcosmos
 
-// These are the ordering values available for composite indexes in the Azure Cosmos DB database service.
+// CompositeIndexOrder are the ordering values available for composite indexes in the Azure Cosmos DB database service.
 // For more information see https://docs.microsoft.com/azure/cosmos-db/index-policy
 type CompositeIndexOrder string
 
@@ -19,6 +19,7 @@ func CompositeIndexOrderValues() []CompositeIndexOrder {
 	return []CompositeIndexOrder{CompositeIndexAscending, CompositeIndexDescending}
 }
 
+// ToPtr returns a *CompositeIndexOrder
 func (c CompositeIndexOrder) ToPtr() *CompositeIndexOrder {
 	return &c
 }

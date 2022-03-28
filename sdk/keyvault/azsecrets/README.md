@@ -1,7 +1,11 @@
 # Azure Key Vault Secrets client library for Go
+Azure Key Vault helps solve the following problems:
+* Secrets management (this library) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
+* Certificate management ([azcertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates)) - create, manage, and deploy public and private SSL/TLS certificates
 Azure Key Vault helps securely store and control access to tokens, passwords, certificates, API keys, and other secrets.
 
-[Source code][secret_client_src] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs]
+[Source code][secret_client_src] | [Package (pkg.go.dev)][reference_docs] | [Product documentation][keyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 
@@ -143,7 +147,7 @@ This section contains code snippets covering common tasks:
 * [List Secrets](#list-secrets "List Secrets")
 
 ### Set a Secret
-[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
+[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
 
 ```golang
 import (
@@ -180,7 +184,7 @@ func main() {
 ```
 
 ### Retrieve a Secret
-[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
 
 ```golang
 import (
@@ -258,7 +262,7 @@ func main() {
 ```
 
 ### Delete a Secret
-[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
+[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
 
 ```golang
 import (
@@ -295,7 +299,7 @@ func main() {
 ```
 
 ### List secrets
-[ListSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.ListSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[ListSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.ListSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
 import (
@@ -405,8 +409,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
-[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client
+[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client
 [secret_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/client.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
+[secrets_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/example_test.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazsecrets%2FREADME.png)

@@ -20,7 +20,7 @@ type Entity struct {
 	Timestamp    EDMDateTime
 }
 
-// EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
+// EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for user defined entity properties
 type EDMEntity struct {
 	Metadata string `json:"odata.metadata"`
 	Id       string `json:"odata.id"`

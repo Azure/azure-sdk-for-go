@@ -78,7 +78,7 @@ func (client *KeyVaultClient) backupKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -86,7 +86,7 @@ func (client *KeyVaultClient) backupKeyCreateRequest(ctx context.Context, vaultB
 
 // backupKeyHandleResponse handles the BackupKey response.
 func (client *KeyVaultClient) backupKeyHandleResponse(resp *http.Response) (KeyVaultClientBackupKeyResponse, error) {
-	result := KeyVaultClientBackupKeyResponse{RawResponse: resp}
+	result := KeyVaultClientBackupKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupKeyResult); err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
@@ -130,7 +130,7 @@ func (client *KeyVaultClient) createKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -138,7 +138,7 @@ func (client *KeyVaultClient) createKeyCreateRequest(ctx context.Context, vaultB
 
 // createKeyHandleResponse handles the CreateKey response.
 func (client *KeyVaultClient) createKeyHandleResponse(resp *http.Response) (KeyVaultClientCreateKeyResponse, error) {
-	result := KeyVaultClientCreateKeyResponse{RawResponse: resp}
+	result := KeyVaultClientCreateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
@@ -189,7 +189,7 @@ func (client *KeyVaultClient) decryptCreateRequest(ctx context.Context, vaultBas
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -197,7 +197,7 @@ func (client *KeyVaultClient) decryptCreateRequest(ctx context.Context, vaultBas
 
 // decryptHandleResponse handles the Decrypt response.
 func (client *KeyVaultClient) decryptHandleResponse(resp *http.Response) (KeyVaultClientDecryptResponse, error) {
-	result := KeyVaultClientDecryptResponse{RawResponse: resp}
+	result := KeyVaultClientDecryptResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
@@ -240,7 +240,7 @@ func (client *KeyVaultClient) deleteKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -248,7 +248,7 @@ func (client *KeyVaultClient) deleteKeyCreateRequest(ctx context.Context, vaultB
 
 // deleteKeyHandleResponse handles the DeleteKey response.
 func (client *KeyVaultClient) deleteKeyHandleResponse(resp *http.Response) (KeyVaultClientDeleteKeyResponse, error) {
-	result := KeyVaultClientDeleteKeyResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyBundle); err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
@@ -301,7 +301,7 @@ func (client *KeyVaultClient) encryptCreateRequest(ctx context.Context, vaultBas
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -309,7 +309,7 @@ func (client *KeyVaultClient) encryptCreateRequest(ctx context.Context, vaultBas
 
 // encryptHandleResponse handles the Encrypt response.
 func (client *KeyVaultClient) encryptHandleResponse(resp *http.Response) (KeyVaultClientEncryptResponse, error) {
-	result := KeyVaultClientEncryptResponse{RawResponse: resp}
+	result := KeyVaultClientEncryptResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
@@ -352,7 +352,7 @@ func (client *KeyVaultClient) getDeletedKeyCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *KeyVaultClient) getDeletedKeyCreateRequest(ctx context.Context, va
 
 // getDeletedKeyHandleResponse handles the GetDeletedKey response.
 func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeyResponse, error) {
-	result := KeyVaultClientGetDeletedKeyResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyBundle); err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
@@ -400,7 +400,7 @@ func (client *KeyVaultClient) getDeletedKeysCreateRequest(ctx context.Context, v
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -408,7 +408,7 @@ func (client *KeyVaultClient) getDeletedKeysCreateRequest(ctx context.Context, v
 
 // getDeletedKeysHandleResponse handles the GetDeletedKeys response.
 func (client *KeyVaultClient) getDeletedKeysHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeysResponse, error) {
-	result := KeyVaultClientGetDeletedKeysResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyListResult); err != nil {
 		return KeyVaultClientGetDeletedKeysResponse{}, err
 	}
@@ -456,7 +456,7 @@ func (client *KeyVaultClient) getKeyCreateRequest(ctx context.Context, vaultBase
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -464,7 +464,7 @@ func (client *KeyVaultClient) getKeyCreateRequest(ctx context.Context, vaultBase
 
 // getKeyHandleResponse handles the GetKey response.
 func (client *KeyVaultClient) getKeyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyResponse, error) {
-	result := KeyVaultClientGetKeyResponse{RawResponse: resp}
+	result := KeyVaultClientGetKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
@@ -507,7 +507,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -515,8 +515,8 @@ func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Cont
 
 // getKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
 func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
-	result := KeyVaultClientGetKeyRotationPolicyResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RotationPolicy); err != nil {
+	result := KeyVaultClientGetKeyRotationPolicyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
 	return result, nil
@@ -557,7 +557,7 @@ func (client *KeyVaultClient) getKeyVersionsCreateRequest(ctx context.Context, v
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -565,7 +565,7 @@ func (client *KeyVaultClient) getKeyVersionsCreateRequest(ctx context.Context, v
 
 // getKeyVersionsHandleResponse handles the GetKeyVersions response.
 func (client *KeyVaultClient) getKeyVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetKeyVersionsResponse, error) {
-	result := KeyVaultClientGetKeyVersionsResponse{RawResponse: resp}
+	result := KeyVaultClientGetKeyVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeyVaultClientGetKeyVersionsResponse{}, err
 	}
@@ -581,11 +581,11 @@ func (client *KeyVaultClient) getKeyVersionsHandleResponse(resp *http.Response) 
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
 func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *KeyVaultClientGetKeysPager {
 	return &KeyVaultClientGetKeysPager{
-		Client: client,
-		Requester: func(ctx context.Context) (*policy.Request, error) {
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.GetKeysCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Advancer: func(ctx context.Context, resp KeyVaultClientGetKeysResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KeyVaultClientGetKeysResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
 		},
 	}
@@ -604,7 +604,7 @@ func (client *KeyVaultClient) GetKeysCreateRequest(ctx context.Context, vaultBas
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -612,7 +612,7 @@ func (client *KeyVaultClient) GetKeysCreateRequest(ctx context.Context, vaultBas
 
 // GetKeysHandleResponse handles the GetKeys response.
 func (client *KeyVaultClient) GetKeysHandleResponse(resp *http.Response) (KeyVaultClientGetKeysResponse, error) {
-	result := KeyVaultClientGetKeysResponse{RawResponse: resp}
+	result := KeyVaultClientGetKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeyVaultClientGetKeysResponse{}, err
 	}
@@ -649,7 +649,7 @@ func (client *KeyVaultClient) getRandomBytesCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -657,7 +657,7 @@ func (client *KeyVaultClient) getRandomBytesCreateRequest(ctx context.Context, v
 
 // getRandomBytesHandleResponse handles the GetRandomBytes response.
 func (client *KeyVaultClient) getRandomBytesHandleResponse(resp *http.Response) (KeyVaultClientGetRandomBytesResponse, error) {
-	result := KeyVaultClientGetRandomBytesResponse{RawResponse: resp}
+	result := KeyVaultClientGetRandomBytesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RandomBytes); err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
@@ -701,7 +701,7 @@ func (client *KeyVaultClient) importKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -709,7 +709,7 @@ func (client *KeyVaultClient) importKeyCreateRequest(ctx context.Context, vaultB
 
 // importKeyHandleResponse handles the ImportKey response.
 func (client *KeyVaultClient) importKeyHandleResponse(resp *http.Response) (KeyVaultClientImportKeyResponse, error) {
-	result := KeyVaultClientImportKeyResponse{RawResponse: resp}
+	result := KeyVaultClientImportKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
@@ -736,7 +736,7 @@ func (client *KeyVaultClient) PurgeDeletedKey(ctx context.Context, vaultBaseURL 
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return KeyVaultClientPurgeDeletedKeyResponse{RawResponse: resp}, nil
+	return KeyVaultClientPurgeDeletedKeyResponse{}, nil
 }
 
 // purgeDeletedKeyCreateRequest creates the PurgeDeletedKey request.
@@ -753,7 +753,7 @@ func (client *KeyVaultClient) purgeDeletedKeyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -797,7 +797,7 @@ func (client *KeyVaultClient) recoverDeletedKeyCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -805,7 +805,7 @@ func (client *KeyVaultClient) recoverDeletedKeyCreateRequest(ctx context.Context
 
 // recoverDeletedKeyHandleResponse handles the RecoverDeletedKey response.
 func (client *KeyVaultClient) recoverDeletedKeyHandleResponse(resp *http.Response) (KeyVaultClientRecoverDeletedKeyResponse, error) {
-	result := KeyVaultClientRecoverDeletedKeyResponse{RawResponse: resp}
+	result := KeyVaultClientRecoverDeletedKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
@@ -844,16 +844,16 @@ func (client *KeyVaultClient) releaseCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	// if keyVersion == "" {
-	// 	return nil, errors.New("parameter keyVersion cannot be empty")
-	// }
+	if keyVersion == "" {
+		return nil, errors.New("parameter keyVersion cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -861,7 +861,7 @@ func (client *KeyVaultClient) releaseCreateRequest(ctx context.Context, vaultBas
 
 // releaseHandleResponse handles the Release response.
 func (client *KeyVaultClient) releaseHandleResponse(resp *http.Response) (KeyVaultClientReleaseResponse, error) {
-	result := KeyVaultClientReleaseResponse{RawResponse: resp}
+	result := KeyVaultClientReleaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyReleaseResult); err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
@@ -906,7 +906,7 @@ func (client *KeyVaultClient) restoreKeyCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -914,7 +914,7 @@ func (client *KeyVaultClient) restoreKeyCreateRequest(ctx context.Context, vault
 
 // restoreKeyHandleResponse handles the RestoreKey response.
 func (client *KeyVaultClient) restoreKeyHandleResponse(resp *http.Response) (KeyVaultClientRestoreKeyResponse, error) {
-	result := KeyVaultClientRestoreKeyResponse{RawResponse: resp}
+	result := KeyVaultClientRestoreKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
@@ -955,7 +955,7 @@ func (client *KeyVaultClient) rotateKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -963,7 +963,7 @@ func (client *KeyVaultClient) rotateKeyCreateRequest(ctx context.Context, vaultB
 
 // rotateKeyHandleResponse handles the RotateKey response.
 func (client *KeyVaultClient) rotateKeyHandleResponse(resp *http.Response) (KeyVaultClientRotateKeyResponse, error) {
-	result := KeyVaultClientRotateKeyResponse{RawResponse: resp}
+	result := KeyVaultClientRotateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
@@ -1011,7 +1011,7 @@ func (client *KeyVaultClient) signCreateRequest(ctx context.Context, vaultBaseUR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1019,7 +1019,7 @@ func (client *KeyVaultClient) signCreateRequest(ctx context.Context, vaultBaseUR
 
 // signHandleResponse handles the Sign response.
 func (client *KeyVaultClient) signHandleResponse(resp *http.Response) (KeyVaultClientSignResponse, error) {
-	result := KeyVaultClientSignResponse{RawResponse: resp}
+	result := KeyVaultClientSignResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
@@ -1069,7 +1069,7 @@ func (client *KeyVaultClient) unwrapKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1077,7 +1077,7 @@ func (client *KeyVaultClient) unwrapKeyCreateRequest(ctx context.Context, vaultB
 
 // unwrapKeyHandleResponse handles the UnwrapKey response.
 func (client *KeyVaultClient) unwrapKeyHandleResponse(resp *http.Response) (KeyVaultClientUnwrapKeyResponse, error) {
-	result := KeyVaultClientUnwrapKeyResponse{RawResponse: resp}
+	result := KeyVaultClientUnwrapKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
@@ -1125,7 +1125,7 @@ func (client *KeyVaultClient) updateKeyCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1133,7 +1133,7 @@ func (client *KeyVaultClient) updateKeyCreateRequest(ctx context.Context, vaultB
 
 // updateKeyHandleResponse handles the UpdateKey response.
 func (client *KeyVaultClient) updateKeyHandleResponse(resp *http.Response) (KeyVaultClientUpdateKeyResponse, error) {
-	result := KeyVaultClientUpdateKeyResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
@@ -1148,7 +1148,7 @@ func (client *KeyVaultClient) updateKeyHandleResponse(resp *http.Response) (KeyV
 // keyRotationPolicy - The policy for the key.
 // options - KeyVaultClientUpdateKeyRotationPolicyOptions contains the optional parameters for the KeyVaultClient.UpdateKeyRotationPolicy
 // method.
-func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy RotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
+func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
 	req, err := client.updateKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, keyRotationPolicy, options)
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
@@ -1164,7 +1164,7 @@ func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vault
 }
 
 // updateKeyRotationPolicyCreateRequest creates the UpdateKeyRotationPolicy request.
-func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy RotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (*policy.Request, error) {
+func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys/{key-name}/rotationpolicy"
@@ -1177,7 +1177,7 @@ func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, keyRotationPolicy)
@@ -1185,8 +1185,8 @@ func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.C
 
 // updateKeyRotationPolicyHandleResponse handles the UpdateKeyRotationPolicy response.
 func (client *KeyVaultClient) updateKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
-	result := KeyVaultClientUpdateKeyRotationPolicyResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RotationPolicy); err != nil {
+	result := KeyVaultClientUpdateKeyRotationPolicyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
 	return result, nil
@@ -1236,7 +1236,7 @@ func (client *KeyVaultClient) verifyCreateRequest(ctx context.Context, vaultBase
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1244,7 +1244,7 @@ func (client *KeyVaultClient) verifyCreateRequest(ctx context.Context, vaultBase
 
 // verifyHandleResponse handles the Verify response.
 func (client *KeyVaultClient) verifyHandleResponse(resp *http.Response) (KeyVaultClientVerifyResponse, error) {
-	result := KeyVaultClientVerifyResponse{RawResponse: resp}
+	result := KeyVaultClientVerifyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVerifyResult); err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
@@ -1296,7 +1296,7 @@ func (client *KeyVaultClient) wrapKeyCreateRequest(ctx context.Context, vaultBas
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1304,7 +1304,7 @@ func (client *KeyVaultClient) wrapKeyCreateRequest(ctx context.Context, vaultBas
 
 // wrapKeyHandleResponse handles the WrapKey response.
 func (client *KeyVaultClient) wrapKeyHandleResponse(resp *http.Response) (KeyVaultClientWrapKeyResponse, error) {
-	result := KeyVaultClientWrapKeyResponse{RawResponse: resp}
+	result := KeyVaultClientWrapKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}

@@ -360,6 +360,9 @@ func TestRecoverDeletedKey(t *testing.T) {
 			_, err = pollerResp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 
+			_, err = client.GetDeletedKey(ctx, key, nil)
+			require.NoError(t, err)
+
 			resp, err := client.BeginRecoverDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 
@@ -534,8 +537,10 @@ func TestListDeletedKeys(t *testing.T) {
 
 			pager := client.ListDeletedKeys(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().DeletedKeys)
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.DeletedKeys)
 			}
 
 			require.GreaterOrEqual(t, count, 3)
@@ -566,10 +571,11 @@ func TestListKeyVersions(t *testing.T) {
 
 			pager := client.ListPropertiesOfKeyVersions(key, nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().Keys)
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(resp.Keys)
 			}
-			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 6)
 		})
 	}

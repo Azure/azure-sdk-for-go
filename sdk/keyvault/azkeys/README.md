@@ -1,9 +1,9 @@
 # Azure Key Vault Keys client library for Go
-Azure Key Vault helps solve the following problems:
-- Cryptographic key management (this library) - create, store, and control
-access to the keys used to encrypt your data
 
-[Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs]
+* Cryptographic key management (this library) - create, store, and control access to the keys used to encrypt your data
+* Secrets management ([azsecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Certificate management ([azcertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates)) - create, manage, and deploy public and private SSL/TLS certificates
+[Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [Product documentation][keyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
 ### Install packages
@@ -141,8 +141,8 @@ This section contains code snippets covering common tasks:
 <!-- * [Perform cryptographic operations](#cryptographic-operations) -->
 
 ### Create a key
-[`CreateRSAKey`](https://aka.ms/azsdk/go/keyvault-keys) and
-[`CreateECKey`](https://aka.ms/azsdk/go/keyvault-keys) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
+[`CreateRSAKey`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.CreateRSAKey) and
+[`CreateECKey`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.CreateECKey) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
 
 ```go
 import (
@@ -183,7 +183,7 @@ func main() {
 ```
 
 ### Retrieve a key
-[`GetKey`](https://aka.ms/azsdk/go/keyvault-keys) retrieves a key previously stored in the Vault.
+[`GetKey`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.GetKey) retrieves a key previously stored in the Vault.
 ```go
 import (
     "fmt"
@@ -213,7 +213,7 @@ func main() {
 ```
 
 ### Update an existing key
-[`UpdateKeyProperties`](https://aka.ms/azsdk/go/keyvault-keys)
+[`UpdateKeyProperties`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.UpdateKeyProperties)
 updates the properties of a key previously stored in the Key Vault.
 ```go
 import (
@@ -249,7 +249,7 @@ func main() {
 ```
 
 ### Delete a key
-[`BeginDeleteKey`](https://aka.ms/azsdk/go/keyvault-keys) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteKey` itself is permanent.
+[`BeginDeleteKey`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.BeginDeleteKey) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteKey` itself is permanent.
 
 ```go
 import (
@@ -333,7 +333,7 @@ func main() {
 ```
 
 ### List keys
-[`ListKeys`](https://aka.ms/azsdk/go/keyvault-keys) lists the properties of all of the keys in the client's vault.
+[`ListKeys`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client.ListKeys) lists the properties of all of the keys in the client's vault.
 
 ```go
 import (
@@ -372,7 +372,7 @@ func main() {
 ```
 
 ### Cryptographic operations
-[CryptographyClient](https://aka.ms/azsdk/go/keyvault-keys)
+[CryptographyClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto#Client)
 enables cryptographic operations (encrypt/decrypt, wrap/unwrap, sign/verify) using a particular key.
 
 ```go
@@ -498,11 +498,12 @@ contact opencode@microsoft.com with any additional questions or comments.
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
-[reference_docs]: https://aka.ms/azsdk/go/keyvault-keys
-[key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys#Client
-[crypto_client_docs]: https://aka.ms/azsdk/go/keyvault-keys/crypto/docs
+[reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
+[key_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client
+[crypto_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto#Client
 [key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/client.go
 [key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/example_test.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
+[keys_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazkeys%2FREADME.png)

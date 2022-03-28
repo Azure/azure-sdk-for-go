@@ -174,17 +174,20 @@ func TestPipelineAudience(t *testing.T) {
 		opts := &arm.ClientOptions{}
 		opts.Cloud = c
 		opts.Transport = srv
+		audience := opts.Cloud.Services[cloud.ResourceManager].Audience
+		if !strings.HasPrefix(audience, "https://") {
+			t.Fatal("unexpected audience " + audience)
+		}
 		getTokenCalled := false
 		cred := mockCredential{getTokenImpl: func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {
 			getTokenCalled = true
 			if n := len(options.Scopes); n != 1 {
 				t.Fatalf("expected 1 scope, got %d", n)
 			}
-			if options.Scopes[0] == opts.Cloud.Services[cloud.ResourceManager].Audience+"/.default" {
-				return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+			if options.Scopes[0] != audience+"/.default" {
+				t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 			}
-			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
-			return nil, nil
+			return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 		}}
 		req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 		if err != nil {

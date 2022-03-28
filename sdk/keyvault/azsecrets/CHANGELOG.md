@@ -1,16 +1,12 @@
 # Release History
 
-## 0.7.0 (Unreleased)
+## 0.7.0 (2022-04-05)
 
 ### Features Added
 * Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values
 
 ### Breaking Changes
 * Removed `RawResponse` from pollers
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.6.0 (2022-03-08)
 

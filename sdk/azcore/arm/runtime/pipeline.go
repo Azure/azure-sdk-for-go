@@ -21,8 +21,6 @@ import (
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-// This method panics when the ClientOptions.Cloud field is set with a Configuration object
-// that's missing Azure Resource Manager settings. A future version will return an error instead.
 func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (pipeline.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}

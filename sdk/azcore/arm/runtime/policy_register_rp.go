@@ -49,8 +49,6 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // NewRPRegistrationPolicy creates a policy object configured using the specified options.
 // The policy controls whether an unregistered resource provider should automatically be
 // registered. See https://aka.ms/rps-not-found for more information.
-// This method panics when the RegistrationOptions.Cloud field is set with a Configuration object
-// that's missing Azure Resource Manager settings. A future version will return an error instead.
 func NewRPRegistrationPolicy(cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}

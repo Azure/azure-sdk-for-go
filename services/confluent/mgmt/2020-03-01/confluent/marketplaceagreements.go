@@ -73,6 +73,11 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2020-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -80,7 +85,8 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements/default", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	if body != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(body))
@@ -151,10 +157,16 @@ func (client MarketplaceAgreementsClient) ListPreparer(ctx context.Context) (*ht
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2020-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

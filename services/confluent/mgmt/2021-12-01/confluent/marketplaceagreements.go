@@ -73,7 +73,7 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -81,6 +81,7 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
+	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -157,7 +158,7 @@ func (client MarketplaceAgreementsClient) ListPreparer(ctx context.Context) (*ht
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

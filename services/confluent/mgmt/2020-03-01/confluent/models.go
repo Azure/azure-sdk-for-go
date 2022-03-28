@@ -302,8 +302,29 @@ type OfferDetail struct {
 	PlanName *string `json:"planName,omitempty"`
 	// TermUnit - Offer Plan Term unit
 	TermUnit *string `json:"termUnit,omitempty"`
-	// Status - SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
+	// Status - READ-ONLY; SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
 	Status SaaSOfferStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OfferDetail.
+func (od OfferDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if od.PublisherID != nil {
+		objectMap["publisherId"] = od.PublisherID
+	}
+	if od.ID != nil {
+		objectMap["id"] = od.ID
+	}
+	if od.PlanID != nil {
+		objectMap["planId"] = od.PlanID
+	}
+	if od.PlanName != nil {
+		objectMap["planName"] = od.PlanName
+	}
+	if od.TermUnit != nil {
+		objectMap["termUnit"] = od.TermUnit
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -323,8 +344,17 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Confluent operations supported by the Microsoft.Confluent provider.
 	Value *[]OperationResult `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.Value != nil {
+		objectMap["value"] = olr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of OperationResult values.
@@ -832,7 +862,7 @@ func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, g
 type OrganizationResourceProperties struct {
 	// CreatedTime - READ-ONLY; The creation time of the resource.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - READ-ONLY; Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
 	ProvisioningState ProvisionState `json:"provisioningState,omitempty"`
 	// OrganizationID - READ-ONLY; Id of the Confluent organization.
 	OrganizationID *string `json:"organizationId,omitempty"`
@@ -847,9 +877,6 @@ type OrganizationResourceProperties struct {
 // MarshalJSON is the custom marshaler for OrganizationResourceProperties.
 func (orp OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if orp.ProvisioningState != "" {
-		objectMap["provisioningState"] = orp.ProvisioningState
-	}
 	if orp.OfferDetail != nil {
 		objectMap["offerDetail"] = orp.OfferDetail
 	}
@@ -863,7 +890,7 @@ func (orp OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
 type OrganizationResourcePropertiesModel struct {
 	// CreatedTime - READ-ONLY; The creation time of the resource.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - READ-ONLY; Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
 	ProvisioningState ProvisionState `json:"provisioningState,omitempty"`
 	// OrganizationID - READ-ONLY; Id of the Confluent organization.
 	OrganizationID *string `json:"organizationId,omitempty"`
@@ -878,9 +905,6 @@ type OrganizationResourcePropertiesModel struct {
 // MarshalJSON is the custom marshaler for OrganizationResourcePropertiesModel.
 func (orpm OrganizationResourcePropertiesModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if orpm.ProvisioningState != "" {
-		objectMap["provisioningState"] = orpm.ProvisioningState
-	}
 	if orpm.OfferDetail != nil {
 		objectMap["offerDetail"] = orpm.OfferDetail
 	}
@@ -902,8 +926,29 @@ type OrganizationResourcePropertiesOfferDetail struct {
 	PlanName *string `json:"planName,omitempty"`
 	// TermUnit - Offer Plan Term unit
 	TermUnit *string `json:"termUnit,omitempty"`
-	// Status - SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
+	// Status - READ-ONLY; SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
 	Status SaaSOfferStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrganizationResourcePropertiesOfferDetail.
+func (orpD OrganizationResourcePropertiesOfferDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if orpD.PublisherID != nil {
+		objectMap["publisherId"] = orpD.PublisherID
+	}
+	if orpD.ID != nil {
+		objectMap["id"] = orpD.ID
+	}
+	if orpD.PlanID != nil {
+		objectMap["planId"] = orpD.PlanID
+	}
+	if orpD.PlanName != nil {
+		objectMap["planName"] = orpD.PlanName
+	}
+	if orpD.TermUnit != nil {
+		objectMap["termUnit"] = orpD.TermUnit
+	}
+	return json.Marshal(objectMap)
 }
 
 // OrganizationResourcePropertiesUserDetail subscriber detail

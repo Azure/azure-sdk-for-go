@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -224,7 +225,7 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 	}
 
 	return NewRPCLink(RPCLinkArgs{
-		Client:  client,
+		Client:  &amqpwrap.AMQPClientWrapper{Inner: client},
 		Address: managementPath,
 	})
 }

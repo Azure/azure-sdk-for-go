@@ -1,17 +1,11 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
+## 0.5.0 (2022-04-05)
 
 ### Breaking Changes
 * `ListDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListDeletedKeysPage, error)` for paging over deleted keys.
 * `ListPropertiesOfKeyVersionssPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
 * Removing `RawResponse *http.Response` from `crypto` response types
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.4.0 (2022-03-08)
 

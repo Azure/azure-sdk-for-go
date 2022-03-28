@@ -4,7 +4,7 @@
 * Cryptographic key management (([azkeys](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys))) - create, store, and control access to the keys used to encrypt your data
 * Secrets management ([azsecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
-[Source code][certificates_client_src] | [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates#Client.BeginCreateCertificate) | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][certificates_samples]
+[Source code][certificates_client_src] | [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates) | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][certificates_samples]
 
 ## Getting started
 ### Install the package

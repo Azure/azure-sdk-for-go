@@ -119,7 +119,7 @@ func main() {
 		panic(err)
 	}
 
-	client, err = azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err := azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -158,7 +158,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	client, err = azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err := azcertificates.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -446,7 +446,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[certificate_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates#Client
+[pkggodev_azcerts]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
+[certificate_client_docs]: https://aka.ms/azsdk/go/azcertificates
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
 [certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates

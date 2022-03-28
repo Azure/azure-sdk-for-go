@@ -244,7 +244,7 @@ The following sections provide several code snippets covering some of the most c
 
 * [Creating a table](#creating-a-table "Creating a table")
 * [Creating entities](#creating-entities "Creating entities")
-* [Listing entities](#querying-entities "Listing entities")
+* [Listing entities](#listing-entities "Listing entities")
 
 
 ### Creating a table
@@ -381,7 +381,7 @@ func main() {
     }
 
 	pager := client.List(options)
-	pageCount = 0
+	pageCount := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -490,7 +490,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Int32Ptr(10)})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -505,7 +505,7 @@ func main() {
         }
     }
 
-    newPager := client.List(&ListEntitiesOptions{
+    newPager := client.List(&aztables.ListEntitiesOptions{
         Top:          to.Int32Ptr(10),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),

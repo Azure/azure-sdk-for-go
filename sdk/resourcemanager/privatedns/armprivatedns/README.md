@@ -52,9 +52,9 @@ client := armprivatedns.NewPrivateZonesClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Private Zone](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/privatezone)
-- [Record Sets](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/record_sets)
-- [Virtual Network Link](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/virtualnetworklink)
+- [Private Zone](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/privatedns/privatezone)
+- [Record Sets](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/privatedns/record_sets)
+- [Virtual Network Link](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/privatedns/virtualnetworklink)
 
 ## Provide Feedback
 

@@ -30,10 +30,12 @@ func (e errNonRetriable) Error() string { return e.Message }
 // GetRecoveryKind().
 type RecoveryKind string
 
-const RecoveryKindNone RecoveryKind = ""
-const RecoveryKindFatal RecoveryKind = "fatal"
-const RecoveryKindLink RecoveryKind = "link"
-const RecoveryKindConn RecoveryKind = "connection"
+const (
+	RecoveryKindNone  RecoveryKind = ""
+	RecoveryKindFatal RecoveryKind = "fatal"
+	RecoveryKindLink  RecoveryKind = "link"
+	RecoveryKindConn  RecoveryKind = "connection"
+)
 
 type SBErrInfo struct {
 	inner        error

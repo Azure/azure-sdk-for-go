@@ -8,11 +8,12 @@
 Package cloud implements a configuration API for applications deployed to sovereign or private Azure clouds.
 
 Azure SDK client configuration defaults are appropriate for Azure Public Cloud (sometimes referred to as
-"Azure Commercial"). This package enables applications deployed to other Azure Clouds to configure clients
-appropriately.
+"Azure Commercial" or simply "Microsoft Azure"). This package enables applications deployed to other
+Azure Clouds to configure clients appropriately.
 
-Applications deployed to a sovereign cloud such as Azure US Government can use WellKnownClouds to configure
-Azure SDK clients, for example:
+This package contains predefined configuration for well-known sovereign clouds such as Azure Government and
+Azure China. Azure SDK clients accept this configuration via the Cloud field of azcore.ClientOptions. For
+example, configuring a credential and ARM client for Azure Government:
 
 	opts := azcore.ClientOptions{Cloud: cloud.AzureGovernment}
 	cred, err := azidentity.NewDefaultAzureCredential(

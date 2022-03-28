@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"net/http"
 	"reflect"
 	"strings"
 
@@ -190,26 +191,30 @@ func GetRecoveryKind(err error) RecoveryKind {
 	var rpcErr rpcError
 
 	if errors.As(err, &rpcErr) {
+		// Described more here:
+		// https://www.oasis-open.org/committees/download.php/54441/AMQP%20Management%20v1.0%20WD09
+		// > Unsuccessful operations MUST NOT result in a statusCode in the 2xx range as defined in Section 10.2 of [RFC2616]
+		// RFC2616 is the specification for HTTP.
 		code := rpcErr.RPCCode()
 
-		if code == RPCResponseCodeNotFound || code == RPCResponseCodeLockLost {
+		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
 			return RecoveryKindFatal
 		}
 
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == 401 {
+		if code == http.StatusUnauthorized {
 			return RecoveryKindLink
 		}
 
 		// simple timeouts
-		if rpcErr.Resp.Code == 408 || rpcErr.Resp.Code == 503 ||
+		if rpcErr.Resp.Code == http.StatusRequestTimeout || rpcErr.Resp.Code == http.StatusServiceUnavailable ||
 			// internal server errors are worth retrying (they will typically lead
 			// to a more actionable error). A simple example of this is when you're
 			// in the middle of an operation and the link is detached. Sometimes you'll get
 			// the detached event immediately, but sometimes you'll get an intermediate 500
 			// indicating your original operation was cancelled.
-			rpcErr.Resp.Code == 500 {
+			rpcErr.Resp.Code == http.StatusInternalServerError {
 			return RecoveryKindNone
 		}
 	}

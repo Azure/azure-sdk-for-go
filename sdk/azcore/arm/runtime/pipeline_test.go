@@ -205,7 +205,6 @@ func TestPipelineAudience(t *testing.T) {
 }
 
 func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
-	t.Skip("this test can't pass without a breaking change to arm/runtime.NewPipeline")
 	partialConfigs := []cloud.Configuration{
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{

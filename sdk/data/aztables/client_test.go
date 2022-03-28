@@ -418,8 +418,8 @@ func TestContinuationTokens(t *testing.T) {
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: &pkContToken,
-				RowKey:       &rkContToken,
+				NextPartitionKey: &pkContToken,
+				NextRowKey:       &rkContToken,
 			})
 			count := 0
 			for newPager.More() {
@@ -462,8 +462,8 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.NotNil(t, rkContToken)
 
 			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: &pkContToken,
-				RowKey:       &rkContToken,
+				NextPartitionKey: &pkContToken,
+				NextRowKey:       &rkContToken,
 				Filter:       to.StringPtr("Value le 5"),
 			})
 			count := 0

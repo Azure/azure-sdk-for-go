@@ -141,11 +141,11 @@ type ListEntitiesOptions struct {
 	// Maximum number of records to return.
 	Top *int32
 
-	// The PartitionKey to start paging from
-	PartitionKey *string
+	// The NextPartitionKey to start paging from
+	NextPartitionKey *string
 
-	// The RowKey to start paging from
-	RowKey *string
+	// The NextRowKey to start paging from
+	NextRowKey *string
 }
 
 func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
@@ -261,8 +261,8 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 		tableName:   t.name,
 		listOptions: listOptions,
 		current:     generated.TableClientQueryEntitiesResponse{},
-		nextPK:      listOptions.PartitionKey,
-		nextRK:      listOptions.RowKey,
+		nextPK:      listOptions.NextPartitionKey,
+		nextRK:      listOptions.NextRowKey,
 	}
 }
 

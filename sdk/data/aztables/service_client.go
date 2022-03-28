@@ -143,6 +143,9 @@ type ListTablesOptions struct {
 
 	// Maximum number of records to return.
 	Top *int32
+
+	// NextTableName is the continuation token for the next table to page from
+	NextTableName *string
 }
 
 func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
@@ -243,7 +246,7 @@ func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse,
 // More returns true if there are more pages to retrieve
 func (p *ListTablesPager) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.XMSContinuationNextTableName == nil || len(*p.current.XMSContinuationNextTableName) == 0 {
+		if p.nextTableName == nil || len(*p.nextTableName) == 0 {
 			return false
 		}
 	}
@@ -261,10 +264,14 @@ func (p *ListTablesPager) More() bool {
 //
 // List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
+	if listOptions == nil {
+		listOptions = &ListTablesOptions{}
+	}
 	return ListTablesPager{
 		client:            t.client,
 		tableQueryOptions: &generated.TableClientQueryOptions{},
 		listOptions:       listOptions,
+		nextTableName:     listOptions.NextTableName,
 	}
 }
 

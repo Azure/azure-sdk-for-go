@@ -3,11 +3,14 @@
 ## 0.6.1 (Unreleased)
 
 ### Features Added
+* Added the `NextTableName` continuation token option to `ListTablesOptions`
 
 ### Breaking Changes
 * Removed the `ODataID`, `ODataEditLink`, and `ODataType` on `TableProperties`
 * Removed `ODataMetadata` on `ListTablesPageResponse`
 * Removed `ResponsePreference` on `AddEntityOptions`
+* Renamed `ListEntitiesOptions.PartitionKey` to `ListEntitiesOptions.NextPartitionKey`.
+* Renamed `ListEntitiesOptionsRowKey` to `ListEntitiesOptions.NextRowKey`
 
 ### Bugs Fixed
 

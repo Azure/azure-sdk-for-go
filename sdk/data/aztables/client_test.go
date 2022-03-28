@@ -464,7 +464,7 @@ func TestContinuationTokensFilters(t *testing.T) {
 			newPager := client.List(&ListEntitiesOptions{
 				NextPartitionKey: &pkContToken,
 				NextRowKey:       &rkContToken,
-				Filter:       to.StringPtr("Value le 5"),
+				Filter:           to.StringPtr("Value le 5"),
 			})
 			count := 0
 			for newPager.More() {

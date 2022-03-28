@@ -14199,7 +14199,7 @@ func (vpo ValidateProbeOutput) MarshalJSON() ([]byte, error) {
 type ValidateSecretInput struct {
 	// SecretType - The secret type. Possible values include: 'SecretTypeURLSigningKey', 'SecretTypeCustomerCertificate', 'SecretTypeManagedCertificate', 'SecretTypeAzureFirstPartyManagedCertificate'
 	SecretType SecretType `json:"secretType,omitempty"`
-	// SecretSource - Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+	// SecretSource - Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​���​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 	// SecretVersion - Secret version, if customer is using a specific version.
 	SecretVersion *string `json:"secretVersion,omitempty"`

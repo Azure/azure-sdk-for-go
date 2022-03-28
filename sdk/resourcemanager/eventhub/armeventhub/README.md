@@ -52,10 +52,10 @@ client := armeventhub.NewPrivateEndpointConnectionsClient(<subscription ID>, cre
 
 ## More sample code
 
-- [Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/clusters)
-- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/disaster_recovery_config)
-- [Event Hub](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/eventhub)
-- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/namespace)
+- [Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventhub/clusters)
+- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventhub/disaster_recovery_config)
+- [Event Hub](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventhub/eventhub)
+- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventhub/namespace)
 
 ## Provide Feedback
 

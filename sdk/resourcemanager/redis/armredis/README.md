@@ -52,9 +52,9 @@ client := armredis.NewPrivateEndpointConnectionsClient(<subscription ID>, cred, 
 
 ## More sample code
 
-- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=redis/firewallrule)
-- [Patch Schedule](https://aka.ms/azsdk/go/mgmt/samples?path=redis/patchschedule)
-- [Redis](https://aka.ms/azsdk/go/mgmt/samples?path=redis/redis)
+- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/redis/firewallrule)
+- [Patch Schedule](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/redis/patchschedule)
+- [Redis](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/redis/redis)
 
 ## Provide Feedback
 

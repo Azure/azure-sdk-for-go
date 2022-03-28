@@ -52,9 +52,9 @@ client := armauthorization.NewPermissionsClient(<subscription ID>, cred, &option
 
 ## More sample code
 
-- [Permissions](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/permissions)
-- [Role Assignment](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_assignment)
-- [Role Definition](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_definition)
+- [Permissions](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/permissions)
+- [Role Assignment](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/role_assignment)
+- [Role Definition](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/role_definition)
 
 ## Provide Feedback
 

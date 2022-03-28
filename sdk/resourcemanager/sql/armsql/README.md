@@ -52,13 +52,13 @@ client := armsql.NewInstanceFailoverGroupsClient(<subscription ID>, cred, &optio
 
 ## More sample code
 
-- [Database](https://aka.ms/azsdk/go/mgmt/samples?path=sql/database)
-- [Elastic Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sql/elastic_pool)
-- [Failover Group](https://aka.ms/azsdk/go/mgmt/samples?path=sql/failover_group)
-- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=sql/firewall_rule)
-- [Job](https://aka.ms/azsdk/go/mgmt/samples?path=sql/job)
-- [Server](https://aka.ms/azsdk/go/mgmt/samples?path=sql/server)
-- [Sync](https://aka.ms/azsdk/go/mgmt/samples?path=sql/sync)
+- [Database](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/database)
+- [Elastic Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/elastic_pool)
+- [Failover Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/failover_group)
+- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/firewall_rule)
+- [Job](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/job)
+- [Server](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/server)
+- [Sync](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/sql/sync)
 
 ## Provide Feedback
 

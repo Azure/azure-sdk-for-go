@@ -52,9 +52,9 @@ client := armkeyvault.NewKeysClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Key](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/key)
-- [Secret](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/secret)
-- [Vault](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/vault)
+- [Key](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/keyvault/key)
+- [Secret](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/keyvault/secret)
+- [Vault](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/keyvault/vault)
 
 ## Provide Feedback
 

@@ -52,9 +52,9 @@ client := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID
 
 ## More sample code
 
-- [Data Source](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/datasource)
-- [Workspace Purge](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspace_purge)
-- [Workspace](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspaces)
+- [Data Source](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/datasource)
+- [Workspace Purge](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/workspace_purge)
+- [Workspace](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/workspaces)
 
 ## Provide Feedback
 

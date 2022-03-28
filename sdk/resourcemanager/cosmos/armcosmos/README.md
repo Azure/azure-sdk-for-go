@@ -52,12 +52,12 @@ client := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Cassandra](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cassandra)
-- [Cosmos DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cosmosdb)
-- [Gremlin](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/gremlin)
-- [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/mongodb)
-- [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/sql)
-- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/table)
+- [Cassandra](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/cassandra)
+- [Cosmos DB](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/cosmosdb)
+- [Gremlin](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/gremlin)
+- [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/mongodb)
+- [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/sql)
+- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/table)
 
 ## Provide Feedback
 

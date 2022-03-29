@@ -1007,10 +1007,6 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *runtime.Pager
 			}, nil
 		},
 	})
-
-	// return &ListDeletedKeysPager{
-	// 	genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
-	// }
 }
 
 // ListPropertiesOfKeyVersionsOptions contains the options for the ListKeyVersions operations

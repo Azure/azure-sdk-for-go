@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"reflect"
 	"testing"
 
@@ -238,11 +239,11 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
-	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeNotFound}}).RecoveryKind)
+	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}).RecoveryKind)
 	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}).RecoveryKind)
 }
 
 func Test_IsLockLostError(t *testing.T) {
 	require.True(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
-	require.False(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeNotFound}}))
+	require.False(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
 }

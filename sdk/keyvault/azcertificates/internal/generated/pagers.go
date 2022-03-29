@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,11 @@ package generated
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClientGetCertificateIssuersPager provides operations for iterating over paged responses.
@@ -58,7 +59,7 @@ func (p *KeyVaultClientGetCertificateIssuersPager) NextPage(ctx context.Context)
 
 		return KeyVaultClientGetCertificateIssuersResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getCertificateIssuersHandleResponse(resp)
+	result, err := p.client.GetCertificateIssuersHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetCertificateIssuersResponse{}, err
 	}
@@ -107,7 +108,7 @@ func (p *KeyVaultClientGetCertificateVersionsPager) NextPage(ctx context.Context
 
 		return KeyVaultClientGetCertificateVersionsResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getCertificateVersionsHandleResponse(resp)
+	result, err := p.client.GetCertificateVersionsHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetCertificateVersionsResponse{}, err
 	}
@@ -156,7 +157,7 @@ func (p *KeyVaultClientGetCertificatesPager) NextPage(ctx context.Context) (KeyV
 
 		return KeyVaultClientGetCertificatesResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getCertificatesHandleResponse(resp)
+	result, err := p.client.GetCertificatesHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetCertificatesResponse{}, err
 	}
@@ -205,7 +206,7 @@ func (p *KeyVaultClientGetDeletedCertificatesPager) NextPage(ctx context.Context
 
 		return KeyVaultClientGetDeletedCertificatesResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getDeletedCertificatesHandleResponse(resp)
+	result, err := p.client.GetDeletedCertificatesHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetDeletedCertificatesResponse{}, err
 	}

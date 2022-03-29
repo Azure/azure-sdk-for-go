@@ -17,7 +17,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Prerequisites
 * An [Azure subscription][azure_sub]
-* Go 1.16 or later
+* Go 1.18 or later
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique names):
 
   (Optional) if you want a new resource group to hold the Key Vault:
@@ -165,10 +165,10 @@ func main() {
 
 	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.CertificatePolicy{
 		IssuerParameters: &azcertificates.IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	if err != nil {
@@ -266,12 +266,12 @@ func main() {
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
 		CertificateAttributes: &azcertificates.CertificateProperties{
-			Enabled: to.BoolPtr(false),
+			Enabled: to.Ptr(false),
 			Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
 		},
 		CertificatePolicy: &azcertificates.CertificatePolicy{
 			IssuerParameters: &azcertificates.IssuerParameters{
-				Name: to.StringPtr("Self"),
+				Name: to.Ptr("Self"),
 			},
 		},
 		Tags: map[string]string{"Tag1": "Val1"},

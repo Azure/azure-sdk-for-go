@@ -298,7 +298,7 @@ function TestAndGenerateReport($dir)
     Set-Location $dir
     # dependencies for go coverage report generation
     go get github.com/jstemmer/go-junit-report
-    go get github.com/axw/gocov/gocov
+    go get github.com/jhendrixMSFT/gocov/gocov
     go get github.com/AlekSi/gocov-xml
     go get github.com/matm/gocov-html
 

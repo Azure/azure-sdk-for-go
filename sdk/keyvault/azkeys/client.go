@@ -727,7 +727,7 @@ type RecoverDeletedKeyPoller struct {
 	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
 	lastResponse    generated.KeyVaultClientGetKeyResponse
 	lastRawResponse *http.Response
-	finished bool
+	finished        bool
 }
 
 // Done returns true when the polling operation is completed

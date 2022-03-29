@@ -20,6 +20,90 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 
+// AggregateFunctionProperties the properties that are associated with an aggregate function.
+type AggregateFunctionProperties struct {
+	// Etag - READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
+	Etag                   *string `json:"etag,omitempty"`
+	*FunctionConfiguration `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicFunctionPropertiesTypeFunctionProperties', 'TypeBasicFunctionPropertiesTypeAggregate', 'TypeBasicFunctionPropertiesTypeScalar'
+	Type TypeBasicFunctionProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AggregateFunctionProperties.
+func (afp AggregateFunctionProperties) MarshalJSON() ([]byte, error) {
+	afp.Type = TypeBasicFunctionPropertiesTypeAggregate
+	objectMap := make(map[string]interface{})
+	if afp.FunctionConfiguration != nil {
+		objectMap["properties"] = afp.FunctionConfiguration
+	}
+	if afp.Type != "" {
+		objectMap["type"] = afp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAggregateFunctionProperties is the BasicFunctionProperties implementation for AggregateFunctionProperties.
+func (afp AggregateFunctionProperties) AsAggregateFunctionProperties() (*AggregateFunctionProperties, bool) {
+	return &afp, true
+}
+
+// AsScalarFunctionProperties is the BasicFunctionProperties implementation for AggregateFunctionProperties.
+func (afp AggregateFunctionProperties) AsScalarFunctionProperties() (*ScalarFunctionProperties, bool) {
+	return nil, false
+}
+
+// AsFunctionProperties is the BasicFunctionProperties implementation for AggregateFunctionProperties.
+func (afp AggregateFunctionProperties) AsFunctionProperties() (*FunctionProperties, bool) {
+	return nil, false
+}
+
+// AsBasicFunctionProperties is the BasicFunctionProperties implementation for AggregateFunctionProperties.
+func (afp AggregateFunctionProperties) AsBasicFunctionProperties() (BasicFunctionProperties, bool) {
+	return &afp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AggregateFunctionProperties struct.
+func (afp *AggregateFunctionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				afp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var functionConfiguration FunctionConfiguration
+				err = json.Unmarshal(*v, &functionConfiguration)
+				if err != nil {
+					return err
+				}
+				afp.FunctionConfiguration = &functionConfiguration
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicFunctionProperties
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				afp.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // AvroSerialization describes how data from an input is serialized or how data is serialized when written
 // to an output in Avro format.
 type AvroSerialization struct {
@@ -3038,6 +3122,54 @@ func (fb FunctionBinding) AsBasicFunctionBinding() (BasicFunctionBinding, bool) 
 	return &fb, true
 }
 
+// FunctionConfiguration ...
+type FunctionConfiguration struct {
+	Inputs  *[]FunctionInput     `json:"inputs,omitempty"`
+	Output  *FunctionOutput      `json:"output,omitempty"`
+	Binding BasicFunctionBinding `json:"binding,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for FunctionConfiguration struct.
+func (fc *FunctionConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "inputs":
+			if v != nil {
+				var inputs []FunctionInput
+				err = json.Unmarshal(*v, &inputs)
+				if err != nil {
+					return err
+				}
+				fc.Inputs = &inputs
+			}
+		case "output":
+			if v != nil {
+				var output FunctionOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				fc.Output = &output
+			}
+		case "binding":
+			if v != nil {
+				binding, err := unmarshalBasicFunctionBinding(*v)
+				if err != nil {
+					return err
+				}
+				fc.Binding = binding
+			}
+		}
+	}
+
+	return nil
+}
+
 // FunctionInput describes one input parameter of a function.
 type FunctionInput struct {
 	// DataType - The (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
@@ -3219,6 +3351,7 @@ type FunctionOutput struct {
 
 // BasicFunctionProperties the properties that are associated with a function.
 type BasicFunctionProperties interface {
+	AsAggregateFunctionProperties() (*AggregateFunctionProperties, bool)
 	AsScalarFunctionProperties() (*ScalarFunctionProperties, bool)
 	AsFunctionProperties() (*FunctionProperties, bool)
 }
@@ -3226,8 +3359,9 @@ type BasicFunctionProperties interface {
 // FunctionProperties the properties that are associated with a function.
 type FunctionProperties struct {
 	// Etag - READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty"`
-	// Type - Possible values include: 'TypeBasicFunctionPropertiesTypeFunctionProperties', 'TypeBasicFunctionPropertiesTypeScalar'
+	Etag                   *string `json:"etag,omitempty"`
+	*FunctionConfiguration `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicFunctionPropertiesTypeFunctionProperties', 'TypeBasicFunctionPropertiesTypeAggregate', 'TypeBasicFunctionPropertiesTypeScalar'
 	Type TypeBasicFunctionProperties `json:"type,omitempty"`
 }
 
@@ -3239,6 +3373,10 @@ func unmarshalBasicFunctionProperties(body []byte) (BasicFunctionProperties, err
 	}
 
 	switch m["type"] {
+	case string(TypeBasicFunctionPropertiesTypeAggregate):
+		var afp AggregateFunctionProperties
+		err := json.Unmarshal(body, &afp)
+		return afp, err
 	case string(TypeBasicFunctionPropertiesTypeScalar):
 		var sfp ScalarFunctionProperties
 		err := json.Unmarshal(body, &sfp)
@@ -3272,10 +3410,18 @@ func unmarshalBasicFunctionPropertiesArray(body []byte) ([]BasicFunctionProperti
 func (fp FunctionProperties) MarshalJSON() ([]byte, error) {
 	fp.Type = TypeBasicFunctionPropertiesTypeFunctionProperties
 	objectMap := make(map[string]interface{})
+	if fp.FunctionConfiguration != nil {
+		objectMap["properties"] = fp.FunctionConfiguration
+	}
 	if fp.Type != "" {
 		objectMap["type"] = fp.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsAggregateFunctionProperties is the BasicFunctionProperties implementation for FunctionProperties.
+func (fp FunctionProperties) AsAggregateFunctionProperties() (*AggregateFunctionProperties, bool) {
+	return nil, false
 }
 
 // AsScalarFunctionProperties is the BasicFunctionProperties implementation for FunctionProperties.
@@ -3291,6 +3437,48 @@ func (fp FunctionProperties) AsFunctionProperties() (*FunctionProperties, bool) 
 // AsBasicFunctionProperties is the BasicFunctionProperties implementation for FunctionProperties.
 func (fp FunctionProperties) AsBasicFunctionProperties() (BasicFunctionProperties, bool) {
 	return &fp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for FunctionProperties struct.
+func (fp *FunctionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var functionConfiguration FunctionConfiguration
+				err = json.Unmarshal(*v, &functionConfiguration)
+				if err != nil {
+					return err
+				}
+				fp.FunctionConfiguration = &functionConfiguration
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicFunctionProperties
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fp.Type = typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // BasicFunctionRetrieveDefaultDefinitionParameters parameters used to specify the type of function to retrieve the
@@ -5874,64 +6062,12 @@ func (rts ResourceTestStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ScalarFunctionConfiguration describes the configuration of the scalar function.
-type ScalarFunctionConfiguration struct {
-	// Inputs - A list of inputs describing the parameters of the function.
-	Inputs *[]FunctionInput `json:"inputs,omitempty"`
-	// Output - The output of the function.
-	Output *FunctionOutput `json:"output,omitempty"`
-	// Binding - The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the endpoint.
-	Binding BasicFunctionBinding `json:"binding,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for ScalarFunctionConfiguration struct.
-func (sfc *ScalarFunctionConfiguration) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "inputs":
-			if v != nil {
-				var inputs []FunctionInput
-				err = json.Unmarshal(*v, &inputs)
-				if err != nil {
-					return err
-				}
-				sfc.Inputs = &inputs
-			}
-		case "output":
-			if v != nil {
-				var output FunctionOutput
-				err = json.Unmarshal(*v, &output)
-				if err != nil {
-					return err
-				}
-				sfc.Output = &output
-			}
-		case "binding":
-			if v != nil {
-				binding, err := unmarshalBasicFunctionBinding(*v)
-				if err != nil {
-					return err
-				}
-				sfc.Binding = binding
-			}
-		}
-	}
-
-	return nil
-}
-
 // ScalarFunctionProperties the properties that are associated with a scalar function.
 type ScalarFunctionProperties struct {
-	// ScalarFunctionConfiguration - Describes the configuration of the scalar function.
-	*ScalarFunctionConfiguration `json:"properties,omitempty"`
 	// Etag - READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty"`
-	// Type - Possible values include: 'TypeBasicFunctionPropertiesTypeFunctionProperties', 'TypeBasicFunctionPropertiesTypeScalar'
+	Etag                   *string `json:"etag,omitempty"`
+	*FunctionConfiguration `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicFunctionPropertiesTypeFunctionProperties', 'TypeBasicFunctionPropertiesTypeAggregate', 'TypeBasicFunctionPropertiesTypeScalar'
 	Type TypeBasicFunctionProperties `json:"type,omitempty"`
 }
 
@@ -5939,13 +6075,18 @@ type ScalarFunctionProperties struct {
 func (sfp ScalarFunctionProperties) MarshalJSON() ([]byte, error) {
 	sfp.Type = TypeBasicFunctionPropertiesTypeScalar
 	objectMap := make(map[string]interface{})
-	if sfp.ScalarFunctionConfiguration != nil {
-		objectMap["properties"] = sfp.ScalarFunctionConfiguration
+	if sfp.FunctionConfiguration != nil {
+		objectMap["properties"] = sfp.FunctionConfiguration
 	}
 	if sfp.Type != "" {
 		objectMap["type"] = sfp.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsAggregateFunctionProperties is the BasicFunctionProperties implementation for ScalarFunctionProperties.
+func (sfp ScalarFunctionProperties) AsAggregateFunctionProperties() (*AggregateFunctionProperties, bool) {
+	return nil, false
 }
 
 // AsScalarFunctionProperties is the BasicFunctionProperties implementation for ScalarFunctionProperties.
@@ -5972,15 +6113,6 @@ func (sfp *ScalarFunctionProperties) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var scalarFunctionConfiguration ScalarFunctionConfiguration
-				err = json.Unmarshal(*v, &scalarFunctionConfiguration)
-				if err != nil {
-					return err
-				}
-				sfp.ScalarFunctionConfiguration = &scalarFunctionConfiguration
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -5989,6 +6121,15 @@ func (sfp *ScalarFunctionProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sfp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var functionConfiguration FunctionConfiguration
+				err = json.Unmarshal(*v, &functionConfiguration)
+				if err != nil {
+					return err
+				}
+				sfp.FunctionConfiguration = &functionConfiguration
 			}
 		case "type":
 			if v != nil {

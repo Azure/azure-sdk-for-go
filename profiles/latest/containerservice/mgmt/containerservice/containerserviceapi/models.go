@@ -9,7 +9,7 @@
 
 package containerserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice/containerserviceapi"
+import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-02-01/containerservice/containerserviceapi"
 
 type AgentPoolsClientAPI = original.AgentPoolsClientAPI
 type MaintenanceConfigurationsClientAPI = original.MaintenanceConfigurationsClientAPI

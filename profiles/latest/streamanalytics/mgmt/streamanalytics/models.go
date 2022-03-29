@@ -173,6 +173,7 @@ const (
 type TypeBasicFunctionProperties = original.TypeBasicFunctionProperties
 
 const (
+	TypeBasicFunctionPropertiesTypeAggregate          TypeBasicFunctionProperties = original.TypeBasicFunctionPropertiesTypeAggregate
 	TypeBasicFunctionPropertiesTypeFunctionProperties TypeBasicFunctionProperties = original.TypeBasicFunctionPropertiesTypeFunctionProperties
 	TypeBasicFunctionPropertiesTypeScalar             TypeBasicFunctionProperties = original.TypeBasicFunctionPropertiesTypeScalar
 )
@@ -227,6 +228,7 @@ const (
 	UdfTypeScalar UdfType = original.UdfTypeScalar
 )
 
+type AggregateFunctionProperties = original.AggregateFunctionProperties
 type AvroSerialization = original.AvroSerialization
 type AzureDataLakeStoreOutputDataSource = original.AzureDataLakeStoreOutputDataSource
 type AzureDataLakeStoreOutputDataSourceProperties = original.AzureDataLakeStoreOutputDataSourceProperties
@@ -300,6 +302,7 @@ type EventHubV2OutputDataSource = original.EventHubV2OutputDataSource
 type EventHubV2StreamInputDataSource = original.EventHubV2StreamInputDataSource
 type Function = original.Function
 type FunctionBinding = original.FunctionBinding
+type FunctionConfiguration = original.FunctionConfiguration
 type FunctionInput = original.FunctionInput
 type FunctionListResult = original.FunctionListResult
 type FunctionListResultIterator = original.FunctionListResultIterator
@@ -359,7 +362,6 @@ type ReferenceInputDataSource = original.ReferenceInputDataSource
 type ReferenceInputProperties = original.ReferenceInputProperties
 type Resource = original.Resource
 type ResourceTestStatus = original.ResourceTestStatus
-type ScalarFunctionConfiguration = original.ScalarFunctionConfiguration
 type ScalarFunctionProperties = original.ScalarFunctionProperties
 type ScaleStreamingJobParameters = original.ScaleStreamingJobParameters
 type Serialization = original.Serialization

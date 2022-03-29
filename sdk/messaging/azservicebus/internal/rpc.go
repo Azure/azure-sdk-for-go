@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -47,6 +48,8 @@ type (
 
 	// RPCResponse is the simplified response structure from an RPC like call
 	RPCResponse struct {
+		// Code is the response code - these originate from Service Bus. Some
+		// common values are called out below, with the RPCResponseCode* constants.
 		Code        int
 		Description string
 		Message     *amqp.Message
@@ -59,6 +62,14 @@ type (
 		message *amqp.Message
 		err     error
 	}
+)
+
+// Response codes that come back over the "RPC" style links like cbs or management.
+const (
+	// RPCResponseCodeLockLost comes back if you lose a message lock _or_ a session lock.
+	// (NOTE: this is the one HTTP code that doesn't make intuitive sense. For all others I've just
+	// used the HTTP status code instead.
+	RPCResponseCodeLockLost = http.StatusGone
 )
 
 type rpcError struct {

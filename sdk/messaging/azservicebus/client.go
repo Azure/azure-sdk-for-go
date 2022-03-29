@@ -156,9 +156,10 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
-		cleanupOnClose: cleanupOnClose,
-		ns:             client.namespace,
-		entity:         entity{Queue: queueName},
+		cleanupOnClose:      cleanupOnClose,
+		ns:                  client.namespace,
+		entity:              entity{Queue: queueName},
+		getRecoveryKindFunc: internal.GetRecoveryKind,
 	}, options)
 
 	if err != nil {
@@ -173,9 +174,10 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
-		cleanupOnClose: cleanupOnClose,
-		ns:             client.namespace,
-		entity:         entity{Topic: topicName, Subscription: subscriptionName},
+		cleanupOnClose:      cleanupOnClose,
+		ns:                  client.namespace,
+		entity:              entity{Topic: topicName, Subscription: subscriptionName},
+		getRecoveryKindFunc: internal.GetRecoveryKind,
 	}, options)
 
 	if err != nil {

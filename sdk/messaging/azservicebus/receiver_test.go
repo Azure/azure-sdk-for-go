@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
@@ -523,6 +524,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 
 	time.Sleep(2 * time.Second)
 	lockedUntilOld := messages[0].LockedUntil
+
 	require.NoError(t, receiver.RenewMessageLock(context.Background(), messages[0]))
 
 	// these should hopefully be unaffected by clock drift since both values come from
@@ -534,12 +536,25 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 		messages[0].LockToken[i] = 0
 	}
 
+	endCaptureFn := test.CaptureLogsForTest()
+	defer endCaptureFn()
 	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0])
 	// String matching can go away once we fix #15644
 	// For now it at least provides the user with good context that something is incorrect about their lock token.
 	require.Contains(t, expectedLockBadError.Error(),
 		"status code 410 and description: The lock supplied is invalid. Either the lock expired, or the message has already been removed from the queue",
 		"error message from SB comes through")
+
+	logMessages := endCaptureFn()
+
+	failedOnFirstTry := false
+	for _, msg := range logMessages {
+		if strings.HasPrefix(msg, "[azsb.Retry] (renewMessageLock) Attempt 0 returned non-retryable error") {
+			failedOnFirstTry = true
+		}
+	}
+
+	require.True(t, failedOnFirstTry, "No retries attempted for message locks being lost/invalid")
 }
 
 // TestReceiverAMQPDataTypes checks that we can send and receive all the AMQP primitive types that are supported

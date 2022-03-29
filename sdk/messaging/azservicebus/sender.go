@@ -157,7 +157,7 @@ func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 		retryOptions:   utils.RetryOptions(retryOptions),
 	}
 
-	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink)
+	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink, internal.GetRecoveryKind)
 	return sender, nil
 }
 

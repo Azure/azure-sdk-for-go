@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -346,5 +347,5 @@ func assertRPCNotFound(t *testing.T, err error) {
 	}
 
 	require.ErrorAs(t, err, &rpcError)
-	require.Equal(t, 404, rpcError.RPCCode())
+	require.Equal(t, http.StatusNotFound, rpcError.RPCCode())
 }

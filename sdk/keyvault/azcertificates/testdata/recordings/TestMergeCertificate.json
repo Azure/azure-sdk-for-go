@@ -1,12 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/certificates/mergeCertificate1664686566/create?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -40,12 +40,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/certificates/mergeCertificate1664686566/create?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -73,7 +73,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 18 Jan 2022 18:31:37 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending?api-version=7.3-preview\u0026request_id=4d7fca11074d4d66a9987486d40f2f5b",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending?api-version=7.3\u0026request_id=4d7fca11074d4d66a9987486d40f2f5b",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -97,12 +97,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/certificates/mergeCertificate1664686566/?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566/?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -190,12 +190,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/certificates/mergeCertificate1664686566/pending?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566/pending?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -233,12 +233,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending/merge?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566/pending/merge?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/certificates/mergeCertificate1664686566/pending/merge?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566/pending/merge?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -255,7 +255,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 18 Jan 2022 18:31:38 GMT",
         "Expires": "-1",
-        "Location": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566?api-version=7.3-preview",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566?api-version=7.3",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
@@ -333,12 +333,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/certificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/certificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -433,12 +433,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -470,12 +470,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -507,12 +507,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -544,12 +544,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -644,12 +644,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3-preview",
+        ":path": "/deletedcertificates/mergeCertificate1664686566?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",

@@ -52,10 +52,10 @@ client := armeventgrid.NewPartnerNamespacesClient(<subscription ID>, cred, &opti
 
 ## More sample code
 
-- [Domain](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain)
-- [Domain Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain_topic)
-- [System Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/systemtopic)
-- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/topic)
+- [Domain](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/domain)
+- [Domain Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/domain_topic)
+- [System Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/systemtopic)
+- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/topic)
 
 ## Provide Feedback
 

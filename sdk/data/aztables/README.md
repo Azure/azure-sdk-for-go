@@ -244,7 +244,7 @@ The following sections provide several code snippets covering some of the most c
 
 * [Creating a table](#creating-a-table "Creating a table")
 * [Creating entities](#creating-entities "Creating entities")
-* [Listing entities](#querying-entities "Listing entities")
+* [Listing entities](#listing-entities "Listing entities")
 
 
 ### Creating a table
@@ -374,14 +374,14 @@ func main() {
     }
 
     filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
-    options := &ListEntitiesOptions{
+    options := &aztables.ListEntitiesOptions{
         Filter: &filter,
         Select: to.StringPtr("RowKey,Value,Product,Available"),
         Top: to.Int32Ptr(15),
     }
 
 	pager := client.List(options)
-	pageCount = 0
+	pageCount := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -403,6 +403,68 @@ func main() {
 }
 ```
 
+#### Writing Filters
+
+##### Supported Comparison Operators
+|**Operator**|**URI expression**|
+|------------|------------------|
+|`Equal`|`eq`|
+|`GreaterThan`|`gt`|
+|`GreaterThanOrEqual`|`ge`|
+|`LessThan`|`lt`|
+|`LessThanOrEqual`|`le`|
+|`NotEqual`|`ne`|
+|`And`|`and`|
+|`Not`|`not`|
+|`Or`|`or`|
+
+Query strings must wrap literal values in single quotes. Literal values containing single quote characters must be escaped with a double single quote. To search for a `LastName` property of "O'Connor" use the following syntax
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("LastName eq 'O''Connor'"),
+}
+```
+
+##### String Properties
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("LastName ge 'A' and LastName lt 'B'"),
+}
+```
+
+##### Numeric Properties
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("Age gt 30"),
+}
+
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("AmountDue le 100.25"),
+}
+```
+
+##### Boolean Properties
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("IsActive eq true"),
+}
+```
+
+##### Datetime Properties
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("CustomerSince eq datetime'2008-07-10T00:00:00Z'"),
+}
+```
+
+##### GUID Properties
+```go
+options := &aztables.ListEntitiesOptions{
+	Filter: to.StringPtr("GuidValue eq guid'a455c695-df98-5678-aaaa-81d3367e5a34'"),
+}
+```
+
+#### Using Continuation Tokens
 The pager exposes continuation tokens that can be used by a new pager instance to begin listing entities from a specific point. For example:
 ```go
 import (
@@ -428,7 +490,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Int32Ptr(10)})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -443,7 +505,7 @@ func main() {
         }
     }
 
-    newPager := client.List(&ListEntitiesOptions{
+    newPager := client.List(&aztables.ListEntitiesOptions{
         Top:          to.Int32Ptr(10),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),

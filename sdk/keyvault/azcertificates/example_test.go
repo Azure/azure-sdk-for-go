@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -54,10 +54,10 @@ func ExampleClient_BeginCreateCertificate() {
 
 	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.CertificatePolicy{
 		IssuerParameters: &azcertificates.IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	if err != nil {
@@ -119,12 +119,12 @@ func ExampleClient_UpdateCertificateProperties() {
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
 		CertificateAttributes: &azcertificates.CertificateProperties{
-			Enabled: to.BoolPtr(false),
-			Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
+			Enabled: to.Ptr(false),
+			Expires: to.Ptr(time.Now().Add(72 * time.Hour)),
 		},
 		CertificatePolicy: &azcertificates.CertificatePolicy{
 			IssuerParameters: &azcertificates.IssuerParameters{
-				Name: to.StringPtr("Self"),
+				Name: to.Ptr("Self"),
 			},
 		},
 		Tags: map[string]string{"Tag1": "Val1"},

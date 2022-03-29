@@ -28,6 +28,9 @@ func findAllSubDirectories(root string) []string {
 		if strings.Contains(path, "resourcemanager") {
 			isMGMT = true
 		}
+		if strings.Contains(path, "eng/tools") {
+			return filepath.SkipDir
+		}
 		if info.IsDir() && strings.HasSuffix(path, "internal") {
 			return filepath.SkipDir
 		} else if info.IsDir() {

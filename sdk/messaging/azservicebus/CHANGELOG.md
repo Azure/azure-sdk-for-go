@@ -6,13 +6,13 @@
 
 - Support for using a SharedAccessSignature in a connection string. Ex: `Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>` (#17314)
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed bug where message batch size calculation was inaccurate, resulting in batches that were too large to be sent. (#17318)
-
-### Other Changes
+- Fixing an issue with an entity not being found leading to a longer timeout than needed. (#17279)
+- Fixed the RPCLink so it does better handling of connection/link failures. (#17389)
+- Fixed issue where a message lock expiring would cause unnecessary retries. These retries could cause message settlement calls (ex: Receiver.CompleteMessage) 
+  to appear to hang. (#17382)
 
 ## 0.3.6 (2022-03-08)
 

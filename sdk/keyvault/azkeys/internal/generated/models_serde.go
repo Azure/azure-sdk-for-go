@@ -10,9 +10,10 @@ package generated
 
 import (
 	"encoding/json"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type Attributes.

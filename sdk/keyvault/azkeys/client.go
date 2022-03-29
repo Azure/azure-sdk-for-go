@@ -348,26 +348,6 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
-// ListPropertiesOfKeysPager implements the ListKeysPager interface
-type ListPropertiesOfKeysPager struct {
-	genPager *runtime.Pager[generated.KeyVaultClientGetKeysResponse]
-}
-
-// More returns true if there are more pages to return
-func (l *ListPropertiesOfKeysPager) More() bool {
-	return l.genPager.More()
-}
-
-// NextPage fetches the next available page of results from the service.
-func (l *ListPropertiesOfKeysPager) NextPage(ctx context.Context) (ListKeysPage, error) {
-	result, err := l.genPager.NextPage(ctx)
-	if err != nil {
-		return ListKeysPage{}, err
-	}
-	return listKeysPageFromGenerated(result), nil
-
-}
-
 // ListPropertiesOfKeysOptions contains the optional parameters for the Client.ListKeys method
 type ListPropertiesOfKeysOptions struct {
 	// placeholder for future optional parameters
@@ -398,10 +378,36 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *ListPropertiesOfKeysPager {
-	return &ListPropertiesOfKeysPager{
-		genPager: c.kvClient.GetKeys(c.vaultUrl, &generated.KeyVaultClientGetKeysOptions{}),
-	}
+func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListKeysPage] {
+	return runtime.NewPager(runtime.PageProcessor[ListKeysPage]{
+		More: func(page ListKeysPage) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListKeysPage) (ListKeysPage, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = c.kvClient.GetKeysCreateRequest(ctx, c.vaultUrl, &generated.KeyVaultClientGetKeysOptions{})
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ListKeysPage{}, err
+			}
+			resp, err := c.kvClient.Pl.Do(req)
+			if err != nil {
+				return ListKeysPage{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListKeysPage{}, runtime.NewResponseError(resp)
+			}
+			genResp, err := c.kvClient.GetKeysHandleResponse(resp)
+			if err != nil {
+				return ListKeysPage{}, err
+			}
+			return listKeysPageFromGenerated(genResp), nil
+		},
+	})
 }
 
 // GetKeyOptions contains the options for the Client.GetKey method
@@ -939,34 +945,6 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, option
 	return updateKeyPropertiesFromGenerated(resp), nil
 }
 
-// ListDeletedKeysPager is the pager returned by Client.ListDeletedKeys
-type ListDeletedKeysPager struct {
-	genPager *runtime.Pager[generated.KeyVaultClientGetDeletedKeysResponse]
-}
-
-// NextPage returns the current page of results
-func (l *ListDeletedKeysPager) NextPage(ctx context.Context) (ListDeletedKeysPage, error) {
-	resp, err := l.genPager.NextPage(ctx)
-	if err != nil {
-		return ListDeletedKeysPage{}, err
-	}
-
-	var values []*DeletedKeyItem
-	for _, d := range resp.Value {
-		values = append(values, deletedKeyItemFromGenerated(d))
-	}
-
-	return ListDeletedKeysPage{
-		NextLink:    resp.NextLink,
-		DeletedKeys: values,
-	}, nil
-}
-
-// More returns true if there are more pages to fetch from the service.
-func (l *ListDeletedKeysPager) More() bool {
-	return l.genPager.More()
-}
-
 // ListDeletedKeysPage holds the data for a single page.
 type ListDeletedKeysPage struct {
 	// READ-ONLY; The URL to get the next set of deleted keys.
@@ -990,34 +968,49 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 // The ListDeleted operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
 // an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
-func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *ListDeletedKeysPager {
-	if options == nil {
-		options = &ListDeletedKeysOptions{}
-	}
+func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysPage] {
+	return runtime.NewPager(runtime.PageProcessor[ListDeletedKeysPage]{
+		More: func(page ListDeletedKeysPage) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListDeletedKeysPage) (ListDeletedKeysPage, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = c.kvClient.GetDeletedKeysCreateRequest(ctx, c.vaultUrl, options.toGenerated())
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ListDeletedKeysPage{}, err
+			}
+			resp, err := c.kvClient.Pl.Do(req)
+			if err != nil {
+				return ListDeletedKeysPage{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListDeletedKeysPage{}, runtime.NewResponseError(resp)
+			}
+			genResp, err := c.kvClient.GetDeletedKeysHandleResponse(resp)
+			if err != nil {
+				return ListDeletedKeysPage{}, runtime.NewResponseError(resp)
+			}
 
-	return &ListDeletedKeysPager{
-		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
-	}
-}
+			var values []*DeletedKeyItem
+			for _, d := range genResp.Value {
+				values = append(values, deletedKeyItemFromGenerated(d))
+			}
 
-// ListPropertiesOfKeyVersionsPager is the pager for the Client.ListPropertiesOfKeyVersions
-type ListPropertiesOfKeyVersionsPager struct {
-	genPager *runtime.Pager[generated.KeyVaultClientGetKeyVersionsResponse]
-}
+			return ListDeletedKeysPage{
+				NextLink:    genResp.NextLink,
+				DeletedKeys: values,
+			}, nil
+		},
+	})
 
-// NextPage returns the results from the next page fetched from the service.
-func (l *ListPropertiesOfKeyVersionsPager) NextPage(ctx context.Context) (ListPropertiesOfKeyVersionsPage, error) {
-	resp, err := l.genPager.NextPage(ctx)
-	if err != nil {
-		return ListPropertiesOfKeyVersionsPage{}, err
-	}
-
-	return listKeyVersionsPageFromGenerated(resp), nil
-}
-
-// More returns true if there are more pages to fetch, elsegit  false.
-func (l *ListPropertiesOfKeyVersionsPager) More() bool {
-	return l.genPager.More()
+	// return &ListDeletedKeysPager{
+	// 	genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
+	// }
 }
 
 // ListPropertiesOfKeyVersionsOptions contains the options for the ListKeyVersions operations
@@ -1059,18 +1052,36 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 // ListPropertiesOfKeyVersions lists all versions of the specified key. The full key identifer and
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *ListPropertiesOfKeyVersionsPager {
-	if options == nil {
-		options = &ListPropertiesOfKeyVersionsOptions{}
-	}
-
-	return &ListPropertiesOfKeyVersionsPager{
-		genPager: c.kvClient.GetKeyVersions(
-			c.vaultUrl,
-			keyName,
-			options.toGenerated(),
-		),
-	}
+func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *runtime.Pager[ListPropertiesOfKeyVersionsPage] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfKeyVersionsPage]{
+		More: func(page ListPropertiesOfKeyVersionsPage) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfKeyVersionsPage) (ListPropertiesOfKeyVersionsPage, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = c.kvClient.GetKeyVersionsCreateRequest(ctx, c.vaultUrl, keyName, options.toGenerated())
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ListPropertiesOfKeyVersionsPage{}, err
+			}
+			resp, err := c.kvClient.Pl.Do(req)
+			if err != nil {
+				return ListPropertiesOfKeyVersionsPage{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListPropertiesOfKeyVersionsPage{}, runtime.NewResponseError(resp)
+			}
+			genResp, err := c.kvClient.GetKeyVersionsHandleResponse(resp)
+			if err != nil {
+				return ListPropertiesOfKeyVersionsPage{}, runtime.NewResponseError(resp)
+			}
+			return listKeyVersionsPageFromGenerated(genResp), nil
+		},
+	})
 }
 
 // RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.

@@ -63,7 +63,7 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
 	if err != nil {
 		panic(err)
 	}

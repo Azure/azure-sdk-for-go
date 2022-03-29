@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,26 +11,25 @@ package generated
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
 // Don't use this type directly, use NewKeyVaultClient() instead.
 type KeyVaultClient struct {
-	Pl runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewKeyVaultClient creates a new instance of KeyVaultClient with the specified values.
 // pl - the pipeline used for sending requests and handling responses.
 func NewKeyVaultClient(pl runtime.Pipeline) *KeyVaultClient {
 	client := &KeyVaultClient{
-		Pl: pl,
+		pl: pl,
 	}
 	return client
 }
@@ -54,7 +53,7 @@ func (client *KeyVaultClient) BackupKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
@@ -106,7 +105,7 @@ func (client *KeyVaultClient) CreateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
@@ -161,7 +160,7 @@ func (client *KeyVaultClient) Decrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
@@ -216,7 +215,7 @@ func (client *KeyVaultClient) DeleteKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
@@ -273,7 +272,7 @@ func (client *KeyVaultClient) Encrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
@@ -328,7 +327,7 @@ func (client *KeyVaultClient) GetDeletedKey(ctx context.Context, vaultBaseURL st
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
@@ -375,16 +374,32 @@ func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedKeysOptions contains the optional parameters for the KeyVaultClient.GetDeletedKeys method.
-func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *KeyVaultClientGetDeletedKeysPager {
-	return &KeyVaultClientGetDeletedKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeletedKeysCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedKeysResponse]{
+		More: func(page KeyVaultClientGetDeletedKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedKeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetDeletedKeysResponse) (KeyVaultClientGetDeletedKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getDeletedKeysCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetDeletedKeysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetDeletedKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetDeletedKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getDeletedKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getDeletedKeysCreateRequest creates the GetDeletedKeys request.
@@ -428,7 +443,7 @@ func (client *KeyVaultClient) GetKey(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
@@ -447,9 +462,9 @@ func (client *KeyVaultClient) getKeyCreateRequest(ctx context.Context, vaultBase
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	// if keyVersion == "" {
-	// 	return nil, errors.New("parameter keyVersion cannot be empty")
-	// }
+	if keyVersion == "" {
+		return nil, errors.New("parameter keyVersion cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
@@ -483,7 +498,7 @@ func (client *KeyVaultClient) GetKeyRotationPolicy(ctx context.Context, vaultBas
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
@@ -528,16 +543,32 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Resp
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
-func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *KeyVaultClientGetKeyVersionsPager {
-	return &KeyVaultClientGetKeyVersionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getKeyVersionsCreateRequest(ctx, vaultBaseURL, keyName, options)
+func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeyVersionsResponse]{
+		More: func(page KeyVaultClientGetKeyVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetKeyVersionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetKeyVersionsResponse) (KeyVaultClientGetKeyVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getKeyVersionsCreateRequest(ctx, vaultBaseURL, keyName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetKeyVersionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetKeyVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetKeyVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getKeyVersionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getKeyVersionsCreateRequest creates the GetKeyVersions request.
@@ -579,20 +610,36 @@ func (client *KeyVaultClient) getKeyVersionsHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
-func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *KeyVaultClientGetKeysPager {
-	return &KeyVaultClientGetKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.GetKeysCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeysResponse]{
+		More: func(page KeyVaultClientGetKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetKeysResponse) (KeyVaultClientGetKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getKeysCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetKeysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
-// GetKeysCreateRequest creates the GetKeys request.
-func (client *KeyVaultClient) GetKeysCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetKeysOptions) (*policy.Request, error) {
+// getKeysCreateRequest creates the GetKeys request.
+func (client *KeyVaultClient) getKeysCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetKeysOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys"
@@ -610,8 +657,8 @@ func (client *KeyVaultClient) GetKeysCreateRequest(ctx context.Context, vaultBas
 	return req, nil
 }
 
-// GetKeysHandleResponse handles the GetKeys response.
-func (client *KeyVaultClient) GetKeysHandleResponse(resp *http.Response) (KeyVaultClientGetKeysResponse, error) {
+// getKeysHandleResponse handles the GetKeys response.
+func (client *KeyVaultClient) getKeysHandleResponse(resp *http.Response) (KeyVaultClientGetKeysResponse, error) {
 	result := KeyVaultClientGetKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeyVaultClientGetKeysResponse{}, err
@@ -629,7 +676,7 @@ func (client *KeyVaultClient) GetRandomBytes(ctx context.Context, vaultBaseURL s
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
@@ -677,7 +724,7 @@ func (client *KeyVaultClient) ImportKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
@@ -729,7 +776,7 @@ func (client *KeyVaultClient) PurgeDeletedKey(ctx context.Context, vaultBaseURL 
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
@@ -773,7 +820,7 @@ func (client *KeyVaultClient) RecoverDeletedKey(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
@@ -825,7 +872,7 @@ func (client *KeyVaultClient) Release(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
@@ -886,7 +933,7 @@ func (client *KeyVaultClient) RestoreKey(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
@@ -931,7 +978,7 @@ func (client *KeyVaultClient) RotateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
@@ -983,7 +1030,7 @@ func (client *KeyVaultClient) Sign(ctx context.Context, vaultBaseURL string, key
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
@@ -1041,7 +1088,7 @@ func (client *KeyVaultClient) UnwrapKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
@@ -1097,7 +1144,7 @@ func (client *KeyVaultClient) UpdateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
@@ -1116,9 +1163,9 @@ func (client *KeyVaultClient) updateKeyCreateRequest(ctx context.Context, vaultB
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	// if keyVersion == "" {
-	// 	return nil, errors.New("parameter keyVersion cannot be empty")
-	// }
+	if keyVersion == "" {
+		return nil, errors.New("parameter keyVersion cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {
@@ -1153,7 +1200,7 @@ func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
@@ -1208,7 +1255,7 @@ func (client *KeyVaultClient) Verify(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
@@ -1268,7 +1315,7 @@ func (client *KeyVaultClient) WrapKey(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}

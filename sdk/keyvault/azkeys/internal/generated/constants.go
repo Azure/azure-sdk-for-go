@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package generated
 
 const (
-	ModuleName    = "generated"
-	ModuleVersion = "v0.5.0"
+	moduleName    = "generated"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - The type of the action.

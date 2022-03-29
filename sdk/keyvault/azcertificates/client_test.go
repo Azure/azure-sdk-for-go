@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -50,10 +50,10 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -89,10 +89,10 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -131,10 +131,10 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -160,10 +160,10 @@ func TestClient_CancelCertificateOperation(t *testing.T) {
 
 	_, err = client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -196,10 +196,10 @@ func TestClient_BackupCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -323,15 +323,15 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	resp, err := client.CreateIssuer(ctx, issuerName, "Test", &CreateIssuerOptions{
 		Credentials: &IssuerCredentials{
-			AccountID: to.StringPtr("keyvaultuser"),
+			AccountID: to.Ptr("keyvaultuser"),
 		},
-		Enabled: to.BoolPtr(true),
+		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.StringPtr("John"),
-				LastName:     to.StringPtr("Doe"),
-				EmailAddress: to.StringPtr("admin@microsoft.com"),
-				Phone:        to.StringPtr("4255555555"),
+				FirstName:    to.Ptr("John"),
+				LastName:     to.Ptr("Doe"),
+				EmailAddress: to.Ptr("admin@microsoft.com"),
+				Phone:        to.Ptr("4255555555"),
 			},
 		},
 	})
@@ -351,15 +351,15 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	_, err = client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
 		Credentials: &IssuerCredentials{
-			AccountID: to.StringPtr("keyvaultuser2"),
+			AccountID: to.Ptr("keyvaultuser2"),
 		},
-		Enabled: to.BoolPtr(true),
+		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.StringPtr("John"),
-				LastName:     to.StringPtr("Doe"),
-				EmailAddress: to.StringPtr("admin@microsoft.com"),
-				Phone:        to.StringPtr("4255555555"),
+				FirstName:    to.Ptr("John"),
+				LastName:     to.Ptr("Doe"),
+				EmailAddress: to.Ptr("admin@microsoft.com"),
+				Phone:        to.Ptr("4255555555"),
 			},
 		},
 	})
@@ -382,10 +382,10 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.StringPtr("Jane"),
-				LastName:     to.StringPtr("Doey"),
-				EmailAddress: to.StringPtr("admin2@microsoft.com"),
-				Phone:        to.StringPtr("4266666666"),
+				FirstName:    to.Ptr("Jane"),
+				LastName:     to.Ptr("Doey"),
+				EmailAddress: to.Ptr("admin2@microsoft.com"),
+				Phone:        to.Ptr("4266666666"),
 			},
 		},
 	})
@@ -413,8 +413,8 @@ func TestClient_ContactsCRUD(t *testing.T) {
 	require.NoError(t, err)
 
 	contacts := Contacts{ContactList: []*Contact{
-		{EmailAddress: to.StringPtr("admin@microsoft.com"), Name: to.StringPtr("John Doe"), Phone: to.StringPtr("1111111111")},
-		{EmailAddress: to.StringPtr("admin@contoso.com"), Name: to.StringPtr("Jane Doey"), Phone: to.StringPtr("2222222222")},
+		{EmailAddress: to.Ptr("admin@microsoft.com"), Name: to.Ptr("John Doe"), Phone: to.Ptr("1111111111")},
+		{EmailAddress: to.Ptr("admin@contoso.com"), Name: to.Ptr("Jane Doey"), Phone: to.Ptr("2222222222")},
 	}}
 
 	resp, err := client.SetContacts(ctx, contacts, nil)
@@ -452,26 +452,26 @@ func TestPolicy(t *testing.T) {
 
 	policy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			CertificateTransparency: to.BoolPtr(false),
-			Name:                    to.StringPtr("Self"),
+			CertificateTransparency: to.Ptr(false),
+			Name:                    to.Ptr("Self"),
 		},
-		Exportable: to.BoolPtr(true),
-		KeySize:    to.Int32Ptr(2048),
-		ReuseKey:   to.BoolPtr(true),
+		Exportable: to.Ptr(true),
+		KeySize:    to.Ptr(int32(2048)),
+		ReuseKey:   to.Ptr(true),
 		KeyType:    CertificateKeyTypeRSA.ToPtr(),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
+			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
-			ContentType: to.StringPtr("application/x-pkcs12"),
+			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.StringPtr("1.3.6.1.5.5.7.3.1"), to.StringPtr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
-			Subject:          to.StringPtr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Int32Ptr(12),
+			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			Subject:          to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				DNSNames: []*string{to.StringPtr("sdk.azure-int.net")},
+				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
 		},
 	}
@@ -489,7 +489,7 @@ func TestPolicy(t *testing.T) {
 
 	// Update the policy
 	policy.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeySize = to.Int32Ptr(256)
+	policy.KeySize = to.Ptr(int32(256))
 	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
@@ -516,26 +516,26 @@ func TestCRUDOperations(t *testing.T) {
 
 	policy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			CertificateTransparency: to.BoolPtr(false),
-			Name:                    to.StringPtr("Self"),
+			CertificateTransparency: to.Ptr(false),
+			Name:                    to.Ptr("Self"),
 		},
-		Exportable: to.BoolPtr(true),
-		KeySize:    to.Int32Ptr(2048),
-		ReuseKey:   to.BoolPtr(true),
+		Exportable: to.Ptr(true),
+		KeySize:    to.Ptr(int32(2048)),
+		ReuseKey:   to.Ptr(true),
 		KeyType:    CertificateKeyTypeRSA.ToPtr(),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
+			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
-			ContentType: to.StringPtr("application/x-pkcs12"),
+			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.StringPtr("1.3.6.1.5.5.7.3.1"), to.StringPtr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
-			Subject:          to.StringPtr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Int32Ptr(12),
+			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			Subject:          to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				DNSNames: []*string{to.StringPtr("sdk.azure-int.net")},
+				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
 		},
 	}
@@ -563,7 +563,7 @@ func TestCRUDOperations(t *testing.T) {
 
 	// Update the policy
 	policy.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeySize = to.Int32Ptr(256)
+	policy.KeySize = to.Ptr(int32(256))
 	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
@@ -597,11 +597,11 @@ func TestMergeCertificate(t *testing.T) {
 
 	certPolicy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name:                    to.StringPtr("Unknown"),
-			CertificateTransparency: to.BoolPtr(false),
+			Name:                    to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=MyCert"),
+			Subject: to.Ptr("CN=MyCert"),
 		},
 	}
 
@@ -677,10 +677,10 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -720,12 +720,12 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				Upns: []*string{to.StringPtr("john.doe@domain.com")},
+				Upns: []*string{to.Ptr("john.doe@domain.com")},
 			},
 		},
 	}, nil)

@@ -1,10 +1,12 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
+* Added PossibleValues functions for `CertificateKeyUsage`, `CertificateKeyType`, `CertificateKeyCurveName`, and `CertificatePolicyAction` constants.
 
 ### Breaking Changes
+* Fixed a misspelling of `CerificateKeyUsage`, changed to `CertificateKeyUsage`
 
 ### Bugs Fixed
 

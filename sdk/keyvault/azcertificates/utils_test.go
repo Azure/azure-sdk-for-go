@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -171,10 +171,10 @@ func cleanUp(t *testing.T, client *Client, certName string) {
 func createCert(t *testing.T, client *Client, certName string) {
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			Name: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
 	require.NoError(t, err)

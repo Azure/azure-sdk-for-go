@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package generated
 
 const (
 	ModuleName    = "azcertificates"
-	ModuleVersion = "v0.2.1"
+	ModuleVersion = "v0.3.0"
 )
 
 // ActionType - The type of the action.
@@ -27,11 +27,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeEmailContacts,
 		ActionTypeAutoRenew,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault.
@@ -87,11 +82,6 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	}
 }
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &c
-}
-
 // JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 type JSONWebKeyCurveName string
 
@@ -110,11 +100,6 @@ func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 		JSONWebKeyCurveNameP384,
 		JSONWebKeyCurveNameP521,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
-	return &c
 }
 
 // JSONWebKeyType - The type of key pair to be used for the certificate.
@@ -139,11 +124,6 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 		JSONWebKeyTypeRSA,
 		JSONWebKeyTypeRSAHSM,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyType pointing to the current value.
-func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
-	return &c
 }
 
 type KeyUsageType string
@@ -173,9 +153,4 @@ func PossibleKeyUsageTypeValues() []KeyUsageType {
 		KeyUsageTypeKeyEncipherment,
 		KeyUsageTypeNonRepudiation,
 	}
-}
-
-// ToPtr returns a *KeyUsageType pointing to the current value.
-func (c KeyUsageType) ToPtr() *KeyUsageType {
-	return &c
 }

@@ -350,7 +350,7 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 
 // ListPropertiesOfKeysPager implements the ListKeysPager interface
 type ListPropertiesOfKeysPager struct {
-	genPager *generated.KeyVaultClientGetKeysPager
+	genPager *runtime.Pager[generated.KeyVaultClientGetKeysResponse]
 }
 
 // More returns true if there are more pages to return
@@ -727,6 +727,7 @@ type RecoverDeletedKeyPoller struct {
 	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
 	lastResponse    generated.KeyVaultClientGetKeyResponse
 	lastRawResponse *http.Response
+	finished bool
 }
 
 // Done returns true when the polling operation is completed
@@ -734,22 +735,30 @@ func (p *RecoverDeletedKeyPoller) Done() bool {
 	if p.lastRawResponse == nil {
 		return false
 	}
-	return p.lastRawResponse.StatusCode == http.StatusOK
+	return p.finished
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
 func (p *RecoverDeletedKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	var rawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
 	resp, err := p.client.GetKey(ctx, p.vaultUrl, p.keyName, "", nil)
-	p.lastResponse = resp
-	p.lastRawResponse = rawResp
-	if rawResp.StatusCode == http.StatusOK || rawResp.StatusCode == http.StatusNotFound {
-		return rawResp, nil
+	if err == nil {
+		// Polling is finished
+		p.finished = true
+		return nil, nil
 	}
-	return rawResp, err
+	p.lastResponse = resp
+	var httpErr *azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		p.lastRawResponse = httpErr.RawResponse
+		if httpErr.StatusCode == http.StatusOK || httpErr.StatusCode == http.StatusNotFound {
+			return httpErr.RawResponse, nil
+		} else {
+			return httpErr.RawResponse, err
+		}
+	}
+	return p.lastRawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -932,7 +941,7 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, option
 
 // ListDeletedKeysPager is the pager returned by Client.ListDeletedKeys
 type ListDeletedKeysPager struct {
-	genPager *generated.KeyVaultClientGetDeletedKeysPager
+	genPager *runtime.Pager[generated.KeyVaultClientGetDeletedKeysResponse]
 }
 
 // NextPage returns the current page of results
@@ -993,7 +1002,7 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *ListDeletedKe
 
 // ListPropertiesOfKeyVersionsPager is the pager for the Client.ListPropertiesOfKeyVersions
 type ListPropertiesOfKeyVersionsPager struct {
-	genPager *generated.KeyVaultClientGetKeyVersionsPager
+	genPager *runtime.Pager[generated.KeyVaultClientGetKeyVersionsResponse]
 }
 
 // NextPage returns the results from the next page fetched from the service.

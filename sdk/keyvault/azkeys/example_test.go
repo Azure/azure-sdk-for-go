@@ -43,7 +43,7 @@ func ExampleClient_CreateRSAKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
 		panic(err)
 	}
@@ -177,7 +177,7 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 
 	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
 		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiryTime: to.StringPtr("P90D"),
+			ExpiryTime: to.Ptr("P90D"),
 		},
 		LifetimeActions: []*azkeys.LifetimeActions{
 			{
@@ -185,7 +185,7 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 					Type: azkeys.ActionTypeNotify.ToPtr(),
 				},
 				Trigger: &azkeys.LifetimeActionsTrigger{
-					TimeBeforeExpiry: to.StringPtr("P30D"),
+					TimeBeforeExpiry: to.Ptr("P30D"),
 				},
 			},
 		},

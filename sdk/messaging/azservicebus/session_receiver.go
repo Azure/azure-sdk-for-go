@@ -55,10 +55,11 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	}
 
 	r, err := newReceiver(newReceiverArgs{
-		ns:             ns,
-		entity:         entity,
-		cleanupOnClose: cleanupOnClose,
-		newLinkFn:      sessionReceiver.newLink,
+		ns:                  ns,
+		entity:              entity,
+		cleanupOnClose:      cleanupOnClose,
+		newLinkFn:           sessionReceiver.newLink,
+		getRecoveryKindFunc: internal.GetRecoveryKindForSession,
 	}, options)
 
 	if err != nil {
@@ -108,7 +109,7 @@ func (r *SessionReceiver) newLink(ctx context.Context, session internal.AMQPSess
 	return nil, link, nil
 }
 
-// ReceiveMessages receives a fixed number of messages, up to numMessages.
+// ReceiveMessages receives a fixed number of messages, up to maxMessages.
 // There are two ways to stop receiving messages:
 // 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first

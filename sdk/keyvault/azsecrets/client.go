@@ -10,13 +10,11 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -218,32 +216,36 @@ type DeleteSecretPoller struct {
 	client         *internal.KeyVaultClient
 	deleteResponse internal.KeyVaultClientDeleteSecretResponse
 	lastResponse   internal.KeyVaultClientGetDeletedSecretResponse
-	RawResponse    *http.Response
+	rawResponse    *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
 func (s *DeleteSecretPoller) Done() bool {
-	return s.lastResponse.RawResponse != nil
+	if s.rawResponse == nil {
+		return false
+	}
+	return s.rawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
 func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
 	resp, err := s.client.GetDeletedSecret(ctx, s.vaultUrl, s.secretName, nil)
 	if err == nil {
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
-		return resp.RawResponse, nil
+		s.rawResponse = rawResp
+		return rawResp, nil
 	}
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		if httpErr.StatusCode == http.StatusNotFound {
-			// This is the expected result
-			return s.deleteResponse.RawResponse, nil
-		}
+	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
+		// This is the expected result
+		s.rawResponse = rawResp
+		return rawResp, nil
 	}
-	return s.deleteResponse.RawResponse, err
+	return rawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -259,7 +261,7 @@ func (s *DeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Duration)
 		if err != nil {
 			return DeleteSecretResponse{}, err
 		}
-		s.RawResponse = resp
+		s.rawResponse = resp
 		if s.Done() {
 			break
 		}
@@ -548,25 +550,39 @@ type RecoverDeletedSecretPoller struct {
 	client          *internal.KeyVaultClient
 	recoverResponse internal.KeyVaultClientRecoverDeletedSecretResponse
 	lastResponse    internal.KeyVaultClientGetSecretResponse
-	RawResponse     *http.Response
+	rawResponse     *http.Response
 }
 
 // Done returns true when the polling operation is completed
 func (b *RecoverDeletedSecretPoller) Done() bool {
-	return b.RawResponse.StatusCode == http.StatusOK
+	if b.rawResponse == nil {
+		return false
+	}
+	return b.rawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
 func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
-	b.lastResponse = resp
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse, err
+	if err == nil {
+		// secret has been recovered, finish
+		b.lastResponse = resp
+		b.rawResponse = rawResp
+		return b.rawResponse, nil
 	}
-	return resp.RawResponse, nil
+
+	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
+		// this is the expected response
+		b.lastResponse = resp
+		b.rawResponse = rawResp
+		return b.rawResponse, nil
+	}
+
+	return rawResp, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -578,12 +594,12 @@ func (b *RecoverDeletedSecretPoller) pollUntilDone(ctx context.Context, t time.D
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
-			b.RawResponse = resp
+			b.rawResponse = resp
 		}
 		if b.Done() {
 			break
 		}
-		b.RawResponse = resp
+		b.rawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
@@ -665,7 +681,6 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
-		RawResponse:     getResp.RawResponse,
 	}
 
 	return RecoverDeletedSecretPollerResponse{
@@ -676,60 +691,20 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 
 // ListDeletedSecretsPager is the pager returned by Client.ListDeletedSecrets
 type ListDeletedSecretsPager struct {
-	vaultURL  string
-	genClient *internal.KeyVaultClient
-	nextLink  *string
+	genPager *internal.KeyVaultClientGetDeletedSecretsPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListDeletedSecretsPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genPager.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListDeletedSecretsPager) NextPage(ctx context.Context) (ListDeletedSecretsPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetDeletedSecretsCreateRequest(
-			ctx,
-			l.vaultURL,
-			&internal.KeyVaultClientGetDeletedSecretsOptions{},
-		)
-		if err != nil {
-			return ListDeletedSecretsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListDeletedSecretsPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListDeletedSecretsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListDeletedSecretsPageResponse{}, err
-		}
-	}
+	result, err := l.genPager.NextPage(ctx)
 	if err != nil {
 		return ListDeletedSecretsPageResponse{}, err
 	}
-	result, err := l.genClient.GetDeletedSecretsHandleResponse(resp)
-	if err != nil {
-		return ListDeletedSecretsPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listDeletedSecretsPageFromGenerated(result), nil
 }
 
@@ -767,70 +742,26 @@ type ListDeletedSecretsOptions struct {
 // in the response. No values are returned for the secrets. This operation requires the secrets/list permission.
 func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) ListDeletedSecretsPager {
 	return ListDeletedSecretsPager{
-		vaultURL:  c.vaultUrl,
-		genClient: c.kvClient,
-		nextLink:  nil,
+		genPager: c.kvClient.GetDeletedSecrets(c.vaultUrl, &internal.KeyVaultClientGetDeletedSecretsOptions{}),
 	}
 }
 
 // ListSecretVersionsPager is the pager for iterating over all versions of a secret
 type ListSecretVersionsPager struct {
-	vaultURL   string
-	secretName string
-	genClient  *internal.KeyVaultClient
-	nextLink   *string
+	genClient *internal.KeyVaultClientGetSecretVersionsPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListSecretVersionsPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genClient.More()
 }
 
 // NextPage returns the next page of results
 func (l *ListSecretVersionsPager) NextPage(ctx context.Context) (ListSecretVersionsPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetSecretVersionsCreateRequest(
-			ctx,
-			l.vaultURL,
-			l.secretName,
-			&internal.KeyVaultClientGetSecretVersionsOptions{},
-		)
-		if err != nil {
-			return ListSecretVersionsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListSecretVersionsPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListSecretVersionsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListSecretVersionsPageResponse{}, err
-		}
-	}
+	result, err := l.genClient.NextPage(ctx)
 	if err != nil {
 		return ListSecretVersionsPageResponse{}, err
 	}
-	result, err := l.genClient.GetSecretVersionsHandleResponse(resp)
-	if err != nil {
-		return ListSecretVersionsPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listSecretVersionsPageFromGenerated(result), nil
 }
 
@@ -841,9 +772,6 @@ type ListSecretVersionsOptions struct {
 
 // ListSecretVersionsPageResponse contains response field for ListSecretVersionsPager.NextPage
 type ListSecretVersionsPageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -858,9 +786,8 @@ func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersi
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
 	return ListSecretVersionsPageResponse{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Secrets:     secrets,
+		NextLink: i.NextLink,
+		Secrets:  secrets,
 	}
 }
 
@@ -869,69 +796,26 @@ func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersi
 // requires the secrets/list permission.
 func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersionsOptions) *ListSecretVersionsPager {
 	return &ListSecretVersionsPager{
-		secretName: secretName,
-		vaultURL:   c.vaultUrl,
-		genClient:  c.kvClient,
-		nextLink:   nil,
+		genClient: c.kvClient.GetSecretVersions(c.vaultUrl, secretName, &internal.KeyVaultClientGetSecretVersionsOptions{}),
 	}
 }
 
 // ListSecretsPager implements the ListSecretsPager interface
 type ListSecretsPager struct {
-	vaultURL  string
-	genClient *internal.KeyVaultClient
-	nextLink  *string
+	genClient *internal.KeyVaultClientGetSecretsPager
 }
 
 // More returns true if there are more pages to return
 func (l *ListSecretsPager) More() bool {
-	if !reflect.ValueOf(l.nextLink).IsZero() {
-		if l.nextLink == nil || len(*l.nextLink) == 0 {
-			return false
-		}
-	}
-	return true
+	return l.genClient.More()
 }
 
 // NextPage returns the current page of results
 func (l *ListSecretsPager) NextPage(ctx context.Context) (ListSecretsPageResponse, error) {
-	var resp *http.Response
-	var err error
-	if l.nextLink == nil {
-		req, err := l.genClient.GetSecretsCreateRequest(
-			ctx,
-			l.vaultURL,
-			&internal.KeyVaultClientGetSecretsOptions{},
-		)
-		if err != nil {
-			return ListSecretsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListSecretsPageResponse{}, err
-		}
-	} else {
-		req, err := runtime.NewRequest(ctx, http.MethodGet, *l.nextLink)
-		if err != nil {
-			return ListSecretsPageResponse{}, err
-		}
-		resp, err = l.genClient.Pl.Do(req)
-		if err != nil {
-			return ListSecretsPageResponse{}, err
-		}
-	}
+	result, err := l.genClient.NextPage(ctx)
 	if err != nil {
 		return ListSecretsPageResponse{}, err
 	}
-	result, err := l.genClient.GetSecretsHandleResponse(resp)
-	if err != nil {
-		return ListSecretsPageResponse{}, err
-	}
-	if result.NextLink == nil {
-		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
-	}
-	l.nextLink = result.NextLink
 	return listSecretsPageFromGenerated(result), nil
 }
 
@@ -966,8 +850,6 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 // secret versions are not listed in the response. This operation requires the secrets/list permission.
 func (c *Client) ListSecrets(options *ListSecretsOptions) ListSecretsPager {
 	return ListSecretsPager{
-		vaultURL:  c.vaultUrl,
-		genClient: c.kvClient,
-		nextLink:  nil,
+		genClient: c.kvClient.GetSecrets(c.vaultUrl, &internal.KeyVaultClientGetSecretsOptions{}),
 	}
 }

@@ -52,9 +52,9 @@ client := armcontainerservice.NewSnapshotsClient(<subscription ID>, cred, &optio
 
 ## More sample code
 
-- [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/agent_pool)
-- [Maintenance Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/maintenance_configurations)
-- [Managed Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/managed_clusters)
+- [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/agent_pool)
+- [Maintenance Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/maintenance_configurations)
+- [Managed Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/managed_clusters)
 
 ## Provide Feedback
 

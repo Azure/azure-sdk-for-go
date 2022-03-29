@@ -6,13 +6,13 @@ These settings apply only when `--go` is specified on the command line.
 go: true
 version: "^3.0.0"
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/ecdce42924ed0f7e60a32c74bc0eb674ca6d4aae/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.2/secrets.json
+- https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/secrets.json
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: true
 output-folder: internal
 tag: package-7.2
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.36"
-module-version: 0.6.0
+use: "@autorest/go@4.0.0-preview.37"
+module-version: 0.7.0
 export-clients: true
 ```

@@ -467,7 +467,7 @@ func TestPolicy(t *testing.T) {
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -531,7 +531,7 @@ func TestCRUDOperations(t *testing.T) {
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{

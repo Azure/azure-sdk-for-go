@@ -19,6 +19,14 @@ func (c CertificatePolicyAction) ToPtr() *CertificatePolicyAction {
 	return &c
 }
 
+// PossibleCertificatePolicyActionValues returns a slice of all possible CertificatePolicyAction values.
+func PossibleCertificatePolicyActionValues() []CertificatePolicyAction {
+	return []CertificatePolicyAction{
+		CertificatePolicyActionEmailContacts,
+		CertificatePolicyActionAutoRenew,
+	}
+}
+
 // CertificateKeyCurveName - Elliptic curve name. For valid values, see CertificateKeyCurveName.
 type CertificateKeyCurveName string
 
@@ -32,6 +40,16 @@ const (
 // ToPtr returns a *CertificateKeyCurveName pointing to the current value.
 func (c CertificateKeyCurveName) ToPtr() *CertificateKeyCurveName {
 	return &c
+}
+
+// PossibleCertificateKeyCurveNameValues returns a slice of all possible CertificateKeyCurveName values.
+func PossibleCertificateKeyCurveNameValues() []CertificateKeyCurveName {
+	return []CertificateKeyCurveName{
+		CertificateKeyCurveNameP256,
+		CertificateKeyCurveNameP256K,
+		CertificateKeyCurveNameP384,
+		CertificateKeyCurveNameP521,
+	}
 }
 
 // CertificateKeyType - The type of key pair to be used for the certificate.
@@ -51,22 +69,49 @@ func (c CertificateKeyType) ToPtr() *CertificateKeyType {
 	return &c
 }
 
-// CerificateKeyUsage is the key usage for a certificate
-type CerificateKeyUsage string
+// PossibleCertificateKeyTypeValues returns a slice of all possible CertificateKeyType values.
+func PossibleCertificateKeyTypeValues() []CertificateKeyType {
+	return []CertificateKeyType{
+		CertificateKeyTypeEC,
+		CertificateKeyTypeECHSM,
+		CertificateKeyTypeOct,
+		CertificateKeyTypeOctHSM,
+		CertificateKeyTypeRSA,
+		CertificateKeyTypeRSAHSM,
+	}
+}
+
+// CertificateKeyUsage is the key usage for a certificate
+type CertificateKeyUsage string
 
 const (
-	CertificateKeyUsageCRLSign          CerificateKeyUsage = "cRLSign"
-	CertificateKeyUsageDataEncipherment CerificateKeyUsage = "dataEncipherment"
-	CertificateKeyUsageDecipherOnly     CerificateKeyUsage = "decipherOnly"
-	CertificateKeyUsageDigitalSignature CerificateKeyUsage = "digitalSignature"
-	CertificateKeyUsageEncipherOnly     CerificateKeyUsage = "encipherOnly"
-	CertificateKeyUsageKeyAgreement     CerificateKeyUsage = "keyAgreement"
-	CertificateKeyUsageKeyCertSign      CerificateKeyUsage = "keyCertSign"
-	CertificateKeyUsageKeyEncipherment  CerificateKeyUsage = "keyEncipherment"
-	CertificateKeyUsageNonRepudiation   CerificateKeyUsage = "nonRepudiation"
+	CertificateKeyUsageCRLSign          CertificateKeyUsage = "cRLSign"
+	CertificateKeyUsageDataEncipherment CertificateKeyUsage = "dataEncipherment"
+	CertificateKeyUsageDecipherOnly     CertificateKeyUsage = "decipherOnly"
+	CertificateKeyUsageDigitalSignature CertificateKeyUsage = "digitalSignature"
+	CertificateKeyUsageEncipherOnly     CertificateKeyUsage = "encipherOnly"
+	CertificateKeyUsageKeyAgreement     CertificateKeyUsage = "keyAgreement"
+	CertificateKeyUsageKeyCertSign      CertificateKeyUsage = "keyCertSign"
+	CertificateKeyUsageKeyEncipherment  CertificateKeyUsage = "keyEncipherment"
+	CertificateKeyUsageNonRepudiation   CertificateKeyUsage = "nonRepudiation"
 )
 
 // ToPtr returns a *CertificateKeyUsage pointing to the current value.
-func (c CerificateKeyUsage) ToPtr() *CerificateKeyUsage {
+func (c CertificateKeyUsage) ToPtr() *CertificateKeyUsage {
 	return &c
+}
+
+// PossibleCertificateKeyUsageValues returns a slice of all possible CertificateKeyUsage values.
+func PossibleCertificateKeyUsageValues() []CertificateKeyUsage {
+	return []CertificateKeyUsage{
+		CertificateKeyUsageCRLSign,
+		CertificateKeyUsageDataEncipherment,
+		CertificateKeyUsageDecipherOnly,
+		CertificateKeyUsageDigitalSignature,
+		CertificateKeyUsageEncipherOnly,
+		CertificateKeyUsageKeyAgreement,
+		CertificateKeyUsageKeyCertSign,
+		CertificateKeyUsageKeyEncipherment,
+		CertificateKeyUsageNonRepudiation,
+	}
 }

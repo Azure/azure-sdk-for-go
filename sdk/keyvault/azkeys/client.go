@@ -71,9 +71,12 @@ type CreateKeyOptions struct {
 	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	Curve *CurveName `json:"crv,omitempty"`
 
-	// The properties of a key managed by the key vault service.
+	// The attributes of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	Size *int32 `json:"key_size,omitempty"`
@@ -113,6 +116,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
 		Tags:           convertToGeneratedMap(c.Tags),
+		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
 }
 
@@ -158,14 +162,31 @@ type CreateECKeyOptions struct {
 
 	// Whether to create an EC key with HSM protection
 	HardwareProtected *bool
+
+	// The attributes of a key managed by the key vault service.
+	Properties *Properties  `json:"attributes,omitempty"`
+	Operations []*Operation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	var keyOps []*generated.JSONWebKeyOperation
+	if c.Operations != nil {
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.Operations))
+		for i, k := range c.Operations {
+			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
+		}
+	}
 	return generated.KeyCreateParameters{
-		Kty:   keyType.toGenerated(),
-		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
-		Tags:  convertToGeneratedMap(c.Tags),
+		Kty:           keyType.toGenerated(),
+		Curve:         (*generated.JSONWebKeyCurveName)(c.CurveName),
+		Tags:          convertToGeneratedMap(c.Tags),
+		KeyOps:        keyOps,
+		ReleasePolicy: c.ReleasePolicy.toGenerated(),
+		KeyAttributes: c.Properties.toGenerated(),
 	}
 }
 
@@ -216,16 +237,33 @@ type CreateOctKeyOptions struct {
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	Size *int32 `json:"key_size,omitempty"`
 
+	// The attributes of a key managed by the key vault service.
+	Properties *Properties  `json:"attributes,omitempty"`
+	Operations []*Operation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
 func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	var keyOps []*generated.JSONWebKeyOperation
+	if c.Operations != nil {
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.Operations))
+		for i, k := range c.Operations {
+			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
+		}
+	}
 	return generated.KeyCreateParameters{
-		Kty:     keyType.toGenerated(),
-		KeySize: c.Size,
-		Tags:    convertToGeneratedMap(c.Tags),
+		Kty:           keyType.toGenerated(),
+		KeySize:       c.Size,
+		Tags:          convertToGeneratedMap(c.Tags),
+		ReleasePolicy: c.ReleasePolicy.toGenerated(),
+		KeyAttributes: c.Properties.toGenerated(),
+		KeyOps:        keyOps,
 	}
 }
 
@@ -435,12 +473,12 @@ func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKe
 // GetKey is used to retrieve the content for any single Key. If the requested key is symmetric, then
 // no key material is released in the response. This operation requires the keys/get permission.
 // Pass nil to use the default options.
-func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOptions) (GetKeyResponse, error) {
+func (c *Client) GetKey(ctx context.Context, name string, options *GetKeyOptions) (GetKeyResponse, error) {
 	if options == nil {
 		options = &GetKeyOptions{}
 	}
 
-	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, options.Version, &generated.KeyVaultClientGetKeyOptions{})
+	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, name, options.Version, &generated.KeyVaultClientGetKeyOptions{})
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
@@ -482,12 +520,12 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 // applicable for soft-delete enabled vaults. While the operation can be invoked on any vault,
 // it will return an error if invoked on a non soft-delete enabled vault. This operation requires
 // the keys/get permission. Pass nil to use the default options.
-func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
+func (c *Client) GetDeletedKey(ctx context.Context, name string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
 	if options == nil {
 		options = &GetDeletedKeyOptions{}
 	}
 
-	resp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	resp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
@@ -518,11 +556,11 @@ func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeleted
 // PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
 // This operation can only be enabled on a soft-delete enabled vault. This operation requires the key/purge permission.
 // Pass nil to use the default options.
-func (c *Client) PurgeDeletedKey(ctx context.Context, keyName string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
+func (c *Client) PurgeDeletedKey(ctx context.Context, name string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedKeyOptions{}
 	}
-	resp, err := c.kvClient.PurgeDeletedKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	resp, err := c.kvClient.PurgeDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
 	return purgeDeletedKeyResponseFromGenerated(resp), err
 }
 
@@ -638,16 +676,16 @@ func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (D
 // BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
 // requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
 // PollUntilDone function can be used to poll until completion. Pass nil to use the default options.
-func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *BeginDeleteKeyOptions) (*DeleteKeyPoller, error) {
+func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *BeginDeleteKeyOptions) (*DeleteKeyPoller, error) {
 	if options == nil {
 		options = &BeginDeleteKeyOptions{}
 	}
-	resp, err := c.kvClient.DeleteKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	resp, err := c.kvClient.DeleteKey(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return nil, err
 	}
 
-	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
+	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, name, nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -657,7 +695,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 
 	return &DeleteKeyPoller{
 		vaultUrl:       c.vaultUrl,
-		keyName:        keyName,
+		keyName:        name,
 		client:         c.kvClient,
 		deleteResponse: resp,
 		lastResponse:   getResp,
@@ -698,12 +736,12 @@ func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse)
 // area cannot be restored to another geographical area. For example, a backup from the US
 // geographical area cannot be restored in an EU geographical area. This operation requires the key/backup permission.
 // Pass nil to use the default options.
-func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupKeyOptions) (BackupKeyResponse, error) {
+func (c *Client) BackupKey(ctx context.Context, name string, options *BackupKeyOptions) (BackupKeyResponse, error) {
 	if options == nil {
 		options = &BackupKeyOptions{}
 	}
 
-	resp, err := c.kvClient.BackupKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	resp, err := c.kvClient.BackupKey(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
@@ -803,18 +841,18 @@ func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDel
 // BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
 // This operation can only be performed on a soft-delete enabled vault. This operation requires
 // the keys/recover permission. Pass nil to use the default options.
-func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, options *BeginRecoverDeletedKeyOptions) (*RecoverDeletedKeyPoller, error) {
+func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, options *BeginRecoverDeletedKeyOptions) (*RecoverDeletedKeyPoller, error) {
 	if options == nil {
 		options = &BeginRecoverDeletedKeyOptions{}
 	}
-	resp, err := c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	resp, err := c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return nil, err
 	}
 
 	var getRawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
-	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
+	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, name, "", nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -824,7 +862,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 
 	return &RecoverDeletedKeyPoller{
 		lastResponse:    getResp,
-		keyName:         keyName,
+		keyName:         name,
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
@@ -841,7 +879,7 @@ type UpdateKeyPropertiesOptions struct {
 	Properties *Properties `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see KeyOperation.
-	Ops []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
@@ -858,9 +896,9 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 	}
 
 	var ops []*generated.JSONWebKeyOperation
-	if u.Ops != nil {
-		ops = make([]*generated.JSONWebKeyOperation, len(u.Ops))
-		for i, o := range u.Ops {
+	if u.Operations != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(u.Operations))
+		for i, o := range u.Operations {
 			ops[i] = (*generated.JSONWebKeyOperation)(o)
 		}
 	}
@@ -898,14 +936,14 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 // UpdateKeyProperties updates the parameters of a key, but cannot be used to update the cryptographic material
 // of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
 // This operation requires the keys/update permission. Pass nil to use the default options.
-func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
+func (c *Client) UpdateKeyProperties(ctx context.Context, name string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateKeyPropertiesOptions{}
 	}
 	resp, err := c.kvClient.UpdateKey(
 		ctx,
 		c.vaultUrl,
-		keyName,
+		name,
 		options.Version,
 		options.toKeyUpdateParameters(),
 		options.toGeneratedOptions(),
@@ -1097,7 +1135,7 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 // ImportKeyOptions contains the optional parameters for the Client.ImportKeyOptions parameter
 type ImportKeyOptions struct {
 	// Whether to import as a hardware key (HSM) or software key.
-	Hsm *bool `json:"Hsm,omitempty"`
+	HardwareProtected *bool `json:"Hsm,omitempty"`
 
 	// The key management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
@@ -1113,7 +1151,7 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 	}
 	return generated.KeyImportParameters{
 		Key:           key.toGenerated(),
-		Hsm:           i.Hsm,
+		Hsm:           i.HardwareProtected,
 		KeyAttributes: attribs,
 		Tags:          convertToGeneratedMap(i.Tags),
 	}
@@ -1139,12 +1177,12 @@ func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse)
 // ImportKey may be used to import any key type into an Azure Key Vault. If the named key already exists,
 // Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
 // Pass nil to use the default options.
-func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, options *ImportKeyOptions) (ImportKeyResponse, error) {
+func (c *Client) ImportKey(ctx context.Context, name string, key JSONWebKey, options *ImportKeyOptions) (ImportKeyResponse, error) {
 	if options == nil {
 		options = &ImportKeyOptions{}
 	}
 
-	resp, err := c.kvClient.ImportKey(ctx, c.vaultUrl, keyName, options.toImportKeyParameters(key), &generated.KeyVaultClientImportKeyOptions{})
+	resp, err := c.kvClient.ImportKey(ctx, c.vaultUrl, name, options.toImportKeyParameters(key), &generated.KeyVaultClientImportKeyOptions{})
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
@@ -1207,7 +1245,7 @@ type RotateKeyResponse struct {
 // RotateKey will rotate the key based on the key policy. It requires the keys/rotate permission.
 // The system will generate a new version in the specified key.
 // Pass nil to use the default options.
-func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
+func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateKeyOptions) (RotateKeyResponse, error) {
 	if options == nil {
 		options = &RotateKeyOptions{}
 	}
@@ -1215,7 +1253,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 	resp, err := c.kvClient.RotateKey(
 		ctx,
 		c.vaultUrl,
-		name,
+		keyName,
 		options.toGenerated(),
 	)
 	if err != nil {
@@ -1271,7 +1309,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 
 // GetKeyRotationPolicy returns the specified key policy resources in the specified key vault. This operation requires
 // the keys/get permission. Pass nil to use the default options.
-func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
+func (c *Client) GetKeyRotationPolicy(ctx context.Context, keyName string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &GetKeyRotationPolicyOptions{}
 	}
@@ -1279,7 +1317,7 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options 
 	resp, err := c.kvClient.GetKeyRotationPolicy(
 		ctx,
 		c.vaultUrl,
-		name,
+		keyName,
 		options.toGenerated(),
 	)
 	if err != nil {
@@ -1400,7 +1438,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 // UpdateKeyRotationPolicy sets specified members in the key policy.
 // This operation requires the keys/update permission.
 // Pass nil to use the default options.
-func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
+func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &UpdateKeyRotationPolicyOptions{}
 	}
@@ -1408,7 +1446,7 @@ func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, optio
 	resp, err := c.kvClient.UpdateKeyRotationPolicy(
 		ctx,
 		c.vaultUrl,
-		name,
+		keyName,
 		options.toGenerated(),
 		&generated.KeyVaultClientUpdateKeyRotationPolicyOptions{},
 	)

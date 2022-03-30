@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,11 +11,10 @@ package generated
 import (
 	"context"
 	"errors"
-	"net/http"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // KeyVaultClientGetCertificateIssuersPager provides operations for iterating over paged responses.

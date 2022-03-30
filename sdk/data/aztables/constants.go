@@ -33,11 +33,6 @@ func PossibleResponseFormatValues() []ResponseFormat {
 	}
 }
 
-// ToPtr returns a *ResponseFormat pointing to the current value.
-func (c ResponseFormat) ToPtr() *ResponseFormat {
-	return &c
-}
-
 // EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
 // will replace an existing entity, MergeEntity will merge properties of the entities.
 type EntityUpdateMode string

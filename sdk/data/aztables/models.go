@@ -6,6 +6,7 @@ package aztables
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -323,23 +324,18 @@ func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
-func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
-	return &c
-}
-
 func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicationStatusType {
 	if g == nil {
 		return nil
 	}
 	if *g == generated.GeoReplicationStatusTypeBootstrap {
-		return GeoReplicationStatusTypeBootstrap.ToPtr()
+		return to.Ptr(GeoReplicationStatusTypeBootstrap)
 	}
 	if *g == generated.GeoReplicationStatusTypeLive {
-		return GeoReplicationStatusTypeLive.ToPtr()
+		return to.Ptr(GeoReplicationStatusTypeLive)
 	}
 	if *g == generated.GeoReplicationStatusTypeUnavailable {
-		return GeoReplicationStatusTypeUnavailable.ToPtr()
+		return to.Ptr(GeoReplicationStatusTypeUnavailable)
 	}
 	return nil
 }

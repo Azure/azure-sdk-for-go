@@ -6,8 +6,6 @@ package aztables
 import (
 	"context"
 	"errors"
-	"net/http"
-	"reflect"
 	"strings"
 	"time"
 
@@ -199,59 +197,6 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	return &TableProperties{
 		Name: g.TableName,
 	}
-}
-
-// ListTablesPager is a Pager for Table List operations
-//
-// Call NextPage first to fetch the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on the Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListTablesPager struct {
-	client            *generated.TableClient
-	current           generated.TableClientQueryResponse
-	tableQueryOptions *generated.TableClientQueryOptions
-	listOptions       *ListTablesOptions
-	nextTableName     *string
-}
-
-// NextPage fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesResponse, error) {
-	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
-		NextTableName: p.nextTableName,
-	}, p.listOptions.toQueryOptions())
-	if err != nil {
-		return ListTablesResponse{}, err
-	}
-	resp, err := p.client.Pl.Do(req)
-	if err != nil {
-		return ListTablesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ListTablesResponse{}, runtime.NewResponseError(resp)
-	}
-
-	result, err := p.client.QueryHandleResponse(resp)
-	if err != nil {
-		return ListTablesResponse{}, err
-	}
-	p.current = result
-	p.nextTableName = p.current.XMSContinuationNextTableName
-	return fromGeneratedTableQueryResponseEnvelope(p.current), nil
-}
-
-// More returns true if there are more pages to retrieve
-func (p *ListTablesPager) More() bool {
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.nextTableName == nil || len(*p.nextTableName) == 0 {
-			return false
-		}
-	}
-	return true
 }
 
 // ListTables queries the existing tables using the specified ListTablesOptions.

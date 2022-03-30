@@ -195,7 +195,7 @@ func (client *KeyVaultClient) getDeletedSecretHandleResponse(resp *http.Response
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedSecretsOptions contains the optional parameters for the KeyVaultClient.GetDeletedSecrets
 // method.
-func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) (*runtime.Pager[KeyVaultClientGetDeletedSecretsResponse]) {
+func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) *runtime.Pager[KeyVaultClientGetDeletedSecretsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedSecretsResponse]{
 		More: func(page KeyVaultClientGetDeletedSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -314,7 +314,7 @@ func (client *KeyVaultClient) getSecretHandleResponse(resp *http.Response) (KeyV
 // secretName - The name of the secret.
 // options - KeyVaultClientGetSecretVersionsOptions contains the optional parameters for the KeyVaultClient.GetSecretVersions
 // method.
-func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) (*runtime.Pager[KeyVaultClientGetSecretVersionsResponse]) {
+func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) *runtime.Pager[KeyVaultClientGetSecretVersionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetSecretVersionsResponse]{
 		More: func(page KeyVaultClientGetSecretVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -380,7 +380,7 @@ func (client *KeyVaultClient) GetSecretVersionsHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetSecretsOptions contains the optional parameters for the KeyVaultClient.GetSecrets method.
-func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) (*runtime.Pager[KeyVaultClientGetSecretsResponse]) {
+func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) *runtime.Pager[KeyVaultClientGetSecretsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetSecretsResponse]{
 		More: func(page KeyVaultClientGetSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -683,4 +683,3 @@ func (client *KeyVaultClient) updateSecretHandleResponse(resp *http.Response) (K
 	}
 	return result, nil
 }
-

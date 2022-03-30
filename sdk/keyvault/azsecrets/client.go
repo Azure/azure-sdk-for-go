@@ -253,7 +253,7 @@ func (s *DeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretRes
 	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
 }
 
-// pollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
 func (s *DeleteSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
 	for {
@@ -576,6 +576,8 @@ func (b *RecoverDeletedSecretPoller) FinalResponse(ctx context.Context) (Recover
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
 
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// Poll is a wait determined by the t parameter.
 func (b *RecoverDeletedSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)

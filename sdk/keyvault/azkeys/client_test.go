@@ -258,7 +258,7 @@ func TestDeleteKey(t *testing.T) {
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.Error(t, err)
 
-			_, err = resp.Poller.FinalResponse(ctx)
+			_, err = resp.FinalResponse(ctx)
 			require.NoError(t, err)
 
 			_, err = client.BeginDeleteKey(ctx, "nonexistent", nil)

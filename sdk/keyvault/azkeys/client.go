@@ -645,7 +645,7 @@ func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse,
 	return *deleteKeyResponseFromGenerated(&s.deleteResponse), nil
 }
 
-// pollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
 func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
 	for {
@@ -796,7 +796,7 @@ func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDel
 	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
-// pollUntilDone is the method for the Response.PollUntilDone struct
+// PollUntilDone is the method for the Response.PollUntilDone struct
 func (p *RecoverDeletedKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
 		_, err := p.Poll(ctx)

@@ -4,9 +4,11 @@
 
 ### Features Added
 * Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values
+* Implemented generic pagers from `runtime.Pager` for all List operations
 
 ### Breaking Changes
 * Removed `RawResponse` from pollers
+* Polling operations return a Poller struct directly instead of a Response envelope
 
 ## 0.6.0 (2022-03-08)
 

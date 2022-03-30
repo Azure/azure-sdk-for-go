@@ -22,6 +22,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
+type none struct{}
+
 type widget struct {
 	Size int `json:"size"`
 }
@@ -85,7 +87,7 @@ func TestLocPollerSimple(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -225,7 +227,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -250,7 +252,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewPollerFromResumeToken[struct{}](tk, pl, nil)
+	lro, err = NewPollerFromResumeToken[none](tk, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -276,7 +278,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -316,7 +318,7 @@ func TestOpPollerSimple(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -528,7 +530,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -553,7 +555,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewPollerFromResumeToken[struct{}](tk, pl, nil)
+	lro, err = NewPollerFromResumeToken[none](tk, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -570,7 +572,7 @@ func TestNopPoller(t *testing.T) {
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
 	pl := newTestPipeline(nil)
-	lro, err := NewPoller[struct{}](firstResp, pl, nil)
+	lro, err := NewPoller[none](firstResp, pl, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

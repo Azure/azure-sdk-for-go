@@ -30,17 +30,20 @@ func NewPoller[T any](finalState string, resp *http.Response, pl pipeline.Pipeli
 	if !pollers.StatusCodeValid(resp) {
 		return nil, errors.New("the LRO failed or was cancelled")
 	}
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
 	// determine the polling method
 	var lro pollers.Operation
-	var err error
 	if async.Applicable(resp) {
-		lro, err = async.New(resp, finalState, pollers.PollerTypeName[T]())
+		lro, err = async.New(resp, finalState, tName)
 	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, pollers.PollerTypeName[T]())
+		lro, err = loc.New(resp, tName)
 	} else if body.Applicable(resp) {
 		// must test body poller last as it's a subset of the other pollers.
 		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
-		lro, err = body.New(resp, pollers.PollerTypeName[T]())
+		lro, err = body.New(resp, tName)
 	} else if m := resp.Request.Method; resp.StatusCode == http.StatusAccepted && (m == http.MethodDelete || m == http.MethodPost) {
 		// if we get here it means we have a 202 with no polling headers.
 		// for DELETE and POST this is a hard error per ARM RPC spec.
@@ -59,7 +62,11 @@ func NewPoller[T any](finalState string, resp *http.Response, pl pipeline.Pipeli
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
 func NewPollerFromResumeToken[T any](token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
-	kind, err := pollers.KindFromToken(pollers.PollerTypeName[T](), token)
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
+	kind, err := pollers.KindFromToken(tName, token)
 	if err != nil {
 		return nil, err
 	}

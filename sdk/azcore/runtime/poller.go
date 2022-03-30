@@ -29,14 +29,17 @@ func NewPoller[T any](resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller
 	if !pollers.StatusCodeValid(resp) {
 		return nil, errors.New("the operation failed or was cancelled")
 	}
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
 	// determine the polling method
 	var lro pollers.Operation
-	var err error
 	// op poller must be checked first as it can also have a location header
 	if op.Applicable(resp) {
-		lro, err = op.New(resp, pollers.PollerTypeName[T]())
+		lro, err = op.New(resp, tName)
 	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, pollers.PollerTypeName[T]())
+		lro, err = loc.New(resp, tName)
 	} else {
 		lro = &pollers.NopPoller{}
 	}
@@ -51,7 +54,11 @@ func NewPoller[T any](resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
 func NewPollerFromResumeToken[T any](token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
-	kind, err := pollers.KindFromToken(pollers.PollerTypeName[T](), token)
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
+	kind, err := pollers.KindFromToken(tName, token)
 	if err != nil {
 		return nil, err
 	}

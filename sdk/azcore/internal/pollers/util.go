@@ -7,6 +7,7 @@
 package pollers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -53,16 +54,15 @@ func IsValidURL(s string) bool {
 }
 
 const idSeparator = ";"
-const emptyTypeName = "-empty-"
 
 // PollerTypeName returns the type name to use when constructing the poller ID.
-// It handles the empty type struct{} with a special name instead of the empty string.
-func PollerTypeName[T any]() string {
+// An error is returned if the generic type has no name (e.g. struct{}).
+func PollerTypeName[T any]() (string, error) {
 	n := shared.TypeOfT[T]().Name()
 	if n == "" {
-		n = emptyTypeName
+		return "", errors.New("nameless types are not allowed")
 	}
-	return n
+	return n, nil
 }
 
 // MakeID returns the poller ID from the provided values.

@@ -52,14 +52,26 @@ func TestStatusCodeValid(t *testing.T) {
 }
 
 func TestPollerTypeName(t *testing.T) {
-	if n := PollerTypeName[int](); n != "int" {
+	n, err := PollerTypeName[int]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != "int" {
 		t.Fatalf("unexpected type name %s", n)
 	}
-	if n := PollerTypeName[struct{}](); n != emptyTypeName {
-		t.Fatalf("unexpected type name %s", n)
+	n, err = PollerTypeName[struct{}]()
+	if err == nil {
+		t.Fatal("unexpected nil error")
 	}
-	if n := PollerTypeName[interface{}](); n != emptyTypeName {
-		t.Fatalf("unexpected type name %s", n)
+	if n != "" {
+		t.Fatal("expected empty type name")
+	}
+	n, err = PollerTypeName[interface{}]()
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if n != "" {
+		t.Fatal("expected empty type name")
 	}
 }
 

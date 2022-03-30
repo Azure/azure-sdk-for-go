@@ -190,7 +190,7 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 // options - TableClientDeleteEntityOptions contains the optional parameters for the TableClient.DeleteEntity method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (TableClientDeleteEntityResponse, error) {
-	req, err := client.deleteEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, ifMatch, options, queryOptions)
+	req, err := client.DeleteEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, ifMatch, options, queryOptions)
 	if err != nil {
 		return TableClientDeleteEntityResponse{}, err
 	}
@@ -201,11 +201,11 @@ func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion 
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableClientDeleteEntityResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.deleteEntityHandleResponse(resp)
+	return client.DeleteEntityHandleResponse(resp)
 }
 
-// deleteEntityCreateRequest creates the DeleteEntity request.
-func (client *TableClient) deleteEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+// DeleteEntityCreateRequest creates the DeleteEntity request.
+func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -241,8 +241,8 @@ func (client *TableClient) deleteEntityCreateRequest(ctx context.Context, dataSe
 	return req, nil
 }
 
-// deleteEntityHandleResponse handles the DeleteEntity response.
-func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (TableClientDeleteEntityResponse, error) {
+// DeleteEntityHandleResponse handles the DeleteEntity response.
+func (client *TableClient) DeleteEntityHandleResponse(resp *http.Response) (TableClientDeleteEntityResponse, error) {
 	result := TableClientDeleteEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -341,7 +341,7 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 // options - TableClientInsertEntityOptions contains the optional parameters for the TableClient.InsertEntity method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (TableClientInsertEntityResponse, error) {
-	req, err := client.insertEntityCreateRequest(ctx, dataServiceVersion, table, options, queryOptions)
+	req, err := client.InsertEntityCreateRequest(ctx, dataServiceVersion, table, options, queryOptions)
 	if err != nil {
 		return TableClientInsertEntityResponse{}, err
 	}
@@ -352,11 +352,11 @@ func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion 
 	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
 		return TableClientInsertEntityResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.insertEntityHandleResponse(resp)
+	return client.InsertEntityHandleResponse(resp)
 }
 
-// insertEntityCreateRequest creates the InsertEntity request.
-func (client *TableClient) insertEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+// InsertEntityCreateRequest creates the InsertEntity request.
+func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -389,8 +389,8 @@ func (client *TableClient) insertEntityCreateRequest(ctx context.Context, dataSe
 	return req, nil
 }
 
-// insertEntityHandleResponse handles the InsertEntity response.
-func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (TableClientInsertEntityResponse, error) {
+// InsertEntityHandleResponse handles the InsertEntity response.
+func (client *TableClient) InsertEntityHandleResponse(resp *http.Response) (TableClientInsertEntityResponse, error) {
 	result := TableClientInsertEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -432,7 +432,7 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 // options - TableClientMergeEntityOptions contains the optional parameters for the TableClient.MergeEntity method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (TableClientMergeEntityResponse, error) {
-	req, err := client.mergeEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
+	req, err := client.MergeEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
 	if err != nil {
 		return TableClientMergeEntityResponse{}, err
 	}
@@ -443,11 +443,11 @@ func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion E
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableClientMergeEntityResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.mergeEntityHandleResponse(resp)
+	return client.MergeEntityHandleResponse(resp)
 }
 
-// mergeEntityCreateRequest creates the MergeEntity request.
-func (client *TableClient) mergeEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+// MergeEntityCreateRequest creates the MergeEntity request.
+func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -488,8 +488,8 @@ func (client *TableClient) mergeEntityCreateRequest(ctx context.Context, dataSer
 	return req, nil
 }
 
-// mergeEntityHandleResponse handles the MergeEntity response.
-func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (TableClientMergeEntityResponse, error) {
+// MergeEntityHandleResponse handles the MergeEntity response.
+func (client *TableClient) MergeEntityHandleResponse(resp *http.Response) (TableClientMergeEntityResponse, error) {
 	result := TableClientMergeEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -872,7 +872,7 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 // options - TableClientUpdateEntityOptions contains the optional parameters for the TableClient.UpdateEntity method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (TableClientUpdateEntityResponse, error) {
-	req, err := client.updateEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
+	req, err := client.UpdateEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
 	if err != nil {
 		return TableClientUpdateEntityResponse{}, err
 	}
@@ -883,11 +883,11 @@ func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion 
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableClientUpdateEntityResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.updateEntityHandleResponse(resp)
+	return client.UpdateEntityHandleResponse(resp)
 }
 
-// updateEntityCreateRequest creates the UpdateEntity request.
-func (client *TableClient) updateEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+// UpdateEntityCreateRequest creates the UpdateEntity request.
+func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -928,8 +928,8 @@ func (client *TableClient) updateEntityCreateRequest(ctx context.Context, dataSe
 	return req, nil
 }
 
-// updateEntityHandleResponse handles the UpdateEntity response.
-func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (TableClientUpdateEntityResponse, error) {
+// UpdateEntityHandleResponse handles the UpdateEntity response.
+func (client *TableClient) UpdateEntityHandleResponse(resp *http.Response) (TableClientUpdateEntityResponse, error) {
 	result := TableClientUpdateEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val

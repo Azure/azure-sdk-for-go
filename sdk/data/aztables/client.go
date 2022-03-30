@@ -8,11 +8,11 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
-	"reflect"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
@@ -155,14 +155,14 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr(),
+		Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata),
 		Select: l.Select,
 		Top:    l.Top,
 	}
 }
 
-// ListEntitiesPageResponse contains response fields for ListEntitiesPager.NextPage
-type ListEntitiesPageResponse struct {
+// ListEntitiesResponse contains response fields for ListEntitiesPager.NextPage
+type ListEntitiesResponse struct {
 	// ContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	ContinuationNextPartitionKey *string
 
@@ -177,66 +177,22 @@ type ListEntitiesPageResponse struct {
 }
 
 // transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesPageResponse, error) {
+func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return ListEntitiesPageResponse{}, err
+			return ListEntitiesResponse{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
 
-	return ListEntitiesPageResponse{
+	return ListEntitiesResponse{
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                resp.TableEntityQueryResponse.ODataMetadata,
 		Entities:                     marshalledValue,
 	}, nil
-}
-
-// ListEntitiesPager is a Pager for Table entity query results.
-//
-// NextPage should be called first, it fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListEntitiesPager struct {
-	tableName   string
-	client      *generated.TableClient
-	current     generated.TableClientQueryEntitiesResponse
-	listOptions *ListEntitiesOptions
-	nextPK      *string
-	nextRK      *string
-}
-
-// More returns true if there are more pages to fetch, false otherwise.
-func (p *ListEntitiesPager) More() bool {
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.XMSContinuationNextPartitionKey == nil || len(*p.current.XMSContinuationNextPartitionKey) > 0 || p.current.XMSContinuationNextRowKey == nil || len(*p.current.XMSContinuationNextRowKey) > 0 {
-			return false
-		}
-	}
-	return true
-}
-
-// NextPage fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
-func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPageResponse, error) {
-	resp, err := p.client.QueryEntities(ctx, generated.Enum1Three0, p.tableName, &generated.TableClientQueryEntitiesOptions{
-		NextPartitionKey: p.nextPK,
-		NextRowKey:       p.nextRK,
-	}, p.listOptions.toQueryOptions())
-	if err != nil {
-		return ListEntitiesPageResponse{}, err
-	}
-	p.current = resp
-	p.nextPK = resp.XMSContinuationNextPartitionKey
-	p.nextRK = resp.XMSContinuationNextRowKey
-	return newListEntitiesPage(resp)
 }
 
 // List queries the entities using the specified ListEntitiesOptions.
@@ -255,18 +211,41 @@ func (p *ListEntitiesPager) NextPage(ctx context.Context) (ListEntitiesPageRespo
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
+func (t *Client) List(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}
-	return ListEntitiesPager{
-		client:      t.client,
-		tableName:   t.name,
-		listOptions: listOptions,
-		current:     generated.TableClientQueryEntitiesResponse{},
-		nextPK:      listOptions.NextPartitionKey,
-		nextRK:      listOptions.NextRowKey,
-	}
+	return runtime.NewPager(runtime.PageProcessor[ListEntitiesResponse]{
+		More: func(page ListEntitiesResponse) bool {
+			if page.ContinuationNextPartitionKey == nil || len(*page.ContinuationNextPartitionKey) == 0 || page.ContinuationNextRowKey == nil || len(*page.ContinuationNextRowKey) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ListEntitiesResponse) (ListEntitiesResponse, error) {
+			var partKey *string
+			var rowKey *string
+			if page != nil {
+				if page.ContinuationNextPartitionKey != nil {
+					partKey = page.ContinuationNextPartitionKey
+				}
+				if page.ContinuationNextRowKey != nil {
+					rowKey = page.ContinuationNextRowKey
+				}
+			} else {
+				partKey = listOptions.NextPartitionKey
+				rowKey = listOptions.NextRowKey
+			}
+			resp, err := t.client.QueryEntities(ctx, generated.Enum1Three0, t.name, &generated.TableClientQueryEntitiesOptions{
+				NextPartitionKey: partKey,
+				NextRowKey:       rowKey,
+			}, listOptions.toQueryOptions())
+			if err != nil {
+				return ListEntitiesResponse{}, err
+			}
+			return newListEntitiesPage(resp)
+		},
+	})
 }
 
 // GetEntityOptions contains optional parameters for Client.GetEntity
@@ -275,7 +254,7 @@ type GetEntityOptions struct {
 }
 
 func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
-	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
+	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata)}
 }
 
 // GetEntityResponse contains response fields for Client.GetEntity
@@ -354,7 +333,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
+	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
@@ -405,7 +384,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 		return &generated.TableClientMergeEntityOptions{}
 	}
 	return &generated.TableClientMergeEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.IfMatch)),
+		IfMatch:               to.Ptr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }
@@ -415,7 +394,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		return &generated.TableClientUpdateEntityOptions{}
 	}
 	return &generated.TableClientUpdateEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.IfMatch)),
+		IfMatch:               to.Ptr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }

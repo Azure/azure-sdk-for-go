@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -162,8 +162,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListTablesPageResponse contains response fields for ListTablesPager.NextPage
-type ListTablesPageResponse struct {
+// ListTablesResponse contains response fields for ListTablesPager.NextPage
+type ListTablesResponse struct {
 	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
 	ContinuationNextTableName *string
 
@@ -171,14 +171,14 @@ type ListTablesPageResponse struct {
 	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPageResponse {
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesResponse {
 	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return ListTablesPageResponse{
+	return ListTablesResponse{
 		ContinuationNextTableName: g.XMSContinuationNextTableName,
 		Tables:                    value,
 	}
@@ -220,24 +220,24 @@ type ListTablesPager struct {
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse, error) {
+func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesResponse, error) {
 	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
 		NextTableName: p.nextTableName,
 	}, p.listOptions.toQueryOptions())
 	if err != nil {
-		return ListTablesPageResponse{}, err
+		return ListTablesResponse{}, err
 	}
 	resp, err := p.client.Pl.Do(req)
 	if err != nil {
-		return ListTablesPageResponse{}, err
+		return ListTablesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ListTablesPageResponse{}, runtime.NewResponseError(resp)
+		return ListTablesResponse{}, runtime.NewResponseError(resp)
 	}
 
 	result, err := p.client.QueryHandleResponse(resp)
 	if err != nil {
-		return ListTablesPageResponse{}, err
+		return ListTablesResponse{}, err
 	}
 	p.current = result
 	p.nextTableName = p.current.XMSContinuationNextTableName
@@ -267,16 +267,37 @@ func (p *ListTablesPager) More() bool {
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
+func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
 	if listOptions == nil {
 		listOptions = &ListTablesOptions{}
 	}
-	return ListTablesPager{
-		client:            t.client,
-		tableQueryOptions: &generated.TableClientQueryOptions{},
-		listOptions:       listOptions,
-		nextTableName:     listOptions.NextTableName,
-	}
+	return runtime.NewPager(runtime.PageProcessor[ListTablesResponse]{
+		More: func(page ListTablesResponse) bool {
+			if page.ContinuationNextTableName == nil || len(*page.ContinuationNextTableName) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ListTablesResponse) (ListTablesResponse, error) {
+			var tableName *string
+			if page != nil {
+				if page.ContinuationNextTableName != nil {
+					tableName = page.ContinuationNextTableName
+				}
+			} else {
+				tableName = listOptions.NextTableName
+			}
+			resp, err := t.client.Query(
+				ctx,
+				generated.Enum1Three0,
+				&generated.TableClientQueryOptions{NextTableName: tableName},
+				listOptions.toQueryOptions())
+			if err != nil {
+				return ListTablesResponse{}, err
+			}
+			return fromGeneratedTableQueryResponseEnvelope(resp), nil
+		},
+	})
 }
 
 // GetStatisticsOptions contains optional parameters for ServiceClient.GetStatistics

@@ -114,7 +114,7 @@ func TestBatchMixed(t *testing.T) {
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 
-			var qResp ListEntitiesPageResponse
+			var qResp ListEntitiesResponse
 			filter := "RowKey eq '1'"
 			list := &ListEntitiesOptions{Filter: &filter}
 			pager := client.List(list)

@@ -161,7 +161,7 @@ func TestMergeEntity(t *testing.T) {
 			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
 			require.Nil(t, updateErr)
 
-			var qResp ListEntitiesPageResponse
+			var qResp ListEntitiesResponse
 			pager := client.List(listOptions)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
@@ -234,7 +234,7 @@ func TestInsertEntity(t *testing.T) {
 			require.Nil(t, err)
 
 			// 5. Query for new entity
-			var qResp ListEntitiesPageResponse
+			var qResp ListEntitiesResponse
 			pager := client.List(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
@@ -293,7 +293,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			list := &ListEntitiesOptions{Filter: &filter}
 			expectedCount := 4
 
-			var resp ListEntitiesPageResponse
+			var resp ListEntitiesResponse
 			pager := client.List(list)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -400,7 +400,7 @@ func TestContinuationTokens(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
+			pager := client.List(&ListEntitiesOptions{Top: to.Ptr(int32(1))})
 			var pkContToken string
 			var rkContToken string
 			for pager.More() {
@@ -442,8 +442,8 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.NoError(t, err)
 
 			pager := client.List(&ListEntitiesOptions{
-				Top:    to.Int32Ptr(1),
-				Filter: to.StringPtr("Value le 5"),
+				Top:    to.Ptr(int32(1)),
+				Filter: to.Ptr("Value le 5"),
 			})
 			var pkContToken string
 			var rkContToken string
@@ -464,7 +464,7 @@ func TestContinuationTokensFilters(t *testing.T) {
 			newPager := client.List(&ListEntitiesOptions{
 				NextPartitionKey: &pkContToken,
 				NextRowKey:       &rkContToken,
-				Filter:           to.StringPtr("Value le 5"),
+				Filter:           to.Ptr("Value le 5"),
 			})
 			count := 0
 			for newPager.More() {

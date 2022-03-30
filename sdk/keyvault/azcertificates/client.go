@@ -132,8 +132,8 @@ func (b *CreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCert
 	return b.createResponse, nil
 }
 
-// pollUntilDone continuallys polls the service with a 't' delay until completion.
-func (b *CreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
+// PollUntilDone continuallys polls the service with a 't' delay until completion.
+func (b *CreateCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -148,17 +148,8 @@ func (b *CreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 	return b.createResponse, nil
 }
 
-// CreateCertificatePollerResponse contains response fields for Client.BeginCreateCertificate
-type CreateCertificatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
-	PollUntilDone func(context.Context, time.Duration) (CreateCertificateResponse, error)
-
-	// Poller contains an initialized WidgetPoller
-	Poller CreateCertificatePoller
-}
-
 // BeginCreateCertificate creates a new certificate resource, if a certificate with this name already exists, a new version is created. This operation requires the certificates/create permission.
-func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy CertificatePolicy, options *BeginCreateCertificateOptions) (CreateCertificatePollerResponse, error) {
+func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy CertificatePolicy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
 	}
@@ -176,10 +167,10 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 	)
 
 	if err != nil {
-		return CreateCertificatePollerResponse{}, err
+		return nil, err
 	}
 
-	p := CreateCertificatePoller{
+	return &CreateCertificatePoller{
 		certName:    certName,
 		certVersion: "",
 		vaultURL:    c.vaultURL,
@@ -198,11 +189,6 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 			},
 		},
 		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
-	}
-
-	return CreateCertificatePollerResponse{
-		Poller:        p,
-		PollUntilDone: p.pollUntilDone,
 	}, nil
 }
 
@@ -360,9 +346,9 @@ func (s *DeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCert
 	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
 }
 
-// pollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *DeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
+func (s *DeleteCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
@@ -377,46 +363,32 @@ func (s *DeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Dura
 	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
 }
 
-// DeleteCertificatePollerResponse contains response fields for Client.BeginDeleteCertificate
-type DeleteCertificatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
-	PollUntilDone func(context.Context, time.Duration) (DeleteCertificateResponse, error)
-
-	// Poller contains an initialized WidgetPoller
-	Poller DeleteCertificatePoller
-}
-
 // BeginDeleteCertificate deletes a certificate from the keyvault. Delete cannot be applied to an individual version of a certificate. This operation
 // requires the certificate/delete permission. This response contains a response with a Poller struct that can be used to Poll for a response, or the
 // DeleteCertificatePollerResponse.PollUntilDone function can be used to poll until completion.
-func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName string, options *BeginDeleteCertificateOptions) (DeleteCertificatePollerResponse, error) {
+func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName string, options *BeginDeleteCertificateOptions) (*DeleteCertificatePoller, error) {
 	if options == nil {
 		options = &BeginDeleteCertificateOptions{}
 	}
 	resp, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
-		return DeleteCertificatePollerResponse{}, err
+		return nil, err
 	}
 
 	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
-			return DeleteCertificatePollerResponse{}, err
+			return nil, err
 		}
 	}
 
-	s := DeleteCertificatePoller{
+	return &DeleteCertificatePoller{
 		vaultURL:        c.vaultURL,
 		certificateName: certificateName,
 		client:          c.genClient,
 		deleteResponse:  resp,
 		lastResponse:    getResp,
-	}
-
-	return DeleteCertificatePollerResponse{
-		Poller:        s,
-		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
 
@@ -1444,8 +1416,8 @@ func (b *RecoverDeletedCertificatePoller) FinalResponse(ctx context.Context) (Re
 	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
 }
 
-// pollUntilDone is the method for the Response.PollUntilDone struct
-func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedCertificateResponse, error) {
+// PollUntilDone is the method for the Response.PollUntilDone struct
+func (b *RecoverDeletedCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedCertificateResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -1472,45 +1444,31 @@ func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRe
 	}
 }
 
-// RecoverDeletedCertificatePollerResponse contains response fields for Client.BeginRecoverDeletedCertificate
-type RecoverDeletedCertificatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
-	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedCertificateResponse, error)
-
-	// Poller contains an initialized RecoverDeletedCertificatePoller
-	Poller RecoverDeletedCertificatePoller
-}
-
 // BeginRecoverDeletedCertificate recovers the deleted certificate in the specified vault to the latest version.
 // This operation can only be performed on a soft-delete enabled vault. This operation requires the certificates/recover permission.
-func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName string, options *BeginRecoverDeletedCertificateOptions) (RecoverDeletedCertificatePollerResponse, error) {
+func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName string, options *BeginRecoverDeletedCertificateOptions) (*RecoverDeletedCertificatePoller, error) {
 	if options == nil {
 		options = &BeginRecoverDeletedCertificateOptions{}
 	}
 	resp, err := c.genClient.RecoverDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
 	if err != nil {
-		return RecoverDeletedCertificatePollerResponse{}, err
+		return nil, err
 	}
 
 	getResp, err := c.genClient.GetCertificate(ctx, c.vaultURL, certName, "", nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
-			return RecoverDeletedCertificatePollerResponse{}, err
+			return nil, err
 		}
 	}
 
-	p := RecoverDeletedCertificatePoller{
+	return &RecoverDeletedCertificatePoller{
 		lastResponse:    getResp,
 		certName:        certName,
 		client:          c.genClient,
 		vaultUrl:        c.vaultURL,
 		recoverResponse: resp,
-	}
-
-	return RecoverDeletedCertificatePollerResponse{
-		PollUntilDone: p.pollUntilDone,
-		Poller:        p,
 	}, nil
 }
 

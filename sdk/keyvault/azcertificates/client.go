@@ -1472,8 +1472,8 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 	}, nil
 }
 
-// ListDeletedCertificatesPage contains response field for ListDeletedCertificatesPager.NextPage
-type ListDeletedCertificatesPage struct {
+// ListDeletedCertificatesResponse contains response field for ListDeletedCertificatesPager.NextPage
+type ListDeletedCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
 	Certificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -1481,7 +1481,7 @@ type ListDeletedCertificatesPage struct {
 	NextLink *string
 }
 
-func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCertificatesResponse) ListDeletedCertificatesPage {
+func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCertificatesResponse) ListDeletedCertificatesResponse {
 	var certs []*DeletedCertificateItem
 
 	if len(g.Value) > 0 {
@@ -1500,7 +1500,7 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 		}
 	}
 
-	return ListDeletedCertificatesPage{
+	return ListDeletedCertificatesResponse{
 		Certificates: certs,
 		NextLink:     g.NextLink,
 	}
@@ -1514,12 +1514,12 @@ type ListDeletedCertificatesOptions struct {
 // ListDeletedCertificates retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
 // This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can
 // only be enabled on soft-delete enabled vaults.
-func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions) *runtime.Pager[ListDeletedCertificatesPage] {
-	return runtime.NewPager(runtime.PageProcessor[ListDeletedCertificatesPage]{
-		More: func(page ListDeletedCertificatesPage) bool {
+func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions) *runtime.Pager[ListDeletedCertificatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListDeletedCertificatesResponse]{
+		More: func(page ListDeletedCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListDeletedCertificatesPage) (ListDeletedCertificatesPage, error) {
+		Fetcher: func(ctx context.Context, page *ListDeletedCertificatesResponse) (ListDeletedCertificatesResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1528,18 +1528,18 @@ func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListDeletedCertificatesPage{}, err
+				return ListDeletedCertificatesResponse{}, err
 			}
 			resp, err := c.genClient.Pl.Do(req)
 			if err != nil {
-				return ListDeletedCertificatesPage{}, err
+				return ListDeletedCertificatesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListDeletedCertificatesPage{}, runtime.NewResponseError(resp)
+				return ListDeletedCertificatesResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.genClient.GetDeletedCertificatesHandleResponse(resp)
 			if err != nil {
-				return ListDeletedCertificatesPage{}, err
+				return ListDeletedCertificatesResponse{}, err
 			}
 			return listDeletedCertsPageFromGenerated(genResp), nil
 		},

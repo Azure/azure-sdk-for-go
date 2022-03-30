@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -58,7 +59,13 @@ const idSeparator = ";"
 // PollerTypeName returns the type name to use when constructing the poller ID.
 // An error is returned if the generic type has no name (e.g. struct{}).
 func PollerTypeName[T any]() (string, error) {
-	n := shared.TypeOfT[T]().Name()
+	tt := shared.TypeOfT[T]()
+	var n string
+	if tt.Kind() == reflect.Pointer {
+		n = "*"
+		tt = tt.Elem()
+	}
+	n += tt.Name()
 	if n == "" {
 		return "", errors.New("nameless types are not allowed")
 	}

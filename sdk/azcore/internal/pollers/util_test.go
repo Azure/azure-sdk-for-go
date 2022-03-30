@@ -73,6 +73,13 @@ func TestPollerTypeName(t *testing.T) {
 	if n != "" {
 		t.Fatal("expected empty type name")
 	}
+	n, err = PollerTypeName[*float64]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != "*float64" {
+		t.Fatalf("unexpected type name %s", n)
+	}
 }
 
 func TestMakeID(t *testing.T) {

@@ -283,9 +283,9 @@ func (client *KeyVaultClient) getSecretCreateRequest(ctx context.Context, vaultB
 		return nil, errors.New("parameter secretName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(secretName))
-	if secretVersion == "" {
-		return nil, errors.New("parameter secretVersion cannot be empty")
-	}
+	// if secretVersion == "" {
+	// 	return nil, errors.New("parameter secretVersion cannot be empty")
+	// }
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(secretVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
@@ -660,9 +660,9 @@ func (client *KeyVaultClient) updateSecretCreateRequest(ctx context.Context, vau
 		return nil, errors.New("parameter secretName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(secretName))
-	if secretVersion == "" {
-		return nil, errors.New("parameter secretVersion cannot be empty")
-	}
+	// if secretVersion == "" {
+	// 	return nil, errors.New("parameter secretVersion cannot be empty")
+	// }
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(secretVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {

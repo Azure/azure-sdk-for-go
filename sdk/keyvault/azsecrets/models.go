@@ -9,6 +9,7 @@ package azsecrets
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 )
 
@@ -119,7 +120,7 @@ func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
 	}
 	return &Properties{
 		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
+		RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.RecoveryLevel)),
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
 		NotBefore:       i.NotBefore,

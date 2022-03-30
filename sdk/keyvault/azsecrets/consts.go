@@ -91,11 +91,6 @@ func (d *DeletionRecoveryLevel) toGenerated() *internal.DeletionRecoveryLevel {
 	}
 }
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &c
-}
-
 // PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
 func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	return []DeletionRecoveryLevel{

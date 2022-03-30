@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -190,7 +191,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 				CreatedOn:       i.Attributes.Created,
 				UpdatedOn:       i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
+				RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
 			},
 			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
@@ -479,7 +480,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 				CreatedOn:       i.Attributes.Created,
 				UpdatedOn:       i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
+				RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
 			},
 		},
 	}
@@ -619,7 +620,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			CreatedOn:       i.Attributes.Created,
 			UpdatedOn:       i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
+			RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
 		}
 	}
 	return RecoverDeletedSecretResponse{

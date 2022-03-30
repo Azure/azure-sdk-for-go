@@ -458,16 +458,16 @@ func TestPolicy(t *testing.T) {
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
 		ReuseKey:   to.Ptr(true),
-		KeyType:    CertificateKeyTypeRSA.ToPtr(),
+		KeyType:    to.Ptr(CertificateKeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: &Action{ActionType: to.Ptr(CertificatePolicyActionEmailContacts)}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			KeyUsage:         []*CertificateKeyUsage{to.Ptr(CertificateKeyUsageDecipherOnly)},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -488,9 +488,9 @@ func TestPolicy(t *testing.T) {
 	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
 
 	// Update the policy
-	policy.KeyType = CertificateKeyTypeEC.ToPtr()
+	policy.KeyType = to.Ptr(CertificateKeyTypeEC)
 	policy.KeySize = to.Ptr(int32(256))
-	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyCurveName = to.Ptr(CertificateKeyCurveNameP256)
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
@@ -522,16 +522,16 @@ func TestCRUDOperations(t *testing.T) {
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
 		ReuseKey:   to.Ptr(true),
-		KeyType:    CertificateKeyTypeRSA.ToPtr(),
+		KeyType:    to.Ptr(CertificateKeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: &Action{ActionType: to.Ptr(CertificatePolicyActionEmailContacts)}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CertificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
+			KeyUsage:         []*CertificateKeyUsage{to.Ptr(CertificateKeyUsageDecipherOnly)},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -562,9 +562,9 @@ func TestCRUDOperations(t *testing.T) {
 	// require.NotNil(t, parsedCert)
 
 	// Update the policy
-	policy.KeyType = CertificateKeyTypeEC.ToPtr()
+	policy.KeyType = to.Ptr(CertificateKeyTypeEC)
 	policy.KeySize = to.Ptr(int32(256))
-	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyCurveName = to.Ptr(CertificateKeyCurveNameP256)
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)

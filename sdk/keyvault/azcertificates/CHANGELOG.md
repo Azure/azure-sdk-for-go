@@ -7,6 +7,7 @@
 
 ### Breaking Changes
 * Fixed a misspelling of `CerificateKeyUsage`, changed to `CertificateKeyUsage`
+* Removed all `ToPtr` methods from constants
 
 ### Bugs Fixed
 

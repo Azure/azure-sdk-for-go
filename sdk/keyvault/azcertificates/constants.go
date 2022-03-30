@@ -14,11 +14,6 @@ const (
 	CertificatePolicyActionAutoRenew     CertificatePolicyAction = "AutoRenew"
 )
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c CertificatePolicyAction) ToPtr() *CertificatePolicyAction {
-	return &c
-}
-
 // PossibleCertificatePolicyActionValues returns a slice of all possible CertificatePolicyAction values.
 func PossibleCertificatePolicyActionValues() []CertificatePolicyAction {
 	return []CertificatePolicyAction{
@@ -36,11 +31,6 @@ const (
 	CertificateKeyCurveNameP384  CertificateKeyCurveName = "P-384"
 	CertificateKeyCurveNameP521  CertificateKeyCurveName = "P-521"
 )
-
-// ToPtr returns a *CertificateKeyCurveName pointing to the current value.
-func (c CertificateKeyCurveName) ToPtr() *CertificateKeyCurveName {
-	return &c
-}
 
 // PossibleCertificateKeyCurveNameValues returns a slice of all possible CertificateKeyCurveName values.
 func PossibleCertificateKeyCurveNameValues() []CertificateKeyCurveName {
@@ -63,11 +53,6 @@ const (
 	CertificateKeyTypeRSA    CertificateKeyType = "RSA"
 	CertificateKeyTypeRSAHSM CertificateKeyType = "RSA-HSM"
 )
-
-// ToPtr returns a *CertificateKeyType pointing to the current value.
-func (c CertificateKeyType) ToPtr() *CertificateKeyType {
-	return &c
-}
 
 // PossibleCertificateKeyTypeValues returns a slice of all possible CertificateKeyType values.
 func PossibleCertificateKeyTypeValues() []CertificateKeyType {
@@ -95,11 +80,6 @@ const (
 	CertificateKeyUsageKeyEncipherment  CertificateKeyUsage = "keyEncipherment"
 	CertificateKeyUsageNonRepudiation   CertificateKeyUsage = "nonRepudiation"
 )
-
-// ToPtr returns a *CertificateKeyUsage pointing to the current value.
-func (c CertificateKeyUsage) ToPtr() *CertificateKeyUsage {
-	return &c
-}
 
 // PossibleCertificateKeyUsageValues returns a slice of all possible CertificateKeyUsage values.
 func PossibleCertificateKeyUsageValues() []CertificateKeyUsage {

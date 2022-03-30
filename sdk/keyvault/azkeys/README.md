@@ -173,7 +173,7 @@ func main() {
 	fmt.Println(*resp.JSONWebKey.KeyType)
 
     // Create EC Key
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
@@ -238,7 +238,7 @@ func main() {
 			"Tag1": "val1",
 		},
 		Properties: &azkeys.Properties{
-			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
+			RecoveryLevel: to.Ptr(azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable),
 		},
 	})
 	if err != nil {
@@ -311,7 +311,7 @@ func main() {
 		LifetimeActions: []*azkeys.LifetimeActions{
 			{
 				Action: &azkeys.LifetimeActionsType{
-					Type: azkeys.ActionTypeNotify.ToPtr(),
+					Type: to.Ptr(azkeys.ActionTypeNotify),
 				},
 				Trigger: &azkeys.LifetimeActionsTrigger{
 					TimeBeforeExpiry: to.StringPtr("P30D"),

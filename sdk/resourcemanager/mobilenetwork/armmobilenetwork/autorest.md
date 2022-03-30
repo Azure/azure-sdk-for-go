@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/49af362e33d89967d7776fdd3a26d5462c9fbb59/specification/mobilenetwork/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/49af362e33d89967d7776fdd3a26d5462c9fbb59/specification/mobilenetwork/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/50d804bd9e656d0bbd873f1e2ab79b3cee33825c/specification/mobilenetwork/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/50d804bd9e656d0bbd873f1e2ab79b3cee33825c/specification/mobilenetwork/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.2.0
 
 ```

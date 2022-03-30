@@ -13,6 +13,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -196,4 +197,11 @@ func (r *NopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
 	}
 	r.i = i
 	return i, nil
+}
+
+// TypeOfT returns the type of the generic type param.
+func TypeOfT[T any]() reflect.Type {
+	// you can't, at present, obtain the type of
+	// a type parameter, so this is the trick
+	return reflect.TypeOf((*T)(nil)).Elem()
 }

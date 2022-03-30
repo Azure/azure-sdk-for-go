@@ -22,8 +22,7 @@ import (
 )
 
 // NewPoller creates a Poller based on the provided initial response.
-// pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPoller[T any](pollerID string, resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
+func NewPoller[T any](resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
 	defer resp.Body.Close()
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
@@ -35,9 +34,9 @@ func NewPoller[T any](pollerID string, resp *http.Response, pl pipeline.Pipeline
 	var err error
 	// op poller must be checked first as it can also have a location header
 	if op.Applicable(resp) {
-		lro, err = op.New(resp, pollerID)
+		lro, err = op.New(resp, pollers.PollerTypeName[T]())
 	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, pollerID)
+		lro, err = loc.New(resp, pollers.PollerTypeName[T]())
 	} else {
 		lro = &pollers.NopPoller{}
 	}
@@ -51,9 +50,8 @@ func NewPoller[T any](pollerID string, resp *http.Response, pl pipeline.Pipeline
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
-// pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPollerFromResumeToken[T any](pollerID string, token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
-	kind, err := pollers.KindFromToken(pollerID, token)
+func NewPollerFromResumeToken[T any](token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
+	kind, err := pollers.KindFromToken(pollers.PollerTypeName[T](), token)
 	if err != nil {
 		return nil, err
 	}

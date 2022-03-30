@@ -23,8 +23,7 @@ import (
 )
 
 // NewPoller creates a Poller based on the provided initial response.
-// pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
-func NewPoller[T any](pollerID string, finalState string, resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
+func NewPoller[T any](finalState string, resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
 	defer resp.Body.Close()
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
@@ -35,13 +34,13 @@ func NewPoller[T any](pollerID string, finalState string, resp *http.Response, p
 	var lro pollers.Operation
 	var err error
 	if async.Applicable(resp) {
-		lro, err = async.New(resp, finalState, pollerID)
+		lro, err = async.New(resp, finalState, pollers.PollerTypeName[T]())
 	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, pollerID)
+		lro, err = loc.New(resp, pollers.PollerTypeName[T]())
 	} else if body.Applicable(resp) {
 		// must test body poller last as it's a subset of the other pollers.
 		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
-		lro, err = body.New(resp, pollerID)
+		lro, err = body.New(resp, pollers.PollerTypeName[T]())
 	} else if m := resp.Request.Method; resp.StatusCode == http.StatusAccepted && (m == http.MethodDelete || m == http.MethodPost) {
 		// if we get here it means we have a 202 with no polling headers.
 		// for DELETE and POST this is a hard error per ARM RPC spec.
@@ -59,9 +58,8 @@ func NewPoller[T any](pollerID string, finalState string, resp *http.Response, p
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
-// pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
-func NewPollerFromResumeToken[T any](pollerID string, token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
-	kind, err := pollers.KindFromToken(pollerID, token)
+func NewPollerFromResumeToken[T any](token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
+	kind, err := pollers.KindFromToken(pollers.PollerTypeName[T](), token)
 	if err != nil {
 		return nil, err
 	}

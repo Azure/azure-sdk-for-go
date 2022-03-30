@@ -53,6 +53,17 @@ func IsValidURL(s string) bool {
 }
 
 const idSeparator = ";"
+const emptyTypeName = "-empty-"
+
+// PollerTypeName returns the type name to use when constructing the poller ID.
+// It handles the empty type struct{} with a special name instead of the empty string.
+func PollerTypeName[T any]() string {
+	n := shared.TypeOfT[T]().Name()
+	if n == "" {
+		n = emptyTypeName
+	}
+	return n
+}
 
 // MakeID returns the poller ID from the provided values.
 func MakeID(pollerID string, kind string) string {

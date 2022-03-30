@@ -797,13 +797,11 @@ const (
 	OperatorLessThan Operator = "LessThan"
 	// OperatorLessThanOrEqual ...
 	OperatorLessThanOrEqual Operator = "LessThanOrEqual"
-	// OperatorNotEquals ...
-	OperatorNotEquals Operator = "NotEquals"
 )
 
 // PossibleOperatorValues returns an array of possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
-	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual, OperatorNotEquals}
+	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual}
 }
 
 // ProvisioningState enumerates the values for provisioning state.

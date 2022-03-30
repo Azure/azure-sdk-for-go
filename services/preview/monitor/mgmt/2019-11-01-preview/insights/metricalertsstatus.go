@@ -34,7 +34,7 @@ func NewMetricAlertsStatusClientWithBaseURI(baseURI string, subscriptionID strin
 
 // List retrieve an alert rule status.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 func (client MetricAlertsStatusClient) List(ctx context.Context, resourceGroupName string, ruleName string) (result MetricAlertStatusCollection, err error) {
 	if tracing.IsEnabled() {
@@ -49,7 +49,10 @@ func (client MetricAlertsStatusClient) List(ctx context.Context, resourceGroupNa
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsStatusClient", "List", err.Error())
 	}
 
@@ -116,7 +119,7 @@ func (client MetricAlertsStatusClient) ListResponder(resp *http.Response) (resul
 
 // ListByName retrieve an alert rule status.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 // statusName - the name of the status.
 func (client MetricAlertsStatusClient) ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string) (result MetricAlertStatusCollection, err error) {
@@ -132,7 +135,10 @@ func (client MetricAlertsStatusClient) ListByName(ctx context.Context, resourceG
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsStatusClient", "ListByName", err.Error())
 	}
 

@@ -34,7 +34,7 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 
 // Get gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // groupName - the name of the private link resource.
 func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, groupName string) (result PrivateLinkResource, err error) {
@@ -50,7 +50,10 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkResourcesClient", "Get", err.Error())
 	}
 
@@ -118,7 +121,7 @@ func (client PrivateLinkResourcesClient) GetResponder(resp *http.Response) (resu
 
 // ListByPrivateLinkScope gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 func (client PrivateLinkResourcesClient) ListByPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string) (result PrivateLinkResourceListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -133,7 +136,10 @@ func (client PrivateLinkResourcesClient) ListByPrivateLinkScope(ctx context.Cont
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkResourcesClient", "ListByPrivateLinkScope", err.Error())
 	}
 

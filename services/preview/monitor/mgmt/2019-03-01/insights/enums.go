@@ -29,6 +29,27 @@ func PossibleAggregationTypeValues() []AggregationType {
 	return []AggregationType{Average, Count, Maximum, Minimum, None, Total}
 }
 
+// AggregationTypeEnum enumerates the values for aggregation type enum.
+type AggregationTypeEnum string
+
+const (
+	// AggregationTypeEnumAverage ...
+	AggregationTypeEnumAverage AggregationTypeEnum = "Average"
+	// AggregationTypeEnumCount ...
+	AggregationTypeEnumCount AggregationTypeEnum = "Count"
+	// AggregationTypeEnumMaximum ...
+	AggregationTypeEnumMaximum AggregationTypeEnum = "Maximum"
+	// AggregationTypeEnumMinimum ...
+	AggregationTypeEnumMinimum AggregationTypeEnum = "Minimum"
+	// AggregationTypeEnumTotal ...
+	AggregationTypeEnumTotal AggregationTypeEnum = "Total"
+)
+
+// PossibleAggregationTypeEnumValues returns an array of possible values for the AggregationTypeEnum const type.
+func PossibleAggregationTypeEnumValues() []AggregationTypeEnum {
+	return []AggregationTypeEnum{AggregationTypeEnumAverage, AggregationTypeEnumCount, AggregationTypeEnumMaximum, AggregationTypeEnumMinimum, AggregationTypeEnumTotal}
+}
+
 // AlertSeverity enumerates the values for alert severity.
 type AlertSeverity string
 
@@ -113,13 +134,17 @@ const (
 	ConditionalOperatorEqual ConditionalOperator = "Equal"
 	// ConditionalOperatorGreaterThan ...
 	ConditionalOperatorGreaterThan ConditionalOperator = "GreaterThan"
+	// ConditionalOperatorGreaterThanOrEqual ...
+	ConditionalOperatorGreaterThanOrEqual ConditionalOperator = "GreaterThanOrEqual"
 	// ConditionalOperatorLessThan ...
 	ConditionalOperatorLessThan ConditionalOperator = "LessThan"
+	// ConditionalOperatorLessThanOrEqual ...
+	ConditionalOperatorLessThanOrEqual ConditionalOperator = "LessThanOrEqual"
 )
 
 // PossibleConditionalOperatorValues returns an array of possible values for the ConditionalOperator const type.
 func PossibleConditionalOperatorValues() []ConditionalOperator {
-	return []ConditionalOperator{ConditionalOperatorEqual, ConditionalOperatorGreaterThan, ConditionalOperatorLessThan}
+	return []ConditionalOperator{ConditionalOperatorEqual, ConditionalOperatorGreaterThan, ConditionalOperatorGreaterThanOrEqual, ConditionalOperatorLessThan, ConditionalOperatorLessThanOrEqual}
 }
 
 // ConditionOperator enumerates the values for condition operator.
@@ -243,12 +268,35 @@ func PossibleEventLevelValues() []EventLevel {
 	return []EventLevel{EventLevelCritical, EventLevelError, EventLevelInformational, EventLevelVerbose, EventLevelWarning}
 }
 
+// MetricClass enumerates the values for metric class.
+type MetricClass string
+
+const (
+	// Availability ...
+	Availability MetricClass = "Availability"
+	// Errors ...
+	Errors MetricClass = "Errors"
+	// Latency ...
+	Latency MetricClass = "Latency"
+	// Saturation ...
+	Saturation MetricClass = "Saturation"
+	// Transactions ...
+	Transactions MetricClass = "Transactions"
+)
+
+// PossibleMetricClassValues returns an array of possible values for the MetricClass const type.
+func PossibleMetricClassValues() []MetricClass {
+	return []MetricClass{Availability, Errors, Latency, Saturation, Transactions}
+}
+
 // MetricStatisticType enumerates the values for metric statistic type.
 type MetricStatisticType string
 
 const (
 	// MetricStatisticTypeAverage ...
 	MetricStatisticTypeAverage MetricStatisticType = "Average"
+	// MetricStatisticTypeCount ...
+	MetricStatisticTypeCount MetricStatisticType = "Count"
 	// MetricStatisticTypeMax ...
 	MetricStatisticTypeMax MetricStatisticType = "Max"
 	// MetricStatisticTypeMin ...
@@ -259,7 +307,7 @@ const (
 
 // PossibleMetricStatisticTypeValues returns an array of possible values for the MetricStatisticType const type.
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
-	return []MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
+	return []MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeCount, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
 }
 
 // MetricTriggerType enumerates the values for metric trigger type.
@@ -275,6 +323,60 @@ const (
 // PossibleMetricTriggerTypeValues returns an array of possible values for the MetricTriggerType const type.
 func PossibleMetricTriggerTypeValues() []MetricTriggerType {
 	return []MetricTriggerType{MetricTriggerTypeConsecutive, MetricTriggerTypeTotal}
+}
+
+// MetricUnit enumerates the values for metric unit.
+type MetricUnit string
+
+const (
+	// MetricUnitBitsPerSecond ...
+	MetricUnitBitsPerSecond MetricUnit = "BitsPerSecond"
+	// MetricUnitBytes ...
+	MetricUnitBytes MetricUnit = "Bytes"
+	// MetricUnitByteSeconds ...
+	MetricUnitByteSeconds MetricUnit = "ByteSeconds"
+	// MetricUnitBytesPerSecond ...
+	MetricUnitBytesPerSecond MetricUnit = "BytesPerSecond"
+	// MetricUnitCores ...
+	MetricUnitCores MetricUnit = "Cores"
+	// MetricUnitCount ...
+	MetricUnitCount MetricUnit = "Count"
+	// MetricUnitCountPerSecond ...
+	MetricUnitCountPerSecond MetricUnit = "CountPerSecond"
+	// MetricUnitMilliCores ...
+	MetricUnitMilliCores MetricUnit = "MilliCores"
+	// MetricUnitMilliSeconds ...
+	MetricUnitMilliSeconds MetricUnit = "MilliSeconds"
+	// MetricUnitNanoCores ...
+	MetricUnitNanoCores MetricUnit = "NanoCores"
+	// MetricUnitPercent ...
+	MetricUnitPercent MetricUnit = "Percent"
+	// MetricUnitSeconds ...
+	MetricUnitSeconds MetricUnit = "Seconds"
+	// MetricUnitUnspecified ...
+	MetricUnitUnspecified MetricUnit = "Unspecified"
+)
+
+// PossibleMetricUnitValues returns an array of possible values for the MetricUnit const type.
+func PossibleMetricUnitValues() []MetricUnit {
+	return []MetricUnit{MetricUnitBitsPerSecond, MetricUnitBytes, MetricUnitByteSeconds, MetricUnitBytesPerSecond, MetricUnitCores, MetricUnitCount, MetricUnitCountPerSecond, MetricUnitMilliCores, MetricUnitMilliSeconds, MetricUnitNanoCores, MetricUnitPercent, MetricUnitSeconds, MetricUnitUnspecified}
+}
+
+// NamespaceClassification enumerates the values for namespace classification.
+type NamespaceClassification string
+
+const (
+	// Custom ...
+	Custom NamespaceClassification = "Custom"
+	// Platform ...
+	Platform NamespaceClassification = "Platform"
+	// Qos ...
+	Qos NamespaceClassification = "Qos"
+)
+
+// PossibleNamespaceClassificationValues returns an array of possible values for the NamespaceClassification const type.
+func PossibleNamespaceClassificationValues() []NamespaceClassification {
+	return []NamespaceClassification{Custom, Platform, Qos}
 }
 
 // OdataType enumerates the values for odata type.
@@ -397,13 +499,11 @@ const (
 	OperatorLessThan Operator = "LessThan"
 	// OperatorLessThanOrEqual ...
 	OperatorLessThanOrEqual Operator = "LessThanOrEqual"
-	// OperatorNotEquals ...
-	OperatorNotEquals Operator = "NotEquals"
 )
 
 // PossibleOperatorValues returns an array of possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
-	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual, OperatorNotEquals}
+	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -539,28 +639,13 @@ const (
 	ExactCount ScaleType = "ExactCount"
 	// PercentChangeCount ...
 	PercentChangeCount ScaleType = "PercentChangeCount"
+	// ServiceAllowedNextValue ...
+	ServiceAllowedNextValue ScaleType = "ServiceAllowedNextValue"
 )
 
 // PossibleScaleTypeValues returns an array of possible values for the ScaleType const type.
 func PossibleScaleTypeValues() []ScaleType {
-	return []ScaleType{ChangeCount, ExactCount, PercentChangeCount}
-}
-
-// Sensitivity enumerates the values for sensitivity.
-type Sensitivity string
-
-const (
-	// SensitivityHigh ...
-	SensitivityHigh Sensitivity = "High"
-	// SensitivityLow ...
-	SensitivityLow Sensitivity = "Low"
-	// SensitivityMedium ...
-	SensitivityMedium Sensitivity = "Medium"
-)
-
-// PossibleSensitivityValues returns an array of possible values for the Sensitivity const type.
-func PossibleSensitivityValues() []Sensitivity {
-	return []Sensitivity{SensitivityHigh, SensitivityLow, SensitivityMedium}
+	return []ScaleType{ChangeCount, ExactCount, PercentChangeCount, ServiceAllowedNextValue}
 }
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
@@ -605,41 +690,4 @@ const (
 // PossibleTimeAggregationTypeValues returns an array of possible values for the TimeAggregationType const type.
 func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 	return []TimeAggregationType{TimeAggregationTypeAverage, TimeAggregationTypeCount, TimeAggregationTypeLast, TimeAggregationTypeMaximum, TimeAggregationTypeMinimum, TimeAggregationTypeTotal}
-}
-
-// Unit enumerates the values for unit.
-type Unit string
-
-const (
-	// UnitBitsPerSecond ...
-	UnitBitsPerSecond Unit = "BitsPerSecond"
-	// UnitBytes ...
-	UnitBytes Unit = "Bytes"
-	// UnitByteSeconds ...
-	UnitByteSeconds Unit = "ByteSeconds"
-	// UnitBytesPerSecond ...
-	UnitBytesPerSecond Unit = "BytesPerSecond"
-	// UnitCores ...
-	UnitCores Unit = "Cores"
-	// UnitCount ...
-	UnitCount Unit = "Count"
-	// UnitCountPerSecond ...
-	UnitCountPerSecond Unit = "CountPerSecond"
-	// UnitMilliCores ...
-	UnitMilliCores Unit = "MilliCores"
-	// UnitMilliSeconds ...
-	UnitMilliSeconds Unit = "MilliSeconds"
-	// UnitNanoCores ...
-	UnitNanoCores Unit = "NanoCores"
-	// UnitPercent ...
-	UnitPercent Unit = "Percent"
-	// UnitSeconds ...
-	UnitSeconds Unit = "Seconds"
-	// UnitUnspecified ...
-	UnitUnspecified Unit = "Unspecified"
-)
-
-// PossibleUnitValues returns an array of possible values for the Unit const type.
-func PossibleUnitValues() []Unit {
-	return []Unit{UnitBitsPerSecond, UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCores, UnitCount, UnitCountPerSecond, UnitMilliCores, UnitMilliSeconds, UnitNanoCores, UnitPercent, UnitSeconds, UnitUnspecified}
 }

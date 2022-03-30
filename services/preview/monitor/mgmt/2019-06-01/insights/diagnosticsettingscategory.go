@@ -83,7 +83,7 @@ func (client DiagnosticSettingsCategoryClient) GetPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories/{name}", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -156,7 +156,7 @@ func (client DiagnosticSettingsCategoryClient) ListPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

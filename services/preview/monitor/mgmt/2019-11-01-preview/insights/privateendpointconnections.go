@@ -34,7 +34,7 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 
 // CreateOrUpdate approve or reject a private endpoint connection with a given name.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // privateEndpointConnectionName - the name of the private endpoint connection.
 func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection) (result PrivateEndpointConnectionsCreateOrUpdateFuture, err error) {
@@ -51,6 +51,9 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Contex
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState", Name: validation.Null, Rule: false,
@@ -130,7 +133,7 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdateResponder(resp *htt
 
 // Delete deletes a private endpoint connection with a given name.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // privateEndpointConnectionName - the name of the private endpoint connection.
 func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, scopeName string, privateEndpointConnectionName string) (result PrivateEndpointConnectionsDeleteFuture, err error) {
@@ -146,7 +149,10 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateEndpointConnectionsClient", "Delete", err.Error())
 	}
 
@@ -216,7 +222,7 @@ func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Respon
 
 // Get gets a private endpoint connection.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // privateEndpointConnectionName - the name of the private endpoint connection.
 func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, scopeName string, privateEndpointConnectionName string) (result PrivateEndpointConnection, err error) {
@@ -232,7 +238,10 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateEndpointConnectionsClient", "Get", err.Error())
 	}
 
@@ -300,7 +309,7 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 
 // ListByPrivateLinkScope gets all private endpoint connections on a private link scope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 func (client PrivateEndpointConnectionsClient) ListByPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string) (result PrivateEndpointConnectionListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -315,7 +324,10 @@ func (client PrivateEndpointConnectionsClient) ListByPrivateLinkScope(ctx contex
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateEndpointConnectionsClient", "ListByPrivateLinkScope", err.Error())
 	}
 

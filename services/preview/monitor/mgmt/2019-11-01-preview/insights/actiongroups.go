@@ -33,7 +33,7 @@ func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) Act
 
 // CreateOrUpdate create a new action group or update an existing one.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // actionGroupName - the name of the action group.
 // actionGroup - the action group to create or use for the update.
 func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (result ActionGroupResource, err error) {
@@ -48,6 +48,9 @@ func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGro
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: actionGroup,
 			Constraints: []validation.Constraint{{Target: "actionGroup.ActionGroup", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.Null, Rule: true,
@@ -124,7 +127,7 @@ func (client ActionGroupsClient) CreateOrUpdateResponder(resp *http.Response) (r
 
 // Delete delete an action group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // actionGroupName - the name of the action group.
 func (client ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -138,6 +141,9 @@ func (client ActionGroupsClient) Delete(ctx context.Context, resourceGroupName s
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "Delete", err.Error())
@@ -206,7 +212,7 @@ func (client ActionGroupsClient) DeleteResponder(resp *http.Response) (result au
 // EnableReceiver enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled.
 // This operation is only supported for Email or SMS receivers.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // actionGroupName - the name of the action group.
 // enableRequest - the receiver to re-enable.
 func (client ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (result autorest.Response, err error) {
@@ -221,6 +227,9 @@ func (client ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGro
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: enableRequest,
 			Constraints: []validation.Constraint{{Target: "enableRequest.ReceiverName", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
@@ -292,7 +301,7 @@ func (client ActionGroupsClient) EnableReceiverResponder(resp *http.Response) (r
 
 // Get get an action group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // actionGroupName - the name of the action group.
 func (client ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string) (result ActionGroupResource, err error) {
 	if tracing.IsEnabled() {
@@ -306,6 +315,9 @@ func (client ActionGroupsClient) Get(ctx context.Context, resourceGroupName stri
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "Get", err.Error())
@@ -374,7 +386,7 @@ func (client ActionGroupsClient) GetResponder(resp *http.Response) (result Actio
 
 // ListByResourceGroup get a list of all action groups in a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ActionGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ActionGroupList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ActionGroupsClient.ListByResourceGroup")
@@ -387,6 +399,9 @@ func (client ActionGroupsClient) ListByResourceGroup(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "ListByResourceGroup", err.Error())
@@ -531,7 +546,7 @@ func (client ActionGroupsClient) ListBySubscriptionIDResponder(resp *http.Respon
 
 // Update updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // actionGroupName - the name of the action group.
 // actionGroupPatch - parameters supplied to the operation.
 func (client ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (result ActionGroupResource, err error) {
@@ -547,7 +562,10 @@ func (client ActionGroupsClient) Update(ctx context.Context, resourceGroupName s
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "Update", err.Error())
 	}
 

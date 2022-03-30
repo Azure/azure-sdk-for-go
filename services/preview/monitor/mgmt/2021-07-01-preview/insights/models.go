@@ -5812,7 +5812,7 @@ type MetricBaselinesResponse struct {
 
 // MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
-	// Operator - the criteria operator. Possible values include: 'OperatorEquals', 'OperatorNotEquals', 'OperatorGreaterThan', 'OperatorGreaterThanOrEqual', 'OperatorLessThan', 'OperatorLessThanOrEqual'
+	// Operator - the criteria operator. Possible values include: 'OperatorEquals', 'OperatorGreaterThan', 'OperatorGreaterThanOrEqual', 'OperatorLessThan', 'OperatorLessThanOrEqual'
 	Operator Operator `json:"operator,omitempty"`
 	// Threshold - the criteria threshold value that activates the alert.
 	Threshold *float64 `json:"threshold,omitempty"`

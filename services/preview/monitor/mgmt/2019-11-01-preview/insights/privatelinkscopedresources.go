@@ -34,7 +34,7 @@ func NewPrivateLinkScopedResourcesClientWithBaseURI(baseURI string, subscription
 
 // CreateOrUpdate approve or reject a private endpoint connection with a given name.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // name - the name of the scoped resource object.
 func (client PrivateLinkScopedResourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource) (result PrivateLinkScopedResourcesCreateOrUpdateFuture, err error) {
@@ -50,7 +50,10 @@ func (client PrivateLinkScopedResourcesClient) CreateOrUpdate(ctx context.Contex
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopedResourcesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -123,7 +126,7 @@ func (client PrivateLinkScopedResourcesClient) CreateOrUpdateResponder(resp *htt
 
 // Delete deletes a private endpoint connection with a given name.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // name - the name of the scoped resource object.
 func (client PrivateLinkScopedResourcesClient) Delete(ctx context.Context, resourceGroupName string, scopeName string, name string) (result PrivateLinkScopedResourcesDeleteFuture, err error) {
@@ -139,7 +142,10 @@ func (client PrivateLinkScopedResourcesClient) Delete(ctx context.Context, resou
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopedResourcesClient", "Delete", err.Error())
 	}
 
@@ -209,7 +215,7 @@ func (client PrivateLinkScopedResourcesClient) DeleteResponder(resp *http.Respon
 
 // Get gets a scoped resource in a private link scope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // name - the name of the scoped resource object.
 func (client PrivateLinkScopedResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, name string) (result ScopedResource, err error) {
@@ -225,7 +231,10 @@ func (client PrivateLinkScopedResourcesClient) Get(ctx context.Context, resource
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopedResourcesClient", "Get", err.Error())
 	}
 
@@ -293,7 +302,7 @@ func (client PrivateLinkScopedResourcesClient) GetResponder(resp *http.Response)
 
 // ListByPrivateLinkScope gets all private endpoint connections on a private link scope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 func (client PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string) (result ScopedResourceListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -308,7 +317,10 @@ func (client PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(ctx contex
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopedResourcesClient", "ListByPrivateLinkScope", err.Error())
 	}
 

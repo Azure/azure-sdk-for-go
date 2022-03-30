@@ -113,6 +113,8 @@ type MetricStatisticType string
 const (
 	// MetricStatisticTypeAverage ...
 	MetricStatisticTypeAverage MetricStatisticType = "Average"
+	// MetricStatisticTypeCount ...
+	MetricStatisticTypeCount MetricStatisticType = "Count"
 	// MetricStatisticTypeMax ...
 	MetricStatisticTypeMax MetricStatisticType = "Max"
 	// MetricStatisticTypeMin ...
@@ -123,7 +125,7 @@ const (
 
 // PossibleMetricStatisticTypeValues returns an array of possible values for the MetricStatisticType const type.
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
-	return []MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
+	return []MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeCount, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
 }
 
 // OdataType enumerates the values for odata type.
@@ -280,28 +282,13 @@ const (
 	ExactCount ScaleType = "ExactCount"
 	// PercentChangeCount ...
 	PercentChangeCount ScaleType = "PercentChangeCount"
+	// ServiceAllowedNextValue ...
+	ServiceAllowedNextValue ScaleType = "ServiceAllowedNextValue"
 )
 
 // PossibleScaleTypeValues returns an array of possible values for the ScaleType const type.
 func PossibleScaleTypeValues() []ScaleType {
-	return []ScaleType{ChangeCount, ExactCount, PercentChangeCount}
-}
-
-// Sensitivity enumerates the values for sensitivity.
-type Sensitivity string
-
-const (
-	// High ...
-	High Sensitivity = "High"
-	// Low ...
-	Low Sensitivity = "Low"
-	// Medium ...
-	Medium Sensitivity = "Medium"
-)
-
-// PossibleSensitivityValues returns an array of possible values for the Sensitivity const type.
-func PossibleSensitivityValues() []Sensitivity {
-	return []Sensitivity{High, Low, Medium}
+	return []ScaleType{ChangeCount, ExactCount, PercentChangeCount, ServiceAllowedNextValue}
 }
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
@@ -352,18 +339,26 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 type Unit string
 
 const (
+	// UnitBitsPerSecond ...
+	UnitBitsPerSecond Unit = "BitsPerSecond"
 	// UnitBytes ...
 	UnitBytes Unit = "Bytes"
 	// UnitByteSeconds ...
 	UnitByteSeconds Unit = "ByteSeconds"
 	// UnitBytesPerSecond ...
 	UnitBytesPerSecond Unit = "BytesPerSecond"
+	// UnitCores ...
+	UnitCores Unit = "Cores"
 	// UnitCount ...
 	UnitCount Unit = "Count"
 	// UnitCountPerSecond ...
 	UnitCountPerSecond Unit = "CountPerSecond"
+	// UnitMilliCores ...
+	UnitMilliCores Unit = "MilliCores"
 	// UnitMilliSeconds ...
 	UnitMilliSeconds Unit = "MilliSeconds"
+	// UnitNanoCores ...
+	UnitNanoCores Unit = "NanoCores"
 	// UnitPercent ...
 	UnitPercent Unit = "Percent"
 	// UnitSeconds ...
@@ -374,5 +369,5 @@ const (
 
 // PossibleUnitValues returns an array of possible values for the Unit const type.
 func PossibleUnitValues() []Unit {
-	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
+	return []Unit{UnitBitsPerSecond, UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCores, UnitCount, UnitCountPerSecond, UnitMilliCores, UnitMilliSeconds, UnitNanoCores, UnitPercent, UnitSeconds, UnitUnspecified}
 }

@@ -34,7 +34,7 @@ func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID strin
 
 // Get gets an incident associated to an alert rule
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 // incidentName - the name of the incident to retrieve.
 func (client AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (result Incident, err error) {
@@ -49,6 +49,9 @@ func (client AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupNam
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.AlertRuleIncidentsClient", "Get", err.Error())
@@ -118,7 +121,7 @@ func (client AlertRuleIncidentsClient) GetResponder(resp *http.Response) (result
 
 // ListByAlertRule gets a list of incidents associated to an alert rule
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 func (client AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string) (result IncidentListResult, err error) {
 	if tracing.IsEnabled() {
@@ -132,6 +135,9 @@ func (client AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, reso
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.AlertRuleIncidentsClient", "ListByAlertRule", err.Error())

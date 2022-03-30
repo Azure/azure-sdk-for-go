@@ -1,12 +1,15 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azsecrets
 
-import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+)
 
 // DeletionRecoveryLevel represents the deletion recovery level for a secret
 type DeletionRecoveryLevel string
@@ -72,26 +75,19 @@ func (d *DeletionRecoveryLevel) toGenerated() *internal.DeletionRecoveryLevel {
 		return nil
 	}
 	if *d == DeletionRecoveryLevelCustomizedRecoverable {
-		i := internal.DeletionRecoveryLevelCustomizedRecoverable
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelCustomizedRecoverable)
 	} else if *d == DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription {
-		i := internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
 	} else if *d == DeletionRecoveryLevelCustomizedRecoverablePurgeable {
-		i := internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
 	} else if *d == DeletionRecoveryLevelPurgeable {
-		i := internal.DeletionRecoveryLevelPurgeable
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelPurgeable)
 	} else if *d == DeletionRecoveryLevelRecoverable {
-		i := internal.DeletionRecoveryLevelRecoverable
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelRecoverable)
 	} else if *d == DeletionRecoveryLevelRecoverableProtectedSubscription {
-		i := internal.DeletionRecoveryLevelRecoverableProtectedSubscription
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
 	} else {
-		i := internal.DeletionRecoveryLevelRecoverablePurgeable
-		return i.ToPtr()
+		return to.Ptr(internal.DeletionRecoveryLevelRecoverablePurgeable)
 	}
 }
 
@@ -99,6 +95,7 @@ func (d *DeletionRecoveryLevel) toGenerated() *internal.DeletionRecoveryLevel {
 func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &c
 }
+
 // PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
 func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	return []DeletionRecoveryLevel{

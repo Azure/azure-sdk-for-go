@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -105,7 +105,7 @@ func TestSecretTags(t *testing.T) {
 
 	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
 		Properties: &Properties{
-			ExpiresOn: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
+			ExpiresOn: to.Ptr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
 		},
 	})
 	require.NoError(t, err)
@@ -347,14 +347,14 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.Equal(t, *getResp.Value, value)
 
 	options := &UpdateSecretPropertiesOptions{
-		ContentType: to.StringPtr("password"),
+		ContentType: to.Ptr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
 		Properties: &Properties{
-			Enabled:   to.BoolPtr(true),
-			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
-			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
+			Enabled:   to.Ptr(true),
+			ExpiresOn: to.Ptr(time.Now().Add(48 * time.Hour)),
+			NotBefore: to.Ptr(time.Now().Add(-24 * time.Hour)),
 		},
 	}
 

@@ -9,6 +9,7 @@ package azkeys
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
@@ -66,7 +67,7 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes) *Properties {
 
 	return &Properties{
 		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
+		RecoveryLevel:   to.Ptr(DeletionRecoveryLevel(*i.RecoveryLevel)),
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
 		NotBefore:       i.NotBefore,

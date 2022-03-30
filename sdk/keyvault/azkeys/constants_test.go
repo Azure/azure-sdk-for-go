@@ -9,21 +9,22 @@ package azkeys
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
 func TestToPtrMethods(t *testing.T) {
 	d := DeletionRecoveryLevelCustomizedRecoverable
-	require.Equal(t, d.ToPtr(), &d)
+	require.Equal(t, to.Ptr(d), &d)
 
 	j := CurveNameP256
-	require.Equal(t, j.ToPtr(), &j)
+	require.Equal(t, to.Ptr(j), &j)
 
 	o := OperationDecrypt
-	require.Equal(t, o.ToPtr(), &o)
+	require.Equal(t, to.Ptr(o), &o)
 
 	a := ExportEncryptionAlgorithmRSAAESKEYWRAP256
-	require.Equal(t, a.ToPtr(), &a)
+	require.Equal(t, to.Ptr(a), &a)
 }
 
 //nolint

@@ -51,11 +51,6 @@ const (
 	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (d DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &d
-}
-
 // convert a pointer to exported DeletionRecoveryLevel to the generated version
 func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecoveryLevel {
 	if d == nil {
@@ -108,11 +103,6 @@ const (
 	CurveNameP521 CurveName = "P-521"
 )
 
-// ToPtr returns a *CurveName pointing to the current value.
-func (c CurveName) ToPtr() *CurveName {
-	return &c
-}
-
 // PossibleCurveNameValues provides a slice of all possible CurveNames
 func PossibleCurveNameValues() []CurveName {
 	return []CurveName{
@@ -135,11 +125,6 @@ const (
 	OperationVerify    Operation = "verify"
 	OperationWrapKey   Operation = "wrapKey"
 )
-
-// ToPtr returns a *KeyOperation pointing to the current value.
-func (c Operation) ToPtr() *Operation {
-	return &c
-}
 
 // PossibleOperationValues provides a slice of all possible Operations
 func PossibleOperationValues() []Operation {
@@ -164,11 +149,6 @@ const (
 	ActionTypeNotify ActionType = "notify"
 )
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
-}
-
 // PossibleActionTypeValues provides a slice of all possible ActionTypes
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
@@ -185,11 +165,6 @@ const (
 	ExportEncryptionAlgorithmRSAAESKEYWRAP256 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
 	ExportEncryptionAlgorithmRSAAESKEYWRAP384 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
-
-// ToPtr returns a *ExportEncryptionAlgorithm pointing to the current value.
-func (c ExportEncryptionAlgorithm) ToPtr() *ExportEncryptionAlgorithm {
-	return &c
-}
 
 // PossibleExportEncryptionAlgorithmValues provides a slice of all possible ExportEncryptionAlgorithms
 func PossibleExportEncryptionAlgorithmValues() []ExportEncryptionAlgorithm {
@@ -222,11 +197,6 @@ const (
 	// RSAHSM - RSA with a private key which is not exportable from the HSM.
 	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
-
-// ToPtr returns a pointer to a KeyType
-func (k KeyType) ToPtr() *KeyType {
-	return &k
-}
 
 // PossibleKeyTypeValues provides a slice of all possible KeyTypes
 func PossibleKeyTypeValues() []KeyType {

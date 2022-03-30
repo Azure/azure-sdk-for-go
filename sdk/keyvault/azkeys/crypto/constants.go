@@ -18,11 +18,6 @@ const (
 	WrapAlgorithmRSA15      WrapAlgorithm = "RSA1_5"
 )
 
-// ToPtr returns a pointer to WrapAlgorithm
-func (k WrapAlgorithm) ToPtr() *WrapAlgorithm {
-	return &k
-}
-
 // PossibleWrapAlgorithmValues returns a slice of all possible WrapAlgorithm values
 func PossibleWrapAlgorithmValues() []WrapAlgorithm {
 	return []WrapAlgorithm{
@@ -55,11 +50,6 @@ const (
 	EncryptionAlgorithmRSAOAEP    EncryptionAlgorithm = "RSA-OAEP"
 	EncryptionAlgorithmRSAOAEP256 EncryptionAlgorithm = "RSA-OAEP-256"
 )
-
-// ToPtr returns a *EncryptionAlgorithm pointing to the current value.
-func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
-	return &c
-}
 
 // PossibleEncryptionAlgorithmValues returns a slice of all possible EncryptionAlgorithm values
 func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
@@ -109,11 +99,6 @@ const (
 	// RSNULL - Reserved
 	SignatureAlgorithmRSNULL SignatureAlgorithm = "RSNULL"
 )
-
-// ToPtr returns a *SignatureAlgorithm pointing to the current value.
-func (c SignatureAlgorithm) ToPtr() *SignatureAlgorithm {
-	return &c
-}
 
 // PossibleSignatureAlgorithmValues returns a slice of all possible SignatureAlgorithm values
 func PossibleSignatureAlgorithmValues() []SignatureAlgorithm {

@@ -285,7 +285,7 @@ func TestDeleteSecret(t *testing.T) {
 	_, err = client.GetSecret(context.Background(), secret, nil)
 	require.Error(t, err)
 
-	_, err = resp.Poller.FinalResponse(context.TODO())
+	_, err = resp.FinalResponse(context.TODO())
 	require.NoError(t, err)
 }
 

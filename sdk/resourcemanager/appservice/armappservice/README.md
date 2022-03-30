@@ -52,9 +52,9 @@ client := armappservice.NewWebAppsClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Static Site](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/staticsite)
-- [App Service Plan](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/web_plans)
-- [Web Site](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/webapp)
+- [Static Site](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/staticsite)
+- [App Service Plan](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/web_plans)
+- [Web Site](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/webapp)
 
 ## Provide Feedback
 

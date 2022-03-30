@@ -429,7 +429,10 @@ func ExampleClient_List() {
 		panic(err)
 	}
 
-	filter := fmt.Sprintf("PartitionKey eq '%v' or PartitionKey eq '%v'", "pk001", "pk002")
+	// For more information about writing query strings, check out:
+	//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+	//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
+	filter := fmt.Sprintf("PartitionKey eq '%s' or PartitionKey eq '%s'", "pk001", "pk002")
 	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
@@ -439,6 +442,21 @@ func ExampleClient_List() {
 			panic(err)
 		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
+
+		for _, entity := range response.Entities {
+			var myEntity aztables.EDMEntity
+			err = json.Unmarshal(entity, &myEntity)
+			if err != nil {
+				panic(err)
+			}
+
+			sp := myEntity.Properties["String"].(string)
+			dp := myEntity.Properties["Double"].(float64)
+			dt := myEntity.Properties["DateTime"].(aztables.EDMDateTime)
+			t1 := time.Time(dt)
+
+			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, t1.String())
+		}
 		pageCount += 1
 	}
 

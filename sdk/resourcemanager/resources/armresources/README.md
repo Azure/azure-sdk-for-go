@@ -52,10 +52,10 @@ client := armresources.NewResourcesClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Deployment](https://aka.ms/azsdk/go/mgmt/samples?path=resource/deployment)
-- [Provider](https://aka.ms/azsdk/go/mgmt/samples?path=resource/provider)
-- [Resource Group](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resourcegroups)
-- [Resource](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resources)
+- [Deployment](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/deployment)
+- [Provider](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/provider)
+- [Resource Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/resourcegroups)
+- [Resource](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/resources)
 
 ## Provide Feedback
 

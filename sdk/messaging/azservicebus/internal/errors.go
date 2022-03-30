@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"net/http"
 	"reflect"
 	"strings"
 
@@ -26,16 +27,20 @@ func NewErrNonRetriable(message string) error {
 
 func (e errNonRetriable) Error() string { return e.Message }
 
-type recoveryKind string
+// RecoveryKind dictates what kind of recovery is possible. Used with
+// GetRecoveryKind().
+type RecoveryKind string
 
-const RecoveryKindNone recoveryKind = ""
-const RecoveryKindFatal recoveryKind = "fatal"
-const RecoveryKindLink recoveryKind = "link"
-const RecoveryKindConn recoveryKind = "connection"
+const (
+	RecoveryKindNone  RecoveryKind = ""
+	RecoveryKindFatal RecoveryKind = "fatal"
+	RecoveryKindLink  RecoveryKind = "link"
+	RecoveryKindConn  RecoveryKind = "connection"
+)
 
 type SBErrInfo struct {
 	inner        error
-	RecoveryKind recoveryKind
+	RecoveryKind RecoveryKind
 }
 
 func (sbe *SBErrInfo) String() string {
@@ -93,7 +98,7 @@ func IsDrainingError(err error) bool {
 	return strings.Contains(err.Error(), "link is currently draining")
 }
 
-var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
+var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
 	// no recovery needed, these are temporary errors.
 	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
 	amqp.ErrorCondition("com.microsoft:timeout"):             RecoveryKindNone,
@@ -117,7 +122,19 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
 	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,
 }
 
-func GetRecoveryKind(err error) recoveryKind {
+// GetRecoveryKindForSession determines the recovery type for session-based links.
+func GetRecoveryKindForSession(err error) RecoveryKind {
+	// when a session is detached there's a delay before we can reacquire the
+	// lock. So a lock lost on a session _is_ retryable.
+	if isLockLostError(err) {
+		return RecoveryKindLink
+	}
+
+	return GetRecoveryKind(err)
+}
+
+// GetRecoveryKind determines the recovery type for non-session based links.
+func GetRecoveryKind(err error) RecoveryKind {
 	if err == nil {
 		return RecoveryKindNone
 	}
@@ -174,28 +191,30 @@ func GetRecoveryKind(err error) recoveryKind {
 	var rpcErr rpcError
 
 	if errors.As(err, &rpcErr) {
+		// Described more here:
+		// https://www.oasis-open.org/committees/download.php/54441/AMQP%20Management%20v1.0%20WD09
+		// > Unsuccessful operations MUST NOT result in a statusCode in the 2xx range as defined in Section 10.2 of [RFC2616]
+		// RFC2616 is the specification for HTTP.
 		code := rpcErr.RPCCode()
 
-		if code == 404 {
+		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
 			return RecoveryKindFatal
 		}
 
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == 401 ||
-			// we lost the session lock, attempt link recovery
-			code == 410 {
+		if code == http.StatusUnauthorized {
 			return RecoveryKindLink
 		}
 
 		// simple timeouts
-		if rpcErr.Resp.Code == 408 || rpcErr.Resp.Code == 503 ||
+		if rpcErr.Resp.Code == http.StatusRequestTimeout || rpcErr.Resp.Code == http.StatusServiceUnavailable ||
 			// internal server errors are worth retrying (they will typically lead
 			// to a more actionable error). A simple example of this is when you're
 			// in the middle of an operation and the link is detached. Sometimes you'll get
 			// the detached event immediately, but sometimes you'll get an intermediate 500
 			// indicating your original operation was cancelled.
-			rpcErr.Resp.Code == 500 {
+			rpcErr.Resp.Code == http.StatusInternalServerError {
 			return RecoveryKindNone
 		}
 	}
@@ -283,4 +302,16 @@ func IsErrNotFound(err error) bool {
 
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
+}
+
+func isLockLostError(err error) bool {
+	var rpcErr rpcError
+
+	if errors.As(err, &rpcErr) {
+		if rpcErr.Resp.Code == RPCResponseCodeLockLost {
+			return true
+		}
+	}
+
+	return false
 }

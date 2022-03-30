@@ -52,12 +52,12 @@ client := armnetwork.NewVirtualHubBgpConnectionsClient(<subscription ID>, cred, 
 
 ## More sample code
 
-- [IP Address](https://aka.ms/azsdk/go/mgmt/samples?path=network/ipaddress)
-- [Load Balancer](https://aka.ms/azsdk/go/mgmt/samples?path=network/loadbalancer)
-- [Network Interface](https://aka.ms/azsdk/go/mgmt/samples?path=network/networkInterface)
-- [Security Group](https://aka.ms/azsdk/go/mgmt/samples?path=network/securitygroups)
-- [Subnet](https://aka.ms/azsdk/go/mgmt/samples?path=network/subnets)
-- [Virtual Network](https://aka.ms/azsdk/go/mgmt/samples?path=network/virtualnetwork)
+- [IP Address](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/ipaddress)
+- [Load Balancer](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/loadbalancer)
+- [Network Interface](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/networkInterface)
+- [Security Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/securitygroups)
+- [Subnet](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/subnets)
+- [Virtual Network](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/virtualnetwork)
 
 ## Provide Feedback
 

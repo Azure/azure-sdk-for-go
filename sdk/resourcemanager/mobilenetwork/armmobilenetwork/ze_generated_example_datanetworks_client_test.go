@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/DataNetworkDelete.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkDelete.json
 func ExampleDataNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleDataNetworksClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/DataNetworkGet.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkGet.json
 func ExampleDataNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleDataNetworksClient_Get() {
 	log.Printf("Response result: %#v\n", res.DataNetworksClientGetResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/DataNetworkCreate.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkCreate.json
 func ExampleDataNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleDataNetworksClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.DataNetworksClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/DataNetworkUpdateTags.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkUpdateTags.json
 func ExampleDataNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleDataNetworksClient_UpdateTags() {
 	log.Printf("Response result: %#v\n", res.DataNetworksClientUpdateTagsResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/DataNetworkListByMobileNetwork.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkListByMobileNetwork.json
 func ExampleDataNetworksClient_ListByMobileNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

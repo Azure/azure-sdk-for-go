@@ -331,6 +331,8 @@ func PossibleTypeBasicFunctionBindingValues() []TypeBasicFunctionBinding {
 type TypeBasicFunctionProperties string
 
 const (
+	// TypeBasicFunctionPropertiesTypeAggregate ...
+	TypeBasicFunctionPropertiesTypeAggregate TypeBasicFunctionProperties = "Aggregate"
 	// TypeBasicFunctionPropertiesTypeFunctionProperties ...
 	TypeBasicFunctionPropertiesTypeFunctionProperties TypeBasicFunctionProperties = "FunctionProperties"
 	// TypeBasicFunctionPropertiesTypeScalar ...
@@ -339,7 +341,7 @@ const (
 
 // PossibleTypeBasicFunctionPropertiesValues returns an array of possible values for the TypeBasicFunctionProperties const type.
 func PossibleTypeBasicFunctionPropertiesValues() []TypeBasicFunctionProperties {
-	return []TypeBasicFunctionProperties{TypeBasicFunctionPropertiesTypeFunctionProperties, TypeBasicFunctionPropertiesTypeScalar}
+	return []TypeBasicFunctionProperties{TypeBasicFunctionPropertiesTypeAggregate, TypeBasicFunctionPropertiesTypeFunctionProperties, TypeBasicFunctionPropertiesTypeScalar}
 }
 
 // TypeBasicInputProperties enumerates the values for type basic input properties.

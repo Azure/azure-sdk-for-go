@@ -1,14 +1,19 @@
 # Release History
 
-## 0.22.1 (Unreleased)
+## 0.23.0 (Unreleased)
 
 ### Features Added
+* Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.
 
 ### Breaking Changes
+* Removed the `Poller` type-alias to the internal poller implementation.
+* Added `Ptr[T any]` and `SliceOfPtrs[T any]` in the `to` package and removed all non-generic implementations.
+* `NullValue` and `IsNullValue` now take a generic type parameter instead of an interface func parameter.
 
 ### Bugs Fixed
 
 ### Other Changes
+* Converted expiring resource and dependent types to use generics.
 
 ## 0.22.0 (2022-03-03)
 

@@ -70,6 +70,11 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
+// VaultURL returns a string of the vault URL
+func (c *Client) VaultURL() string {
+	return c.vaultUrl
+}
+
 // parseFromKID parses "https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"
 // into "https://myvaultname.managedhsm.azure.net/", "key1053998307", and "b86c2e6ad9054f4abf69cc185b99aa60"
 func parseFromKID(s *string) (*string, *string, *string) {

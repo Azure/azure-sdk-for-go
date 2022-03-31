@@ -109,7 +109,7 @@ func ExampleClient_ListSecrets() {
 		panic(err)
 	}
 
-	pager := client.ListSecrets(nil)
+	pager := client.ListPropertiesOfSecrets(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

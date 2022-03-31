@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -94,14 +93,14 @@ func TestSecretTags(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, 1, len(resp.Tags))
-	require.Equal(t, "Val1", resp.Tags["Tag1"])
+	require.Equal(t, 1, len(resp.Properties.Tags))
+	require.Equal(t, "Val1", resp.Properties.Tags["Tag1"])
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, 1, len(getResp.Tags))
-	require.Equal(t, "Val1", getResp.Tags["Tag1"])
+	require.Equal(t, 1, len(getResp.Properties.Tags))
+	require.Equal(t, "Val1", getResp.Properties.Tags["Tag1"])
 
 	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
 		Properties: &Properties{
@@ -109,16 +108,16 @@ func TestSecretTags(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, 1, len(updateResp.Tags))
-	require.Equal(t, "Val1", updateResp.Tags["Tag1"])
+	require.Equal(t, 1, len(updateResp.Properties.Tags))
+	require.Equal(t, "Val1", updateResp.Properties.Tags["Tag1"])
 
 	// Delete the tags
 	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
 		Tags: make(map[string]string),
 	})
 	require.NoError(t, err)
-	require.Equal(t, 0, len(updateResp.Tags))
-	require.NotEqual(t, "Val1", updateResp.Tags["Tag1"])
+	require.Equal(t, 0, len(updateResp.Properties.Tags))
+	require.NotEqual(t, "Val1", updateResp.Properties.Tags["Tag1"])
 }
 
 func TestListSecretVersions(t *testing.T) {
@@ -142,7 +141,7 @@ func TestListSecretVersions(t *testing.T) {
 	defer cleanUpSecret(t, client, secret)
 
 	count := 0
-	pager := client.ListSecretVersions(secret, nil)
+	pager := client.ListPropertiesOfSecretVersions(secret, nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -173,7 +172,7 @@ func TestListSecrets(t *testing.T) {
 	defer cleanUpSecret(t, client, "secret4")
 
 	count := 0
-	pager := client.ListSecrets(nil)
+	pager := client.ListPropertiesOfSecrets(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -364,8 +363,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 	getResp, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, getResp.Tags["Tag1"], "TagVal1")
-	require.Equal(t, *getResp.ContentType, "password")
+	require.Equal(t, getResp.Properties.Tags["Tag1"], "TagVal1")
+	require.Equal(t, *getResp.Properties.ContentType, "password")
 }
 
 func TestBeginRecoverDeletedSecret(t *testing.T) {
@@ -481,29 +480,6 @@ func TestTimeout(t *testing.T) {
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Less(t, time.Since(start).Seconds(), 11.0)
 	require.Greater(t, time.Since(start).Seconds(), 9.0)
-}
-
-func TestConstants(t *testing.T) {
-	d := DeletionRecoveryLevelCustomizedRecoverable
-	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
-
-	d1 := DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
-	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
-
-	d2 := DeletionRecoveryLevelCustomizedRecoverablePurgeable
-	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
-
-	d3 := DeletionRecoveryLevelPurgeable
-	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
-
-	d4 := DeletionRecoveryLevelRecoverable
-	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
-
-	d5 := DeletionRecoveryLevelRecoverableProtectedSubscription
-	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
-
-	d6 := DeletionRecoveryLevelRecoverablePurgeable
-	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
 }
 
 func TestLogging(t *testing.T) {

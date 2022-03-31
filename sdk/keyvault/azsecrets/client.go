@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -65,6 +64,10 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
+func (c *Client) VaultURL() string {
+	return c.vaultUrl
+}
+
 // GetSecretOptions holds the optional parameters for the Client.GetSecret function
 type GetSecretOptions struct {
 	// Version specifies the version of a secret. If unspecified, the most recent version will be returned
@@ -84,28 +87,42 @@ type GetSecretResponse struct {
 	Secret
 }
 
-func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
-	return &GetSecretResponse{
+func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
+	vaultURL, _, version := parseFromID(i.ID)
+	return GetSecretResponse{
 		Secret: Secret{
-			Properties:  secretPropertiesFromGenerated(i.Attributes),
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
+				NotBefore:       i.Attributes.NotBefore,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL:        vaultURL,
+				Version:         version,
+			},
+			ID:    i.ID,
+			Value: i.Value,
 		},
 	}
 }
 
 // GetSecret gets a specified secret from a given key vault. The GET operation is applicable to any secret
 // stored in Azure Key Vault. This operation requires the secrets/get permission
-func (c *Client) GetSecret(ctx context.Context, secretName string, options *GetSecretOptions) (GetSecretResponse, error) {
+func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretOptions) (GetSecretResponse, error) {
 	if options == nil {
 		options = &GetSecretOptions{}
 	}
-	resp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, options.Version, options.toGenerated())
-	return *getSecretResponseFromGenerated(resp), err
+	resp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, name, options.Version, options.toGenerated())
+	if err != nil {
+		return GetSecretResponse{}, err
+	}
+	return getSecretResponseFromGenerated(resp), nil
 }
 
 // SetSecretOptions contains the optional parameters for a Client.SetSecret operation
@@ -135,22 +152,33 @@ type SetSecretResponse struct {
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
+	vaultURL, _, version := parseFromID(i.ID)
 	return SetSecretResponse{
 		Secret: Secret{
-			Properties:  secretPropertiesFromGenerated(i.Attributes),
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
+				NotBefore:       i.Attributes.NotBefore,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL:        vaultURL,
+				Version:         version,
+			},
+			ID:    i.ID,
+			Value: i.Value,
 		},
 	}
 }
 
 // SetSecret sets a secret in a specifed key vault. The set operation adds a secret to the Azure Key Vault, if the named secret
 // already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.
-func (c *Client) SetSecret(ctx context.Context, secretName string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
+func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
 	if options == nil {
 		options = &SetSecretOptions{}
 	}
@@ -158,7 +186,7 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 	if options.Properties != nil {
 		secretAttribs = *options.Properties.toGenerated()
 	}
-	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, secretName, internal.SecretSetParameters{
+	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, internal.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: &secretAttribs,
@@ -172,26 +200,25 @@ type DeleteSecretResponse struct {
 	DeletedSecret
 }
 
-func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretResponse) *DeleteSecretResponse {
-	if i == nil {
-		return nil
-	}
-	return &DeleteSecretResponse{
+func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
+	vaultURL, _, version := parseFromID(i.ID)
+	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			ID: i.ID,
 			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
 				Enabled:         i.Attributes.Enabled,
 				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
 				NotBefore:       i.Attributes.NotBefore,
-				CreatedOn:       i.Attributes.Created,
-				UpdatedOn:       i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL: vaultURL,
+				Version: version,
 			},
 			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
@@ -251,7 +278,7 @@ func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 
 // FinalResponse returns the final response after the operations has finished
 func (s *DeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
-	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
+	return deleteSecretResponseFromGenerated(s.deleteResponse), nil
 }
 
 // PollUntilDone continually calls the Poll operation until the operation is completed. In between each
@@ -268,23 +295,23 @@ func (s *DeleteSecretPoller) PollUntilDone(ctx context.Context, t time.Duration)
 		}
 		time.Sleep(t)
 	}
-	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
+	return deleteSecretResponseFromGenerated(s.deleteResponse), nil
 }
 
 // BeginDeleteSecret deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
 // requires the secrets/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
 // response PollUntilDone function can be used to poll until completion.
-func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, options *BeginDeleteSecretOptions) (*DeleteSecretPoller, error) {
+func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (*DeleteSecretPoller, error) {
 	// TODO: this is kvSecretClient.DeleteSecret and a GetDeletedSecret under the hood for the polling version
 	if options == nil {
 		options = &BeginDeleteSecretOptions{}
 	}
-	resp, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	resp, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return nil, err
 	}
 
-	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, nil)
+	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -294,7 +321,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 
 	return &DeleteSecretPoller{
 		vaultUrl:       c.vaultUrl,
-		secretName:     secretName,
+		secretName:     name,
 		client:         c.kvClient,
 		deleteResponse: resp,
 		lastResponse:   getResp,
@@ -317,17 +344,27 @@ type GetDeletedSecretResponse struct {
 
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
+	vaultURL, _, version := parseFromID(i.ID)
 	return GetDeletedSecretResponse{
 		DeletedSecret: DeletedSecret{
-			Properties:         secretPropertiesFromGenerated(i.Attributes),
-			ContentType:        i.ContentType,
+			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
+				NotBefore:       i.Attributes.NotBefore,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL:        vaultURL,
+				Version:         version,
+			},
 			ID:                 i.ID,
 			RecoveryID:         i.RecoveryID,
-			Tags:               convertPtrMap(i.Tags),
-			Value:              i.Value,
 			DeletedOn:          i.DeletedDate,
-			KeyID:              i.Kid,
-			Managed:            i.Managed,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 	}
@@ -335,12 +372,15 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 
 // GetDeletedSecret gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
 // This operation requires the secrets/get permission.
-func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
+func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {
 		options = &GetDeletedSecretOptions{}
 	}
-	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
-	return getDeletedSecretResponseFromGenerated(resp), err
+	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
+	if err != nil {
+		return GetDeletedSecretResponse{}, err
+	}
+	return getDeletedSecretResponseFromGenerated(resp), nil
 }
 
 // UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
@@ -376,15 +416,26 @@ type UpdateSecretPropertiesResponse struct {
 }
 
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
+	vaultURL, _, version := parseFromID(i.ID)
 	return UpdateSecretPropertiesResponse{
 		Secret: Secret{
-			Properties:  secretPropertiesFromGenerated(i.Attributes),
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
+				NotBefore:       i.Attributes.NotBefore,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL:        vaultURL,
+				Version:         version,
+			},
+			ID:    i.ID,
+			Value: i.Value,
 		},
 	}
 }
@@ -392,7 +443,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 // UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
 // operation changes specified attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
-func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+func (c *Client) UpdateSecretProperties(ctx context.Context, name string, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
 	}
@@ -400,7 +451,7 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 	resp, err := c.kvClient.UpdateSecret(
 		ctx,
 		c.vaultUrl,
-		secretName,
+		name,
 		options.Version,
 		options.toGeneratedProperties(),
 		options.toGenerated(),
@@ -436,12 +487,12 @@ func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResp
 
 // BackupSecrets backs up the specified secret. Requests that a backup of the specified secret be downloaded to the client.
 // All versions of the secret will be downloaded. This operation requires the secrets/backup permission.
-func (c *Client) BackupSecret(ctx context.Context, secretName string, options *BackupSecretOptions) (BackupSecretResponse, error) {
+func (c *Client) BackupSecret(ctx context.Context, name string, options *BackupSecretOptions) (BackupSecretResponse, error) {
 	if options == nil {
 		options = &BackupSecretOptions{}
 	}
 
-	resp, err := c.kvClient.BackupSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	resp, err := c.kvClient.BackupSecret(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return BackupSecretResponse{}, err
 	}
@@ -465,22 +516,25 @@ type RestoreSecretBackupResponse struct {
 
 // converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
+	vaultURL, _, version := parseFromID(i.ID)
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			ID:    i.ID,
+			Value: i.Value,
 			Properties: &Properties{
+				ContentType:     i.ContentType,
+				CreatedOn:       i.Attributes.Created,
 				Enabled:         i.Attributes.Enabled,
 				ExpiresOn:       i.Attributes.Expires,
+				IsManaged:       i.Managed,
+				KeyID:           i.Kid,
 				NotBefore:       i.Attributes.NotBefore,
-				CreatedOn:       i.Attributes.Created,
-				UpdatedOn:       i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
+				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
+				Tags:            convertPtrMap(i.Tags),
+				UpdatedOn:       i.Attributes.Updated,
+				VaultURL:        vaultURL,
+				Version:         version,
 			},
 		},
 	}
@@ -522,11 +576,11 @@ func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDelet
 
 // PurgeDeletedSecret deletes the specified secret. The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
 // This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
-func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
+func (c *Client) PurgeDeletedSecret(ctx context.Context, name string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedSecretOptions{}
 	}
-	resp, err := c.kvClient.PurgeDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	resp, err := c.kvClient.PurgeDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
@@ -606,7 +660,7 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 
 // RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
-	Secret
+	SecretProperties
 }
 
 // change recover deleted secret reponse to the generated version.
@@ -620,34 +674,32 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			CreatedOn:       i.Attributes.Created,
 			UpdatedOn:       i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel)),
+			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
 		}
 	}
 	return RecoverDeletedSecretResponse{
-		Secret: Secret{
+		SecretProperties: SecretProperties{
 			Properties:  a,
 			ContentType: i.ContentType,
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
-			Value:       i.Value,
-			KeyID:       i.Kid,
-			Managed:     i.Managed,
+			IsManaged:   i.Managed,
 		},
 	}
 }
 
 // BeginRecoverDeletedSecret recovers the deleted secret in the specified vault to the latest version.
 // This operation can only be performed on a soft-delete enabled vault. This operation requires the secrets/recover permission.
-func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName string, options *BeginRecoverDeletedSecretOptions) (*RecoverDeletedSecretPoller, error) {
+func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, options *BeginRecoverDeletedSecretOptions) (*RecoverDeletedSecretPoller, error) {
 	if options == nil {
 		options = &BeginRecoverDeletedSecretOptions{}
 	}
-	resp, err := c.kvClient.RecoverDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	resp, err := c.kvClient.RecoverDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
 	if err != nil {
 		return nil, err
 	}
 
-	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, "", nil)
+	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, name, "", nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -657,7 +709,7 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 
 	return &RecoverDeletedSecretPoller{
 		lastResponse:    getResp,
-		secretName:      secretName,
+		secretName:      name,
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
@@ -733,56 +785,56 @@ type ListSecretVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListSecretVersionsResponse contains response field for ListSecretVersionsPager.NextPage
-type ListSecretVersionsResponse struct {
+// ListPropertiesOfSecretVersionsResponse contains response field for ListSecretVersionsPager.NextPage
+type ListPropertiesOfSecretVersionsResponse struct {
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
-func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsResponse {
-	var secrets []SecretItem
+func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
+	var secrets []SecretProperties
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
-	return ListSecretVersionsResponse{
+	return ListPropertiesOfSecretVersionsResponse{
 		NextLink: i.NextLink,
 		Secrets:  secrets,
 	}
 }
 
-// ListSecretVersions lists all versions of the specified secret. The full secret identifer and
+// ListPropertiesOfSecretVersions lists all versions of the specified secret. The full secret identifer and
 // attributes are provided in the response. No values are returned for the secrets. This operation
 // requires the secrets/list permission.
-func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersionsOptions) *runtime.Pager[ListSecretVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListSecretVersionsResponse]{
-		More: func(page ListSecretVersionsResponse) bool {
+func (c *Client) ListPropertiesOfSecretVersions(name string, options *ListSecretVersionsOptions) *runtime.Pager[ListPropertiesOfSecretVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfSecretVersionsResponse]{
+		More: func(page ListPropertiesOfSecretVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListSecretVersionsResponse) (ListSecretVersionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfSecretVersionsResponse) (ListPropertiesOfSecretVersionsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetSecretVersionsCreateRequest(ctx, c.vaultUrl, secretName, &internal.KeyVaultClientGetSecretVersionsOptions{})
+				req, err = c.kvClient.GetSecretVersionsCreateRequest(ctx, c.vaultUrl, name, &internal.KeyVaultClientGetSecretVersionsOptions{})
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListSecretVersionsResponse{}, err
+				return ListPropertiesOfSecretVersionsResponse{}, err
 			}
 			resp, err := c.kvClient.Pl.Do(req)
 			if err != nil {
-				return ListSecretVersionsResponse{}, err
+				return ListPropertiesOfSecretVersionsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListSecretVersionsResponse{}, runtime.NewResponseError(resp)
+				return ListPropertiesOfSecretVersionsResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.kvClient.GetSecretVersionsHandleResponse(resp)
 			if err != nil {
-				return ListSecretVersionsResponse{}, err
+				return ListPropertiesOfSecretVersionsResponse{}, err
 			}
 			return listSecretVersionsPageFromGenerated(genResp), nil
 		},
@@ -794,36 +846,36 @@ type ListSecretsOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// ListSecretsResponse contains the current page of results for the Client.ListSecrets operation.
-type ListSecretsResponse struct {
+// ListPropertiesOfSecretsResponse contains the current page of results for the Client.ListSecrets operation.
+type ListPropertiesOfSecretsResponse struct {
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
-func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsResponse {
-	var secrets []SecretItem
+func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
+	var secrets []SecretProperties
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
-	return ListSecretsResponse{
+	return ListPropertiesOfSecretsResponse{
 		NextLink: i.NextLink,
 		Secrets:  secrets,
 	}
 }
 
-// ListSecrets list all secrets in a specified key vault. The ListSecrets operation is applicable to the entire vault,
+// ListPropertiesOfSecrets list all secrets in a specified key vault. The ListPropertiesOfSecrets operation is applicable to the entire vault,
 // however, only the base secret identifier and its attributes are provided in the response. Individual
 // secret versions are not listed in the response. This operation requires the secrets/list permission.
-func (c *Client) ListSecrets(options *ListSecretsOptions) *runtime.Pager[ListSecretsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListSecretsResponse]{
-		More: func(page ListSecretsResponse) bool {
+func (c *Client) ListPropertiesOfSecrets(options *ListSecretsOptions) *runtime.Pager[ListPropertiesOfSecretsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfSecretsResponse]{
+		More: func(page ListPropertiesOfSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListSecretsResponse) (ListSecretsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfSecretsResponse) (ListPropertiesOfSecretsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -832,18 +884,18 @@ func (c *Client) ListSecrets(options *ListSecretsOptions) *runtime.Pager[ListSec
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListSecretsResponse{}, err
+				return ListPropertiesOfSecretsResponse{}, err
 			}
 			resp, err := c.kvClient.Pl.Do(req)
 			if err != nil {
-				return ListSecretsResponse{}, err
+				return ListPropertiesOfSecretsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListSecretsResponse{}, runtime.NewResponseError(resp)
+				return ListPropertiesOfSecretsResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.kvClient.GetSecretsHandleResponse(resp)
 			if err != nil {
-				return ListSecretsResponse{}, err
+				return ListPropertiesOfSecretsResponse{}, err
 			}
 			return listSecretsPageFromGenerated(genResp), nil
 		},

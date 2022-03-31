@@ -7,6 +7,9 @@
 package azsecrets
 
 import (
+	"fmt"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -18,31 +21,14 @@ type DeletedSecret struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// The content type of the secret.
-	ContentType *string `json:"contentType,omitempty"`
-
 	// The secret id.
 	ID *string `json:"id,omitempty"`
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// The secret value.
-	Value *string `json:"value,omitempty"`
-
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-	// certificate.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -53,41 +39,37 @@ type Secret struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// The content type of the secret.
-	ContentType *string `json:"contentType,omitempty"`
-
 	// The secret id.
 	ID *string `json:"id,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// The secret value.
 	Value *string `json:"value,omitempty"`
-
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // Properties - The secret management properties.
 type Properties struct {
+	// The content type of the secret.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
 	ExpiresOn *time.Time `json:"exp,omitempty"`
 
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+	// will be true.
+	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
+
+	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+	// certificate.
+	KeyID *string `json:"kid,omitempty" azure:"ro"`
+
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time in UTC.
-	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -95,7 +77,19 @@ type Properties struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently
 	// deleted by a privileged user; otherwise, only the
 	// system can purge the secret, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// READ-ONLY; Last updated time in UTC.
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+
+	// VaultURL is the vault url the secret came from
+	VaultURL *string
+
+	// Version is the version of the secret
+	Version *string
 }
 
 func (s *Properties) toGenerated() *internal.SecretAttributes {
@@ -104,7 +98,7 @@ func (s *Properties) toGenerated() *internal.SecretAttributes {
 	}
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   s.RecoveryLevel.toGenerated(),
+		RecoveryLevel:   (*internal.DeletionRecoveryLevel)(s.RecoveryLevel),
 		Enabled:         s.Enabled,
 		Expires:         s.ExpiresOn,
 		NotBefore:       s.NotBefore,
@@ -119,18 +113,22 @@ func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
 		return nil
 	}
 	return &Properties{
-		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   to.Ptr(deletionRecoveryLevelFromGenerated(*i.RecoveryLevel)),
+		ContentType:     nil,
+		CreatedOn:       i.Created,
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
+		IsManaged:       nil,
+		KeyID:           nil,
 		NotBefore:       i.NotBefore,
-		CreatedOn:       i.Created,
+		RecoverableDays: i.RecoverableDays,
+		RecoveryLevel:   (*string)(i.RecoveryLevel),
+		Tags:            nil,
 		UpdatedOn:       i.Updated,
 	}
 }
 
-// SecretItem contains secret metadata.
-type SecretItem struct {
+// SecretProperties contains secret metadata.
+type SecretProperties struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
@@ -144,21 +142,21 @@ type SecretItem struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
+	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
+func secretItemFromGenerated(i *internal.SecretItem) SecretProperties {
 	if i == nil {
-		return SecretItem{}
+		return SecretProperties{}
 	}
 
-	return SecretItem{
+	return SecretProperties{
 		Properties:  secretPropertiesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
 		Tags:        convertPtrMap(i.Tags),
-		Managed:     i.Managed,
+		IsManaged:   i.Managed,
 	}
 }
 
@@ -180,11 +178,11 @@ type DeletedSecretItem struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the secret was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
 	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
+	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -201,8 +199,8 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,
 		Tags:               convertPtrMap(i.Tags),
-		DeletedDate:        i.DeletedDate,
-		Managed:            i.Managed,
+		DeletedOn:          i.DeletedDate,
+		IsManaged:          i.Managed,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 	}
 }
@@ -231,4 +229,28 @@ func convertToGeneratedMap(m map[string]string) map[string]*string {
 	}
 
 	return ret
+}
+
+// parseFromKID parses "https://rosebud.vault.azure.net/secrets/secret3379360089/3f3b11064811494a8a8b27edf4f0985b"
+// into "https://rosebud.vault.azure.net/", "secret3379360089", and "3f3b11064811494a8a8b27edf4f0985b"
+// returns the vaultURL, name, and version
+func parseFromID(s *string) (*string, *string, *string) {
+	if s == nil {
+		return nil, nil, nil
+	}
+	parsed, err := url.Parse(*s)
+	if err != nil {
+		return nil, nil, nil
+	}
+
+	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
+	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
+	if len(split) < 3 {
+		if len(split) < 2 {
+			return &url, nil, nil
+		}
+		return &url, to.Ptr(split[1]), nil
+	}
+
+	return &url, to.Ptr(split[1]), to.Ptr(split[2])
 }

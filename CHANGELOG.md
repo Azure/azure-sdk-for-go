@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v63.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities`
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices`
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-11-01/media`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral`
+- `github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2022-02-01/signalr`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage`
+
 ## `v63.0.0`
 
 ### New Packages
@@ -13,13 +25,13 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.0.0/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
 
 ### Removed Packages
 

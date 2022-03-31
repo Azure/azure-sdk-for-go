@@ -238,7 +238,7 @@ func main() {
 			"Tag1": "val1",
 		},
 		Properties: &azkeys.Properties{
-			RecoveryLevel: to.Ptr(azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable),
+			Exportable: to.Ptr(true),
 		},
 	})
 	if err != nil {

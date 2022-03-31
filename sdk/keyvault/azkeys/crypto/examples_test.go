@@ -39,7 +39,7 @@ func ExampleClient_Encrypt() {
 		panic(err)
 	}
 
-	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
+	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -57,13 +57,13 @@ func ExampleClient_Decrypt() {
 		panic(err)
 	}
 
-	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
+	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(encryptResponse.Result)
 
-	decryptResponse, err := client.Decrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, encryptResponse.Result, nil)
+	decryptResponse, err := client.Decrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, encryptResponse.Result, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -84,7 +84,7 @@ func ExampleClient_WrapKey() {
 	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
 
 	// Wrap
-	wrapResp, err := client.WrapKey(context.TODO(), crypto.WrapAlgorithmRSAOAEP, keyBytes, nil)
+	wrapResp, err := client.WrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, keyBytes, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -105,14 +105,14 @@ func ExampleClient_UnwrapKey() {
 	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
 
 	// Wrap
-	wrapResp, err := client.WrapKey(context.TODO(), crypto.WrapAlgorithmRSAOAEP, keyBytes, nil)
+	wrapResp, err := client.WrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, keyBytes, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(wrapResp.Result)
 
 	// Unwrap
-	unwrapResp, err := client.UnwrapKey(context.TODO(), crypto.WrapAlgorithmRSAOAEP, wrapResp.Result, nil)
+	unwrapResp, err := client.UnwrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, wrapResp.Result, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +137,7 @@ func ExampleClient_Sign() {
 	}
 	digest := hasher.Sum(nil)
 
-	signResponse, err := client.Sign(context.TODO(), crypto.SignatureAlgorithmRS256, digest, nil)
+	signResponse, err := client.Sign(context.TODO(), crypto.SignatureAlgRS256, digest, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -162,13 +162,13 @@ func ExampleClient_Verify() {
 	}
 	digest := hasher.Sum(nil)
 
-	signResponse, err := client.Sign(context.TODO(), crypto.SignatureAlgorithmRS256, digest, nil)
+	signResponse, err := client.Sign(context.TODO(), crypto.SignatureAlgRS256, digest, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(signResponse.Result)
 
-	verifyResponse, err := client.Verify(context.TODO(), crypto.SignatureAlgorithmRS256, digest, signResponse.Result, nil)
+	verifyResponse, err := client.Verify(context.TODO(), crypto.SignatureAlgRS256, digest, signResponse.Result, nil)
 	if err != nil {
 		panic(err)
 	}

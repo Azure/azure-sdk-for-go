@@ -20,7 +20,7 @@ func TestToPtrMethods(t *testing.T) {
 	o := OperationDecrypt
 	require.Equal(t, to.Ptr(o), &o)
 
-	a := ExportEncryptionAlgorithmRSAAESKEYWRAP256
+	a := ExportEncryptionAlgRSAAESKEYWRAP256
 	require.Equal(t, to.Ptr(a), &a)
 }
 

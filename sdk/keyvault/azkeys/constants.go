@@ -89,21 +89,21 @@ func PossibleActionTypeValues() []RotationAction {
 	}
 }
 
-// ExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type ExportEncryptionAlgorithm string
+// ExportEncryptionAlg - The encryption algorithm to use to protected the exported key material
+type ExportEncryptionAlg string
 
 const (
-	ExportEncryptionAlgorithmCKMRSAAESKEYWRAP ExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	ExportEncryptionAlgorithmRSAAESKEYWRAP256 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	ExportEncryptionAlgorithmRSAAESKEYWRAP384 ExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	ExportEncryptionAlgCKMRSAAESKEYWRAP ExportEncryptionAlg = "CKM_RSA_AES_KEY_WRAP"
+	ExportEncryptionAlgRSAAESKEYWRAP256 ExportEncryptionAlg = "RSA_AES_KEY_WRAP_256"
+	ExportEncryptionAlgRSAAESKEYWRAP384 ExportEncryptionAlg = "RSA_AES_KEY_WRAP_384"
 )
 
-// PossibleExportEncryptionAlgorithmValues provides a slice of all possible ExportEncryptionAlgorithms
-func PossibleExportEncryptionAlgorithmValues() []ExportEncryptionAlgorithm {
-	return []ExportEncryptionAlgorithm{
-		ExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
-		ExportEncryptionAlgorithmRSAAESKEYWRAP256,
-		ExportEncryptionAlgorithmRSAAESKEYWRAP384,
+// PossibleExportEncryptionAlgValues provides a slice of all possible ExportEncryptionAlgs
+func PossibleExportEncryptionAlgValues() []ExportEncryptionAlg {
+	return []ExportEncryptionAlg{
+		ExportEncryptionAlgCKMRSAAESKEYWRAP,
+		ExportEncryptionAlgRSAAESKEYWRAP256,
+		ExportEncryptionAlgRSAAESKEYWRAP384,
 	}
 }
 

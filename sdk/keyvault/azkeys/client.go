@@ -1364,7 +1364,7 @@ type ReleaseKeyOptions struct {
 	Version string
 
 	// The encryption algorithm to use to protected the exported key material
-	Enc *ExportEncryptionAlgorithm `json:"enc,omitempty"`
+	Enc *ExportEncryptionAlg `json:"enc,omitempty"`
 
 	// A client provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`

@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
@@ -27,11 +26,11 @@ type TopicProperties struct {
 	// DefaultMessageTimeToLive is the duration after which the message expires, starting from when
 	// the message is sent to Service Bus. This is the default value used when TimeToLive is not
 	// set on a message itself.
-	DefaultMessageTimeToLive *time.Duration
+	DefaultMessageTimeToLive *string
 
 	// DuplicateDetectionHistoryTimeWindow is the duration of duplicate detection history.
 	// Default value is 10 minutes.
-	DuplicateDetectionHistoryTimeWindow *time.Duration
+	DuplicateDetectionHistoryTimeWindow *string
 
 	// EnableBatchedOperations indicates whether server-side batched operations are enabled.
 	EnableBatchedOperations *bool
@@ -40,7 +39,7 @@ type TopicProperties struct {
 	Status *EntityStatus
 
 	// AutoDeleteOnIdle is the idle interval after which the topic is automatically deleted.
-	AutoDeleteOnIdle *time.Duration
+	AutoDeleteOnIdle *string
 
 	// EnablePartitioning indicates whether the topic is to be partitioned across multiple message brokers.
 	EnablePartitioning *bool
@@ -74,17 +73,9 @@ type TopicRuntimeProperties struct {
 	ScheduledMessageCount int32
 }
 
-// CreateTopicResult contains the result for Client.CreateTopic
-type CreateTopicResult struct {
-	TopicProperties
-}
-
 // CreateTopicResponse contains response fields for Client.CreateTopic
 type CreateTopicResponse struct {
-	CreateTopicResult
-
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
+	TopicProperties
 }
 
 // CreateTopicOptions contains optional parameters for Client.CreateTopic
@@ -93,32 +84,21 @@ type CreateTopicOptions struct {
 }
 
 // CreateTopic creates a topic using defaults for all options.
-func (ac *Client) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (*CreateTopicResponse, error) {
-	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, properties, true)
+func (ac *Client) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (CreateTopicResponse, error) {
+	newProps, _, err := ac.createOrUpdateTopicImpl(ctx, topicName, properties, true)
 
 	if err != nil {
-		return nil, err
+		return CreateTopicResponse{}, err
 	}
 
-	return &CreateTopicResponse{
-		RawResponse: resp,
-		CreateTopicResult: CreateTopicResult{
-			TopicProperties: *newProps,
-		},
+	return CreateTopicResponse{
+		TopicProperties: *newProps,
 	}, nil
-}
-
-// GetTopicResult contains the result for Client.GetTopic
-type GetTopicResult struct {
-	TopicProperties
 }
 
 // GetTopicResponse contains response fields for Client.GetTopic
 type GetTopicResponse struct {
-	GetTopicResult
-
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
+	TopicProperties
 }
 
 // GetTopicOptions contains optional parameters for Client.GetTopic
@@ -130,7 +110,7 @@ type GetTopicOptions struct {
 // If the entity does not exist this function will return a nil GetTopicResponse and a nil error.
 func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
 	var atomResp *atom.TopicEnvelope
-	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
+	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
 		if errors.Is(err, atom.ErrFeedEmpty) {
@@ -147,25 +127,14 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	}
 
 	return &GetTopicResponse{
-		RawResponse: resp,
-		GetTopicResult: GetTopicResult{
-			TopicProperties: *props,
-		},
+		TopicProperties: *props,
 	}, nil
 }
 
-// GetTopicRuntimePropertiesResult contains the result for Client.GetTopicRuntimeProperties
-type GetTopicRuntimePropertiesResult struct {
+// GetTopicRuntimePropertiesResponse contains the result for Client.GetTopicRuntimeProperties
+type GetTopicRuntimePropertiesResponse struct {
 	// Value is the result of the request.
 	TopicRuntimeProperties
-}
-
-// GetTopicRuntimePropertiesResponse contains response fields for Client.GetTopicRuntimeProperties
-type GetTopicRuntimePropertiesResponse struct {
-	GetTopicRuntimePropertiesResult
-
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
 }
 
 // GetTopicRuntimePropertiesOptions contains optional parameters for Client.GetTopicRuntimeProperties
@@ -177,7 +146,7 @@ type GetTopicRuntimePropertiesOptions struct {
 // If the entity does not exist this function will return a nil GetTopicRuntimePropertiesResponse and a nil error.
 func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string, options *GetTopicRuntimePropertiesOptions) (*GetTopicRuntimePropertiesResponse, error) {
 	var atomResp *atom.TopicEnvelope
-	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
+	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
 		if errors.Is(err, atom.ErrFeedEmpty) {
@@ -194,10 +163,7 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	}
 
 	return &GetTopicRuntimePropertiesResponse{
-		RawResponse: resp,
-		GetTopicRuntimePropertiesResult: GetTopicRuntimePropertiesResult{
-			TopicRuntimeProperties: *props,
-		},
+		TopicRuntimeProperties: *props,
 	}, nil
 }
 
@@ -212,8 +178,6 @@ type TopicItem struct {
 type ListTopicsResponse struct {
 	// Items is the result of the request.
 	Items []*TopicItem
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
 }
 
 // ListTopicsOptions can be used to configure the ListTopics method.
@@ -222,34 +186,32 @@ type ListTopicsOptions struct {
 	MaxPageSize int32
 }
 
-// TopicsPager provides iteration over TopicProperties pages.
-type TopicsPager struct {
+// ListTopicsPager provides iteration over ListTopics pages.
+type ListTopicsPager struct {
 	innerPager pagerFunc
+	done       bool
+}
 
-	lastErr      error
-	lastResponse *ListTopicsResponse
+func (p *ListTopicsPager) More() bool {
+	return !p.done
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *TopicsPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
+func (p *ListTopicsPager) NextPage(ctx context.Context) (ListTopicsResponse, error) {
+	resp, err := p.getNextPage(ctx)
+
+	if resp == nil {
+		p.done = true
+		return ListTopicsResponse{}, nil
+	}
+
+	return *resp, err
 }
 
-// PageResponse returns the current page.
-func (p *TopicsPager) PageResponse() *ListTopicsResponse {
-	return p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *TopicsPager) Err() error {
-	return p.lastErr
-}
-
-func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
+func (p *ListTopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
 	var feed *atom.TopicFeed
-	resp, err := p.innerPager(ctx, &feed)
+	_, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
@@ -271,13 +233,12 @@ func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, err
 	}
 
 	return &ListTopicsResponse{
-		RawResponse: resp,
-		Items:       all,
+		Items: all,
 	}, nil
 }
 
 // ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) *TopicsPager {
+func (ac *Client) ListTopics(options *ListTopicsOptions) *ListTopicsPager {
 	var pageSize int32
 
 	if options != nil {
@@ -286,7 +247,7 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) *TopicsPager {
 
 	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
 
-	return &TopicsPager{
+	return &ListTopicsPager{
 		innerPager: pagerFunc,
 	}
 }
@@ -302,8 +263,6 @@ type TopicRuntimePropertiesItem struct {
 type ListTopicsRuntimePropertiesResponse struct {
 	// Items is the result of the request.
 	Items []*TopicRuntimePropertiesItem
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
 }
 
 // ListTopicsRuntimePropertiesOptions can be used to configure the ListTopicsRuntimeProperties method.
@@ -312,33 +271,33 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// TopicRuntimePropertiesPager provides iteration over TopicRuntimeProperties pages.
-type TopicRuntimePropertiesPager struct {
-	innerPager   pagerFunc
-	lastErr      error
-	lastResponse *ListTopicsRuntimePropertiesResponse
+// ListTopicsRuntimePropertiesPager provides iteration over ListTopicsRuntimeProperties pages.
+type ListTopicsRuntimePropertiesPager struct {
+	innerPager pagerFunc
+	done       bool
+}
+
+// More returns true if there are more pages.
+func (p *ListTopicsRuntimePropertiesPager) More() bool {
+	return !p.done
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *TopicRuntimePropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
+func (p *ListTopicsRuntimePropertiesPager) NextPage(ctx context.Context) (ListTopicsRuntimePropertiesResponse, error) {
+	resp, err := p.getNextPage(ctx)
+
+	if resp == nil {
+		p.done = true
+		return ListTopicsRuntimePropertiesResponse{}, nil
+	}
+
+	return *resp, err
 }
 
-// PageResponse returns the current page.
-func (p *TopicRuntimePropertiesPager) PageResponse() *ListTopicsRuntimePropertiesResponse {
-	return p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *TopicRuntimePropertiesPager) Err() error {
-	return p.lastErr
-}
-
-func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
+func (p *ListTopicsRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
 	var feed *atom.TopicFeed
-	resp, err := p.innerPager(ctx, &feed)
+	_, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
@@ -360,13 +319,12 @@ func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTop
 	}
 
 	return &ListTopicsRuntimePropertiesResponse{
-		RawResponse: resp,
-		Items:       all,
+		Items: all,
 	}, nil
 }
 
 // ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *TopicRuntimePropertiesPager {
+func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *ListTopicsRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -375,22 +333,14 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 
 	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
 
-	return &TopicRuntimePropertiesPager{
+	return &ListTopicsRuntimePropertiesPager{
 		innerPager: pagerFunc,
 	}
 }
 
-// UpdateTopicResult contains the result of Client.UpdateTopic
-type UpdateTopicResult struct {
-	TopicProperties
-}
-
 // UpdateTopicResponse contains response fields for Client.UpdateTopic
 type UpdateTopicResponse struct {
-	UpdateTopicResult
-
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
+	TopicProperties
 }
 
 // UpdateTopicOptions contains optional parameters for Client.UpdateTopic
@@ -399,18 +349,15 @@ type UpdateTopicOptions struct {
 }
 
 // UpdateTopic updates an existing topic.
-func (ac *Client) UpdateTopic(ctx context.Context, topicName string, properties TopicProperties, options *UpdateTopicOptions) (*UpdateTopicResponse, error) {
-	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, &properties, false)
+func (ac *Client) UpdateTopic(ctx context.Context, topicName string, properties TopicProperties, options *UpdateTopicOptions) (UpdateTopicResponse, error) {
+	newProps, _, err := ac.createOrUpdateTopicImpl(ctx, topicName, &properties, false)
 
 	if err != nil {
-		return nil, err
+		return UpdateTopicResponse{}, err
 	}
 
-	return &UpdateTopicResponse{
-		RawResponse: resp,
-		UpdateTopicResult: UpdateTopicResult{
-			TopicProperties: *newProps,
-		},
+	return UpdateTopicResponse{
+		TopicProperties: *newProps,
 	}, nil
 }
 
@@ -418,8 +365,6 @@ func (ac *Client) UpdateTopic(ctx context.Context, topicName string, properties 
 type DeleteTopicResponse struct {
 	// Value is the result of the request.
 	Value *TopicProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
 }
 
 // DeleteTopicOptions contains optional parameters for Client.DeleteTopic
@@ -428,12 +373,10 @@ type DeleteTopicOptions struct {
 }
 
 // DeleteTopic deletes a topic.
-func (ac *Client) DeleteTopic(ctx context.Context, topicName string, options *DeleteTopicOptions) (*DeleteTopicResponse, error) {
+func (ac *Client) DeleteTopic(ctx context.Context, topicName string, options *DeleteTopicOptions) (DeleteTopicResponse, error) {
 	resp, err := ac.em.Delete(ctx, "/"+topicName)
 	defer atom.CloseRes(ctx, resp)
-	return &DeleteTopicResponse{
-		RawResponse: resp,
-	}, err
+	return DeleteTopicResponse{}, err
 }
 
 func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
@@ -473,16 +416,16 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 
 func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) *atom.TopicEnvelope {
 	desc := &atom.TopicDescription{
-		DefaultMessageTimeToLive:            utils.DurationToStringPtr(props.DefaultMessageTimeToLive),
+		DefaultMessageTimeToLive:            props.DefaultMessageTimeToLive,
 		MaxSizeInMegabytes:                  props.MaxSizeInMegabytes,
 		RequiresDuplicateDetection:          props.RequiresDuplicateDetection,
-		DuplicateDetectionHistoryTimeWindow: utils.DurationToStringPtr(props.DuplicateDetectionHistoryTimeWindow),
+		DuplicateDetectionHistoryTimeWindow: props.DuplicateDetectionHistoryTimeWindow,
 		EnableBatchedOperations:             props.EnableBatchedOperations,
 
 		Status:             (*atom.EntityStatus)(props.Status),
 		UserMetadata:       props.UserMetadata,
 		SupportOrdering:    props.SupportOrdering,
-		AutoDeleteOnIdle:   utils.DurationToStringPtr(props.AutoDeleteOnIdle),
+		AutoDeleteOnIdle:   props.AutoDeleteOnIdle,
 		EnablePartitioning: props.EnablePartitioning,
 	}
 
@@ -490,33 +433,15 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 }
 
 func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
-	defaultMessageTimeToLive, err := utils.ISO8601StringToDuration(td.DefaultMessageTimeToLive)
-
-	if err != nil {
-		return nil, err
-	}
-
-	duplicateDetectionHistoryTimeWindow, err := utils.ISO8601StringToDuration(td.DuplicateDetectionHistoryTimeWindow)
-
-	if err != nil {
-		return nil, err
-	}
-
-	autoDeleteOnIdle, err := utils.ISO8601StringToDuration(td.AutoDeleteOnIdle)
-
-	if err != nil {
-		return nil, err
-	}
-
 	return &TopicProperties{
 		MaxSizeInMegabytes:                  td.MaxSizeInMegabytes,
 		RequiresDuplicateDetection:          td.RequiresDuplicateDetection,
-		DefaultMessageTimeToLive:            defaultMessageTimeToLive,
-		DuplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow,
+		DefaultMessageTimeToLive:            td.DefaultMessageTimeToLive,
+		DuplicateDetectionHistoryTimeWindow: td.DuplicateDetectionHistoryTimeWindow,
 		EnableBatchedOperations:             td.EnableBatchedOperations,
 		Status:                              (*EntityStatus)(td.Status),
 		UserMetadata:                        td.UserMetadata,
-		AutoDeleteOnIdle:                    autoDeleteOnIdle,
+		AutoDeleteOnIdle:                    td.AutoDeleteOnIdle,
 		EnablePartitioning:                  td.EnablePartitioning,
 		SupportOrdering:                     td.SupportOrdering,
 	}, nil

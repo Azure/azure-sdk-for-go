@@ -50,7 +50,6 @@ func TestAdminClient_GetNamespaceProperties(t *testing.T) {
 	resp, err := adminClient.GetNamespaceProperties(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
-	require.NotNil(t, resp.RawResponse)
 
 	require.True(t, resp.SKU == "Standard" || resp.SKU == "Premium" || resp.SKU == "Basic")
 
@@ -67,6 +66,10 @@ func TestAdminClient_GetNamespaceProperties(t *testing.T) {
 }
 
 func TestAdminClient_QueueWithMaxValues(t *testing.T) {
+	// this is the magic TimeSpan.Max value that the portal uses to determine we want
+	// infinite "time"
+	var MaxTimeSpanForTests = to.StringPtr("P10675199DT2H48M5.4775807S")
+
 	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
@@ -75,20 +78,20 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
-		LockDuration: toDurationPtr(45 * time.Second),
+		LockDuration: to.StringPtr("PT45S"),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
 		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(4096),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
 		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Duration(1<<63 - 1)),
+		DefaultMessageTimeToLive:            MaxTimeSpanForTests,
 		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4H"),
 		MaxDeliveryCount:                    to.Int32Ptr(100),
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
+		AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 		UserMetadata:                        to.StringPtr("some metadata"),
 	}, nil)
 	require.NoError(t, err)
@@ -99,19 +102,19 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, QueueProperties{
-		LockDuration: toDurationPtr(45 * time.Second),
+		LockDuration: to.StringPtr("PT45S"),
 		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 4096),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
 		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Duration(1<<63 - 1)),
+		DefaultMessageTimeToLive:            MaxTimeSpanForTests,
 		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4H"),
 		MaxDeliveryCount:                    to.Int32Ptr(100),
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
+		AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 		UserMetadata:                        to.StringPtr("some metadata"),
 	}, resp.QueueProperties)
 
@@ -136,20 +139,20 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 
 	es := EntityStatusReceiveDisabled
 	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
-		LockDuration: toDurationPtr(45 * time.Second),
+		LockDuration: to.StringPtr("PT45S"),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
 		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(4096),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
 		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Hour * 6),
+		DefaultMessageTimeToLive:            to.StringPtr("PT6H"),
 		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4H"),
 		MaxDeliveryCount:                    to.Int32Ptr(100),
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
+		AutoDeleteOnIdle:                    to.StringPtr("PT10M"),
 	}, nil)
 	require.NoError(t, err)
 
@@ -158,19 +161,19 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 	}()
 
 	require.EqualValues(t, QueueProperties{
-		LockDuration: toDurationPtr(45 * time.Second),
+		LockDuration: to.StringPtr("PT45S"),
 		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 4096),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
 		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Hour * 6),
+		DefaultMessageTimeToLive:            to.StringPtr("PT6H"),
 		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4H"),
 		MaxDeliveryCount:                    to.Int32Ptr(100),
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
+		AutoDeleteOnIdle:                    to.StringPtr("PT10M"),
 	}, createResp.QueueProperties)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
@@ -201,7 +204,6 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	updatedProps.RequiresSession = to.BoolPtr(true)
 	updatedProps, err = adminClient.UpdateQueue(context.Background(), queueName, updatedProps.QueueProperties, nil)
 	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Queue cannot be changed")
-	require.Nil(t, updatedProps)
 
 	updatedProps, err = adminClient.UpdateQueue(context.Background(), "non-existent-queue", createdProps.QueueProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
@@ -210,8 +212,6 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-
-	require.Nil(t, updatedProps)
 }
 
 func TestAdminClient_ListQueues(t *testing.T) {
@@ -237,15 +237,14 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	pager := adminClient.ListQueues(nil)
 	all := map[string]*QueueItem{}
 
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 
 		for _, props := range page.Items {
 			all[props.QueueName] = props
 		}
 	}
-
-	require.NoError(t, pager.Err())
 
 	// sanity check - the queues we created exist and their deserialization is
 	// working.
@@ -372,11 +371,11 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(2048),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Minute * 3),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(time.Minute * 4),
+		DefaultMessageTimeToLive:            to.StringPtr("PT3M"),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4M"),
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
+		AutoDeleteOnIdle:                    to.StringPtr("PT7M"),
 		SupportOrdering:                     to.BoolPtr(true),
 		UserMetadata:                        to.StringPtr("user metadata"),
 	}, nil)
@@ -388,11 +387,11 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 2048), // enabling partitioning increases our max size because of the 16 partitions
 		RequiresDuplicateDetection:          to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Minute * 3),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(time.Minute * 4),
+		DefaultMessageTimeToLive:            to.StringPtr("PT3M"),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4M"),
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
+		AutoDeleteOnIdle:                    to.StringPtr("PT7M"),
 		SupportOrdering:                     to.BoolPtr(true),
 		UserMetadata:                        to.StringPtr("user metadata"),
 	}, addResp.TopicProperties)
@@ -404,11 +403,11 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 2048), // enabling partitioning increases our max size because of the 16 partitions
 		RequiresDuplicateDetection:          to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Minute * 3),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(time.Minute * 4),
+		DefaultMessageTimeToLive:            to.StringPtr("PT3M"),
+		DuplicateDetectionHistoryTimeWindow: to.StringPtr("PT4M"),
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
+		AutoDeleteOnIdle:                    to.StringPtr("PT7M"),
 		SupportOrdering:                     to.BoolPtr(true),
 		UserMetadata:                        to.StringPtr("user metadata"),
 	}, getResp.TopicProperties)
@@ -424,9 +423,9 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 	require.Zero(t, runtimeResp.SizeInBytes)
 
 	addSubWithPropsResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, &SubscriptionProperties{
-		LockDuration:                                    toDurationPtr(3 * time.Minute),
+		LockDuration:                                    to.StringPtr("PT3M"),
 		RequiresSession:                                 to.BoolPtr(false),
-		DefaultMessageTimeToLive:                        toDurationPtr(7 * time.Minute),
+		DefaultMessageTimeToLive:                        to.StringPtr("PT7M"),
 		DeadLetteringOnMessageExpiration:                to.BoolPtr(true),
 		EnableDeadLetteringOnFilterEvaluationExceptions: to.BoolPtr(false),
 		MaxDeliveryCount:                                to.Int32Ptr(11),
@@ -434,7 +433,7 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		// ForwardTo:                     &forwardToQueueName,
 		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
 		EnableBatchedOperations: to.BoolPtr(false),
-		AutoDeleteOnIdle:        toDurationPtr(11 * time.Minute),
+		AutoDeleteOnIdle:        to.StringPtr("PT11M"),
 		UserMetadata:            to.StringPtr("user metadata"),
 	}, nil)
 	require.NoError(t, err)
@@ -442,9 +441,9 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
 	require.EqualValues(t, SubscriptionProperties{
-		LockDuration:                                    toDurationPtr(3 * time.Minute),
+		LockDuration:                                    to.StringPtr("PT3M"),
 		RequiresSession:                                 to.BoolPtr(false),
-		DefaultMessageTimeToLive:                        toDurationPtr(7 * time.Minute),
+		DefaultMessageTimeToLive:                        to.StringPtr("PT7M"),
 		DeadLetteringOnMessageExpiration:                to.BoolPtr(true),
 		EnableDeadLetteringOnFilterEvaluationExceptions: to.BoolPtr(false),
 		MaxDeliveryCount:                                to.Int32Ptr(11),
@@ -452,9 +451,9 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		// ForwardTo:                     &forwardToQueueName,
 		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
 		EnableBatchedOperations: to.BoolPtr(false),
-		AutoDeleteOnIdle:        toDurationPtr(11 * time.Minute),
+		AutoDeleteOnIdle:        to.StringPtr("PT11M"),
 		UserMetadata:            to.StringPtr("user metadata"),
-	}, addSubWithPropsResp.CreateSubscriptionResult.SubscriptionProperties)
+	}, addSubWithPropsResp.SubscriptionProperties)
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
@@ -467,17 +466,16 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	addResp.AutoDeleteOnIdle = toDurationPtr(11 * time.Minute)
+	addResp.AutoDeleteOnIdle = to.StringPtr("PT11M")
 	updateResp, err := adminClient.UpdateTopic(context.Background(), topicName, addResp.TopicProperties, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, 11*time.Minute, *updateResp.AutoDeleteOnIdle)
+	require.EqualValues(t, "PT11M", *updateResp.AutoDeleteOnIdle)
 
 	// try changing a value that's not allowed
 	updateResp.EnablePartitioning = to.BoolPtr(true)
 	updateResp, err = adminClient.UpdateTopic(context.Background(), topicName, updateResp.TopicProperties, nil)
 	require.Contains(t, err.Error(), "Partitioning cannot be changed for Topic. ")
-	require.Nil(t, updateResp)
 
 	updateResp, err = adminClient.UpdateTopic(context.Background(), "non-existent-topic", addResp.TopicProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
@@ -486,8 +484,6 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-
-	require.Nil(t, updateResp)
 }
 
 func TestAdminClient_ListTopics(t *testing.T) {
@@ -507,7 +503,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 		go func(i int) {
 			defer wg.Done()
 			_, err := adminClient.CreateTopic(context.Background(), topicName, &TopicProperties{
-				DefaultMessageTimeToLive: toDurationPtr(time.Duration(i+1) * time.Minute),
+				DefaultMessageTimeToLive: to.StringPtr(fmt.Sprintf("PT%dM", i+1)),
 			}, nil)
 			require.NoError(t, err)
 		}(i)
@@ -525,9 +521,11 @@ func TestAdminClient_ListTopics(t *testing.T) {
 
 	times := 0
 
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+
 		times++
-		page := pager.PageResponse()
 
 		require.LessOrEqual(t, len(page.Items), 2)
 
@@ -538,7 +536,6 @@ func TestAdminClient_ListTopics(t *testing.T) {
 		}
 	}
 
-	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
@@ -546,7 +543,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	for i, expectedTopic := range expectedTopics {
 		props, exists := all[expectedTopic]
 		require.True(t, exists)
-		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
+		require.EqualValues(t, fmt.Sprintf("PT%dM", i+1), *props.DefaultMessageTimeToLive)
 	}
 }
 
@@ -575,9 +572,11 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	})
 	all := map[string]*TopicRuntimePropertiesItem{}
 
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+
 		times++
-		page := pager.PageResponse()
 
 		require.LessOrEqual(t, len(page.Items), 2)
 
@@ -588,7 +587,6 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 		}
 	}
 
-	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
@@ -619,7 +617,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 		expectedSubscriptions = append(expectedSubscriptions, subName)
 
 		_, err = adminClient.CreateSubscription(context.Background(), topicName, subName, &SubscriptionProperties{
-			DefaultMessageTimeToLive: toDurationPtr(time.Duration(i+1) * time.Minute),
+			DefaultMessageTimeToLive: to.StringPtr(fmt.Sprintf("PT%dM", i+1)),
 		}, nil)
 		require.NoError(t, err)
 
@@ -656,7 +654,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 		props, exists := all[expectedTopic]
 		require.True(t, exists)
 		require.Equal(t, topicName, props.TopicName)
-		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
+		require.EqualValues(t, fmt.Sprintf("PT%dM", i+1), *props.DefaultMessageTimeToLive)
 	}
 }
 
@@ -737,26 +735,23 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	addResp.LockDuration = toDurationPtr(4 * time.Minute)
+	addResp.LockDuration = to.StringPtr("PT4M")
 	updateResp, err := adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, addResp.SubscriptionProperties, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, 4*time.Minute, *updateResp.LockDuration)
+	require.EqualValues(t, "PT4M", *updateResp.LockDuration)
 
 	// try changing a value that's not allowed
 	updateResp.RequiresSession = to.BoolPtr(true)
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, updateResp.SubscriptionProperties, nil)
 	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Subscription cannot be changed")
-	require.Nil(t, updateResp)
 
-	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
+	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.SubscriptionProperties, nil)
 	require.Contains(t, err.Error(), "404 Not Found")
 
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-
-	require.Nil(t, updateResp)
 }
 
 func TestAdminClient_LackPermissions_Queue(t *testing.T) {
@@ -781,8 +776,9 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.EqualValues(t, 401, re.StatusCode)
 
 	pager := testData.Client.ListQueues(nil)
-	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "Manage,EntityRead claims required for this operation")
+	page, err := pager.NextPage(context.Background())
+	require.Empty(t, page.Items)
+	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
 	require.ErrorAs(t, err, &re)
 	require.EqualValues(t, 401, re.StatusCode)
 
@@ -824,8 +820,8 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	pager := testData.Client.ListTopics(nil)
-	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), ">Manage,EntityRead claims required for this operation")
+	_, err = pager.NextPage(context.Background())
+	require.Contains(t, err, ">Manage,EntityRead claims required for this operation")
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
@@ -1055,10 +1051,6 @@ func TestAdminClient_pagerWithFullPage(t *testing.T) {
 		"/$Resources/Topics?&$top=10&$skip=10",
 		"/$Resources/Topics?&$top=10&$skip=20",
 	}, em.getPaths)
-}
-
-func toDurationPtr(d time.Duration) *time.Duration {
-	return &d
 }
 
 func deleteQueue(t *testing.T, ac *Client, queueName string) {

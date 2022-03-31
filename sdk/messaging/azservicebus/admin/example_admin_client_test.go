@@ -6,8 +6,8 @@ package admin_test
 import (
 	"context"
 	"fmt"
-	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 )
@@ -37,35 +37,38 @@ func ExampleClient_CreateQueue() {
 
 	// some example properties
 	fmt.Printf("Max message delivery count = %d\n", *resp.MaxDeliveryCount)
-	fmt.Printf("Lock duration: %s\n", resp.LockDuration)
+	fmt.Printf("Lock duration: %s\n", *resp.LockDuration)
 }
 
 func ExampleClient_CreateQueue_usingproperties() {
-	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 
 	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &admin.QueueProperties{
 		// some example properties
-		LockDuration:     &lockDuration,
+		LockDuration:     to.StringPtr("PT1M"),
 		MaxDeliveryCount: &maxDeliveryCount,
 	}, nil)
 	exitOnError("Failed to create queue", err)
 
 	// some example properties
 	fmt.Printf("Max message delivery count = %d\n", *resp.MaxDeliveryCount)
-	fmt.Printf("Lock duration: %s\n", resp.LockDuration)
+	fmt.Printf("Lock duration: %s\n", *resp.LockDuration)
 }
 
 func ExampleClient_ListQueues() {
 	queuePager := adminClient.ListQueues(nil)
 
-	for queuePager.NextPage(context.TODO()) {
-		for _, queue := range queuePager.PageResponse().Items {
+	for queuePager.More() {
+		page, err := queuePager.NextPage(context.TODO())
+
+		if err != nil {
+			panic(err)
+		}
+
+		for _, queue := range page.Items {
 			fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
 		}
 	}
-
-	exitOnError("Failed when listing queues", queuePager.Err())
 }
 
 func ExampleClient_ListQueuesRuntimeProperties() {

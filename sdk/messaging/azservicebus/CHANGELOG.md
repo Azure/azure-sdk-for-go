@@ -14,6 +14,43 @@
 - Fixed issue where a message lock expiring would cause unnecessary retries. These retries could cause message settlement calls (ex: Receiver.CompleteMessage) 
   to appear to hang. (#17382)
 
+### Breaking Changes
+
+- The `admin.Client` type has been changed to conform with the latest Azure Go SDK guidelines. As part of this:
+  - Fields that were of type `time.Duration` have been changed to `*string`, where the value of the string is the ISO8601 timestamp format. 
+    Affected fields from Queues, Topics and Subscriptions: AutoDeleteOnIdle, DefaultMessageTimeToLive, DuplicateDetectionHistoryTimeWindow, LockDuration.    
+  - Pagers have been changed. 
+  
+    Previously:
+    ```go
+    // older code
+    for queuePager.NextPage(context.TODO()) {
+		  for _, queue := range queuePager.PageResponse().Items {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    
+    if err := queuePager.Err(); err != nil {
+      panic(err)
+    }
+    ```
+    And now:
+
+    ```go
+    // new code
+    for queuePager.More() {
+		  page, err := queuePager.NextPage(context.TODO())
+
+		  if err != nil {
+			  panic(err)
+		  }
+
+		  for _, queue := range page.Items {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    ```
+
 ## 0.3.6 (2022-03-08)
 
 ### Bugs Fixed

@@ -27,7 +27,7 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 
 	log.Printf("Creating queue")
 
-	lockDuration := 5 * time.Minute
+	lockDuration := "PT5M"
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
 		LockDuration: &lockDuration,

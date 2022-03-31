@@ -49,7 +49,7 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 		queueProperties = &admin.QueueProperties{}
 	}
 
-	autoDeleteOnIdle := 5 * time.Minute
+	autoDeleteOnIdle := "PT5M"
 	queueProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
 
 	_, err = adminClient.CreateQueue(context.Background(), queueName, queueProperties, nil)

@@ -54,14 +54,13 @@ func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
-	autoDeleteOnIdle := 10 * time.Minute
-
 	var newQP admin.QueueProperties
 
 	if qp != nil {
 		newQP = *qp
 	}
 
+	autoDeleteOnIdle := "PT10M"
 	newQP.AutoDeleteOnIdle = &autoDeleteOnIdle
 
 	// mostly useful for tracking backwards in case something goes wrong.

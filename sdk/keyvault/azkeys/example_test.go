@@ -107,13 +107,13 @@ func ExampleClient_UpdateKeyProperties() {
 			"Tag1": "val1",
 		},
 		Properties: &azkeys.Properties{
-			RecoveryLevel: to.Ptr(azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable),
+			Enabled: to.Ptr(true),
 		},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
+	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Properties.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -177,12 +177,12 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 
 	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
 		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiryTime: to.Ptr("P90D"),
+			ExpiresIn: to.Ptr("P90D"),
 		},
 		LifetimeActions: []*azkeys.LifetimeActions{
 			{
 				Action: &azkeys.LifetimeActionsType{
-					Type: to.Ptr(azkeys.ActionTypeNotify),
+					Type: to.Ptr(azkeys.RotationActionNotify),
 				},
 				Trigger: &azkeys.LifetimeActionsTrigger{
 					TimeBeforeExpiry: to.Ptr("P30D"),

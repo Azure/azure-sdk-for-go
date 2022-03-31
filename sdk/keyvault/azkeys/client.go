@@ -9,12 +9,16 @@ package azkeys
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -64,6 +68,26 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
+}
+
+// parseFromKID parses "https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"
+// into "https://myvaultname.managedhsm.azure.net/", "key1053998307", and "b86c2e6ad9054f4abf69cc185b99aa60"
+func parseFromKID(s *string) (*string, *string, *string) {
+	if s == nil {
+		return nil, nil, nil
+	}
+	parsed, err := url.Parse(*s)
+	if err != nil {
+		return nil, nil, nil
+	}
+
+	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
+	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
+	if len(split) < 3 {
+		return &url, nil, nil
+	}
+
+	return &url, to.Ptr(split[1]), to.Ptr(split[2])
 }
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
@@ -127,12 +151,13 @@ type CreateKeyResponse struct {
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
-			Tags:       convertGeneratedMap(g.Tags),
-			Managed:    g.Managed,
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -197,12 +222,13 @@ type CreateECKeyResponse struct {
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateECKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
-			Tags:       convertGeneratedMap(g.Tags),
-			Managed:    g.Managed,
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -273,13 +299,14 @@ type CreateOctKeyResponse struct {
 }
 
 // convert generated response to CreateOCTKeyResponse
-func createOctKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
+func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateOctKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -353,13 +380,14 @@ type CreateRSAKeyResponse struct {
 }
 
 // convert internal response to CreateRSAKeyResponse
-func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
+func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateRSAKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -391,8 +419,8 @@ type ListPropertiesOfKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListKeysResponse contains the current page of results for the Client.ListSecrets operation
-type ListKeysResponse struct {
+// ListPropertiesOfKeysResponse contains the current page of results for the Client.ListSecrets operation
+type ListPropertiesOfKeysResponse struct {
 	// READ-ONLY; The URL to get the next set of keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
@@ -401,12 +429,12 @@ type ListKeysResponse struct {
 }
 
 // convert internal Response to ListKeysPage
-func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKeysResponse {
+func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListPropertiesOfKeysResponse {
 	var keys []*KeyItem
 	for _, k := range i.Value {
 		keys = append(keys, keyItemFromGenerated(k))
 	}
-	return ListKeysResponse{
+	return ListPropertiesOfKeysResponse{
 		NextLink: i.NextLink,
 		Keys:     keys,
 	}
@@ -416,12 +444,12 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListKeysResponse]{
-		More: func(page ListKeysResponse) bool {
+func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListPropertiesOfKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfKeysResponse]{
+		More: func(page ListPropertiesOfKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListKeysResponse) (ListKeysResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfKeysResponse) (ListPropertiesOfKeysResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -430,18 +458,18 @@ func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *run
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListKeysResponse{}, err
+				return ListPropertiesOfKeysResponse{}, err
 			}
 			resp, err := c.kvClient.Pl.Do(req)
 			if err != nil {
-				return ListKeysResponse{}, err
+				return ListPropertiesOfKeysResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListKeysResponse{}, runtime.NewResponseError(resp)
+				return ListPropertiesOfKeysResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.kvClient.GetKeysHandleResponse(resp)
 			if err != nil {
-				return ListKeysResponse{}, err
+				return ListPropertiesOfKeysResponse{}, err
 			}
 			return listKeysPageFromGenerated(genResp), nil
 		},
@@ -459,13 +487,14 @@ type GetKeyResponse struct {
 }
 
 // convert internal response to GetKeyResponse
-func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
+func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return GetKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -502,16 +531,15 @@ type GetDeletedKeyResponse struct {
 }
 
 // convert generated response to GetDeletedKeyResponse
-func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
+func getDeletedKeyResponseFromGenerated(g generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return GetDeletedKeyResponse{
 		DeletedKey: DeletedKey{
-			Properties:         keyPropertiesFromGenerated(i.Attributes),
-			Key:                jsonWebKeyFromGenerated(i.Key),
-			Tags:               convertGeneratedMap(i.Tags),
-			Managed:            i.Managed,
-			RecoveryID:         i.RecoveryID,
-			DeletedOn:          i.DeletedDate,
-			ScheduledPurgeDate: i.ScheduledPurgeDate,
+			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Key:                jsonWebKeyFromGenerated(g.Key),
+			RecoveryID:         g.RecoveryID,
+			DeletedOn:          g.DeletedDate,
+			ScheduledPurgeDate: g.ScheduledPurgeDate,
 		},
 	}
 }
@@ -570,20 +598,19 @@ type DeleteKeyResponse struct {
 }
 
 // convert interal response to DeleteKeyResponse
-func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
-	if i == nil {
+func deleteKeyResponseFromGenerated(g *generated.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
+	if g == nil {
 		return nil
 	}
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return &DeleteKeyResponse{
 		DeletedKey: DeletedKey{
-			Properties:         keyPropertiesFromGenerated(i.Attributes),
-			Key:                jsonWebKeyFromGenerated(i.Key),
-			RecoveryID:         i.RecoveryID,
-			ReleasePolicy:      keyReleasePolicyFromGenerated(i.ReleasePolicy),
-			Tags:               convertGeneratedMap(i.Tags),
-			DeletedOn:          i.DeletedDate,
-			Managed:            i.Managed,
-			ScheduledPurgeDate: i.ScheduledPurgeDate,
+			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Key:                jsonWebKeyFromGenerated(g.Key),
+			RecoveryID:         g.RecoveryID,
+			ReleasePolicy:      keyReleasePolicyFromGenerated(g.ReleasePolicy),
+			DeletedOn:          g.DeletedDate,
+			ScheduledPurgeDate: g.ScheduledPurgeDate,
 		},
 	}
 }
@@ -659,15 +686,14 @@ func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (D
 		time.Sleep(t)
 	}
 
+	vaultURL, name, version := parseFromKID(s.deleteResponse.Key.Kid)
 	return DeleteKeyResponse{
 		DeletedKey: DeletedKey{
 			RecoveryID:         s.deleteResponse.RecoveryID,
 			DeletedOn:          s.deleteResponse.DeletedDate,
 			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
-			Tags:               convertGeneratedMap(s.deleteResponse.Tags),
-			Managed:            s.deleteResponse.Managed,
 			ReleasePolicy:      keyReleasePolicyFromGenerated(s.deleteResponse.ReleasePolicy),
-			Properties:         keyPropertiesFromGenerated(s.deleteResponse.Attributes),
+			Properties:         keyPropertiesFromGenerated(s.deleteResponse.Attributes, s.deleteResponse.Key.Kid, name, version, s.deleteResponse.Managed,vaultURL, s.deleteResponse.Tags),
 			Key:                jsonWebKeyFromGenerated(s.deleteResponse.Key),
 		},
 	}, nil
@@ -827,13 +853,14 @@ type RecoverDeletedKeyResponse struct {
 }
 
 // change recover deleted key reponse to the generated version.
-func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
+func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return RecoverDeletedKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name,version, g.Managed,vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -922,13 +949,14 @@ type UpdateKeyPropertiesResponse struct {
 }
 
 // convert the internal response to UpdateKeyPropertiesResponse
-func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
+func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return UpdateKeyPropertiesResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name,version, g.Managed,vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -1105,13 +1133,14 @@ type RestoreKeyBackupResponse struct {
 }
 
 // converts the generated response to the publicly exposed version.
-func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
+func restoreKeyBackupResponseFromGenerated(g generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return RestoreKeyBackupResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -1163,13 +1192,14 @@ type ImportKeyResponse struct {
 }
 
 // convert the generated response to the ImportKeyResponse
-func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
+func importKeyResponseFromGenerated(g generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
+	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return ImportKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(i.Attributes),
-			JSONWebKey: jsonWebKeyFromGenerated(i.Key),
-			Tags:       convertGeneratedMap(i.Tags),
-			Managed:    i.Managed,
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name,version, g.Managed,vaultURL, g.Tags),
+			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
+			ID:         g.Key.Kid,
+			KeyType:    (*KeyType)(g.Key.Kty),
 		},
 	}
 }
@@ -1260,13 +1290,14 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 		return RotateKeyResponse{}, err
 	}
 
+	vaultURL, name, version := parseFromKID(resp.Key.Kid)
 	return RotateKeyResponse{
 		Key: Key{
-			Properties:    keyPropertiesFromGenerated(resp.Attributes),
+			Properties:    keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed,vaultURL, resp.Tags),
 			JSONWebKey:    jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			Tags:          convertGeneratedMap(resp.Tags),
-			Managed:       resp.Managed,
+			ID:            resp.Key.Kid,
+			KeyType:       (*KeyType)(resp.Key.Kty),
 		},
 	}, nil
 }
@@ -1293,9 +1324,9 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	var attribs *RotationPolicyAttributes
 	if i.Attributes != nil {
 		attribs = &RotationPolicyAttributes{
-			ExpiryTime: i.Attributes.ExpiryTime,
-			CreatedOn:  i.Attributes.Created,
-			UpdatedOn:  i.Attributes.Updated,
+			ExpiresIn: i.Attributes.ExpiryTime,
+			CreatedOn: i.Attributes.Created,
+			UpdatedOn: i.Attributes.Updated,
 		}
 	}
 	return GetKeyRotationPolicyResponse{
@@ -1347,7 +1378,7 @@ type ReleaseKeyResponse struct {
 
 // ReleaseKey is applicable to all key types. The target key must be marked exportable. This operation requires the keys/release permission.
 // Pass nil to use the default options.
-func (c *Client) ReleaseKey(ctx context.Context, name string, target string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
+func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationToken string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
 	if options == nil {
 		options = &ReleaseKeyOptions{}
 	}
@@ -1358,7 +1389,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
-			TargetAttestationToken: &target,
+			TargetAttestationToken: &targetAttestationToken,
 			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
 			Nonce:                  options.Nonce,
 		},
@@ -1421,9 +1452,9 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	var attribs *RotationPolicyAttributes
 	if i.Attributes != nil {
 		attribs = &RotationPolicyAttributes{
-			ExpiryTime: i.Attributes.ExpiryTime,
-			CreatedOn:  i.Attributes.Created,
-			UpdatedOn:  i.Attributes.Updated,
+			ExpiresIn: i.Attributes.ExpiryTime,
+			CreatedOn: i.Attributes.Created,
+			UpdatedOn: i.Attributes.Updated,
 		}
 	}
 	return UpdateKeyRotationPolicyResponse{

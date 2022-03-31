@@ -36,6 +36,16 @@ func TestConstructor(t *testing.T) {
 	require.NotNil(t, client.kvClient)
 }
 
+func TestParsing(t *testing.T) {
+	url, name, version := parseFromKID(to.Ptr("https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"))
+	require.NotNil(t, url)
+	require.NotNil(t, name)
+	require.NotNil(t, version)
+	require.Equal(t, "https://myvaultname.managedhsm.azure.net/", *url)
+	require.Equal(t, "key1053998307", *name)
+	require.Equal(t, "b86c2e6ad9054f4abf69cc185b99aa60", *version)
+}
+
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
@@ -51,11 +61,11 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			resp, err := client.CreateRSAKey(ctx, key, nil)
 			require.NoError(t, err)
-			require.NotNil(t, resp.Key)
+			validateKey(t, &resp.Key)
 
 			resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: to.Ptr(true)})
 			require.NoError(t, err)
-			require.NotNil(t, resp2.Key)
+			validateKey(t, &resp2.Key)
 
 			cleanUpKey(t, client, key)
 			cleanUpKey(t, client, key+"hsm")
@@ -83,15 +93,16 @@ func TestCreateKeyRSATags(t *testing.T) {
 	})
 	defer cleanUpKey(t, client, key)
 	require.NoError(t, err)
-	require.NotNil(t, resp.Key)
-	require.Equal(t, 1, len(resp.Tags))
+	validateKey(t, &resp.Key)
+	require.Equal(t, 1, len(resp.Properties.Tags))
 
 	// Remove the tag
 	resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
 		Tags: map[string]string{},
 	})
 	require.NoError(t, err)
-	require.Equal(t, 0, len(resp2.Tags))
+	require.Equal(t, 0, len(resp2.Properties.Tags))
+	validateKey(t, &resp2.Key)
 }
 
 func TestCreateECKey(t *testing.T) {
@@ -109,7 +120,7 @@ func TestCreateECKey(t *testing.T) {
 
 			resp, err := client.CreateECKey(ctx, key, nil)
 			require.NoError(t, err)
-			require.NotNil(t, resp.Key)
+			validateKey(t, &resp.Key)
 
 			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
 			require.Error(t, err)
@@ -142,7 +153,7 @@ func TestCreateOCTKey(t *testing.T) {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				require.NotNil(t, resp.Key)
+				validateKey(t, &resp.Key)
 
 				cleanUpKey(t, client, key)
 			}
@@ -202,12 +213,13 @@ func TestGetKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateKey(ctx, key, KeyTypeRSA, nil)
+			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
+			validateKey(t, &r.Key)
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
-			require.NotNil(t, resp.Key)
+			validateKey(t, &resp.Key)
 
 			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeRSA, nil)
 			require.Error(t, err)
@@ -230,8 +242,9 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			_, err = client.CreateKey(ctx, key, KeyTypeRSA, nil)
+			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
+			validateKey(t, &r.Key)
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
@@ -408,7 +421,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
-			require.Equal(t, resp.Tags["Tag1"], "Val1")
+			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
@@ -795,12 +808,12 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 
 			_, err = client.UpdateKeyRotationPolicy(ctx, key, &UpdateKeyRotationPolicyOptions{
 				Attributes: &RotationPolicyAttributes{
-					ExpiryTime: to.Ptr("P90D"),
+					ExpiresIn: to.Ptr("P90D"),
 				},
 				LifetimeActions: []*LifetimeActions{
 					{
 						Action: &LifetimeActionsType{
-							Type: to.Ptr(ActionTypeNotify),
+							Type: to.Ptr(RotationActionNotify),
 						},
 						Trigger: &LifetimeActionsTrigger{
 							TimeBeforeExpiry: to.Ptr("P30D"),

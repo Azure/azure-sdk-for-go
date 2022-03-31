@@ -14,9 +14,6 @@ import (
 )
 
 func TestToPtrMethods(t *testing.T) {
-	d := DeletionRecoveryLevelCustomizedRecoverable
-	require.Equal(t, to.Ptr(d), &d)
-
 	j := CurveNameP256
 	require.Equal(t, to.Ptr(j), &j)
 

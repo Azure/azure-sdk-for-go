@@ -52,7 +52,7 @@ func ExampleClient_BeginCreateCertificate() {
 		panic(err)
 	}
 
-	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.CertificatePolicy{
+	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.Policy{
 		IssuerParameters: &azcertificates.IssuerParameters{
 			Name: to.Ptr("Self"),
 		},
@@ -118,23 +118,23 @@ func ExampleClient_UpdateCertificateProperties() {
 
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
-		CertificateAttributes: &azcertificates.CertificateProperties{
+		Properties: &azcertificates.Properties{
 			Enabled: to.Ptr(false),
 			Expires: to.Ptr(time.Now().Add(72 * time.Hour)),
+			Tags:    map[string]string{"Tag1": "Val1"},
 		},
-		CertificatePolicy: &azcertificates.CertificatePolicy{
+		CertificatePolicy: &azcertificates.Policy{
 			IssuerParameters: &azcertificates.IssuerParameters{
 				Name: to.Ptr("Self"),
 			},
 		},
-		Tags: map[string]string{"Tag1": "Val1"},
 	})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
 	fmt.Println(*resp.KeyVaultCertificate.Properties.Enabled)
-	fmt.Println(resp.Tags)
+	fmt.Println(resp.Properties.Tags)
 }
 
 func ExampleClient_ListCertificates() {

@@ -169,7 +169,7 @@ func cleanUp(t *testing.T, client *Client, certName string) {
 }
 
 func createCert(t *testing.T, client *Client, certName string) {
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
 			Name: to.Ptr("Self"),
 		},

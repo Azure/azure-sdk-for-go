@@ -6,92 +6,92 @@
 
 package azcertificates
 
-// CertificatePolicyAction - The type of the action.
-type CertificatePolicyAction string
+// PolicyAction - The type of the action.
+type PolicyAction string
 
 const (
-	CertificatePolicyActionEmailContacts CertificatePolicyAction = "EmailContacts"
-	CertificatePolicyActionAutoRenew     CertificatePolicyAction = "AutoRenew"
+	PolicyActionEmailContacts PolicyAction = "EmailContacts"
+	PolicyActionAutoRenew     PolicyAction = "AutoRenew"
 )
 
-// PossibleCertificatePolicyActionValues returns a slice of all possible CertificatePolicyAction values.
-func PossibleCertificatePolicyActionValues() []CertificatePolicyAction {
-	return []CertificatePolicyAction{
-		CertificatePolicyActionEmailContacts,
-		CertificatePolicyActionAutoRenew,
+// PossiblePolicyActionValues returns a slice of all possible CertificatePolicyAction values.
+func PossiblePolicyActionValues() []PolicyAction {
+	return []PolicyAction{
+		PolicyActionEmailContacts,
+		PolicyActionAutoRenew,
 	}
 }
 
-// CertificateKeyCurveName - Elliptic curve name. For valid values, see CertificateKeyCurveName.
-type CertificateKeyCurveName string
+// KeyCurveName - Elliptic curve name. For valid values, see KeyCurveName.
+type KeyCurveName string
 
 const (
-	CertificateKeyCurveNameP256  CertificateKeyCurveName = "P-256"
-	CertificateKeyCurveNameP256K CertificateKeyCurveName = "P-256K"
-	CertificateKeyCurveNameP384  CertificateKeyCurveName = "P-384"
-	CertificateKeyCurveNameP521  CertificateKeyCurveName = "P-521"
+	KeyCurveNameP256  KeyCurveName = "P-256"
+	KeyCurveNameP256K KeyCurveName = "P-256K"
+	KeyCurveNameP384  KeyCurveName = "P-384"
+	KeyCurveNameP521  KeyCurveName = "P-521"
 )
 
-// PossibleCertificateKeyCurveNameValues returns a slice of all possible CertificateKeyCurveName values.
-func PossibleCertificateKeyCurveNameValues() []CertificateKeyCurveName {
-	return []CertificateKeyCurveName{
-		CertificateKeyCurveNameP256,
-		CertificateKeyCurveNameP256K,
-		CertificateKeyCurveNameP384,
-		CertificateKeyCurveNameP521,
+// PossibleKeyCurveNameValues returns a slice of all possible CertificateKeyCurveName values.
+func PossibleKeyCurveNameValues() []KeyCurveName {
+	return []KeyCurveName{
+		KeyCurveNameP256,
+		KeyCurveNameP256K,
+		KeyCurveNameP384,
+		KeyCurveNameP521,
 	}
 }
 
-// CertificateKeyType - The type of key pair to be used for the certificate.
-type CertificateKeyType string
+// KeyType - The type of key pair to be used for the certificate.
+type KeyType string
 
 const (
-	CertificateKeyTypeEC     CertificateKeyType = "EC"
-	CertificateKeyTypeECHSM  CertificateKeyType = "EC-HSM"
-	CertificateKeyTypeOct    CertificateKeyType = "oct"
-	CertificateKeyTypeOctHSM CertificateKeyType = "oct-HSM"
-	CertificateKeyTypeRSA    CertificateKeyType = "RSA"
-	CertificateKeyTypeRSAHSM CertificateKeyType = "RSA-HSM"
+	KeyTypeEC     KeyType = "EC"
+	KeyTypeECHSM  KeyType = "EC-HSM"
+	KeyTypeOct    KeyType = "oct"
+	KeyTypeOctHSM KeyType = "oct-HSM"
+	KeyTypeRSA    KeyType = "RSA"
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
 
-// PossibleCertificateKeyTypeValues returns a slice of all possible CertificateKeyType values.
-func PossibleCertificateKeyTypeValues() []CertificateKeyType {
-	return []CertificateKeyType{
-		CertificateKeyTypeEC,
-		CertificateKeyTypeECHSM,
-		CertificateKeyTypeOct,
-		CertificateKeyTypeOctHSM,
-		CertificateKeyTypeRSA,
-		CertificateKeyTypeRSAHSM,
+// PossibleKeyTypeValues returns a slice of all possible CertificateKeyType values.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeOct,
+		KeyTypeOctHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
 	}
 }
 
-// CertificateKeyUsage is the key usage for a certificate
-type CertificateKeyUsage string
+// KeyUsage is the key usage for a certificate
+type KeyUsage string
 
 const (
-	CertificateKeyUsageCRLSign          CertificateKeyUsage = "cRLSign"
-	CertificateKeyUsageDataEncipherment CertificateKeyUsage = "dataEncipherment"
-	CertificateKeyUsageDecipherOnly     CertificateKeyUsage = "decipherOnly"
-	CertificateKeyUsageDigitalSignature CertificateKeyUsage = "digitalSignature"
-	CertificateKeyUsageEncipherOnly     CertificateKeyUsage = "encipherOnly"
-	CertificateKeyUsageKeyAgreement     CertificateKeyUsage = "keyAgreement"
-	CertificateKeyUsageKeyCertSign      CertificateKeyUsage = "keyCertSign"
-	CertificateKeyUsageKeyEncipherment  CertificateKeyUsage = "keyEncipherment"
-	CertificateKeyUsageNonRepudiation   CertificateKeyUsage = "nonRepudiation"
+	KeyUsageCRLSign          KeyUsage = "cRLSign"
+	KeyUsageDataEncipherment KeyUsage = "dataEncipherment"
+	KeyUsageDecipherOnly     KeyUsage = "decipherOnly"
+	KeyUsageDigitalSignature KeyUsage = "digitalSignature"
+	KeyUsageEncipherOnly     KeyUsage = "encipherOnly"
+	KeyUsageKeyAgreement     KeyUsage = "keyAgreement"
+	KeyUsageKeyCertSign      KeyUsage = "keyCertSign"
+	KeyUsageKeyEncipherment  KeyUsage = "keyEncipherment"
+	KeyUsageNonRepudiation   KeyUsage = "nonRepudiation"
 )
 
-// PossibleCertificateKeyUsageValues returns a slice of all possible CertificateKeyUsage values.
-func PossibleCertificateKeyUsageValues() []CertificateKeyUsage {
-	return []CertificateKeyUsage{
-		CertificateKeyUsageCRLSign,
-		CertificateKeyUsageDataEncipherment,
-		CertificateKeyUsageDecipherOnly,
-		CertificateKeyUsageDigitalSignature,
-		CertificateKeyUsageEncipherOnly,
-		CertificateKeyUsageKeyAgreement,
-		CertificateKeyUsageKeyCertSign,
-		CertificateKeyUsageKeyEncipherment,
-		CertificateKeyUsageNonRepudiation,
+// PossibleKeyUsageValues returns a slice of all possible CertificateKeyUsage values.
+func PossibleKeyUsageValues() []KeyUsage {
+	return []KeyUsage{
+		KeyUsageCRLSign,
+		KeyUsageDataEncipherment,
+		KeyUsageDecipherOnly,
+		KeyUsageDigitalSignature,
+		KeyUsageEncipherOnly,
+		KeyUsageKeyAgreement,
+		KeyUsageKeyCertSign,
+		KeyUsageKeyEncipherment,
+		KeyUsageNonRepudiation,
 	}
 }

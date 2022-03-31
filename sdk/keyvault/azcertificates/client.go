@@ -68,10 +68,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 // BeginCreateCertificateOptions contains optional parameters for Client.BeginCreateCertificate
 type BeginCreateCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 }
 
 func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCreateCertificateOptions {
@@ -80,7 +77,7 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 
 // CreateCertificateResponse contains response fields for Client.BeginCreateCertificate
 type CreateCertificateResponse struct {
-	CertificateOperation
+	Operation
 }
 
 // CreateCertificatePoller is the poller returned by the Client.BeginCreateCertificate
@@ -149,19 +146,23 @@ func (b *CreateCertificatePoller) PollUntilDone(ctx context.Context, t time.Dura
 }
 
 // BeginCreateCertificate creates a new certificate resource, if a certificate with this name already exists, a new version is created. This operation requires the certificates/create permission.
-func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy CertificatePolicy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
+func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy Policy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
 	}
 
+	var tags map[string]*string
+	if options.Properties != nil && options.Properties.Tags != nil {
+		tags = convertToGeneratedMap(options.Properties.Tags)
+	}
 	resp, err := c.genClient.CreateCertificate(
 		ctx,
 		c.vaultURL,
 		certName,
 		generated.CertificateCreateParameters{
 			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-			Tags:                  convertToGeneratedMap(options.Tags),
-			CertificateAttributes: options.CertificateAttributes.toGenerated(),
+			Tags:                  tags,
+			CertificateAttributes: options.Properties.toGenerated(),
 		},
 		options.toGenerated(),
 	)
@@ -176,7 +177,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		vaultURL:    c.vaultURL,
 		client:      c.genClient,
 		createResponse: CreateCertificateResponse{
-			CertificateOperation: CertificateOperation{
+			Operation: Operation{
 				CancellationRequested: resp.CancellationRequested,
 				Csr:                   resp.Csr,
 				Error:                 certificateErrorFromGenerated(resp.Error),
@@ -215,10 +216,9 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 
 	return GetCertificateResponse{
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
@@ -239,7 +239,7 @@ func (g *GetCertificateOperationOptions) toGenerated() *generated.KeyVaultClient
 
 // GetCertificateOperationResponse contains response field for Client.GetCertificateOperation
 type GetCertificateOperationResponse struct {
-	CertificateOperation
+	Operation
 }
 
 // GetCertificateOperation gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
@@ -250,7 +250,7 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certName string, o
 	}
 
 	return GetCertificateOperationResponse{
-		CertificateOperation: CertificateOperation{
+		Operation: Operation{
 			CancellationRequested: resp.CancellationRequested,
 			Csr:                   resp.Csr,
 			Error:                 certificateErrorFromGenerated(resp.Error),
@@ -288,10 +288,9 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 			RecoveryID:         g.RecoveryID,
 			DeletedDate:        g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Properties:         certificateAttributesFromGenerated(g.Attributes),
+			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags)),
 			Cer:                g.Cer,
 			ContentType:        g.ContentType,
-			Tags:               convertGeneratedMap(g.Tags),
 			ID:                 g.ID,
 			KeyID:              g.Kid,
 			Policy:             certificatePolicyFromGenerated(g.Policy),
@@ -444,10 +443,9 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 			RecoveryID:         resp.RecoveryID,
 			DeletedDate:        resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Properties:         certificateAttributesFromGenerated(resp.Attributes),
+			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
 			Cer:                resp.Cer,
 			ContentType:        resp.ContentType,
-			Tags:               convertGeneratedMap(resp.Tags),
 			ID:                 resp.ID,
 			KeyID:              resp.Kid,
 			Policy:             certificatePolicyFromGenerated(resp.Policy),
@@ -488,16 +486,13 @@ func (c *Client) BackupCertificate(ctx context.Context, certName string, options
 // ImportCertificateOptions contains optional parameters for Client.ImportCertificate
 type ImportCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The management policy for the certificate.
-	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
+	CertificatePolicy *Policy `json:"policy,omitempty"`
 
 	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
 	Password *string `json:"pwd,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImportCertificateOptions {
@@ -516,16 +511,20 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	if options == nil {
 		options = &ImportCertificateOptions{}
 	}
+	var tags map[string]*string
+	if options.Properties != nil && options.Properties.Tags != nil {
+		tags = convertToGeneratedMap(options.Properties.Tags)
+	}
 	resp, err := c.genClient.ImportCertificate(
 		ctx,
 		c.vaultURL,
 		certName,
 		generated.CertificateImportParameters{
 			Base64EncodedCertificate: &base64EncodedCertificate,
-			CertificateAttributes:    options.CertificateAttributes.toGenerated(),
+			CertificateAttributes:    options.Properties.toGenerated(),
 			CertificatePolicy:        options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
 			Password:                 options.Password,
-			Tags:                     convertToGeneratedMap(options.Tags),
+			Tags:                     tags,
 		},
 		options.toGenerated(),
 	)
@@ -535,10 +534,9 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 	return ImportCertificateResponse{
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
@@ -568,9 +566,8 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     certificateAttributesFromGenerated(v.Attributes),
+			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags)),
 			ID:             v.ID,
-			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
 		})
 	}
@@ -636,9 +633,8 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     certificateAttributesFromGenerated(v.Attributes),
+			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags)),
 			ID:             v.ID,
-			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
 		})
 	}
@@ -705,7 +701,7 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 
 // CreateIssuerResponse contains response fields for Client.CreateIssuer
 type CreateIssuerResponse struct {
-	CertificateIssuer
+	Issuer
 }
 
 // CreateIssuer adds or updates the specified certificate issuer. This operation requires the certificates/setissuers permission.
@@ -753,16 +749,16 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	}
 
 	cr := CreateIssuerResponse{}
-	cr.CertificateIssuer = CertificateIssuer{
+	cr.Issuer = Issuer{
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 		Provider:    resp.Provider,
 		ID:          resp.ID,
 	}
 
 	if resp.Attributes != nil {
-		cr.CertificateIssuer.Created = resp.Attributes.Created
-		cr.CertificateIssuer.Enabled = resp.Attributes.Enabled
-		cr.CertificateIssuer.Updated = resp.Attributes.Updated
+		cr.Issuer.Created = resp.Attributes.Created
+		cr.Issuer.Enabled = resp.Attributes.Enabled
+		cr.Issuer.Updated = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		cr.OrganizationID = resp.OrganizationDetails.ID
@@ -795,7 +791,7 @@ func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificate
 
 // GetIssuerResponse contains response fields for ClientGetIssuer
 type GetIssuerResponse struct {
-	CertificateIssuer
+	Issuer
 }
 
 // GetIssuer returns the specified certificate issuer resources in the specified key vault. This operation
@@ -807,16 +803,16 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}
 
 	g := GetIssuerResponse{}
-	g.CertificateIssuer = CertificateIssuer{
+	g.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {
-		g.CertificateIssuer.Created = resp.Attributes.Created
-		g.CertificateIssuer.Enabled = resp.Attributes.Enabled
-		g.CertificateIssuer.Updated = resp.Attributes.Updated
+		g.Issuer.Created = resp.Attributes.Created
+		g.Issuer.Enabled = resp.Attributes.Enabled
+		g.Issuer.Updated = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		g.OrganizationID = resp.OrganizationDetails.ID
@@ -846,7 +842,7 @@ type ListPropertiesOfIssuersOptions struct {
 // ListIssuersPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
 type ListIssuersPropertiesOfIssuersResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
-	Issuers []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
+	Issuers []*IssuerItem `json:"value,omitempty" azure:"ro"`
 
 	// NextLink is the next link of pages to fetch
 	NextLink *string
@@ -854,7 +850,7 @@ type ListIssuersPropertiesOfIssuersResponse struct {
 
 // convert internal Response to ListPropertiesOfIssuersPage
 func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersResponse {
-	var vals []*CertificateIssuerItem
+	var vals []*IssuerItem
 
 	for _, v := range i.Value {
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
@@ -908,7 +904,7 @@ func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCerti
 
 // DeleteIssuerResponse contains response fields for Client.DeleteIssuer
 type DeleteIssuerResponse struct {
-	CertificateIssuer
+	Issuer
 }
 
 // DeleteIssuer permanently removes the specified certificate issuer from the vault. This operation requires the certificates/manageissuers/deleteissuers permission.
@@ -919,16 +915,16 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 	}
 
 	d := DeleteIssuerResponse{}
-	d.CertificateIssuer = CertificateIssuer{
+	d.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {
-		d.CertificateIssuer.Created = resp.Attributes.Created
-		d.CertificateIssuer.Enabled = resp.Attributes.Enabled
-		d.CertificateIssuer.Updated = resp.Attributes.Updated
+		d.Issuer.Created = resp.Attributes.Created
+		d.Issuer.Enabled = resp.Attributes.Enabled
+		d.Issuer.Updated = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		d.OrganizationID = resp.OrganizationDetails.ID
@@ -1009,7 +1005,7 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 
 // UpdateIssuerResponse contains response fields for Client.UpdateIssuer
 type UpdateIssuerResponse struct {
-	CertificateIssuer
+	Issuer
 }
 
 // UpdateIssuer performs an update on the specified certificate issuer entity. This operation requires
@@ -1027,16 +1023,16 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 	}
 
 	u := UpdateIssuerResponse{}
-	u.CertificateIssuer = CertificateIssuer{
+	u.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {
-		u.CertificateIssuer.Created = resp.Attributes.Created
-		u.CertificateIssuer.Enabled = resp.Attributes.Enabled
-		u.CertificateIssuer.Updated = resp.Attributes.Updated
+		u.Issuer.Created = resp.Attributes.Created
+		u.Issuer.Enabled = resp.Attributes.Enabled
+		u.Issuer.Updated = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		u.OrganizationID = resp.OrganizationDetails.ID
@@ -1163,11 +1159,11 @@ func (u *UpdateCertificatePolicyOptions) toGenerated() *generated.KeyVaultClient
 
 // UpdateCertificatePolicyResponse contains response fields for Client.UpdateCertificatePolicy
 type UpdateCertificatePolicyResponse struct {
-	CertificatePolicy
+	Policy
 }
 
 // UpdateCertificatePolicy sets specified members in the certificate policy, leave others as null. This operation requires the certificates/update permission.
-func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, policy CertificatePolicy, options *UpdateCertificatePolicyOptions) (UpdateCertificatePolicyResponse, error) {
+func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, policy Policy, options *UpdateCertificatePolicyOptions) (UpdateCertificatePolicyResponse, error) {
 	resp, err := c.genClient.UpdateCertificatePolicy(
 		ctx,
 		c.vaultURL,
@@ -1181,7 +1177,7 @@ func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, p
 	}
 
 	return UpdateCertificatePolicyResponse{
-		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
+		Policy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
 	}, nil
 }
 
@@ -1196,7 +1192,7 @@ func (g *GetCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientGet
 
 // GetCertificatePolicyResponse contains response fields for Client.GetCertificatePolicy
 type GetCertificatePolicyResponse struct {
-	CertificatePolicy
+	Policy
 }
 
 // GetCertificatePolicy returns the specified certificate policy resources in the specified key vault. This operation requires the certificates/get permission.
@@ -1212,7 +1208,7 @@ func (c *Client) GetCertificatePolicy(ctx context.Context, certName string, opti
 	}
 
 	return GetCertificatePolicyResponse{
-		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
+		Policy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
 	}, nil
 }
 
@@ -1222,13 +1218,10 @@ type UpdateCertificatePropertiesOptions struct {
 	Version string
 
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// The management policy for the certificate.
-	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	CertificatePolicy *Policy `json:"policy,omitempty"`
 }
 
 func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
@@ -1246,15 +1239,19 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 	if options == nil {
 		options = &UpdateCertificatePropertiesOptions{}
 	}
+	var tags map[string]*string
+	if options.Properties != nil && options.Properties.Tags != nil {
+		tags = convertToGeneratedMap(options.Properties.Tags)
+	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
 		c.vaultURL,
 		certName,
 		options.Version,
 		generated.CertificateUpdateParameters{
-			CertificateAttributes: options.CertificateAttributes.toGenerated(),
+			CertificateAttributes: options.Properties.toGenerated(),
 			CertificatePolicy:     options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
-			Tags:                  convertToGeneratedMap(options.Tags),
+			Tags:                  tags,
 		},
 		options.toGenerated(),
 	)
@@ -1269,10 +1266,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 // MergeCertificateOptions contains optional parameters for Client.MergeCertificate
 type MergeCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 }
 
 func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCertificateOptions {
@@ -1289,13 +1283,17 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 	if options == nil {
 		options = &MergeCertificateOptions{}
 	}
+	var tags map[string]*string
+	if options.Properties != nil && options.Properties.Tags != nil {
+		tags = convertToGeneratedMap(options.Properties.Tags)
+	}
 	resp, err := c.genClient.MergeCertificate(
 		ctx, c.vaultURL,
 		certName,
 		generated.CertificateMergeParameters{
 			X509Certificates:      certificates,
-			CertificateAttributes: options.CertificateAttributes.toGenerated(),
-			Tags:                  convertToGeneratedMap(options.Tags),
+			CertificateAttributes: options.Properties.toGenerated(),
+			Tags:                  tags,
 		},
 		options.toGenerated(),
 	)
@@ -1305,10 +1303,9 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 
 	return MergeCertificateResponse{
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
@@ -1348,10 +1345,9 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
@@ -1489,10 +1485,9 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 
 		for i, c := range g.Value {
 			certs[i] = &DeletedCertificateItem{
-				Properties:         certificateAttributesFromGenerated(c.Attributes),
+				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags)),
 				ID:                 c.ID,
 				RecoveryID:         c.RecoveryID,
-				Tags:               convertGeneratedMap(c.Tags),
 				X509Thumbprint:     c.X509Thumbprint,
 				DeletedDate:        c.DeletedDate,
 				ScheduledPurgeDate: c.ScheduledPurgeDate,
@@ -1557,7 +1552,7 @@ func (c *CancelCertificateOperationOptions) toGenerated() *generated.KeyVaultCli
 
 // CancelCertificateOperationResponse contains response fields for Client.CancelCertificateOperation
 type CancelCertificateOperationResponse struct {
-	CertificateOperation
+	Operation
 }
 
 // CancelCertificateOperation cancels a certificate creation operation that is already in progress. This operation requires the certificates/update permission.
@@ -1576,7 +1571,7 @@ func (c *Client) CancelCertificateOperation(ctx context.Context, certName string
 	}
 
 	return CancelCertificateOperationResponse{
-		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
+		Operation: certificateOperationFromGenerated(resp.CertificateOperation),
 	}, nil
 }
 
@@ -1591,7 +1586,7 @@ func (d *DeleteCertificateOperationOptions) toGenerated() *generated.KeyVaultCli
 
 // DeleteCertificateOperationResponse contains response fields for Client.DeleteCertificateOperation
 type DeleteCertificateOperationResponse struct {
-	CertificateOperation
+	Operation
 }
 
 // DeleteCertificateOperation deletes the creation operation for a specified certificate that is in the process of being created. The certificate is no
@@ -1609,6 +1604,6 @@ func (c *Client) DeleteCertificateOperation(ctx context.Context, certName string
 	}
 
 	return DeleteCertificateOperationResponse{
-		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
+		Operation: certificateOperationFromGenerated(resp.CertificateOperation),
 	}, nil
 }

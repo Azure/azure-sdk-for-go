@@ -113,9 +113,9 @@ func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTa
 	return CreateTableResponse{}
 }
 
-// Create creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
+// CreateTable creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
 // HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
-func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
+func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
@@ -169,9 +169,6 @@ type ListEntitiesResponse struct {
 	// ContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	ContinuationNextRowKey *string
 
-	// The metadata response of the table.
-	ODataMetadata *string
-
 	// List of table entities.
 	Entities [][]byte
 }
@@ -190,12 +187,11 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 	return ListEntitiesResponse{
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
-		ODataMetadata:                resp.TableEntityQueryResponse.ODataMetadata,
 		Entities:                     marshalledValue,
 	}, nil
 }
 
-// List queries the entities using the specified ListEntitiesOptions.
+// ListEntities queries the entities using the specified ListEntitiesOptions.
 // ListEntitiesOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those entities that satisfy the filter expression.
@@ -207,11 +203,11 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 // Top: The maximum number of entities that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
+// ListEntities returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *Client) List(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
+func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}
@@ -376,7 +372,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 // UpdateEntityOptions contains optional parameters for Client.UpdateEntity
 type UpdateEntityOptions struct {
 	IfMatch    *azcore.ETag
-	UpdateMode EntityUpdateMode
+	UpdateMode UpdateMode
 }
 
 func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableClientMergeEntityOptions {
@@ -441,7 +437,7 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntit
 func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
 		options = &UpdateEntityOptions{
-			UpdateMode: EntityUpdateModeMerge,
+			UpdateMode: UpdateModeMerge,
 		}
 	}
 
@@ -463,7 +459,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case EntityUpdateModeMerge:
+	case UpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -474,7 +470,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			&generated.QueryOptions{},
 		)
 		return updateEntityResponseFromMergeGenerated(&resp), err
-	case EntityUpdateModeReplace:
+	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -499,7 +495,7 @@ type InsertEntityOptions struct {
 
 	// UpdateMode is the desired mode for the Update. Use ReplaceEntity to replace fields on
 	// the entity, use MergeEntity to merge fields of the entity.
-	UpdateMode EntityUpdateMode
+	UpdateMode UpdateMode
 }
 
 // InsertEntityResponse contains response fields for Client.InsertEntity
@@ -544,7 +540,7 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	if options == nil {
 		options = &InsertEntityOptions{
-			UpdateMode: EntityUpdateModeMerge,
+			UpdateMode: UpdateModeMerge,
 		}
 	}
 	var mapEntity map[string]interface{}
@@ -560,7 +556,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 	rowkey := rk.(string)
 
 	switch options.UpdateMode {
-	case EntityUpdateModeMerge:
+	case UpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
 			generated.Enum1Three0,
@@ -571,7 +567,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 			&generated.QueryOptions{},
 		)
 		return insertEntityFromGeneratedMerge(&resp), err
-	case EntityUpdateModeReplace:
+	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
 			generated.Enum1Three0,

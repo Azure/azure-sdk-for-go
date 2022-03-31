@@ -17,35 +17,19 @@ const (
 	rowKey                        = "RowKey"
 )
 
-// ResponseFormat determines what is returned from a service request
-type ResponseFormat string
-
-const (
-	ResponseFormatReturnContent   ResponseFormat = "return-content"
-	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
-)
-
-// PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
-func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{
-		ResponseFormatReturnContent,
-		ResponseFormatReturnNoContent,
-	}
-}
-
-// EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
+// UpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
 // will replace an existing entity, MergeEntity will merge properties of the entities.
-type EntityUpdateMode string
+type UpdateMode string
 
 const (
-	EntityUpdateModeReplace EntityUpdateMode = "replace"
-	EntityUpdateModeMerge   EntityUpdateMode = "merge"
+	UpdateModeReplace UpdateMode = "replace"
+	UpdateModeMerge   UpdateMode = "merge"
 )
 
-// PossibleEntityUpdateModeValues returns the possible values for the EntityUpdateMode const type.
-func PossibleEntityUpdateModeValues() []EntityUpdateMode {
-	return []EntityUpdateMode{
-		EntityUpdateModeMerge,
-		EntityUpdateModeReplace,
+// PossibleUpdateModeValues returns the possible values for the EntityUpdateMode const type.
+func PossibleUpdateModeValues() []UpdateMode {
+	return []UpdateMode{
+		UpdateModeMerge,
+		UpdateModeReplace,
 	}
 }

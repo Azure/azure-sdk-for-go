@@ -174,7 +174,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 
 	// Success on a list
-	pager := client.List(nil)
+	pager := client.ListEntities(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
@@ -240,7 +240,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 
 	// Success on a list
-	pager := client.List(nil)
+	pager := client.ListEntities(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)

@@ -238,7 +238,7 @@ func ExampleClient_Create() {
 	}
 
 	// Create a table
-	_, err = client.Create(context.TODO(), nil)
+	_, err = client.CreateTable(context.TODO(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -433,7 +433,7 @@ func ExampleClient_List() {
 	//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 	//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 	filter := fmt.Sprintf("PartitionKey eq '%s' or PartitionKey eq '%s'", "pk001", "pk002")
-	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
+	pager := client.ListEntities(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
 	for pager.More() {
@@ -461,7 +461,7 @@ func ExampleClient_List() {
 	}
 
 	// To list all entities in a table, provide nil to Query()
-	listPager := client.List(nil)
+	listPager := client.ListEntities(nil)
 	pageCount = 0
 	for listPager.More() {
 		response, err := listPager.NextPage(context.TODO())

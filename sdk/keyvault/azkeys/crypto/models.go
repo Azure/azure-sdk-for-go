@@ -8,17 +8,19 @@ package crypto
 
 // KeyOperationResult - The key operation result.
 type KeyOperationResult struct {
+	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	// READ-ONLY
-	AdditionalAuthenticatedData []byte `json:"aad,omitempty" azure:"ro"`
+	AuthData []byte `json:"aad,omitempty" azure:"ro"`
 
+	// The tag to authenticate when performing decryption with an authenticated algorithm.
 	// READ-ONLY
-	AuthenticationTag []byte `json:"tag,omitempty" azure:"ro"`
+	AuthTag []byte `json:"tag,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	IV []byte `json:"iv,omitempty" azure:"ro"`
 
 	// READ-ONLY; Key identifier
-	ID *string `json:"kid,omitempty" azure:"ro"`
+	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	Result []byte `json:"value,omitempty" azure:"ro"`

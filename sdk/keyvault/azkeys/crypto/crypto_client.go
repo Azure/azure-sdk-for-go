@@ -120,22 +120,22 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 // EncryptOptions contains optional parameters for Client.EncryptOptions
 type EncryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-	AAD []byte `json:"aad,omitempty"`
+	AuthData []byte `json:"aad,omitempty"`
 
 	// Initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	Tag []byte `json:"tag,omitempty"`
+	AuthenticationTag []byte `json:"tag,omitempty"`
 }
 
 func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
-		AAD:       e.AAD,
+		AAD:       e.AuthData,
 		Iv:        e.IV,
-		Tag:       e.Tag,
+		Tag:       e.AuthenticationTag,
 	}
 }
 
@@ -147,10 +147,10 @@ type EncryptResponse struct {
 func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) EncryptResponse {
 	return EncryptResponse{
 		KeyOperationResult: KeyOperationResult{
-			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
-			AuthenticationTag:           i.AuthenticationTag,
+			AuthData: i.AdditionalAuthenticatedData,
+			AuthTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                          i.Kid,
+			KeyID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -186,22 +186,22 @@ func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []b
 // DecryptOptions contains the optional parameters for the Client.Decrypt function
 type DecryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-	AAD []byte `json:"aad,omitempty"`
+	AuthData []byte `json:"aad,omitempty"`
 
 	// Initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	Tag []byte `json:"tag,omitempty"`
+	AuthTag []byte `json:"tag,omitempty"`
 }
 
 func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
-		AAD:       e.AAD,
+		AAD:       e.AuthData,
 		Iv:        e.IV,
-		Tag:       e.Tag,
+		Tag:       e.AuthTag,
 	}
 }
 
@@ -213,10 +213,10 @@ type DecryptResponse struct {
 func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) DecryptResponse {
 	return DecryptResponse{
 		KeyOperationResult: KeyOperationResult{
-			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
-			AuthenticationTag:           i.AuthenticationTag,
+			AuthData: i.AdditionalAuthenticatedData,
+			AuthTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                          i.Kid,
+			KeyID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -251,22 +251,22 @@ func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertex
 // WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
 type WrapKeyOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-	AAD []byte `json:"aad,omitempty"`
+	AuthData []byte `json:"aad,omitempty"`
 
 	// Initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	Tag []byte `json:"tag,omitempty"`
+	AuthTag []byte `json:"tag,omitempty"`
 }
 
 func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
-		AAD:       w.AAD,
+		AAD:       w.AuthData,
 		Iv:        w.IV,
-		Tag:       w.Tag,
+		Tag:       w.AuthTag,
 	}
 }
 
@@ -278,10 +278,10 @@ type WrapKeyResponse struct {
 func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) WrapKeyResponse {
 	return WrapKeyResponse{
 		KeyOperationResult: KeyOperationResult{
-			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
-			AuthenticationTag:           i.AuthenticationTag,
+			AuthData: i.AdditionalAuthenticatedData,
+			AuthTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                          i.Kid,
+			KeyID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -316,22 +316,22 @@ func (c *Client) WrapKey(ctx context.Context, alg WrapAlgorithm, key []byte, opt
 // UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method
 type UnwrapKeyOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-	AAD []byte `json:"aad,omitempty"`
+	AuthData []byte `json:"aad,omitempty"`
 
 	// Initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	Tag []byte `json:"tag,omitempty"`
+	AuthTag []byte `json:"tag,omitempty"`
 }
 
 func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlgorithm, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
 		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
-		AAD:       w.AAD,
+		AAD:       w.AuthData,
 		Iv:        w.IV,
-		Tag:       w.Tag,
+		Tag:       w.AuthTag,
 	}
 }
 
@@ -343,10 +343,10 @@ type UnwrapKeyResponse struct {
 func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) UnwrapKeyResponse {
 	return UnwrapKeyResponse{
 		KeyOperationResult: KeyOperationResult{
-			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
-			AuthenticationTag:           i.AuthenticationTag,
+			AuthData: i.AdditionalAuthenticatedData,
+			AuthTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                          i.Kid,
+			KeyID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}
@@ -391,10 +391,10 @@ type SignResponse struct {
 func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignResponse {
 	return SignResponse{
 		KeyOperationResult: KeyOperationResult{
-			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
-			AuthenticationTag:           i.AuthenticationTag,
+			AuthData: i.AdditionalAuthenticatedData,
+			AuthTag:           i.AuthenticationTag,
 			IV:                          i.Iv,
-			ID:                          i.Kid,
+			KeyID:                          i.Kid,
 			Result:                      i.Result,
 		},
 	}

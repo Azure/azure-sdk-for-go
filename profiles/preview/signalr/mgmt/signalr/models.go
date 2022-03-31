@@ -12,7 +12,7 @@ package signalr
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr"
+	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2022-02-01/signalr"
 )
 
 const (
@@ -22,84 +22,148 @@ const (
 type ACLAction = original.ACLAction
 
 const (
-	Allow ACLAction = original.Allow
-	Deny  ACLAction = original.Deny
+	ACLActionAllow ACLAction = original.ACLActionAllow
+	ACLActionDeny  ACLAction = original.ACLActionDeny
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type FeatureFlags = original.FeatureFlags
 
 const (
-	EnableConnectivityLogs FeatureFlags = original.EnableConnectivityLogs
-	EnableMessagingLogs    FeatureFlags = original.EnableMessagingLogs
-	ServiceMode            FeatureFlags = original.ServiceMode
+	FeatureFlagsEnableConnectivityLogs FeatureFlags = original.FeatureFlagsEnableConnectivityLogs
+	FeatureFlagsEnableLiveTrace        FeatureFlags = original.FeatureFlagsEnableLiveTrace
+	FeatureFlagsEnableMessagingLogs    FeatureFlags = original.FeatureFlagsEnableMessagingLogs
+	FeatureFlagsServiceMode            FeatureFlags = original.FeatureFlagsServiceMode
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary   KeyType = original.Primary
-	Secondary KeyType = original.Secondary
+	KeyTypePrimary   KeyType = original.KeyTypePrimary
+	KeyTypeSalt      KeyType = original.KeyTypeSalt
+	KeyTypeSecondary KeyType = original.KeyTypeSecondary
+)
+
+type ManagedIdentityType = original.ManagedIdentityType
+
+const (
+	ManagedIdentityTypeNone           ManagedIdentityType = original.ManagedIdentityTypeNone
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = original.ManagedIdentityTypeSystemAssigned
+	ManagedIdentityTypeUserAssigned   ManagedIdentityType = original.ManagedIdentityTypeUserAssigned
 )
 
 type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
 
 const (
-	Approved     PrivateLinkServiceConnectionStatus = original.Approved
-	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
-	Pending      PrivateLinkServiceConnectionStatus = original.Pending
-	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Moving    ProvisioningState = original.Moving
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
-	Unknown   ProvisioningState = original.Unknown
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateMoving    ProvisioningState = original.ProvisioningStateMoving
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown   ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type RequestType = original.RequestType
 
 const (
-	ClientConnection RequestType = original.ClientConnection
-	RESTAPI          RequestType = original.RESTAPI
-	ServerConnection RequestType = original.ServerConnection
+	RequestTypeClientConnection RequestType = original.RequestTypeClientConnection
+	RequestTypeRESTAPI          RequestType = original.RequestTypeRESTAPI
+	RequestTypeServerConnection RequestType = original.RequestTypeServerConnection
+	RequestTypeTrace            RequestType = original.RequestTypeTrace
+)
+
+type ScaleType = original.ScaleType
+
+const (
+	ScaleTypeAutomatic ScaleType = original.ScaleTypeAutomatic
+	ScaleTypeManual    ScaleType = original.ScaleTypeManual
+	ScaleTypeNone      ScaleType = original.ScaleTypeNone
 )
 
 type ServiceKind = original.ServiceKind
 
 const (
-	RawWebSockets ServiceKind = original.RawWebSockets
-	SignalR       ServiceKind = original.SignalR
+	ServiceKindRawWebSockets ServiceKind = original.ServiceKindRawWebSockets
+	ServiceKindSignalR       ServiceKind = original.ServiceKindSignalR
+)
+
+type SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatus
+
+const (
+	SharedPrivateLinkResourceStatusApproved     SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusApproved
+	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusDisconnected
+	SharedPrivateLinkResourceStatusPending      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusPending
+	SharedPrivateLinkResourceStatusRejected     SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusRejected
+	SharedPrivateLinkResourceStatusTimeout      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusTimeout
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Basic    SkuTier = original.Basic
-	Free     SkuTier = original.Free
-	Premium  SkuTier = original.Premium
-	Standard SkuTier = original.Standard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierFree     SkuTier = original.SkuTierFree
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
+)
+
+type UpstreamAuthType = original.UpstreamAuthType
+
+const (
+	UpstreamAuthTypeManagedIdentity UpstreamAuthType = original.UpstreamAuthTypeManagedIdentity
+	UpstreamAuthTypeNone            UpstreamAuthType = original.UpstreamAuthTypeNone
 )
 
 type BaseClient = original.BaseClient
 type Client = original.Client
 type CorsSettings = original.CorsSettings
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
-type CreateOrUpdateProperties = original.CreateOrUpdateProperties
+type CustomCertificate = original.CustomCertificate
+type CustomCertificateList = original.CustomCertificateList
+type CustomCertificateListIterator = original.CustomCertificateListIterator
+type CustomCertificateListPage = original.CustomCertificateListPage
+type CustomCertificateProperties = original.CustomCertificateProperties
+type CustomCertificatesClient = original.CustomCertificatesClient
+type CustomCertificatesCreateOrUpdateFuture = original.CustomCertificatesCreateOrUpdateFuture
+type CustomDomain = original.CustomDomain
+type CustomDomainList = original.CustomDomainList
+type CustomDomainListIterator = original.CustomDomainListIterator
+type CustomDomainListPage = original.CustomDomainListPage
+type CustomDomainProperties = original.CustomDomainProperties
+type CustomDomainsClient = original.CustomDomainsClient
+type CustomDomainsCreateOrUpdateFuture = original.CustomDomainsCreateOrUpdateFuture
+type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
 type DeleteFuture = original.DeleteFuture
 type Dimension = original.Dimension
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseBody = original.ErrorResponseBody
 type Feature = original.Feature
 type Keys = original.Keys
+type LiveTraceCategory = original.LiveTraceCategory
+type LiveTraceConfiguration = original.LiveTraceConfiguration
 type LogSpecification = original.LogSpecification
+type ManagedIdentity = original.ManagedIdentity
+type ManagedIdentitySettings = original.ManagedIdentitySettings
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
@@ -115,6 +179,9 @@ type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointACL = original.PrivateEndpointACL
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionList = original.PrivateEndpointConnectionList
+type PrivateEndpointConnectionListIterator = original.PrivateEndpointConnectionListIterator
+type PrivateEndpointConnectionListPage = original.PrivateEndpointConnectionListPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
@@ -133,13 +200,32 @@ type Resource = original.Resource
 type ResourceList = original.ResourceList
 type ResourceListIterator = original.ResourceListIterator
 type ResourceListPage = original.ResourceListPage
+type ResourceLogCategory = original.ResourceLogCategory
+type ResourceLogConfiguration = original.ResourceLogConfiguration
+type ResourceReference = original.ResourceReference
 type ResourceSku = original.ResourceSku
 type ResourceType = original.ResourceType
 type RestartFuture = original.RestartFuture
 type ServerlessUpstreamSettings = original.ServerlessUpstreamSettings
 type ServiceSpecification = original.ServiceSpecification
+type ShareablePrivateLinkResourceProperties = original.ShareablePrivateLinkResourceProperties
+type ShareablePrivateLinkResourceType = original.ShareablePrivateLinkResourceType
+type SharedPrivateLinkResource = original.SharedPrivateLinkResource
+type SharedPrivateLinkResourceList = original.SharedPrivateLinkResourceList
+type SharedPrivateLinkResourceListIterator = original.SharedPrivateLinkResourceListIterator
+type SharedPrivateLinkResourceListPage = original.SharedPrivateLinkResourceListPage
+type SharedPrivateLinkResourceProperties = original.SharedPrivateLinkResourceProperties
+type SharedPrivateLinkResourcesClient = original.SharedPrivateLinkResourcesClient
+type SharedPrivateLinkResourcesCreateOrUpdateFuture = original.SharedPrivateLinkResourcesCreateOrUpdateFuture
+type SharedPrivateLinkResourcesDeleteFuture = original.SharedPrivateLinkResourcesDeleteFuture
+type Sku = original.Sku
+type SkuCapacity = original.SkuCapacity
+type SkuList = original.SkuList
+type SystemData = original.SystemData
+type TLSSettings = original.TLSSettings
 type TrackedResource = original.TrackedResource
 type UpdateFuture = original.UpdateFuture
+type UpstreamAuthSettings = original.UpstreamAuthSettings
 type UpstreamTemplate = original.UpstreamTemplate
 type Usage = original.Usage
 type UsageList = original.UsageList
@@ -147,6 +233,7 @@ type UsageListIterator = original.UsageListIterator
 type UsageListPage = original.UsageListPage
 type UsageName = original.UsageName
 type UsagesClient = original.UsagesClient
+type UserAssignedIdentityProperty = original.UserAssignedIdentityProperty
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -156,6 +243,30 @@ func NewClient(subscriptionID string) Client {
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomCertificateListIterator(page CustomCertificateListPage) CustomCertificateListIterator {
+	return original.NewCustomCertificateListIterator(page)
+}
+func NewCustomCertificateListPage(cur CustomCertificateList, getNextPage func(context.Context, CustomCertificateList) (CustomCertificateList, error)) CustomCertificateListPage {
+	return original.NewCustomCertificateListPage(cur, getNextPage)
+}
+func NewCustomCertificatesClient(subscriptionID string) CustomCertificatesClient {
+	return original.NewCustomCertificatesClient(subscriptionID)
+}
+func NewCustomCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CustomCertificatesClient {
+	return original.NewCustomCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomDomainListIterator(page CustomDomainListPage) CustomDomainListIterator {
+	return original.NewCustomDomainListIterator(page)
+}
+func NewCustomDomainListPage(cur CustomDomainList, getNextPage func(context.Context, CustomDomainList) (CustomDomainList, error)) CustomDomainListPage {
+	return original.NewCustomDomainListPage(cur, getNextPage)
+}
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
+}
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
@@ -168,6 +279,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
+	return original.NewPrivateEndpointConnectionListIterator(page)
+}
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return original.NewPrivateEndpointConnectionListPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -193,6 +310,18 @@ func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
 func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
 	return original.NewResourceListPage(cur, getNextPage)
 }
+func NewSharedPrivateLinkResourceListIterator(page SharedPrivateLinkResourceListPage) SharedPrivateLinkResourceListIterator {
+	return original.NewSharedPrivateLinkResourceListIterator(page)
+}
+func NewSharedPrivateLinkResourceListPage(cur SharedPrivateLinkResourceList, getNextPage func(context.Context, SharedPrivateLinkResourceList) (SharedPrivateLinkResourceList, error)) SharedPrivateLinkResourceListPage {
+	return original.NewSharedPrivateLinkResourceListPage(cur, getNextPage)
+}
+func NewSharedPrivateLinkResourcesClient(subscriptionID string) SharedPrivateLinkResourcesClient {
+	return original.NewSharedPrivateLinkResourcesClient(subscriptionID)
+}
+func NewSharedPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) SharedPrivateLinkResourcesClient {
+	return original.NewSharedPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewUsageListIterator(page UsageListPage) UsageListIterator {
 	return original.NewUsageListIterator(page)
 }
@@ -211,11 +340,17 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleACLActionValues() []ACLAction {
 	return original.PossibleACLActionValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleFeatureFlagsValues() []FeatureFlags {
 	return original.PossibleFeatureFlagsValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
+}
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return original.PossibleManagedIdentityTypeValues()
 }
 func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
 	return original.PossiblePrivateLinkServiceConnectionStatusValues()
@@ -226,11 +361,20 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleRequestTypeValues() []RequestType {
 	return original.PossibleRequestTypeValues()
 }
+func PossibleScaleTypeValues() []ScaleType {
+	return original.PossibleScaleTypeValues()
+}
 func PossibleServiceKindValues() []ServiceKind {
 	return original.PossibleServiceKindValues()
 }
+func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResourceStatus {
+	return original.PossibleSharedPrivateLinkResourceStatusValues()
+}
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleUpstreamAuthTypeValues() []UpstreamAuthType {
+	return original.PossibleUpstreamAuthTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

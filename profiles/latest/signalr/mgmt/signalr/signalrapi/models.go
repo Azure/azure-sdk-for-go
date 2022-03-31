@@ -9,10 +9,13 @@
 
 package signalrapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr/signalrapi"
+import original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2022-02-01/signalr/signalrapi"
 
 type ClientAPI = original.ClientAPI
+type CustomCertificatesClientAPI = original.CustomCertificatesClientAPI
+type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type SharedPrivateLinkResourcesClientAPI = original.SharedPrivateLinkResourcesClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

@@ -24,8 +24,8 @@ import (
 
 // NewPollerOptions contains the optional parameters for NewPoller.
 type NewPollerOptions[T any] struct {
-	// FinalState contains the final-state-via value for the LRO.
-	FinalState string
+	// FinalStateVia contains the final-state-via value for the LRO.
+	FinalStateVia string
 
 	// Response contains a preconstructed response type.
 	// The final payload will be unmarshaled into it and returned.
@@ -50,7 +50,7 @@ func NewPoller[T any](resp *http.Response, pl pipeline.Pipeline, options *NewPol
 	// determine the polling method
 	var lro pollers.Operation
 	if async.Applicable(resp) {
-		lro, err = async.New(resp, options.FinalState, tName)
+		lro, err = async.New(resp, options.FinalStateVia, tName)
 	} else if loc.Applicable(resp) {
 		lro, err = loc.New(resp, tName)
 	} else if body.Applicable(resp) {

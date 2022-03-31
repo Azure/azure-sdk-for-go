@@ -216,14 +216,13 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 
 	return GetCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
-			Cer:            resp.Cer,
-			ContentType:    resp.ContentType,
-			ID:             resp.ID,
-			KeyID:          resp.Kid,
-			SecretID:       resp.Sid,
-			X509Thumbprint: resp.X509Thumbprint,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Cer:         resp.Cer,
+			ContentType: resp.ContentType,
+			ID:          resp.ID,
+			KeyID:       resp.Kid,
+			SecretID:    resp.Sid,
+			Policy:      certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -288,14 +287,13 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 			RecoveryID:         g.RecoveryID,
 			DeletedOn:          g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID),
+			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
 			Cer:                g.Cer,
 			ContentType:        g.ContentType,
 			ID:                 g.ID,
 			KeyID:              g.Kid,
 			Policy:             certificatePolicyFromGenerated(g.Policy),
 			SecretID:           g.Sid,
-			X509Thumbprint:     g.X509Thumbprint,
 		},
 	}
 }
@@ -443,14 +441,13 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 			RecoveryID:         resp.RecoveryID,
 			DeletedOn:          resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
+			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
 			Cer:                resp.Cer,
 			ContentType:        resp.ContentType,
 			ID:                 resp.ID,
 			KeyID:              resp.Kid,
 			Policy:             certificatePolicyFromGenerated(resp.Policy),
 			SecretID:           resp.Sid,
-			X509Thumbprint:     resp.X509Thumbprint,
 		},
 	}, nil
 }
@@ -534,14 +531,13 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 	return ImportCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
-			Cer:            resp.Cer,
-			ContentType:    resp.ContentType,
-			ID:             resp.ID,
-			KeyID:          resp.Kid,
-			SecretID:       resp.Sid,
-			X509Thumbprint: resp.X509Thumbprint,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Cer:         resp.Cer,
+			ContentType: resp.ContentType,
+			ID:          resp.ID,
+			KeyID:       resp.Kid,
+			SecretID:    resp.Sid,
+			Policy:      certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -551,8 +547,8 @@ type ListCertificatesOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// ListCertificatesResponse contains response fields for ListCertificatesPager.NextPage
-type ListCertificatesResponse struct {
+// ListPropertiesOfCertificatesResponse contains response fields for ListCertificatesPager.NextPage
+type ListPropertiesOfCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -561,33 +557,32 @@ type ListCertificatesResponse struct {
 }
 
 // convert internal Response to ListCertificatesPage
-func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse) ListCertificatesResponse {
+func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse) ListPropertiesOfCertificatesResponse {
 	var vals []*CertificateItem
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID),
-			ID:             v.ID,
-			X509Thumbprint: v.X509Thumbprint,
+			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			ID:         v.ID,
 		})
 	}
 
-	return ListCertificatesResponse{
+	return ListPropertiesOfCertificatesResponse{
 		Certificates: vals,
 		NextLink:     i.NextLink,
 	}
 }
 
-// ListCertificates retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
+// ListPropertiesOfCertificates retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
 // public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
 // base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
 // certificate are not listed in the response. This operation requires the certificates/list permission.
-func (c *Client) ListCertificates(options *ListCertificatesOptions) *runtime.Pager[ListCertificatesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListCertificatesResponse]{
-		More: func(page ListCertificatesResponse) bool {
+func (c *Client) ListPropertiesOfCertificates(options *ListCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfCertificatesResponse]{
+		More: func(page ListPropertiesOfCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListCertificatesResponse) (ListCertificatesResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfCertificatesResponse) (ListPropertiesOfCertificatesResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -596,18 +591,18 @@ func (c *Client) ListCertificates(options *ListCertificatesOptions) *runtime.Pag
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListCertificatesResponse{}, err
+				return ListPropertiesOfCertificatesResponse{}, err
 			}
 			resp, err := c.genClient.Pl.Do(req)
 			if err != nil {
-				return ListCertificatesResponse{}, err
+				return ListPropertiesOfCertificatesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListCertificatesResponse{}, runtime.NewResponseError(resp)
+				return ListPropertiesOfCertificatesResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.genClient.GetCertificatesHandleResponse(resp)
 			if err != nil {
-				return ListCertificatesResponse{}, err
+				return ListPropertiesOfCertificatesResponse{}, err
 			}
 			return listCertsPageFromGenerated(genResp), nil
 		},
@@ -619,8 +614,8 @@ type ListCertificateVersionsOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// ListCertificateVersionsResponse contains response fields for ListCertificateVersionsPager.NextPage
-type ListCertificateVersionsResponse struct {
+// ListPropertiesOfCertificateVersionsResponse contains response fields for ListCertificateVersionsPager.NextPage
+type ListPropertiesOfCertificateVersionsResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
@@ -629,31 +624,30 @@ type ListCertificateVersionsResponse struct {
 }
 
 // create ListCertificatesPage from generated pager
-func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsResponse {
+func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListPropertiesOfCertificateVersionsResponse {
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID),
-			ID:             v.ID,
-			X509Thumbprint: v.X509Thumbprint,
+			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			ID:         v.ID,
 		})
 	}
 
-	return ListCertificateVersionsResponse{
+	return ListPropertiesOfCertificateVersionsResponse{
 		Certificates: vals,
 		NextLink:     i.NextLink,
 	}
 }
 
-// ListCertificateVersions lists all versions of the specified certificate. The full certificate identifer and
+// ListPropertiesOfCertificateVersions lists all versions of the specified certificate. The full certificate identifer and
 // attributes are provided in the response. No values are returned for the certificates. This operation
 // requires the certificates/list permission.
-func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListCertificateVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListCertificateVersionsResponse]{
-		More: func(page ListCertificateVersionsResponse) bool {
+func (c *Client) ListPropertiesOfCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfCertificateVersionsResponse]{
+		More: func(page ListPropertiesOfCertificateVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListCertificateVersionsResponse) (ListCertificateVersionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListPropertiesOfCertificateVersionsResponse) (ListPropertiesOfCertificateVersionsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -662,18 +656,18 @@ func (c *Client) ListCertificateVersions(certificateName string, options *ListCe
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListCertificateVersionsResponse{}, err
+				return ListPropertiesOfCertificateVersionsResponse{}, err
 			}
 			resp, err := c.genClient.Pl.Do(req)
 			if err != nil {
-				return ListCertificateVersionsResponse{}, err
+				return ListPropertiesOfCertificateVersionsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListCertificateVersionsResponse{}, runtime.NewResponseError(resp)
+				return ListPropertiesOfCertificateVersionsResponse{}, runtime.NewResponseError(resp)
 			}
 			genResp, err := c.genClient.GetCertificateVersionsHandleResponse(resp)
 			if err != nil {
-				return ListCertificateVersionsResponse{}, err
+				return ListPropertiesOfCertificateVersionsResponse{}, err
 			}
 			return listCertificateVersionsPageFromGenerated(genResp), nil
 		},
@@ -1303,14 +1297,13 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 
 	return MergeCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
-			Cer:            resp.Cer,
-			ContentType:    resp.ContentType,
-			ID:             resp.ID,
-			KeyID:          resp.Kid,
-			SecretID:       resp.Sid,
-			X509Thumbprint: resp.X509Thumbprint,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Cer:         resp.Cer,
+			ContentType: resp.ContentType,
+			ID:          resp.ID,
+			KeyID:       resp.Kid,
+			SecretID:    resp.Sid,
+			Policy:      certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -1345,14 +1338,13 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
-			Cer:            resp.Cer,
-			ContentType:    resp.ContentType,
-			ID:             resp.ID,
-			KeyID:          resp.Kid,
-			SecretID:       resp.Sid,
-			X509Thumbprint: resp.X509Thumbprint,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Cer:         resp.Cer,
+			ContentType: resp.ContentType,
+			ID:          resp.ID,
+			KeyID:       resp.Kid,
+			SecretID:    resp.Sid,
+			Policy:      certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -1485,10 +1477,9 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 
 		for i, c := range g.Value {
 			certs[i] = &DeletedCertificateItem{
-				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID),
+				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID, c.X509Thumbprint),
 				ID:                 c.ID,
 				RecoveryID:         c.RecoveryID,
-				X509Thumbprint:     c.X509Thumbprint,
 				DeletedOn:          c.DeletedDate,
 				ScheduledPurgeDate: c.ScheduledPurgeDate,
 			}

@@ -8,9 +8,16 @@ package azcertificates_test
 
 import (
 	"context"
+	"crypto/rand"
+	"crypto/x509"
+	"encoding/base64"
+	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/big"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -100,6 +107,7 @@ func ExampleClient_GetCertificate() {
 		panic(err)
 	}
 }
+
 func ExampleClient_UpdateCertificateProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +145,7 @@ func ExampleClient_UpdateCertificateProperties() {
 	fmt.Println(resp.Properties.Tags)
 }
 
-func ExampleClient_ListCertificates() {
+func ExampleClient_ListPropertiesOfCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -153,7 +161,7 @@ func ExampleClient_ListCertificates() {
 		panic(err)
 	}
 
-	pager := client.ListCertificates(nil)
+	pager := client.ListPropertiesOfCertificates(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -191,4 +199,98 @@ func ExampleClient_BeginDeleteCertificate() {
 	}
 
 	fmt.Println("Deleted certificate with ID: ", *finalResp.ID)
+}
+
+func ExampleClient_MergeCertificate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
+	if !ok {
+		log.Fatalf("Could not find 'AZURE_KEYVAULT_URL' in environment variables")
+	}
+
+	client, err := azcertificates.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	certPolicy := azcertificates.Policy{
+		IssuerParameters: &azcertificates.IssuerParameters{
+			Name:                    to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
+		},
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+			Subject: to.Ptr("CN=MyCert"),
+		},
+	}
+
+	// Load public key
+	data, err := ioutil.ReadFile("path/to/cert/ca.crt")
+	block, _ := pem.Decode(data)
+	caCert, err := x509.ParseCertificate(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+
+	data, err = ioutil.ReadFile("path/to/certkey/ca.key")
+	pkeyBlock, _ := pem.Decode(data)
+	pkey, err := x509.ParsePKCS1PrivateKey(pkeyBlock.Bytes)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BeginCreateCertificate(context.TODO(), "myCertName", certPolicy, nil)
+	if err != nil {
+		panic(err)
+	}
+	_, err = resp.PollUntilDone(context.TODO(), time.Second)
+	if err != nil {
+		panic(err)
+	}
+
+	certOpResp, err := client.GetCertificateOperation(context.TODO(), "myCertName", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	// load certificate request
+	csrblock, _ := pem.Decode([]byte(csr))
+	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	if err != nil {
+		panic(err)
+	}
+
+	cert := x509.Certificate{
+		SerialNumber:       big.NewInt(1),
+		NotBefore:          time.Now(),
+		NotAfter:           time.Now().Add(24 * time.Hour),
+		Issuer:             caCert.Issuer,
+		Subject:            req.Subject,
+		PublicKey:          req.PublicKey,
+		PublicKeyAlgorithm: req.PublicKeyAlgorithm,
+		Signature:          req.Signature,
+		SignatureAlgorithm: req.SignatureAlgorithm,
+	}
+
+	certBytes, err := x509.CreateCertificate(rand.Reader, &cert, caCert, req.PublicKey, pkey)
+	if err != nil {
+		panic(err)
+	}
+
+	// Need to strip the BEGIN/END from the certificate
+	certificateString := string(certBytes)
+	certificateString = strings.Replace(certificateString, "-----Begin Certificate-----", "", 1)
+	certificateString = strings.Replace(certificateString, "-----End Certificate-----", "", 1)
+
+	mergeResp, err := client.MergeCertificate(context.TODO(), "myCertName", [][]byte{[]byte(certificateString)}, nil)
+	if err != nil {
+		panic(err)
+	}
+	_ = mergeResp
 }

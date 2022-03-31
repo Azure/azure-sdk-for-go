@@ -82,6 +82,9 @@ type Properties struct {
 	VaultURL *string
 
 	Version *string
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
 }
 
 func (c *Properties) toGenerated() *generated.CertificateAttributes {
@@ -100,7 +103,7 @@ func (c *Properties) toGenerated() *generated.CertificateAttributes {
 	}
 }
 
-func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string, id *string) *Properties {
+func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string, id *string, thumbprint []byte) *Properties {
 	if g == nil {
 		return nil
 	}
@@ -120,6 +123,7 @@ func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string
 		Name:            name,
 		VaultURL:        vaulURL,
 		Version:         version,
+		X509Thumbprint:  thumbprint,
 	}
 }
 
@@ -142,9 +146,6 @@ type Certificate struct {
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // CertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
@@ -169,9 +170,6 @@ type CertificateWithPolicy struct {
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
@@ -180,13 +178,12 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 	}
 
 	return Certificate{
-		Properties:     propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID),
-		Cer:            g.Cer,
-		ContentType:    g.ContentType,
-		ID:             g.ID,
-		KeyID:          g.Kid,
-		SecretID:       g.Sid,
-		X509Thumbprint: g.X509Thumbprint,
+		Properties:  propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+		Cer:         g.Cer,
+		ContentType: g.ContentType,
+		ID:          g.ID,
+		KeyID:       g.Kid,
+		SecretID:    g.Sid,
 	}
 }
 
@@ -238,9 +235,6 @@ type CertificateItem struct {
 
 	// Certificate identifier.
 	ID *string `json:"id,omitempty"`
-
-	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
 }
 
 // Operation - A certificate operation is returned in case of asynchronous requests.
@@ -369,7 +363,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 		c.ReuseKey = g.KeyProperties.ReuseKey
 	}
 
-	c.Properties = propertiesFromGenerated(g.Attributes, nil, nil)
+	c.Properties = propertiesFromGenerated(g.Attributes, nil, nil, nil)
 	c.IssuerParameters = issuerParametersFromGenerated(g.IssuerParameters)
 	c.LifetimeActions = la
 	c.SecretProperties = &SecretProperties{ContentType: g.SecretProperties.ContentType}
@@ -461,9 +455,6 @@ type DeletedCertificate struct {
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
@@ -476,9 +467,6 @@ type DeletedCertificateItem struct {
 
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
-
-	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`

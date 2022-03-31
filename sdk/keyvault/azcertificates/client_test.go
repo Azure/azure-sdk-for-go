@@ -231,7 +231,7 @@ func TestClient_ListCertificates(t *testing.T) {
 
 	time.Sleep(10 * delay())
 
-	pager := client.ListCertificates(nil)
+	pager := client.ListPropertiesOfCertificates(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -254,7 +254,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
-	pager := client.ListCertificateVersions(name, nil)
+	pager := client.ListPropertiesOfCertificateVersions(name, nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -268,7 +268,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListCertificateVersions(name, nil)
+	pager = client.ListPropertiesOfCertificateVersions(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -282,7 +282,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListCertificateVersions(name, nil)
+	pager = client.ListPropertiesOfCertificateVersions(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())

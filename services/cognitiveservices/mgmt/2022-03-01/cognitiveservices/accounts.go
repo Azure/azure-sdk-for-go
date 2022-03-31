@@ -107,7 +107,7 @@ func (client AccountsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -202,7 +202,7 @@ func (client AccountsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -300,7 +300,7 @@ func (client AccountsClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -382,7 +382,7 @@ func (client AccountsClient) ListPreparer(ctx context.Context) (*http.Request, e
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -507,7 +507,7 @@ func (client AccountsClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -633,7 +633,7 @@ func (client AccountsClient) ListKeysPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -661,6 +661,137 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result APIK
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListModels list available Models for the requested Cognitive Services account
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - the name of Cognitive Services account.
+func (client AccountsClient) ListModels(ctx context.Context, resourceGroupName string, accountName string) (result AccountModelListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListModels")
+		defer func() {
+			sc := -1
+			if result.amlr.Response.Response != nil {
+				sc = result.amlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cognitiveservices.AccountsClient", "ListModels", err.Error())
+	}
+
+	result.fn = client.listModelsNextResults
+	req, err := client.ListModelsPreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListModels", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListModelsSender(req)
+	if err != nil {
+		result.amlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListModels", resp, "Failure sending request")
+		return
+	}
+
+	result.amlr, err = client.ListModelsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListModels", resp, "Failure responding to request")
+		return
+	}
+	if result.amlr.hasNextLink() && result.amlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListModelsPreparer prepares the ListModels request.
+func (client AccountsClient) ListModelsPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2022-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/models", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListModelsSender sends the ListModels request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountsClient) ListModelsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListModelsResponder handles the response to the ListModels request. The method always
+// closes the http.Response Body.
+func (client AccountsClient) ListModelsResponder(resp *http.Response) (result AccountModelListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listModelsNextResults retrieves the next set of results, if any.
+func (client AccountsClient) listModelsNextResults(ctx context.Context, lastResults AccountModelListResult) (result AccountModelListResult, err error) {
+	req, err := lastResults.accountModelListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "listModelsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListModelsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "listModelsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListModelsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "listModelsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListModelsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AccountsClient) ListModelsComplete(ctx context.Context, resourceGroupName string, accountName string) (result AccountModelListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListModels")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListModels(ctx, resourceGroupName, accountName)
 	return
 }
 
@@ -722,7 +853,7 @@ func (client AccountsClient) ListSkusPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -813,7 +944,7 @@ func (client AccountsClient) ListUsagesPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -906,7 +1037,7 @@ func (client AccountsClient) RegenerateKeyPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -991,7 +1122,7 @@ func (client AccountsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -18,7 +18,7 @@ import (
 
 func Test_Sender_MessageID(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		EnablePartitioning: to.BoolPtr(true),
+		EnablePartitioning: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -31,7 +31,7 @@ func Test_Sender_MessageID(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
-		MessageID: to.StringPtr("message with a message ID"),
+		MessageID: to.Ptr("message with a message ID"),
 	})
 	require.NoError(t, err)
 
@@ -116,7 +116,7 @@ func receiveAll(t *testing.T, receiver *Receiver, expected int) []*ReceivedMessa
 
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		EnablePartitioning: to.BoolPtr(true),
+		EnablePartitioning: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -134,13 +134,13 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 
 	err = batch.AddMessage(&Message{
 		Body:         []byte("2. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
+		PartitionKey: to.Ptr("partitionKey1"),
 	})
 	require.NoError(t, err)
 
 	err = batch.AddMessage(&Message{
 		Body:         []byte("3. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
+		PartitionKey: to.Ptr("partitionKey1"),
 	})
 	require.NoError(t, err)
 
@@ -148,9 +148,9 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
-		MessageID:    to.StringPtr("message ID"),
+		MessageID:    to.Ptr("message ID"),
 		Body:         []byte("1. single partitioned message"),
-		PartitionKey: to.StringPtr("partitionKey1"),
+		PartitionKey: to.Ptr("partitionKey1"),
 	})
 	require.NoError(t, err)
 

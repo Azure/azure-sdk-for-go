@@ -44,8 +44,8 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 
 	// message from queue -> DeadLetter -> to the dead letter queue
 	err = receiver.DeadLetterMessage(ctx, msg, &DeadLetterOptions{
-		ErrorDescription: to.StringPtr("the error description"),
-		Reason:           to.StringPtr("the error reason"),
+		ErrorDescription: to.Ptr("the error description"),
+		Reason:           to.Ptr("the error reason"),
 	})
 	require.NoError(t, err)
 

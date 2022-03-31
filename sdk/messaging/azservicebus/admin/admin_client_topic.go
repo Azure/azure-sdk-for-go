@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
@@ -238,7 +239,7 @@ func (p *ListTopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse,
 }
 
 // ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) *ListTopicsPager {
+func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
 	var pageSize int32
 
 	if options != nil {

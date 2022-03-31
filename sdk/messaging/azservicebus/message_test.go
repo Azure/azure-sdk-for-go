@@ -25,11 +25,11 @@ func TestMessageUnitTest(t *testing.T) {
 		scheduledEnqueuedTime := time.Now()
 
 		message = &Message{
-			MessageID:               to.StringPtr("message id"),
+			MessageID:               to.Ptr("message id"),
 			Body:                    []byte("the body"),
-			PartitionKey:            to.StringPtr("partition key"),
-			TransactionPartitionKey: to.StringPtr("via partition key"),
-			SessionID:               to.StringPtr("session id"),
+			PartitionKey:            to.Ptr("partition key"),
+			TransactionPartitionKey: to.Ptr("via partition key"),
+			SessionID:               to.Ptr("session id"),
 			ScheduledEnqueueTime:    &scheduledEnqueuedTime,
 		}
 
@@ -99,16 +99,16 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		DeliveryTag: dotNetEncodedLockTokenGUID,
 		Properties: &amqp.MessageProperties{
 			MessageID:          "messageID",
-			To:                 to.StringPtr("to"),
-			Subject:            to.StringPtr("subject"),
-			ReplyTo:            to.StringPtr("replyTo"),
-			ReplyToGroupID:     to.StringPtr("replyToGroupID"),
+			To:                 to.Ptr("to"),
+			Subject:            to.Ptr("subject"),
+			ReplyTo:            to.Ptr("replyTo"),
+			ReplyToGroupID:     to.Ptr("replyToGroupID"),
 			CorrelationID:      "correlationID",
-			ContentType:        to.StringPtr("contentType"),
-			ContentEncoding:    to.StringPtr("contentEncoding"),
+			ContentType:        to.Ptr("contentType"),
+			ContentEncoding:    to.Ptr("contentEncoding"),
 			AbsoluteExpiryTime: &until,
 			CreationTime:       &until,
-			GroupID:            to.StringPtr("groupID"),
+			GroupID:            to.Ptr("groupID"),
 			GroupSequence:      &groupSequence,
 		},
 		Annotations: amqp.Annotations{

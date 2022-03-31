@@ -45,7 +45,7 @@ func ExampleClient_CreateQueue_usingproperties() {
 
 	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &admin.QueueProperties{
 		// some example properties
-		LockDuration:     to.StringPtr("PT1M"),
+		LockDuration:     to.Ptr("PT1M"),
 		MaxDeliveryCount: &maxDeliveryCount,
 	}, nil)
 	exitOnError("Failed to create queue", err)

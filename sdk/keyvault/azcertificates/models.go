@@ -7,8 +7,12 @@
 package azcertificates
 
 import (
+	"fmt"
+	"net/url"
+	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
 )
 
@@ -45,6 +49,9 @@ type AdministratorContact struct {
 
 // Properties - The certificate management properties.
 type Properties struct {
+	// READ-ONLY; Creation time in UTC.
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -53,9 +60,6 @@ type Properties struct {
 
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -69,7 +73,15 @@ type Properties struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+
+	ID *string
+
+	Name *string
+
+	VaultURL *string
+
+	Version *string
 }
 
 func (c *Properties) toGenerated() *generated.CertificateAttributes {
@@ -78,35 +90,41 @@ func (c *Properties) toGenerated() *generated.CertificateAttributes {
 	}
 
 	return &generated.CertificateAttributes{
-		Created:         c.Created,
+		Created:         c.CreatedOn,
 		Enabled:         c.Enabled,
 		Expires:         c.Expires,
 		NotBefore:       c.NotBefore,
 		RecoverableDays: c.RecoverableDays,
 		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(c.RecoveryLevel),
-		Updated:         c.Updated,
+		Updated:         c.UpdatedOn,
 	}
 }
 
-func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string) *Properties {
+func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string, id *string) *Properties {
 	if g == nil {
 		return nil
 	}
+
+	vaulURL, name, version := parseFromID(id)
 
 	return &Properties{
 		Enabled:         g.Enabled,
 		Expires:         g.Expires,
 		NotBefore:       g.NotBefore,
-		Created:         g.Created,
-		Updated:         g.Updated,
+		CreatedOn:       g.Created,
+		UpdatedOn:       g.Updated,
 		RecoverableDays: g.RecoverableDays,
 		RecoveryLevel:   (*string)(g.RecoveryLevel),
 		Tags:            tags,
+		ID:              id,
+		Name:            name,
+		VaultURL:        vaulURL,
+		Version:         version,
 	}
 }
 
-// KeyVaultCertificate - A certificate bundle consists of a certificate (X509) plus its properties.
-type KeyVaultCertificate struct {
+// Certificate - A certificate bundle consists of a certificate (X509) plus its properties.
+type Certificate struct {
 	// The certificate attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
@@ -129,8 +147,8 @@ type KeyVaultCertificate struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-// KeyVaultCertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
-type KeyVaultCertificateWithPolicy struct {
+// CertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
+type CertificateWithPolicy struct {
 	// The certificate attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
@@ -156,13 +174,13 @@ type KeyVaultCertificateWithPolicy struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-func certificateFromGenerated(g *generated.CertificateBundle) KeyVaultCertificate {
+func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 	if g == nil {
-		return KeyVaultCertificate{}
+		return Certificate{}
 	}
 
-	return KeyVaultCertificate{
-		Properties:     propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags)),
+	return Certificate{
+		Properties:     propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID),
 		Cer:            g.Cer,
 		ContentType:    g.ContentType,
 		ID:             g.ID,
@@ -351,7 +369,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 		c.ReuseKey = g.KeyProperties.ReuseKey
 	}
 
-	c.Properties = propertiesFromGenerated(g.Attributes, nil)
+	c.Properties = propertiesFromGenerated(g.Attributes, nil, nil)
 	c.IssuerParameters = issuerParametersFromGenerated(g.IssuerParameters)
 	c.LifetimeActions = la
 	c.SecretProperties = &SecretProperties{ContentType: g.SecretProperties.ContentType}
@@ -427,7 +445,7 @@ type DeletedCertificate struct {
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -463,7 +481,7 @@ type DeletedCertificateItem struct {
 	X509Thumbprint []byte `json:"x5t,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -475,10 +493,10 @@ type Issuer struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
@@ -668,7 +686,7 @@ func (t *Trigger) toGenerated() *generated.Trigger {
 // X509CertificateProperties - Properties of the X509 component of a certificate.
 type X509CertificateProperties struct {
 	// The enhanced key usage.
-	Ekus []*string `json:"ekus,omitempty"`
+	EnhancedKeyUsages []*string `json:"ekus,omitempty"`
 
 	// List of key usages.
 	KeyUsage []*KeyUsage `json:"key_usage,omitempty"`
@@ -694,7 +712,7 @@ func (x *X509CertificateProperties) toGenerated() *generated.X509CertificateProp
 	}
 
 	return &generated.X509CertificateProperties{
-		Ekus:                    x.Ekus,
+		Ekus:                    x.EnhancedKeyUsages,
 		KeyUsage:                keyUsage,
 		Subject:                 x.Subject,
 		SubjectAlternativeNames: x.SubjectAlternativeNames.toGenerated(),
@@ -713,7 +731,7 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 	}
 
 	return &X509CertificateProperties{
-		Ekus:                    g.Ekus,
+		EnhancedKeyUsages:       g.Ekus,
 		Subject:                 g.Subject,
 		KeyUsage:                ku,
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
@@ -743,4 +761,24 @@ func convertGeneratedMap(m map[string]*string) map[string]string {
 		ret[k] = *v
 	}
 	return ret
+}
+
+// parseFromID parses "https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"
+// into "https://myvaultname.managedhsm.azure.net/", "key1053998307", and "b86c2e6ad9054f4abf69cc185b99aa60"
+func parseFromID(s *string) (*string, *string, *string) {
+	if s == nil {
+		return nil, nil, nil
+	}
+	parsed, err := url.Parse(*s)
+	if err != nil {
+		return nil, nil, nil
+	}
+
+	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
+	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
+	if len(split) < 3 {
+		return &url, nil, nil
+	}
+
+	return &url, to.Ptr(split[1]), to.Ptr(split[2])
 }

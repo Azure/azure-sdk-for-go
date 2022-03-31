@@ -200,7 +200,7 @@ type GetCertificateOptions struct {
 
 // GetCertificateResponse contains response fields for Client.GetCertificate
 type GetCertificateResponse struct {
-	KeyVaultCertificateWithPolicy
+	CertificateWithPolicy
 }
 
 // GetCertificate gets information about a specific certificate. This operation requires the certificates/get permission.
@@ -215,8 +215,8 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 	}
 
 	return GetCertificateResponse{
-		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
+		CertificateWithPolicy: CertificateWithPolicy{
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			ID:             resp.ID,
@@ -286,9 +286,9 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 	return DeleteCertificateResponse{
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         g.RecoveryID,
-			DeletedDate:        g.DeletedDate,
+			DeletedOn:          g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags)),
+			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID),
 			Cer:                g.Cer,
 			ContentType:        g.ContentType,
 			ID:                 g.ID,
@@ -441,9 +441,9 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 	return GetDeletedCertificateResponse{
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         resp.RecoveryID,
-			DeletedDate:        resp.DeletedDate,
+			DeletedOn:          resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
+			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
 			Cer:                resp.Cer,
 			ContentType:        resp.ContentType,
 			ID:                 resp.ID,
@@ -501,7 +501,7 @@ func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImport
 
 // ImportCertificateResponse contains response fields for Client.ImportCertificate
 type ImportCertificateResponse struct {
-	KeyVaultCertificateWithPolicy
+	CertificateWithPolicy
 }
 
 // ImportCertificate imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires the
@@ -533,8 +533,8 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	}
 
 	return ImportCertificateResponse{
-		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
+		CertificateWithPolicy: CertificateWithPolicy{
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			ID:             resp.ID,
@@ -566,7 +566,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags)),
+			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID),
 			ID:             v.ID,
 			X509Thumbprint: v.X509Thumbprint,
 		})
@@ -633,7 +633,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags)),
+			Properties:     propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID),
 			ID:             v.ID,
 			X509Thumbprint: v.X509Thumbprint,
 		})
@@ -756,9 +756,9 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	}
 
 	if resp.Attributes != nil {
-		cr.Issuer.Created = resp.Attributes.Created
+		cr.Issuer.CreatedOn = resp.Attributes.Created
 		cr.Issuer.Enabled = resp.Attributes.Enabled
-		cr.Issuer.Updated = resp.Attributes.Updated
+		cr.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		cr.OrganizationID = resp.OrganizationDetails.ID
@@ -810,9 +810,9 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}
 
 	if resp.Attributes != nil {
-		g.Issuer.Created = resp.Attributes.Created
+		g.Issuer.CreatedOn = resp.Attributes.Created
 		g.Issuer.Enabled = resp.Attributes.Enabled
-		g.Issuer.Updated = resp.Attributes.Updated
+		g.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		g.OrganizationID = resp.OrganizationDetails.ID
@@ -922,9 +922,9 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 	}
 
 	if resp.Attributes != nil {
-		d.Issuer.Created = resp.Attributes.Created
+		d.Issuer.CreatedOn = resp.Attributes.Created
 		d.Issuer.Enabled = resp.Attributes.Enabled
-		d.Issuer.Updated = resp.Attributes.Updated
+		d.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		d.OrganizationID = resp.OrganizationDetails.ID
@@ -1030,9 +1030,9 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 	}
 
 	if resp.Attributes != nil {
-		u.Issuer.Created = resp.Attributes.Created
+		u.Issuer.CreatedOn = resp.Attributes.Created
 		u.Issuer.Enabled = resp.Attributes.Enabled
-		u.Issuer.Updated = resp.Attributes.Updated
+		u.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
 		u.OrganizationID = resp.OrganizationDetails.ID
@@ -1230,7 +1230,7 @@ func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultCl
 
 // UpdateCertificatePropertiesResponse contains response fields for Client.UpdateCertificateProperties
 type UpdateCertificatePropertiesResponse struct {
-	KeyVaultCertificate
+	Certificate
 }
 
 // UpdateCertificateProperties applies the specified update on the given certificate; the only elements updated are the certificate's
@@ -1259,7 +1259,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 		return UpdateCertificatePropertiesResponse{}, err
 	}
 	return UpdateCertificatePropertiesResponse{
-		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
+		Certificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
 
@@ -1275,7 +1275,7 @@ func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCe
 
 // MergeCertificateResponse contains response fields for Client.MergeCertificate
 type MergeCertificateResponse struct {
-	KeyVaultCertificateWithPolicy
+	CertificateWithPolicy
 }
 
 // MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
@@ -1302,8 +1302,8 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 	}
 
 	return MergeCertificateResponse{
-		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
+		CertificateWithPolicy: CertificateWithPolicy{
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			ID:             resp.ID,
@@ -1326,7 +1326,7 @@ func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClien
 
 // RestoreCertificateBackupResponse contains response fields for Client.RestoreCertificateBackup
 type RestoreCertificateBackupResponse struct {
-	KeyVaultCertificateWithPolicy
+	CertificateWithPolicy
 }
 
 // RestoreCertificateBackup performs the reversal of the Delete operation. The operation is applicable in vaults
@@ -1344,8 +1344,8 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 	}
 
 	return RestoreCertificateBackupResponse{
-		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
-			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags)),
+		CertificateWithPolicy: CertificateWithPolicy{
+			Properties:     propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			ID:             resp.ID,
@@ -1430,13 +1430,13 @@ func (b *RecoverDeletedCertificatePoller) PollUntilDone(ctx context.Context, t t
 
 // RecoverDeletedCertificateResponse contains response fields for Client.RecoverDeletedCertificate
 type RecoverDeletedCertificateResponse struct {
-	KeyVaultCertificate
+	Certificate
 }
 
 // change recover deleted certificate reponse to the generated version.
 func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedCertificateResponse) RecoverDeletedCertificateResponse {
 	return RecoverDeletedCertificateResponse{
-		KeyVaultCertificate: certificateFromGenerated(&i.CertificateBundle),
+		Certificate: certificateFromGenerated(&i.CertificateBundle),
 	}
 }
 
@@ -1485,11 +1485,11 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 
 		for i, c := range g.Value {
 			certs[i] = &DeletedCertificateItem{
-				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags)),
+				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID),
 				ID:                 c.ID,
 				RecoveryID:         c.RecoveryID,
 				X509Thumbprint:     c.X509Thumbprint,
-				DeletedDate:        c.DeletedDate,
+				DeletedOn:          c.DeletedDate,
 				ScheduledPurgeDate: c.ScheduledPurgeDate,
 			}
 		}

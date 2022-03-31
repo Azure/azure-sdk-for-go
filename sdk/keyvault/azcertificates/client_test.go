@@ -466,7 +466,7 @@ func TestPolicy(t *testing.T) {
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			EnhancedKeyUsages:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
 			KeyUsage:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),
@@ -530,7 +530,7 @@ func TestCRUDOperations(t *testing.T) {
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			EnhancedKeyUsages:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
 			KeyUsage:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:          to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths: to.Ptr(int32(12)),

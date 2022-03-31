@@ -133,7 +133,7 @@ func ExampleClient_UpdateCertificateProperties() {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.KeyVaultCertificate.Properties.Enabled)
+	fmt.Println(*resp.Certificate.Properties.Enabled)
 	fmt.Println(resp.Properties.Tags)
 }
 

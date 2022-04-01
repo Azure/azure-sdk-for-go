@@ -178,7 +178,7 @@ func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryRespons
 
 	return ListTablesResponse{
 		NextTableName: g.XMSContinuationNextTableName,
-		Tables:                    value,
+		Tables:        value,
 	}
 }
 
@@ -286,17 +286,18 @@ func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetProperti
 
 // GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
-	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
+	Properties ServiceProperties
+	// // The set of CORS rules.
+	// Cors []*CorsRule `xml:"Cors>CorsRule"`
 
-	// A summary of request statistics grouped by API in hourly aggregates for tables.
-	HourMetrics *Metrics `xml:"HourMetrics"`
+	// // A summary of request statistics grouped by API in hourly aggregates for tables.
+	// HourMetrics *Metrics `xml:"HourMetrics"`
 
-	// Azure Analytics Logging settings.
-	Logging *Logging `xml:"Logging"`
+	// // Azure Analytics Logging settings.
+	// Logging *Logging `xml:"Logging"`
 
-	// A summary of request statistics grouped by API in minute aggregates for tables.
-	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
+	// // A summary of request statistics grouped by API in minute aggregates for tables.
+	// MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
 func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesResponse) GetPropertiesResponse {
@@ -305,10 +306,12 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 		cors = append(cors, fromGeneratedCors(c))
 	}
 	return GetPropertiesResponse{
-		Cors:          cors,
-		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
-		Logging:       fromGeneratedLogging(g.Logging),
-		MinuteMetrics: fromGeneratedMetrics(g.MinuteMetrics),
+		Properties: ServiceProperties{
+			Cors:          cors,
+			HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
+			Logging:       fromGeneratedLogging(g.Logging),
+			MinuteMetrics: fromGeneratedMetrics(g.MinuteMetrics),
+		},
 	}
 }
 

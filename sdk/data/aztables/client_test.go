@@ -208,7 +208,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -230,7 +230,7 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
@@ -265,10 +265,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}

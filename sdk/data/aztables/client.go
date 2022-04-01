@@ -531,13 +531,13 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 	}
 }
 
-// InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
+// UpsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
 // replaced or merged as specified the updateMode parameter. If the entity exists and updateMode is Merge, the property
 // values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
-func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
+func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	if options == nil {
 		options = &InsertEntityOptions{
 			UpdateMode: UpdateModeMerge,

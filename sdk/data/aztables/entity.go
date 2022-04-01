@@ -150,6 +150,10 @@ func (e *EDMBinary) UnmarshalText(data []byte) error {
 	return nil
 }
 
+func (e *EDMBinary) ToByteSlice() []byte {
+	return *e
+}
+
 // EDMInt64 represents an entity property that is a 64-bit integer. Using EDMInt64 guarantees
 // proper odata type annotations.
 type EDMInt64 int64
@@ -169,6 +173,10 @@ func (e *EDMInt64) UnmarshalText(data []byte) error {
 	return nil
 }
 
+func (e *EDMInt64) ToInt64() int64 {
+	return int64(*e)
+}
+
 // EDMGUID represents an entity property that is a GUID wrapped in a string. Using EDMGUID guarantees
 // proper odata type annotations.
 type EDMGUID string
@@ -182,6 +190,10 @@ func (e EDMGUID) MarshalText() ([]byte, error) {
 func (e *EDMGUID) UnmarshalText(data []byte) error {
 	*e = EDMGUID(string(data))
 	return nil
+}
+
+func (e EDMGUID) ToString() string {
+	return string(e)
 }
 
 // EDMDateTime represents an entity property that is a time.Time object. Using EDMDateTime guarantees
@@ -201,4 +213,8 @@ func (e *EDMDateTime) UnmarshalText(data []byte) error {
 	}
 	*e = EDMDateTime(t)
 	return nil
+}
+
+func (e EDMDateTime) ToTime() time.Time {
+	return time.Time(e)
 }

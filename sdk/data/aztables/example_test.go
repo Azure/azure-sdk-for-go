@@ -98,7 +98,7 @@ func ExampleNewServiceClientWithNoCredential() {
 	fmt.Println(client)
 }
 
-func ExampleServiceClient_GetAccountSASToken() {
+func ExampleServiceClient_GetAccountSASURL() {
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	if err != nil {
 		panic(err)
@@ -223,7 +223,7 @@ func ExampleServiceClient_DeleteTable() {
 	}
 }
 
-func ExampleClient_Create() {
+func ExampleClient_CreateTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -315,7 +315,7 @@ type InventoryEntity struct {
 	OnSale      bool
 }
 
-func ExampleClient_InsertEntity() {
+func ExampleClient_UpsertEntity() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -410,7 +410,7 @@ func ExampleClient_DeleteEntity() {
 	}
 }
 
-func ExampleClient_List() {
+func ExampleClient_ListEntities() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")

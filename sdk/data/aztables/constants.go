@@ -17,8 +17,8 @@ const (
 	rowKey                        = "RowKey"
 )
 
-// UpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
-// will replace an existing entity, MergeEntity will merge properties of the entities.
+// UpdateMode specifies what type of update to do on UpsertEntity or UpdateEntity. UpdateModeReplace
+// will replace an existing entity, UpdateModeMerge will merge properties of the entities.
 type UpdateMode string
 
 const (

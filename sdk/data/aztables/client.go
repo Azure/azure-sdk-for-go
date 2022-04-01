@@ -496,8 +496,8 @@ type InsertEntityOptions struct {
 	// ETag is the optional etag for the Table
 	ETag azcore.ETag
 
-	// UpdateMode is the desired mode for the Update. Use ReplaceEntity to replace fields on
-	// the entity, use MergeEntity to merge fields of the entity.
+	// UpdateMode is the desired mode for the Update. Use UpdateModeReplace to replace fields on
+	// the entity, use UpdateModeMerge to merge fields of the entity.
 	UpdateMode UpdateMode
 }
 

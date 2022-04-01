@@ -19,6 +19,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestReceiverCancel(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	messages, err := receiver.ReceiveMessages(ctx, 5, nil)
+	require.NoError(t, err)
+	require.Empty(t, messages)
+}
+
 func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

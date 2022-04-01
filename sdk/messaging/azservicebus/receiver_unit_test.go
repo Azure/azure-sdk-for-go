@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -251,18 +252,41 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 }
 
 func TestReceiverCancellationUnitTests(t *testing.T) {
-	r := &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			Receiver: &internal.FakeAMQPReceiver{},
-		},
-	}
+	t.Run("ImmediatelyCancelled", func(t *testing.T) {
+		r := &Receiver{
+			amqpLinks: &internal.FakeAMQPLinks{
+				Receiver: &internal.FakeAMQPReceiver{},
+			},
+		}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
 
-	msgs, err := r.ReceiveMessages(ctx, 95, nil)
-	require.Empty(t, msgs)
-	require.True(t, internal.IsCancelError(err))
+		msgs, err := r.ReceiveMessages(ctx, 95, nil)
+		require.Empty(t, msgs)
+		require.True(t, internal.IsCancelError(err))
+	})
+
+	t.Run("CancelledWhileReceiving", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+
+		r := &Receiver{
+			defaultTimeAfterFirstMsg: time.Second,
+			defaultDrainTimeout:      time.Second,
+			amqpLinks: &internal.FakeAMQPLinks{
+				Receiver: &internal.FakeAMQPReceiver{
+					ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
+						cancel()
+						return nil, ctx.Err()
+					},
+				},
+			},
+		}
+
+		msgs, err := r.ReceiveMessages(ctx, 95, nil)
+		require.Empty(t, msgs)
+		require.ErrorIs(t, err, context.Canceled)
+	})
 }
 
 func TestReceiverOptions(t *testing.T) {

@@ -13,6 +13,9 @@
 * Replaced `arm.Endpoint` with `cloud` API
   * Removed the `endpoint` parameter from `NewRPRegistrationPolicy()`
   * `arm/runtime.NewPipeline()` and `.NewRPRegistrationPolicy()` now return an `error`
+* Refactored `NewPoller` and `NewPollerFromResumeToken` funcs in `arm/runtime` and `runtime` packages.
+  * Removed the `pollerID` parameter as it's no longer required.
+  * Created optional parameter structs and moved optional parameters into them.
 
 ### Bugs Fixed
 

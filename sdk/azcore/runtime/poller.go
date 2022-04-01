@@ -21,23 +21,35 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+// NewPollerOptions contains the optional parameters for NewPoller.
+type NewPollerOptions[T any] struct {
+	// Response contains a preconstructed response type.
+	// The final payload will be unmarshaled into it and returned.
+	Response *T
+}
+
 // NewPoller creates a Poller based on the provided initial response.
-// pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPoller[T any](pollerID string, resp *http.Response, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
+func NewPoller[T any](resp *http.Response, pl pipeline.Pipeline, options *NewPollerOptions[T]) (*Poller[T], error) {
+	if options == nil {
+		options = &NewPollerOptions[T]{}
+	}
 	defer resp.Body.Close()
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
 	if !pollers.StatusCodeValid(resp) {
 		return nil, errors.New("the operation failed or was cancelled")
 	}
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
 	// determine the polling method
 	var lro pollers.Operation
-	var err error
 	// op poller must be checked first as it can also have a location header
 	if op.Applicable(resp) {
-		lro, err = op.New(resp, pollerID)
+		lro, err = op.New(resp, tName)
 	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, pollerID)
+		lro, err = loc.New(resp, tName)
 	} else {
 		lro = &pollers.NopPoller{}
 	}
@@ -46,14 +58,27 @@ func NewPoller[T any](pollerID string, resp *http.Response, pl pipeline.Pipeline
 	}
 	return &Poller[T]{
 		pt: pollers.NewPoller(lro, resp, pl),
-		rt: rt,
+		rt: options.Response,
 	}, nil
 }
 
+// NewPollerFromResumeTokenOptions contains the optional parameters for NewPollerFromResumeToken.
+type NewPollerFromResumeTokenOptions[T any] struct {
+	// Response contains a preconstructed response type.
+	// The final payload will be unmarshaled into it and returned.
+	Response *T
+}
+
 // NewPollerFromResumeToken creates a Poller from a resume token string.
-// pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPollerFromResumeToken[T any](pollerID string, token string, pl pipeline.Pipeline, rt *T) (*Poller[T], error) {
-	kind, err := pollers.KindFromToken(pollerID, token)
+func NewPollerFromResumeToken[T any](token string, pl pipeline.Pipeline, options *NewPollerFromResumeTokenOptions[T]) (*Poller[T], error) {
+	if options == nil {
+		options = &NewPollerFromResumeTokenOptions[T]{}
+	}
+	tName, err := pollers.PollerTypeName[T]()
+	if err != nil {
+		return nil, err
+	}
+	kind, err := pollers.KindFromToken(tName, token)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +99,7 @@ func NewPollerFromResumeToken[T any](pollerID string, token string, pl pipeline.
 	}
 	return &Poller[T]{
 		pt: pollers.NewPoller(lro, nil, pl),
-		rt: rt,
+		rt: options.Response,
 	}, nil
 }
 

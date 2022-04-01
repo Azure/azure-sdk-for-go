@@ -470,6 +470,21 @@ func ExampleClient_List() {
 		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
+
+		for _, entity := range response.Entities {
+			var myEntity aztables.EDMEntity
+			err = json.Unmarshal(entity, &myEntity)
+			if err != nil {
+				panic(err)
+			}
+
+			sp := myEntity.Properties["String"].(string)
+			dp := myEntity.Properties["Double"].(float64)
+			dt := myEntity.Properties["DateTime"].(aztables.EDMDateTime)
+			t1 := time.Time(dt)
+
+			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, t1.String())
+		}
 	}
 }
 

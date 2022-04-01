@@ -162,8 +162,8 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 
 // ListTablesResponse contains response fields for ListTablesPager.NextPage
 type ListTablesResponse struct {
-	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
-	ContinuationNextTableName *string
+	// NextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	NextTableName *string
 
 	// List of tables.
 	Tables []*TableProperties `json:"value,omitempty"`
@@ -177,7 +177,7 @@ func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryRespons
 	}
 
 	return ListTablesResponse{
-		ContinuationNextTableName: g.XMSContinuationNextTableName,
+		NextTableName: g.XMSContinuationNextTableName,
 		Tables:                    value,
 	}
 }
@@ -218,7 +218,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Page
 	}
 	return runtime.NewPager(runtime.PageProcessor[ListTablesResponse]{
 		More: func(page ListTablesResponse) bool {
-			if page.ContinuationNextTableName == nil || len(*page.ContinuationNextTableName) == 0 {
+			if page.NextTableName == nil || len(*page.NextTableName) == 0 {
 				return false
 			}
 			return true
@@ -226,8 +226,8 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Page
 		Fetcher: func(ctx context.Context, page *ListTablesResponse) (ListTablesResponse, error) {
 			var tableName *string
 			if page != nil {
-				if page.ContinuationNextTableName != nil {
-					tableName = page.ContinuationNextTableName
+				if page.NextTableName != nil {
+					tableName = page.NextTableName
 				}
 			} else {
 				tableName = listOptions.NextTableName

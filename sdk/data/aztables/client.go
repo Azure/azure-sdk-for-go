@@ -163,11 +163,11 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 
 // ListEntitiesResponse contains response fields for ListEntitiesPager.NextPage
 type ListEntitiesResponse struct {
-	// ContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	ContinuationNextPartitionKey *string
+	// NextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
+	NextPartitionKey *string
 
-	// ContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	ContinuationNextRowKey *string
+	// NextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
+	NextRowKey *string
 
 	// List of table entities.
 	Entities [][]byte
@@ -185,8 +185,8 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 	}
 
 	return ListEntitiesResponse{
-		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
-		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
+		NextPartitionKey: resp.XMSContinuationNextPartitionKey,
+		NextRowKey:       resp.XMSContinuationNextRowKey,
 		Entities:                     marshalledValue,
 	}, nil
 }
@@ -213,7 +213,7 @@ func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[L
 	}
 	return runtime.NewPager(runtime.PageProcessor[ListEntitiesResponse]{
 		More: func(page ListEntitiesResponse) bool {
-			if page.ContinuationNextPartitionKey == nil || len(*page.ContinuationNextPartitionKey) == 0 || page.ContinuationNextRowKey == nil || len(*page.ContinuationNextRowKey) == 0 {
+			if page.NextPartitionKey == nil || len(*page.NextPartitionKey) == 0 || page.NextRowKey == nil || len(*page.NextRowKey) == 0 {
 				return false
 			}
 			return true
@@ -222,11 +222,11 @@ func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[L
 			var partKey *string
 			var rowKey *string
 			if page != nil {
-				if page.ContinuationNextPartitionKey != nil {
-					partKey = page.ContinuationNextPartitionKey
+				if page.NextPartitionKey != nil {
+					partKey = page.NextPartitionKey
 				}
-				if page.ContinuationNextRowKey != nil {
-					rowKey = page.ContinuationNextRowKey
+				if page.NextRowKey != nil {
+					rowKey = page.NextRowKey
 				}
 			} else {
 				partKey = listOptions.NextPartitionKey

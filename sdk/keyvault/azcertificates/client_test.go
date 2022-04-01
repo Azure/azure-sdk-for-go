@@ -726,7 +726,7 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
-			SubjectAlternativeNames: &SubjectAlternativeNames{
+ 				SubjectAlternativeNames: &SubjectAlternativeNames{
 				Upns: []*string{to.Ptr("john.doe@domain.com")},
 			},
 		},

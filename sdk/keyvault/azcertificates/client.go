@@ -146,7 +146,7 @@ func (b *CreateCertificatePoller) PollUntilDone(ctx context.Context, t time.Dura
 }
 
 // BeginCreateCertificate creates a new certificate resource, if a certificate with this name already exists, a new version is created. This operation requires the certificates/create permission.
-func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy Policy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
+func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName string, policy Policy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
 	}
@@ -158,7 +158,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 	resp, err := c.genClient.CreateCertificate(
 		ctx,
 		c.vaultURL,
-		certName,
+		certificateName,
 		generated.CertificateCreateParameters{
 			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
 			Tags:                  tags,
@@ -172,7 +172,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 	}
 
 	return &CreateCertificatePoller{
-		certName:    certName,
+		certName:    certificateName,
 		certVersion: "",
 		vaultURL:    c.vaultURL,
 		client:      c.genClient,
@@ -242,8 +242,8 @@ type GetCertificateOperationResponse struct {
 }
 
 // GetCertificateOperation gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
-func (c *Client) GetCertificateOperation(ctx context.Context, certName string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
-	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, certName, options.toGenerated())
+func (c *Client) GetCertificateOperation(ctx context.Context, name string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
+	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
@@ -405,8 +405,8 @@ type PurgeDeletedCertificateResponse struct {
 
 // PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
-func (c *Client) PurgeDeletedCertificate(ctx context.Context, certName string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
-	_, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+func (c *Client) PurgeDeletedCertificate(ctx context.Context, name string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
+	_, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return PurgeDeletedCertificateResponse{}, err
 	}
@@ -430,8 +430,8 @@ type GetDeletedCertificateResponse struct {
 
 // GetDeletedCertificate retrieves the deleted certificate information plus its attributes, such as retention interval, scheduled permanent deletion
 // and the current deletion recovery level. This operation requires the certificates/get permission.
-func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
-	resp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+func (c *Client) GetDeletedCertificate(ctx context.Context, name string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
+	resp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return GetDeletedCertificateResponse{}, err
 	}
@@ -469,8 +469,8 @@ type BackupCertificateResponse struct {
 
 // BackupCertificate requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded.
 // This operation requires the certificates/backup permission.
-func (c *Client) BackupCertificate(ctx context.Context, certName string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
-	resp, err := c.genClient.BackupCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+func (c *Client) BackupCertificate(ctx context.Context, name string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
+	resp, err := c.genClient.BackupCertificate(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return BackupCertificateResponse{}, err
 	}
@@ -504,7 +504,7 @@ type ImportCertificateResponse struct {
 // ImportCertificate imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires the
 // certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the certificate is in PEM format
 // the PEM file must contain the key as well as x509 certificates. Key Vault will only accept a key in PKCS#8 format.
-func (c *Client) ImportCertificate(ctx context.Context, certName string, base64EncodedCertificate string, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
+func (c *Client) ImportCertificate(ctx context.Context, name string, base64EncodedCertificate string, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
 	if options == nil {
 		options = &ImportCertificateOptions{}
 	}
@@ -515,7 +515,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	resp, err := c.genClient.ImportCertificate(
 		ctx,
 		c.vaultURL,
-		certName,
+		name,
 		generated.CertificateImportParameters{
 			Base64EncodedCertificate: &base64EncodedCertificate,
 			CertificateAttributes:    options.Properties.toGenerated(),

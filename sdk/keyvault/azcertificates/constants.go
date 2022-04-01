@@ -48,8 +48,6 @@ type KeyType string
 const (
 	KeyTypeEC     KeyType = "EC"
 	KeyTypeECHSM  KeyType = "EC-HSM"
-	KeyTypeOct    KeyType = "oct"
-	KeyTypeOctHSM KeyType = "oct-HSM"
 	KeyTypeRSA    KeyType = "RSA"
 	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
@@ -59,8 +57,6 @@ func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{
 		KeyTypeEC,
 		KeyTypeECHSM,
-		KeyTypeOct,
-		KeyTypeOctHSM,
 		KeyTypeRSA,
 		KeyTypeRSAHSM,
 	}

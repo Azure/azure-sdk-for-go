@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
@@ -523,5 +524,44 @@ func ExampleServiceClient_ListTables() {
 			fmt.Printf("\tTableName: %s\n", *table.Name)
 		}
 		pageCount += 1
+	}
+}
+
+func ExampleServiceClient_SetProperties() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp, err := service.GetProperties(context.TODO(), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.Properties.HourMetrics = &aztables.Metrics{
+		Enabled: to.Ptr(true),
+	}
+	getResp.Properties.Logging = &aztables.Logging{
+		Delete: to.Ptr(true),
+		Read:   to.Ptr(true),
+		Write:  to.Ptr(true),
+	}
+	getResp.Properties.Cors = append(getResp.Properties.Cors, &aztables.CorsRule{
+		AllowedHeaders: to.Ptr("x-allowed-header"),
+		AllowedMethods: to.Ptr("POST,GET"),
+	})
+
+	_, err = service.SetProperties(context.TODO(), getResp.Properties, nil)
+	if err != nil {
+		panic(err)
 	}
 }

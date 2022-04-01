@@ -112,7 +112,7 @@ func ExampleServiceClient_GetAccountSASToken() {
 	permission := aztables.AccountSASPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := service.GetAccountSASToken(resources, permission, start, expiry)
+	sasURL, err := service.GetAccountSASURL(resources, permission, start, expiry)
 	if err != nil {
 		panic(err)
 	}

@@ -363,9 +363,9 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
-// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
+// GetAccountSASURL is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
 // if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
-func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (t ServiceClient) GetAccountSASURL(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
 	if t.cred == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}

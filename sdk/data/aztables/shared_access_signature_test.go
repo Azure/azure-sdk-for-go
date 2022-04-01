@@ -52,7 +52,7 @@ func TestSASServiceClient(t *testing.T) {
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
+	sasUrl, err := serviceClient.GetAccountSASURL(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)

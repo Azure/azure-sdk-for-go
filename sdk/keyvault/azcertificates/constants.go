@@ -91,3 +91,19 @@ func PossibleKeyUsageValues() []KeyUsage {
 		KeyUsageNonRepudiation,
 	}
 }
+
+// CertificateContentType is the content type of the certificate.
+type CertificateContentType string
+
+const (
+	CertificateContentTypePKCS12 CertificateContentType = "application/x-pkcs12"
+	CertificateContentTypePEM    CertificateContentType = "application/x-pem-file"
+)
+
+// PossibleCertificateContentTypeValues returns a slice of all possible CertificateContentType values.
+func PossibleCertificateContentTypeValues() []CertificateContentType {
+	return []CertificateContentType{
+		CertificateContentTypePEM,
+		CertificateContentTypePKCS12,
+	}
+}

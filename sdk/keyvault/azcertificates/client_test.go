@@ -342,9 +342,9 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	getResp, err := client.GetIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Provider, "Test")
-	require.Equal(t, *getResp.Credentials.AccountID, "keyvaultuser")
-	require.Contains(t, *getResp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+	require.Equal(t, *getResp.Issuer.Provider, "Test")
+	require.Equal(t, *getResp.Issuer.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *getResp.Issuer.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 
 	issuerName2, err := createRandomName(t, "issuer2")
 	require.NoError(t, err)
@@ -364,6 +364,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
+	require.Equal(t, issuerName2, *createResp.Issuer.Name)
 
 	// List operation
 	pager := client.ListPropertiesOfIssuers(nil)
@@ -389,11 +390,11 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	// Update the certificate issuer
 	updateResp, err := client.UpdateIssuer(ctx, *createResp.Issuer, nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(updateResp.AdministratorContacts))
-	require.Equal(t, "Jane", *updateResp.AdministratorContacts[0].FirstName)
-	require.Equal(t, "Doey", *updateResp.AdministratorContacts[0].LastName)
-	require.Equal(t, "admin2@microsoft.com", *updateResp.AdministratorContacts[0].EmailAddress)
-	require.Equal(t, "4266666666", *updateResp.AdministratorContacts[0].Phone)
+	require.Equal(t, 1, len(updateResp.Issuer.AdministratorContacts))
+	require.Equal(t, "Jane", *updateResp.Issuer.AdministratorContacts[0].FirstName)
+	require.Equal(t, "Doey", *updateResp.Issuer.AdministratorContacts[0].LastName)
+	require.Equal(t, "admin2@microsoft.com", *updateResp.Issuer.AdministratorContacts[0].EmailAddress)
+	require.Equal(t, "4266666666", *updateResp.Issuer.AdministratorContacts[0].Phone)
 
 	// Delete the first issuer
 	_, err = client.DeleteIssuer(ctx, issuerName, nil)
@@ -461,12 +462,10 @@ func TestPolicy(t *testing.T) {
 		LifetimeActions: []*LifetimeAction{
 			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
-		SecretProperties: &SecretProperties{
-			ContentType: to.Ptr("application/x-pkcs12"),
-		},
+		ContentType: to.Ptr(CertificateContentTypePKCS12),
 		X509Properties: &X509CertificateProperties{
 			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsages:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			KeyUsages:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:           to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -484,7 +483,7 @@ func TestPolicy(t *testing.T) {
 	// Make sure policies are equal
 	require.Equal(t, *policy.IssuerParameters.IssuerName, *receivedPolicy.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *receivedPolicy.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *receivedPolicy.ContentType)
 
 	// Update the policy
 	policy.KeyType = to.Ptr(KeyTypeEC)
@@ -496,7 +495,7 @@ func TestPolicy(t *testing.T) {
 
 	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *updateResp.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
@@ -525,12 +524,10 @@ func TestCRUDOperations(t *testing.T) {
 		LifetimeActions: []*LifetimeAction{
 			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
-		SecretProperties: &SecretProperties{
-			ContentType: to.Ptr("application/x-pkcs12"),
-		},
+		ContentType: to.Ptr(CertificateContentTypePKCS12),
 		X509Properties: &X509CertificateProperties{
 			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsages:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			KeyUsages:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:           to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -570,11 +567,14 @@ func TestCRUDOperations(t *testing.T) {
 
 	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *updateResp.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
+	if received.Properties.Tags == nil {
+		received.Properties.Tags = map[string]string{}
+	}
 	received.Properties.Tags["tag1"] = "updated_values1"
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)

@@ -775,6 +775,8 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		cr.Issuer.AdministratorContacts = adminDetails
 	}
 
+	name := parseIssuer(resp.ID)
+	cr.Issuer.Name = name
 	return cr, nil
 }
 
@@ -789,7 +791,7 @@ func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificate
 
 // GetIssuerResponse contains response fields for ClientGetIssuer
 type GetIssuerResponse struct {
-	Issuer
+	Issuer *Issuer
 }
 
 // GetIssuer returns the specified certificate issuer resources in the specified key vault. This operation
@@ -801,7 +803,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}
 
 	g := GetIssuerResponse{}
-	g.Issuer = Issuer{
+	g.Issuer = &Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -813,7 +815,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		g.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
-		g.OrganizationID = resp.OrganizationDetails.ID
+		g.Issuer.OrganizationID = resp.OrganizationDetails.ID
 		var adminDetails []*AdministratorContact
 		if resp.OrganizationDetails.AdminDetails != nil {
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
@@ -826,9 +828,11 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 				}
 			}
 		}
-		g.AdministratorContacts = adminDetails
+		g.Issuer.AdministratorContacts = adminDetails
 	}
 
+	name := parseIssuer(resp.ID)
+	g.Issuer.Name = name
 	return g, nil
 }
 
@@ -902,7 +906,7 @@ func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCerti
 
 // DeleteIssuerResponse contains response fields for Client.DeleteIssuer
 type DeleteIssuerResponse struct {
-	Issuer
+	Issuer *Issuer
 }
 
 // DeleteIssuer permanently removes the specified certificate issuer from the vault. This operation requires the certificates/manageissuers/deleteissuers permission.
@@ -913,7 +917,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 	}
 
 	d := DeleteIssuerResponse{}
-	d.Issuer = Issuer{
+	d.Issuer = &Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -925,7 +929,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 		d.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
-		d.OrganizationID = resp.OrganizationDetails.ID
+		d.Issuer.OrganizationID = resp.OrganizationDetails.ID
 		var adminDetails []*AdministratorContact
 		if resp.OrganizationDetails.AdminDetails != nil {
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
@@ -938,9 +942,11 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 				}
 			}
 		}
-		d.AdministratorContacts = adminDetails
+		d.Issuer.AdministratorContacts = adminDetails
 	}
 
+	name := parseIssuer(resp.ID)
+	d.Issuer.Name = name
 	return d, nil
 }
 
@@ -990,7 +996,7 @@ func (i *Issuer) toUpdateParameters() generated.CertificateIssuerUpdateParameter
 
 // UpdateIssuerResponse contains response fields for Client.UpdateIssuer
 type UpdateIssuerResponse struct {
-	Issuer
+	Issuer *Issuer
 }
 
 // UpdateIssuer performs an update on the specified certificate issuer entity. This operation requires
@@ -999,7 +1005,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 	resp, err := c.genClient.UpdateCertificateIssuer(
 		ctx,
 		c.vaultURL,
-		*certificateIssuer.ID,
+		*certificateIssuer.Name,
 		certificateIssuer.toUpdateParameters(),
 		&generated.KeyVaultClientUpdateCertificateIssuerOptions{},
 	)
@@ -1008,7 +1014,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 	}
 
 	u := UpdateIssuerResponse{}
-	u.Issuer = Issuer{
+	u.Issuer = &Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -1020,7 +1026,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 		u.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
-		u.OrganizationID = resp.OrganizationDetails.ID
+		u.Issuer.OrganizationID = resp.OrganizationDetails.ID
 		var adminDetails []*AdministratorContact
 		if resp.OrganizationDetails.AdminDetails != nil {
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
@@ -1033,9 +1039,10 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 				}
 			}
 		}
-		u.AdministratorContacts = adminDetails
+		u.Issuer.AdministratorContacts = adminDetails
 	}
-
+	name := parseIssuer(resp.ID)
+	u.Issuer.Name = name
 	return u, nil
 }
 

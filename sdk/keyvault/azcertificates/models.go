@@ -7,6 +7,7 @@
 package azcertificates
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"strings"
@@ -15,22 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
 )
-
-// Action - The action that will be executed.
-type Action struct {
-	// The type of the action.
-	ActionType *PolicyAction `json:"action_type,omitempty"`
-}
-
-func (a *Action) toGenerated() *generated.Action {
-	if a == nil {
-		return nil
-	}
-
-	return &generated.Action{
-		ActionType: (*generated.ActionType)(a.ActionType),
-	}
-}
 
 // AdministratorContact - Details of the organization administrator of the certificate issuer.
 type AdministratorContact struct {
@@ -193,10 +178,21 @@ type CertificateOperationError struct {
 	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key vault server error.
-	InnerError *CertificateOperationError `json:"innererror,omitempty" azure:"ro"`
+	innerError *CertificateOperationError
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	message *string
+}
+
+func (c *CertificateOperationError) Error() string {
+	if c == nil {
+		return ""
+	}
+	marshalled, err := json.Marshal(*c)
+	if err != nil {
+		return fmt.Sprintf("could not turn operation error into a string: %v", err)
+	}
+	return string(marshalled)
 }
 
 func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationError {
@@ -206,8 +202,8 @@ func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationErro
 
 	return &CertificateOperationError{
 		Code:       g.Code,
-		Message:    g.Message,
-		InnerError: certificateErrorFromGenerated(g.InnerError),
+		message:    g.Message,
+		innerError: certificateErrorFromGenerated(g.InnerError),
 	}
 }
 
@@ -307,8 +303,8 @@ type Policy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a certificate.
 	LifetimeActions []*LifetimeAction `json:"lifetime_actions,omitempty"`
 
-	// Properties of the secret backing a certificate.
-	SecretProperties *SecretProperties `json:"secret_props,omitempty"`
+	// ContentType of the downloaded certificate
+	ContentType *CertificateContentType `json:"secret_props,omitempty"`
 
 	// Properties of the X509 component of a certificate.
 	X509Properties *X509CertificateProperties `json:"x509_props,omitempty"`
@@ -338,7 +334,7 @@ func (c *Policy) toGeneratedCertificateCreateParameters() *generated.Certificate
 		Attributes:                c.Properties.toGenerated(),
 		IssuerParameters:          c.IssuerParameters.toGenerated(),
 		KeyProperties:             keyProps,
-		SecretProperties:          c.SecretProperties.toGenerated(),
+		SecretProperties:          &generated.SecretProperties{ContentType: (*string)(c.ContentType)},
 		LifetimeActions:           la,
 		X509CertificateProperties: c.X509Properties.toGenerated(),
 	}
@@ -366,7 +362,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 	c.Properties = propertiesFromGenerated(g.Attributes, nil, nil, nil)
 	c.IssuerParameters = issuerParametersFromGenerated(g.IssuerParameters)
 	c.LifetimeActions = la
-	c.SecretProperties = &SecretProperties{ContentType: g.SecretProperties.ContentType}
+	c.ContentType = (*CertificateContentType)(g.SecretProperties.ContentType)
 	c.X509Properties = x509CertificatePropertiesFromGenerated(g.X509CertificateProperties)
 	return c
 }
@@ -500,6 +496,9 @@ type Issuer struct {
 
 	// READ-ONLY; Identifier for the issuer object.
 	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name is the name of the issuer
+	Name *string
 }
 
 // IssuerCredentials - The credentials to be used for the certificate issuer.
@@ -595,22 +594,6 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
 			LifetimePercentage: g.Trigger.LifetimePercentage,
 		},
-	}
-}
-
-// SecretProperties - Properties of the key backing a certificate.
-type SecretProperties struct {
-	// The media type (MIME type).
-	ContentType *string `json:"contentType,omitempty"`
-}
-
-func (s *SecretProperties) toGenerated() *generated.SecretProperties {
-	if s == nil {
-		return nil
-	}
-
-	return &generated.SecretProperties{
-		ContentType: s.ContentType,
 	}
 }
 
@@ -769,4 +752,25 @@ func parseFromID(s *string) (*string, *string, *string) {
 	}
 
 	return &url, to.Ptr(split[1]), to.Ptr(split[2])
+}
+
+// returns the issuer name from a URL like: https://myvault.vault.azure.net/certificates/issuers/issuer3351460800
+// issuer is the last part of the path
+func parseIssuer(s *string) *string {
+	if s == nil {
+		return nil
+	}
+	fmt.Println(*s)
+
+	parsed, err := url.Parse(*s)
+	if err != nil {
+		return nil
+	}
+
+	split := strings.Split(parsed.Path, "/")
+	if len(split) == 0 {
+		return nil
+	}
+	fmt.Println("SPLIT: ", split)
+	return to.Ptr(split[len(split)-1])
 }

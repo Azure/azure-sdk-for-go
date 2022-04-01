@@ -76,6 +76,9 @@ type Properties struct {
 
 	Name *string
 
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]string `json:"tags,omitempty"`
+
 	VaultURL *string
 
 	Version *string
@@ -308,7 +311,7 @@ type Policy struct {
 	SecretProperties *SecretProperties `json:"secret_props,omitempty"`
 
 	// Properties of the X509 component of a certificate.
-	X509CertificateProperties *X509CertificateProperties `json:"x509_props,omitempty"`
+	X509Properties *X509CertificateProperties `json:"x509_props,omitempty"`
 }
 
 func (c *Policy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
@@ -337,7 +340,7 @@ func (c *Policy) toGeneratedCertificateCreateParameters() *generated.Certificate
 		KeyProperties:             keyProps,
 		SecretProperties:          c.SecretProperties.toGenerated(),
 		LifetimeActions:           la,
-		X509CertificateProperties: c.X509CertificateProperties.toGenerated(),
+		X509CertificateProperties: c.X509Properties.toGenerated(),
 	}
 }
 
@@ -364,7 +367,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 	c.IssuerParameters = issuerParametersFromGenerated(g.IssuerParameters)
 	c.LifetimeActions = la
 	c.SecretProperties = &SecretProperties{ContentType: g.SecretProperties.ContentType}
-	c.X509CertificateProperties = x509CertificatePropertiesFromGenerated(g.X509CertificateProperties)
+	c.X509Properties = x509CertificatePropertiesFromGenerated(g.X509CertificateProperties)
 	return c
 }
 
@@ -559,7 +562,7 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 	return &IssuerParameters{
 		CertificateTransparency: g.CertificateTransparency,
 		CertificateType:         g.CertificateType,
-		IssuerName:                    g.Name,
+		IssuerName:              g.Name,
 	}
 }
 
@@ -674,7 +677,7 @@ type X509CertificateProperties struct {
 	EnhancedKeyUsages []*string `json:"ekus,omitempty"`
 
 	// List of key usages.
-	KeyUsage []*KeyUsage `json:"key_usage,omitempty"`
+	KeyUsages []*KeyUsage `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.
 	Subject *string `json:"subject,omitempty"`
@@ -692,7 +695,7 @@ func (x *X509CertificateProperties) toGenerated() *generated.X509CertificateProp
 	}
 
 	var keyUsage []*generated.KeyUsageType
-	for _, k := range x.KeyUsage {
+	for _, k := range x.KeyUsages {
 		keyUsage = append(keyUsage, (*generated.KeyUsageType)(k))
 	}
 
@@ -718,7 +721,7 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 	return &X509CertificateProperties{
 		EnhancedKeyUsages:       g.Ekus,
 		Subject:                 g.Subject,
-		KeyUsage:                ku,
+		KeyUsages:               ku,
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
 		ValidityInMonths:        g.ValidityInMonths,
 	}

@@ -173,7 +173,7 @@ func createCert(t *testing.T, client *Client, certName string) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)

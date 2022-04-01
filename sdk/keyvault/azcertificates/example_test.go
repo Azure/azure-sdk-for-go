@@ -63,7 +63,7 @@ func ExampleClient_BeginCreateCertificate() {
 		IssuerParameters: &azcertificates.IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+		X509Properties: &azcertificates.X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -124,24 +124,19 @@ func ExampleClient_UpdateCertificateProperties() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
-		Version: "myNewVersion",
-		Properties: &azcertificates.Properties{
-			Enabled: to.Ptr(false),
-			Expires: to.Ptr(time.Now().Add(72 * time.Hour)),
-			Tags:    map[string]string{"Tag1": "Val1"},
-		},
-		CertificatePolicy: &azcertificates.Policy{
-			IssuerParameters: &azcertificates.IssuerParameters{
-				IssuerName: to.Ptr("Self"),
-			},
-		},
-	})
+	getResp, err := client.GetCertificate(context.TODO(), "myCertName", nil)
+	if err != nil {
+		panic(err)
+	}
+	getResp.Properties.Enabled = to.Ptr(false)
+	getResp.Properties.Tags["Tag1"] = "Val1"
+
+	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", *getResp.Properties, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.Certificate.Properties.Enabled)
+	fmt.Println(*resp.Properties.Enabled)
 	fmt.Println(resp.Properties.Tags)
 }
 
@@ -219,10 +214,10 @@ func ExampleClient_MergeCertificate() {
 
 	certPolicy := azcertificates.Policy{
 		IssuerParameters: &azcertificates.IssuerParameters{
-			IssuerName:                    to.Ptr("Unknown"),
+			IssuerName:              to.Ptr("Unknown"),
 			CertificateTransparency: to.Ptr(false),
 		},
-		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+		X509Properties: &azcertificates.X509CertificateProperties{
 			Subject: to.Ptr("CN=MyCert"),
 		},
 	}

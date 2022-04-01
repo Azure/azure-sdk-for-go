@@ -52,7 +52,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -91,7 +91,7 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -133,7 +133,7 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -162,7 +162,7 @@ func TestClient_CancelCertificateOperation(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -198,7 +198,7 @@ func TestClient_BackupCertificate(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -336,9 +336,9 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *resp.Provider, "Test")
-	require.Equal(t, *resp.Credentials.AccountID, "keyvaultuser")
-	require.Contains(t, *resp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+	require.Equal(t, *resp.Issuer.Provider, "Test")
+	require.Equal(t, *resp.Issuer.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *resp.Issuer.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 
 	getResp, err := client.GetIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)
@@ -349,7 +349,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	issuerName2, err := createRandomName(t, "issuer2")
 	require.NoError(t, err)
 
-	_, err = client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
+	createResp, err := client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
 		Credentials: &IssuerCredentials{
 			AccountID: to.Ptr("keyvaultuser2"),
 		},
@@ -378,17 +378,16 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	}
 	require.GreaterOrEqual(t, count, 2)
 
-	// Update the certificate issuer
-	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{
-		AdministratorContacts: []*AdministratorContact{
-			{
-				FirstName:    to.Ptr("Jane"),
-				LastName:     to.Ptr("Doey"),
-				EmailAddress: to.Ptr("admin2@microsoft.com"),
-				Phone:        to.Ptr("4266666666"),
-			},
+	createResp.Issuer.AdministratorContacts = []*AdministratorContact{
+		{
+			FirstName:    to.Ptr("Jane"),
+			LastName:     to.Ptr("Doey"),
+			EmailAddress: to.Ptr("admin2@microsoft.com"),
+			Phone:        to.Ptr("4266666666"),
 		},
-	})
+	}
+	// Update the certificate issuer
+	updateResp, err := client.UpdateIssuer(ctx, *createResp.Issuer, nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(updateResp.AdministratorContacts))
 	require.Equal(t, "Jane", *updateResp.AdministratorContacts[0].FirstName)
@@ -453,7 +452,7 @@ func TestPolicy(t *testing.T) {
 	policy := Policy{
 		IssuerParameters: &IssuerParameters{
 			CertificateTransparency: to.Ptr(false),
-			IssuerName:                    to.Ptr("Self"),
+			IssuerName:              to.Ptr("Self"),
 		},
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
@@ -465,9 +464,9 @@ func TestPolicy(t *testing.T) {
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			KeyUsages:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:           to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -517,7 +516,7 @@ func TestCRUDOperations(t *testing.T) {
 	policy := Policy{
 		IssuerParameters: &IssuerParameters{
 			CertificateTransparency: to.Ptr(false),
-			IssuerName:                    to.Ptr("Self"),
+			IssuerName:              to.Ptr("Self"),
 		},
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
@@ -529,9 +528,9 @@ func TestCRUDOperations(t *testing.T) {
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			KeyUsages:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
 			Subject:           to.Ptr("CN=DefaultPolicy"),
 			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
@@ -576,9 +575,8 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
-	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{
-		Properties: &Properties{Tags: map[string]string{"tag1": "updated_values1"}},
-	})
+	received.Properties.Tags["tag1"] = "updated_values1"
+	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)
 	require.Equal(t, "updated_values1", updatePropsResp.Properties.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
@@ -599,10 +597,10 @@ func TestMergeCertificate(t *testing.T) {
 
 	certPolicy := Policy{
 		IssuerParameters: &IssuerParameters{
-			IssuerName:                    to.Ptr("Unknown"),
+			IssuerName:              to.Ptr("Unknown"),
 			CertificateTransparency: to.Ptr(false),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=MyCert"),
 		},
 	}
@@ -681,7 +679,7 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 		},
 	}, nil)
@@ -724,7 +722,7 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 		IssuerParameters: &IssuerParameters{
 			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
+		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
 				Upns: []*string{to.Ptr("john.doe@domain.com")},

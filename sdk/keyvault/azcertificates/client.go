@@ -485,21 +485,17 @@ func (c *Client) BackupCertificate(ctx context.Context, name string, options *Ba
 
 // ImportCertificateOptions contains optional parameters for Client.ImportCertificate
 type ImportCertificateOptions struct {
-	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
 	// The management policy for the certificate.
 	CertificatePolicy *Policy `json:"policy,omitempty"`
+
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
 
 	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
 	Password *string `json:"pwd,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
 	Tags map[string]string `json:"tags,omitempty"`
-}
-
-func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImportCertificateOptions {
-	return &generated.KeyVaultClientImportCertificateOptions{}
 }
 
 // ImportCertificateResponse contains response fields for Client.ImportCertificate
@@ -531,7 +527,7 @@ func (c *Client) ImportCertificate(ctx context.Context, name string, certificate
 			Password:          options.Password,
 			Tags:              tags,
 		},
-		options.toGenerated(),
+		&generated.KeyVaultClientImportCertificateOptions{},
 	)
 	if err != nil {
 		return ImportCertificateResponse{}, err
@@ -703,7 +699,7 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 
 // CreateIssuerResponse contains response fields for Client.CreateIssuer
 type CreateIssuerResponse struct {
-	Issuer
+	Issuer *Issuer
 }
 
 // CreateIssuer adds or updates the specified certificate issuer. This operation requires the certificates/setissuers permission.
@@ -751,7 +747,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	}
 
 	cr := CreateIssuerResponse{}
-	cr.Issuer = Issuer{
+	cr.Issuer = &Issuer{
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 		Provider:    resp.Provider,
 		ID:          resp.ID,
@@ -763,7 +759,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		cr.Issuer.UpdatedOn = resp.Attributes.Updated
 	}
 	if resp.OrganizationDetails != nil {
-		cr.OrganizationID = resp.OrganizationDetails.ID
+		cr.Issuer.OrganizationID = resp.OrganizationDetails.ID
 		var adminDetails []*AdministratorContact
 		if resp.OrganizationDetails.AdminDetails != nil {
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
@@ -776,7 +772,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 				}
 			}
 		}
-		cr.AdministratorContacts = adminDetails
+		cr.Issuer.AdministratorContacts = adminDetails
 	}
 
 	return cr, nil
@@ -950,41 +946,28 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 
 // UpdateIssuerOptions contains optional parameters for Client.UpdateIssuer
 type UpdateIssuerOptions struct {
-	// Determines whether the issuer is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// The credentials to be used for the issuer.
-	Credentials *IssuerCredentials `json:"credentials,omitempty"`
-
-	// Details of the organization administrator.
-	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
-
-	// Id of the organization.
-	OrganizationID *string `json:"id,omitempty"`
-
-	// The issuer provider.
-	Provider *string `json:"provider,omitempty"`
+	// placeholder for future optional parameters
 }
 
-func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUpdateParameters {
-	if u == nil {
+func (i *Issuer) toUpdateParameters() generated.CertificateIssuerUpdateParameters {
+	if i == nil {
 		return generated.CertificateIssuerUpdateParameters{}
 	}
 	var attrib *generated.IssuerAttributes
-	if u.Enabled != nil {
-		attrib = &generated.IssuerAttributes{Enabled: u.Enabled}
+	if i.Enabled != nil {
+		attrib = &generated.IssuerAttributes{Enabled: i.Enabled}
 	}
 
 	var orgDetail *generated.OrganizationDetails
-	if u.OrganizationID != nil || u.AdministratorContacts != nil {
+	if i.OrganizationID != nil || i.AdministratorContacts != nil {
 		orgDetail = &generated.OrganizationDetails{}
-		if u.OrganizationID != nil {
-			orgDetail.ID = u.OrganizationID
+		if i.OrganizationID != nil {
+			orgDetail.ID = i.OrganizationID
 		}
 
-		if u.AdministratorContacts != nil {
-			a := make([]*generated.AdministratorDetails, len(u.AdministratorContacts))
-			for idx, v := range u.AdministratorContacts {
+		if i.AdministratorContacts != nil {
+			a := make([]*generated.AdministratorDetails, len(i.AdministratorContacts))
+			for idx, v := range i.AdministratorContacts {
 				a[idx] = &generated.AdministratorDetails{
 					EmailAddress: v.EmailAddress,
 					FirstName:    v.FirstName,
@@ -999,9 +982,9 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 
 	return generated.CertificateIssuerUpdateParameters{
 		Attributes:          attrib,
-		Credentials:         u.Credentials.toGenerated(),
+		Credentials:         i.Credentials.toGenerated(),
 		OrganizationDetails: orgDetail,
-		Provider:            u.Provider,
+		Provider:            i.Provider,
 	}
 }
 
@@ -1012,12 +995,12 @@ type UpdateIssuerResponse struct {
 
 // UpdateIssuer performs an update on the specified certificate issuer entity. This operation requires
 // the certificates/setissuers permission.
-func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {
+func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {
 	resp, err := c.genClient.UpdateCertificateIssuer(
 		ctx,
 		c.vaultURL,
-		issuerName,
-		options.toUpdateParameters(),
+		*certificateIssuer.ID,
+		certificateIssuer.toUpdateParameters(),
 		&generated.KeyVaultClientUpdateCertificateIssuerOptions{},
 	)
 	if err != nil {
@@ -1237,13 +1220,13 @@ type UpdateCertificatePropertiesResponse struct {
 
 // UpdateCertificateProperties applies the specified update on the given certificate; the only elements updated are the certificate's
 // attributes. This operation requires the certificates/update permission.
-func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateName string, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
+func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateName string, properties Properties, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateCertificatePropertiesOptions{}
 	}
 	var tags map[string]*string
-	if options.Properties != nil && options.Properties.Tags != nil {
-		tags = convertToGeneratedMap(options.Properties.Tags)
+	if properties.Tags != nil {
+		tags = convertToGeneratedMap(properties.Tags)
 	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
@@ -1251,8 +1234,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateNam
 		certificateName,
 		options.Version,
 		generated.CertificateUpdateParameters{
-			CertificateAttributes: options.Properties.toGenerated(),
-			CertificatePolicy:     options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
+			CertificateAttributes: properties.toGenerated(),
 			Tags:                  tags,
 		},
 		options.toGenerated(),

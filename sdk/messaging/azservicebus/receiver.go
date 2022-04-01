@@ -426,6 +426,14 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			// Cancelling a DrainCredit means we're in an indeterminate state
 			// so we treat that as a "must recover" error.
 			cleanup(err)
+
+			if internal.IsCancelError(err) {
+				// this cancellation is entirely on us - we cleaned up as best we can
+				// but the user isn't expected to know about this detail so we don't
+				// return the cancellation error.
+				err = nil
+			}
+
 			return flushAndReturn(err)
 		}
 

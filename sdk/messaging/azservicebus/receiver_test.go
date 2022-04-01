@@ -30,7 +30,7 @@ func TestReceiverCancel(t *testing.T) {
 	defer cancel()
 
 	messages, err := receiver.ReceiveMessages(ctx, 5, nil)
-	require.NoError(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 }
 
@@ -319,7 +319,7 @@ func TestReceiverDeferWithReceiveAndDelete(t *testing.T) {
 	defer cancel()
 
 	messages, err = receiveAndDeleteReceiver.ReceiveMessages(ctx, len(sequenceNumbers), nil)
-	require.NoError(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 }
 

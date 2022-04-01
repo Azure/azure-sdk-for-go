@@ -3809,69 +3809,6 @@
       }
     },
     {
-      "taskType": "trigger",
-      "capabilityId": "IssueResponder",
-      "subCapability": "IssuesOnlyResponder",
-      "version": "1.0",
-      "config": {
-        "conditions": {
-          "operator": "and",
-          "operands": [
-            {
-              "name": "labelAdded",
-              "parameters": {
-                "label": "issue-addressed"
-              }
-            }
-          ]
-        },
-        "eventType": "issue",
-        "eventNames": [
-          "issues",
-          "project_card"
-        ],
-        "taskName": "[Resolve Workflow] Issue Addressed Label Applied",
-        "actions": [
-          {
-            "name": "addReply",
-            "parameters": {
-              "comment": "Hi @${issueAuthor}.  Thank you for opening this issue and giving us the opportunity to assist.  We believe that this has been addressed.  If you feel that further discussion is needed, please add a comment with the text “`/unresolve`” to remove the “issue-addressed” label and continue the conversation."
-            }
-          },
-          {
-            "name": "removeLabel",
-            "parameters": {
-              "label": "needs-triage"
-            }
-          },
-          {
-            "name": "removeLabel",
-            "parameters": {
-              "label": "needs-team-triage"
-            }
-          },
-          {
-            "name": "removeLabel",
-            "parameters": {
-              "label": "needs-team-attention"
-            }
-          },
-          {
-            "name": "removeLabel",
-            "parameters": {
-              "label": "needs-author-feedback"
-            }
-          },
-          {
-            "name": "removeLabel",
-            "parameters": {
-              "label": "no-recent-activity"
-            }
-          }
-        ]
-      }
-    },
-    {
       "taskType": "scheduled",
       "capabilityId": "ScheduledSearch",
       "subCapability": "ScheduledSearch",

@@ -604,3 +604,58 @@ func TestNopPoller(t *testing.T) {
 		t.Fatal("expected empty token")
 	}
 }
+
+type preconstructedWidget struct {
+	Size           int `json:"size"`
+	Preconstructed int
+}
+
+func TestOpPollerWithResponseType(t *testing.T) {
+	srv, close := mock.NewServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)), mock.WithHeader("Retry-After", "1"))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
+	// PUT and PATCH state that a final GET will happen
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
+	defer close()
+
+	reqURL, err := url.Parse(srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp := &http.Response{
+		Body:       body,
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
+		},
+	}
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
+	lro, err := NewPoller(firstResp, pl, &NewPollerOptions[preconstructedWidget]{
+		Response: &preconstructedWidget{
+			Preconstructed: 12345,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	w, err := lro.PollUntilDone(context.Background(), time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if w.Size != 2 {
+		t.Fatalf("unexpected widget size %d", w.Size)
+	}
+	if w.Preconstructed != 12345 {
+		t.Fatalf("unexpected widget size %d", w.Preconstructed)
+	}
+}

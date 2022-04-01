@@ -327,3 +327,50 @@ func TestNewPollerFail202NoHeaders(t *testing.T) {
 		t.Fatal("expected nil poller")
 	}
 }
+
+type preconstructedMockType struct {
+	Field          *string `json:"field,omitempty"`
+	Preconstructed int
+}
+
+func TestNewPollerWithResponseType(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)), mock.WithHeader("Retry-After", "1"))
+	srv.AppendResponse(mock.WithBody([]byte(provStateSucceeded)))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[preconstructedMockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&body.Poller{}) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken(tk, pl, &NewPollerFromResumeTokenOptions[preconstructedMockType]{
+		Response: &preconstructedMockType{
+			Preconstructed: 12345,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+	if result.Preconstructed != 12345 {
+		t.Fatalf("unexpected value %d", result.Preconstructed)
+	}
+}

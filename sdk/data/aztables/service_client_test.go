@@ -310,7 +310,7 @@ func TestSetCors(t *testing.T) {
 	require.NoError(t, err)
 
 	getResp.Properties.Cors = []*CorsRule{
-		&CorsRule{
+		{
 			AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
 			AllowedMethods:  to.Ptr("PUT"),
 			AllowedOrigins:  to.Ptr("www.xyz.com"),

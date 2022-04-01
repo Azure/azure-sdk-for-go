@@ -22,10 +22,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+// FinalStateVia is the enumerated type for the possible final-state-via values.
+type FinalStateVia = pollers.FinalStateVia
+
+const (
+	// FinalStateViaAzureAsyncOp indicates the final payload comes from the Azure-AsyncOperation URL.
+	FinalStateViaAzureAsyncOp = pollers.FinalStateViaAzureAsyncOp
+
+	// FinalStateViaLocation indicates the final payload comes from the Location URL.
+	FinalStateViaLocation = pollers.FinalStateViaLocation
+
+	// FinalStateViaOriginalURI indicates the final payload comes from the original URL.
+	FinalStateViaOriginalURI = pollers.FinalStateViaOriginalURI
+
+	// FinalStateViaOpLocation indicates the final payload comes from the Operation-Location URL.
+	FinalStateViaOpLocation = pollers.FinalStateViaOpLocation
+)
+
 // NewPollerOptions contains the optional parameters for NewPoller.
 type NewPollerOptions[T any] struct {
 	// FinalStateVia contains the final-state-via value for the LRO.
-	FinalStateVia string
+	FinalStateVia FinalStateVia
 
 	// Response contains a preconstructed response type.
 	// The final payload will be unmarshaled into it and returned.

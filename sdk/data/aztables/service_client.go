@@ -99,12 +99,17 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 
 // CreateTable creates a table with the specified name. If the service returns a non-successful HTTP status code,
 // the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
-func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	_, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
-	return t.NewClient(name), err
+	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	if err != nil {
+		return CreateTableResponse{}, err
+	}
+	return CreateTableResponse{
+		TableName: resp.TableName,
+	}, nil
 }
 
 // DeleteTableOptions contains optional parameters for Client.Delete and ServiceClient.DeleteTable

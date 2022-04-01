@@ -106,11 +106,14 @@ func parseURL(serviceURL string) (string, string, error) {
 
 // CreateTableResponse contains response fields for Client.Create and ServiceClient.CreateTable
 type CreateTableResponse struct {
-	// placeholder for future response fields
+	// The name of the table.
+	TableName *string `json:"TableName,omitempty"`
 }
 
 func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTableResponse {
-	return CreateTableResponse{}
+	return CreateTableResponse{
+		TableName: g.TableName,
+	}
 }
 
 // CreateTable creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
@@ -187,7 +190,7 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 	return ListEntitiesResponse{
 		NextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		NextRowKey:       resp.XMSContinuationNextRowKey,
-		Entities:                     marshalledValue,
+		Entities:         marshalledValue,
 	}, nil
 }
 

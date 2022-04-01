@@ -11,6 +11,12 @@
 * Removed `ResponsePreference` on `AddEntityOptions`
 * Renamed `ListEntitiesOptions.PartitionKey` to `ListEntitiesOptions.NextPartitionKey`.
 * Renamed `ListEntitiesOptionsRowKey` to `ListEntitiesOptions.NextRowKey`
+* Renamed `Client.Create` to `Client.CreateTable`
+* Renamed `ListEntitiesPageResponse` to `ListEntitiesResponse`
+* Removed the `Entity` prefix on `EntityUpdateModeMerge` and `EntityUpdateModeReplace`
+* Renamed `Client.InsertEntity` to `Client.UpsertEntity`
+* Removed the `Continuation` prefix from `ContinuationNextPartitionKey`, `ContinuationNextRowKey`, and `ContinuationNextTable`
+* Removed the `ResponseFormat` type
 
 ### Bugs Fixed
 

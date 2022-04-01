@@ -6,9 +6,7 @@ package aztables
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -210,18 +208,4 @@ func TestEntityUnicode(t *testing.T) {
 			require.Nil(t, err)
 		})
 	}
-}
-
-func TestEDMTypes(t *testing.T) {
-	largeInt := EDMInt64(int64(math.Pow(2, 33)))
-	largeInt = EDMInt64(largeInt.ToInt64() + 1)
-	require.Equal(t, int64(math.Pow(2, 33)+1), largeInt.ToInt64())
-
-	edmBin := EDMBinary([]byte("somebinarydata"))
-	updatedEdmbin := EDMBinary(append(edmBin.ToByteSlice(), []byte("morebinarydata")...))
-	require.Equal(t, []byte("somebinarydatamorebinarydata"), updatedEdmbin.ToByteSlice())
-
-	edmDate := EDMDateTime(time.Date(2022, time.April, 1, 1, 1, 1, 1, time.UTC))
-	updatedEdmDate := EDMDateTime(edmDate.ToTime().Add(24 * time.Hour))
-	require.Equal(t, time.Date(2022, time.April, 2, 1, 1, 1, 1, time.UTC), updatedEdmDate.ToTime())
 }

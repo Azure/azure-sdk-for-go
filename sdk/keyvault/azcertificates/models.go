@@ -184,6 +184,7 @@ type CertificateOperationError struct {
 	message *string
 }
 
+// Error returns the error string detailing why the Certificate Operation failed.
 func (c *CertificateOperationError) Error() string {
 	if c == nil {
 		return ""

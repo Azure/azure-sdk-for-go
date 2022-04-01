@@ -224,6 +224,9 @@ func ExampleClient_MergeCertificate() {
 
 	// Load public key
 	data, err := ioutil.ReadFile("path/to/cert/ca.crt")
+	if err != nil {
+		panic(err)
+	}
 	block, _ := pem.Decode(data)
 	caCert, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
@@ -231,6 +234,9 @@ func ExampleClient_MergeCertificate() {
 	}
 
 	data, err = ioutil.ReadFile("path/to/certkey/ca.key")
+	if err != nil {
+		panic(err)
+	}
 	pkeyBlock, _ := pem.Decode(data)
 	pkey, err := x509.ParsePKCS1PrivateKey(pkeyBlock.Bytes)
 	if err != nil {

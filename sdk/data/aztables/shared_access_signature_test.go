@@ -98,7 +98,7 @@ func TestSASClient(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -152,7 +152,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -218,7 +218,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)

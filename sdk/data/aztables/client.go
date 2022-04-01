@@ -656,9 +656,9 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 	return setAccessPolicyResponseFromGenerated(&response), err
 }
 
-// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
+// GetTableSASURL is a convenience method for generating a SAS token for a specific table.
 // It can only be used by clients created by NewClientWithSharedKey().
-func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (t Client) GetTableSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
 	if t.cred == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}

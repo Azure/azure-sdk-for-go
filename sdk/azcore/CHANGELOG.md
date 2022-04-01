@@ -5,6 +5,7 @@
 ### Features Added
 * Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.
 * Added `cloud` package with a new API for cloud configuration
+* Added `FinalStateVia` field to `runtime.NewPollerOptions[T any]` type.
 
 ### Breaking Changes
 * Removed the `Poller` type-alias to the internal poller implementation.
@@ -16,6 +17,7 @@
 * Refactored `NewPoller` and `NewPollerFromResumeToken` funcs in `arm/runtime` and `runtime` packages.
   * Removed the `pollerID` parameter as it's no longer required.
   * Created optional parameter structs and moved optional parameters into them.
+* Changed `FinalStateVia` field to a `const` type.
 
 ### Bugs Fixed
 

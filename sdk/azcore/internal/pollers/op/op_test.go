@@ -60,7 +60,7 @@ func TestNew(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +82,7 @@ func TestNewWithInitialStatus(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -98,7 +98,7 @@ func TestNewWithPost(t *testing.T) {
 	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -114,7 +114,7 @@ func TestNewWithDelete(t *testing.T) {
 	resp := initialResponse(http.MethodDelete, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +128,7 @@ func TestNewWithDelete(t *testing.T) {
 
 func TestNewFail(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -137,7 +137,7 @@ func TestNewFail(t *testing.T) {
 	}
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, "/must/be/absolute")
-	poller, err = New(resp, "pollerID")
+	poller, err = New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -145,7 +145,7 @@ func TestNewFail(t *testing.T) {
 		t.Fatal("expected nil poller")
 	}
 	resp.Header.Set(shared.HeaderOperationLocation, "/must/be/absolute")
-	poller, err = New(resp, "pollerID")
+	poller, err = New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -158,7 +158,7 @@ func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -192,7 +192,7 @@ func TestUpdateResourceLocation(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -215,7 +215,7 @@ func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -235,7 +235,7 @@ func TestUpdateMissingStatus(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}

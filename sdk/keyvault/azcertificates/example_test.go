@@ -61,7 +61,7 @@ func ExampleClient_BeginCreateCertificate() {
 
 	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.Policy{
 		IssuerParameters: &azcertificates.IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -133,7 +133,7 @@ func ExampleClient_UpdateCertificateProperties() {
 		},
 		CertificatePolicy: &azcertificates.Policy{
 			IssuerParameters: &azcertificates.IssuerParameters{
-				Name: to.Ptr("Self"),
+				IssuerName: to.Ptr("Self"),
 			},
 		},
 	})
@@ -219,7 +219,7 @@ func ExampleClient_MergeCertificate() {
 
 	certPolicy := azcertificates.Policy{
 		IssuerParameters: &azcertificates.IssuerParameters{
-			Name:                    to.Ptr("Unknown"),
+			IssuerName:                    to.Ptr("Unknown"),
 			CertificateTransparency: to.Ptr(false),
 		},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{
@@ -256,7 +256,7 @@ func ExampleClient_MergeCertificate() {
 		panic(err)
 	}
 
-	mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(certOpResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
 	// load certificate request

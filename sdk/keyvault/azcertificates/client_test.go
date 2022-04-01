@@ -50,7 +50,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -66,7 +66,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 
 	// want to interface with x509 std library
 
-	mid := base64.StdEncoding.EncodeToString(pollerResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
 	// load certificate request
@@ -89,7 +89,7 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -131,7 +131,7 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -160,7 +160,7 @@ func TestClient_CancelCertificateOperation(t *testing.T) {
 
 	_, err = client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -196,7 +196,7 @@ func TestClient_BackupCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -453,23 +453,23 @@ func TestPolicy(t *testing.T) {
 	policy := Policy{
 		IssuerParameters: &IssuerParameters{
 			CertificateTransparency: to.Ptr(false),
-			Name:                    to.Ptr("Self"),
+			IssuerName:                    to.Ptr("Self"),
 		},
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
 		ReuseKey:   to.Ptr(true),
 		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: to.Ptr(PolicyActionEmailContacts)}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			EnhancedKeyUsages:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
-			Subject:          to.Ptr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Ptr(int32(12)),
+			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			Subject:           to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
 				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
@@ -483,7 +483,7 @@ func TestPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure policies are equal
-	require.Equal(t, *policy.IssuerParameters.Name, *receivedPolicy.Policy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *receivedPolicy.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *receivedPolicy.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
 
@@ -495,7 +495,7 @@ func TestPolicy(t *testing.T) {
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.Policy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
@@ -517,23 +517,23 @@ func TestCRUDOperations(t *testing.T) {
 	policy := Policy{
 		IssuerParameters: &IssuerParameters{
 			CertificateTransparency: to.Ptr(false),
-			Name:                    to.Ptr("Self"),
+			IssuerName:                    to.Ptr("Self"),
 		},
 		Exportable: to.Ptr(true),
 		KeySize:    to.Ptr(int32(2048)),
 		ReuseKey:   to.Ptr(true),
 		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: to.Ptr(PolicyActionEmailContacts)}, Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
 		},
 		SecretProperties: &SecretProperties{
 			ContentType: to.Ptr("application/x-pkcs12"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
-			EnhancedKeyUsages:             []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
-			Subject:          to.Ptr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Ptr(int32(12)),
+			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:          []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			Subject:           to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
 				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
@@ -569,7 +569,7 @@ func TestCRUDOperations(t *testing.T) {
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.Policy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
@@ -599,7 +599,7 @@ func TestMergeCertificate(t *testing.T) {
 
 	certPolicy := Policy{
 		IssuerParameters: &IssuerParameters{
-			Name:                    to.Ptr("Unknown"),
+			IssuerName:                    to.Ptr("Unknown"),
 			CertificateTransparency: to.Ptr(false),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
@@ -632,7 +632,7 @@ func TestMergeCertificate(t *testing.T) {
 	certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
 	require.NoError(t, err)
 
-	mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(certOpResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
 	// load certificate request
@@ -679,7 +679,7 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
@@ -722,11 +722,11 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.Ptr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
 		X509CertificateProperties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
- 				SubjectAlternativeNames: &SubjectAlternativeNames{
+			SubjectAlternativeNames: &SubjectAlternativeNames{
 				Upns: []*string{to.Ptr("john.doe@domain.com")},
 			},
 		},

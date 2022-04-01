@@ -69,9 +69,6 @@ type Properties struct {
 	// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
-	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
@@ -133,7 +130,7 @@ type Certificate struct {
 	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string `json:"contentType,omitempty"`
@@ -154,7 +151,7 @@ type CertificateWithPolicy struct {
 	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string `json:"contentType,omitempty"`
@@ -179,7 +176,7 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 
 	return Certificate{
 		Properties:  propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
-		Cer:         g.Cer,
+		CER:         g.Cer,
 		ContentType: g.ContentType,
 		ID:          g.ID,
 		KeyID:       g.Kid,
@@ -243,7 +240,7 @@ type Operation struct {
 	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
 
 	// The certificate signing request (CSR) that is being used in the certificate operation.
-	Csr []byte `json:"csr,omitempty"`
+	CSR []byte `json:"csr,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
 	Error *CertificateOperationError `json:"error,omitempty"`
@@ -270,7 +267,7 @@ type Operation struct {
 func certificateOperationFromGenerated(g generated.CertificateOperation) Operation {
 	return Operation{
 		CancellationRequested: g.CancellationRequested,
-		Csr:                   g.Csr,
+		CSR:                   g.Csr,
 		Error:                 certificateErrorFromGenerated(g.Error),
 		IssuerParameters:      issuerParametersFromGenerated(g.IssuerParameters),
 		RequestID:             g.RequestID,
@@ -430,7 +427,7 @@ type DeletedCertificate struct {
 	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string `json:"contentType,omitempty"`
@@ -538,8 +535,8 @@ type IssuerParameters struct {
 	// Certificate type as supported by the provider (optional); for example 'OV-SSL', 'EV-SSL'
 	CertificateType *string `json:"cty,omitempty"`
 
-	// Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-	Name *string `json:"name,omitempty"`
+	// IssuerName of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
+	IssuerName *string `json:"name,omitempty"`
 }
 
 func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
@@ -550,7 +547,7 @@ func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
 	return &generated.IssuerParameters{
 		CertificateTransparency: i.CertificateTransparency,
 		CertificateType:         i.CertificateType,
-		Name:                    i.Name,
+		Name:                    i.IssuerName,
 	}
 }
 
@@ -562,14 +559,14 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 	return &IssuerParameters{
 		CertificateTransparency: g.CertificateTransparency,
 		CertificateType:         g.CertificateType,
-		Name:                    g.Name,
+		IssuerName:                    g.Name,
 	}
 }
 
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
-	Action *Action `json:"action,omitempty"`
+	Action *PolicyAction `json:"action,omitempty"`
 
 	// The condition that will execute the action.
 	Trigger *Trigger `json:"trigger,omitempty"`
@@ -577,7 +574,9 @@ type LifetimeAction struct {
 
 func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
 	return &generated.LifetimeAction{
-		Action:  l.Action.toGenerated(),
+		Action: &generated.Action{
+			ActionType: (*generated.ActionType)(l.Action),
+		},
 		Trigger: l.Trigger.toGenerated(),
 	}
 }
@@ -588,9 +587,7 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 	}
 
 	return &LifetimeAction{
-		Action: &Action{
-			ActionType: (*PolicyAction)(g.Action.ActionType),
-		},
+		Action: (*PolicyAction)(g.Action.ActionType),
 		Trigger: &Trigger{
 			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
 			LifetimePercentage: g.Trigger.LifetimePercentage,

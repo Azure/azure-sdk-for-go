@@ -184,10 +184,6 @@ func (e *EDMGUID) UnmarshalText(data []byte) error {
 	return nil
 }
 
-func (e EDMGUID) ToString() string {
-	return string(e)
-}
-
 // EDMDateTime represents an entity property that is a time.Time object. Using EDMDateTime guarantees
 // proper odata type annotations.
 type EDMDateTime time.Time

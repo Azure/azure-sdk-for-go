@@ -506,13 +506,14 @@ func TestAzurite(t *testing.T) {
 
 	name, err := createRandomName(t, "Table")
 	require.NoError(t, err)
-	client, err := svc.CreateTable(ctx, name, nil)
+	_, err = svc.CreateTable(ctx, name, nil)
 	defer func() {
-		_, err = client.Delete(ctx, nil)
+		_, err = svc.DeleteTable(ctx, name, nil)
 		require.NoError(t, err)
 	}()
 	require.NoError(t, err)
 
+	client := svc.NewClient(name)
 	entity := EDMEntity{
 		Entity: Entity{
 			PartitionKey: "pencils",

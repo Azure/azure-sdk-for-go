@@ -152,3 +152,73 @@ func (ac *Client) newPagerFunc(baseFragment string, maxPageSize int32, lenV func
 		return resp, nil
 	}
 }
+
+type entityPager[TFeed interface{ Items() []T }, T any, TFinal any] struct {
+	convertFn    func(*T) (*TFinal, error)
+	maxPageSize  int32
+	baseFragment string
+	em           atom.EntityManager
+
+	eof  bool
+	skip int32
+}
+
+// func newEntityPager[TFeed interface{ Items() []T }, T any, TFinal any](em atom.EntityManager, baseFragment string, maxPageSize int32, convertFn func(T) ([]TFinal, error)) *entityPager[TFeed, T] {
+// 	return &entityPager[TFeed, T]{
+// 		maxPageSize:  maxPageSize,
+// 		baseFragment: baseFragment,
+// 		em:           em,
+// 	}
+// }
+
+func (ep *entityPager[_, _, _]) More() bool {
+	return !ep.eof
+}
+
+func (ep *entityPager[TFeed, T, TOutput]) Fetcher(ctx context.Context) ([]TOutput, error) {
+	if ep.eof {
+		return nil, nil
+	}
+
+	url := ep.baseFragment + "?"
+	if ep.maxPageSize > 0 {
+		url += fmt.Sprintf("&$top=%d", ep.maxPageSize)
+	}
+
+	if ep.skip > 0 {
+		url += fmt.Sprintf("&$skip=%d", ep.skip)
+	}
+
+	var pv *TFeed
+	_, err := ep.em.Get(ctx, url, &pv)
+
+	if err != nil {
+		ep.eof = true
+		return nil, err
+	}
+
+	if len((*pv).Items()) == 0 {
+		ep.eof = true
+		return nil, nil
+	}
+
+	if len((*pv).Items()) < int(ep.maxPageSize) {
+		ep.eof = true
+	}
+
+	ep.skip += int32(len((*pv).Items()))
+
+	var finalItems []TOutput
+
+	for _, feedItem := range (*pv).Items() {
+		final, err := ep.convertFn(&feedItem)
+
+		if err != nil {
+			return nil, err
+		}
+
+		finalItems = append(finalItems, *final)
+	}
+
+	return finalItems, nil
+}

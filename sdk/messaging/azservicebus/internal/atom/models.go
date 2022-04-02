@@ -121,6 +121,10 @@ type (
 	}
 )
 
+func (tf TopicFeed) Items() []TopicEnvelope {
+	return tf.Entries
+}
+
 // Subscriptions (and rules)
 type (
 	// FilterDescriber can transform itself into a FilterDescription

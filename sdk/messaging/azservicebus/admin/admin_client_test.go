@@ -517,7 +517,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	pager := adminClient.ListTopics(&ListTopicsOptions{
 		MaxPageSize: 2,
 	})
-	all := map[string]*TopicItem{}
+	all := map[string]TopicItem{}
 
 	times := 0
 
@@ -570,7 +570,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	pager := adminClient.ListTopicsRuntimeProperties(&ListTopicsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
-	all := map[string]*TopicRuntimePropertiesItem{}
+	all := map[string]TopicRuntimePropertiesItem{}
 
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())

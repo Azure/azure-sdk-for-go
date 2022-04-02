@@ -121,14 +121,14 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 		return nil, err
 	}
 
-	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
+	topicItem, err := newTopicItem(atomResp)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetTopicResponse{
-		TopicProperties: *props,
+		TopicProperties: topicItem.TopicProperties,
 	}, nil
 }
 
@@ -157,14 +157,14 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 		return nil, err
 	}
 
-	props, err := newTopicRuntimeProperties(&atomResp.Content.TopicDescription)
+	item, err := newTopicRuntimePropertiesItem(atomResp)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetTopicRuntimePropertiesResponse{
-		TopicRuntimeProperties: *props,
+		TopicRuntimeProperties: item.TopicRuntimeProperties,
 	}, nil
 }
 
@@ -178,64 +178,13 @@ type TopicItem struct {
 // ListTopicsResponse contains response fields for the Client.PageResponse method
 type ListTopicsResponse struct {
 	// Items is the result of the request.
-	Items []*TopicItem
+	Items []TopicItem
 }
 
 // ListTopicsOptions can be used to configure the ListTopics method.
 type ListTopicsOptions struct {
 	// MaxPageSize is the maximum size of each page of results.
 	MaxPageSize int32
-}
-
-// ListTopicsPager provides iteration over ListTopics pages.
-type ListTopicsPager struct {
-	innerPager pagerFunc
-	done       bool
-}
-
-func (p *ListTopicsPager) More() bool {
-	return !p.done
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ListTopicsPager) NextPage(ctx context.Context) (ListTopicsResponse, error) {
-	resp, err := p.getNextPage(ctx)
-
-	if resp == nil {
-		p.done = true
-		return ListTopicsResponse{}, nil
-	}
-
-	return *resp, err
-}
-
-func (p *ListTopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
-	var feed *atom.TopicFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*TopicItem
-
-	for _, env := range feed.Entries {
-		props, err := newTopicProperties(&env.Content.TopicDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &TopicItem{
-			TopicProperties: *props,
-			TopicName:       env.Title,
-		})
-	}
-
-	return &ListTopicsResponse{
-		Items: all,
-	}, nil
 }
 
 // ListTopics lists topics.
@@ -246,11 +195,29 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopi
 		pageSize = options.MaxPageSize
 	}
 
-	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
-
-	return &ListTopicsPager{
-		innerPager: pagerFunc,
+	ep := &entityPager[atom.TopicFeed, atom.TopicEnvelope, TopicItem]{
+		convertFn:    newTopicItem,
+		baseFragment: "/$Resources/Topics",
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListTopicsResponse]{
+		More: func(ltr ListTopicsResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListTopicsResponse) (ListTopicsResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListTopicsResponse{}, err
+			}
+
+			return ListTopicsResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 // TopicRuntimePropertiesItem contains fields for the Client.ListTopicsRuntimeProperties method
@@ -263,7 +230,7 @@ type TopicRuntimePropertiesItem struct {
 // ListTopicsRuntimePropertiesResponse contains response fields for TopicRuntimePropertiesPager.PageResponse
 type ListTopicsRuntimePropertiesResponse struct {
 	// Items is the result of the request.
-	Items []*TopicRuntimePropertiesItem
+	Items []TopicRuntimePropertiesItem
 }
 
 // ListTopicsRuntimePropertiesOptions can be used to configure the ListTopicsRuntimeProperties method.
@@ -272,71 +239,37 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopicsRuntimePropertiesPager provides iteration over ListTopicsRuntimeProperties pages.
-type ListTopicsRuntimePropertiesPager struct {
-	innerPager pagerFunc
-	done       bool
-}
-
-// More returns true if there are more pages.
-func (p *ListTopicsRuntimePropertiesPager) More() bool {
-	return !p.done
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ListTopicsRuntimePropertiesPager) NextPage(ctx context.Context) (ListTopicsRuntimePropertiesResponse, error) {
-	resp, err := p.getNextPage(ctx)
-
-	if resp == nil {
-		p.done = true
-		return ListTopicsRuntimePropertiesResponse{}, nil
-	}
-
-	return *resp, err
-}
-
-func (p *ListTopicsRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
-	var feed *atom.TopicFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*TopicRuntimePropertiesItem
-
-	for _, entry := range feed.Entries {
-		props, err := newTopicRuntimeProperties(&entry.Content.TopicDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &TopicRuntimePropertiesItem{
-			TopicName:              entry.Title,
-			TopicRuntimeProperties: *props,
-		})
-	}
-
-	return &ListTopicsRuntimePropertiesResponse{
-		Items: all,
-	}, nil
-}
-
 // ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *ListTopicsRuntimePropertiesPager {
+func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
-
-	return &ListTopicsRuntimePropertiesPager{
-		innerPager: pagerFunc,
+	ep := &entityPager[atom.TopicFeed, atom.TopicEnvelope, TopicRuntimePropertiesItem]{
+		convertFn:    newTopicRuntimePropertiesItem,
+		baseFragment: "/$Resources/Topics",
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListTopicsRuntimePropertiesResponse]{
+		More: func(ltr ListTopicsRuntimePropertiesResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListTopicsRuntimePropertiesResponse) (ListTopicsRuntimePropertiesResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListTopicsRuntimePropertiesResponse{}, err
+			}
+
+			return ListTopicsRuntimePropertiesResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 // UpdateTopicResponse contains response fields for Client.UpdateTopic
@@ -406,13 +339,13 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 		return nil, nil, err
 	}
 
-	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
+	topicItem, err := newTopicItem(atomResp)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return topicProps, resp, nil
+	return &topicItem.TopicProperties, resp, nil
 }
 
 func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) *atom.TopicEnvelope {
@@ -433,22 +366,29 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 	return atom.WrapWithTopicEnvelope(desc)
 }
 
-func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
-	return &TopicProperties{
-		MaxSizeInMegabytes:                  td.MaxSizeInMegabytes,
-		RequiresDuplicateDetection:          td.RequiresDuplicateDetection,
-		DefaultMessageTimeToLive:            td.DefaultMessageTimeToLive,
-		DuplicateDetectionHistoryTimeWindow: td.DuplicateDetectionHistoryTimeWindow,
-		EnableBatchedOperations:             td.EnableBatchedOperations,
-		Status:                              (*EntityStatus)(td.Status),
-		UserMetadata:                        td.UserMetadata,
-		AutoDeleteOnIdle:                    td.AutoDeleteOnIdle,
-		EnablePartitioning:                  td.EnablePartitioning,
-		SupportOrdering:                     td.SupportOrdering,
+func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
+	td := te.Content.TopicDescription
+
+	return &TopicItem{
+		TopicName: te.Title,
+		TopicProperties: TopicProperties{
+			MaxSizeInMegabytes:                  td.MaxSizeInMegabytes,
+			RequiresDuplicateDetection:          td.RequiresDuplicateDetection,
+			DefaultMessageTimeToLive:            td.DefaultMessageTimeToLive,
+			DuplicateDetectionHistoryTimeWindow: td.DuplicateDetectionHistoryTimeWindow,
+			EnableBatchedOperations:             td.EnableBatchedOperations,
+			Status:                              (*EntityStatus)(td.Status),
+			UserMetadata:                        td.UserMetadata,
+			AutoDeleteOnIdle:                    td.AutoDeleteOnIdle,
+			EnablePartitioning:                  td.EnablePartitioning,
+			SupportOrdering:                     td.SupportOrdering,
+		},
 	}, nil
 }
 
-func newTopicRuntimeProperties(desc *atom.TopicDescription) (*TopicRuntimeProperties, error) {
+func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimePropertiesItem, error) {
+	desc := env.Content.TopicDescription
+
 	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
 		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
@@ -469,10 +409,8 @@ func newTopicRuntimeProperties(desc *atom.TopicDescription) (*TopicRuntimeProper
 		return nil, err
 	}
 
-	return props, nil
-}
-
-func topicFeedLen(pv interface{}) int {
-	topicFeed := pv.(**atom.TopicFeed)
-	return len((*topicFeed).Entries)
+	return &TopicRuntimePropertiesItem{
+		TopicName:              env.Title,
+		TopicRuntimeProperties: *props,
+	}, nil
 }

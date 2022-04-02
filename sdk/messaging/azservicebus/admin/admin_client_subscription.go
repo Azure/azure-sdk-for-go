@@ -458,8 +458,3 @@ func newSubscriptionRuntimePropertiesItem(env *atom.SubscriptionEnvelope, topicN
 		SubscriptionName:              env.Title,
 	}, nil
 }
-
-func subFeedLen(v interface{}) int {
-	feed := v.(**atom.SubscriptionFeed)
-	return len((*feed).Entries)
-}

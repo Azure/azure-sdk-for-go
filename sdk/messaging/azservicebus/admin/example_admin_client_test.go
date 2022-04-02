@@ -74,13 +74,17 @@ func ExampleClient_ListQueues() {
 func ExampleClient_ListQueuesRuntimeProperties() {
 	queuePager := adminClient.ListQueuesRuntimeProperties(nil)
 
-	for queuePager.NextPage(context.TODO()) {
-		for _, queue := range queuePager.PageResponse().Items {
+	for queuePager.More() {
+		page, err := queuePager.NextPage(context.TODO())
+
+		if err != nil {
+			panic(err)
+		}
+
+		for _, queue := range page.Items {
 			fmt.Printf("Queue name: %s, active messages: %d\n", queue.QueueName, queue.ActiveMessageCount)
 		}
 	}
-
-	exitOnError("Failed when listing queues runtime properties", queuePager.Err())
 }
 
 // NOTE: these are just here to keep the examples succinct.

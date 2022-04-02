@@ -235,7 +235,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 
 	// we skipped the first queue so it shouldn't come back in the results.
 	pager := adminClient.ListQueues(nil)
-	all := map[string]*QueueItem{}
+	all := map[string]QueueItem{}
 
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
@@ -278,24 +278,25 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	pager := adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
-	all := map[string]*QueueRuntimePropertiesItem{}
+	all := map[string]QueueRuntimePropertiesItem{}
 
 	times := 0
 
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
 		times++
-		page := pager.PageResponse()
 
-		require.LessOrEqual(t, len(page.Items), 2)
+		resp, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 
-		for _, queueRuntimeItem := range page.Items {
+		require.LessOrEqual(t, len(resp.Items), 2)
+
+		for _, queueRuntimeItem := range resp.Items {
 			// _, exists := all[queueRuntimeItem.QueueName]
 			// require.False(t, exists, fmt.Sprintf("Each queue result should be unique but found more than one of '%s'", queueRuntimeItem.QueueName))
 			all[queueRuntimeItem.QueueName] = queueRuntimeItem
 		}
 	}
 
-	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the queues we created exist and their deserialization is

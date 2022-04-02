@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
@@ -177,14 +178,14 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 		return nil, err
 	}
 
-	props, err := newQueueProperties(&atomResp.Content.QueueDescription)
+	queueItem, err := newQueueItem(atomResp)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetQueueResponse{
-		QueueProperties: *props,
+		QueueProperties: queueItem.QueueProperties,
 	}, nil
 }
 
@@ -212,14 +213,14 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 		return nil, err
 	}
 
-	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription)
+	item, err := newQueueRuntimePropertiesItem(atomResp)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetQueueRuntimePropertiesResponse{
-		QueueRuntimeProperties: *props,
+		QueueRuntimeProperties: item.QueueRuntimeProperties,
 	}, nil
 }
 
@@ -247,7 +248,7 @@ type ListQueuesOptions struct {
 
 // ListQueuesResponse contains the response fields for QueuePager.PageResponse
 type ListQueuesResponse struct {
-	Items []*QueueItem
+	Items []QueueItem
 }
 
 // QueueItem contains the data from the Client.ListQueues pager
@@ -257,16 +258,36 @@ type QueueItem struct {
 }
 
 // ListQueues lists queues.
-func (ac *Client) ListQueues(options *ListQueuesOptions) *ListQueuesPager {
+func (ac *Client) ListQueues(options *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	return &ListQueuesPager{
-		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
+	ep := &entityPager[atom.QueueFeed, atom.QueueEnvelope, QueueItem]{
+		convertFn:    newQueueItem,
+		baseFragment: "/$Resources/Queues",
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListQueuesResponse]{
+		More: func(ltr ListQueuesResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListQueuesResponse) (ListQueuesResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListQueuesResponse{}, err
+			}
+
+			return ListQueuesResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 // ListQueuesRuntimePropertiesOptions can be used to configure the ListQueuesRuntimeProperties method.
@@ -277,7 +298,7 @@ type ListQueuesRuntimePropertiesOptions struct {
 
 // ListQueuesRuntimePropertiesResponse contains the page response for QueueRuntimePropertiesPager.PageResponse
 type ListQueuesRuntimePropertiesResponse struct {
-	Items []*QueueRuntimePropertiesItem
+	Items []QueueRuntimePropertiesItem
 }
 
 // QueueRuntimePropertiesItem contains a single item in the page response for QueueRuntimePropertiesPager.PageResponse
@@ -287,16 +308,36 @@ type QueueRuntimePropertiesItem struct {
 }
 
 // ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) *ListQueueRuntimePropertiesPager {
+func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) *runtime.Pager[ListQueuesRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	return &ListQueueRuntimePropertiesPager{
-		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
+	ep := &entityPager[atom.QueueFeed, atom.QueueEnvelope, QueueRuntimePropertiesItem]{
+		convertFn:    newQueueRuntimePropertiesItem,
+		baseFragment: "/$Resources/Queues",
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListQueuesRuntimePropertiesResponse]{
+		More: func(ltr ListQueuesRuntimePropertiesResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListQueuesRuntimePropertiesResponse) (ListQueuesRuntimePropertiesResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListQueuesRuntimePropertiesResponse{}, err
+			}
+
+			return ListQueuesRuntimePropertiesResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string, props *QueueProperties, creating bool) (*QueueProperties, *http.Response, error) {
@@ -323,118 +364,13 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 		return nil, nil, err
 	}
 
-	newProps, err := newQueueProperties(&atomResp.Content.QueueDescription)
+	item, err := newQueueItem(atomResp)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return newProps, resp, nil
-}
-
-// ListQueuesPager provides iteration over ListQueues pages.
-type ListQueuesPager struct {
-	innerPager pagerFunc
-	done       bool
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ListQueuesPager) NextPage(ctx context.Context) (ListQueuesResponse, error) {
-	resp, err := p.getNextPage(ctx)
-
-	if resp == nil {
-		p.done = true
-		return ListQueuesResponse{}, nil
-	}
-
-	return *resp, err
-}
-
-// More returns true if there are more pages.
-func (p *ListQueuesPager) More() bool {
-	return !p.done
-}
-
-func (p *ListQueuesPager) getNextPage(ctx context.Context) (*ListQueuesResponse, error) {
-	var feed *atom.QueueFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*QueueItem
-
-	for _, env := range feed.Entries {
-		queueName := env.Title
-		props, err := newQueueProperties(&env.Content.QueueDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &QueueItem{
-			QueueName:       queueName,
-			QueueProperties: *props,
-		})
-	}
-
-	return &ListQueuesResponse{
-		Items: all,
-	}, nil
-}
-
-// ListQueueRuntimePropertiesPager provides iteration over ListQueueRuntimeProperties pages.
-type ListQueueRuntimePropertiesPager struct {
-	innerPager   pagerFunc
-	lastErr      error
-	lastResponse *ListQueuesRuntimePropertiesResponse
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ListQueueRuntimePropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
-}
-
-// PageResponse returns the current page.
-func (p *ListQueueRuntimePropertiesPager) PageResponse() ListQueuesRuntimePropertiesResponse {
-	return *p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *ListQueueRuntimePropertiesPager) Err() error {
-	return p.lastErr
-}
-
-func (p *ListQueueRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesRuntimePropertiesResponse, error) {
-	var feed *atom.QueueFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*QueueRuntimePropertiesItem
-
-	for _, entry := range feed.Entries {
-		rt, err := newQueueRuntimeProperties(&entry.Content.QueueDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &QueueRuntimePropertiesItem{
-			QueueName:              entry.Title,
-			QueueRuntimeProperties: *rt,
-		})
-	}
-
-	return &ListQueuesRuntimePropertiesResponse{
-		Items: all,
-	}, nil
+	return &item.QueueProperties, resp, nil
 }
 
 func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) (*atom.QueueEnvelope, []atom.MiddlewareFunc) {
@@ -459,8 +395,10 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
 }
 
-func newQueueProperties(desc *atom.QueueDescription) (*QueueProperties, error) {
-	queuePropsResult := &QueueProperties{
+func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
+	desc := env.Content.QueueDescription
+
+	props := &QueueProperties{
 		LockDuration:                        desc.LockDuration,
 		MaxSizeInMegabytes:                  desc.MaxSizeInMegabytes,
 		RequiresDuplicateDetection:          desc.RequiresDuplicateDetection,
@@ -478,10 +416,15 @@ func newQueueProperties(desc *atom.QueueDescription) (*QueueProperties, error) {
 		UserMetadata:                        desc.UserMetadata,
 	}
 
-	return queuePropsResult, nil
+	return &QueueItem{
+		QueueName:       env.Title,
+		QueueProperties: *props,
+	}, nil
 }
 
-func newQueueRuntimeProperties(desc *atom.QueueDescription) (*QueueRuntimeProperties, error) {
+func newQueueRuntimePropertiesItem(env *atom.QueueEnvelope) (*QueueRuntimePropertiesItem, error) {
+	desc := env.Content.QueueDescription
+
 	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
 		TotalMessageCount:              int64OrZero(desc.MessageCount),
@@ -506,7 +449,10 @@ func newQueueRuntimeProperties(desc *atom.QueueDescription) (*QueueRuntimeProper
 		return nil, err
 	}
 
-	return qrt, nil
+	return &QueueRuntimePropertiesItem{
+		QueueName:              env.Title,
+		QueueRuntimeProperties: *qrt,
+	}, nil
 }
 
 func int32OrZero(i *int32) int32 {
@@ -523,9 +469,4 @@ func int64OrZero(i *int64) int64 {
 	}
 
 	return *i
-}
-
-func queueFeedLen(v interface{}) int {
-	feed := v.(**atom.QueueFeed)
-	return len((*feed).Entries)
 }

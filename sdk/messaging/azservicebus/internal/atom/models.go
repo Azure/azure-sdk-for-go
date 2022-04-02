@@ -66,6 +66,10 @@ type (
 	}
 )
 
+func (qf QueueFeed) Items() []QueueEnvelope {
+	return qf.Entries
+}
+
 // Topics
 type (
 	// TopicEntity is the Azure Service Bus description of a Topic for management activities

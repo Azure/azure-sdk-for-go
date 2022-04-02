@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
@@ -145,14 +146,14 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 		return nil, err
 	}
 
-	props, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
+	item, err := newSubscriptionItem(atomResp, topicName)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetSubscriptionResponse{
-		SubscriptionProperties: *props,
+		SubscriptionProperties: item.SubscriptionProperties,
 	}, nil
 }
 
@@ -186,14 +187,14 @@ func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicNam
 		return nil, err
 	}
 
-	props, err := newSubscriptionRuntimeProperties(&atomResp.Content.SubscriptionDescription)
+	item, err := newSubscriptionRuntimePropertiesItem(atomResp, topicName)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetSubscriptionRuntimePropertiesResponse{
-		SubscriptionRuntimeProperties: *props,
+		SubscriptionRuntimeProperties: item.SubscriptionRuntimeProperties,
 	}, nil
 }
 
@@ -214,76 +215,42 @@ type SubscriptionPropertiesItem struct {
 // ListSubscriptionsResponse contains the response fields for SubscriptionPager.PageResponse
 type ListSubscriptionsResponse struct {
 	// Value is the result of the request.
-	Items []*SubscriptionPropertiesItem
-}
-
-// SubscriptionPager provides iteration over ListSubscriptions pages.
-type SubscriptionPager struct {
-	topicName  string
-	innerPager pagerFunc
-
-	lastErr      error
-	lastResponse *ListSubscriptionsResponse
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *SubscriptionPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNext(ctx)
-	return p.lastResponse != nil
-}
-
-// PageResponse returns the current page.
-func (p *SubscriptionPager) PageResponse() ListSubscriptionsResponse {
-	return *p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *SubscriptionPager) Err() error {
-	return p.lastErr
-}
-
-func (p *SubscriptionPager) getNext(ctx context.Context) (*ListSubscriptionsResponse, error) {
-	var feed *atom.SubscriptionFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*SubscriptionPropertiesItem
-
-	for _, env := range feed.Entries {
-		props, err := newSubscriptionProperties(&env.Content.SubscriptionDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &SubscriptionPropertiesItem{
-			TopicName:              p.topicName,
-			SubscriptionName:       env.Title,
-			SubscriptionProperties: *props,
-		})
-	}
-
-	return &ListSubscriptionsResponse{
-		Items: all,
-	}, nil
+	Items []SubscriptionPropertiesItem
 }
 
 // ListSubscriptions lists subscriptions for a topic.
-func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) *SubscriptionPager {
+func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) *runtime.Pager[ListSubscriptionsResponse] {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	return &SubscriptionPager{
-		topicName:  topicName,
-		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
+	ep := &entityPager[atom.SubscriptionFeed, atom.SubscriptionEnvelope, SubscriptionPropertiesItem]{
+		convertFn: func(env *atom.SubscriptionEnvelope) (*SubscriptionPropertiesItem, error) {
+			return newSubscriptionItem(env, topicName)
+		},
+		baseFragment: fmt.Sprintf("/%s/Subscriptions?", topicName),
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsResponse]{
+		More: func(ltr ListSubscriptionsResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListSubscriptionsResponse) (ListSubscriptionsResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListSubscriptionsResponse{}, err
+			}
+
+			return ListSubscriptionsResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 // ListSubscriptionsRuntimePropertiesOptions can be used to configure the ListSubscriptionsRuntimeProperties method.
@@ -303,75 +270,42 @@ type SubscriptionRuntimePropertiesItem struct {
 // ListSubscriptionsRuntimePropertiesResponse contains the response fields for SubscriptionRuntimePropertiesPager.PageResponse
 type ListSubscriptionsRuntimePropertiesResponse struct {
 	// Value is the result of the request.
-	Items []*SubscriptionRuntimePropertiesItem
-}
-
-// SubscriptionRuntimePropertiesPager provides iteration over ListSubscriptionsRuntimeProperties pages.
-type SubscriptionRuntimePropertiesPager struct {
-	topicName  string
-	innerPager pagerFunc
-
-	lastErr      error
-	lastResponse *ListSubscriptionsRuntimePropertiesResponse
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *SubscriptionRuntimePropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
-}
-
-// PageResponse returns the current page.
-func (p *SubscriptionRuntimePropertiesPager) PageResponse() ListSubscriptionsRuntimePropertiesResponse {
-	return *p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *SubscriptionRuntimePropertiesPager) Err() error {
-	return p.lastErr
-}
-
-func (p *SubscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListSubscriptionsRuntimePropertiesResponse, error) {
-	var feed *atom.SubscriptionFeed
-	_, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
-		return nil, err
-	}
-
-	var all []*SubscriptionRuntimePropertiesItem
-
-	for _, entry := range feed.Entries {
-		props, err := newSubscriptionRuntimeProperties(&entry.Content.SubscriptionDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &SubscriptionRuntimePropertiesItem{
-			TopicName:                     p.topicName,
-			SubscriptionName:              entry.Title,
-			SubscriptionRuntimeProperties: *props,
-		})
-	}
-
-	return &ListSubscriptionsRuntimePropertiesResponse{
-		Items: all,
-	}, nil
+	Items []SubscriptionRuntimePropertiesItem
 }
 
 // ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
-func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) SubscriptionRuntimePropertiesPager {
+func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) *runtime.Pager[ListSubscriptionsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	return SubscriptionRuntimePropertiesPager{
-		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
+	ep := &entityPager[atom.SubscriptionFeed, atom.SubscriptionEnvelope, SubscriptionRuntimePropertiesItem]{
+		convertFn: func(env *atom.SubscriptionEnvelope) (*SubscriptionRuntimePropertiesItem, error) {
+			return newSubscriptionRuntimePropertiesItem(env, topicName)
+		},
+		baseFragment: fmt.Sprintf("/%s/Subscriptions?", topicName),
+		maxPageSize:  pageSize,
+		em:           ac.em,
 	}
+
+	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsRuntimePropertiesResponse]{
+		More: func(ltr ListSubscriptionsRuntimePropertiesResponse) bool {
+			return ep.More()
+		},
+		Fetcher: func(ctx context.Context, t *ListSubscriptionsRuntimePropertiesResponse) (ListSubscriptionsRuntimePropertiesResponse, error) {
+			items, err := ep.Fetcher(ctx)
+
+			if err != nil {
+				return ListSubscriptionsRuntimePropertiesResponse{}, err
+			}
+
+			return ListSubscriptionsRuntimePropertiesResponse{
+				Items: items,
+			}, nil
+		},
+	})
 }
 
 // UpdateSubscriptionResponse contains the response fields for Client.UpdateSubscription
@@ -438,13 +372,13 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 		return nil, nil, err
 	}
 
-	newProps, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
+	item, err := newSubscriptionItem(atomResp, topicName)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return newProps, resp, nil
+	return &item.SubscriptionProperties, resp, nil
 }
 
 func newSubscriptionEnvelope(props *SubscriptionProperties, tokenProvider auth.TokenProvider) *atom.SubscriptionEnvelope {
@@ -468,8 +402,10 @@ func newSubscriptionEnvelope(props *SubscriptionProperties, tokenProvider auth.T
 	return atom.WrapWithSubscriptionEnvelope(desc)
 }
 
-func newSubscriptionProperties(desc *atom.SubscriptionDescription) (*SubscriptionProperties, error) {
-	return &SubscriptionProperties{
+func newSubscriptionItem(env *atom.SubscriptionEnvelope, topicName string) (*SubscriptionPropertiesItem, error) {
+	desc := env.Content.SubscriptionDescription
+
+	props := SubscriptionProperties{
 		RequiresSession:                                 desc.RequiresSession,
 		DeadLetteringOnMessageExpiration:                desc.DeadLetteringOnMessageExpiration,
 		EnableDeadLetteringOnFilterEvaluationExceptions: desc.DeadLetteringOnFilterEvaluationExceptions,
@@ -482,11 +418,19 @@ func newSubscriptionProperties(desc *atom.SubscriptionDescription) (*Subscriptio
 		EnableBatchedOperations:                         desc.EnableBatchedOperations,
 		Status:                                          (*EntityStatus)(desc.Status),
 		AutoDeleteOnIdle:                                desc.AutoDeleteOnIdle,
+	}
+
+	return &SubscriptionPropertiesItem{
+		TopicName:              topicName,
+		SubscriptionName:       env.Title,
+		SubscriptionProperties: props,
 	}, nil
 }
 
-func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) (*SubscriptionRuntimeProperties, error) {
-	rtp := &SubscriptionRuntimeProperties{
+func newSubscriptionRuntimePropertiesItem(env *atom.SubscriptionEnvelope, topicName string) (*SubscriptionRuntimePropertiesItem, error) {
+	desc := env.Content.SubscriptionDescription
+
+	rtp := SubscriptionRuntimeProperties{
 		TotalMessageCount:              *desc.MessageCount,
 		ActiveMessageCount:             *desc.CountDetails.ActiveMessageCount,
 		DeadLetterMessageCount:         *desc.CountDetails.DeadLetterMessageCount,
@@ -507,7 +451,12 @@ func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) (*Subs
 	if rtp.AccessedAt, err = atom.StringToTime(desc.AccessedAt); err != nil {
 		return nil, err
 	}
-	return rtp, nil
+
+	return &SubscriptionRuntimePropertiesItem{
+		SubscriptionRuntimeProperties: rtp,
+		TopicName:                     topicName,
+		SubscriptionName:              env.Title,
+	}, nil
 }
 
 func subFeedLen(v interface{}) int {

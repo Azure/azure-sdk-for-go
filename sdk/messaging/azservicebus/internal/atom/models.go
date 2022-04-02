@@ -262,6 +262,10 @@ type (
 	}
 )
 
+func (sf SubscriptionFeed) Items() []SubscriptionEnvelope {
+	return sf.Entries
+}
+
 type (
 	/*
 		<entry xmlns="http://www.w3.org/2005/Atom">

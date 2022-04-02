@@ -629,13 +629,14 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	pager := adminClient.ListSubscriptions(topicName, &ListSubscriptionsOptions{
 		MaxPageSize: 2,
 	})
-	all := map[string]*SubscriptionPropertiesItem{}
+	all := map[string]SubscriptionPropertiesItem{}
 
 	times := 0
 
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
 		times++
-		page := pager.PageResponse()
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 
 		require.LessOrEqual(t, len(page.Items), 2)
 
@@ -646,7 +647,6 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 		}
 	}
 
-	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the subscriptions we created exist and their deserialization is
@@ -685,12 +685,13 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, &ListSubscriptionsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
-	all := map[string]*SubscriptionRuntimePropertiesItem{}
+	all := map[string]SubscriptionRuntimePropertiesItem{}
 	times := 0
 
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
 		times++
-		page := pager.PageResponse()
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
 
 		require.LessOrEqual(t, len(page.Items), 2)
 
@@ -708,7 +709,6 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 		}
 	}
 
-	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
@@ -822,7 +822,7 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	pager := testData.Client.ListTopics(nil)
 	_, err = pager.NextPage(context.Background())
-	require.Contains(t, err, ">Manage,EntityRead claims required for this operation")
+	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
@@ -902,8 +902,9 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
 	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
-	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
+	_, err = pager.NextPage(context.Background())
+	require.False(t, pager.More())
+	require.Contains(t, err, "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 
 	_, err = testData.Client.CreateSubscription(ctx, testData.TopicName, "canneverbecreated", nil, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")

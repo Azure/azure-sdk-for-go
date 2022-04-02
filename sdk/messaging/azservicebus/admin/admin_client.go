@@ -163,14 +163,6 @@ type entityPager[TFeed interface{ Items() []T }, T any, TFinal any] struct {
 	skip int32
 }
 
-// func newEntityPager[TFeed interface{ Items() []T }, T any, TFinal any](em atom.EntityManager, baseFragment string, maxPageSize int32, convertFn func(T) ([]TFinal, error)) *entityPager[TFeed, T] {
-// 	return &entityPager[TFeed, T]{
-// 		maxPageSize:  maxPageSize,
-// 		baseFragment: baseFragment,
-// 		em:           em,
-// 	}
-// }
-
 func (ep *entityPager[_, _, _]) More() bool {
 	return !ep.eof
 }

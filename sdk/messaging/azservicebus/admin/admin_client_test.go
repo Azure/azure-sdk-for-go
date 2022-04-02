@@ -903,8 +903,7 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 
 	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
 	_, err = pager.NextPage(context.Background())
-	require.False(t, pager.More())
-	require.Contains(t, err, "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 
 	_, err = testData.Client.CreateSubscription(ctx, testData.TopicName, "canneverbecreated", nil, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")

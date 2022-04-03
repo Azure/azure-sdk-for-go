@@ -70,7 +70,7 @@ func TestSetGetSecret(t *testing.T) {
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, *getResp.Secret.Value, value)
 }
 
 func TestSecretTags(t *testing.T) {
@@ -93,31 +93,28 @@ func TestSecretTags(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, 1, len(resp.Properties.Tags))
-	require.Equal(t, "Val1", resp.Properties.Tags["Tag1"])
+	require.Equal(t, 1, len(resp.Secret.Properties.Tags))
+	require.Equal(t, "Val1", resp.Secret.Properties.Tags["Tag1"])
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, 1, len(getResp.Properties.Tags))
-	require.Equal(t, "Val1", getResp.Properties.Tags["Tag1"])
+	require.Equal(t, *getResp.Secret.Value, value)
+	require.Equal(t, 1, len(getResp.Secret.Properties.Tags))
+	require.Equal(t, "Val1", getResp.Secret.Properties.Tags["Tag1"])
+	require.NotNil(t, getResp.Secret.Properties.Name)
 
-	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
-		Properties: &Properties{
-			ExpiresOn: to.Ptr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
-		},
-	})
+	getResp.Secret.Properties.ExpiresOn = to.Ptr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC))
+	updateResp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(updateResp.Properties.Tags))
-	require.Equal(t, "Val1", updateResp.Properties.Tags["Tag1"])
+	require.Equal(t, 1, len(updateResp.Secret.Properties.Tags))
+	require.Equal(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
 
 	// Delete the tags
-	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, &UpdateSecretPropertiesOptions{
-		Tags: make(map[string]string),
-	})
+	updateResp.Secret.Properties.Tags = map[string]string{}
+	updateResp, err = client.UpdateSecretProperties(context.Background(), *updateResp.Secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, 0, len(updateResp.Properties.Tags))
-	require.NotEqual(t, "Val1", updateResp.Properties.Tags["Tag1"])
+	require.Equal(t, 0, len(updateResp.Secret.Properties.Tags))
+	require.NotEqual(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
 }
 
 func TestListSecretVersions(t *testing.T) {
@@ -343,28 +340,27 @@ func TestUpdateSecretProperties(t *testing.T) {
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, *getResp.Secret.Value, value)
 
-	options := &UpdateSecretPropertiesOptions{
+	getResp.Secret.Properties = &Properties{
 		ContentType: to.Ptr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
-		Properties: &Properties{
-			Enabled:   to.Ptr(true),
-			ExpiresOn: to.Ptr(time.Now().Add(48 * time.Hour)),
-			NotBefore: to.Ptr(time.Now().Add(-24 * time.Hour)),
-		},
+		Enabled:   to.Ptr(true),
+		ExpiresOn: to.Ptr(time.Now().Add(48 * time.Hour)),
+		NotBefore: to.Ptr(time.Now().Add(-24 * time.Hour)),
+		Name:      getResp.Secret.Properties.Name,
 	}
 
-	_, err = client.UpdateSecretProperties(context.Background(), secret, options)
+	_, err = client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
 	require.NoError(t, err)
 
 	getResp, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, getResp.Properties.Tags["Tag1"], "TagVal1")
-	require.Equal(t, *getResp.Properties.ContentType, "password")
+	require.Equal(t, *getResp.Secret.Value, value)
+	require.Equal(t, getResp.Secret.Properties.Tags["Tag1"], "TagVal1")
+	require.Equal(t, *getResp.Secret.Properties.ContentType, "password")
 }
 
 func TestBeginRecoverDeletedSecret(t *testing.T) {
@@ -401,7 +397,7 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, *getResp.Secret.Value, value)
 }
 
 func TestBackupSecret(t *testing.T) {

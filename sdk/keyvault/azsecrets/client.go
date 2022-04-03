@@ -84,13 +84,13 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 
 // GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
-	Secret
+	Secret *Secret
 }
 
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return GetSecretResponse{
-		Secret: Secret{
+		Secret: &Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -105,6 +105,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 				UpdatedOn:       i.Attributes.Updated,
 				VaultURL:        vaultURL,
 				Version:         version,
+				Name:            name,
 			},
 			ID:    i.ID,
 			Value: i.Value,
@@ -147,14 +148,14 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 
 // SetSecretResponse is the response struct for the Client.SetSecret operation.
 type SetSecretResponse struct {
-	Secret
+	Secret *Secret
 }
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return SetSecretResponse{
-		Secret: Secret{
+		Secret: &Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -169,6 +170,7 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 				UpdatedOn:       i.Attributes.Updated,
 				VaultURL:        vaultURL,
 				Version:         version,
+				Name:            name,
 			},
 			ID:    i.ID,
 			Value: i.Value,
@@ -201,7 +203,7 @@ type DeleteSecretResponse struct {
 }
 
 func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
 			ID: i.ID,
@@ -217,8 +219,9 @@ func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResp
 				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
 				Tags:            convertPtrMap(i.Tags),
 				UpdatedOn:       i.Attributes.Updated,
-				VaultURL: vaultURL,
-				Version: version,
+				VaultURL:        vaultURL,
+				Version:         version,
+				Name:            name,
 			},
 			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
@@ -344,7 +347,7 @@ type GetDeletedSecretResponse struct {
 
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return GetDeletedSecretResponse{
 		DeletedSecret: DeletedSecret{
 			Properties: &Properties{
@@ -361,6 +364,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 				UpdatedOn:       i.Attributes.Updated,
 				VaultURL:        vaultURL,
 				Version:         version,
+				Name:            name,
 			},
 			ID:                 i.ID,
 			RecoveryID:         i.RecoveryID,
@@ -385,40 +389,22 @@ func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *Get
 
 // UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
 type UpdateSecretPropertiesOptions struct {
-	// Version is the specific version of a Secret to update. If not specified it will update the most recent version.
-	Version string
-
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
-
-	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	// placeholder for future optional parameters
 }
 
 func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpdateSecretOptions {
 	return &internal.KeyVaultClientUpdateSecretOptions{}
 }
 
-func (u UpdateSecretPropertiesOptions) toGeneratedProperties() internal.SecretUpdateParameters {
-	return internal.SecretUpdateParameters{
-		ContentType:      u.ContentType,
-		SecretAttributes: u.Properties.toGenerated(),
-		Tags:             convertToGeneratedMap(u.Tags),
-	}
-}
-
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
-	Secret
+	Secret *Secret
 }
 
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return UpdateSecretPropertiesResponse{
-		Secret: Secret{
+		Secret: &Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -433,6 +419,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 				UpdatedOn:       i.Attributes.Updated,
 				VaultURL:        vaultURL,
 				Version:         version,
+				Name:            name,
 			},
 			ID:    i.ID,
 			Value: i.Value,
@@ -443,18 +430,25 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 // UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
 // operation changes specified attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
-func (c *Client) UpdateSecretProperties(ctx context.Context, name string, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
+	}
+	name, version := "", ""
+	if secret.Properties != nil && secret.Properties.Name != nil {
+		name = *secret.Properties.Name
+	}
+	if secret.Properties != nil && secret.Properties.Version != nil {
+		version = *secret.Properties.Version
 	}
 
 	resp, err := c.kvClient.UpdateSecret(
 		ctx,
 		c.vaultUrl,
 		name,
-		options.Version,
-		options.toGeneratedProperties(),
-		options.toGenerated(),
+		version,
+		secret.toGeneratedProperties(),
+		&internal.KeyVaultClientUpdateSecretOptions{},
 	)
 	if err != nil {
 		return UpdateSecretPropertiesResponse{}, err
@@ -516,7 +510,7 @@ type RestoreSecretBackupResponse struct {
 
 // converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
-	vaultURL, _, version := parseFromID(i.ID)
+	vaultURL, name, version := parseFromID(i.ID)
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
 			ID:    i.ID,
@@ -535,6 +529,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 				UpdatedOn:       i.Attributes.Updated,
 				VaultURL:        vaultURL,
 				Version:         version,
+				Name:            name,
 			},
 		},
 	}

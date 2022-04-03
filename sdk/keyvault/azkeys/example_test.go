@@ -47,8 +47,8 @@ func ExampleClient_CreateRSAKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 
 func ExampleClient_CreateECKey() {
@@ -67,8 +67,8 @@ func ExampleClient_CreateECKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 
 func ExampleClient_GetKey() {
@@ -87,7 +87,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
 }
 
 func ExampleClient_UpdateKeyProperties() {
@@ -102,18 +102,21 @@ func ExampleClient_UpdateKeyProperties() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
-		Tags: map[string]string{
-			"Tag1": "val1",
-		},
-		Properties: &azkeys.Properties{
-			Enabled: to.Ptr(true),
-		},
-	})
+	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Properties.Tags["Tag1"])
+
+	resp.Key.Properties.Tags = map[string]string{
+		"Tag1": "val1",
+	}
+	resp.Key.Properties.Enabled = to.Ptr(true)
+
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), *resp.Key, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {

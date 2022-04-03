@@ -116,6 +116,25 @@ type Key struct {
 	KeyType *KeyType
 }
 
+// convert the options to generated.KeyUpdateParameters struct
+func (k Key) toKeyUpdateParameters() generated.KeyUpdateParameters {
+	var attribs *generated.KeyAttributes
+	if k.Properties != nil {
+		attribs = k.Properties.toGenerated()
+	}
+
+	var tags map[string]*string
+	if k.Properties != nil && k.Properties.Tags != nil {
+		tags = convertToGeneratedMap(k.Properties.Tags)
+	}
+
+	return generated.KeyUpdateParameters{
+		KeyAttributes: attribs,
+		ReleasePolicy: k.ReleasePolicy.toGenerated(),
+		Tags:          tags,
+	}
+}
+
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see PossibleCurveNameValues.

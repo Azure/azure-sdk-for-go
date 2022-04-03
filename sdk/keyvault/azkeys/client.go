@@ -151,14 +151,14 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 
 // CreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type CreateKeyResponse struct {
-	Key
+	Key *Key
 }
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateKeyResponse{
-		Key: Key{
+		Key: &Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -222,14 +222,14 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 
 // CreateECKeyResponse contains the response from method Client.CreateECKey.
 type CreateECKeyResponse struct {
-	Key
+	Key *Key
 }
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateECKeyResponse{
-		Key: Key{
+		Key: &Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -300,14 +300,14 @@ func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 
 // CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
 type CreateOctKeyResponse struct {
-	Key
+	Key *Key
 }
 
 // convert generated response to CreateOCTKeyResponse
 func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateOctKeyResponse{
-		Key: Key{
+		Key: &Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -381,14 +381,14 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 
 // CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
 type CreateRSAKeyResponse struct {
-	Key
+	Key *Key
 }
 
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateRSAKeyResponse{
-		Key: Key{
+		Key: &Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -488,14 +488,14 @@ type GetKeyOptions struct {
 
 // GetKeyResponse contains the response for the Client.GetResponse method
 type GetKeyResponse struct {
-	Key
+	Key *Key
 }
 
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return GetKeyResponse{
-		Key: Key{
+		Key: &Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -904,48 +904,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 
 // UpdateKeyPropertiesOptions contains the optional parameters for the Client.UpdateKeyProperties method
 type UpdateKeyPropertiesOptions struct {
-	// The version of a key to update
-	Version string
-
-	// The attributes of a key managed by the key vault service.
-	Properties *Properties `json:"attributes,omitempty"`
-
-	// Json web key operations. For more information on possible key operations, see KeyOperation.
-	Operations []*Operation `json:"key_ops,omitempty"`
-
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-}
-
-// convert the options to generated.KeyUpdateParameters struct
-func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateParameters {
-	var attribs *generated.KeyAttributes
-	if u.Properties != nil {
-		attribs = u.Properties.toGenerated()
-	}
-
-	var ops []*generated.JSONWebKeyOperation
-	if u.Operations != nil {
-		ops = make([]*generated.JSONWebKeyOperation, len(u.Operations))
-		for i, o := range u.Operations {
-			ops[i] = (*generated.JSONWebKeyOperation)(o)
-		}
-	}
-
-	return generated.KeyUpdateParameters{
-		KeyOps:        ops,
-		KeyAttributes: attribs,
-		ReleasePolicy: u.ReleasePolicy.toGenerated(),
-		Tags:          convertToGeneratedMap(u.Tags),
-	}
-}
-
-// convert options to generated options
-func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *generated.KeyVaultClientUpdateKeyOptions {
-	return &generated.KeyVaultClientUpdateKeyOptions{}
+	// placeholder for future optional parameters
 }
 
 // UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
@@ -969,17 +928,24 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 // UpdateKeyProperties updates the parameters of a key, but cannot be used to update the cryptographic material
 // of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
 // This operation requires the keys/update permission. Pass nil to use the default options.
-func (c *Client) UpdateKeyProperties(ctx context.Context, name string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
+func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateKeyPropertiesOptions{}
+	}
+	name, version := "", ""
+	if key.Properties != nil && key.Properties.Name != nil {
+		name = *key.Properties.Name
+	}
+	if key.Properties != nil && key.Properties.Version != nil {
+		version = *key.Properties.Version
 	}
 	resp, err := c.kvClient.UpdateKey(
 		ctx,
 		c.vaultUrl,
 		name,
-		options.Version,
-		options.toKeyUpdateParameters(),
-		options.toGeneratedOptions(),
+		version,
+		key.toKeyUpdateParameters(),
+		&generated.KeyVaultClientUpdateKeyOptions{},
 	)
 	if err != nil {
 		return UpdateKeyPropertiesResponse{}, err

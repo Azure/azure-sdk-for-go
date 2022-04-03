@@ -8,7 +8,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-generated/v0.4.0 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.4.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -16,16 +16,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 03 Mar 2022 16:00:23 GMT",
+        "Date": "Sun, 03 Apr 2022 18:35:43 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=184.56.155.243;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.291.1",
-        "x-ms-request-id": "3bf92bcc-3e66-4d14-9353-52ad6704fbd1",
+        "x-ms-keyvault-service-version": "1.9.331.5",
+        "x-ms-request-id": "047c1d1a-b5fe-4f9e-b534-62243916e54f",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -43,9 +43,9 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "252",
+        "Content-Length": "304",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-generated/v0.4.0 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.4.1 azsdk-go-azcore/v0.23.0 (go1.18; Windows_NT)"
       },
       "RequestBody": {
         "attributes": {
@@ -57,70 +57,30 @@
         ],
         "kty": "RSA-HSM",
         "release_policy": {
-          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiIifV0sInZlcnNpb24iOiIxLjAuMCJ9",
+          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL3NlYW5rYW5lc2l0ZS5henVyZXdlYnNpdGVzLm5ldC8ifV0sInZlcnNpb24iOiIxLjAuMCJ9",
           "immutable": true
         }
       },
       "StatusCode": 400,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "113",
+        "Content-Length": "108",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 03 Mar 2022 16:00:25 GMT",
+        "Date": "Sun, 03 Apr 2022 18:35:43 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=184.56.155.243;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.291.1",
-        "x-ms-request-id": "30779f27-a02d-43f6-a6c4-22dd8cf782a5",
+        "x-ms-keyvault-service-version": "1.9.331.5",
+        "x-ms-request-id": "98010d38-92ca-477a-834f-45913fc440ac",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "error": {
           "code": "BadParameter",
-          "message": "AKV.SKR.1012: The specified attestation service  cannot be reached."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/immuta3226834185/?api-version=7.3",
-      "RequestMethod": "PATCH",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Content-Length": "173",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-generated/v0.4.0 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)"
-      },
-      "RequestBody": {
-        "release_policy": {
-          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJmYWxzZSJ9XSwiYXV0aG9yaXR5IjoiIn1dLCJ2ZXJzaW9uIjoiMS4wLjAifQ",
-          "immutable": true
-        }
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "304",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 03 Mar 2022 16:00:25 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.291.1",
-        "x-ms-request-id": "6d231407-b627-4b54-a8d3-44a08d362a86",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "A key with (name/id) immuta3226834185 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182"
+          "message": "AKV.SKR.1020: Immutable Key Release Policy cannot be modified."
         }
       }
     }

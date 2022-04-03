@@ -61,18 +61,18 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			resp, err := client.CreateRSAKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, &resp.Key)
+			validateKey(t, resp.Key)
 
 			resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: to.Ptr(true)})
 			require.NoError(t, err)
-			validateKey(t, &resp2.Key)
+			validateKey(t, resp2.Key)
 
 			cleanUpKey(t, client, key)
 			cleanUpKey(t, client, key+"hsm")
 
 			invalid, err := client.CreateRSAKey(ctx, "invalidName!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Properties)
+			require.Nil(t, invalid.Key)
 		})
 	}
 }
@@ -93,13 +93,12 @@ func TestCreateKeyRSATags(t *testing.T) {
 	})
 	defer cleanUpKey(t, client, key)
 	require.NoError(t, err)
-	validateKey(t, &resp.Key)
-	require.Equal(t, 1, len(resp.Properties.Tags))
+	validateKey(t, resp.Key)
+	require.Equal(t, 1, len(resp.Key.Properties.Tags))
 
+	resp.Key.Properties.Tags = map[string]string{}
 	// Remove the tag
-	resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-		Tags: map[string]string{},
-	})
+	resp2, err := client.UpdateKeyProperties(ctx, *resp.Key, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(resp2.Properties.Tags))
 	validateKey(t, &resp2.Key)
@@ -120,11 +119,11 @@ func TestCreateECKey(t *testing.T) {
 
 			resp, err := client.CreateECKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, &resp.Key)
+			validateKey(t, resp.Key)
 
 			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.JSONWebKey)
+			require.Nil(t, invalid.Key)
 
 			cleanUpKey(t, client, key)
 		})
@@ -153,7 +152,7 @@ func TestCreateOCTKey(t *testing.T) {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				validateKey(t, &resp.Key)
+				validateKey(t, resp.Key)
 
 				cleanUpKey(t, client, key)
 			}
@@ -215,15 +214,15 @@ func TestGetKey(t *testing.T) {
 
 			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
-			validateKey(t, &r.Key)
+			validateKey(t, r.Key)
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, &resp.Key)
+			validateKey(t, resp.Key)
 
 			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeRSA, nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Properties)
+			require.Nil(t, invalid.Key)
 		})
 	}
 }
@@ -244,7 +243,7 @@ func TestDeleteKey(t *testing.T) {
 
 			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
-			validateKey(t, &r.Key)
+			validateKey(t, r.Key)
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
@@ -407,24 +406,23 @@ func TestUpdateKeyProperties(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{})
+			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				Tags: map[string]string{
-					"Tag1": "Val1",
-				},
-				Properties: &Properties{
-					ExpiresOn: to.Ptr(time.Now().AddDate(1, 0, 0)),
-				},
-			})
+			createResp.Key.Properties.Tags = map[string]string{
+				"Tag1": "Val1",
+			}
+			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
+
+			resp, err := client.UpdateKeyProperties(ctx, *createResp.Key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
 			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
-			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
+			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
+			invalid, err := client.UpdateKeyProperties(ctx, *createResp.Key, nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Properties)
 		})
@@ -463,7 +461,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			})
 			require.NoError(t, err)
 
-			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
 				HardwareProtected: to.Ptr(true),
 				Properties: &Properties{
 					Exportable: to.Ptr(true),
@@ -474,7 +472,6 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				},
 				Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
 			})
-			_ = err
 			// require.NoError(t, err) // Recently failing with "AKV.SKR.1012: The specified attestation service  cannot be reached."
 			// defer cleanUpKey(t, client, key)
 
@@ -492,15 +489,18 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				"version": "1.0.0",
 			})
 			require.NoError(t, err)
+			require.Nil(t, createResp.Key)
+			_ = newMarshalledPolicy
 
-			_, err = client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				ReleasePolicy: &ReleasePolicy{
+			/*
+				createResp.Key.ReleasePolicy = &ReleasePolicy{
 					Immutable:     to.Ptr(true),
 					EncodedPolicy: newMarshalledPolicy,
-				},
-			})
-			_ = err
-			// require.Error(t, err)
+				}
+				_, err = client.UpdateKeyProperties(ctx, *createResp.Key, nil)
+				_ = err
+				require.Error(t, err)
+			*/
 		})
 	}
 }
@@ -706,12 +706,11 @@ func TestRotateKey(t *testing.T) {
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			require.NotEqual(t, *createResp.JSONWebKey.ID, *resp.JSONWebKey.ID)
-			require.NotEqual(t, createResp.JSONWebKey.N, resp.JSONWebKey.N)
+			require.NotEqual(t, *createResp.Key.JSONWebKey.ID, *resp.JSONWebKey.ID)
+			require.NotEqual(t, createResp.Key.JSONWebKey.N, resp.JSONWebKey.N)
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
 			require.Nil(t, invalid.Key)
 		})
 	}

@@ -45,7 +45,7 @@ func TestClient_EncryptDecrypt(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)
@@ -70,7 +70,7 @@ func TestClient_WrapUnwrap(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)
@@ -99,7 +99,7 @@ func TestClient_SignVerify(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)

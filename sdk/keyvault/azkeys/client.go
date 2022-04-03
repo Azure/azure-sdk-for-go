@@ -929,9 +929,6 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 // of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
 // This operation requires the keys/update permission. Pass nil to use the default options.
 func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
-	if options == nil {
-		options = &UpdateKeyPropertiesOptions{}
-	}
 	name, version := "", ""
 	if key.Properties != nil && key.Properties.Name != nil {
 		name = *key.Properties.Name

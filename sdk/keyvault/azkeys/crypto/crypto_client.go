@@ -131,11 +131,11 @@ type EncryptOptions struct {
 
 func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
-		Algorithm:   (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
-		Value: value,
-		AAD:   e.AuthData,
-		Iv:    e.IV,
-		Tag:   e.AuthenticationTag,
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
+		Value:     value,
+		AAD:       e.AuthData,
+		Iv:        e.IV,
+		Tag:       e.AuthenticationTag,
 	}
 }
 
@@ -197,11 +197,11 @@ type DecryptOptions struct {
 
 func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
-		Algorithm:   (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
-		Value: value,
-		AAD:   e.AuthData,
-		Iv:    e.IV,
-		Tag:   e.AuthTag,
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
+		Value:     value,
+		AAD:       e.AuthData,
+		Iv:        e.IV,
+		Tag:       e.AuthTag,
 	}
 }
 
@@ -262,11 +262,11 @@ type WrapKeyOptions struct {
 
 func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlg, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
-		Algorithm:   (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
-		Value: value,
-		AAD:   w.AuthData,
-		Iv:    w.IV,
-		Tag:   w.AuthTag,
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
+		Value:     value,
+		AAD:       w.AuthData,
+		Iv:        w.IV,
+		Tag:       w.AuthTag,
 	}
 }
 
@@ -327,11 +327,11 @@ type UnwrapKeyOptions struct {
 
 func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlg, value []byte) generated.KeyOperationsParameters {
 	return generated.KeyOperationsParameters{
-		Algorithm:   (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
-		Value: value,
-		AAD:   w.AuthData,
-		Iv:    w.IV,
-		Tag:   w.AuthTag,
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
+		Value:     value,
+		AAD:       w.AuthData,
+		Iv:        w.IV,
+		Tag:       w.AuthTag,
 	}
 }
 
@@ -413,8 +413,8 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlg, digest []byte
 		c.keyID,
 		c.keyVersion,
 		generated.KeySignParameters{
-			Algorithm:   (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
-			Value: digest,
+			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
+			Value:     digest,
 		},
 		options.toGenerated(),
 	)
@@ -459,7 +459,7 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlg, digest []by
 		c.keyID,
 		c.keyVersion,
 		generated.KeyVerifyParameters{
-			Algorithm:       (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
+			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
 			Digest:    digest,
 			Signature: signature,
 		},

@@ -472,6 +472,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				},
 				Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
 			})
+			_ = err
 			// require.NoError(t, err) // Recently failing with "AKV.SKR.1012: The specified attestation service  cannot be reached."
 			// defer cleanUpKey(t, client, key)
 

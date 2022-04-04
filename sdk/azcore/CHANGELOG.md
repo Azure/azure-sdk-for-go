@@ -1,6 +1,6 @@
 # Release History
 
-## 0.23.0 (Unreleased)
+## 0.23.0 (2022-04-04)
 
 ### Features Added
 * Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.

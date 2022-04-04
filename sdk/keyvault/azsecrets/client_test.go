@@ -400,6 +400,80 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 	require.Equal(t, *getResp.Secret.Value, value)
 }
 
+func TestBeginRecoverDeletedSecretRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	pollerResp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	resp, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	rt, err := resp.ResumeToken()
+	require.NoError(t, err)
+
+	poller, err := client.BeginRecoverDeletedSecret(context.Background(), secret, &BeginRecoverDeletedSecretOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	_, err = poller.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Secret.Value, value)
+}
+
+func TestBeginDeleteSecretRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "begindeleterehydrat")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	pollerResp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	rt, err := pollerResp.ResumeToken()
+	require.NoError(t, err)
+
+	rehydrated, err := client.BeginDeleteSecret(context.Background(), secret, &BeginDeleteSecretOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	_, err = rehydrated.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	_, err = client.GetSecret(context.Background(), secret, nil)
+	require.Error(t, err)
+}
+
 func TestBackupSecret(t *testing.T) {
 	stop := startTest(t)
 	defer stop()

@@ -31,10 +31,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		client, err = azsecrets.NewClient(v, cred, nil)
 		if err == nil {
 			pager := client.ListSecrets(nil)
-			for pager.NextPage(context.Background()) {
-				pager.PageResponse()
+			for pager.More() {
+				_, err := pager.NextPage(context.Background())
+				if err != nil {
+					break
+				}
 			}
-			err = pager.Err()
 		}
 	}
     if err == nil {

@@ -1,16 +1,16 @@
 module github.com/Azure/azure-sdk-for-python/sdk/samples/azidentity/manual-tests/managed-identity/functions
 
-go 1.17
+go 1.18
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../../../../azidentity
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.13.1
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.5.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.14.0
+	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.6.0
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.22.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.2.1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0 // indirect

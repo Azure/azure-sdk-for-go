@@ -279,6 +279,54 @@ func TestDeleteKey(t *testing.T) {
 	}
 }
 
+func TestBeginDeleteKeyRehydrate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t, testTypes[0])
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "rehydrate-poller")
+	require.NoError(t, err)
+
+	_, err = client.CreateRSAKey(ctx, key, nil)
+	require.NoError(t, err)
+
+	defer cleanUpKey(t, client, key)
+
+	deletePoller, err := client.BeginDeleteKey(ctx, key, nil)
+	require.NoError(t, err)
+
+	rt, err := deletePoller.ResumeToken()
+	require.NoError(t, err)
+
+	rehydrated, err := client.BeginDeleteKey(ctx, key, &BeginDeleteKeyOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	_, err = rehydrated.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+
+	// Validate key is not get-able
+	_, err = client.GetKey(ctx, key, nil)
+	require.Error(t, err)
+
+	// Recover deleted
+	recover, err := client.BeginRecoverDeletedKey(ctx, key, nil)
+	require.NoError(t, err)
+
+	rt, err = recover.ResumeToken()
+	require.NoError(t, err)
+
+	rehydratedRecover, err := client.BeginRecoverDeletedKey(ctx, key, &BeginRecoverDeletedKeyOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	_, err = rehydratedRecover.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+
+	_, err = client.GetKey(ctx, key, nil)
+	require.NoError(t, err)
+}
+
 func TestBackupKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {

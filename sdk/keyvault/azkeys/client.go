@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -603,12 +604,9 @@ type DeleteKeyResponse struct {
 }
 
 // convert interal response to DeleteKeyResponse
-func deleteKeyResponseFromGenerated(g *generated.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
-	if g == nil {
-		return nil
-	}
+func deleteKeyResponseFromGenerated(g generated.KeyVaultClientDeleteKeyResponse) DeleteKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
-	return &DeleteKeyResponse{
+	return DeleteKeyResponse{
 		DeletedKey: DeletedKey{
 			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			Key:                jsonWebKeyFromGenerated(g.Key),
@@ -622,7 +620,8 @@ func deleteKeyResponseFromGenerated(g *generated.KeyVaultClientDeleteKeyResponse
 
 // BeginDeleteKeyOptions contains the optional parameters for the Client.BeginDeleteKey method.
 type BeginDeleteKeyOptions struct {
-	// placeholder for future optional parameters
+	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
+	ResumeToken *string
 }
 
 // convert public options to generated options struct
@@ -638,6 +637,7 @@ type DeleteKeyPoller struct {
 	deleteResponse    generated.KeyVaultClientDeleteKeyResponse
 	deleteRawResponse *http.Response
 	lastResponse      generated.KeyVaultClientGetDeletedKeyResponse
+	resumeToken       string
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -674,7 +674,7 @@ func (s *DeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
 
 // FinalResponse returns the final response after the operations has finished
 func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
-	return *deleteKeyResponseFromGenerated(&s.deleteResponse), nil
+	return deleteKeyResponseFromGenerated(s.deleteResponse), nil
 }
 
 // PollUntilDone continually calls the Poll operation until the operation is completed. In between each
@@ -704,6 +704,11 @@ func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (D
 	}, nil
 }
 
+// ResumeToken returns a token for resuming polling at a later time
+func (s *DeleteKeyPoller) ResumeToken() (string, error) {
+	return string(s.resumeToken), nil
+}
+
 // BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
 // requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
 // PollUntilDone function can be used to poll until completion. Pass nil to use the default options.
@@ -711,9 +716,25 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 	if options == nil {
 		options = &BeginDeleteKeyOptions{}
 	}
-	resp, err := c.kvClient.DeleteKey(ctx, c.vaultUrl, name, options.toGenerated())
-	if err != nil {
-		return nil, err
+	var resumeToken string
+	var delResp generated.KeyVaultClientDeleteKeyResponse
+	var err error
+	if options.ResumeToken == nil {
+		delResp, err = c.kvClient.DeleteKey(ctx, c.vaultUrl, name, options.toGenerated())
+		if err != nil {
+			return nil, err
+		}
+
+		resumeTokenMarshalled, err := json.Marshal(delResp)
+		if err != nil {
+			return nil, err
+		}
+		resumeToken = string(resumeTokenMarshalled)
+	} else {
+		err = json.Unmarshal([]byte(*options.ResumeToken), &delResp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, name, nil)
@@ -728,8 +749,9 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 		vaultUrl:       c.vaultUrl,
 		keyName:        name,
 		client:         c.kvClient,
-		deleteResponse: resp,
+		deleteResponse: delResp,
 		lastResponse:   getResp,
+		resumeToken:    resumeToken,
 	}, nil
 }
 
@@ -789,6 +811,7 @@ type RecoverDeletedKeyPoller struct {
 	lastResponse    generated.KeyVaultClientGetKeyResponse
 	lastRawResponse *http.Response
 	finished        bool
+	resumeToken     string
 }
 
 // Done returns true when the polling operation is completed
@@ -844,7 +867,8 @@ func (p *RecoverDeletedKeyPoller) PollUntilDone(ctx context.Context, t time.Dura
 
 // BeginRecoverDeletedKeyOptions contains the optional parameters for the Client.BeginRecoverDeletedKey operation
 type BeginRecoverDeletedKeyOptions struct {
-	// placeholder for future optional parameters
+	// ResumeToken returns a string for creating a new poller to begin polling again
+	ResumeToken *string
 }
 
 // Convert the publicly exposed options object to the generated version
@@ -870,6 +894,11 @@ func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDel
 	}
 }
 
+// ResumeToken returns a token for resuming polling at a later time
+func (r *RecoverDeletedKeyPoller) ResumeToken() (string, error) {
+	return string(r.resumeToken), nil
+}
+
 // BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
 // This operation can only be performed on a soft-delete enabled vault. This operation requires
 // the keys/recover permission. Pass nil to use the default options.
@@ -877,9 +906,25 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 	if options == nil {
 		options = &BeginRecoverDeletedKeyOptions{}
 	}
-	resp, err := c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
-	if err != nil {
-		return nil, err
+	var resumeToken string
+	var recoverResp generated.KeyVaultClientRecoverDeletedKeyResponse
+	var err error
+	if options.ResumeToken == nil {
+		recoverResp, err = c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
+		if err != nil {
+			return nil, err
+		}
+
+		marshalled, err := json.Marshal(recoverResp)
+		if err != nil {
+			return nil, err
+		}
+		resumeToken = string(marshalled)
+	} else {
+		err = json.Unmarshal([]byte(*options.ResumeToken), &recoverResp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var getRawResp *http.Response
@@ -897,8 +942,9 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 		keyName:         name,
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
-		recoverResponse: resp,
+		recoverResponse: recoverResp,
 		lastRawResponse: getRawResp,
+		resumeToken:     resumeToken,
 	}, nil
 }
 

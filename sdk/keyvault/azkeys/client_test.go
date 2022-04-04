@@ -72,7 +72,7 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			invalid, err := client.CreateRSAKey(ctx, "invalidName!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.Key.Properties)
 		})
 	}
 }
@@ -123,7 +123,7 @@ func TestCreateECKey(t *testing.T) {
 
 			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.Key.Properties)
 
 			cleanUpKey(t, client, key)
 		})
@@ -222,7 +222,7 @@ func TestGetKey(t *testing.T) {
 
 			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeRSA, nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.Key.Properties)
 		})
 	}
 }
@@ -538,7 +538,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				"version": "1.0.0",
 			})
 			require.NoError(t, err)
-			require.Nil(t, createResp.Key)
+			require.Nil(t, createResp.Key.Properties)
 			_ = newMarshalledPolicy
 
 			/*

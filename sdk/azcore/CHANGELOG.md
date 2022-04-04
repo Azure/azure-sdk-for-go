@@ -19,8 +19,6 @@
   * Created optional parameter structs and moved optional parameters into them.
 * Changed `FinalStateVia` field to a `const` type.
 
-### Bugs Fixed
-
 ### Other Changes
 * Converted expiring resource and dependent types to use generics.
 

@@ -12,6 +12,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -174,5 +175,14 @@ func TestNopClosingBytesReader(t *testing.T) {
 	_, err = ncbr.Seek(-int64(len(val2)+1), io.SeekCurrent)
 	if err == nil {
 		t.Fatal("unexpected nil error")
+	}
+}
+
+func TestTypeOfT(t *testing.T) {
+	if tt := TypeOfT[bool](); tt != reflect.TypeOf(true) {
+		t.Fatalf("unexpected type %s", tt)
+	}
+	if tt := TypeOfT[int32](); tt == reflect.TypeOf(3.14) {
+		t.Fatal("didn't expect types to match")
 	}
 }

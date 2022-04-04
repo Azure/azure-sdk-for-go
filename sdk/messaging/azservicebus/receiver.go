@@ -371,7 +371,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return nil, err
 	}
 
-	flushAndReturn := func(err error) ([]*ReceivedMessage, error) {
+	cleanup := func(err error) {
 		if err != nil {
 			if internal.IsCancelError(err) {
 				// if the user cancelled any of the "cleanup" operations then the link
@@ -384,20 +384,19 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 				_ = r.amqpLinks.CloseIfNeeded(context.Background(), err)
 			}
 		}
+	}
 
-		// in receiveAndDelete messages are assumed to deleted by the service "spontaneously", which means
-		// they can't be received again once we've gotten them here. So, unlike peekLock mode above, we
-		// make sure we flush any messages that we might be holding onto, even on error.
+	flushAndReturn := func(lastErr error) ([]*ReceivedMessage, error) {
 		flushPrefetchedMessages(ctx, linksWithID.Receiver, &all)
 
 		if len(all) > 0 {
 			// users don't typically check the other values in the return if the 'err' is non-nil
-			// so if we have any results we'll just return them and get rid of the error.
+			// so if we have any messages we'll just return them and nil out the error.
 			// If it's persistent they'll see it on their next ReceiveMessages() call.
 			return all, nil
 		} else {
-			if internal.GetRecoveryKind(err) == internal.RecoveryKindFatal {
-				return nil, err
+			if internal.GetRecoveryKind(lastErr) == internal.RecoveryKindFatal {
+				return nil, lastErr
 			}
 
 			// there's no material difference here, so let them fail on the next call to ReceiveMessages() instead.
@@ -406,28 +405,39 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	}
 
 	if err := fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg, &all); err != nil {
-		// if the user's cancelled the fetch, we should clean up the link by draining it.
+		// if the user's cancelled the fetch we'll fall through and let the drain happen.
 		if !internal.IsCancelError(err) {
-			// link is dead so we'll just skip draining altogether.
+			// If the user didn't cancel then we had an actual failure that's going to require a
+			// link/connection reset. Close links and return whatever we can.
+			cleanup(err)
 			return flushAndReturn(err)
 		}
+
+		// user cancelled, fall through so we drain the link since it's still active.
 	}
 
 	if len(all) < maxMessages { // drain if there are excess credits
-		// NOTE: there is a very intermittent issue where the drain frame doesn't seem to come back. Still investigating
-		// but it's best to not leave their program in a completely hung state during this time.
-		ctx, cancel := context.WithTimeout(context.Background(), r.defaultDrainTimeout)
-		defer cancel()
+		drainCtx, drainCtxcancel := context.WithTimeout(context.Background(), r.defaultDrainTimeout)
+		defer drainCtxcancel()
 
-		// start the drain asynchronously. Note that we ignore the user's context at this point
+		// Start the drain asynchronously. Note that we ignore the user's context at this point
 		// since draining makes sure we don't get messages when nobody is receiving.
-		if err := linksWithID.Receiver.DrainCredit(ctx); err != nil {
-			// note that cancelling a DrainCredit means we're in an indeterminate state
+		if err := linksWithID.Receiver.DrainCredit(drainCtx); err != nil {
+			// Cancelling a DrainCredit means we're in an indeterminate state
 			// so we treat that as a "must recover" error.
+			cleanup(err)
+
+			if internal.IsCancelError(err) {
+				// this cancellation is entirely on us - we cleaned up as best we can
+				// but the user isn't expected to know about this detail so we don't
+				// return the cancellation error.
+				err = nil
+			}
+
 			return flushAndReturn(err)
 		}
 
-		return flushAndReturn(nil)
+		return flushAndReturn(ctx.Err())
 	}
 
 	// we only get here if we got exactly the # of messages they asked for
@@ -464,12 +474,9 @@ func fetchMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessa
 	}
 }
 
-// flushPrefetchedMessages makes a best-effort attempt at draining any messages on the link. If the link is dead,
-// or times out when draining we will close it quickly. The next operation on the link will
-// recover it.
+// flushPrefetchedMessages makes a best-effort attempt at flushing the internal channel for the link. This is
+// a purely in-memory operation so should work even if the link itself has failed.
 func flushPrefetchedMessages(ctx context.Context, receiver internal.AMQPReceiver, messages *[]*ReceivedMessage) {
-	// Draining data from the receiver's prefetched queue. This won't wait for new messages to
-	// arrive, so it'll only receive messages that arrived prior to the drain.
 	for {
 		am, err := receiver.Prefetched(ctx)
 

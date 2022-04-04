@@ -69,6 +69,12 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     $releaseNotes = ""
     $packageProperties = Get-GoModuleProperties $pkg.Directory
 
+    # We have some cases when processing service directories that non-shipping projects like perfdata
+    # we just want to exclude them as opposed to returning a property with invalid data.
+    if (!$packageProperties) {
+      return $null
+    }
+
     if ($packageProperties.ChangeLogPath -and $packageProperties.Version)
     {
       $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $packageProperties.ChangeLogPath `

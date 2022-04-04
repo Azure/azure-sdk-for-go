@@ -22,16 +22,10 @@ type TokenCredential = shared.TokenCredential
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 
-func typeOfT[T any]() reflect.Type {
-	// you can't, at present, obtain the type of
-	// a type parameter, so this is the trick
-	return reflect.TypeOf((*T)(nil)).Elem()
-}
-
 // NullValue is used to send an explicit 'null' within a request.
 // This is typically used in JSON-MERGE-PATCH operations to delete a value.
 func NullValue[T any]() T {
-	t := typeOfT[T]()
+	t := shared.TypeOfT[T]()
 	v, found := nullables[t]
 	if !found {
 		var o reflect.Value

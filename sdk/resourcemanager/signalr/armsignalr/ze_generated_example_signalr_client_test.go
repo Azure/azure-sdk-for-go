@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_CheckNameAvailability.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleClient_CheckNameAvailability() {
 	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_ListBySubscription.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListBySubscription.json
 func ExampleClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleClient_ListBySubscription() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_ListByResourceGroup.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListByResourceGroup.json
 func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleClient_ListByResourceGroup() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_Get.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleClient_Get() {
 	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_CreateOrUpdate.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,6 +154,14 @@ func ExampleClient_BeginCreateOrUpdate() {
 						Properties: map[string]*string{},
 						Value:      to.StringPtr("<value>"),
 					}},
+				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
+					Categories: []*armsignalr.LiveTraceCategory{
+						{
+							Name:    to.StringPtr("<name>"),
+							Enabled: to.StringPtr("<enabled>"),
+						}},
+					Enabled: to.StringPtr("<enabled>"),
+				},
 				NetworkACLs: &armsignalr.NetworkACLs{
 					DefaultAction: armsignalr.ACLAction("Deny").ToPtr(),
 					PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
@@ -204,7 +212,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_Delete.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +233,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_Update.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,6 +282,14 @@ func ExampleClient_BeginUpdate() {
 						Properties: map[string]*string{},
 						Value:      to.StringPtr("<value>"),
 					}},
+				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
+					Categories: []*armsignalr.LiveTraceCategory{
+						{
+							Name:    to.StringPtr("<name>"),
+							Enabled: to.StringPtr("<enabled>"),
+						}},
+					Enabled: to.StringPtr("<enabled>"),
+				},
 				NetworkACLs: &armsignalr.NetworkACLs{
 					DefaultAction: armsignalr.ACLAction("Deny").ToPtr(),
 					PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
@@ -324,7 +340,7 @@ func ExampleClient_BeginUpdate() {
 	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_ListKeys.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +358,7 @@ func ExampleClient_ListKeys() {
 	log.Printf("Response result: %#v\n", res.ClientListKeysResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_RegenerateKey.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +382,7 @@ func ExampleClient_BeginRegenerateKey() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_Restart.json
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

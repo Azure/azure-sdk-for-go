@@ -19,14 +19,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateEndpointConnections_List.json
-func ExamplePrivateEndpointConnectionsClient_List() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_List.json
+func ExampleCustomDomainsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomDomainsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
@@ -44,67 +44,67 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateEndpointConnections_Get.json
-func ExamplePrivateEndpointConnectionsClient_Get() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_Get.json
+func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomDomainsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
-		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
 		"<resource-name>",
+		"<name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
+	log.Printf("Response result: %#v\n", res.CustomDomainsClientGetResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateEndpointConnections_Update.json
-func ExamplePrivateEndpointConnectionsClient_Update() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_CreateOrUpdate.json
+func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	res, err := client.Update(ctx,
-		"<private-endpoint-connection-name>",
+	client := armsignalr.NewCustomDomainsClient("<subscription-id>", cred, nil)
+	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armsignalr.PrivateEndpointConnection{
-			Properties: &armsignalr.PrivateEndpointConnectionProperties{
-				PrivateEndpoint: &armsignalr.PrivateEndpoint{
+		"<name>",
+		armsignalr.CustomDomain{
+			Properties: &armsignalr.CustomDomainProperties{
+				CustomCertificate: &armsignalr.ResourceReference{
 					ID: to.StringPtr("<id>"),
 				},
-				PrivateLinkServiceConnectionState: &armsignalr.PrivateLinkServiceConnectionState{
-					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armsignalr.PrivateLinkServiceConnectionStatus("Approved").ToPtr(),
-				},
+				DomainName: to.StringPtr("<domain-name>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientUpdateResult)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateEndpointConnections_Delete.json
-func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_Delete.json
+func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomDomainsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
-		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
 		"<resource-name>",
+		"<name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)

@@ -17,9 +17,25 @@
 ### Breaking Changes
 
 - The `admin.Client` type has been changed to conform with the latest Azure Go SDK guidelines. As part of this:
-  - Fields that were of type `time.Duration` have been changed to `*string`, where the value of the string is the ISO8601 timestamp format. 
+  - Embedded `*Result` structs in `admin.Client`'s APIs have been removed. Inner *Properties values have been hoisted up to the `*Response` instead.
+  - `.Response` fields have been removed for successful results. These will be added back using a     different pattern in the next release.
+  - Fields that were of type `time.Duration` have been changed to `*string`, where the value of the string is an ISO8601 timestamp. 
     Affected fields from Queues, Topics and Subscriptions: AutoDeleteOnIdle, DefaultMessageTimeToLive, DuplicateDetectionHistoryTimeWindow, LockDuration.    
-  - Pagers have been changed. 
+  - Properties that were passed as a parameter to CreateQueue, CreateTopic or CreateSubscription are now in the `options` parameter (as they were optional):
+    Previously:
+    ```go
+    // older code
+    adminClient.CreateQueue(context.Background(), queueName, &queueProperties, nil)	  
+    ```
+
+    And now:
+    ```go
+    // new code
+    adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+      Properties: queueProperties,
+    })
+    ```  
+  - Pagers have been changed to use the new generics-based `runtime.Pager`:
   
     Previously:
     ```go
@@ -45,7 +61,7 @@
 			  panic(err)
 		  }
 
-		  for _, queue := range page.Items {
+		  for _, queue := range page.Queues {
 			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
 		  }
 	  }

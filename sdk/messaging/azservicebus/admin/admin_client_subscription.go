@@ -100,11 +100,18 @@ type CreateSubscriptionResponse struct {
 
 // CreateSubscriptionOptions contains optional parameters for Client.CreateSubscription
 type CreateSubscriptionOptions struct {
-	// For future expansion
+	// Properties for the subscription.
+	Properties *SubscriptionProperties
 }
 
 // CreateSubscription creates a subscription to a topic with configurable properties
-func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subscriptionName string, properties *SubscriptionProperties, options *CreateSubscriptionOptions) (CreateSubscriptionResponse, error) {
+func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subscriptionName string, options *CreateSubscriptionOptions) (CreateSubscriptionResponse, error) {
+	var properties *SubscriptionProperties
+
+	if options != nil {
+		properties = options.Properties
+	}
+
 	newProps, _, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, subscriptionName, properties, true)
 
 	if err != nil {
@@ -215,7 +222,7 @@ type SubscriptionPropertiesItem struct {
 // ListSubscriptionsResponse contains the response fields for SubscriptionPager.PageResponse
 type ListSubscriptionsResponse struct {
 	// Value is the result of the request.
-	Items []SubscriptionPropertiesItem
+	Subscriptions []SubscriptionPropertiesItem
 }
 
 // ListSubscriptions lists subscriptions for a topic.
@@ -247,7 +254,7 @@ func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptions
 			}
 
 			return ListSubscriptionsResponse{
-				Items: items,
+				Subscriptions: items,
 			}, nil
 		},
 	})
@@ -270,7 +277,7 @@ type SubscriptionRuntimePropertiesItem struct {
 // ListSubscriptionsRuntimePropertiesResponse contains the response fields for SubscriptionRuntimePropertiesPager.PageResponse
 type ListSubscriptionsRuntimePropertiesResponse struct {
 	// Value is the result of the request.
-	Items []SubscriptionRuntimePropertiesItem
+	SubscriptionRuntimeProperties []SubscriptionRuntimePropertiesItem
 }
 
 // ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
@@ -302,7 +309,7 @@ func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *
 			}
 
 			return ListSubscriptionsRuntimePropertiesResponse{
-				Items: items,
+				SubscriptionRuntimeProperties: items,
 			}, nil
 		},
 	})

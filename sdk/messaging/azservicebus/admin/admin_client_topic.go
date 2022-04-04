@@ -81,11 +81,18 @@ type CreateTopicResponse struct {
 
 // CreateTopicOptions contains optional parameters for Client.CreateTopic
 type CreateTopicOptions struct {
-	// For future expansion
+	// Properties for the topic.
+	Properties *TopicProperties
 }
 
 // CreateTopic creates a topic using defaults for all options.
-func (ac *Client) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (CreateTopicResponse, error) {
+func (ac *Client) CreateTopic(ctx context.Context, topicName string, options *CreateTopicOptions) (CreateTopicResponse, error) {
+	var properties *TopicProperties
+
+	if options != nil {
+		properties = options.Properties
+	}
+
 	newProps, _, err := ac.createOrUpdateTopicImpl(ctx, topicName, properties, true)
 
 	if err != nil {
@@ -177,8 +184,8 @@ type TopicItem struct {
 
 // ListTopicsResponse contains response fields for the Client.PageResponse method
 type ListTopicsResponse struct {
-	// Items is the result of the request.
-	Items []TopicItem
+	// Topics is the result of the request.
+	Topics []TopicItem
 }
 
 // ListTopicsOptions can be used to configure the ListTopics method.
@@ -214,7 +221,7 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopi
 			}
 
 			return ListTopicsResponse{
-				Items: items,
+				Topics: items,
 			}, nil
 		},
 	})
@@ -229,8 +236,8 @@ type TopicRuntimePropertiesItem struct {
 
 // ListTopicsRuntimePropertiesResponse contains response fields for TopicRuntimePropertiesPager.PageResponse
 type ListTopicsRuntimePropertiesResponse struct {
-	// Items is the result of the request.
-	Items []TopicRuntimePropertiesItem
+	// TopicRuntimeProperties is the result of the request.
+	TopicRuntimeProperties []TopicRuntimePropertiesItem
 }
 
 // ListTopicsRuntimePropertiesOptions can be used to configure the ListTopicsRuntimeProperties method.
@@ -266,7 +273,7 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 			}
 
 			return ListTopicsRuntimePropertiesResponse{
-				Items: items,
+				TopicRuntimeProperties: items,
 			}, nil
 		},
 	})

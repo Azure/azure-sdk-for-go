@@ -62,7 +62,7 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 				os.Exit(1)
 			}
 
-			for _, queueProps := range page.Items {
+			for _, queueProps := range page.Queues {
 				if re.MatchString(queueProps.QueueName) {
 					queuesToDelete = append(queuesToDelete, queueProps.QueueName)
 				}
@@ -92,7 +92,7 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 				return 1
 			}
 
-			for _, topicProps := range page.Items {
+			for _, topicProps := range page.Topics {
 				if re.MatchString(topicProps.TopicName) {
 					topicsToDelete = append(topicsToDelete, topicProps.TopicName)
 				}

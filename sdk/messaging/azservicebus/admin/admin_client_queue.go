@@ -110,7 +110,8 @@ type QueueRuntimeProperties struct {
 
 // CreateQueueOptions contains the optional parameters for Client.CreateQueue
 type CreateQueueOptions struct {
-	// for future expansion
+	// Properties for the queue.
+	Properties *QueueProperties
 }
 
 // CreateQueueResponse contains the response fields for Client.CreateQueue
@@ -119,7 +120,13 @@ type CreateQueueResponse struct {
 }
 
 // CreateQueue creates a queue with configurable properties.
-func (ac *Client) CreateQueue(ctx context.Context, queueName string, properties *QueueProperties, options *CreateQueueOptions) (CreateQueueResponse, error) {
+func (ac *Client) CreateQueue(ctx context.Context, queueName string, options *CreateQueueOptions) (CreateQueueResponse, error) {
+	var properties *QueueProperties
+
+	if options != nil {
+		properties = options.Properties
+	}
+
 	newProps, _, err := ac.createOrUpdateQueueImpl(ctx, queueName, properties, true)
 
 	if err != nil {
@@ -248,7 +255,7 @@ type ListQueuesOptions struct {
 
 // ListQueuesResponse contains the response fields for QueuePager.PageResponse
 type ListQueuesResponse struct {
-	Items []QueueItem
+	Queues []QueueItem
 }
 
 // QueueItem contains the data from the Client.ListQueues pager
@@ -284,7 +291,7 @@ func (ac *Client) ListQueues(options *ListQueuesOptions) *runtime.Pager[ListQueu
 			}
 
 			return ListQueuesResponse{
-				Items: items,
+				Queues: items,
 			}, nil
 		},
 	})
@@ -298,7 +305,7 @@ type ListQueuesRuntimePropertiesOptions struct {
 
 // ListQueuesRuntimePropertiesResponse contains the page response for QueueRuntimePropertiesPager.PageResponse
 type ListQueuesRuntimePropertiesResponse struct {
-	Items []QueueRuntimePropertiesItem
+	QueueRuntimeProperties []QueueRuntimePropertiesItem
 }
 
 // QueueRuntimePropertiesItem contains a single item in the page response for QueueRuntimePropertiesPager.PageResponse
@@ -334,7 +341,7 @@ func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimeProperti
 			}
 
 			return ListQueuesRuntimePropertiesResponse{
-				Items: items,
+				QueueRuntimeProperties: items,
 			}, nil
 		},
 	})

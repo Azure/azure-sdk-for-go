@@ -32,7 +32,7 @@ func ExampleNewClientFromConnectionString() {
 }
 
 func ExampleClient_CreateQueue() {
-	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
+	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil)
 	exitOnError("Failed to add queue", err)
 
 	// some example properties
@@ -43,11 +43,13 @@ func ExampleClient_CreateQueue() {
 func ExampleClient_CreateQueue_usingproperties() {
 	maxDeliveryCount := int32(10)
 
-	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &admin.QueueProperties{
-		// some example properties
-		LockDuration:     to.Ptr("PT1M"),
-		MaxDeliveryCount: &maxDeliveryCount,
-	}, nil)
+	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &admin.CreateQueueOptions{
+		Properties: &admin.QueueProperties{
+			// some example properties
+			LockDuration:     to.Ptr("PT1M"),
+			MaxDeliveryCount: &maxDeliveryCount,
+		},
+	})
 	exitOnError("Failed to create queue", err)
 
 	// some example properties
@@ -65,7 +67,7 @@ func ExampleClient_ListQueues() {
 			panic(err)
 		}
 
-		for _, queue := range page.Items {
+		for _, queue := range page.Queues {
 			fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
 		}
 	}
@@ -81,7 +83,7 @@ func ExampleClient_ListQueuesRuntimeProperties() {
 			panic(err)
 		}
 
-		for _, queue := range page.Items {
+		for _, queue := range page.QueueRuntimeProperties {
 			fmt.Printf("Queue name: %s, active messages: %d\n", queue.QueueName, queue.ActiveMessageCount)
 		}
 	}

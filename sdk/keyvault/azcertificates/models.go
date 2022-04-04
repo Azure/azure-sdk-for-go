@@ -311,6 +311,14 @@ type Policy struct {
 	X509Properties *X509CertificateProperties `json:"x509_props,omitempty"`
 }
 
+// NewDefaultCertificatePolicy returns a Policy with IssuerName "Self" and Subject "CN=DefaultPolicy"
+func NewDefaultCertificatePolicy() Policy {
+	return Policy{
+		IssuerParameters: &IssuerParameters{IssuerName: (*string)(to.Ptr(WellKnownIssuerSelf))},
+		X509Properties:   &X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
+	}
+}
+
 func (c *Policy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
 	if c == nil {
 		return nil

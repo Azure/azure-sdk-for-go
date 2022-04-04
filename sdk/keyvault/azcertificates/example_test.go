@@ -59,14 +59,7 @@ func ExampleClient_BeginCreateCertificate() {
 		panic(err)
 	}
 
-	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.Policy{
-		IssuerParameters: &azcertificates.IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &azcertificates.X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.NewDefaultCertificatePolicy(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -212,15 +205,8 @@ func ExampleClient_MergeCertificate() {
 		panic(err)
 	}
 
-	certPolicy := azcertificates.Policy{
-		IssuerParameters: &azcertificates.IssuerParameters{
-			IssuerName:              to.Ptr("Unknown"),
-			CertificateTransparency: to.Ptr(false),
-		},
-		X509Properties: &azcertificates.X509CertificateProperties{
-			Subject: to.Ptr("CN=MyCert"),
-		},
-	}
+	certPolicy := azcertificates.NewDefaultCertificatePolicy()
+	certPolicy.IssuerParameters.CertificateTransparency = to.Ptr(false)
 
 	// Load public key
 	data, err := ioutil.ReadFile("path/to/cert/ca.crt")

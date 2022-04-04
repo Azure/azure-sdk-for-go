@@ -48,14 +48,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "beginCreate")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
@@ -87,14 +80,7 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "createCert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
@@ -129,14 +115,7 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	_, err = resp.PollUntilDone(ctx, delay())
@@ -158,14 +137,7 @@ func TestClient_CancelCertificateOperation(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	_, err = client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	_, err = client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	cancelResp, err := client.CancelCertificateOperation(ctx, certName, nil)
@@ -194,14 +166,7 @@ func TestClient_BackupCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 	_, err = resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
@@ -595,15 +560,8 @@ func TestMergeCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "mergeCertificate")
 	require.NoError(t, err)
 
-	certPolicy := Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName:              to.Ptr("Unknown"),
-			CertificateTransparency: to.Ptr(false),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=MyCert"),
-		},
-	}
+	certPolicy := NewDefaultCertificatePolicy()
+	certPolicy.IssuerParameters.CertificateTransparency = to.Ptr(false)
 
 	// Load public key
 	data, err := ioutil.ReadFile("testdata/ca.crt")
@@ -675,14 +633,7 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "certRecover")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
-		IssuerParameters: &IssuerParameters{
-			IssuerName: to.Ptr("Self"),
-		},
-		X509Properties: &X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 	defer cleanUp(t, client, certName)
 

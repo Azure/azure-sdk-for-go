@@ -107,3 +107,19 @@ func PossibleCertificateContentTypeValues() []CertificateContentType {
 		CertificateContentTypePKCS12,
 	}
 }
+
+// WellKnownIssuer names you can use when creating a certificate policy
+type WellKnownIssuer string
+
+const (
+	WellKnownIssuerSelf    WellKnownIssuer = "Self"
+	WellKnownIssuerUnknown WellKnownIssuer = "Unknown"
+)
+
+// PossibleWellKnownIssuerValues returns a slice of all possible WellKnownIssuer values.
+func PossibleWellKnownIssuerValues() []WellKnownIssuer {
+	return []WellKnownIssuer{
+		WellKnownIssuerSelf,
+		WellKnownIssuerUnknown,
+	}
+}

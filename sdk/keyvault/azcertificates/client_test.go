@@ -70,6 +70,41 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 	require.NoError(t, req.CheckSignature())
 }
 
+func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "beginCreateRehydrate")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	rt, err := resp.ResumeToken()
+	require.NoError(t, err)
+
+	newPoller, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), &BeginCreateCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	pollerResp, err := newPoller.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	// want to interface with x509 std library
+	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
+	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	// load certificate request
+	csrblock, _ := pem.Decode([]byte(csr))
+	require.NotNil(t, csrblock)
+	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	require.NoError(t, err)
+	require.NoError(t, req.CheckSignature())
+}
+
 func TestClient_BeginDeleteCertificate(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -91,6 +126,47 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 	require.NoError(t, err)
 
 	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	deletedResp, err := client.GetDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Contains(t, *deletedResp.ID, certName)
+
+	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+}
+
+func TestClient_BeginDeleteCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "createCertRehydrate")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	rt, err := delResp.ResumeToken()
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteCertificate(ctx, certName, &BeginDeleteCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	delPollerResp, err := poller.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
 	require.Contains(t, *delPollerResp.ID, certName)
 
@@ -657,6 +733,50 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	recoveredResp, err := recover.PollUntilDone(ctx, time.Second)
 	require.NoError(t, err)
 	require.Contains(t, *recoveredResp.ID, certName)
+}
+
+func TestClient_BeginRecoverDeletedCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "certBeginRecoverRehydrated")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	recover, err := client.BeginRecoverDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	rt, err := recover.ResumeToken()
+	require.NoError(t, err)
+
+	poller, err := client.BeginRecoverDeletedCertificate(ctx, certName, &BeginRecoverDeletedCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	recoveredResp, err := poller.PollUntilDone(ctx, time.Second)
+	require.NoError(t, err)
+	require.Contains(t, *recoveredResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.NoError(t, err)
 }
 
 func TestClient_RestoreCertificateBackup(t *testing.T) {

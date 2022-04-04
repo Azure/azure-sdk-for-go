@@ -4,6 +4,8 @@
 
 ### Features Added
 * Added PossibleValues functions for `CertificateKeyUsage`, `CertificateKeyType`, `CertificateKeyCurveName`, and `CertificatePolicyAction` constants.
+* Added the `ResumeToken` method on pollers for resuming operations later
+* Added the `ResumeToken` field to the options structs of `Begin` methods for resuming operations
 
 ### Breaking Changes
 * Fixed a misspelling of `CerificateKeyUsage`, changed to `CertificateKeyUsage`

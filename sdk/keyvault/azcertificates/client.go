@@ -8,6 +8,7 @@ package azcertificates
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"time"
@@ -72,6 +73,9 @@ type BeginCreateCertificateOptions struct {
 
 	// Application specific metadata in the form of key-value pairs
 	Tags map[string]string `json:"tags,omitempty"`
+
+	// ResumeToken is a token for resuming long running operations from a previous poller
+	ResumeToken *string
 }
 
 func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCreateCertificateOptions {
@@ -92,6 +96,12 @@ type CreateCertificatePoller struct {
 	createResponse CreateCertificateResponse
 	lastResponse   generated.KeyVaultClientGetCertificateResponse
 	getRawResponse *http.Response
+	resumeToken    string
+}
+
+// ResumeToken returns a token for resuming polling at a later time
+func (p *CreateCertificatePoller) ResumeToken() (string, error) {
+	return string(p.resumeToken), nil
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -158,20 +168,37 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 	if options.Tags != nil {
 		tags = convertToGeneratedMap(options.Tags)
 	}
-	resp, err := c.genClient.CreateCertificate(
-		ctx,
-		c.vaultURL,
-		certificateName,
-		generated.CertificateCreateParameters{
-			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-			Tags:                  tags,
-			CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
-		},
-		options.toGenerated(),
-	)
 
-	if err != nil {
-		return nil, err
+	var createResp generated.KeyVaultClientCreateCertificateResponse
+	var err error
+	var rt string
+
+	if options.ResumeToken == nil {
+		createResp, err = c.genClient.CreateCertificate(
+			ctx,
+			c.vaultURL,
+			certificateName,
+			generated.CertificateCreateParameters{
+				CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
+				Tags:                  tags,
+				CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
+			},
+			options.toGenerated(),
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		marshalled, err := json.Marshal(createResp)
+		if err != nil {
+			return nil, err
+		}
+		rt = string(marshalled)
+	} else {
+		err = json.Unmarshal([]byte(*options.ResumeToken), &createResp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &CreateCertificatePoller{
@@ -181,18 +208,19 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 		client:      c.genClient,
 		createResponse: CreateCertificateResponse{
 			Operation: Operation{
-				CancellationRequested: resp.CancellationRequested,
-				CSR:                   resp.Csr,
-				Error:                 certificateErrorFromGenerated(resp.Error),
-				IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
-				RequestID:             resp.RequestID,
-				Status:                resp.Status,
-				StatusDetails:         resp.StatusDetails,
-				Target:                resp.Target,
-				ID:                    resp.ID,
+				CancellationRequested: createResp.CancellationRequested,
+				CSR:                   createResp.Csr,
+				Error:                 certificateErrorFromGenerated(createResp.Error),
+				IssuerParameters:      issuerParametersFromGenerated(createResp.IssuerParameters),
+				RequestID:             createResp.RequestID,
+				Status:                createResp.Status,
+				StatusDetails:         createResp.StatusDetails,
+				Target:                createResp.Target,
+				ID:                    createResp.ID,
 			},
 		},
 		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
+		resumeToken:  rt,
 	}, nil
 }
 
@@ -268,7 +296,8 @@ func (c *Client) GetCertificateOperation(ctx context.Context, name string, optio
 
 // BeginDeleteCertificateOptions contains optional parameters for Client.BeginDeleteCertificate
 type BeginDeleteCertificateOptions struct {
-	// placeholder for future optional parameters.
+	// ResumeToken is a string to begin polling from a previous operation
+	ResumeToken *string
 }
 
 // convert public options to generated options struct
@@ -281,10 +310,7 @@ type DeleteCertificateResponse struct {
 	DeletedCertificate
 }
 
-func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCertificateResponse) DeleteCertificateResponse {
-	if g == nil {
-		return DeleteCertificateResponse{}
-	}
+func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCertificateResponse) DeleteCertificateResponse {
 	return DeleteCertificateResponse{
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         g.RecoveryID,
@@ -309,6 +335,12 @@ type DeleteCertificatePoller struct {
 	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
 	lastResponse    generated.KeyVaultClientGetDeletedCertificateResponse
 	lastRawResponse *http.Response
+	resumeToken     string
+}
+
+// ResumeToken returns a token for resuming polling at a later time
+func (s *DeleteCertificatePoller) ResumeToken() (string, error) {
+	return string(s.resumeToken), nil
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -343,7 +375,7 @@ func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 
 // FinalResponse returns the final response after the operations has finished
 func (s *DeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCertificateResponse, error) {
-	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
+	return deleteCertificateResponseFromGenerated(s.deleteResponse), nil
 }
 
 // PollUntilDone continually calls the Poll operation until the operation is completed. In between each
@@ -360,7 +392,7 @@ func (s *DeleteCertificatePoller) PollUntilDone(ctx context.Context, t time.Dura
 		}
 		time.Sleep(t)
 	}
-	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
+	return deleteCertificateResponseFromGenerated(s.deleteResponse), nil
 }
 
 // BeginDeleteCertificate deletes a certificate from the keyvault. Delete cannot be applied to an individual version of a certificate. This operation
@@ -370,9 +402,25 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 	if options == nil {
 		options = &BeginDeleteCertificateOptions{}
 	}
-	resp, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
-	if err != nil {
-		return nil, err
+	var resumeToken string
+	var delResp generated.KeyVaultClientDeleteCertificateResponse
+	var err error
+	if options.ResumeToken == nil {
+		delResp, err = c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
+		if err != nil {
+			return nil, err
+		}
+
+		marshalled, err := json.Marshal(delResp)
+		if err != nil {
+			return nil, err
+		}
+		resumeToken = string(marshalled)
+	} else {
+		err = json.Unmarshal([]byte(*options.ResumeToken), &delResp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, nil)
@@ -387,8 +435,9 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 		vaultURL:        c.vaultURL,
 		certificateName: certificateName,
 		client:          c.genClient,
-		deleteResponse:  resp,
+		deleteResponse:  delResp,
 		lastResponse:    getResp,
+		resumeToken:     resumeToken,
 	}, nil
 }
 
@@ -1348,7 +1397,8 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 // BeginRecoverDeletedCertificateOptions contains optional parameters for Client.BeginRecoverDeletedCertificate
 type BeginRecoverDeletedCertificateOptions struct {
-	// placeholder for future optional parameters.
+	// ResumeToken is a token for resuming long running operations from a previous call.
+	ResumeToken *string
 }
 
 func (b *BeginRecoverDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedCertificateOptions {
@@ -1363,6 +1413,12 @@ type RecoverDeletedCertificatePoller struct {
 	recoverResponse generated.KeyVaultClientRecoverDeletedCertificateResponse
 	lastResponse    generated.KeyVaultClientGetCertificateResponse
 	lastRawResponse *http.Response
+	resumeToken     string
+}
+
+// ResumeToken returns a token for resuming polling at a later time
+func (p *RecoverDeletedCertificatePoller) ResumeToken() (string, error) {
+	return string(p.resumeToken), nil
 }
 
 // Done returns true when the polling operation is completed
@@ -1435,9 +1491,25 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 	if options == nil {
 		options = &BeginRecoverDeletedCertificateOptions{}
 	}
-	resp, err := c.genClient.RecoverDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
-	if err != nil {
-		return nil, err
+	var recoverResp generated.KeyVaultClientRecoverDeletedCertificateResponse
+	var resumeToken string
+	var err error
+	if options.ResumeToken == nil {
+		recoverResp, err = c.genClient.RecoverDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
+		if err != nil {
+			return nil, err
+		}
+
+		marshalled, err := json.Marshal(recoverResp)
+		if err != nil {
+			return nil, err
+		}
+		resumeToken = string(marshalled)
+	} else {
+		err = json.Unmarshal([]byte(*options.ResumeToken), &recoverResp)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	getResp, err := c.genClient.GetCertificate(ctx, c.vaultURL, certificateName, "", nil)
@@ -1453,7 +1525,8 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 		certName:        certificateName,
 		client:          c.genClient,
 		vaultUrl:        c.vaultURL,
-		recoverResponse: resp,
+		recoverResponse: recoverResp,
+		resumeToken:     resumeToken,
 	}, nil
 }
 

@@ -81,7 +81,7 @@ func (client BackupInstancesClient) AdhocBackupPreparer(ctx context.Context, vau
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,7 +189,7 @@ func (client BackupInstancesClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -272,7 +272,7 @@ func (client BackupInstancesClient) DeletePreparer(ctx context.Context, vaultNam
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -359,7 +359,7 @@ func (client BackupInstancesClient) GetPreparer(ctx context.Context, vaultName s
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -440,7 +440,7 @@ func (client BackupInstancesClient) ListPreparer(ctx context.Context, vaultName 
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -508,6 +508,405 @@ func (client BackupInstancesClient) ListComplete(ctx context.Context, vaultName 
 	return
 }
 
+// ResumeBackups this operation will resume backups for backup instance
+// Parameters:
+// vaultName - the name of the backup vault.
+// resourceGroupName - the name of the resource group where the backup vault is present.
+func (client BackupInstancesClient) ResumeBackups(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result BackupInstancesResumeBackupsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.ResumeBackups")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ResumeBackupsPreparer(ctx, vaultName, resourceGroupName, backupInstanceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ResumeBackups", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ResumeBackupsSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ResumeBackups", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ResumeBackupsPreparer prepares the ResumeBackups request.
+func (client BackupInstancesClient) ResumeBackupsPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupInstanceName": autorest.Encode("path", backupInstanceName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"vaultName":          autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeBackups", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ResumeBackupsSender sends the ResumeBackups request. The method will close the
+// http.Response Body if it receives an error.
+func (client BackupInstancesClient) ResumeBackupsSender(req *http.Request) (future BackupInstancesResumeBackupsFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// ResumeBackupsResponder handles the response to the ResumeBackups request. The method always
+// closes the http.Response Body.
+func (client BackupInstancesClient) ResumeBackupsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// ResumeProtection this operation will resume protection for a stopped backup instance
+// Parameters:
+// vaultName - the name of the backup vault.
+// resourceGroupName - the name of the resource group where the backup vault is present.
+func (client BackupInstancesClient) ResumeProtection(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result BackupInstancesResumeProtectionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.ResumeProtection")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ResumeProtectionPreparer(ctx, vaultName, resourceGroupName, backupInstanceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ResumeProtection", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ResumeProtectionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ResumeProtection", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ResumeProtectionPreparer prepares the ResumeProtection request.
+func (client BackupInstancesClient) ResumeProtectionPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupInstanceName": autorest.Encode("path", backupInstanceName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"vaultName":          autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ResumeProtectionSender sends the ResumeProtection request. The method will close the
+// http.Response Body if it receives an error.
+func (client BackupInstancesClient) ResumeProtectionSender(req *http.Request) (future BackupInstancesResumeProtectionFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// ResumeProtectionResponder handles the response to the ResumeProtection request. The method always
+// closes the http.Response Body.
+func (client BackupInstancesClient) ResumeProtectionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// StopProtection this operation will stop protection of a backup instance and data will be held forever
+// Parameters:
+// vaultName - the name of the backup vault.
+// resourceGroupName - the name of the resource group where the backup vault is present.
+func (client BackupInstancesClient) StopProtection(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result BackupInstancesStopProtectionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.StopProtection")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StopProtectionPreparer(ctx, vaultName, resourceGroupName, backupInstanceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "StopProtection", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.StopProtectionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "StopProtection", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// StopProtectionPreparer prepares the StopProtection request.
+func (client BackupInstancesClient) StopProtectionPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupInstanceName": autorest.Encode("path", backupInstanceName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"vaultName":          autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StopProtectionSender sends the StopProtection request. The method will close the
+// http.Response Body if it receives an error.
+func (client BackupInstancesClient) StopProtectionSender(req *http.Request) (future BackupInstancesStopProtectionFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// StopProtectionResponder handles the response to the StopProtection request. The method always
+// closes the http.Response Body.
+func (client BackupInstancesClient) StopProtectionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// SuspendBackups this operation will stop backups for backup instance
+// Parameters:
+// vaultName - the name of the backup vault.
+// resourceGroupName - the name of the resource group where the backup vault is present.
+func (client BackupInstancesClient) SuspendBackups(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result BackupInstancesSuspendBackupsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.SuspendBackups")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.SuspendBackupsPreparer(ctx, vaultName, resourceGroupName, backupInstanceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "SuspendBackups", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.SuspendBackupsSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "SuspendBackups", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// SuspendBackupsPreparer prepares the SuspendBackups request.
+func (client BackupInstancesClient) SuspendBackupsPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupInstanceName": autorest.Encode("path", backupInstanceName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"vaultName":          autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SuspendBackupsSender sends the SuspendBackups request. The method will close the
+// http.Response Body if it receives an error.
+func (client BackupInstancesClient) SuspendBackupsSender(req *http.Request) (future BackupInstancesSuspendBackupsFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// SuspendBackupsResponder handles the response to the SuspendBackups request. The method always
+// closes the http.Response Body.
+func (client BackupInstancesClient) SuspendBackupsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// SyncBackupInstance sync backup instance again in case of failure
+// This action will retry last failed operation and will bring backup instance to valid state
+// Parameters:
+// vaultName - the name of the backup vault.
+// resourceGroupName - the name of the resource group where the backup vault is present.
+// parameters - request body for operation
+func (client BackupInstancesClient) SyncBackupInstance(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters SyncBackupInstanceRequest) (result BackupInstancesSyncBackupInstanceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.SyncBackupInstance")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.SyncBackupInstancePreparer(ctx, vaultName, resourceGroupName, backupInstanceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "SyncBackupInstance", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.SyncBackupInstanceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "SyncBackupInstance", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// SyncBackupInstancePreparer prepares the SyncBackupInstance request.
+func (client BackupInstancesClient) SyncBackupInstancePreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters SyncBackupInstanceRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupInstanceName": autorest.Encode("path", backupInstanceName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"vaultName":          autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SyncBackupInstanceSender sends the SyncBackupInstance request. The method will close the
+// http.Response Body if it receives an error.
+func (client BackupInstancesClient) SyncBackupInstanceSender(req *http.Request) (future BackupInstancesSyncBackupInstanceFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// SyncBackupInstanceResponder handles the response to the SyncBackupInstance request. The method always
+// closes the http.Response Body.
+func (client BackupInstancesClient) SyncBackupInstanceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // TriggerRehydrate rehydrate recovery point for restore for a BackupInstance
 // Parameters:
 // resourceGroupName - the name of the resource group where the backup vault is present.
@@ -555,7 +954,7 @@ func (client BackupInstancesClient) TriggerRehydratePreparer(ctx context.Context
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -638,7 +1037,7 @@ func (client BackupInstancesClient) TriggerRestorePreparer(ctx context.Context, 
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -744,7 +1143,7 @@ func (client BackupInstancesClient) ValidateForBackupPreparer(ctx context.Contex
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -828,7 +1227,7 @@ func (client BackupInstancesClient) ValidateForRestorePreparer(ctx context.Conte
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

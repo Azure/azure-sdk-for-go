@@ -77,7 +77,7 @@ func (client JobsClient) GetPreparer(ctx context.Context, resourceGroupName stri
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -158,7 +158,7 @@ func (client JobsClient) ListPreparer(ctx context.Context, resourceGroupName str
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

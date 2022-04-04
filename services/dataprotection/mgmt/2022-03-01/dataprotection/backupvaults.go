@@ -77,7 +77,7 @@ func (client BackupVaultsClient) CheckNameAvailabilityPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -112,10 +112,10 @@ func (client BackupVaultsClient) CheckNameAvailabilityResponder(resp *http.Respo
 
 // CreateOrUpdate creates or updates a BackupVault resource belonging to a resource group.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// vaultName - the name of the backup vault.
 // parameters - request body for operation
-func (client BackupVaultsClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupVaultResource) (result BackupVaultsCreateOrUpdateFuture, err error) {
+func (client BackupVaultsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource) (result BackupVaultsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupVaultsClient.CreateOrUpdate")
 		defer func() {
@@ -133,7 +133,7 @@ func (client BackupVaultsClient) CreateOrUpdate(ctx context.Context, vaultName s
 		return result, validation.NewError("dataprotection.BackupVaultsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, vaultName, resourceGroupName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, vaultName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -149,14 +149,14 @@ func (client BackupVaultsClient) CreateOrUpdate(ctx context.Context, vaultName s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BackupVaultsClient) CreateOrUpdatePreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupVaultResource) (*http.Request, error) {
+func (client BackupVaultsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,9 +201,9 @@ func (client BackupVaultsClient) CreateOrUpdateResponder(resp *http.Response) (r
 
 // Delete deletes a BackupVault resource from the resource group.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
-func (client BackupVaultsClient) Delete(ctx context.Context, vaultName string, resourceGroupName string) (result autorest.Response, err error) {
+// vaultName - the name of the backup vault.
+func (client BackupVaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupVaultsClient.Delete")
 		defer func() {
@@ -214,7 +214,7 @@ func (client BackupVaultsClient) Delete(ctx context.Context, vaultName string, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, vaultName, resourceGroupName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -237,14 +237,14 @@ func (client BackupVaultsClient) Delete(ctx context.Context, vaultName string, r
 }
 
 // DeletePreparer prepares the Delete request.
-func (client BackupVaultsClient) DeletePreparer(ctx context.Context, vaultName string, resourceGroupName string) (*http.Request, error) {
+func (client BackupVaultsClient) DeletePreparer(ctx context.Context, resourceGroupName string, vaultName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -276,9 +276,9 @@ func (client BackupVaultsClient) DeleteResponder(resp *http.Response) (result au
 
 // Get returns a resource belonging to a resource group.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
-func (client BackupVaultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string) (result BackupVaultResource, err error) {
+// vaultName - the name of the backup vault.
+func (client BackupVaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string) (result BackupVaultResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupVaultsClient.Get")
 		defer func() {
@@ -289,7 +289,7 @@ func (client BackupVaultsClient) Get(ctx context.Context, vaultName string, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, vaultName, resourceGroupName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "Get", nil, "Failure preparing request")
 		return
@@ -312,14 +312,14 @@ func (client BackupVaultsClient) Get(ctx context.Context, vaultName string, reso
 }
 
 // GetPreparer prepares the Get request.
-func (client BackupVaultsClient) GetPreparer(ctx context.Context, vaultName string, resourceGroupName string) (*http.Request, error) {
+func (client BackupVaultsClient) GetPreparer(ctx context.Context, resourceGroupName string, vaultName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -398,7 +398,7 @@ func (client BackupVaultsClient) GetInResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -511,7 +511,7 @@ func (client BackupVaultsClient) GetInSubscriptionPreparer(ctx context.Context) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -581,10 +581,10 @@ func (client BackupVaultsClient) GetInSubscriptionComplete(ctx context.Context) 
 
 // Update updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// vaultName - the name of the backup vault.
 // parameters - request body for operation
-func (client BackupVaultsClient) Update(ctx context.Context, vaultName string, resourceGroupName string, parameters PatchResourceRequestInput) (result BackupVaultsUpdateFuture, err error) {
+func (client BackupVaultsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput) (result BackupVaultsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupVaultsClient.Update")
 		defer func() {
@@ -595,7 +595,7 @@ func (client BackupVaultsClient) Update(ctx context.Context, vaultName string, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, vaultName, resourceGroupName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, vaultName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "Update", nil, "Failure preparing request")
 		return
@@ -611,14 +611,14 @@ func (client BackupVaultsClient) Update(ctx context.Context, vaultName string, r
 }
 
 // UpdatePreparer prepares the Update request.
-func (client BackupVaultsClient) UpdatePreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters PatchResourceRequestInput) (*http.Request, error) {
+func (client BackupVaultsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

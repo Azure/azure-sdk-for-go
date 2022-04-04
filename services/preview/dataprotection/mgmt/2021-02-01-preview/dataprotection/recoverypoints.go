@@ -78,7 +78,7 @@ func (client RecoveryPointsClient) GetPreparer(ctx context.Context, vaultName st
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -163,7 +163,7 @@ func (client RecoveryPointsClient) ListPreparer(ctx context.Context, vaultName s
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

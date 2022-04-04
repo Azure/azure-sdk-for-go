@@ -1,5 +1,5 @@
 {
-  "commit": "6e95cd4c6086d61bb3de67cf6e4209a7b84efa23",
+  "commit": "49f003bd7b06f60a7be792d6b38a20678c7610cc",
   "readme": "/_/azure-rest-api-specs/specification/dataprotection/resource-manager/readme.md",
   "tag": "package-2021-07",
   "use": "@microsoft.azure/autorest.go@2.1.187",

@@ -12,7 +12,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-08-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage"
 )
 
 const (
@@ -22,8 +22,9 @@ const (
 type AccessTier = original.AccessTier
 
 const (
-	AccessTierCool AccessTier = original.AccessTierCool
-	AccessTierHot  AccessTier = original.AccessTierHot
+	AccessTierCool    AccessTier = original.AccessTierCool
+	AccessTierHot     AccessTier = original.AccessTierHot
+	AccessTierPremium AccessTier = original.AccessTierPremium
 )
 
 type AccountExpand = original.AccountExpand
@@ -102,6 +103,13 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type DNSEndpointType = original.DNSEndpointType
+
+const (
+	DNSEndpointTypeAzureDNSZone DNSEndpointType = original.DNSEndpointTypeAzureDNSZone
+	DNSEndpointTypeStandard     DNSEndpointType = original.DNSEndpointTypeStandard
 )
 
 type DefaultAction = original.DefaultAction
@@ -437,6 +445,14 @@ const (
 	SignedResourceTypesS SignedResourceTypes = original.SignedResourceTypesS
 )
 
+type SkuConversionStatus = original.SkuConversionStatus
+
+const (
+	SkuConversionStatusFailed     SkuConversionStatus = original.SkuConversionStatusFailed
+	SkuConversionStatusInProgress SkuConversionStatus = original.SkuConversionStatusInProgress
+	SkuConversionStatusSucceeded  SkuConversionStatus = original.SkuConversionStatusSucceeded
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -495,6 +511,7 @@ type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParamet
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
 type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
+type AccountSkuConversionStatus = original.AccountSkuConversionStatus
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountsAbortHierarchicalNamespaceMigrationFuture = original.AccountsAbortHierarchicalNamespaceMigrationFuture
 type AccountsClient = original.AccountsClient
@@ -672,11 +689,13 @@ type SkusClient = original.SkusClient
 type SmbSetting = original.SmbSetting
 type SystemData = original.SystemData
 type Table = original.Table
+type TableAccessPolicy = original.TableAccessPolicy
 type TableClient = original.TableClient
 type TableProperties = original.TableProperties
 type TableServiceProperties = original.TableServiceProperties
 type TableServicePropertiesProperties = original.TableServicePropertiesProperties
 type TableServicesClient = original.TableServicesClient
+type TableSignedIdentifier = original.TableSignedIdentifier
 type TagFilter = original.TagFilter
 type TagProperty = original.TagProperty
 type TrackedResource = original.TrackedResource
@@ -889,6 +908,9 @@ func PossibleBypassValues() []Bypass {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleDNSEndpointTypeValues() []DNSEndpointType {
+	return original.PossibleDNSEndpointTypeValues()
+}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
@@ -1017,6 +1039,9 @@ func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 }
 func PossibleSignedResourceValues() []SignedResource {
 	return original.PossibleSignedResourceValues()
+}
+func PossibleSkuConversionStatusValues() []SkuConversionStatus {
+	return original.PossibleSkuConversionStatusValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

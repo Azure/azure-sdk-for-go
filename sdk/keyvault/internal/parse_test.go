@@ -1,3 +1,8 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 package internal
 
 import (
@@ -10,8 +15,8 @@ import (
 func TestParseID(t *testing.T) {
 	examples := map[string]struct{ url, name, version *string }{
 		"https://myvaultname.vault.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60": {to.Ptr("https://myvaultname.vault.azure.net/"), to.Ptr("key1053998307"), to.Ptr("b86c2e6ad9054f4abf69cc185b99aa60")},
-		"https://myvaultname.vault.azure.net/keys/key1053998307": {to.Ptr("https://myvaultname.vault.azure.net/"), to.Ptr("key1053998307"), nil},
-		"https://myvaultname.vault.azure.net/": {to.Ptr("https://myvaultname.vault.azure.net/"), nil, nil},
+		"https://myvaultname.vault.azure.net/keys/key1053998307":                                  {to.Ptr("https://myvaultname.vault.azure.net/"), to.Ptr("key1053998307"), nil},
+		"https://myvaultname.vault.azure.net/":                                                    {to.Ptr("https://myvaultname.vault.azure.net/"), nil, nil},
 	}
 
 	for url, result := range examples {

@@ -112,7 +112,7 @@ func ExampleClient_UpdateKeyProperties() {
 	}
 	resp.Key.Properties.Enabled = to.Ptr(true)
 
-	updateResp, err := client.UpdateKeyProperties(context.TODO(), *resp.Key, nil)
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -178,27 +178,29 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
-		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiresIn: to.Ptr("P90D"),
-		},
-		LifetimeActions: []*azkeys.LifetimeActions{
-			{
-				Action: &azkeys.LifetimeActionsType{
-					Type: to.Ptr(azkeys.RotationActionNotify),
-				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
-					TimeBeforeExpiry: to.Ptr("P30D"),
-				},
+	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
+	getResp.LifetimeActions = []*azkeys.LifetimeActions{
+		{
+			Action: &azkeys.LifetimeActionsType{
+				Type: to.Ptr(azkeys.RotationActionNotify),
+			},
+			Trigger: &azkeys.LifetimeActionsTrigger{
+				TimeBeforeExpiry: to.Ptr("P30D"),
 			},
 		},
-	})
+	}
+
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Updated key rotation policy for: ", *resp.ID)
 
-	//
 	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
 	if err != nil {
 		panic(err)

@@ -61,11 +61,11 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			resp, err := client.CreateRSAKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, resp.Key)
+			validateKey(t, to.Ptr(resp.Key))
 
 			resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: to.Ptr(true)})
 			require.NoError(t, err)
-			validateKey(t, resp2.Key)
+			validateKey(t, to.Ptr(resp2.Key))
 
 			cleanUpKey(t, client, key)
 			cleanUpKey(t, client, key+"hsm")
@@ -93,12 +93,12 @@ func TestCreateKeyRSATags(t *testing.T) {
 	})
 	defer cleanUpKey(t, client, key)
 	require.NoError(t, err)
-	validateKey(t, resp.Key)
+	validateKey(t, to.Ptr(resp.Key))
 	require.Equal(t, 1, len(resp.Key.Properties.Tags))
 
 	resp.Key.Properties.Tags = map[string]string{}
 	// Remove the tag
-	resp2, err := client.UpdateKeyProperties(ctx, *resp.Key, nil)
+	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(resp2.Properties.Tags))
 	validateKey(t, &resp2.Key)
@@ -119,7 +119,7 @@ func TestCreateECKey(t *testing.T) {
 
 			resp, err := client.CreateECKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, resp.Key)
+			validateKey(t, to.Ptr(resp.Key))
 
 			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
 			require.Error(t, err)
@@ -152,7 +152,7 @@ func TestCreateOCTKey(t *testing.T) {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				validateKey(t, resp.Key)
+				validateKey(t, to.Ptr(resp.Key))
 
 				cleanUpKey(t, client, key)
 			}
@@ -214,11 +214,11 @@ func TestGetKey(t *testing.T) {
 
 			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
-			validateKey(t, r.Key)
+			validateKey(t, to.Ptr(r.Key))
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
-			validateKey(t, resp.Key)
+			validateKey(t, to.Ptr(resp.Key))
 
 			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeRSA, nil)
 			require.Error(t, err)
@@ -243,7 +243,7 @@ func TestDeleteKey(t *testing.T) {
 
 			r, err := client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
-			validateKey(t, r.Key)
+			validateKey(t, to.Ptr(r.Key))
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
@@ -463,14 +463,14 @@ func TestUpdateKeyProperties(t *testing.T) {
 			}
 			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
 
-			resp, err := client.UpdateKeyProperties(ctx, *createResp.Key, nil)
+			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
 			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
-			invalid, err := client.UpdateKeyProperties(ctx, *createResp.Key, nil)
+			invalid, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Properties)
 		})
@@ -850,25 +850,26 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
+
 			_, err = client.CreateRSAKey(ctx, key, nil)
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			_, err = client.UpdateKeyRotationPolicy(ctx, key, &UpdateKeyRotationPolicyOptions{
-				Attributes: &RotationPolicyAttributes{
-					ExpiresIn: to.Ptr("P90D"),
-				},
-				LifetimeActions: []*LifetimeActions{
-					{
-						Action: &LifetimeActionsType{
-							Type: to.Ptr(RotationActionNotify),
-						},
-						Trigger: &LifetimeActionsTrigger{
-							TimeBeforeExpiry: to.Ptr("P30D"),
-						},
+			get, err := client.GetKeyRotationPolicy(ctx, key, nil)
+			require.NoError(t, err)
+			get.Attributes.ExpiresIn = to.Ptr("P90D")
+			get.LifetimeActions = []*LifetimeActions{
+				{
+					Action: &LifetimeActionsType{
+						Type: to.Ptr(RotationActionNotify),
+					},
+					Trigger: &LifetimeActionsTrigger{
+						TimeBeforeExpiry: to.Ptr("P30D"),
 					},
 				},
-			})
+			}
+
+			_, err = client.UpdateKeyRotationPolicy(ctx, key, get.RotationPolicy, nil)
 			require.NoError(t, err)
 		})
 	}

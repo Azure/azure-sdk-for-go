@@ -152,14 +152,14 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 
 // CreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
 type CreateKeyResponse struct {
-	Key *Key
+	Key
 }
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateKeyResponse{
-		Key: &Key{
+		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -223,14 +223,14 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 
 // CreateECKeyResponse contains the response from method Client.CreateECKey.
 type CreateECKeyResponse struct {
-	Key *Key
+	Key
 }
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateECKeyResponse{
-		Key: &Key{
+		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -301,14 +301,14 @@ func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 
 // CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
 type CreateOctKeyResponse struct {
-	Key *Key
+	Key
 }
 
 // convert generated response to CreateOCTKeyResponse
 func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateOctKeyResponse{
-		Key: &Key{
+		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -382,14 +382,14 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 
 // CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
 type CreateRSAKeyResponse struct {
-	Key *Key
+	Key
 }
 
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return CreateRSAKeyResponse{
-		Key: &Key{
+		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -489,14 +489,14 @@ type GetKeyOptions struct {
 
 // GetKeyResponse contains the response for the Client.GetResponse method
 type GetKeyResponse struct {
-	Key *Key
+	Key
 }
 
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	vaultURL, name, version := parseFromKID(g.Key.Kid)
 	return GetKeyResponse{
-		Key: &Key{
+		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
@@ -1421,36 +1421,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 
 // UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyOptions struct {
-	// The key rotation policy attributes.
-	Attributes *RotationPolicyAttributes `json:"attributes,omitempty"`
-
-	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
-	// one for notify. Notification time would be
-	// default to 30 days before expiry and it is not configurable.
-	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
-
-	// READ-ONLY; The key policy id.
-	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolicy {
-	var attribs *generated.KeyRotationPolicyAttributes
-	if u.Attributes != nil {
-		attribs = u.Attributes.toGenerated()
-	}
-	var la []*generated.LifetimeActions
-	if la != nil {
-		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
-		for i, l := range u.LifetimeActions {
-			la[i] = l.toGenerated()
-		}
-	}
-
-	return generated.KeyRotationPolicy{
-		ID:              u.ID,
-		LifetimeActions: la,
-		Attributes:      attribs,
-	}
+	// placeholder for future optional parameters
 }
 
 // UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
@@ -1483,7 +1454,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 // UpdateKeyRotationPolicy sets specified members in the key policy.
 // This operation requires the keys/update permission.
 // Pass nil to use the default options.
-func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
+func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, policy RotationPolicy, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &UpdateKeyRotationPolicyOptions{}
 	}
@@ -1492,7 +1463,7 @@ func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, op
 		ctx,
 		c.vaultUrl,
 		keyName,
-		options.toGenerated(),
+		policy.toGenerated(),
 		&generated.KeyVaultClientUpdateKeyRotationPolicyOptions{},
 	)
 

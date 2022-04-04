@@ -377,6 +377,27 @@ type RotationPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+
+func (u RotationPolicy) toGenerated() generated.KeyRotationPolicy {
+	var attribs *generated.KeyRotationPolicyAttributes
+	if u.Attributes != nil {
+		attribs = u.Attributes.toGenerated()
+	}
+	var la []*generated.LifetimeActions
+	if la != nil {
+		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
+		for i, l := range u.LifetimeActions {
+			la[i] = l.toGenerated()
+		}
+	}
+
+	return generated.KeyRotationPolicy{
+		ID:              u.ID,
+		LifetimeActions: la,
+		Attributes:      attribs,
+	}
+}
+
 // RotationPolicyAttributes - The key rotation policy attributes.
 type RotationPolicyAttributes struct {
 	// The expiryTime will be applied on the new key version. It should be at least 28 days.

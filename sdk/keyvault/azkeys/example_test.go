@@ -63,7 +63,7 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
@@ -107,9 +107,7 @@ func ExampleClient_UpdateKeyProperties() {
 		panic(err)
 	}
 
-	resp.Key.Properties.Tags = map[string]string{
-		"Tag1": "val1",
-	}
+	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
 	resp.Key.Properties.Enabled = to.Ptr(true)
 
 	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)

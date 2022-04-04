@@ -16,7 +16,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Prerequisites
 * An [Azure subscription][azure_sub]
-* Go version 1.16 or higher
+* Go version 1.18 or higher
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique
 names):
 
@@ -165,20 +165,20 @@ func main() {
     }
 
     // Create RSA Key
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 
     // Create EC Key
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 ```
 
@@ -208,7 +208,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
 }
 ```
 
@@ -233,18 +233,19 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
-		Tags: map[string]string{
-			"Tag1": "val1",
-		},
-		Properties: &azkeys.Properties{
-			Exportable: to.Ptr(true),
-		},
-	})
+	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
+
+	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
+	resp.Key.Properties.Enabled = to.Ptr(true)
+
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
 }
 ```
 
@@ -273,7 +274,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
 	if err != nil {
 		panic(err)
@@ -304,27 +304,29 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
-		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiryTime: to.StringPtr("P90D"),
-		},
-		LifetimeActions: []*azkeys.LifetimeActions{
-			{
-				Action: &azkeys.LifetimeActionsType{
-					Type: to.Ptr(azkeys.ActionTypeNotify),
-				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
-					TimeBeforeExpiry: to.StringPtr("P30D"),
-				},
+	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
+	getResp.LifetimeActions = []*azkeys.LifetimeActions{
+		{
+			Action: &azkeys.LifetimeActionsType{
+				Type: to.Ptr(azkeys.RotationActionNotify),
+			},
+			Trigger: &azkeys.LifetimeActionsTrigger{
+				TimeBeforeExpiry: to.Ptr("P30D"),
 			},
 		},
-	})
+	}
+
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Updated key rotation policy for: ", *resp.ID)
 
-    // To rotate a key
 	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
 	if err != nil {
 		panic(err)
@@ -392,11 +394,52 @@ func main() {
 		panic(err)
 	}
 
-	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
+	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(encryptResponse.Result)
+
+	decryptResponse, err := client.Decrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, encryptResponse.Result, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(decryptResponse.Result)
+
+	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
+
+	// Wrap
+	wrapResp, err := client.WrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, keyBytes, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(wrapResp.Result)
+
+	// Unwrap
+	unwrapResp, err := client.UnwrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, wrapResp.Result, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(unwrapResp.Result)
+
+	hasher := sha256.New()
+	_, err = hasher.Write([]byte("plaintext"))
+	if err != nil {
+		panic(err)
+	}
+	digest := hasher.Sum(nil)
+
+	signResponse, err := client.Sign(context.TODO(), crypto.SignatureAlgRS256, digest, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(signResponse.Result)
+
+	verifyResponse, err := client.Verify(context.TODO(), crypto.SignatureAlgRS256, digest, signResponse.Result, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*verifyResponse.IsValid)
 }
 ```
 

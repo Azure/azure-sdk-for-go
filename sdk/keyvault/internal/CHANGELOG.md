@@ -1,10 +1,12 @@
 # Release History
 
-## 0.2.2 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
+* Adds the `ParseKeyvaultID` function to parse an ID into the Key Vault URL, item name, and item version
 
 ### Breaking Changes
+* Uses azcore v0.24.0
 
 ### Bugs Fixed
 

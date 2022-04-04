@@ -2,8 +2,6 @@
 
 ## 0.14.0 (2022-04-05)
 
-### Features Added
-
 ### Breaking Changes
 * Removed `AuthorityHost`. Credentials are now configured for sovereign or private
   clouds with the API in `azcore/cloud`, for example:
@@ -19,10 +17,6 @@
   opts.Cloud = cloud.AzureGovernment
   cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
   ```
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.13.2 (2022-03-08)
 

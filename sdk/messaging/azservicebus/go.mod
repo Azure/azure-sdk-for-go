@@ -3,9 +3,9 @@ module github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.22.1-0.20220315231014-ed309e73db6b
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.13.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.3
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1
 	github.com/Azure/azure-sdk-for-go/sdk/messaging/internal v0.1.0
 	github.com/Azure/go-amqp v0.17.4
 	github.com/devigned/tab v0.1.1

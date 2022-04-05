@@ -9,12 +9,11 @@ package azcertificates
 import (
 	"encoding/json"
 	"fmt"
-	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // AdministratorContact - Details of the organization administrator of the certificate issuer.
@@ -93,7 +92,7 @@ func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string
 		return nil
 	}
 
-	vaulURL, name, version := parseFromID(id)
+	vaulURL, name, version := shared.ParseID(id)
 
 	return &Properties{
 		Enabled:         g.Enabled,
@@ -741,45 +740,4 @@ func convertGeneratedMap(m map[string]*string) map[string]string {
 		ret[k] = *v
 	}
 	return ret
-}
-
-// parseFromID parses "https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"
-// into "https://myvaultname.managedhsm.azure.net/", "key1053998307", and "b86c2e6ad9054f4abf69cc185b99aa60"
-func parseFromID(s *string) (*string, *string, *string) {
-	if s == nil {
-		return nil, nil, nil
-	}
-	parsed, err := url.Parse(*s)
-	if err != nil {
-		return nil, nil, nil
-	}
-
-	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
-	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
-	if len(split) < 3 {
-		return &url, nil, nil
-	}
-
-	return &url, to.Ptr(split[1]), to.Ptr(split[2])
-}
-
-// returns the issuer name from a URL like: https://myvault.vault.azure.net/certificates/issuers/issuer3351460800
-// issuer is the last part of the path
-func parseIssuer(s *string) *string {
-	if s == nil {
-		return nil
-	}
-	fmt.Println(*s)
-
-	parsed, err := url.Parse(*s)
-	if err != nil {
-		return nil
-	}
-
-	split := strings.Split(parsed.Path, "/")
-	if len(split) == 0 {
-		return nil
-	}
-	fmt.Println("SPLIT: ", split)
-	return to.Ptr(split[len(split)-1])
 }

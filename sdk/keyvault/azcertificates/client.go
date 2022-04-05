@@ -824,7 +824,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		cr.Issuer.AdministratorContacts = adminDetails
 	}
 
-	name := parseIssuer(resp.ID)
+	_, _, name := shared.ParseID(resp.ID)
 	cr.Issuer.Name = name
 	return cr, nil
 }
@@ -880,7 +880,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		g.Issuer.AdministratorContacts = adminDetails
 	}
 
-	name := parseIssuer(resp.ID)
+	_, _, name := shared.ParseID(resp.ID)
 	g.Issuer.Name = name
 	return g, nil
 }
@@ -994,7 +994,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 		d.Issuer.AdministratorContacts = adminDetails
 	}
 
-	name := parseIssuer(resp.ID)
+	_, _, name := shared.ParseID(resp.ID)
 	d.Issuer.Name = name
 	return d, nil
 }
@@ -1090,7 +1090,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 		}
 		u.Issuer.AdministratorContacts = adminDetails
 	}
-	name := parseIssuer(resp.ID)
+	_, _, name := shared.ParseID(resp.ID)
 	u.Issuer.Name = name
 	return u, nil
 }

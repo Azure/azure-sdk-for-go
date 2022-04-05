@@ -25,11 +25,6 @@
 * `ServiceClient.CreateTable` returns a response struct with the name of the table created, not a `Client`
 * `SASSignatureValues.NewSASQueryParameters` is now `SASSignatureValues.Sign` and returns an encoded SAS
 
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.6.0 (2022-03-08)
 
 ### Breaking Changes

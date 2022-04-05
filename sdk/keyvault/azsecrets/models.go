@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // DeletedSecret consists of the previous ID, attributes, tags, and information on when it will be purged.
@@ -19,6 +20,9 @@ type DeletedSecret struct {
 
 	// The secret id.
 	ID *string `json:"id,omitempty"`
+
+	// The name of the string
+	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
@@ -142,8 +146,8 @@ func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
 	}
 }
 
-// SecretProperties contains secret metadata.
-type SecretProperties struct {
+// SecretItem contains secret metadata.
+type SecretItem struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
@@ -153,6 +157,9 @@ type SecretProperties struct {
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
 
+	// Name of the secret
+	Name *string
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
@@ -161,15 +168,17 @@ type SecretProperties struct {
 }
 
 // create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) SecretProperties {
+func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
 	if i == nil {
-		return SecretProperties{}
+		return SecretItem{}
 	}
 
-	return SecretProperties{
+	_, name, _ := shared.ParseID(i.ID)
+	return SecretItem{
 		Properties:  secretPropertiesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
+		Name:        name,
 		Tags:        convertPtrMap(i.Tags),
 		IsManaged:   i.Managed,
 	}
@@ -185,6 +194,9 @@ type DeletedSecretItem struct {
 
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
+
+	// The name of the deleted secret
+	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
@@ -208,9 +220,11 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		return DeletedSecretItem{}
 	}
 
+	_, name, _ := shared.ParseID(i.ID)
 	return DeletedSecretItem{
 		Properties:         secretPropertiesFromGenerated(i.Attributes),
 		ContentType:        i.ContentType,
+		Name:               name,
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,
 		Tags:               convertPtrMap(i.Tags),

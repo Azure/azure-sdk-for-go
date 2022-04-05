@@ -211,7 +211,8 @@ func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResp
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
-			ID: i.ID,
+			ID:   i.ID,
+			Name: name,
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -396,6 +397,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 				Name:            name,
 			},
 			ID:                 i.ID,
+			Name:               name,
 			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
@@ -688,7 +690,7 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 
 // RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
-	SecretProperties
+	SecretItem
 }
 
 // change recover deleted secret reponse to the generated version.
@@ -705,11 +707,14 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
 		}
 	}
+
+	_, name, _ := shared.ParseID(i.ID)
 	return RecoverDeletedSecretResponse{
-		SecretProperties: SecretProperties{
+		SecretItem: SecretItem{
 			Properties:  a,
 			ContentType: i.ContentType,
 			ID:          i.ID,
+			Name:        name,
 			Tags:        convertPtrMap(i.Tags),
 			IsManaged:   i.Managed,
 		},
@@ -837,12 +842,12 @@ type ListPropertiesOfSecretVersionsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []SecretProperties `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
-	var secrets []SecretProperties
+	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -898,12 +903,12 @@ type ListPropertiesOfSecretsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []SecretProperties `json:"value,omitempty" azure:"ro"`
+	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
-	var secrets []SecretProperties
+	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

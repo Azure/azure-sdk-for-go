@@ -142,7 +142,7 @@ func (b *CreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCert
 	return b.createResponse, nil
 }
 
-// PollUntilDone continuallys polls the service with a 't' delay until completion.
+// PollUntilDone continually polls the service with a 't' delay until completion.
 func (b *CreateCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -125,7 +125,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000
 func parseTenant(url string) *string {
 	if url == "" {
-		return to.StringPtr("")
+		return to.Ptr("")
 	}
 	parts := strings.Split(url, "/")
 	tenant := parts[3]

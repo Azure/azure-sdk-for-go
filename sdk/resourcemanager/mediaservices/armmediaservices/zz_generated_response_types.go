@@ -915,6 +915,38 @@ type LocationsClientCheckNameAvailabilityResult struct {
 	EntityNameAvailabilityCheckOutput
 }
 
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	OperationResultsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationResultsClientGetResult contains the result from method OperationResultsClient.Get.
+type OperationResultsClientGetResult struct {
+	AssetTrack
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
+}
+
+// OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResponse struct {
+	OperationStatusesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationStatusesClientGetResult contains the result from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResult struct {
+	AssetTrackOperationStatus
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationsClientListResult
@@ -1113,6 +1145,18 @@ type StreamingEndpointsClientListResponse struct {
 // StreamingEndpointsClientListResult contains the result from method StreamingEndpointsClient.List.
 type StreamingEndpointsClientListResult struct {
 	StreamingEndpointListResult
+}
+
+// StreamingEndpointsClientSKUsResponse contains the response from method StreamingEndpointsClient.SKUs.
+type StreamingEndpointsClientSKUsResponse struct {
+	StreamingEndpointsClientSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StreamingEndpointsClientSKUsResult contains the result from method StreamingEndpointsClient.SKUs.
+type StreamingEndpointsClientSKUsResult struct {
+	StreamingEndpointSKUInfoListResult
 }
 
 // StreamingEndpointsClientScalePollerResponse contains the response from method StreamingEndpointsClient.Scale.
@@ -1411,6 +1455,226 @@ type StreamingPoliciesClientListResponse struct {
 // StreamingPoliciesClientListResult contains the result from method StreamingPoliciesClient.List.
 type StreamingPoliciesClientListResult struct {
 	StreamingPolicyCollection
+}
+
+// TracksClientCreateOrUpdatePollerResponse contains the response from method TracksClient.CreateOrUpdate.
+type TracksClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TracksClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TracksClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TracksClientCreateOrUpdateResponse, error) {
+	respType := TracksClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AssetTrack)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TracksClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *TracksClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *TracksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TracksClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TracksClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TracksClientCreateOrUpdateResponse contains the response from method TracksClient.CreateOrUpdate.
+type TracksClientCreateOrUpdateResponse struct {
+	TracksClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TracksClientCreateOrUpdateResult contains the result from method TracksClient.CreateOrUpdate.
+type TracksClientCreateOrUpdateResult struct {
+	AssetTrack
+}
+
+// TracksClientDeletePollerResponse contains the response from method TracksClient.Delete.
+type TracksClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TracksClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TracksClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TracksClientDeleteResponse, error) {
+	respType := TracksClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TracksClientDeletePollerResponse from the provided client and resume token.
+func (l *TracksClientDeletePollerResponse) Resume(ctx context.Context, client *TracksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TracksClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TracksClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TracksClientDeleteResponse contains the response from method TracksClient.Delete.
+type TracksClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TracksClientGetResponse contains the response from method TracksClient.Get.
+type TracksClientGetResponse struct {
+	TracksClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TracksClientGetResult contains the result from method TracksClient.Get.
+type TracksClientGetResult struct {
+	AssetTrack
+}
+
+// TracksClientListResponse contains the response from method TracksClient.List.
+type TracksClientListResponse struct {
+	TracksClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TracksClientListResult contains the result from method TracksClient.List.
+type TracksClientListResult struct {
+	AssetTrackCollection
+}
+
+// TracksClientUpdatePollerResponse contains the response from method TracksClient.Update.
+type TracksClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TracksClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TracksClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TracksClientUpdateResponse, error) {
+	respType := TracksClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AssetTrack)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TracksClientUpdatePollerResponse from the provided client and resume token.
+func (l *TracksClientUpdatePollerResponse) Resume(ctx context.Context, client *TracksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TracksClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TracksClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TracksClientUpdateResponse contains the response from method TracksClient.Update.
+type TracksClientUpdateResponse struct {
+	TracksClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TracksClientUpdateResult contains the result from method TracksClient.Update.
+type TracksClientUpdateResult struct {
+	AssetTrack
+}
+
+// TracksClientUpdateTrackDataPollerResponse contains the response from method TracksClient.UpdateTrackData.
+type TracksClientUpdateTrackDataPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TracksClientUpdateTrackDataPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TracksClientUpdateTrackDataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TracksClientUpdateTrackDataResponse, error) {
+	respType := TracksClientUpdateTrackDataResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TracksClientUpdateTrackDataPollerResponse from the provided client and resume token.
+func (l *TracksClientUpdateTrackDataPollerResponse) Resume(ctx context.Context, client *TracksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TracksClient.UpdateTrackData", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TracksClientUpdateTrackDataPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TracksClientUpdateTrackDataResponse contains the response from method TracksClient.UpdateTrackData.
+type TracksClientUpdateTrackDataResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // TransformsClientCreateOrUpdateResponse contains the response from method TransformsClient.CreateOrUpdate.

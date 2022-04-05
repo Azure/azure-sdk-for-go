@@ -315,6 +315,45 @@ func (a *AkamaiSignatureHeaderAuthenticationKey) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
+// ArmStreamingEndpointCapacity - The streaming endpoint sku capacity.
+type ArmStreamingEndpointCapacity struct {
+	// The streaming endpoint default capacity.
+	Default *int32 `json:"default,omitempty"`
+
+	// The streaming endpoint maximum capacity.
+	Maximum *int32 `json:"maximum,omitempty"`
+
+	// The streaming endpoint minimum capacity.
+	Minimum *int32 `json:"minimum,omitempty"`
+
+	// READ-ONLY
+	ScaleType *string `json:"scaleType,omitempty" azure:"ro"`
+}
+
+// ArmStreamingEndpointCurrentSKU - The streaming endpoint current sku.
+type ArmStreamingEndpointCurrentSKU struct {
+	// The streaming endpoint sku capacity.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// READ-ONLY; The streaming endpoint sku name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+// ArmStreamingEndpointSKU - The streaming endpoint sku.
+type ArmStreamingEndpointSKU struct {
+	// READ-ONLY; The streaming endpoint sku name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+type ArmStreamingEndpointSKUInfo struct {
+	// The streaming endpoint sku capacity.
+	Capacity     *ArmStreamingEndpointCapacity `json:"capacity,omitempty"`
+	ResourceType *string                       `json:"resourceType,omitempty"`
+
+	// The streaming endpoint sku.
+	SKU *ArmStreamingEndpointSKU `json:"sku,omitempty"`
+}
+
 // Asset - An Asset.
 type Asset struct {
 	// The resource properties.
@@ -612,6 +651,152 @@ func (a *AssetStreamingLocator) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "streamingPolicyName":
 			err = unpopulate(val, &a.StreamingPolicyName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AssetTrack - An Asset Track resource.
+type AssetTrack struct {
+	// The resource properties.
+	Properties *AssetTrackProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssetTrack.
+func (a AssetTrack) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AssetTrackCollection - A collection of AssetTrack items.
+type AssetTrackCollection struct {
+	// A collection of AssetTrack items.
+	Value []*AssetTrack `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssetTrackCollection.
+func (a AssetTrackCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AssetTrackOperationStatus - Status of asset track operation.
+type AssetTrackOperationStatus struct {
+	// REQUIRED; Operation identifier.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
+
+	// Operation end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// The error detail.
+	Error *ErrorDetail `json:"error,omitempty"`
+
+	// Operation resource ID.
+	ID *string `json:"id,omitempty"`
+
+	// Operation start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssetTrackOperationStatus.
+func (a AssetTrackOperationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssetTrackOperationStatus.
+func (a *AssetTrackOperationStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &a.Error)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AssetTrackProperties - Properties of a video, audio or text track in the asset.
+type AssetTrackProperties struct {
+	// Detailed information about a track in the asset.
+	Track TrackBaseClassification `json:"track,omitempty"`
+
+	// READ-ONLY; Provisioning state of the asset track.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssetTrackProperties.
+func (a AssetTrackProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "track", a.Track)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssetTrackProperties.
+func (a *AssetTrackProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "provisioningState":
+			err = unpopulate(val, &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "track":
+			a.Track, err = unmarshalTrackBaseClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -932,6 +1117,46 @@ func (a *AudioOverlay) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// AudioTrack - Represents an audio track in the asset.
+type AudioTrack struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type AudioTrack.
+func (a *AudioTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: a.ODataType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AudioTrack.
+func (a AudioTrack) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["@odata.type"] = "#Microsoft.Media.AudioTrack"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AudioTrack.
+func (a *AudioTrack) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // AudioTrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetAudioTrackDescriptor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1001,8 +1226,8 @@ type BuiltInStandardEncoderPreset struct {
 	// REQUIRED; The built-in preset to be used for encoding videos.
 	PresetName *EncoderNamedPreset `json:"presetName,omitempty"`
 
-	// PresetConfigurations are only supported for the ContentAwareEncoding and H265ContentAwareEncoding built-in presets. These
-	// settings will not affect other built-in or custom defined presets.
+	// Optional configuration settings for encoder. Configurations is only supported for ContentAwareEncoding and H265ContentAwareEncoding
+	// BuiltInStandardEncoderPreset.
 	Configurations *PresetConfigurations `json:"configurations,omitempty"`
 }
 
@@ -2546,7 +2771,7 @@ func (e EnvelopeEncryption) MarshalJSON() ([]byte, error) {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -2579,13 +2804,6 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "target", e.Target)
 	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // FaceDetectorPreset - Describes all the settings to be used when analyzing a video in order to detect (and optionally redact)
@@ -2892,9 +3110,6 @@ type H264Layer struct {
 	// a required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
 
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
-
 	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
 	// whenever the video profile permits its use.
 	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
@@ -2906,6 +3121,12 @@ type H264Layer struct {
 	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
 	// The default is 5 seconds (for example, PT5S).
 	BufferWindow *string `json:"bufferWindow,omitempty"`
+
+	// The value of CRF to be used when encoding this layer. This setting takes effect when RateControlMode of video codec is
+	// set at CRF mode. The range of CRF value is between 0 and 51, where lower values
+	// would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at some point
+	// quality degradation will be noticed. Default value is 23.
+	Crf *float32 `json:"crf,omitempty"`
 
 	// The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for the
 	// profile and level.
@@ -2950,115 +3171,6 @@ type H264Layer struct {
 	Width *string `json:"width,omitempty"`
 }
 
-// GetLayer implements the LayerClassification interface for type H264Layer.
-func (h *H264Layer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: h.ODataType,
-		Width:     h.Width,
-		Height:    h.Height,
-		Label:     h.Label,
-	}
-}
-
-// GetVideoLayer implements the VideoLayerClassification interface for type H264Layer.
-func (h *H264Layer) GetVideoLayer() *VideoLayer {
-	return &VideoLayer{
-		Bitrate:        h.Bitrate,
-		MaxBitrate:     h.MaxBitrate,
-		BFrames:        h.BFrames,
-		FrameRate:      h.FrameRate,
-		Slices:         h.Slices,
-		AdaptiveBFrame: h.AdaptiveBFrame,
-		ODataType:      h.ODataType,
-		Width:          h.Width,
-		Height:         h.Height,
-		Label:          h.Label,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type H264Layer.
-func (h H264Layer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
-	populate(objectMap, "bFrames", h.BFrames)
-	populate(objectMap, "bitrate", h.Bitrate)
-	populate(objectMap, "bufferWindow", h.BufferWindow)
-	populate(objectMap, "entropyMode", h.EntropyMode)
-	populate(objectMap, "frameRate", h.FrameRate)
-	populate(objectMap, "height", h.Height)
-	populate(objectMap, "label", h.Label)
-	populate(objectMap, "level", h.Level)
-	populate(objectMap, "maxBitrate", h.MaxBitrate)
-	objectMap["@odata.type"] = "#Microsoft.Media.H264Layer"
-	populate(objectMap, "profile", h.Profile)
-	populate(objectMap, "referenceFrames", h.ReferenceFrames)
-	populate(objectMap, "slices", h.Slices)
-	populate(objectMap, "width", h.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type H264Layer.
-func (h *H264Layer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adaptiveBFrame":
-			err = unpopulate(val, &h.AdaptiveBFrame)
-			delete(rawMsg, key)
-		case "bFrames":
-			err = unpopulate(val, &h.BFrames)
-			delete(rawMsg, key)
-		case "bitrate":
-			err = unpopulate(val, &h.Bitrate)
-			delete(rawMsg, key)
-		case "bufferWindow":
-			err = unpopulate(val, &h.BufferWindow)
-			delete(rawMsg, key)
-		case "entropyMode":
-			err = unpopulate(val, &h.EntropyMode)
-			delete(rawMsg, key)
-		case "frameRate":
-			err = unpopulate(val, &h.FrameRate)
-			delete(rawMsg, key)
-		case "height":
-			err = unpopulate(val, &h.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &h.Label)
-			delete(rawMsg, key)
-		case "level":
-			err = unpopulate(val, &h.Level)
-			delete(rawMsg, key)
-		case "maxBitrate":
-			err = unpopulate(val, &h.MaxBitrate)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &h.ODataType)
-			delete(rawMsg, key)
-		case "profile":
-			err = unpopulate(val, &h.Profile)
-			delete(rawMsg, key)
-		case "referenceFrames":
-			err = unpopulate(val, &h.ReferenceFrames)
-			delete(rawMsg, key)
-		case "slices":
-			err = unpopulate(val, &h.Slices)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &h.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // H264Video - Describes all the properties for encoding a video with the H.264 codec.
 type H264Video struct {
 	// REQUIRED; The discriminator for derived types.
@@ -3077,6 +3189,9 @@ type H264Video struct {
 
 	// The collection of output H.264 layers to be produced by the encoder.
 	Layers []*H264Layer `json:"layers,omitempty"`
+
+	// The video rate control mode
+	RateControlMode *H264RateControlMode `json:"rateControlMode,omitempty"`
 
 	// Whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag
 	// should be set to true only when the encoder is being configured to produce a
@@ -3117,6 +3232,7 @@ func (h H264Video) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "label", h.Label)
 	populate(objectMap, "layers", h.Layers)
 	objectMap["@odata.type"] = "#Microsoft.Media.H264Video"
+	populate(objectMap, "rateControlMode", h.RateControlMode)
 	populate(objectMap, "sceneChangeDetection", h.SceneChangeDetection)
 	populate(objectMap, "stretchMode", h.StretchMode)
 	populate(objectMap, "syncMode", h.SyncMode)
@@ -3147,6 +3263,9 @@ func (h *H264Video) UnmarshalJSON(data []byte) error {
 		case "@odata.type":
 			err = unpopulate(val, &h.ODataType)
 			delete(rawMsg, key)
+		case "rateControlMode":
+			err = unpopulate(val, &h.RateControlMode)
+			delete(rawMsg, key)
 		case "sceneChangeDetection":
 			err = unpopulate(val, &h.SceneChangeDetection)
 			delete(rawMsg, key)
@@ -3172,9 +3291,6 @@ type H265Layer struct {
 	// required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
 
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
-
 	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
 	// turn it on whenever the video profile permits its use.
 	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
@@ -3186,6 +3302,12 @@ type H265Layer struct {
 	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
 	// The default is 5 seconds (for example, PT5S).
 	BufferWindow *string `json:"bufferWindow,omitempty"`
+
+	// The value of CRF to be used when encoding this layer. This setting takes effect when RateControlMode of video codec is
+	// set at CRF mode. The range of CRF value is between 0 and 51, where lower values
+	// would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at some point
+	// quality degradation will be noticed. Default value is 28.
+	Crf *float32 `json:"crf,omitempty"`
 
 	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
 	// are integers (For example, 30000/1001), or in the form of a number (For example,
@@ -3224,111 +3346,6 @@ type H265Layer struct {
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
-}
-
-// GetH265VideoLayer implements the H265VideoLayerClassification interface for type H265Layer.
-func (h *H265Layer) GetH265VideoLayer() *H265VideoLayer {
-	return &H265VideoLayer{
-		Bitrate:        h.Bitrate,
-		MaxBitrate:     h.MaxBitrate,
-		BFrames:        h.BFrames,
-		FrameRate:      h.FrameRate,
-		Slices:         h.Slices,
-		AdaptiveBFrame: h.AdaptiveBFrame,
-		ODataType:      h.ODataType,
-		Width:          h.Width,
-		Height:         h.Height,
-		Label:          h.Label,
-	}
-}
-
-// GetLayer implements the LayerClassification interface for type H265Layer.
-func (h *H265Layer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: h.ODataType,
-		Width:     h.Width,
-		Height:    h.Height,
-		Label:     h.Label,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type H265Layer.
-func (h H265Layer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
-	populate(objectMap, "bFrames", h.BFrames)
-	populate(objectMap, "bitrate", h.Bitrate)
-	populate(objectMap, "bufferWindow", h.BufferWindow)
-	populate(objectMap, "frameRate", h.FrameRate)
-	populate(objectMap, "height", h.Height)
-	populate(objectMap, "label", h.Label)
-	populate(objectMap, "level", h.Level)
-	populate(objectMap, "maxBitrate", h.MaxBitrate)
-	objectMap["@odata.type"] = "#Microsoft.Media.H265Layer"
-	populate(objectMap, "profile", h.Profile)
-	populate(objectMap, "referenceFrames", h.ReferenceFrames)
-	populate(objectMap, "slices", h.Slices)
-	populate(objectMap, "width", h.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type H265Layer.
-func (h *H265Layer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adaptiveBFrame":
-			err = unpopulate(val, &h.AdaptiveBFrame)
-			delete(rawMsg, key)
-		case "bFrames":
-			err = unpopulate(val, &h.BFrames)
-			delete(rawMsg, key)
-		case "bitrate":
-			err = unpopulate(val, &h.Bitrate)
-			delete(rawMsg, key)
-		case "bufferWindow":
-			err = unpopulate(val, &h.BufferWindow)
-			delete(rawMsg, key)
-		case "frameRate":
-			err = unpopulate(val, &h.FrameRate)
-			delete(rawMsg, key)
-		case "height":
-			err = unpopulate(val, &h.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &h.Label)
-			delete(rawMsg, key)
-		case "level":
-			err = unpopulate(val, &h.Level)
-			delete(rawMsg, key)
-		case "maxBitrate":
-			err = unpopulate(val, &h.MaxBitrate)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &h.ODataType)
-			delete(rawMsg, key)
-		case "profile":
-			err = unpopulate(val, &h.Profile)
-			delete(rawMsg, key)
-		case "referenceFrames":
-			err = unpopulate(val, &h.ReferenceFrames)
-			delete(rawMsg, key)
-		case "slices":
-			err = unpopulate(val, &h.Slices)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &h.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // H265Video - Describes all the properties for encoding a video with the H.265 codec.
@@ -3438,25 +3455,12 @@ func (h *H265Video) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// H265VideoLayerClassification provides polymorphic access to related types.
-// Call the interface's GetH265VideoLayer() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *H265Layer, *H265VideoLayer
-type H265VideoLayerClassification interface {
-	LayerClassification
-	// GetH265VideoLayer returns the H265VideoLayer content of the underlying type.
-	GetH265VideoLayer() *H265VideoLayer
-}
-
 // H265VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
 type H265VideoLayer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example:
 	// a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a
 	// required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
-
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
 
 	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
 	// turn it on whenever the video profile permits its use.
@@ -3493,87 +3497,23 @@ type H265VideoLayer struct {
 	Width *string `json:"width,omitempty"`
 }
 
-// GetH265VideoLayer implements the H265VideoLayerClassification interface for type H265VideoLayer.
-func (h *H265VideoLayer) GetH265VideoLayer() *H265VideoLayer { return h }
-
-// GetLayer implements the LayerClassification interface for type H265VideoLayer.
-func (h *H265VideoLayer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: h.ODataType,
-		Width:     h.Width,
-		Height:    h.Height,
-		Label:     h.Label,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type H265VideoLayer.
-func (h H265VideoLayer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
-	populate(objectMap, "bFrames", h.BFrames)
-	populate(objectMap, "bitrate", h.Bitrate)
-	populate(objectMap, "frameRate", h.FrameRate)
-	populate(objectMap, "height", h.Height)
-	populate(objectMap, "label", h.Label)
-	populate(objectMap, "maxBitrate", h.MaxBitrate)
-	objectMap["@odata.type"] = "#Microsoft.Media.H265VideoLayer"
-	populate(objectMap, "slices", h.Slices)
-	populate(objectMap, "width", h.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type H265VideoLayer.
-func (h *H265VideoLayer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adaptiveBFrame":
-			err = unpopulate(val, &h.AdaptiveBFrame)
-			delete(rawMsg, key)
-		case "bFrames":
-			err = unpopulate(val, &h.BFrames)
-			delete(rawMsg, key)
-		case "bitrate":
-			err = unpopulate(val, &h.Bitrate)
-			delete(rawMsg, key)
-		case "frameRate":
-			err = unpopulate(val, &h.FrameRate)
-			delete(rawMsg, key)
-		case "height":
-			err = unpopulate(val, &h.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &h.Label)
-			delete(rawMsg, key)
-		case "maxBitrate":
-			err = unpopulate(val, &h.MaxBitrate)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &h.ODataType)
-			delete(rawMsg, key)
-		case "slices":
-			err = unpopulate(val, &h.Slices)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &h.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Hls - HTTP Live Streaming (HLS) packing setting for the live output.
 type Hls struct {
 	// The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value does not
 	// affect the packing ratio for HLS CMAF output.
 	FragmentsPerTsSegment *int32 `json:"fragmentsPerTsSegment,omitempty"`
+}
+
+// HlsSettings - The HLS setting for a text track.
+type HlsSettings struct {
+	// The characteristics for the HLS setting.
+	Characteristics *string `json:"characteristics,omitempty"`
+
+	// The default for the HLS setting.
+	Default *bool `json:"default,omitempty"`
+
+	// The forced for the HLS setting.
+	Forced *bool `json:"forced,omitempty"`
 }
 
 // IPAccessControl - The IP access control.
@@ -4968,9 +4908,6 @@ func (j *JpgImage) UnmarshalJSON(data []byte) error {
 
 // JpgLayer - Describes the settings to produce a JPEG image from the input video.
 type JpgLayer struct {
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
-
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
 	Height *string `json:"height,omitempty"`
@@ -4985,59 +4922,6 @@ type JpgLayer struct {
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
-}
-
-// GetLayer implements the LayerClassification interface for type JpgLayer.
-func (j *JpgLayer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: j.ODataType,
-		Width:     j.Width,
-		Height:    j.Height,
-		Label:     j.Label,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JpgLayer.
-func (j JpgLayer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "height", j.Height)
-	populate(objectMap, "label", j.Label)
-	objectMap["@odata.type"] = "#Microsoft.Media.JpgLayer"
-	populate(objectMap, "quality", j.Quality)
-	populate(objectMap, "width", j.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JpgLayer.
-func (j *JpgLayer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "height":
-			err = unpopulate(val, &j.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &j.Label)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
-			delete(rawMsg, key)
-		case "quality":
-			err = unpopulate(val, &j.Quality)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &j.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 type KeyDelivery struct {
@@ -5055,22 +4939,10 @@ type KeyVaultProperties struct {
 	CurrentKeyIdentifier *string `json:"currentKeyIdentifier,omitempty" azure:"ro"`
 }
 
-// LayerClassification provides polymorphic access to related types.
-// Call the interface's GetLayer() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *H264Layer, *H265Layer, *H265VideoLayer, *JpgLayer, *Layer, *PNGLayer, *VideoLayer
-type LayerClassification interface {
-	// GetLayer returns the Layer content of the underlying type.
-	GetLayer() *Layer
-}
-
 // Layer - The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying
 // a layer for each desired resolution. A layer represents the properties for the video
 // or image at a resolution.
 type Layer struct {
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
-
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
 	Height *string `json:"height,omitempty"`
@@ -5083,9 +4955,6 @@ type Layer struct {
 	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
 }
-
-// GetLayer implements the LayerClassification interface for type Layer.
-func (l *Layer) GetLayer() *Layer { return l }
 
 // ListContainerSasInput - The parameters to the list SAS request.
 type ListContainerSasInput struct {
@@ -6177,6 +6046,16 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
+type OperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6453,9 +6332,6 @@ func (p *PNGImage) UnmarshalJSON(data []byte) error {
 
 // PNGLayer - Describes the settings to produce a PNG image from the input video.
 type PNGLayer struct {
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
-
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
 	Height *string `json:"height,omitempty"`
@@ -6467,55 +6343,6 @@ type PNGLayer struct {
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
-}
-
-// GetLayer implements the LayerClassification interface for type PNGLayer.
-func (p *PNGLayer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: p.ODataType,
-		Width:     p.Width,
-		Height:    p.Height,
-		Label:     p.Label,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PNGLayer.
-func (p PNGLayer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "height", p.Height)
-	populate(objectMap, "label", p.Label)
-	objectMap["@odata.type"] = "#Microsoft.Media.PngLayer"
-	populate(objectMap, "width", p.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PNGLayer.
-func (p *PNGLayer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "height":
-			err = unpopulate(val, &p.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &p.Label)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &p.ODataType)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &p.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PresentationTimeRange - The presentation time range, this is asset related and not recommended for Account Filter.
@@ -7200,6 +7027,9 @@ type StreamingEndpoint struct {
 	// The streaming endpoint properties.
 	Properties *StreamingEndpointProperties `json:"properties,omitempty"`
 
+	// The streaming endpoint sku.
+	SKU *ArmStreamingEndpointCurrentSKU `json:"sku,omitempty"`
+
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -7223,6 +7053,7 @@ func (s StreamingEndpoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "sku", s.SKU)
 	populate(objectMap, "systemData", s.SystemData)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "type", s.Type)
@@ -7397,6 +7228,18 @@ func (s *StreamingEndpointProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type StreamingEndpointSKUInfoListResult struct {
+	// The result of the List StreamingEndpoint skus.
+	Value []*ArmStreamingEndpointSKUInfo `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StreamingEndpointSKUInfoListResult.
+func (s StreamingEndpointSKUInfoListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
 // StreamingEndpointsClientBeginCreateOptions contains the optional parameters for the StreamingEndpointsClient.BeginCreate
 // method.
 type StreamingEndpointsClientBeginCreateOptions struct {
@@ -7440,6 +7283,11 @@ type StreamingEndpointsClientGetOptions struct {
 
 // StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
 type StreamingEndpointsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StreamingEndpointsClientSKUsOptions contains the optional parameters for the StreamingEndpointsClient.SKUs method.
+type StreamingEndpointsClientSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7955,6 +7803,102 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// TextTrack - Represents a text track in an asset. A text track is usually used for sparse data related to the audio or video
+// tracks.
+type TextTrack struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The display name of the text track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The file name to the source file. This file is located in the storage container of the asset.
+	FileName *string `json:"fileName,omitempty"`
+
+	// The HLS specific setting for the text track.
+	HlsSettings *HlsSettings `json:"hlsSettings,omitempty"`
+
+	// When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist when requested
+	// by a client. When the PlayerVisibility is set to "Hidden", the text will
+	// not be available to the client. The default value is "Visible".
+	PlayerVisibility *Visibility `json:"playerVisibility,omitempty"`
+
+	// READ-ONLY; The RFC5646 language code for the text track.
+	LanguageCode *string `json:"languageCode,omitempty" azure:"ro"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type TextTrack.
+func (t *TextTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: t.ODataType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TextTrack.
+func (t TextTrack) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "displayName", t.DisplayName)
+	populate(objectMap, "fileName", t.FileName)
+	populate(objectMap, "hlsSettings", t.HlsSettings)
+	populate(objectMap, "languageCode", t.LanguageCode)
+	objectMap["@odata.type"] = "#Microsoft.Media.TextTrack"
+	populate(objectMap, "playerVisibility", t.PlayerVisibility)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TextTrack.
+func (t *TextTrack) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "displayName":
+			err = unpopulate(val, &t.DisplayName)
+			delete(rawMsg, key)
+		case "fileName":
+			err = unpopulate(val, &t.FileName)
+			delete(rawMsg, key)
+		case "hlsSettings":
+			err = unpopulate(val, &t.HlsSettings)
+			delete(rawMsg, key)
+		case "languageCode":
+			err = unpopulate(val, &t.LanguageCode)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &t.ODataType)
+			delete(rawMsg, key)
+		case "playerVisibility":
+			err = unpopulate(val, &t.PlayerVisibility)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// TrackBaseClassification provides polymorphic access to related types.
+// Call the interface's GetTrackBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AudioTrack, *TextTrack, *TrackBase, *VideoTrack
+type TrackBaseClassification interface {
+	// GetTrackBase returns the TrackBase content of the underlying type.
+	GetTrackBase() *TrackBase
+}
+
+// TrackBase - Base type for concrete track types. A derived type must be used to represent the Track.
+type TrackBase struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type TrackBase.
+func (t *TrackBase) GetTrackBase() *TrackBase { return t }
+
 // TrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetTrackDescriptor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -8028,6 +7972,36 @@ func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "tags", t.Tags)
 	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
+}
+
+// TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate method.
+type TracksClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TracksClientBeginDeleteOptions contains the optional parameters for the TracksClient.BeginDelete method.
+type TracksClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TracksClientBeginUpdateOptions contains the optional parameters for the TracksClient.BeginUpdate method.
+type TracksClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TracksClientBeginUpdateTrackDataOptions contains the optional parameters for the TracksClient.BeginUpdateTrackData method.
+type TracksClientBeginUpdateTrackDataOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TracksClientGetOptions contains the optional parameters for the TracksClient.Get method.
+type TracksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TracksClientListOptions contains the optional parameters for the TracksClient.List method.
+type TracksClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Transform - A Transform encapsulates the rules or instructions for generating desired outputs from input media, such as
@@ -8519,24 +8493,11 @@ func (v *VideoAnalyzerPreset) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// VideoLayerClassification provides polymorphic access to related types.
-// Call the interface's GetVideoLayer() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *H264Layer, *VideoLayer
-type VideoLayerClassification interface {
-	LayerClassification
-	// GetVideoLayer returns the VideoLayer content of the underlying type.
-	GetVideoLayer() *VideoLayer
-}
-
 // VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
 type VideoLayer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is
 	// a required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
-
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
 
 	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
 	// whenever the video profile permits its use.
@@ -8571,82 +8532,6 @@ type VideoLayer struct {
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
-}
-
-// GetLayer implements the LayerClassification interface for type VideoLayer.
-func (v *VideoLayer) GetLayer() *Layer {
-	return &Layer{
-		ODataType: v.ODataType,
-		Width:     v.Width,
-		Height:    v.Height,
-		Label:     v.Label,
-	}
-}
-
-// GetVideoLayer implements the VideoLayerClassification interface for type VideoLayer.
-func (v *VideoLayer) GetVideoLayer() *VideoLayer { return v }
-
-// MarshalJSON implements the json.Marshaller interface for type VideoLayer.
-func (v VideoLayer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adaptiveBFrame", v.AdaptiveBFrame)
-	populate(objectMap, "bFrames", v.BFrames)
-	populate(objectMap, "bitrate", v.Bitrate)
-	populate(objectMap, "frameRate", v.FrameRate)
-	populate(objectMap, "height", v.Height)
-	populate(objectMap, "label", v.Label)
-	populate(objectMap, "maxBitrate", v.MaxBitrate)
-	objectMap["@odata.type"] = "#Microsoft.Media.VideoLayer"
-	populate(objectMap, "slices", v.Slices)
-	populate(objectMap, "width", v.Width)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VideoLayer.
-func (v *VideoLayer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adaptiveBFrame":
-			err = unpopulate(val, &v.AdaptiveBFrame)
-			delete(rawMsg, key)
-		case "bFrames":
-			err = unpopulate(val, &v.BFrames)
-			delete(rawMsg, key)
-		case "bitrate":
-			err = unpopulate(val, &v.Bitrate)
-			delete(rawMsg, key)
-		case "frameRate":
-			err = unpopulate(val, &v.FrameRate)
-			delete(rawMsg, key)
-		case "height":
-			err = unpopulate(val, &v.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &v.Label)
-			delete(rawMsg, key)
-		case "maxBitrate":
-			err = unpopulate(val, &v.MaxBitrate)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
-			delete(rawMsg, key)
-		case "slices":
-			err = unpopulate(val, &v.Slices)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &v.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VideoOverlay - Describes the properties of a video overlay.
@@ -8760,6 +8645,46 @@ func (v *VideoOverlay) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "start":
 			err = unpopulate(val, &v.Start)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// VideoTrack - Represents a video track in the asset.
+type VideoTrack struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type VideoTrack.
+func (v *VideoTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: v.ODataType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VideoTrack.
+func (v VideoTrack) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["@odata.type"] = "#Microsoft.Media.VideoTrack"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VideoTrack.
+func (v *VideoTrack) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {

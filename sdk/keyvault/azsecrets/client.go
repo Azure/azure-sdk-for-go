@@ -65,6 +65,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
+// VaultURL returns the vault URL string for the client
 func (c *Client) VaultURL() string {
 	return c.vaultUrl
 }
@@ -458,9 +459,6 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 // operation changes specified attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
 func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
-	if options == nil {
-		options = &UpdateSecretPropertiesOptions{}
-	}
 	name, version := "", ""
 	if secret.Properties != nil && secret.Properties.Name != nil {
 		name = *secret.Properties.Name

@@ -33,7 +33,7 @@ type APIProperties struct {
 	AADTenantID *string `json:"aadTenantId,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// (Personalization Only) The flag to enable statistics of Bing Search.
 	EventHubConnectionString *string `json:"eventHubConnectionString,omitempty"`
@@ -122,10 +122,10 @@ func (a *APIProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
-				a.AdditionalProperties = map[string]map[string]interface{}{}
+				a.AdditionalProperties = map[string]interface{}{}
 			}
 			if val != nil {
-				var aux map[string]interface{}
+				var aux interface{}
 				err = json.Unmarshal(val, &aux)
 				a.AdditionalProperties[key] = aux
 			}
@@ -209,6 +209,64 @@ func (a AccountListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AccountModel - Cognitive Services account Model.
+type AccountModel struct {
+	// Base Model Identifier.
+	BaseModel *DeploymentModel `json:"baseModel,omitempty"`
+
+	// The capabilities.
+	Capabilities map[string]*string `json:"capabilities,omitempty"`
+
+	// Cognitive Services account ModelDeprecationInfo.
+	Deprecation *ModelDeprecationInfo `json:"deprecation,omitempty"`
+
+	// Deployment model format.
+	Format *string `json:"format,omitempty"`
+
+	// The max capacity.
+	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
+
+	// Deployment model name.
+	Name *string `json:"name,omitempty"`
+
+	// Deployment model version.
+	Version *string `json:"version,omitempty"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountModel.
+func (a AccountModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "baseModel", a.BaseModel)
+	populate(objectMap, "capabilities", a.Capabilities)
+	populate(objectMap, "deprecation", a.Deprecation)
+	populate(objectMap, "format", a.Format)
+	populate(objectMap, "maxCapacity", a.MaxCapacity)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "version", a.Version)
+	return json.Marshal(objectMap)
+}
+
+// AccountModelListResult - The list of cognitive services accounts operation response.
+type AccountModelListResult struct {
+	// The link used to get the next page of Model.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Gets the list of Cognitive Services accounts Model and their properties.
+	Value []*AccountModel `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountModelListResult.
+func (a AccountModelListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
 // AccountProperties - Properties of Cognitive Services account.
 type AccountProperties struct {
 	// The api properties for special APIs.
@@ -219,6 +277,9 @@ type AccountProperties struct {
 	CustomSubDomainName *string `json:"customSubDomainName,omitempty"`
 	DisableLocalAuth    *bool   `json:"disableLocalAuth,omitempty"`
 
+	// The flag to enable dynamic throttling.
+	DynamicThrottlingEnabled *bool `json:"dynamicThrottlingEnabled,omitempty"`
+
 	// The encryption properties for this resource.
 	Encryption *Encryption `json:"encryption,omitempty"`
 
@@ -228,8 +289,7 @@ type AccountProperties struct {
 	// A collection of rules governing the accessibility from specific network locations.
 	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
 
-	// Whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
+	// Whether or not public endpoint access is allowed for this account.
 	PublicNetworkAccess           *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	Restore                       *bool                `json:"restore,omitempty"`
 	RestrictOutboundNetworkAccess *bool                `json:"restrictOutboundNetworkAccess,omitempty"`
@@ -246,6 +306,9 @@ type AccountProperties struct {
 
 	// READ-ONLY; Gets the date of cognitive services account creation.
 	DateCreated *string `json:"dateCreated,omitempty" azure:"ro"`
+
+	// READ-ONLY; The deletion date, only available for deleted account.
+	DeletionDate *string `json:"deletionDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; Endpoint of the created account.
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
@@ -270,6 +333,9 @@ type AccountProperties struct {
 
 	// READ-ONLY; Sku change info of account.
 	SKUChangeInfo *SKUChangeInfo `json:"skuChangeInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The scheduled purge date, only available for deleted account.
+	ScheduledPurgeDate *string `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccountProperties.
@@ -281,7 +347,9 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "capabilities", a.Capabilities)
 	populate(objectMap, "customSubDomainName", a.CustomSubDomainName)
 	populate(objectMap, "dateCreated", a.DateCreated)
+	populate(objectMap, "deletionDate", a.DeletionDate)
 	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
+	populate(objectMap, "dynamicThrottlingEnabled", a.DynamicThrottlingEnabled)
 	populate(objectMap, "encryption", a.Encryption)
 	populate(objectMap, "endpoint", a.Endpoint)
 	populate(objectMap, "endpoints", a.Endpoints)
@@ -296,6 +364,7 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "restore", a.Restore)
 	populate(objectMap, "restrictOutboundNetworkAccess", a.RestrictOutboundNetworkAccess)
 	populate(objectMap, "skuChangeInfo", a.SKUChangeInfo)
+	populate(objectMap, "scheduledPurgeDate", a.ScheduledPurgeDate)
 	populate(objectMap, "userOwnedStorage", a.UserOwnedStorage)
 	return json.Marshal(objectMap)
 }
@@ -349,6 +418,11 @@ type AccountsClientListByResourceGroupOptions struct {
 
 // AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
 type AccountsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.ListModels method.
+type AccountsClientListModelsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -690,6 +764,9 @@ type DeploymentScaleSettings struct {
 
 	// Deployment scale type.
 	ScaleType *DeploymentScaleType `json:"scaleType,omitempty"`
+
+	// READ-ONLY; Deployment active capacity. This value might be different from capacity if customer recently updated capacity.
+	ActiveCapacity *int32 `json:"activeCapacity,omitempty" azure:"ro"`
 }
 
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -738,51 +815,6 @@ type Encryption struct {
 
 	// Properties of KeyVault
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // IPRule - A rule governing the accessibility from a specific ip address or ip range.
@@ -852,6 +884,15 @@ type MetricName struct {
 
 	// The name of the metric.
 	Value *string `json:"value,omitempty"`
+}
+
+// ModelDeprecationInfo - Cognitive Services account ModelDeprecationInfo.
+type ModelDeprecationInfo struct {
+	// The datetime of deprecation of the fineTune Model.
+	FineTune *string `json:"fineTune,omitempty"`
+
+	// The datetime of deprecation of the inference Model.
+	Inference *string `json:"inference,omitempty"`
 }
 
 // NetworkRuleSet - A set of rules governing the network accessibility.

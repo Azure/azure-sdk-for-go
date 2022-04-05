@@ -10,7 +10,7 @@ package armcognitiveservices
 
 const (
 	moduleName    = "armcognitiveservices"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -295,8 +295,7 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// PublicNetworkAccess - Whether or not public endpoint access is allowed for this account. Value is optional but if passed
-// in, must be 'Enabled' or 'Disabled'
+// PublicNetworkAccess - Whether or not public endpoint access is allowed for this account.
 type PublicNetworkAccess string
 
 const (

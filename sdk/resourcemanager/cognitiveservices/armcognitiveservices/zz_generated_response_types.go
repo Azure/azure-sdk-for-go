@@ -149,6 +149,18 @@ type AccountsClientListKeysResult struct {
 	APIKeys
 }
 
+// AccountsClientListModelsResponse contains the response from method AccountsClient.ListModels.
+type AccountsClientListModelsResponse struct {
+	AccountsClientListModelsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountsClientListModelsResult contains the result from method AccountsClient.ListModels.
+type AccountsClientListModelsResult struct {
+	AccountModelListResult
+}
+
 // AccountsClientListResponse contains the response from method AccountsClient.List.
 type AccountsClientListResponse struct {
 	AccountsClientListResult

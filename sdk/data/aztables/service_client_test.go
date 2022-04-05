@@ -207,13 +207,13 @@ func TestSetLogging(t *testing.T) {
 	defer delete()
 
 	logging := Logging{
-		Read:    to.BoolPtr(true),
-		Write:   to.BoolPtr(true),
-		Delete:  to.BoolPtr(true),
-		Version: to.StringPtr("1.0"),
+		Read:    to.Ptr(true),
+		Write:   to.Ptr(true),
+		Delete:  to.Ptr(true),
+		Version: to.Ptr("1.0"),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
 		},
 	}
 	props := ServiceProperties{Logging: &logging}
@@ -239,13 +239,13 @@ func TestSetHoursMetrics(t *testing.T) {
 	defer delete()
 
 	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
 		},
-		Version: to.StringPtr("1.0"),
+		Version: to.Ptr("1.0"),
 	}
 	props := ServiceProperties{HourMetrics: &metrics}
 
@@ -269,13 +269,13 @@ func TestSetMinuteMetrics(t *testing.T) {
 	defer delete()
 
 	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
 		},
-		Version: to.StringPtr("1.0"),
+		Version: to.Ptr("1.0"),
 	}
 	props := ServiceProperties{MinuteMetrics: &metrics}
 
@@ -299,11 +299,11 @@ func TestSetCors(t *testing.T) {
 	defer delete()
 
 	corsRules1 := CorsRule{
-		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
-		AllowedMethods:  to.StringPtr("PUT"),
-		AllowedOrigins:  to.StringPtr("www.xyz.com"),
-		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
-		MaxAgeInSeconds: to.Int32Ptr(500),
+		AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
+		AllowedMethods:  to.Ptr("PUT"),
+		AllowedOrigins:  to.Ptr("www.xyz.com"),
+		ExposedHeaders:  to.Ptr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Ptr(int32(500)),
 	}
 	props := ServiceProperties{Cors: []*CorsRule{&corsRules1}}
 
@@ -328,11 +328,11 @@ func TestSetTooManyCors(t *testing.T) {
 	defer delete()
 
 	corsRules1 := CorsRule{
-		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
-		AllowedMethods:  to.StringPtr("PUT"),
-		AllowedOrigins:  to.StringPtr("www.xyz.com"),
-		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
-		MaxAgeInSeconds: to.Int32Ptr(500),
+		AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
+		AllowedMethods:  to.Ptr("PUT"),
+		AllowedOrigins:  to.Ptr("www.xyz.com"),
+		ExposedHeaders:  to.Ptr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Ptr(int32(500)),
 	}
 	props := ServiceProperties{Cors: make([]*CorsRule, 0)}
 	for i := 0; i < 6; i++ {
@@ -348,13 +348,13 @@ func TestRetentionTooLong(t *testing.T) {
 	defer delete()
 
 	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(366),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(366)),
 		},
-		Version: to.StringPtr("1.0"),
+		Version: to.Ptr("1.0"),
 	}
 	props := ServiceProperties{MinuteMetrics: &metrics}
 

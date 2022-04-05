@@ -406,7 +406,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 		return &generated.TableClientMergeEntityOptions{}
 	}
 	return &generated.TableClientMergeEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.IfMatch)),
+		IfMatch:               to.Ptr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }
@@ -416,7 +416,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		return &generated.TableClientUpdateEntityOptions{}
 	}
 	return &generated.TableClientUpdateEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.IfMatch)),
+		IfMatch:               to.Ptr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }

@@ -400,7 +400,7 @@ func TestContinuationTokens(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
+			pager := client.List(&ListEntitiesOptions{Top: to.Ptr(int32(1))})
 			var pkContToken string
 			var rkContToken string
 			for pager.More() {
@@ -442,8 +442,8 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.NoError(t, err)
 
 			pager := client.List(&ListEntitiesOptions{
-				Top:    to.Int32Ptr(1),
-				Filter: to.StringPtr("Value le 5"),
+				Top:    to.Ptr(int32(1)),
+				Filter: to.Ptr("Value le 5"),
 			})
 			var pkContToken string
 			var rkContToken string
@@ -464,7 +464,7 @@ func TestContinuationTokensFilters(t *testing.T) {
 			newPager := client.List(&ListEntitiesOptions{
 				PartitionKey: &pkContToken,
 				RowKey:       &rkContToken,
-				Filter:       to.StringPtr("Value le 5"),
+				Filter:       to.Ptr("Value le 5"),
 			})
 			count := 0
 			for newPager.More() {

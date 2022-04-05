@@ -276,7 +276,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeInsertMerge:
 		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
-			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+			opts.IfMatch = to.Ptr(string(*transactionAction.IfMatch))
 		}
 		req, err = t.client.MergeEntityCreateRequest(
 			ctx,
@@ -298,7 +298,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeInsertReplace:
 		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
-			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+			opts.IfMatch = to.Ptr(string(*transactionAction.IfMatch))
 		}
 		req, err = t.client.UpdateEntityCreateRequest(
 			ctx,

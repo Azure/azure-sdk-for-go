@@ -12,7 +12,7 @@ package media
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-06-01/media"
+	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-11-01/media"
 )
 
 const (
@@ -255,6 +255,14 @@ const (
 	H264ComplexitySpeed    H264Complexity = original.H264ComplexitySpeed
 )
 
+type H264RateControlMode = original.H264RateControlMode
+
+const (
+	H264RateControlModeABR H264RateControlMode = original.H264RateControlModeABR
+	H264RateControlModeCBR H264RateControlMode = original.H264RateControlModeCBR
+	H264RateControlModeCRF H264RateControlMode = original.H264RateControlModeCRF
+)
+
 type H264VideoProfile = original.H264VideoProfile
 
 const (
@@ -277,8 +285,9 @@ const (
 type H265VideoProfile = original.H265VideoProfile
 
 const (
-	H265VideoProfileAuto H265VideoProfile = original.H265VideoProfileAuto
-	H265VideoProfileMain H265VideoProfile = original.H265VideoProfileMain
+	H265VideoProfileAuto   H265VideoProfile = original.H265VideoProfileAuto
+	H265VideoProfileMain   H265VideoProfile = original.H265VideoProfileMain
+	H265VideoProfileMain10 H265VideoProfile = original.H265VideoProfileMain10
 )
 
 type InsightsType = original.InsightsType
@@ -395,9 +404,10 @@ const (
 type OdataType = original.OdataType
 
 const (
-	OdataTypeContentKeyPolicyPlayReadyContentKeyLocation                                  OdataType = original.OdataTypeContentKeyPolicyPlayReadyContentKeyLocation
-	OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader        OdataType = original.OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
-	OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier OdataType = original.OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier
+	OdataTypeMicrosoftMediaAudioTrack OdataType = original.OdataTypeMicrosoftMediaAudioTrack
+	OdataTypeMicrosoftMediaTextTrack  OdataType = original.OdataTypeMicrosoftMediaTextTrack
+	OdataTypeMicrosoftMediaVideoTrack OdataType = original.OdataTypeMicrosoftMediaVideoTrack
+	OdataTypeTrackBase                OdataType = original.OdataTypeTrackBase
 )
 
 type OdataTypeBasicClipTime = original.OdataTypeBasicClipTime
@@ -433,6 +443,14 @@ const (
 	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration
 	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration   OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration
 	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration
+)
+
+type OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation = original.OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation
+
+const (
+	OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeContentKeyPolicyPlayReadyContentKeyLocation                                  OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation = original.OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeContentKeyPolicyPlayReadyContentKeyLocation
+	OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader        OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation = original.OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
+	OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation = original.OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier
 )
 
 type OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestriction
@@ -490,18 +508,6 @@ type OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutput
 const (
 	OdataTypeBasicJobOutputOdataTypeJobOutput                    OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutputOdataTypeJobOutput
 	OdataTypeBasicJobOutputOdataTypeMicrosoftMediaJobOutputAsset OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutputOdataTypeMicrosoftMediaJobOutputAsset
-)
-
-type OdataTypeBasicLayer = original.OdataTypeBasicLayer
-
-const (
-	OdataTypeBasicLayerOdataTypeLayer                        OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeLayer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaH264Layer      OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH264Layer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaH265Layer      OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH265Layer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaH265VideoLayer OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH265VideoLayer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaJpgLayer       OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaJpgLayer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaPngLayer       OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaPngLayer
-	OdataTypeBasicLayerOdataTypeMicrosoftMediaVideoLayer     OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaVideoLayer
 )
 
 type OdataTypeBasicOverlay = original.OdataTypeBasicOverlay
@@ -567,6 +573,14 @@ const (
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateFailed     ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateInProgress ProvisioningState = original.ProvisioningStateInProgress
+	ProvisioningStateSucceeded  ProvisioningState = original.ProvisioningStateSucceeded
+)
+
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
@@ -602,8 +616,9 @@ const (
 type StreamOptionsFlag = original.StreamOptionsFlag
 
 const (
-	StreamOptionsFlagDefault    StreamOptionsFlag = original.StreamOptionsFlagDefault
-	StreamOptionsFlagLowLatency StreamOptionsFlag = original.StreamOptionsFlagLowLatency
+	StreamOptionsFlagDefault      StreamOptionsFlag = original.StreamOptionsFlagDefault
+	StreamOptionsFlagLowLatency   StreamOptionsFlag = original.StreamOptionsFlagLowLatency
+	StreamOptionsFlagLowLatencyV2 StreamOptionsFlag = original.StreamOptionsFlagLowLatencyV2
 )
 
 type StreamingEndpointResourceState = original.StreamingEndpointResourceState
@@ -672,6 +687,13 @@ const (
 	VideoSyncModeVfr         VideoSyncMode = original.VideoSyncModeVfr
 )
 
+type Visibility = original.Visibility
+
+const (
+	VisibilityHidden  Visibility = original.VisibilityHidden
+	VisibilityVisible Visibility = original.VisibilityVisible
+)
+
 type AacAudio = original.AacAudio
 type AbsoluteClipTime = original.AbsoluteClipTime
 type AccessControl = original.AccessControl
@@ -683,6 +705,10 @@ type AccountFilterCollectionPage = original.AccountFilterCollectionPage
 type AccountFiltersClient = original.AccountFiltersClient
 type AkamaiAccessControl = original.AkamaiAccessControl
 type AkamaiSignatureHeaderAuthenticationKey = original.AkamaiSignatureHeaderAuthenticationKey
+type ArmStreamingEndpointCapacity = original.ArmStreamingEndpointCapacity
+type ArmStreamingEndpointCurrentSku = original.ArmStreamingEndpointCurrentSku
+type ArmStreamingEndpointSku = original.ArmStreamingEndpointSku
+type ArmStreamingEndpointSkuInfo = original.ArmStreamingEndpointSkuInfo
 type Asset = original.Asset
 type AssetCollection = original.AssetCollection
 type AssetCollectionIterator = original.AssetCollectionIterator
@@ -696,10 +722,15 @@ type AssetFilterCollectionPage = original.AssetFilterCollectionPage
 type AssetFiltersClient = original.AssetFiltersClient
 type AssetProperties = original.AssetProperties
 type AssetStreamingLocator = original.AssetStreamingLocator
+type AssetTrack = original.AssetTrack
+type AssetTrackCollection = original.AssetTrackCollection
+type AssetTrackOperationStatus = original.AssetTrackOperationStatus
+type AssetTrackProperties = original.AssetTrackProperties
 type AssetsClient = original.AssetsClient
 type Audio = original.Audio
 type AudioAnalyzerPreset = original.AudioAnalyzerPreset
 type AudioOverlay = original.AudioOverlay
+type AudioTrack = original.AudioTrack
 type AudioTrackDescriptor = original.AudioTrackDescriptor
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
@@ -713,20 +744,18 @@ type BasicContentKeyPolicyPlayReadyContentKeyLocation = original.BasicContentKey
 type BasicContentKeyPolicyRestriction = original.BasicContentKeyPolicyRestriction
 type BasicContentKeyPolicyRestrictionTokenKey = original.BasicContentKeyPolicyRestrictionTokenKey
 type BasicFormat = original.BasicFormat
-type BasicH265VideoLayer = original.BasicH265VideoLayer
 type BasicImage = original.BasicImage
 type BasicImageFormat = original.BasicImageFormat
 type BasicInputDefinition = original.BasicInputDefinition
 type BasicJobInput = original.BasicJobInput
 type BasicJobInputClip = original.BasicJobInputClip
 type BasicJobOutput = original.BasicJobOutput
-type BasicLayer = original.BasicLayer
 type BasicMultiBitrateFormat = original.BasicMultiBitrateFormat
 type BasicOverlay = original.BasicOverlay
 type BasicPreset = original.BasicPreset
+type BasicTrackBase = original.BasicTrackBase
 type BasicTrackDescriptor = original.BasicTrackDescriptor
 type BasicVideo = original.BasicVideo
-type BasicVideoLayer = original.BasicVideoLayer
 type BasicVideoTrackDescriptor = original.BasicVideoTrackDescriptor
 type BuiltInStandardEncoderPreset = original.BuiltInStandardEncoderPreset
 type CbcsDrmConfiguration = original.CbcsDrmConfiguration
@@ -794,6 +823,7 @@ type H265Layer = original.H265Layer
 type H265Video = original.H265Video
 type H265VideoLayer = original.H265VideoLayer
 type Hls = original.Hls
+type HlsSettings = original.HlsSettings
 type IPAccessControl = original.IPAccessControl
 type IPRange = original.IPRange
 type Image = original.Image
@@ -869,6 +899,8 @@ type NoEncryption = original.NoEncryption
 type Operation = original.Operation
 type OperationCollection = original.OperationCollection
 type OperationDisplay = original.OperationDisplay
+type OperationResultsClient = original.OperationResultsClient
+type OperationStatusesClient = original.OperationStatusesClient
 type OperationsClient = original.OperationsClient
 type OutputFile = original.OutputFile
 type Overlay = original.Overlay
@@ -914,6 +946,7 @@ type StreamingEndpointListResult = original.StreamingEndpointListResult
 type StreamingEndpointListResultIterator = original.StreamingEndpointListResultIterator
 type StreamingEndpointListResultPage = original.StreamingEndpointListResultPage
 type StreamingEndpointProperties = original.StreamingEndpointProperties
+type StreamingEndpointSkuInfoListResult = original.StreamingEndpointSkuInfoListResult
 type StreamingEndpointsClient = original.StreamingEndpointsClient
 type StreamingEndpointsCreateFuture = original.StreamingEndpointsCreateFuture
 type StreamingEndpointsDeleteFuture = original.StreamingEndpointsDeleteFuture
@@ -943,10 +976,17 @@ type StreamingPolicyProperties = original.StreamingPolicyProperties
 type StreamingPolicyWidevineConfiguration = original.StreamingPolicyWidevineConfiguration
 type SyncStorageKeysInput = original.SyncStorageKeysInput
 type SystemData = original.SystemData
+type TextTrack = original.TextTrack
+type TrackBase = original.TrackBase
 type TrackDescriptor = original.TrackDescriptor
 type TrackPropertyCondition = original.TrackPropertyCondition
 type TrackSelection = original.TrackSelection
 type TrackedResource = original.TrackedResource
+type TracksClient = original.TracksClient
+type TracksCreateOrUpdateFuture = original.TracksCreateOrUpdateFuture
+type TracksDeleteFuture = original.TracksDeleteFuture
+type TracksUpdateFuture = original.TracksUpdateFuture
+type TracksUpdateTrackDataFuture = original.TracksUpdateTrackDataFuture
 type Transform = original.Transform
 type TransformCollection = original.TransformCollection
 type TransformCollectionIterator = original.TransformCollectionIterator
@@ -961,6 +1001,7 @@ type Video = original.Video
 type VideoAnalyzerPreset = original.VideoAnalyzerPreset
 type VideoLayer = original.VideoLayer
 type VideoOverlay = original.VideoOverlay
+type VideoTrack = original.VideoTrack
 type VideoTrackDescriptor = original.VideoTrackDescriptor
 
 func New(subscriptionID string) BaseClient {
@@ -1062,6 +1103,18 @@ func NewMediaservicesClient(subscriptionID string) MediaservicesClient {
 func NewMediaservicesClientWithBaseURI(baseURI string, subscriptionID string) MediaservicesClient {
 	return original.NewMediaservicesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClient(subscriptionID)
+}
+func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationStatusesClient(subscriptionID string) OperationStatusesClient {
+	return original.NewOperationStatusesClient(subscriptionID)
+}
+func NewOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) OperationStatusesClient {
+	return original.NewOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -1121,6 +1174,12 @@ func NewStreamingPolicyCollectionIterator(page StreamingPolicyCollectionPage) St
 }
 func NewStreamingPolicyCollectionPage(cur StreamingPolicyCollection, getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
 	return original.NewStreamingPolicyCollectionPage(cur, getNextPage)
+}
+func NewTracksClient(subscriptionID string) TracksClient {
+	return original.NewTracksClient(subscriptionID)
+}
+func NewTracksClientWithBaseURI(baseURI string, subscriptionID string) TracksClient {
+	return original.NewTracksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTransformCollectionIterator(page TransformCollectionPage) TransformCollectionIterator {
 	return original.NewTransformCollectionIterator(page)
@@ -1218,6 +1277,9 @@ func PossibleFilterTrackPropertyTypeValues() []FilterTrackPropertyType {
 func PossibleH264ComplexityValues() []H264Complexity {
 	return original.PossibleH264ComplexityValues()
 }
+func PossibleH264RateControlModeValues() []H264RateControlMode {
+	return original.PossibleH264RateControlModeValues()
+}
 func PossibleH264VideoProfileValues() []H264VideoProfile {
 	return original.PossibleH264VideoProfileValues()
 }
@@ -1272,6 +1334,9 @@ func PossibleOdataTypeBasicCodecValues() []OdataTypeBasicCodec {
 func PossibleOdataTypeBasicContentKeyPolicyConfigurationValues() []OdataTypeBasicContentKeyPolicyConfiguration {
 	return original.PossibleOdataTypeBasicContentKeyPolicyConfigurationValues()
 }
+func PossibleOdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationValues() []OdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocation {
+	return original.PossibleOdataTypeBasicContentKeyPolicyPlayReadyContentKeyLocationValues()
+}
 func PossibleOdataTypeBasicContentKeyPolicyRestrictionTokenKeyValues() []OdataTypeBasicContentKeyPolicyRestrictionTokenKey {
 	return original.PossibleOdataTypeBasicContentKeyPolicyRestrictionTokenKeyValues()
 }
@@ -1289,9 +1354,6 @@ func PossibleOdataTypeBasicJobInputValues() []OdataTypeBasicJobInput {
 }
 func PossibleOdataTypeBasicJobOutputValues() []OdataTypeBasicJobOutput {
 	return original.PossibleOdataTypeBasicJobOutputValues()
-}
-func PossibleOdataTypeBasicLayerValues() []OdataTypeBasicLayer {
-	return original.PossibleOdataTypeBasicLayerValues()
 }
 func PossibleOdataTypeBasicOverlayValues() []OdataTypeBasicOverlay {
 	return original.PossibleOdataTypeBasicOverlayValues()
@@ -1316,6 +1378,9 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 }
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
@@ -1355,6 +1420,9 @@ func PossibleTrackPropertyTypeValues() []TrackPropertyType {
 }
 func PossibleVideoSyncModeValues() []VideoSyncMode {
 	return original.PossibleVideoSyncModeValues()
+}
+func PossibleVisibilityValues() []Visibility {
+	return original.PossibleVisibilityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

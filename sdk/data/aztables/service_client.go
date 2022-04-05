@@ -6,14 +6,13 @@ package aztables
 import (
 	"context"
 	"errors"
-	"net/http"
-	"reflect"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -100,12 +99,17 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 
 // CreateTable creates a table with the specified name. If the service returns a non-successful HTTP status code,
 // the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
-func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	_, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
-	return t.NewClient(name), err
+	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	if err != nil {
+		return CreateTableResponse{}, err
+	}
+	return CreateTableResponse{
+		TableName: resp.TableName,
+	}, nil
 }
 
 // DeleteTableOptions contains optional parameters for Client.Delete and ServiceClient.DeleteTable
@@ -143,6 +147,9 @@ type ListTablesOptions struct {
 
 	// Maximum number of records to return.
 	Top *int32
+
+	// NextTableName is the continuation token for the next table to page from
+	NextTableName *string
 }
 
 func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
@@ -152,49 +159,36 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr(),
+		Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata),
 		Select: l.Select,
 		Top:    l.Top,
 	}
 }
 
-// ListTablesPageResponse contains response fields for ListTablesPager.NextPage
-type ListTablesPageResponse struct {
-	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
-	ContinuationNextTableName *string
-
-	// The metadata response of the table.
-	ODataMetadata *string `json:"odata.metadata,omitempty"`
+// ListTablesResponse contains response fields for ListTablesPager.NextPage
+type ListTablesResponse struct {
+	// NextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	NextTableName *string
 
 	// List of tables.
 	Tables []*TableProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesPageResponse {
+func fromGeneratedTableQueryResponseEnvelope(g generated.TableClientQueryResponse) ListTablesResponse {
 	var value []*TableProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return ListTablesPageResponse{
-		ContinuationNextTableName: g.XMSContinuationNextTableName,
-		ODataMetadata:             g.ODataMetadata,
-		Tables:                    value,
+	return ListTablesResponse{
+		NextTableName: g.XMSContinuationNextTableName,
+		Tables:        value,
 	}
 }
 
 // TableProperties contains the properties for a single Table
 type TableProperties struct {
-	// The edit link of the table.
-	ODataEditLink *string `json:"odata.editLink,omitempty"`
-
-	// The ID of the table.
-	ODataID *string `json:"odata.id,omitempty"`
-
-	// The odata type of the table.
-	ODataType *string `json:"odata.type,omitempty"`
-
 	// The name of the table.
 	Name *string `json:"TableName,omitempty"`
 }
@@ -206,64 +200,8 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 
 	return &TableProperties{
-		Name:          g.TableName,
-		ODataEditLink: g.ODataEditLink,
-		ODataID:       g.ODataID,
-		ODataType:     g.ODataType,
+		Name: g.TableName,
 	}
-}
-
-// ListTablesPager is a Pager for Table List operations
-//
-// Call NextPage first to fetch the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaluated by calling PageResponse on the Pager.
-// If the result is false, the value of Err() will indicate if an error occurred.
-//
-// PageResponse returns the results from the page most recently fetched from the service.
-type ListTablesPager struct {
-	client            *generated.TableClient
-	current           generated.TableClientQueryResponse
-	tableQueryOptions *generated.TableClientQueryOptions
-	listOptions       *ListTablesOptions
-	nextTableName     *string
-}
-
-// NextPage fetches the next available page of results from the service.
-// If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaulated by calling PageResponse on this Pager.
-func (p *ListTablesPager) NextPage(ctx context.Context) (ListTablesPageResponse, error) {
-	req, err := p.client.QueryCreateRequest(ctx, generated.Enum1Three0, &generated.TableClientQueryOptions{
-		NextTableName: p.nextTableName,
-	}, p.listOptions.toQueryOptions())
-	if err != nil {
-		return ListTablesPageResponse{}, err
-	}
-	resp, err := p.client.Pl.Do(req)
-	if err != nil {
-		return ListTablesPageResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ListTablesPageResponse{}, runtime.NewResponseError(resp)
-	}
-
-	result, err := p.client.QueryHandleResponse(resp)
-	if err != nil {
-		return ListTablesPageResponse{}, err
-	}
-	p.current = result
-	p.nextTableName = p.current.XMSContinuationNextTableName
-	return fromGeneratedTableQueryResponseEnvelope(p.current), nil
-}
-
-// More returns true if there are more pages to retrieve
-func (p *ListTablesPager) More() bool {
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.XMSContinuationNextTableName == nil || len(*p.current.XMSContinuationNextTableName) == 0 {
-			return false
-		}
-	}
-	return true
 }
 
 // ListTables queries the existing tables using the specified ListTablesOptions.
@@ -279,12 +217,37 @@ func (p *ListTablesPager) More() bool {
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
-	return ListTablesPager{
-		client:            t.client,
-		tableQueryOptions: &generated.TableClientQueryOptions{},
-		listOptions:       listOptions,
+func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
+	if listOptions == nil {
+		listOptions = &ListTablesOptions{}
 	}
+	return runtime.NewPager(runtime.PageProcessor[ListTablesResponse]{
+		More: func(page ListTablesResponse) bool {
+			if page.NextTableName == nil || len(*page.NextTableName) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ListTablesResponse) (ListTablesResponse, error) {
+			var tableName *string
+			if page != nil {
+				if page.NextTableName != nil {
+					tableName = page.NextTableName
+				}
+			} else {
+				tableName = listOptions.NextTableName
+			}
+			resp, err := t.client.Query(
+				ctx,
+				generated.Enum1Three0,
+				&generated.TableClientQueryOptions{NextTableName: tableName},
+				listOptions.toQueryOptions())
+			if err != nil {
+				return ListTablesResponse{}, err
+			}
+			return fromGeneratedTableQueryResponseEnvelope(resp), nil
+		},
+	})
 }
 
 // GetStatisticsOptions contains optional parameters for ServiceClient.GetStatistics
@@ -328,17 +291,7 @@ func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetProperti
 
 // GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
-	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
-
-	// A summary of request statistics grouped by API in hourly aggregates for tables.
-	HourMetrics *Metrics `xml:"HourMetrics"`
-
-	// Azure Analytics Logging settings.
-	Logging *Logging `xml:"Logging"`
-
-	// A summary of request statistics grouped by API in minute aggregates for tables.
-	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
+	ServiceProperties
 }
 
 func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesResponse) GetPropertiesResponse {
@@ -347,10 +300,12 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 		cors = append(cors, fromGeneratedCors(c))
 	}
 	return GetPropertiesResponse{
-		Cors:          cors,
-		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
-		Logging:       fromGeneratedLogging(g.Logging),
-		MinuteMetrics: fromGeneratedMetrics(g.MinuteMetrics),
+		ServiceProperties: ServiceProperties{
+			Cors:          cors,
+			HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
+			Logging:       fromGeneratedLogging(g.Logging),
+			MinuteMetrics: fromGeneratedMetrics(g.MinuteMetrics),
+		},
 	}
 }
 
@@ -402,9 +357,9 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
-// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
+// GetAccountSASURL is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
 // if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
-func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (t ServiceClient) GetAccountSASURL(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
 	if t.cred == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}

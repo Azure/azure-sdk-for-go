@@ -376,8 +376,8 @@ func main() {
     filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
     options := &aztables.ListEntitiesOptions{
         Filter: &filter,
-        Select: to.StringPtr("RowKey,Value,Product,Available"),
-        Top: to.Int32Ptr(15),
+        Select: to.Ptr("RowKey,Value,Product,Available"),
+        Top: to.Ptr(int32(((15),
     }
 
 	pager := client.List(options)
@@ -421,46 +421,46 @@ func main() {
 Query strings must wrap literal values in single quotes. Literal values containing single quote characters must be escaped with a double single quote. To search for a `LastName` property of "O'Connor" use the following syntax
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("LastName eq 'O''Connor'"),
+	Filter: to.Ptr("LastName eq 'O''Connor'"),
 }
 ```
 
 ##### String Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("LastName ge 'A' and LastName lt 'B'"),
+	Filter: to.Ptr("LastName ge 'A' and LastName lt 'B'"),
 }
 ```
 
 ##### Numeric Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("Age gt 30"),
+	Filter: to.Ptr("Age gt 30"),
 }
 
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("AmountDue le 100.25"),
+	Filter: to.Ptr("AmountDue le 100.25"),
 }
 ```
 
 ##### Boolean Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("IsActive eq true"),
+	Filter: to.Ptr("IsActive eq true"),
 }
 ```
 
 ##### Datetime Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("CustomerSince eq datetime'2008-07-10T00:00:00Z'"),
+	Filter: to.Ptr("CustomerSince eq datetime'2008-07-10T00:00:00Z'"),
 }
 ```
 
 ##### GUID Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.StringPtr("GuidValue eq guid'a455c695-df98-5678-aaaa-81d3367e5a34'"),
+	Filter: to.Ptr("GuidValue eq guid'a455c695-df98-5678-aaaa-81d3367e5a34'"),
 }
 ```
 
@@ -490,7 +490,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Int32Ptr(10)})
+    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(((10)})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -506,7 +506,7 @@ func main() {
     }
 
     newPager := client.List(&aztables.ListEntitiesOptions{
-        Top:          to.Int32Ptr(10),
+        Top:          to.Ptr(int32(((10),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),
     })

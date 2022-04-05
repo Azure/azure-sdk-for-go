@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
@@ -182,8 +182,8 @@ Querying entities
 	filter := "PartitionKey eq 'markers' or RowKey eq 'id-001'"
 	options := &ListEntitiesOptions{
 		Filter: &filter,
-		Select: to.StringPtr("RowKey,Value,Product,Available"),
-		Top: to.Int32Ptr(15),
+		Select: to.Ptr("RowKey,Value,Product,Available"),
+		Top: to.Ptr(int32(((15),
 	}
 
 	pager := client.List(options)

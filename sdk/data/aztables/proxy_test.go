@@ -144,7 +144,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 	require.NoError(t, err)
 
 	if createTable {
-		_, err = client.Create(ctx, nil)
+		_, err = client.CreateTable(ctx, nil)
 		require.NoError(t, err)
 	}
 

@@ -1,10 +1,30 @@
 # Release History
 
-## 0.6.1 (Unreleased)
+## 0.7.0 (2022-04-05)
 
 ### Features Added
+* Added the `NextTableName` continuation token option to `ListTablesOptions`
+* Added the `TableName` property to `CreateTableResponse`
 
 ### Breaking Changes
+* Removed the `ODataID`, `ODataEditLink`, and `ODataType` on `TableProperties`
+* Removed `ODataMetadata` on `ListTablesPageResponse`
+* Removed `ResponsePreference` on `AddEntityOptions`
+* Renamed `ListEntitiesOptions.PartitionKey` to `ListEntitiesOptions.NextPartitionKey`.
+* Renamed `ListEntitiesOptionsRowKey` to `ListEntitiesOptions.NextRowKey`
+* Renamed `Client.Create` to `Client.CreateTable`
+* Renamed `ListEntitiesPageResponse` to `ListEntitiesResponse`
+* Removed the `Entity` prefix on `EntityUpdateModeMerge` and `EntityUpdateModeReplace`
+* Renamed `Client.InsertEntity` to `Client.UpsertEntity`
+* Removed the `Continuation` prefix from `ContinuationNextPartitionKey`, `ContinuationNextRowKey`, and `ContinuationNextTable`
+* Removed the `ResponseFormat` type
+* Renamed `Client.List` to `Client.ListEntities`
+* Renamed `Client.GetTableSASToken` to `Client.GetTableSASURL` and `ServiceClient.GetAccountSASToken` to `ServiceClient.GetAccountSASURL`
+* `ServiceClient.GetProperties` returns a `ServiceProperties` struct which can be used on the `ServiceClient.SetProperties`
+* Removed the `Type` suffix from `GeoReplicationStatusType`
+* `ServiceClient.CreateTable` returns a response struct with the name of the table created, not a `Client`
+* `SASSignatureValues.NewSASQueryParameters` is now `SASSignatureValues.Sign` and returns an encoded SAS
+
 
 ### Bugs Fixed
 

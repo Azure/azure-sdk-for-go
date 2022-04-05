@@ -52,7 +52,7 @@ func TestSASServiceClient(t *testing.T) {
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
+	sasUrl, err := serviceClient.GetAccountSASURL(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -98,7 +98,7 @@ func TestSASClient(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -152,7 +152,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -174,7 +174,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 
 	// Success on a list
-	pager := client.List(nil)
+	pager := client.ListEntities(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
@@ -218,7 +218,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
 	c := serviceClient.NewClient(tableName)
-	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
+	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
 	err = recording.Start(t, pathToPackage, nil)
@@ -240,7 +240,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 
 	// Success on a list
-	pager := client.List(nil)
+	pager := client.ListEntities(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)

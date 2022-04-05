@@ -24,7 +24,7 @@ func TestServiceErrors(t *testing.T) {
 			defer delete()
 
 			// Create a duplicate table to produce an error
-			_, err := client.Create(ctx, nil)
+			_, err := client.CreateTable(ctx, nil)
 			require.Error(t, err)
 		})
 	}
@@ -36,7 +36,7 @@ func TestCreateTable(t *testing.T) {
 			client, delete := initClientTest(t, service, false)
 			defer delete()
 
-			_, err := client.Create(ctx, nil)
+			_, err := client.CreateTable(ctx, nil)
 
 			require.NoError(t, err)
 		})
@@ -158,11 +158,11 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: UpdateModeMerge})
 			require.Nil(t, updateErr)
 
-			var qResp ListEntitiesPageResponse
-			pager := client.List(listOptions)
+			var qResp ListEntitiesResponse
+			pager := client.ListEntities(listOptions)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -191,7 +191,7 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: EntityUpdateModeMerge})
+			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: UpdateModeMerge})
 			require.Error(t, updateErr)
 		})
 	}
@@ -208,7 +208,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -230,12 +230,12 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
-			var qResp ListEntitiesPageResponse
-			pager := client.List(list)
+			var qResp ListEntitiesResponse
+			pager := client.ListEntities(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -265,10 +265,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: EntityUpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}
@@ -293,8 +293,8 @@ func TestQuerySimpleEntity(t *testing.T) {
 			list := &ListEntitiesOptions{Filter: &filter}
 			expectedCount := 4
 
-			var resp ListEntitiesPageResponse
-			pager := client.List(list)
+			var resp ListEntitiesResponse
+			pager := client.ListEntities(list)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -345,7 +345,7 @@ func TestQueryComplexEntity(t *testing.T) {
 			expectedCount := 4
 			options := &ListEntitiesOptions{Filter: &filter}
 
-			pager := client.List(options)
+			pager := client.ListEntities(options)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -400,26 +400,26 @@ func TestContinuationTokens(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
+			pager := client.ListEntities(&ListEntitiesOptions{Top: to.Ptr(int32(1))})
 			var pkContToken string
 			var rkContToken string
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
 				require.Equal(t, 1, len(resp.Entities))
-				require.NotNil(t, resp.ContinuationNextPartitionKey)
-				require.NotNil(t, resp.ContinuationNextRowKey)
-				pkContToken = *resp.ContinuationNextPartitionKey
-				rkContToken = *resp.ContinuationNextRowKey
+				require.NotNil(t, resp.NextPartitionKey)
+				require.NotNil(t, resp.NextRowKey)
+				pkContToken = *resp.NextPartitionKey
+				rkContToken = *resp.NextRowKey
 				break
 			}
 
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
-			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: &pkContToken,
-				RowKey:       &rkContToken,
+			newPager := client.ListEntities(&ListEntitiesOptions{
+				NextPartitionKey: &pkContToken,
+				NextRowKey:       &rkContToken,
 			})
 			count := 0
 			for newPager.More() {
@@ -441,9 +441,9 @@ func TestContinuationTokensFilters(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.List(&ListEntitiesOptions{
-				Top:    to.Int32Ptr(1),
-				Filter: to.StringPtr("Value le 5"),
+			pager := client.ListEntities(&ListEntitiesOptions{
+				Top:    to.Ptr(int32(1)),
+				Filter: to.Ptr("Value le 5"),
 			})
 			var pkContToken string
 			var rkContToken string
@@ -451,20 +451,20 @@ func TestContinuationTokensFilters(t *testing.T) {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
 				require.Equal(t, 1, len(resp.Entities))
-				require.NotNil(t, resp.ContinuationNextPartitionKey)
-				require.NotNil(t, resp.ContinuationNextRowKey)
-				pkContToken = *resp.ContinuationNextPartitionKey
-				rkContToken = *resp.ContinuationNextRowKey
+				require.NotNil(t, resp.NextPartitionKey)
+				require.NotNil(t, resp.NextRowKey)
+				pkContToken = *resp.NextPartitionKey
+				rkContToken = *resp.NextRowKey
 				break
 			}
 
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
-			newPager := client.List(&ListEntitiesOptions{
-				PartitionKey: &pkContToken,
-				RowKey:       &rkContToken,
-				Filter:       to.StringPtr("Value le 5"),
+			newPager := client.ListEntities(&ListEntitiesOptions{
+				NextPartitionKey: &pkContToken,
+				NextRowKey:       &rkContToken,
+				Filter:           to.Ptr("Value le 5"),
 			})
 			count := 0
 			for newPager.More() {
@@ -506,13 +506,14 @@ func TestAzurite(t *testing.T) {
 
 	name, err := createRandomName(t, "Table")
 	require.NoError(t, err)
-	client, err := svc.CreateTable(ctx, name, nil)
+	_, err = svc.CreateTable(ctx, name, nil)
 	defer func() {
-		_, err = client.Delete(ctx, nil)
+		_, err = svc.DeleteTable(ctx, name, nil)
 		require.NoError(t, err)
 	}()
 	require.NoError(t, err)
 
+	client := svc.NewClient(name)
 	entity := EDMEntity{
 		Entity: Entity{
 			PartitionKey: "pencils",
@@ -535,7 +536,7 @@ func TestAzurite(t *testing.T) {
 	require.NoError(t, err)
 
 	count := 0
-	pager := client.List(nil)
+	pager := client.ListEntities(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		require.NoError(t, err)

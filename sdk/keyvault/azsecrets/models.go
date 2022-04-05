@@ -80,7 +80,7 @@ type Properties struct {
 	// certificate.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
-	// Not before date in UTC.
+	// NotBefore is the secret's not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.

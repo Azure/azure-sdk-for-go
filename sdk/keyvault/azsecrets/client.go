@@ -335,7 +335,8 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 		}
 		resumeToken = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &delResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &delResp)
 		if err != nil {
 			return nil, err
 		}
@@ -736,7 +737,8 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, opt
 		}
 		resumeToken = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &recoverResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &recoverResp)
 		if err != nil {
 			return nil, err
 		}

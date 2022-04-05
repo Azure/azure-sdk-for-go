@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package internal
 
 const (
-	moduleName    = "internal"
-	moduleVersion = "v0.7.0"
+	ModuleName    = "internal"
+	ModuleVersion = "v0.7.0"
 )
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for secrets in the current vault. If it
@@ -64,4 +64,9 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 		DeletionRecoveryLevelRecoverableProtectedSubscription,
 		DeletionRecoveryLevelRecoverablePurgeable,
 	}
+}
+
+// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
+func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
+	return &c
 }

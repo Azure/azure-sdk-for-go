@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -34,7 +34,7 @@ func NewKeyVaultClient(options *azcore.ClientOptions) *KeyVaultClient {
 		options = &azcore.ClientOptions{}
 	}
 	client := &KeyVaultClient{
-		Pl: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
+		Pl: runtime.NewPipeline(ModuleName, ModuleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -196,32 +196,16 @@ func (client *KeyVaultClient) getDeletedSecretHandleResponse(resp *http.Response
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedSecretsOptions contains the optional parameters for the KeyVaultClient.GetDeletedSecrets
 // method.
-func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) *runtime.Pager[KeyVaultClientGetDeletedSecretsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedSecretsResponse]{
-		More: func(page KeyVaultClientGetDeletedSecretsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) *KeyVaultClientGetDeletedSecretsPager {
+	return &KeyVaultClientGetDeletedSecretsPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetDeletedSecretsCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetDeletedSecretsResponse) (KeyVaultClientGetDeletedSecretsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetDeletedSecretsCreateRequest(ctx, vaultBaseURL, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetDeletedSecretsResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetDeletedSecretsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetDeletedSecretsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetDeletedSecretsHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedSecretsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedSecretListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetDeletedSecretsCreateRequest creates the GetDeletedSecrets request.
@@ -315,32 +299,16 @@ func (client *KeyVaultClient) getSecretHandleResponse(resp *http.Response) (KeyV
 // secretName - The name of the secret.
 // options - KeyVaultClientGetSecretVersionsOptions contains the optional parameters for the KeyVaultClient.GetSecretVersions
 // method.
-func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) *runtime.Pager[KeyVaultClientGetSecretVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetSecretVersionsResponse]{
-		More: func(page KeyVaultClientGetSecretVersionsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) *KeyVaultClientGetSecretVersionsPager {
+	return &KeyVaultClientGetSecretVersionsPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetSecretVersionsCreateRequest(ctx, vaultBaseURL, secretName, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetSecretVersionsResponse) (KeyVaultClientGetSecretVersionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetSecretVersionsCreateRequest(ctx, vaultBaseURL, secretName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetSecretVersionsResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetSecretVersionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetSecretVersionsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetSecretVersionsHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetSecretVersionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetSecretVersionsCreateRequest creates the GetSecretVersions request.
@@ -381,32 +349,16 @@ func (client *KeyVaultClient) GetSecretVersionsHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetSecretsOptions contains the optional parameters for the KeyVaultClient.GetSecrets method.
-func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) *runtime.Pager[KeyVaultClientGetSecretsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetSecretsResponse]{
-		More: func(page KeyVaultClientGetSecretsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) *KeyVaultClientGetSecretsPager {
+	return &KeyVaultClientGetSecretsPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetSecretsCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetSecretsResponse) (KeyVaultClientGetSecretsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetSecretsCreateRequest(ctx, vaultBaseURL, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetSecretsResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetSecretsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetSecretsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetSecretsHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetSecretsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetSecretsCreateRequest creates the GetSecrets request.

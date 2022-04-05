@@ -10,6 +10,7 @@
 * Removed `RawResponse` from pollers
 * Polling operations return a Poller struct directly instead of a Response envelope
 * Removed `ToPtr` methods
+* Upgrading from a minimum of go1.16 to go1.18
 
 ## 0.6.0 (2022-03-08)
 

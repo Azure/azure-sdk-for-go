@@ -12,7 +12,7 @@ clear-output-folder: true
 output-folder: internal
 tag: package-7.2
 credential-scope: none
-use: "C:/github.com/autorest.go"
+use: "@autorest/go@4.0.0-preview.37"
 module-version: 0.7.0
 export-clients: true
 ```

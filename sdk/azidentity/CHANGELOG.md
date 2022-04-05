@@ -3,6 +3,7 @@
 ## 0.14.0 (2022-04-05)
 
 ### Breaking Changes
+* This module now requires Go 1.18
 * Removed `AuthorityHost`. Credentials are now configured for sovereign or private
   clouds with the API in `azcore/cloud`, for example:
   ```go

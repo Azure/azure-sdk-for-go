@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"reflect"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -39,7 +38,7 @@ const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
 func setAuthorityHost(cc cloud.Configuration) (string, error) {
 	host := cc.LoginEndpoint
 	if host == "" {
-		if !reflect.ValueOf(cc).IsZero() {
+		if len(cc.Services) > 0 {
 			return "", errors.New("missing LoginEndpoint for specified cloud")
 		}
 		host = cloud.AzurePublicCloud.LoginEndpoint

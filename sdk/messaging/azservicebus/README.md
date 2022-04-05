@@ -123,7 +123,7 @@ if err != nil {
 // send a single message
 err = sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world!"),
-})
+}, nil)
 ```
 
 You can also send messages in batches, which can be more efficient than sending them individually
@@ -140,13 +140,13 @@ if err != nil {
 // Add a message to our message batch. This can be called multiple times.
 err = messageBatch.AddMessage(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
-})
+}, nil)
 
 if errors.Is(err, azservicebus.ErrMessageTooLarge) {
   fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
   // send what we have since the batch is full
-  err := sender.SendMessageBatch(context.TODO(), messageBatch)
+  err := sender.SendMessageBatch(context.TODO(), messageBatch, nil)
 
   if err != nil {
     panic(err)
@@ -193,7 +193,7 @@ if err != nil {
 for _, message := range messages {
   // For more information about settling messages:
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-  err = receiver.CompleteMessage(context.TODO(), message)
+  err = receiver.CompleteMessage(context.TODO(), message, nil)
 
   if err != nil {
     panic(err)

@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -22,8 +22,8 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	version  Enum0
-	pl       runtime.Pipeline
+	version Enum0
+	pl runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
@@ -36,8 +36,8 @@ func NewServiceClient(endpoint string, version Enum0, options *azcore.ClientOpti
 	}
 	client := &ServiceClient{
 		endpoint: endpoint,
-		version:  version,
-		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
+		version: version,
+		pl: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -226,3 +226,4 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
+

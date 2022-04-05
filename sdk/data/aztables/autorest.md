@@ -11,7 +11,7 @@ clear-output-folder: false
 output-folder: internal
 tag: package-2019-02
 credential-scope: none
-use: "C:/github.com/autorest.go"
+use: "@autorest/go@4.0.0-preview.37"
 module-version: 0.5.1
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"

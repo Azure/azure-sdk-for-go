@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (Unreleased)
+## 0.7.0 (2022-04-05)
 
 ### Features Added
 * Added the `NextTableName` continuation token option to `ListTablesOptions`
@@ -23,7 +23,7 @@
 * `ServiceClient.GetProperties` returns a `ServiceProperties` struct which can be used on the `ServiceClient.SetProperties`
 * Removed the `Type` suffix from `GeoReplicationStatusType`
 * `ServiceClient.CreateTable` returns a response struct with the name of the table created, not a `Client`
-* `SASSignatureValues.NewSASQueryParameters` is now `SASSignatureValues.Sign` and returns an encoded SAS 
+* `SASSignatureValues.NewSASQueryParameters` is now `SASSignatureValues.Sign` and returns an encoded SAS
 
 
 ### Bugs Fixed

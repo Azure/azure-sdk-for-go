@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package internal
 
 const (
-	moduleName    = "internal"
-	moduleVersion = "v0.7.0"
+	moduleName = "internal"
+	moduleVersion = "v0.5.1"
 )
 
 type Enum0 string
@@ -21,9 +21,14 @@ const (
 
 // PossibleEnum0Values returns the possible values for the Enum0 const type.
 func PossibleEnum0Values() []Enum0 {
-	return []Enum0{
+	return []Enum0{	
 		Enum0TwoThousandNineteen0202,
 	}
+}
+
+// ToPtr returns a *Enum0 pointing to the current value.
+func (c Enum0) ToPtr() *Enum0 {
+	return &c
 }
 
 type Enum1 string
@@ -34,9 +39,14 @@ const (
 
 // PossibleEnum1Values returns the possible values for the Enum1 const type.
 func PossibleEnum1Values() []Enum1 {
-	return []Enum1{
+	return []Enum1{	
 		Enum1Three0,
 	}
+}
+
+// ToPtr returns a *Enum1 pointing to the current value.
+func (c Enum1) ToPtr() *Enum1 {
+	return &c
 }
 
 type Enum4 string
@@ -47,9 +57,14 @@ const (
 
 // PossibleEnum4Values returns the possible values for the Enum4 const type.
 func PossibleEnum4Values() []Enum4 {
-	return []Enum4{
+	return []Enum4{	
 		Enum4ACL,
 	}
+}
+
+// ToPtr returns a *Enum4 pointing to the current value.
+func (c Enum4) ToPtr() *Enum4 {
+	return &c
 }
 
 type Enum5 string
@@ -60,9 +75,14 @@ const (
 
 // PossibleEnum5Values returns the possible values for the Enum5 const type.
 func PossibleEnum5Values() []Enum5 {
-	return []Enum5{
+	return []Enum5{	
 		Enum5Service,
 	}
+}
+
+// ToPtr returns a *Enum5 pointing to the current value.
+func (c Enum5) ToPtr() *Enum5 {
+	return &c
 }
 
 type Enum6 string
@@ -73,9 +93,14 @@ const (
 
 // PossibleEnum6Values returns the possible values for the Enum6 const type.
 func PossibleEnum6Values() []Enum6 {
-	return []Enum6{
+	return []Enum6{	
 		Enum6Properties,
 	}
+}
+
+// ToPtr returns a *Enum6 pointing to the current value.
+func (c Enum6) ToPtr() *Enum6 {
+	return &c
 }
 
 type Enum7 string
@@ -86,57 +111,78 @@ const (
 
 // PossibleEnum7Values returns the possible values for the Enum7 const type.
 func PossibleEnum7Values() []Enum7 {
-	return []Enum7{
+	return []Enum7{	
 		Enum7Stats,
 	}
+}
+
+// ToPtr returns a *Enum7 pointing to the current value.
+func (c Enum7) ToPtr() *Enum7 {
+	return &c
 }
 
 // GeoReplicationStatusType - The status of the secondary location.
 type GeoReplicationStatusType string
 
 const (
-	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
+	GeoReplicationStatusTypeBootstrap GeoReplicationStatusType = "bootstrap"
+	GeoReplicationStatusTypeLive GeoReplicationStatusType = "live"
 	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
 )
 
 // PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
 func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{
+	return []GeoReplicationStatusType{	
 		GeoReplicationStatusTypeBootstrap,
 		GeoReplicationStatusTypeLive,
 		GeoReplicationStatusTypeUnavailable,
 	}
 }
 
+// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
+func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
+	return &c
+}
+
 type ODataMetadataFormat string
 
 const (
-	ODataMetadataFormatApplicationJSONODataFullmetadata    ODataMetadataFormat = "application/json;odata=fullmetadata"
+	ODataMetadataFormatApplicationJSONODataFullmetadata ODataMetadataFormat = "application/json;odata=fullmetadata"
 	ODataMetadataFormatApplicationJSONODataMinimalmetadata ODataMetadataFormat = "application/json;odata=minimalmetadata"
-	ODataMetadataFormatApplicationJSONODataNometadata      ODataMetadataFormat = "application/json;odata=nometadata"
+	ODataMetadataFormatApplicationJSONODataNometadata ODataMetadataFormat = "application/json;odata=nometadata"
 )
 
 // PossibleODataMetadataFormatValues returns the possible values for the ODataMetadataFormat const type.
 func PossibleODataMetadataFormatValues() []ODataMetadataFormat {
-	return []ODataMetadataFormat{
+	return []ODataMetadataFormat{	
 		ODataMetadataFormatApplicationJSONODataFullmetadata,
 		ODataMetadataFormatApplicationJSONODataMinimalmetadata,
 		ODataMetadataFormatApplicationJSONODataNometadata,
 	}
 }
 
+// ToPtr returns a *ODataMetadataFormat pointing to the current value.
+func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
+	return &c
+}
+
 type ResponseFormat string
 
 const (
-	ResponseFormatReturnContent   ResponseFormat = "return-content"
+	ResponseFormatReturnContent ResponseFormat = "return-content"
 	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
 )
 
 // PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
 func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{
+	return []ResponseFormat{	
 		ResponseFormatReturnContent,
 		ResponseFormatReturnNoContent,
 	}
 }
+
+// ToPtr returns a *ResponseFormat pointing to the current value.
+func (c ResponseFormat) ToPtr() *ResponseFormat {
+	return &c
+}
+

@@ -7,12 +7,8 @@
 package azsecrets
 
 import (
-	"fmt"
-	"net/url"
-	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 )
 
@@ -248,28 +244,4 @@ func convertToGeneratedMap(m map[string]string) map[string]*string {
 	}
 
 	return ret
-}
-
-// parseFromKID parses "https://rosebud.vault.azure.net/secrets/secret3379360089/3f3b11064811494a8a8b27edf4f0985b"
-// into "https://rosebud.vault.azure.net/", "secret3379360089", and "3f3b11064811494a8a8b27edf4f0985b"
-// returns the vaultURL, name, and version
-func parseFromID(s *string) (*string, *string, *string) {
-	if s == nil {
-		return nil, nil, nil
-	}
-	parsed, err := url.Parse(*s)
-	if err != nil {
-		return nil, nil, nil
-	}
-
-	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
-	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
-	if len(split) < 3 {
-		if len(split) < 2 {
-			return &url, nil, nil
-		}
-		return &url, to.Ptr(split[1]), nil
-	}
-
-	return &url, to.Ptr(split[1]), to.Ptr(split[2])
 }

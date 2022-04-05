@@ -89,7 +89,7 @@ type GetSecretResponse struct {
 }
 
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return GetSecretResponse{
 		Secret: &Secret{
 			Properties: &Properties{
@@ -154,7 +154,7 @@ type SetSecretResponse struct {
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return SetSecretResponse{
 		Secret: &Secret{
 			Properties: &Properties{
@@ -207,7 +207,7 @@ type DeleteSecretResponse struct {
 }
 
 func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
 			ID: i.ID,
@@ -374,7 +374,7 @@ type GetDeletedSecretResponse struct {
 
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return GetDeletedSecretResponse{
 		DeletedSecret: DeletedSecret{
 			Properties: &Properties{
@@ -429,7 +429,7 @@ type UpdateSecretPropertiesResponse struct {
 }
 
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return UpdateSecretPropertiesResponse{
 		Secret: &Secret{
 			Properties: &Properties{
@@ -537,7 +537,7 @@ type RestoreSecretBackupResponse struct {
 
 // converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
-	vaultURL, name, version := parseFromID(i.ID)
+	vaultURL, name, version := shared.ParseID(i.ID)
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
 			ID:    i.ID,

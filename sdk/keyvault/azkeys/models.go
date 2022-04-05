@@ -377,7 +377,6 @@ type RotationPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-
 func (u RotationPolicy) toGenerated() generated.KeyRotationPolicy {
 	var attribs *generated.KeyRotationPolicyAttributes
 	if u.Attributes != nil {

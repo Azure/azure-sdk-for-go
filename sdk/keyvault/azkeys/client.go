@@ -1431,10 +1431,6 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 // This operation requires the keys/update permission.
 // Pass nil to use the default options.
 func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, policy RotationPolicy, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
-	if options == nil {
-		options = &UpdateKeyRotationPolicyOptions{}
-	}
-
 	resp, err := c.kvClient.UpdateKeyRotationPolicy(
 		ctx,
 		c.vaultUrl,

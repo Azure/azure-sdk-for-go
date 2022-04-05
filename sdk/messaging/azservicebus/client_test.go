@@ -55,7 +55,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
-	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
+	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, nil)
@@ -69,7 +69,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
 
 	for _, m := range messages {
-		err = receiver.CompleteMessage(context.TODO(), m)
+		err = receiver.CompleteMessage(context.TODO(), m, nil)
 		require.NoError(t, err)
 	}
 
@@ -104,7 +104,7 @@ func TestNewClientWithWebsockets(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	// we have to test this down here since the connection is lazy initialized.
@@ -141,7 +141,7 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
@@ -172,7 +172,7 @@ func TestNewClientNewSenderNotFound(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
 	defer cancel()
 
-	err = sender.SendMessage(ctx, &Message{Body: []byte("hello")})
+	err = sender.SendMessage(ctx, &Message{Body: []byte("hello")}, nil)
 	assertRPCNotFound(t, err)
 }
 

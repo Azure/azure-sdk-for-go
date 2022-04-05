@@ -49,7 +49,7 @@ func IdleFastReconnect(remainingArgs []string) {
 
 	err = sender.SendMessage(context.Background(), &azservicebus.Message{
 		Body: []byte("hello"),
-	})
+	}, nil)
 
 	if err != nil {
 		log.Printf("%#v", err)
@@ -86,7 +86,7 @@ func IdleFastReconnect(remainingArgs []string) {
 
 	err = sender.SendMessage(ctx, &azservicebus.Message{
 		Body: []byte("hello"),
-	})
+	}, nil)
 
 	if err != nil {
 		panic(err)

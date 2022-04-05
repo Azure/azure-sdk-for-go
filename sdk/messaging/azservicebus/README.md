@@ -27,7 +27,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ```
 
 ### Prerequisites
-- Go, version 1.16 or higher
+- Go, version 1.18 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/).
 - A Service Bus Queue, Topic or Subscription. You can create an entity in your Service Bus Namespace using the [Azure Portal](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal), or the [Azure CLI](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-cli).

@@ -72,7 +72,7 @@ func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionNa
 
 		for _, msg := range messages {
 			go func(msg *azservicebus.ReceivedMessage) {
-				err := receiver.CompleteMessage(sc.Context, msg)
+				err := receiver.CompleteMessage(sc.Context, msg, nil)
 				sc.LogIfFailed("complete failed", err, stats)
 
 				if err == nil {
@@ -103,7 +103,7 @@ func continuallySend(sc *shared.StressContext, queueName string) {
 	for t := range ticker.C {
 		err := sender.SendMessage(ctx, &azservicebus.Message{
 			Body: []byte(fmt.Sprintf("hello world: %s", t.String())),
-		})
+		}, nil)
 
 		atomic.AddInt32(&senderStats.Sent, 1)
 		sc.TrackMetric(MetricMessageSent, 1)

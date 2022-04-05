@@ -41,7 +41,7 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 			ApplicationProperties: map[string]interface{}{
 				"Number": i,
 			},
-		})
+		}, nil)
 		sc.PanicOnError("failed add/sending a batch", err)
 	}
 

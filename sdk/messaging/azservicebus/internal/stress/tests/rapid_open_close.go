@@ -29,7 +29,7 @@ func RapidOpenCloseTest(remainingArgs []string) {
 
 		err = sender.SendMessage(context.Background(), &azservicebus.Message{
 			Body: []byte("ping"),
-		})
+		}, nil)
 		sc.PanicOnError("failed to send message", err)
 
 		err = sender.Close(sc.Context)

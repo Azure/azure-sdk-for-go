@@ -291,9 +291,7 @@ func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetProperti
 
 // GetPropertiesResponse contains response fields for Client.GetProperties
 type GetPropertiesResponse struct {
-	// Properties are the properties for a service account. These properties
-	// include logging, metrics, and cors rule for the account.
-	Properties ServiceProperties
+	ServiceProperties
 }
 
 func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesResponse) GetPropertiesResponse {
@@ -302,7 +300,7 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 		cors = append(cors, fromGeneratedCors(c))
 	}
 	return GetPropertiesResponse{
-		Properties: ServiceProperties{
+		ServiceProperties: ServiceProperties{
 			Cors:          cors,
 			HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
 			Logging:       fromGeneratedLogging(g.Logging),

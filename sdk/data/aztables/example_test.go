@@ -547,20 +547,20 @@ func ExampleServiceClient_SetProperties() {
 		panic(err)
 	}
 
-	getResp.Properties.HourMetrics = &aztables.Metrics{
+	getResp.HourMetrics = &aztables.Metrics{
 		Enabled: to.Ptr(true),
 	}
-	getResp.Properties.Logging = &aztables.Logging{
+	getResp.Logging = &aztables.Logging{
 		Delete: to.Ptr(true),
 		Read:   to.Ptr(true),
 		Write:  to.Ptr(true),
 	}
-	getResp.Properties.Cors = append(getResp.Properties.Cors, &aztables.CorsRule{
+	getResp.Cors = append(getResp.Cors, &aztables.CorsRule{
 		AllowedHeaders: to.Ptr("x-allowed-header"),
 		AllowedMethods: to.Ptr("POST,GET"),
 	})
 
-	_, err = service.SetProperties(context.TODO(), getResp.Properties, nil)
+	_, err = service.SetProperties(context.TODO(), getResp.ServiceProperties, nil)
 	if err != nil {
 		panic(err)
 	}

@@ -674,7 +674,7 @@ func (t Client) GetTableSASURL(permissions SASPermissions, start time.Time, expi
 		StartRowKey:       permissions.StartRowKey,
 		EndPartitionKey:   permissions.EndPartitionKey,
 		EndRowKey:         permissions.EndRowKey,
-	}.NewSASQueryParameters(t.cred)
+	}.Sign(t.cred)
 	if err != nil {
 		return "", err
 	}
@@ -683,6 +683,6 @@ func (t Client) GetTableSASURL(permissions SASPermissions, start time.Time, expi
 	if !strings.Contains(serviceURL, "/") {
 		serviceURL += "/"
 	}
-	serviceURL += t.name + "?" + qps.Encode()
+	serviceURL += t.name + "?" + qps
 	return serviceURL, nil
 }

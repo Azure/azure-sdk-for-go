@@ -33,11 +33,13 @@ const (
 
 // SetEvents is used to control which events are written to
 // the log.  By default all log events are writen.
+// NOTE: this is not goroutine safe and should be called before using SDK clients.
 func SetEvents(cls ...Event) {
 	log.SetEvents(cls...)
 }
 
 // SetListener will set the Logger to write to the specified Listener.
+// NOTE: this is not goroutine safe and should be called before using SDK clients.
 func SetListener(lst func(Event, string)) {
 	log.SetListener(lst)
 }

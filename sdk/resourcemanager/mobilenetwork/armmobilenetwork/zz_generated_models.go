@@ -41,7 +41,7 @@ type AttachedDataNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -172,7 +172,7 @@ type DataNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -314,6 +314,15 @@ type InterfaceProperties struct {
 	// REQUIRED; The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge
 	// machine.
 	Name *string `json:"name,omitempty"`
+
+	// The IPv4 address.
+	IPv4Address *string `json:"ipv4Address,omitempty"`
+
+	// The default IPv4 gateway (router).
+	IPv4Gateway *string `json:"ipv4Gateway,omitempty"`
+
+	// The IPv4 subnet.
+	IPv4Subnet *string `json:"ipv4Subnet,omitempty"`
 }
 
 // ListResult - Response for mobile networks API service call.
@@ -350,7 +359,7 @@ type MobileNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -496,7 +505,7 @@ type PacketCoreControlPlane struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -607,7 +616,7 @@ type PacketCoreDataPlane struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -844,6 +853,9 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -871,7 +883,7 @@ type Service struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1025,7 +1037,7 @@ type Sim struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1123,7 +1135,7 @@ type SimPolicy struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1231,18 +1243,17 @@ type SimPropertiesFormat struct {
 	// data network, slice}.
 	StaticIPConfiguration []*SimStaticIPProperties `json:"staticIpConfiguration,omitempty"`
 
-	// READ-ONLY; The configuration state of the sim resource - complete or incomplete.
-	ConfigurationState *ConfigurationState `json:"configurationState,omitempty" azure:"ro"`
-
 	// READ-ONLY; The provisioning state of the sim resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The state of the sim resource.
+	SimState *SimState `json:"simState,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SimPropertiesFormat.
 func (s SimPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "authenticationKey", s.AuthenticationKey)
-	populate(objectMap, "configurationState", s.ConfigurationState)
 	populate(objectMap, "deviceType", s.DeviceType)
 	populate(objectMap, "integratedCircuitCardIdentifier", s.IntegratedCircuitCardIdentifier)
 	populate(objectMap, "internationalMobileSubscriberIdentity", s.InternationalMobileSubscriberIdentity)
@@ -1250,6 +1261,7 @@ func (s SimPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "operatorKeyCode", s.OperatorKeyCode)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "simPolicy", s.SimPolicy)
+	populate(objectMap, "simState", s.SimState)
 	populate(objectMap, "staticIpConfiguration", s.StaticIPConfiguration)
 	return json.Marshal(objectMap)
 }
@@ -1322,7 +1334,7 @@ type Site struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1418,7 +1430,7 @@ type Slice struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1632,6 +1644,9 @@ type TrackedResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1642,6 +1657,7 @@ func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
 	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
 	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)

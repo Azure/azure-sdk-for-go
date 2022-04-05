@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -126,7 +127,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 	}
 }
 
-func TestReceiver_ReceiveMessages_DrainTimeout(t *testing.T) {
+func TestReceiver_ReceiveMessages_DrainTimeout_SomeMessagesReceived(t *testing.T) {
 	// all the receive modes work the same when there are no messages
 	for _, mode := range receiveModesForTests {
 		t.Run(mode.Name, func(t *testing.T) {
@@ -165,6 +166,55 @@ func TestReceiver_ReceiveMessages_DrainTimeout(t *testing.T) {
 			// even if that means "erasing" the error.
 			require.NoError(t, err)
 			require.Equal(t, []string{"hello"}, getSortedBodies(messages))
+
+			// since ReceiveAndDelete messages would be lost we always flush any messages that might
+			// be sitting in the link before we throw the instance away.
+			require.Equal(t, 1, fakeAMQPReceiver.PrefetchedCalled, "prefetched before throwing away the broken link")
+
+			// a drain timeout means we need to close our links as we no longer know the true state of it.
+			require.Equal(t, 1, fakeAMQPLinks.Closed, "links are closed using Close(), not CloseIfNeeded()")
+			require.Equal(t, 0, fakeAMQPLinks.CloseIfNeededCalled, "links are not closed using CloseIfNeeded()")
+		})
+	}
+}
+
+func TestReceiver_ReceiveMessages_DrainTimeout_NoMessagesReceived(t *testing.T) {
+	// When no messages are received we enter into a separate flow where we are deciding
+	// if we want to return the error or not.
+	for _, mode := range receiveModesForTests {
+		t.Run(mode.Name, func(t *testing.T) {
+			fakeAMQPReceiver := &internal.FakeAMQPReceiver{
+				ReceiveResults: []struct {
+					M *amqp.Message
+					E error
+				}{
+					{E: context.DeadlineExceeded},
+				},
+				DrainCreditImpl: func(ctx context.Context) error {
+					// simulate the "drain never comes back" situation.
+					// We have a timer now that stops it from hanging forever.
+					<-ctx.Done()
+					return ctx.Err()
+				},
+			}
+
+			fakeAMQPLinks := &internal.FakeAMQPLinks{
+				Receiver: fakeAMQPReceiver,
+			}
+
+			receiver, err := newReceiver(newReceiverArgs{
+				ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
+				entity: entity{Queue: "queue"},
+			}, &ReceiverOptions{ReceiveMode: mode.Val})
+			require.NoError(t, err)
+
+			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+			// the timeout occurred in drain. This isn't fatal to the user, even if we received
+			// _no_ messages.
+			require.NoError(t, err)
+			require.Empty(t, messages)
+
+			require.Equal(t, 1, fakeAMQPReceiver.DrainCalled, "drain was called")
 
 			// since ReceiveAndDelete messages would be lost we always flush any messages that might
 			// be sitting in the link before we throw the instance away.
@@ -251,18 +301,41 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 }
 
 func TestReceiverCancellationUnitTests(t *testing.T) {
-	r := &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			Receiver: &internal.FakeAMQPReceiver{},
-		},
-	}
+	t.Run("ImmediatelyCancelled", func(t *testing.T) {
+		r := &Receiver{
+			amqpLinks: &internal.FakeAMQPLinks{
+				Receiver: &internal.FakeAMQPReceiver{},
+			},
+		}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
 
-	msgs, err := r.ReceiveMessages(ctx, 95, nil)
-	require.Empty(t, msgs)
-	require.True(t, internal.IsCancelError(err))
+		msgs, err := r.ReceiveMessages(ctx, 95, nil)
+		require.Empty(t, msgs)
+		require.True(t, internal.IsCancelError(err))
+	})
+
+	t.Run("CancelledWhileReceiving", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+
+		r := &Receiver{
+			defaultTimeAfterFirstMsg: time.Second,
+			defaultDrainTimeout:      time.Second,
+			amqpLinks: &internal.FakeAMQPLinks{
+				Receiver: &internal.FakeAMQPReceiver{
+					ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
+						cancel()
+						return nil, ctx.Err()
+					},
+				},
+			},
+		}
+
+		msgs, err := r.ReceiveMessages(ctx, 95, nil)
+		require.Empty(t, msgs)
+		require.ErrorIs(t, err, context.Canceled)
+	})
 }
 
 func TestReceiverOptions(t *testing.T) {

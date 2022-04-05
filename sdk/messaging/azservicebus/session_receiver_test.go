@@ -21,7 +21,7 @@ import (
 
 func TestSessionReceiver_acceptSession(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -33,7 +33,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
-		SessionID: to.StringPtr("session-1"),
+		SessionID: to.Ptr("session-1"),
 	})
 	require.NoError(t, err)
 
@@ -64,7 +64,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -76,13 +76,13 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
-		SessionID: to.StringPtr(""),
+		SessionID: to.Ptr(""),
 	})
 	require.NoError(t, err)
 
 	sequenceNumbers, err := sender.ScheduleMessages(ctx, []*Message{{
 		Body:      []byte("session-based message"),
-		SessionID: to.StringPtr(""),
+		SessionID: to.Ptr(""),
 	}}, time.Now())
 	require.NoError(t, err)
 	require.NotEmpty(t, sequenceNumbers)
@@ -122,7 +122,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 
 func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -143,7 +143,7 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 
 func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -154,7 +154,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
-		SessionID: to.StringPtr("acceptnextsession-test"),
+		SessionID: to.Ptr("acceptnextsession-test"),
 	})
 	require.NoError(t, err)
 
@@ -188,7 +188,7 @@ func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 	t.Skip("Really slow test (since it has to wait for a timeout from the service)")
 
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -211,7 +211,7 @@ func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 
 func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -239,7 +239,7 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 
 func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -251,7 +251,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body:      []byte("hello world"),
-		SessionID: to.StringPtr("session-1"),
+		SessionID: to.Ptr("session-1"),
 	})
 	require.NoError(t, err)
 
@@ -266,7 +266,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 
 func TestSessionReceiver_Detach(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	})
 	defer cleanup()
 
@@ -287,7 +287,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body:      []byte("hello"),
-		SessionID: to.StringPtr("test-session"),
+		SessionID: to.Ptr("test-session"),
 	})
 	require.NoError(t, err)
 	require.NoError(t, sender.Close(context.Background()))
@@ -298,7 +298,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 
 	// force a detach to happen
 	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	}, nil)
 	require.NoError(t, err)
 
@@ -308,7 +308,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 
 	// force a detach to happen
 	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
-		RequiresSession: to.BoolPtr(true),
+		RequiresSession: to.Ptr(true),
 	}, nil)
 	require.NoError(t, err)
 

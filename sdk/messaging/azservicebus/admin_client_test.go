@@ -24,7 +24,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -37,10 +37,12 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.Namespace), forwardToQueueName)
 
-	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
-		ForwardTo:                     &formatted,
-		ForwardDeadLetteredMessagesTo: &formatted,
-	}, nil)
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+		Properties: &admin.QueueProperties{
+			ForwardTo:                     &formatted,
+			ForwardDeadLetteredMessagesTo: &formatted,
+		},
+	})
 
 	require.NoError(t, err)
 	defer func() {
@@ -87,7 +89,7 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	defer client.Close(context.Background())
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, queueName)
@@ -144,10 +146,10 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
+	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 	require.NotNil(t, addSubResp)
 	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)

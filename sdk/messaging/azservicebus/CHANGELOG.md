@@ -15,6 +15,59 @@
   to appear to hang. (#17382)
 - Fixed issue where a cancellation on ReceiveMessages() would work, but wouldn't return the proper cancellation error. (#17422)
 
+### Breaking Changes
+
+- The `admin.Client` type has been changed to conform with the latest Azure Go SDK guidelines. As part of this:
+  - Embedded `*Result` structs in `admin.Client`'s APIs have been removed. Inner *Properties values have been hoisted up to the `*Response` instead.
+  - `.Response` fields have been removed for successful results. These will be added back using a     different pattern in the next release.
+  - Fields that were of type `time.Duration` have been changed to `*string`, where the value of the string is an ISO8601 timestamp. 
+    Affected fields from Queues, Topics and Subscriptions: AutoDeleteOnIdle, DefaultMessageTimeToLive, DuplicateDetectionHistoryTimeWindow, LockDuration.    
+  - Properties that were passed as a parameter to CreateQueue, CreateTopic or CreateSubscription are now in the `options` parameter (as they were optional):
+    Previously:
+    ```go
+    // older code
+    adminClient.CreateQueue(context.Background(), queueName, &queueProperties, nil)	  
+    ```
+
+    And now:
+    ```go
+    // new code
+    adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+      Properties: queueProperties,
+    })
+    ```  
+  - Pagers have been changed to use the new generics-based `runtime.Pager`:
+  
+    Previously:
+    ```go
+    // older code
+    for queuePager.NextPage(context.TODO()) {
+		  for _, queue := range queuePager.PageResponse().Items {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    
+    if err := queuePager.Err(); err != nil {
+      panic(err)
+    }
+    ```
+    And now:
+
+    ```go
+    // new code
+    for queuePager.More() {
+		  page, err := queuePager.NextPage(context.TODO())
+
+		  if err != nil {
+			  panic(err)
+		  }
+
+		  for _, queue := range page.Queues {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    ```
+
 ## 0.3.6 (2022-03-08)
 
 ### Bugs Fixed

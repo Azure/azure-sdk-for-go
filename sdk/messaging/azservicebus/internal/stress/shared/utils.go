@@ -54,20 +54,21 @@ func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
-	autoDeleteOnIdle := 10 * time.Minute
-
 	var newQP admin.QueueProperties
 
 	if qp != nil {
 		newQP = *qp
 	}
 
+	autoDeleteOnIdle := "PT10M"
 	newQP.AutoDeleteOnIdle = &autoDeleteOnIdle
 
 	// mostly useful for tracking backwards in case something goes wrong.
 	newQP.UserMetadata = &sc.TestRunID
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &newQP, nil)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+		Properties: &newQP,
+	})
 	sc.PanicOnError("failed to create queue", err)
 }
 
@@ -78,11 +79,11 @@ func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNa
 	ac, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("Failed to create a topic manager", err)
 
-	_, err = ac.CreateTopic(context.Background(), topicName, nil, nil)
+	_, err = ac.CreateTopic(context.Background(), topicName, nil)
 	sc.PanicOnError("Failed to create topic", err)
 
 	for _, name := range subscriptionNames {
-		_, err := ac.CreateSubscription(context.Background(), topicName, name, nil, nil)
+		_, err := ac.CreateSubscription(context.Background(), topicName, name, nil)
 		sc.PanicOnError("Failed to create subscription manager", err)
 	}
 

@@ -62,6 +62,7 @@ type FakeAMQPReceiver struct {
 
 	PrefetchedCalled int
 	ReceiveCalled    int
+	ReceiveFn        func(ctx context.Context) (*amqp.Message, error)
 
 	ReceiveResults []struct {
 		M *amqp.Message
@@ -103,6 +104,10 @@ func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 // is empty, will block on ctx.Done().
 func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	r.ReceiveCalled++
+
+	if r.ReceiveFn != nil {
+		return r.ReceiveFn(ctx)
+	}
 
 	if len(r.ReceiveResults) == 0 {
 		<-ctx.Done()

@@ -9,6 +9,7 @@ package policy
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
@@ -27,6 +28,9 @@ type Request = pipeline.Request
 // ClientOptions contains optional settings for a client's pipeline.
 // All zero-value fields will be initialized with default values.
 type ClientOptions struct {
+	// Cloud specifies a cloud for the client. The default is Azure Public Cloud.
+	Cloud cloud.Configuration
+
 	// Logging configures the built-in logging policy.
 	Logging LogOptions
 

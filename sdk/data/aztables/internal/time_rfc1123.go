@@ -8,14 +8,10 @@
 
 package internal
 
-
-
 import (
 	"strings"
 	"time"
 )
-
-
 
 const (
 	rfc1123JSON = `"` + time.RFC1123 + `"`

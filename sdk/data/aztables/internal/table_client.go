@@ -26,8 +26,8 @@ import (
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
 	endpoint string
-	version Enum0
-	pl runtime.Pipeline
+	version  Enum0
+	pl       runtime.Pipeline
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
@@ -40,8 +40,8 @@ func NewTableClient(endpoint string, version Enum0, options *azcore.ClientOption
 	}
 	client := &TableClient{
 		endpoint: endpoint,
-		version: version,
-		pl: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
+		version:  version,
+		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -836,7 +836,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if options != nil && options.TableACL != nil {
@@ -957,4 +957,3 @@ func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (Tabl
 	}
 	return result, nil
 }
-

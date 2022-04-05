@@ -31,9 +31,6 @@ type ClientCertificateCredentialOptions struct {
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
 	SendCertificateChain bool
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
@@ -61,7 +58,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

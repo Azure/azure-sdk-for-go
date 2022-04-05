@@ -7,6 +7,7 @@
 * Added the `TableName` property to `CreateTableResponse`
 
 ### Breaking Changes
+* This module now requires Go 1.18
 * Removed the `ODataID`, `ODataEditLink`, and `ODataType` on `TableProperties`
 * Removed `ODataMetadata` on `ListTablesPageResponse`
 * Removed `ResponsePreference` on `AddEntityOptions`

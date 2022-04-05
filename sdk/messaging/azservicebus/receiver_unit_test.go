@@ -376,7 +376,7 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 		},
 	}
 
-	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.EqualError(t, err, "links are dead")
 	require.Nil(t, messages)
 
@@ -386,7 +386,7 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 		},
 	}
 
-	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.EqualError(t, err, "receive deferred messages failed")
 	require.Nil(t, messages)
 }

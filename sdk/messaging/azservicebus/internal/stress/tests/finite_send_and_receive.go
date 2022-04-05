@@ -75,7 +75,7 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 				defer cancel()
 
-				err := receiver.CompleteMessage(ctx, msg)
+				err := receiver.CompleteMessage(ctx, msg, nil)
 
 				var rpcCodeErr interface{ RPCCode() int }
 

@@ -66,16 +66,16 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("this message will be auto-forwarded"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
 	require.NoError(t, err)
 
-	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
+	forwardedMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 
-	body, err := forwardedMessage.Body()
+	body, err := forwardedMessages[0].Body()
 	require.NoError(t, err)
 	require.EqualValues(t, "this message will be auto-forwarded", string(body))
 }
@@ -100,13 +100,13 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
 			Body: []byte("hello"),
-		})
+		}, nil)
 		require.NoError(t, err)
 	}
 
 	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{
 		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
+	}, time.Now().Add(2*time.Hour), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, sequenceNumbers)
 
@@ -164,7 +164,7 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	//  Scheduled messages are accounted for in the topic stats.
 	_, err = sender.ScheduleMessages(context.Background(), []*Message{
 		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
+	}, time.Now().Add(2*time.Hour), nil)
 	require.NoError(t, err)
 
 	// validate the topic runtime properties

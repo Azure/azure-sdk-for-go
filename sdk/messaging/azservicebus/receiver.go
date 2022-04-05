@@ -201,8 +201,13 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	return r.receiveMessagesImpl(ctx, maxMessages, options)
 }
 
+// ReceiveDeferredMessagesOptions contains optional parameters for the ReceiveDeferredMessages function.
+type ReceiveDeferredMessagesOptions struct {
+	// For future expansion
+}
+
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
-func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
+func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, "receiveDeferredMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -279,8 +284,13 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 	return receivedMessages, nil
 }
 
+// RenewMessageLockOptions contains optional parameters for the RenewMessageLock function.
+type RenewMessageLockOptions struct {
+	// For future expansion
+}
+
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
-func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
+func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
 	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
@@ -303,8 +313,8 @@ func (r *Receiver) Close(ctx context.Context) error {
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.CompleteMessage(ctx, message)
+func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
+	return r.settler.CompleteMessage(ctx, message, options)
 }
 
 // AbandonMessage will cause a message to be returned to the queue or subscription.
@@ -325,36 +335,6 @@ func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, o
 // or `Client.NewReceiverForSubscription()` using the `ReceiverOptions.SubQueue` option.
 func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return r.settler.DeadLetterMessage(ctx, message, options)
-}
-
-// receiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
-func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
-	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if len(messages) == 0 {
-		return nil, nil
-	}
-
-	return messages[0], nil
-}
-
-// receiveMessage receives a single message, waiting up to `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
-func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveMessagesOptions) (*ReceivedMessage, error) {
-	messages, err := r.ReceiveMessages(ctx, 1, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if len(messages) == 0 {
-		return nil, nil
-	}
-
-	return messages[0], nil
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {

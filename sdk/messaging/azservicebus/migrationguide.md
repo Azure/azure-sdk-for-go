@@ -55,7 +55,7 @@ sender, err := client.NewSender(queueOrTopicName, nil)
 
 sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world"),
-})
+}, nil)
 ```
 
 ### Sending messages in batches
@@ -75,13 +75,13 @@ if err != nil {
 // Add a message to our message batch. This can be called multiple times.
 err = messageBatch.AddMessage(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
-})
+}, nil)
 
 if errors.Is(err, azservicebus.ErrMessageTooLarge) {
   fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
   // send what we have since the batch is full
-  err := sender.SendMessageBatch(context.TODO(), messageBatch)
+  err := sender.SendMessageBatch(context.TODO(), messageBatch, nil)
 
   if err != nil {
     panic(err)
@@ -182,7 +182,7 @@ Now, using `azservicebus`:
 messages, err := receiver.ReceiveMessages(ctx, 10, nil)
 
 for _, message := range messages {
-  err = receiver.CompleteMessage(ctx, message)
+  err = receiver.CompleteMessage(ctx, message, nil)
 }
 ```
 

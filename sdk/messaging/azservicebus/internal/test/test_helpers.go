@@ -99,7 +99,10 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 //
 func CaptureLogsForTest() func() []string {
 	messagesCh := make(chan string, 10000)
+	return CaptureLogsForTestWithChannel(messagesCh)
+}
 
+func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 	setAzLogListener(func(e azlog.Event, s string) {
 		messagesCh <- fmt.Sprintf("[%s] %s", e, s)
 	})

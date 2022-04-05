@@ -34,30 +34,30 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
 		SessionID: to.Ptr("session-1"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.inner.receiveMessage(ctx, nil)
+	messages, err := receiver.inner.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
 
-	body, err := msg.Body()
+	body, err := messages[0].Body()
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", body)
-	require.EqualValues(t, "session-1", *msg.SessionID)
-	require.NoError(t, receiver.CompleteMessage(ctx, msg))
+	require.EqualValues(t, "session-1", *messages[0].SessionID)
+	require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
 
 	require.EqualValues(t, "session-1", receiver.SessionID())
 
-	sessionState, err := receiver.GetSessionState(ctx)
+	sessionState, err := receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.Nil(t, sessionState)
 
-	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
-	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello"), nil))
+	sessionState, err = receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "hello", string(sessionState))
 }
@@ -77,13 +77,13 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
 		SessionID: to.Ptr(""),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	sequenceNumbers, err := sender.ScheduleMessages(ctx, []*Message{{
 		Body:      []byte("session-based message"),
 		SessionID: to.Ptr(""),
-	}}, time.Now())
+	}}, time.Now(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, sequenceNumbers)
 
@@ -102,7 +102,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 		require.NoError(t, err)
 
 		for _, msg := range messages {
-			require.NoError(t, receiver.CompleteMessage(ctx, msg))
+			require.NoError(t, receiver.CompleteMessage(ctx, msg, nil))
 			received = append(received, msg)
 		}
 
@@ -155,7 +155,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	err = sender.SendMessage(ctx, &Message{
 		Body:      []byte("session-based message"),
 		SessionID: to.Ptr("acceptnextsession-test"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	// Using AcceptNextSessionForQueue will let the service determine the next 'available' session
@@ -163,23 +163,23 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.inner.receiveMessage(ctx, nil)
+	messages, err := receiver.inner.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
 
-	body, err := msg.Body()
+	body, err := messages[0].Body()
 	require.NoError(t, err)
 	require.EqualValues(t, "session-based message", body)
-	require.EqualValues(t, "acceptnextsession-test", *msg.SessionID)
-	require.NoError(t, receiver.CompleteMessage(ctx, msg))
+	require.EqualValues(t, "acceptnextsession-test", *messages[0].SessionID)
+	require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
 
 	require.EqualValues(t, "acceptnextsession-test", receiver.SessionID())
 
-	sessionState, err := receiver.GetSessionState(ctx)
+	sessionState, err := receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.Nil(t, sessionState)
 
-	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
-	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello"), nil))
+	sessionState, err = receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "hello", string(sessionState))
 }
@@ -221,15 +221,15 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 
 	// normal receivers are lazy initialized so we need to do _something_ to make sure
 	// the link gets spun up (and thus fails)
-	message, err := receiver.receiveMessage(context.Background(), nil)
-	require.Nil(t, message)
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.Nil(t, messages)
 
 	var amqpError *amqp.Error
 	require.True(t, errors.As(err, &amqpError))
 	require.EqualValues(t, amqpError.Condition, "amqp:not-allowed")
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
 
-	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	messages, err = receiver.PeekMessages(context.Background(), 1, nil)
 	require.Nil(t, messages)
 
 	require.True(t, errors.As(err, &amqpError))
@@ -252,7 +252,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{
 		Body:      []byte("hello world"),
 		SessionID: to.Ptr("session-1"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	messages, err := sessionReceiver.ReceiveMessages(context.Background(), 1, nil)
@@ -260,7 +260,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	require.NotNil(t, messages)
 
 	orig := sessionReceiver.LockedUntil()
-	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
+	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background(), nil))
 	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
 }
 
@@ -288,11 +288,11 @@ func TestSessionReceiver_Detach(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{
 		Body:      []byte("hello"),
 		SessionID: to.Ptr("test-session"),
-	})
+	}, nil)
 	require.NoError(t, err)
 	require.NoError(t, sender.Close(context.Background()))
 
-	state, err := receiver.GetSessionState(context.Background())
+	state, err := receiver.GetSessionState(context.Background(), nil)
 	require.NoError(t, err)
 	require.Nil(t, state)
 
@@ -302,7 +302,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	state, err = receiver.GetSessionState(context.Background())
+	state, err = receiver.GetSessionState(context.Background(), nil)
 	require.NoError(t, err)
 	require.Nil(t, state)
 
@@ -316,7 +316,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, messages)
 
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
 	require.NoError(t, receiver.Close(context.Background()))
 }
 

@@ -33,7 +33,8 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
-	endCapture := test.CaptureLogsForTest()
+	messagesCh := make(chan string, 10000)
+	endCapture := test.CaptureLogsForTestWithChannel(messagesCh)
 	defer endCapture()
 
 	responses := []*rpcTestResp{
@@ -55,8 +56,17 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	var netOpError net.Error
 	require.ErrorAs(t, err, &netOpError)
 
-	logMessages := endCapture()
-	require.Contains(t, logMessages, "[rpctesting] "+responseRouterShutdownMessage)
+LogLoop:
+	for {
+		select {
+		case msg := <-messagesCh:
+			if msg == "[rpctesting] "+responseRouterShutdownMessage {
+				break LogLoop
+			}
+		default:
+			require.Fail(t, "RPC router never shut down")
+		}
+	}
 }
 
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {

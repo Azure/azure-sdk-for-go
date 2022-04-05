@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.7 (Unreleased)
+## 0.4.0 (Unreleased)
 
 ### Features Added
 
@@ -17,6 +17,9 @@
 
 ### Breaking Changes
 
+- This module now requires Go 1.18
+- Multiple functions have had `options` parameters added.
+- `SessionReceiver.RenewMessageLock` has been removed - it isn't used for sessions. SessionReceivers should use `SessionReceiver.RenewSessionLock`.
 - The `admin.Client` type has been changed to conform with the latest Azure Go SDK guidelines. As part of this:
   - Embedded `*Result` structs in `admin.Client`'s APIs have been removed. Inner *Properties values have been hoisted up to the `*Response` instead.
   - `.Response` fields have been removed for successful results. These will be added back using a     different pattern in the next release.

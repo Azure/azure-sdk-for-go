@@ -12,7 +12,7 @@ import (
 )
 
 type settler interface {
-	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
+	CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error
 	AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error
 	DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error
 	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error
@@ -55,8 +55,13 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 	return err
 }
 
+// CompleteMessageOptions contains optional parameters for the CompleteMessage function.
+type CompleteMessageOptions struct {
+	// For future expansion
+}
+
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
 			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)

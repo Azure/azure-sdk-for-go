@@ -45,7 +45,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
 			Body: []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
-		})
+		}, nil)
 		require.NoError(t, err)
 	}
 
@@ -67,7 +67,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 			fmt.Sprintf("[%d]: send five, receive five", i),
 			string(body))
 
-		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i]))
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
 	}
 }
 
@@ -81,7 +81,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -97,7 +97,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 		[]string{"hello"},
 		getSortedBodies(messages))
 
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
 }
 
 func TestReceiverDrainHasError(t *testing.T) {
@@ -110,7 +110,7 @@ func TestReceiverDrainHasError(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -142,7 +142,7 @@ func TestReceiverAbandon(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("send and abandon test"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -159,7 +159,7 @@ func TestReceiverAbandon(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(abandonedMessages))
 
-	require.NoError(t, receiver.CompleteMessage(context.Background(), abandonedMessages[0]))
+	require.NoError(t, receiver.CompleteMessage(context.Background(), abandonedMessages[0], nil))
 }
 
 // Receive has two timeouts - an explicit one (passed in via ReceiveOptions.MaxWaitTime)
@@ -174,7 +174,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("send and abandon test"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -205,7 +205,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
 			Body: []byte(fmt.Sprintf("[%d]: many messages", i)),
-		})
+		}, nil)
 		require.NoError(t, err)
 	}
 
@@ -223,7 +223,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 		allMessages = append(allMessages, messages...)
 
 		for _, message := range messages {
-			require.NoError(t, receiver.CompleteMessage(context.Background(), message))
+			require.NoError(t, receiver.CompleteMessage(context.Background(), message, nil))
 		}
 	}
 
@@ -245,7 +245,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 
 	err = sender.SendMessage(ctx, &Message{
 		Body: []byte("deferring a message"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -263,14 +263,14 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 		sequenceNumbers = append(sequenceNumbers, *m.SequenceNumber)
 	}
 
-	deferredMessages, err := receiver.ReceiveDeferredMessages(ctx, sequenceNumbers)
+	deferredMessages, err := receiver.ReceiveDeferredMessages(ctx, sequenceNumbers, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
 	require.True(t, deferredMessages[0].deferred, "internal flag indicating it was from a deferred receiver method is set")
 
 	for _, m := range deferredMessages {
-		err = receiver.CompleteMessage(ctx, m)
+		err = receiver.CompleteMessage(ctx, m, nil)
 		require.NoError(t, err)
 	}
 }
@@ -288,7 +288,7 @@ func TestReceiverDeferWithReceiveAndDelete(t *testing.T) {
 
 	err = sender.SendMessage(ctx, &Message{
 		Body: []byte("deferring a message"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -311,7 +311,7 @@ func TestReceiverDeferWithReceiveAndDelete(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	messages, err = receiveAndDeleteReceiver.ReceiveDeferredMessages(ctx, sequenceNumbers)
+	messages, err = receiveAndDeleteReceiver.ReceiveDeferredMessages(ctx, sequenceNumbers, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, len(sequenceNumbers), len(messages))
 
@@ -340,12 +340,12 @@ func TestReceiverPeek(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		err := batch.AddMessage(&Message{
 			Body: []byte(fmt.Sprintf("Message %d", i)),
-		})
+		}, nil)
 
 		require.NoError(t, err)
 	}
 
-	err = sender.SendMessageBatch(ctx, batch)
+	err = sender.SendMessageBatch(ctx, batch, nil)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -417,7 +417,7 @@ func TestReceiverDetachWithPeekLock(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 	require.NoError(t, sender.Close(context.Background()))
 
@@ -484,7 +484,7 @@ func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 	require.NoError(t, sender.Close(context.Background()))
 
@@ -528,7 +528,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -540,7 +540,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	lockedUntilOld := messages[0].LockedUntil
 
-	require.NoError(t, receiver.RenewMessageLock(context.Background(), messages[0]))
+	require.NoError(t, receiver.RenewMessageLock(context.Background(), messages[0], nil))
 
 	// these should hopefully be unaffected by clock drift since both values come from
 	// the service's times, not ours.
@@ -553,7 +553,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 
 	endCaptureFn := test.CaptureLogsForTest()
 	defer endCaptureFn()
-	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0])
+	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0], nil)
 	// String matching can go away once we fix #15644
 	// For now it at least provides the user with good context that something is incorrect about their lock token.
 	require.Contains(t, expectedLockBadError.Error(),
@@ -625,7 +625,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 			"bool": true,
 			"uuid": amqp.UUID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}),
 		},
-	}))
+	}, nil))
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
@@ -675,23 +675,23 @@ func TestReceiverMultiReceiver(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
 
 	err = sender2.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world 2"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	messages, err = receiver2.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world 2"}, getSortedBodies(messages))
-	require.NoError(t, receiver2.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver2.CompleteMessage(context.Background(), messages[0], nil))
 }
 
 func TestReceiverMultiTopic(t *testing.T) {
@@ -715,32 +715,32 @@ func TestReceiverMultiTopic(t *testing.T) {
 
 	err = queueSender.SendMessage(context.Background(), &Message{
 		Body: []byte("sent to queue"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	err = otherQueueSender.SendMessage(context.Background(), &Message{
 		Body: []byte("sent to other queue"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	messages, err := queueReceiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"sent to queue"}, getSortedBodies(messages))
-	require.NoError(t, queueReceiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, queueReceiver.CompleteMessage(context.Background(), messages[0], nil))
 
 	otherMessages, err := otherQueueReceiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"sent to other queue"}, getSortedBodies(otherMessages))
-	require.NoError(t, otherQueueReceiver.CompleteMessage(context.Background(), otherMessages[0]))
+	require.NoError(t, otherQueueReceiver.CompleteMessage(context.Background(), otherMessages[0], nil))
 
 	err = otherQueueSender.SendMessage(context.Background(), &Message{
 		Body: []byte("sent to other queue2"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	err = queueSender.SendMessage(context.Background(), &Message{
 		Body: []byte("sent to queue2"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	messages, err = queueReceiver.ReceiveMessages(context.Background(), 1, nil)

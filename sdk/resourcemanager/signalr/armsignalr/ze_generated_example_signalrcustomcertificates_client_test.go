@@ -19,14 +19,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRSharedPrivateLinkResources_List.json
-func ExampleSharedPrivateLinkResourcesClient_List() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomCertificates_List.json
+func ExampleCustomCertificatesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
@@ -44,42 +44,42 @@ func ExampleSharedPrivateLinkResourcesClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRSharedPrivateLinkResources_Get.json
-func ExampleSharedPrivateLinkResourcesClient_Get() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomCertificates_Get.json
+func ExampleCustomCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
-		"<shared-private-link-resource-name>",
 		"<resource-group-name>",
 		"<resource-name>",
+		"<certificate-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.SharedPrivateLinkResourcesClientGetResult)
+	log.Printf("Response result: %#v\n", res.CustomCertificatesClientGetResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
-func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomCertificates_CreateOrUpdate.json
+func ExampleCustomCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<shared-private-link-resource-name>",
 		"<resource-group-name>",
 		"<resource-name>",
-		armsignalr.SharedPrivateLinkResource{
-			Properties: &armsignalr.SharedPrivateLinkResourceProperties{
-				GroupID:               to.StringPtr("<group-id>"),
-				PrivateLinkResourceID: to.StringPtr("<private-link-resource-id>"),
-				RequestMessage:        to.StringPtr("<request-message>"),
+		"<certificate-name>",
+		armsignalr.CustomCertificate{
+			Properties: &armsignalr.CustomCertificateProperties{
+				KeyVaultBaseURI:       to.StringPtr("<key-vault-base-uri>"),
+				KeyVaultSecretName:    to.StringPtr("<key-vault-secret-name>"),
+				KeyVaultSecretVersion: to.StringPtr("<key-vault-secret-version>"),
 			},
 		},
 		nil)
@@ -90,26 +90,22 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.SharedPrivateLinkResourcesClientCreateOrUpdateResult)
+	log.Printf("Response result: %#v\n", res.CustomCertificatesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRSharedPrivateLinkResources_Delete.json
-func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
+// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomCertificates_Delete.json
+func ExampleCustomCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDelete(ctx,
-		"<shared-private-link-resource-name>",
+	client := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
+	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
+		"<certificate-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}

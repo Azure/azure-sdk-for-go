@@ -86,13 +86,13 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 
 // GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
-	Secret *Secret
+	Secret
 }
 
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return GetSecretResponse{
-		Secret: &Secret{
+		Secret: Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -110,6 +110,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 				Name:            name,
 			},
 			ID:    i.ID,
+			Name:  name,
 			Value: i.Value,
 		},
 	}
@@ -150,14 +151,14 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 
 // SetSecretResponse is the response struct for the Client.SetSecret operation.
 type SetSecretResponse struct {
-	Secret *Secret
+	Secret
 }
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return SetSecretResponse{
-		Secret: &Secret{
+		Secret: Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -175,6 +176,7 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 				Name:            name,
 			},
 			ID:    i.ID,
+			Name:  name,
 			Value: i.Value,
 		},
 	}
@@ -429,13 +431,13 @@ func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpd
 
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
-	Secret *Secret
+	Secret
 }
 
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return UpdateSecretPropertiesResponse{
-		Secret: &Secret{
+		Secret: Secret{
 			Properties: &Properties{
 				ContentType:     i.ContentType,
 				CreatedOn:       i.Attributes.Created,
@@ -453,6 +455,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 				Name:            name,
 			},
 			ID:    i.ID,
+			Name:  name,
 			Value: i.Value,
 		},
 	}
@@ -542,6 +545,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
 			ID:    i.ID,
+			Name:  name,
 			Value: i.Value,
 			Properties: &Properties{
 				ContentType:     i.ContentType,

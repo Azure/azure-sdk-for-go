@@ -5,12 +5,21 @@
 ### Features Added
 * Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values
 * Implemented generic pagers from `runtime.Pager` for all List operations
+* Added `Name *string` to `DeletedSecret`, `Properties`, `Secret`, `SecretItem`, and `SecretItem`
+* Added `Client.VaultURL` to determine the vault URL for debugging
+* Adding `ResumeToken` method to pollers for resuming polling at a later date by using the added `ResumeToken` optional parameter on client polling methods
 
 ### Breaking Changes
+* Requires a minimum version of go 1.18
 * Removed `RawResponse` from pollers
+* Removed `DeletionRecoveryLevel`
 * Polling operations return a Poller struct directly instead of a Response envelope
 * Removed `ToPtr` methods
-* Upgrading from a minimum of go1.16 to go1.18
+* `Client.UpdateSecretProperties` takes a `Secret`
+* Renamed `Client.ListSecrets` to `Client.ListPropertiesOfSecrets`
+* Renamed `Client.ListSecretVersions` to `Client.ListPropertiesOfSecretVersions`
+* Renamed `DeletedDate` to `DeletedOn` and `Managed` to `IsManaged`
+* Moved `ContentType`, `Tags`, `KeyID`, and `IsManaged` to `Properties`
 
 ## 0.6.0 (2022-03-08)
 

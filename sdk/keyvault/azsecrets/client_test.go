@@ -104,14 +104,14 @@ func TestSecretTags(t *testing.T) {
 	require.NotNil(t, getResp.Secret.Properties.Name)
 
 	getResp.Secret.Properties.ExpiresOn = to.Ptr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC))
-	updateResp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
+	updateResp, err := client.UpdateSecretProperties(context.Background(), getResp.Secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(updateResp.Secret.Properties.Tags))
 	require.Equal(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
 
 	// Delete the tags
 	updateResp.Secret.Properties.Tags = map[string]string{}
-	updateResp, err = client.UpdateSecretProperties(context.Background(), *updateResp.Secret, nil)
+	updateResp, err = client.UpdateSecretProperties(context.Background(), updateResp.Secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(updateResp.Secret.Properties.Tags))
 	require.NotEqual(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
@@ -353,7 +353,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 		Name:      getResp.Secret.Properties.Name,
 	}
 
-	_, err = client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
+	_, err = client.UpdateSecretProperties(context.Background(), getResp.Secret, nil)
 	require.NoError(t, err)
 
 	getResp, err = client.GetSecret(context.Background(), secret, nil)

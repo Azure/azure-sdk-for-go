@@ -42,6 +42,9 @@ type Secret struct {
 	// The secret id.
 	ID *string `json:"id,omitempty"`
 
+	// The name of the secret
+	Name *string
+
 	// The secret value.
 	Value *string `json:"value,omitempty"`
 }

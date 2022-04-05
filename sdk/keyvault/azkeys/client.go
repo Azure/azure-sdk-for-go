@@ -10,16 +10,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -74,26 +70,6 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 // VaultURL returns a string of the vault URL
 func (c *Client) VaultURL() string {
 	return c.vaultUrl
-}
-
-// parseFromKID parses "https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"
-// into "https://myvaultname.managedhsm.azure.net/", "key1053998307", and "b86c2e6ad9054f4abf69cc185b99aa60"
-func parseFromKID(s *string) (*string, *string, *string) {
-	if s == nil {
-		return nil, nil, nil
-	}
-	parsed, err := url.Parse(*s)
-	if err != nil {
-		return nil, nil, nil
-	}
-
-	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
-	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
-	if len(split) < 3 {
-		return &url, nil, nil
-	}
-
-	return &url, to.Ptr(split[1]), to.Ptr(split[2])
 }
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
@@ -157,7 +133,7 @@ type CreateKeyResponse struct {
 
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -228,7 +204,7 @@ type CreateECKeyResponse struct {
 
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateECKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -306,7 +282,7 @@ type CreateOctKeyResponse struct {
 
 // convert generated response to CreateOCTKeyResponse
 func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateOctKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -387,7 +363,7 @@ type CreateRSAKeyResponse struct {
 
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateRSAKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -494,7 +470,7 @@ type GetKeyResponse struct {
 
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -538,7 +514,7 @@ type GetDeletedKeyResponse struct {
 
 // convert generated response to GetDeletedKeyResponse
 func getDeletedKeyResponseFromGenerated(g generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetDeletedKeyResponse{
 		DeletedKey: DeletedKey{
 			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -605,7 +581,7 @@ type DeleteKeyResponse struct {
 
 // convert interal response to DeleteKeyResponse
 func deleteKeyResponseFromGenerated(g generated.KeyVaultClientDeleteKeyResponse) DeleteKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return DeleteKeyResponse{
 		DeletedKey: DeletedKey{
 			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -691,7 +667,7 @@ func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (D
 		time.Sleep(t)
 	}
 
-	vaultURL, name, version := parseFromKID(s.deleteResponse.Key.Kid)
+	vaultURL, name, version := shared.ParseID(s.deleteResponse.Key.Kid)
 	return DeleteKeyResponse{
 		DeletedKey: DeletedKey{
 			RecoveryID:         s.deleteResponse.RecoveryID,
@@ -883,7 +859,7 @@ type RecoverDeletedKeyResponse struct {
 
 // change recover deleted key reponse to the generated version.
 func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RecoverDeletedKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -960,7 +936,7 @@ type UpdateKeyPropertiesResponse struct {
 
 // convert the internal response to UpdateKeyPropertiesResponse
 func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return UpdateKeyPropertiesResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -1148,7 +1124,7 @@ type RestoreKeyBackupResponse struct {
 
 // converts the generated response to the publicly exposed version.
 func restoreKeyBackupResponseFromGenerated(g generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RestoreKeyBackupResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -1207,7 +1183,7 @@ type ImportKeyResponse struct {
 
 // convert the generated response to the ImportKeyResponse
 func importKeyResponseFromGenerated(g generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
-	vaultURL, name, version := parseFromKID(g.Key.Kid)
+	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return ImportKeyResponse{
 		Key: Key{
 			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
@@ -1304,7 +1280,7 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 		return RotateKeyResponse{}, err
 	}
 
-	vaultURL, name, version := parseFromKID(resp.Key.Kid)
+	vaultURL, name, version := shared.ParseID(resp.Key.Kid)
 	return RotateKeyResponse{
 		Key: Key{
 			Properties:    keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed, vaultURL, resp.Tags),

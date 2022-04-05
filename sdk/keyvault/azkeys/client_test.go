@@ -36,16 +36,6 @@ func TestConstructor(t *testing.T) {
 	require.NotNil(t, client.kvClient)
 }
 
-func TestParsing(t *testing.T) {
-	url, name, version := parseFromKID(to.Ptr("https://myvaultname.managedhsm.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60"))
-	require.NotNil(t, url)
-	require.NotNil(t, name)
-	require.NotNil(t, version)
-	require.Equal(t, "https://myvaultname.managedhsm.azure.net/", *url)
-	require.Equal(t, "key1053998307", *name)
-	require.Equal(t, "b86c2e6ad9054f4abf69cc185b99aa60", *version)
-}
-
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {

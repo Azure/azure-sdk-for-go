@@ -46,23 +46,26 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 	}
 }
 
-// NewRPRegistrationPolicy creates a policy object configured using the specified endpoint,
-// credentials and options.  The policy controls if an unregistered resource provider should
-// automatically be registered. See https://aka.ms/rps-not-found for more information.
-// Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
+// NewRPRegistrationPolicy creates a policy object configured using the specified options.
+// The policy controls whether an unregistered resource provider should automatically be
+// registered. See https://aka.ms/rps-not-found for more information.
+func NewRPRegistrationPolicy(cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}
-	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{shared.EndpointToScope(endpoint)}})
+	conf, err := getConfiguration(&o.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{conf.Audience + "/.default"}})
 	p := &rpRegistrationPolicy{
-		endpoint: endpoint,
+		endpoint: conf.Endpoint,
 		pipeline: runtime.NewPipeline(shared.Module, shared.Version, runtime.PipelineOptions{PerRetry: []pipeline.Policy{authPolicy}}, &o.ClientOptions),
 		options:  *o,
 	}
 	// init the copy
 	setDefaults(&p.options)
-	return p
+	return p, nil
 }
 
 type rpRegistrationPolicy struct {

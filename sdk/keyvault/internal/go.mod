@@ -2,11 +2,9 @@ module github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal
 
 go 1.18
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore
-
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.20.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.2
 	github.com/stretchr/testify v1.7.0
 )
 

@@ -10,35 +10,16 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
-
-// ConfigurationState - The configuration state of the resource - complete or incomplete.
-type ConfigurationState string
-
-const (
-	ConfigurationStateComplete   ConfigurationState = "Complete"
-	ConfigurationStateIncomplete ConfigurationState = "Incomplete"
-)
-
-// PossibleConfigurationStateValues returns the possible values for the ConfigurationState const type.
-func PossibleConfigurationStateValues() []ConfigurationState {
-	return []ConfigurationState{
-		ConfigurationStateComplete,
-		ConfigurationStateIncomplete,
-	}
-}
-
-// ToPtr returns a *ConfigurationState pointing to the current value.
-func (c ConfigurationState) ToPtr() *ConfigurationState {
-	return &c
-}
 
 // CoreNetworkType - Core network type.
 type CoreNetworkType string
 
 const (
-	CoreNetworkTypeEPC    CoreNetworkType = "EPC"
+	// CoreNetworkTypeEPC - EPC / 4G core
+	CoreNetworkTypeEPC CoreNetworkType = "EPC"
+	// CoreNetworkTypeFiveGC - 5G core
 	CoreNetworkTypeFiveGC CoreNetworkType = "5GC"
 )
 
@@ -84,8 +65,10 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 type NaptEnabled string
 
 const (
+	// NaptEnabledDisabled - NAPT is disabled
 	NaptEnabledDisabled NaptEnabled = "Disabled"
-	NaptEnabledEnabled  NaptEnabled = "Enabled"
+	// NaptEnabledEnabled - NAPT is enabled
+	NaptEnabledEnabled NaptEnabled = "Enabled"
 )
 
 // PossibleNaptEnabledValues returns the possible values for the NaptEnabled const type.
@@ -126,7 +109,9 @@ func (c PduSessionType) ToPtr() *PduSessionType {
 type PreemptionCapability string
 
 const (
+	// PreemptionCapabilityMayPreempt - May preempt
 	PreemptionCapabilityMayPreempt PreemptionCapability = "MayPreempt"
+	// PreemptionCapabilityNotPreempt - Cannot preempt
 	PreemptionCapabilityNotPreempt PreemptionCapability = "NotPreempt"
 )
 
@@ -147,8 +132,10 @@ func (c PreemptionCapability) ToPtr() *PreemptionCapability {
 type PreemptionVulnerability string
 
 const (
+	// PreemptionVulnerabilityNotPreemptable - Cannot be preempted
 	PreemptionVulnerabilityNotPreemptable PreemptionVulnerability = "NotPreemptable"
-	PreemptionVulnerabilityPreemptable    PreemptionVulnerability = "Preemptable"
+	// PreemptionVulnerabilityPreemptable - May be preempted
+	PreemptionVulnerabilityPreemptable PreemptionVulnerability = "Preemptable"
 )
 
 // PossiblePreemptionVulnerabilityValues returns the possible values for the PreemptionVulnerability const type.
@@ -199,9 +186,12 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 type SdfDirection string
 
 const (
+	// SdfDirectionBidirectional - Traffic flowing both to and from the UE.
 	SdfDirectionBidirectional SdfDirection = "Bidirectional"
-	SdfDirectionDownlink      SdfDirection = "Downlink"
-	SdfDirectionUplink        SdfDirection = "Uplink"
+	// SdfDirectionDownlink - Traffic flowing from the data network to the UE.
+	SdfDirectionDownlink SdfDirection = "Downlink"
+	// SdfDirectionUplink - Traffic flowing from the UE to the data network.
+	SdfDirectionUplink SdfDirection = "Uplink"
 )
 
 // PossibleSdfDirectionValues returns the possible values for the SdfDirection const type.
@@ -218,11 +208,39 @@ func (c SdfDirection) ToPtr() *SdfDirection {
 	return &c
 }
 
+// SimState - The state of the sim resource.
+type SimState string
+
+const (
+	// SimStateDisabled - The sim is disabled because not all configuration required for enabling is present.
+	SimStateDisabled SimState = "Disabled"
+	// SimStateEnabled - The sim is enabled.
+	SimStateEnabled SimState = "Enabled"
+	// SimStateInvalid - The sim cannot be enabled because some of the associated configuration is invalid.
+	SimStateInvalid SimState = "Invalid"
+)
+
+// PossibleSimStateValues returns the possible values for the SimState const type.
+func PossibleSimStateValues() []SimState {
+	return []SimState{
+		SimStateDisabled,
+		SimStateEnabled,
+		SimStateInvalid,
+	}
+}
+
+// ToPtr returns a *SimState pointing to the current value.
+func (c SimState) ToPtr() *SimState {
+	return &c
+}
+
 // TrafficControlPermission - Traffic control permission.
 type TrafficControlPermission string
 
 const (
+	// TrafficControlPermissionBlocked - Traffic matching this rule is not allowed to flow.
 	TrafficControlPermissionBlocked TrafficControlPermission = "Blocked"
+	// TrafficControlPermissionEnabled - Traffic matching this rule is allowed to flow.
 	TrafficControlPermissionEnabled TrafficControlPermission = "Enabled"
 )
 

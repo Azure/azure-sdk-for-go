@@ -2,13 +2,9 @@ module github.com/Azure/azure-sdk-for-go/sdk/azcore/testdata/perf
 
 go 1.17
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../.
-
-replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../../internal
-
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.22.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.2
 )
 
 require (

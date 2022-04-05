@@ -13,6 +13,7 @@
 - Fixed the RPCLink so it does better handling of connection/link failures. (#17389)
 - Fixed issue where a message lock expiring would cause unnecessary retries. These retries could cause message settlement calls (ex: Receiver.CompleteMessage) 
   to appear to hang. (#17382)
+- Fixed issue where a cancellation on ReceiveMessages() would work, but wouldn't return the proper cancellation error. (#17422)
 
 ## 0.3.6 (2022-03-08)
 

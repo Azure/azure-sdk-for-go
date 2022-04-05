@@ -10,7 +10,7 @@ package armmediaservices
 
 const (
 	moduleName    = "armmediaservices"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.
@@ -832,6 +832,32 @@ func (c H264Complexity) ToPtr() *H264Complexity {
 	return &c
 }
 
+// H264RateControlMode - The video rate control mode
+type H264RateControlMode string
+
+const (
+	// H264RateControlModeABR - Average Bitrate (ABR) mode that hits the target bitrate: Default mode.
+	H264RateControlModeABR H264RateControlMode = "ABR"
+	// H264RateControlModeCBR - Constant Bitrate (CBR) mode that tightens bitrate variations around target bitrate.
+	H264RateControlModeCBR H264RateControlMode = "CBR"
+	// H264RateControlModeCRF - Constant Rate Factor (CRF) mode that targets at constant subjective quality.
+	H264RateControlModeCRF H264RateControlMode = "CRF"
+)
+
+// PossibleH264RateControlModeValues returns the possible values for the H264RateControlMode const type.
+func PossibleH264RateControlModeValues() []H264RateControlMode {
+	return []H264RateControlMode{
+		H264RateControlModeABR,
+		H264RateControlModeCBR,
+		H264RateControlModeCRF,
+	}
+}
+
+// ToPtr returns a *H264RateControlMode pointing to the current value.
+func (c H264RateControlMode) ToPtr() *H264RateControlMode {
+	return &c
+}
+
 // H264VideoProfile - We currently support Baseline, Main, High, High422, High444. Default is Auto.
 type H264VideoProfile string
 
@@ -905,6 +931,8 @@ const (
 	H265VideoProfileAuto H265VideoProfile = "Auto"
 	// H265VideoProfileMain - Main profile (https://x265.readthedocs.io/en/default/cli.html?highlight=profile#profile-level-tier)
 	H265VideoProfileMain H265VideoProfile = "Main"
+	// H265VideoProfileMain10 - Main 10 profile (https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding#Main_10)
+	H265VideoProfileMain10 H265VideoProfile = "Main10"
 )
 
 // PossibleH265VideoProfileValues returns the possible values for the H265VideoProfile const type.
@@ -912,6 +940,7 @@ func PossibleH265VideoProfileValues() []H265VideoProfile {
 	return []H265VideoProfile{
 		H265VideoProfileAuto,
 		H265VideoProfileMain,
+		H265VideoProfileMain10,
 	}
 }
 
@@ -1420,6 +1449,32 @@ func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceC
 	return &c
 }
 
+// ProvisioningState - Provisioning state of the asset track.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateFailed - Provisioning state failed.
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateInProgress - Provisioning state in progress.
+	ProvisioningStateInProgress ProvisioningState = "InProgress"
+	// ProvisioningStateSucceeded - Provisioning state succeeded.
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateFailed,
+		ProvisioningStateInProgress,
+		ProvisioningStateSucceeded,
+	}
+}
+
+// ToPtr returns a *ProvisioningState pointing to the current value.
+func (c ProvisioningState) ToPtr() *ProvisioningState {
+	return &c
+}
+
 // PublicNetworkAccess - Whether or not public network access is allowed for resources under the Media Services account.
 type PublicNetworkAccess string
 
@@ -1528,9 +1583,12 @@ type StreamOptionsFlag string
 const (
 	// StreamOptionsFlagDefault - Live streaming with no special latency optimizations.
 	StreamOptionsFlagDefault StreamOptionsFlag = "Default"
-	// StreamOptionsFlagLowLatency - The live event provides lower end to end latency by reducing its internal buffers. This could
-	// result in more client buffering during playback if network bandwidth is low.
+	// StreamOptionsFlagLowLatency - The live event provides lower end to end latency by reducing its internal buffers.
 	StreamOptionsFlagLowLatency StreamOptionsFlag = "LowLatency"
+	// StreamOptionsFlagLowLatencyV2 - The live event is optimized for end to end latency. This option is only available for encoding
+	// live events with RTMP input. The outputs can be streamed using HLS or DASH formats. The outputs' archive or DVR rewind
+	// length is limited to 6 hours. Use "LowLatency" stream option for all other scenarios.
+	StreamOptionsFlagLowLatencyV2 StreamOptionsFlag = "LowLatencyV2"
 )
 
 // PossibleStreamOptionsFlagValues returns the possible values for the StreamOptionsFlag const type.
@@ -1538,6 +1596,7 @@ func PossibleStreamOptionsFlagValues() []StreamOptionsFlag {
 	return []StreamOptionsFlag{
 		StreamOptionsFlagDefault,
 		StreamOptionsFlagLowLatency,
+		StreamOptionsFlagLowLatencyV2,
 	}
 }
 
@@ -1773,5 +1832,30 @@ func PossibleVideoSyncModeValues() []VideoSyncMode {
 
 // ToPtr returns a *VideoSyncMode pointing to the current value.
 func (c VideoSyncMode) ToPtr() *VideoSyncMode {
+	return &c
+}
+
+// Visibility - When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist
+// when requested by a client. When the PlayerVisibility is set to "Hidden", the text will
+// not be available to the client. The default value is "Visible".
+type Visibility string
+
+const (
+	// VisibilityHidden - The track is hidden to video player.
+	VisibilityHidden Visibility = "Hidden"
+	// VisibilityVisible - The track is visible to video player.
+	VisibilityVisible Visibility = "Visible"
+)
+
+// PossibleVisibilityValues returns the possible values for the Visibility const type.
+func PossibleVisibilityValues() []Visibility {
+	return []Visibility{
+		VisibilityHidden,
+		VisibilityVisible,
+	}
+}
+
+// ToPtr returns a *Visibility pointing to the current value.
+func (c Visibility) ToPtr() *Visibility {
 	return &c
 }

@@ -70,6 +70,60 @@ func (p *AccountsClientListByResourceGroupPager) PageResponse() AccountsClientLi
 	return p.current
 }
 
+// AccountsClientListModelsPager provides operations for iterating over paged responses.
+type AccountsClientListModelsPager struct {
+	client    *AccountsClient
+	current   AccountsClientListModelsResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListModelsResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *AccountsClientListModelsPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *AccountsClientListModelsPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.AccountModelListResult.NextLink == nil || len(*p.current.AccountModelListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listModelsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current AccountsClientListModelsResponse page.
+func (p *AccountsClientListModelsPager) PageResponse() AccountsClientListModelsResponse {
+	return p.current
+}
+
 // AccountsClientListPager provides operations for iterating over paged responses.
 type AccountsClientListPager struct {
 	client    *AccountsClient

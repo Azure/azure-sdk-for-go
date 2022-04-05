@@ -42,7 +42,7 @@ func TestApplicable(t *testing.T) {
 func TestNew(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +62,7 @@ func TestNew(t *testing.T) {
 
 func TestNewFail(t *testing.T) {
 	resp := initialResponse()
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -70,7 +70,7 @@ func TestNewFail(t *testing.T) {
 		t.Fatal("expected nil poller")
 	}
 	resp.Header.Set(shared.HeaderLocation, "/must/be/absolute")
-	poller, err = New(resp, "pollerID")
+	poller, err = New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -82,7 +82,7 @@ func TestNewFail(t *testing.T) {
 func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -110,7 +110,7 @@ func TestUpdateSucceeded(t *testing.T) {
 func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}

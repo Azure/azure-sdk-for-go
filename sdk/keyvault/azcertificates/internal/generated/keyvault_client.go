@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -496,32 +496,16 @@ func (client *KeyVaultClient) getCertificateIssuerHandleResponse(resp *http.Resp
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers
 // method.
-func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *runtime.Pager[KeyVaultClientGetCertificateIssuersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateIssuersResponse]{
-		More: func(page KeyVaultClientGetCertificateIssuersResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *KeyVaultClientGetCertificateIssuersPager {
+	return &KeyVaultClientGetCertificateIssuersPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificateIssuersResponse) (KeyVaultClientGetCertificateIssuersResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetCertificateIssuersResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetCertificateIssuersResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetCertificateIssuersResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetCertificateIssuersHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateIssuersResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateIssuerListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetCertificateIssuersCreateRequest creates the GetCertificateIssuers request.
@@ -661,32 +645,16 @@ func (client *KeyVaultClient) getCertificatePolicyHandleResponse(resp *http.Resp
 // certificateName - The name of the certificate.
 // options - KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions
 // method.
-func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *runtime.Pager[KeyVaultClientGetCertificateVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateVersionsResponse]{
-		More: func(page KeyVaultClientGetCertificateVersionsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *KeyVaultClientGetCertificateVersionsPager {
+	return &KeyVaultClientGetCertificateVersionsPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificateVersionsResponse) (KeyVaultClientGetCertificateVersionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetCertificateVersionsResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetCertificateVersionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetCertificateVersionsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetCertificateVersionsHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateVersionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetCertificateVersionsCreateRequest creates the GetCertificateVersions request.
@@ -727,32 +695,16 @@ func (client *KeyVaultClient) GetCertificateVersionsHandleResponse(resp *http.Re
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetCertificatesOptions contains the optional parameters for the KeyVaultClient.GetCertificates
 // method.
-func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *runtime.Pager[KeyVaultClientGetCertificatesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificatesResponse]{
-		More: func(page KeyVaultClientGetCertificatesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *KeyVaultClientGetCertificatesPager {
+	return &KeyVaultClientGetCertificatesPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetCertificatesCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificatesResponse) (KeyVaultClientGetCertificatesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetCertificatesCreateRequest(ctx, vaultBaseURL, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetCertificatesResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetCertificatesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetCertificatesResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetCertificatesHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificatesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetCertificatesCreateRequest creates the GetCertificates request.
@@ -846,32 +798,16 @@ func (client *KeyVaultClient) getDeletedCertificateHandleResponse(resp *http.Res
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates
 // method.
-func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *runtime.Pager[KeyVaultClientGetDeletedCertificatesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedCertificatesResponse]{
-		More: func(page KeyVaultClientGetDeletedCertificatesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *KeyVaultClientGetDeletedCertificatesPager {
+	return &KeyVaultClientGetDeletedCertificatesPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.GetDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
 		},
-		Fetcher: func(ctx context.Context, page *KeyVaultClientGetDeletedCertificatesResponse) (KeyVaultClientGetDeletedCertificatesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.GetDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyVaultClientGetDeletedCertificatesResponse{}, err
-			}
-			resp, err := client.Pl.Do(req)
-			if err != nil {
-				return KeyVaultClientGetDeletedCertificatesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyVaultClientGetDeletedCertificatesResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.GetDeletedCertificatesHandleResponse(resp)
+		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedCertificatesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedCertificateListResult.NextLink)
 		},
-	})
+	}
 }
 
 // GetDeletedCertificatesCreateRequest creates the GetDeletedCertificates request.

@@ -468,6 +468,28 @@ func unmarshalPresetClassification(rawMsg json.RawMessage) (PresetClassification
 	return b, json.Unmarshal(rawMsg, b)
 }
 
+func unmarshalTrackBaseClassification(rawMsg json.RawMessage) (TrackBaseClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TrackBaseClassification
+	switch m["@odata.type"] {
+	case "#Microsoft.Media.AudioTrack":
+		b = &AudioTrack{}
+	case "#Microsoft.Media.TextTrack":
+		b = &TextTrack{}
+	case "#Microsoft.Media.VideoTrack":
+		b = &VideoTrack{}
+	default:
+		b = &TrackBase{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalTrackDescriptorClassification(rawMsg json.RawMessage) (TrackDescriptorClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

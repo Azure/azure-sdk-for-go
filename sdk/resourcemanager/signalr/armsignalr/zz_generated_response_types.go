@@ -335,6 +335,210 @@ type ClientUpdateResult struct {
 	ResourceInfo
 }
 
+// CustomCertificatesClientCreateOrUpdatePollerResponse contains the response from method CustomCertificatesClient.CreateOrUpdate.
+type CustomCertificatesClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *CustomCertificatesClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CustomCertificatesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomCertificatesClientCreateOrUpdateResponse, error) {
+	respType := CustomCertificatesClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomCertificate)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomCertificatesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *CustomCertificatesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CustomCertificatesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomCertificatesClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &CustomCertificatesClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// CustomCertificatesClientCreateOrUpdateResponse contains the response from method CustomCertificatesClient.CreateOrUpdate.
+type CustomCertificatesClientCreateOrUpdateResponse struct {
+	CustomCertificatesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomCertificatesClientCreateOrUpdateResult contains the result from method CustomCertificatesClient.CreateOrUpdate.
+type CustomCertificatesClientCreateOrUpdateResult struct {
+	CustomCertificate
+}
+
+// CustomCertificatesClientDeleteResponse contains the response from method CustomCertificatesClient.Delete.
+type CustomCertificatesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomCertificatesClientGetResponse contains the response from method CustomCertificatesClient.Get.
+type CustomCertificatesClientGetResponse struct {
+	CustomCertificatesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomCertificatesClientGetResult contains the result from method CustomCertificatesClient.Get.
+type CustomCertificatesClientGetResult struct {
+	CustomCertificate
+}
+
+// CustomCertificatesClientListResponse contains the response from method CustomCertificatesClient.List.
+type CustomCertificatesClientListResponse struct {
+	CustomCertificatesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomCertificatesClientListResult contains the result from method CustomCertificatesClient.List.
+type CustomCertificatesClientListResult struct {
+	CustomCertificateList
+}
+
+// CustomDomainsClientCreateOrUpdatePollerResponse contains the response from method CustomDomainsClient.CreateOrUpdate.
+type CustomDomainsClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *CustomDomainsClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CustomDomainsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsClientCreateOrUpdateResponse, error) {
+	respType := CustomDomainsClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *CustomDomainsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// CustomDomainsClientCreateOrUpdateResponse contains the response from method CustomDomainsClient.CreateOrUpdate.
+type CustomDomainsClientCreateOrUpdateResponse struct {
+	CustomDomainsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomDomainsClientCreateOrUpdateResult contains the result from method CustomDomainsClient.CreateOrUpdate.
+type CustomDomainsClientCreateOrUpdateResult struct {
+	CustomDomain
+}
+
+// CustomDomainsClientDeletePollerResponse contains the response from method CustomDomainsClient.Delete.
+type CustomDomainsClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *CustomDomainsClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l CustomDomainsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsClientDeleteResponse, error) {
+	respType := CustomDomainsClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsClientDeletePollerResponse from the provided client and resume token.
+func (l *CustomDomainsClientDeletePollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// CustomDomainsClientDeleteResponse contains the response from method CustomDomainsClient.Delete.
+type CustomDomainsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomDomainsClientGetResponse contains the response from method CustomDomainsClient.Get.
+type CustomDomainsClientGetResponse struct {
+	CustomDomainsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomDomainsClientGetResult contains the result from method CustomDomainsClient.Get.
+type CustomDomainsClientGetResult struct {
+	CustomDomain
+}
+
+// CustomDomainsClientListResponse contains the response from method CustomDomainsClient.List.
+type CustomDomainsClientListResponse struct {
+	CustomDomainsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomDomainsClientListResult contains the result from method CustomDomainsClient.List.
+type CustomDomainsClientListResult struct {
+	CustomDomainList
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationsClientListResult

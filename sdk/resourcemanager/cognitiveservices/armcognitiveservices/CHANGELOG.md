@@ -1,5 +1,35 @@
 # Release History
 
+## 0.4.0 (2022-04-04)
+### Breaking Changes
+
+- Type of `APIProperties.AdditionalProperties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `AccountModel.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientListModelsPager.NextPage(context.Context) bool`
+- New function `AccountModelListResult.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClient.ListModels(string, string, *AccountsClientListModelsOptions) *AccountsClientListModelsPager`
+- New function `*AccountsClientListModelsPager.PageResponse() AccountsClientListModelsResponse`
+- New function `*AccountsClientListModelsPager.Err() error`
+- New struct `AccountModel`
+- New struct `AccountModelListResult`
+- New struct `AccountsClientListModelsOptions`
+- New struct `AccountsClientListModelsPager`
+- New struct `AccountsClientListModelsResponse`
+- New struct `AccountsClientListModelsResult`
+- New struct `ModelDeprecationInfo`
+- New field `ScheduledPurgeDate` in struct `AccountProperties`
+- New field `DynamicThrottlingEnabled` in struct `AccountProperties`
+- New field `DeletionDate` in struct `AccountProperties`
+- New field `ActiveCapacity` in struct `DeploymentScaleSettings`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

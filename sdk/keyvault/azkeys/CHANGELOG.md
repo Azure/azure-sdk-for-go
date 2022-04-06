@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.0 (2022-04-05)
+## 0.5.0 (2022-04-06)
 
 ### Features Added
 * Added the Name property on `Key`

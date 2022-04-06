@@ -43,7 +43,7 @@ func ExampleClient_Encrypt() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(encryptResponse.Result)
+	fmt.Println(encryptResponse.Ciphertext)
 }
 
 func ExampleClient_Decrypt() {
@@ -61,13 +61,13 @@ func ExampleClient_Decrypt() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(encryptResponse.Result)
+	fmt.Println(encryptResponse.Ciphertext)
 
-	decryptResponse, err := client.Decrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, encryptResponse.Result, nil)
+	decryptResponse, err := client.Decrypt(context.TODO(), crypto.EncryptionAlgRSAOAEP, encryptResponse.Ciphertext, nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(decryptResponse.Result)
+	fmt.Println(decryptResponse.Plaintext)
 }
 
 func ExampleClient_WrapKey() {
@@ -88,7 +88,7 @@ func ExampleClient_WrapKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(wrapResp.Result)
+	fmt.Println(wrapResp.EncryptedKey)
 }
 
 func ExampleClient_UnwrapKey() {
@@ -109,14 +109,14 @@ func ExampleClient_UnwrapKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(wrapResp.Result)
+	fmt.Println(wrapResp.EncryptedKey)
 
 	// Unwrap
-	unwrapResp, err := client.UnwrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, wrapResp.Result, nil)
+	unwrapResp, err := client.UnwrapKey(context.TODO(), crypto.WrapAlgRSAOAEP, wrapResp.EncryptedKey, nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(unwrapResp.Result)
+	fmt.Println(unwrapResp.Key)
 }
 
 func ExampleClient_Sign() {
@@ -141,7 +141,7 @@ func ExampleClient_Sign() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(signResponse.Result)
+	fmt.Println(signResponse.Signature)
 }
 
 func ExampleClient_Verify() {
@@ -166,9 +166,9 @@ func ExampleClient_Verify() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(signResponse.Result)
+	fmt.Println(signResponse.Signature)
 
-	verifyResponse, err := client.Verify(context.TODO(), crypto.SignatureAlgRS256, digest, signResponse.Result, nil)
+	verifyResponse, err := client.Verify(context.TODO(), crypto.SignatureAlgRS256, digest, signResponse.Signature, nil)
 	if err != nil {
 		panic(err)
 	}

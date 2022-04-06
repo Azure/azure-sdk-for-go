@@ -54,9 +54,9 @@ func TestClient_EncryptDecrypt(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, encryptResponse)
 
-	decryptResponse, err := cryptoClient.Decrypt(ctx, EncryptionAlgRSAOAEP, encryptResponse.Result, nil)
+	decryptResponse, err := cryptoClient.Decrypt(ctx, EncryptionAlgRSAOAEP, encryptResponse.Ciphertext, nil)
 	require.NoError(t, err)
-	require.Equal(t, decryptResponse.Result, []byte("plaintext"))
+	require.Equal(t, decryptResponse.Plaintext, []byte("plaintext"))
 }
 
 func TestClient_WrapUnwrap(t *testing.T) {
@@ -82,9 +82,9 @@ func TestClient_WrapUnwrap(t *testing.T) {
 	require.NoError(t, err)
 
 	// Unwrap
-	unwrapResp, err := cryptoClient.UnwrapKey(ctx, WrapAlgRSAOAEP, wrapResp.Result, nil)
+	unwrapResp, err := cryptoClient.UnwrapKey(ctx, WrapAlgRSAOAEP, wrapResp.EncryptedKey, nil)
 	require.NoError(t, err)
-	require.Equal(t, keyBytes, unwrapResp.Result)
+	require.Equal(t, keyBytes, unwrapResp.Key)
 
 }
 
@@ -112,7 +112,7 @@ func TestClient_SignVerify(t *testing.T) {
 	signResponse, err := cryptoClient.Sign(ctx, SignatureAlgRS256, digest, nil)
 	require.NoError(t, err)
 
-	verifyResponse, err := cryptoClient.Verify(ctx, SignatureAlgRS256, digest, signResponse.Result, nil)
+	verifyResponse, err := cryptoClient.Verify(ctx, SignatureAlgRS256, digest, signResponse.Signature, nil)
 	require.NoError(t, err)
 	require.True(t, *verifyResponse.IsValid)
 }

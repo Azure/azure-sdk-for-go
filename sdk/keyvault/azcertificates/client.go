@@ -101,7 +101,7 @@ type CreateCertificatePoller struct {
 
 // ResumeToken returns a token for resuming polling at a later time
 func (p *CreateCertificatePoller) ResumeToken() (string, error) {
-	return string(p.resumeToken), nil
+	return p.resumeToken, nil
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -1425,7 +1425,7 @@ type RecoverDeletedCertificatePoller struct {
 
 // ResumeToken returns a token for resuming polling at a later time
 func (p *RecoverDeletedCertificatePoller) ResumeToken() (string, error) {
-	return string(p.resumeToken), nil
+	return p.resumeToken, nil
 }
 
 // Done returns true when the polling operation is completed

@@ -682,8 +682,8 @@ func TestMergeCertificate(t *testing.T) {
 		Subject:            req.Subject,
 		PublicKey:          req.PublicKey,
 		PublicKeyAlgorithm: req.PublicKeyAlgorithm,
-		Signature:          req.Signature,
 		SignatureAlgorithm: req.SignatureAlgorithm,
+		Signature:          req.Signature,
 	}
 
 	certBytes, err := x509.CreateCertificate(rand.Reader, &cert, caCert, req.PublicKey, pkey)

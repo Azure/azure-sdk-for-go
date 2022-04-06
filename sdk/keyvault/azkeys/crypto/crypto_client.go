@@ -127,7 +127,7 @@ type EncryptOptions struct {
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	AuthenticationTag []byte `json:"tag,omitempty"`
+	AuthTag []byte `json:"tag,omitempty"`
 }
 
 func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, value []byte) generated.KeyOperationsParameters {
@@ -136,7 +136,7 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, va
 		Value:     value,
 		AAD:       e.AuthData,
 		Iv:        e.IV,
-		Tag:       e.AuthenticationTag,
+		Tag:       e.AuthTag,
 	}
 }
 

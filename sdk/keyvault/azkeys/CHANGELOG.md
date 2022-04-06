@@ -7,8 +7,8 @@
 
 ### Breaking Changes
 * Requires go 1.18
-* `ListDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListDeletedKeysPage, error)` for paging over deleted keys.
-* `ListPropertiesOfKeyVersionssPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
+* `ListPropertiesOfDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfDeletedKeysPage, error)` for paging over deleted keys.
+* `ListPropertiesOfKeyVersionsPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
 * Removing `RawResponse *http.Response` from `crypto` response types
 
 ## 0.4.0 (2022-03-08)

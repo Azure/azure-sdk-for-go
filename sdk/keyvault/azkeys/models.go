@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Properties - The properties of a key managed by the key vault service.
@@ -27,12 +28,13 @@ type Properties struct {
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
+	// Name of the key
 	Name *string
 
 	// Not before date in UTC.
@@ -46,14 +48,16 @@ type Properties struct {
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
+	// VaultURL for the key
 	VaultURL *string
 
+	// Version of the key
 	Version *string
 }
 
@@ -109,7 +113,7 @@ type Key struct {
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string
 
 	// READ-ONLY; The name of the key
@@ -156,7 +160,7 @@ type JSONWebKey struct {
 	K      []byte    `json:"k,omitempty"`
 	KeyOps []*string `json:"key_ops,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
@@ -237,8 +241,11 @@ type KeyItem struct {
 	// The key management properties.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
+
+	// Name of the key
+	Name *string
 }
 
 // convert *generated.KeyItem to *KeyItem
@@ -247,9 +254,11 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 		return nil
 	}
 
+	_, name, _ := shared.ParseID(i.Kid)
 	return &KeyItem{
 		Properties: keyPropertiesFromGenerated(i.Attributes, nil, nil, nil, i.Managed, nil, i.Tags),
 		ID:         i.Kid,
+		Name:       name,
 	}
 }
 
@@ -279,13 +288,16 @@ type DeletedKeyItem struct {
 	// The key management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
+
+	// Name of the key
+	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC
@@ -305,6 +317,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		return nil
 	}
 
+	_, name, _ := shared.ParseID(i.Kid)
 	return &DeletedKeyItem{
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
@@ -319,6 +332,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
 		},
 		ID:      i.Kid,
+		Name:    name,
 		Tags:    convertGeneratedMap(i.Tags),
 		Managed: i.Managed,
 	}
@@ -399,7 +413,7 @@ func (u RotationPolicy) toGenerated() generated.KeyRotationPolicy {
 
 // RotationPolicyAttributes - The key rotation policy attributes.
 type RotationPolicyAttributes struct {
-	// The expiryTime will be applied on the new key version. It should be at least 28 days.
+	// ExpiresIn will be applied on the new key version. It should be at least 28 days.
 	// It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months: P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
 	// It should be at least 28 days.
 	ExpiresIn *string `json:"expiryTime,omitempty"`

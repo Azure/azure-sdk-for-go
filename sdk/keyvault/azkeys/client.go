@@ -90,7 +90,7 @@ type CreateKeyOptions struct {
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -164,7 +164,7 @@ type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	CurveName *CurveName `json:"crv,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
@@ -252,7 +252,7 @@ type CreateOctKeyOptions struct {
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -325,7 +325,7 @@ type CreateRSAKeyOptions struct {
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
@@ -1159,7 +1159,7 @@ type ImportKeyOptions struct {
 	// The key management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tag contains application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 

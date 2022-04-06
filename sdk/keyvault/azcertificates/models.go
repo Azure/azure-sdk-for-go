@@ -100,7 +100,7 @@ func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string
 
 	return &Properties{
 		Enabled:         g.Enabled,
-		ExpiresOn:         g.Expires,
+		ExpiresOn:       g.Expires,
 		NotBefore:       g.NotBefore,
 		CreatedOn:       g.Created,
 		UpdatedOn:       g.Updated,
@@ -650,9 +650,9 @@ func subjectAlternativeNamesFromGenerated(g *generated.SubjectAlternativeNames) 
 	}
 
 	return &SubjectAlternativeNames{
-		DNSNames: g.DNSNames,
-		Emails:   g.Emails,
-		UserPrincipalNames:     g.Upns,
+		DNSNames:           g.DNSNames,
+		Emails:             g.Emails,
+		UserPrincipalNames: g.Upns,
 	}
 }
 

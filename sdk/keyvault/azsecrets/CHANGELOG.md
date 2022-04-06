@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (2022-04-05)
+## 0.7.0 (2022-04-06)
 
 ### Features Added
 * Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values

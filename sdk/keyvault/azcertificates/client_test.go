@@ -264,6 +264,7 @@ func TestClient_ListCertificates(t *testing.T) {
 	createdCount := 0
 	for i := 0; i < 4; i++ {
 		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		fmt.Println(name)
 		require.NoError(t, err)
 		createCert(t, client, name)
 		defer cleanUp(t, client, name)
@@ -277,6 +278,9 @@ func TestClient_ListCertificates(t *testing.T) {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
 		createdCount -= len(page.Certificates)
+		for _, c := range page.Certificates {
+			fmt.Println(*c.ID)
+		}
 	}
 
 	require.Equal(t, 0, createdCount)

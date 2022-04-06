@@ -74,15 +74,9 @@ type NamespaceProperties struct {
 	Name           string
 }
 
-// GetNamespacePropertiesResult contains the result of Client.GetNamespaceProperties
-type GetNamespacePropertiesResult struct {
-	NamespaceProperties
-}
-
 // GetNamespacePropertiesResponse contains the response fields of Client.GetNamespaceProperties method
 type GetNamespacePropertiesResponse struct {
-	GetNamespacePropertiesResult
-	RawResponse *http.Response
+	NamespaceProperties
 }
 
 // GetNamespacePropertiesOptions contains the optional parameters of Client.GetNamespaceProperties
@@ -91,31 +85,28 @@ type GetNamespacePropertiesOptions struct {
 }
 
 // GetNamespaceProperties gets the properties for the namespace, includings properties like SKU and CreatedTime.
-func (ac *Client) GetNamespaceProperties(ctx context.Context, options *GetNamespacePropertiesOptions) (*GetNamespacePropertiesResponse, error) {
+func (ac *Client) GetNamespaceProperties(ctx context.Context, options *GetNamespacePropertiesOptions) (GetNamespacePropertiesResponse, error) {
 	var body *atom.NamespaceEntry
-	resp, err := ac.em.Get(ctx, "/$namespaceinfo", &body)
+	_, err := ac.em.Get(ctx, "/$namespaceinfo", &body)
 
 	if err != nil {
-		return nil, err
+		return GetNamespacePropertiesResponse{}, err
 	}
 
-	props := &GetNamespacePropertiesResponse{
-		RawResponse: resp,
-		GetNamespacePropertiesResult: GetNamespacePropertiesResult{
-			NamespaceProperties: NamespaceProperties{
-				Name:           body.NamespaceInfo.Name,
-				SKU:            body.NamespaceInfo.MessagingSKU,
-				MessagingUnits: body.NamespaceInfo.MessagingUnits,
-			},
+	props := GetNamespacePropertiesResponse{
+		NamespaceProperties: NamespaceProperties{
+			Name:           body.NamespaceInfo.Name,
+			SKU:            body.NamespaceInfo.MessagingSKU,
+			MessagingUnits: body.NamespaceInfo.MessagingUnits,
 		},
 	}
 
 	if props.CreatedTime, err = atom.StringToTime(body.NamespaceInfo.CreatedTime); err != nil {
-		return nil, err
+		return GetNamespacePropertiesResponse{}, err
 	}
 
 	if props.ModifiedTime, err = atom.StringToTime(body.NamespaceInfo.ModifiedTime); err != nil {
-		return nil, err
+		return GetNamespacePropertiesResponse{}, err
 	}
 	return props, nil
 }
@@ -160,4 +151,66 @@ func (ac *Client) newPagerFunc(baseFragment string, maxPageSize int32, lenV func
 		skip += int32(lenV(pv))
 		return resp, nil
 	}
+}
+
+type entityPager[TFeed interface{ Items() []T }, T any, TFinal any] struct {
+	convertFn    func(*T) (*TFinal, error)
+	maxPageSize  int32
+	baseFragment string
+	em           atom.EntityManager
+
+	eof  bool
+	skip int32
+}
+
+func (ep *entityPager[_, _, _]) More() bool {
+	return !ep.eof
+}
+
+func (ep *entityPager[TFeed, T, TOutput]) Fetcher(ctx context.Context) ([]TOutput, error) {
+	if ep.eof {
+		return nil, nil
+	}
+
+	url := ep.baseFragment + "?"
+	if ep.maxPageSize > 0 {
+		url += fmt.Sprintf("&$top=%d", ep.maxPageSize)
+	}
+
+	if ep.skip > 0 {
+		url += fmt.Sprintf("&$skip=%d", ep.skip)
+	}
+
+	var pv *TFeed
+	_, err := ep.em.Get(ctx, url, &pv)
+
+	if err != nil {
+		ep.eof = true
+		return nil, err
+	}
+
+	if len((*pv).Items()) == 0 {
+		ep.eof = true
+		return nil, nil
+	}
+
+	if len((*pv).Items()) < int(ep.maxPageSize) {
+		ep.eof = true
+	}
+
+	ep.skip += int32(len((*pv).Items()))
+
+	var finalItems []TOutput
+
+	for _, feedItem := range (*pv).Items() {
+		final, err := ep.convertFn(&feedItem)
+
+		if err != nil {
+			return nil, err
+		}
+
+		finalItems = append(finalItems, *final)
+	}
+
+	return finalItems, nil
 }

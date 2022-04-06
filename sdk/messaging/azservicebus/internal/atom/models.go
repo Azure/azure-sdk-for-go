@@ -66,6 +66,10 @@ type (
 	}
 )
 
+func (qf QueueFeed) Items() []QueueEnvelope {
+	return qf.Entries
+}
+
 // Topics
 type (
 	// TopicEntity is the Azure Service Bus description of a Topic for management activities
@@ -120,6 +124,10 @@ type (
 		SubscriptionCount                   *int32        `xml:"SubscriptionCount,omitempty"`
 	}
 )
+
+func (tf TopicFeed) Items() []TopicEnvelope {
+	return tf.Entries
+}
 
 // Subscriptions (and rules)
 type (
@@ -253,6 +261,10 @@ type (
 		ID   string
 	}
 )
+
+func (sf SubscriptionFeed) Items() []SubscriptionEnvelope {
+	return sf.Entries
+}
 
 type (
 	/*

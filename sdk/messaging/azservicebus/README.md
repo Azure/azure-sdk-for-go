@@ -27,7 +27,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ```
 
 ### Prerequisites
-- Go, version 1.16 or higher
+- Go, version 1.18 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/).
 - A Service Bus Queue, Topic or Subscription. You can create an entity in your Service Bus Namespace using the [Azure Portal](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal), or the [Azure CLI](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-cli).
@@ -123,7 +123,7 @@ if err != nil {
 // send a single message
 err = sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world!"),
-})
+}, nil)
 ```
 
 You can also send messages in batches, which can be more efficient than sending them individually
@@ -140,13 +140,13 @@ if err != nil {
 // Add a message to our message batch. This can be called multiple times.
 err = messageBatch.AddMessage(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
-})
+}, nil)
 
 if errors.Is(err, azservicebus.ErrMessageTooLarge) {
   fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
   // send what we have since the batch is full
-  err := sender.SendMessageBatch(context.TODO(), messageBatch)
+  err := sender.SendMessageBatch(context.TODO(), messageBatch, nil)
 
   if err != nil {
     panic(err)
@@ -193,7 +193,7 @@ if err != nil {
 for _, message := range messages {
   // For more information about settling messages:
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-  err = receiver.CompleteMessage(context.TODO(), message)
+  err = receiver.CompleteMessage(context.TODO(), message, nil)
 
   if err != nil {
     panic(err)

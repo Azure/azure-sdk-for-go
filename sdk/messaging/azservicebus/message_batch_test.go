@@ -37,7 +37,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 			ApplicationProperties: map[string]interface{}{
 				"small": "value",
 			},
-		})
+		}, nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, mb.NumMessages())
@@ -60,7 +60,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 				"aFLoat":     100.1,
 				"lotsOfData": string(as2k[:]),
 			},
-		})
+		}, nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, mb.NumMessages())
@@ -79,7 +79,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 		err := mb.AddMessage(&Message{
 			Body: []byte("hello world"),
-		})
+		}, nil)
 
 		require.EqualError(t, err, ErrMessageTooLarge.Error())
 
@@ -93,7 +93,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 		require.EqualValues(t, 0, mb.currentSize)
 		err := mb.AddMessage(&Message{
 			Body: []byte("hello world"),
-		})
+		}, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, 145, mb.currentSize)
 
@@ -102,7 +102,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 		err = mb.AddMessage(&Message{
 			Body: as2k[:],
-		})
+		}, nil)
 		require.EqualError(t, err, ErrMessageTooLarge.Error())
 
 		require.Equal(t, sizeBefore, mb.NumBytes(), "size is unchanged when a message fails to get added")
@@ -121,7 +121,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 				err := mb.AddMessage(&Message{
 					Body: []byte{i},
-				})
+				}, nil)
 
 				require.NoError(t, err)
 			}(i)

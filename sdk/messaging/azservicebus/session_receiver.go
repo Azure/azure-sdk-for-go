@@ -69,7 +69,7 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	sessionReceiver.inner = r
 
 	// temp workaround until we expose the session expiration time from the receiver in go-amqp
-	if err := sessionReceiver.RenewSessionLock(ctx); err != nil {
+	if err := sessionReceiver.RenewSessionLock(ctx, nil); err != nil {
 		_ = sessionReceiver.Close(context.Background())
 		return nil, err
 	}
@@ -119,8 +119,8 @@ func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, 
 }
 
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
-func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
-	return r.inner.ReceiveDeferredMessages(ctx, sequenceNumbers)
+func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
+	return r.inner.ReceiveDeferredMessages(ctx, sequenceNumbers, options)
 }
 
 // PeekMessages will peek messages without locking or deleting messages.
@@ -131,19 +131,14 @@ func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int,
 	return r.inner.PeekMessages(ctx, maxMessageCount, options)
 }
 
-// RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
-func (r *SessionReceiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
-	return r.inner.RenewMessageLock(ctx, msg)
-}
-
 // Close permanently closes the receiver.
 func (r *SessionReceiver) Close(ctx context.Context) error {
 	return r.inner.Close(ctx)
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (r *SessionReceiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.inner.CompleteMessage(ctx, message)
+func (r *SessionReceiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
+	return r.inner.CompleteMessage(ctx, message, options)
 }
 
 // AbandonMessage will cause a message to be returned to the queue or subscription.
@@ -179,8 +174,13 @@ func (sr *SessionReceiver) LockedUntil() time.Time {
 	return sr.lockedUntil
 }
 
+// GetSessionStateOptions contains optional parameters for the GetSessionState function.
+type GetSessionStateOptions struct {
+	// For future expansion
+}
+
 // GetSessionState retrieves state associated with the session.
-func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) {
+func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSessionStateOptions) ([]byte, error) {
 	var sessionState []byte
 
 	err := sr.inner.amqpLinks.Retry(ctx, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -197,16 +197,26 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) 
 	return sessionState, err
 }
 
+// SetSessionStateOptions contains optional parameters for the SetSessionState function.
+type SetSessionStateOptions struct {
+	// For future expansion
+}
+
 // SetSessionState sets the state associated with the session.
-func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) error {
+func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
 	}, sr.inner.retryOptions)
 }
 
+// RenewSessionLockOptions contains optional parameters for the RenewSessionLock function.
+type RenewSessionLockOptions struct {
+	// For future expansion
+}
+
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
-func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
+func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
 	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
 

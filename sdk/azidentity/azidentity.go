@@ -15,6 +15,7 @@ import (
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
@@ -30,23 +31,17 @@ const (
 
 const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
 
-// AuthorityHost is the base URL for Azure Active Directory
-type AuthorityHost string
-
-const (
-	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
-	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
-	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
-)
-
-// setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
-	host := string(authorityHost)
+// setAuthorityHost initializes the authority host for credentials. Precedence is:
+// 1. cloud.Configuration.LoginEndpoint value set by user
+// 2. value of AZURE_AUTHORITY_HOST
+// 3. default: Azure Public Cloud
+func setAuthorityHost(cc cloud.Configuration) (string, error) {
+	host := cc.LoginEndpoint
 	if host == "" {
-		host = string(AzurePublicCloud)
+		if len(cc.Services) > 0 {
+			return "", errors.New("missing LoginEndpoint for specified cloud")
+		}
+		host = cloud.AzurePublicCloud.LoginEndpoint
 		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
 		}

@@ -40,12 +40,17 @@ func newMessageBatch(maxBytes uint64) *MessageBatch {
 	return mb
 }
 
+// AddMessageOptions contains optional parameters for the AddMessage function.
+type AddMessageOptions struct {
+	// For future expansion
+}
+
 // AddMessage adds a message to the batch if the message will not exceed the max size of the batch
 // Returns:
 // - ErrMessageTooLarge if the message cannot fit
 // - a non-nil error for other failures
 // - nil, otherwise
-func (mb *MessageBatch) AddMessage(m *Message) error {
+func (mb *MessageBatch) AddMessage(m *Message, options *AddMessageOptions) error {
 	return mb.addAMQPMessage(m.toAMQPMessage())
 }
 

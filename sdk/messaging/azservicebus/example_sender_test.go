@@ -24,7 +24,7 @@ func ExampleSender_SendMessage_message() {
 		Body: []byte("hello, this is a message"),
 	}
 
-	err = sender.SendMessage(context.TODO(), message)
+	err = sender.SendMessage(context.TODO(), message, nil)
 	exitOnError("Failed to send message", err)
 }
 
@@ -35,7 +35,7 @@ func ExampleSender_SendMessage_messageBatch() {
 	// By calling AddMessage multiple times you can add multiple messages into a
 	// batch. This can help with message throughput, as you can send multiple
 	// messages in a single send.
-	err = batch.AddMessage(&azservicebus.Message{Body: []byte("hello world")})
+	err = batch.AddMessage(&azservicebus.Message{Body: []byte("hello world")}, nil)
 
 	if err != nil {
 		switch err {
@@ -54,7 +54,7 @@ func ExampleSender_SendMessage_messageBatch() {
 
 	// After you add all the messages to the batch you send it using
 	// Sender.SendMessageBatch()
-	err = sender.SendMessageBatch(context.TODO(), batch)
+	err = sender.SendMessageBatch(context.TODO(), batch, nil)
 	exitOnError("Failed to send message batch", err)
 }
 
@@ -67,10 +67,10 @@ func ExampleSender_ScheduleMessages() {
 	sequenceNumbers, err := sender.ScheduleMessages(context.TODO(),
 		[]*azservicebus.Message{
 			{Body: []byte("hello world")},
-		}, time.Now().Add(time.Hour))
+		}, time.Now().Add(time.Hour), nil)
 	exitOnError("Failed to schedule messages", err)
 
-	err = sender.CancelScheduledMessages(context.TODO(), sequenceNumbers)
+	err = sender.CancelScheduledMessages(context.TODO(), sequenceNumbers, nil)
 	exitOnError("Failed to cancel scheduled messages", err)
 
 	// or you can set the `ScheduledEnqueueTime` field on a message when you send it
@@ -81,6 +81,6 @@ func ExampleSender_ScheduleMessages() {
 			Body: []byte("hello world"),
 			// schedule the message to be delivered in an hour.
 			ScheduledEnqueueTime: &future,
-		})
+		}, nil)
 	exitOnError("Failed to schedule messages using SendMessage", err)
 }

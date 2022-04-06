@@ -71,7 +71,7 @@ func MostlyIdleReceiver(remainingArgs []string) {
 				log.Printf("Sending message for duration %s", duration)
 				err := sender.SendMessage(sc.Context, &azservicebus.Message{
 					Body: []byte(fmt.Sprintf("Message for %s", duration)),
-				})
+				}, nil)
 				sc.PanicOnError(fmt.Sprintf("failed sending message for duration %s", duration), err)
 			})
 
@@ -83,7 +83,7 @@ func MostlyIdleReceiver(remainingArgs []string) {
 			stats.AddReceived(int32(len(messages)))
 
 			for _, msg := range messages {
-				err := receiver.CompleteMessage(sc.Context, msg)
+				err := receiver.CompleteMessage(sc.Context, msg, nil)
 				sc.PanicOnError("failed to complete message", err)
 			}
 		}(stats, duration)

@@ -61,8 +61,13 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	return batch, nil
 }
 
+// SendMessageOptions contains optional parameters for the SendMessage function.
+type SendMessageOptions struct {
+	// For future expansion
+}
+
 // SendMessage sends a Message to a queue or topic.
-func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
+func (s *Sender) SendMessage(ctx context.Context, message *Message, options *SendMessageOptions) error {
 	return s.links.Retry(ctx, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
 		defer span.End()
@@ -71,9 +76,14 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
 	}, utils.RetryOptions(s.retryOptions))
 }
 
+// SendMessageBatchOptions contains optional parameters for the SendMessageBatch function.
+type SendMessageBatchOptions struct {
+	// For future expansion
+}
+
 // SendMessageBatch sends a MessageBatch to a queue or topic.
 // Message batches can be created using `Sender.NewMessageBatch`.
-func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) error {
+func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
 	return s.links.Retry(ctx, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
 		defer span.End()
@@ -82,10 +92,15 @@ func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) erro
 	}, utils.RetryOptions(s.retryOptions))
 }
 
+// ScheduleMessagesOptions contains optional parameters for the ScheduleMessages function.
+type ScheduleMessagesOptions struct {
+	// For future expansion
+}
+
 // ScheduleMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
 // Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
-func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, scheduledEnqueueTime time.Time) ([]int64, error) {
+func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, scheduledEnqueueTime time.Time, options *ScheduleMessagesOptions) ([]int64, error) {
 	var amqpMessages []*amqp.Message
 
 	for _, m := range messages {
@@ -97,8 +112,13 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 
 // MessageBatch changes
 
+// CancelScheduledMessagesOptions contains optional parameters for the CancelScheduledMessages function.
+type CancelScheduledMessagesOptions struct {
+	// For future expansion
+}
+
 // CancelScheduledMessages cancels multiple messages that were scheduled.
-func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64) error {
+func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64, options *CancelScheduledMessagesOptions) error {
 	return s.links.Retry(ctx, "cancelScheduledMessage", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.CancelScheduledMessages(ctx, lwv.RPC, sequenceNumbers)
 	}, s.retryOptions)

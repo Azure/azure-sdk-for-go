@@ -48,7 +48,7 @@ type Properties struct {
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -297,7 +297,7 @@ type DeletedKeyItem struct {
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC

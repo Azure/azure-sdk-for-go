@@ -9,7 +9,7 @@
 package generated
 
 const (
-	ModuleName    = "generated"
+	ModuleName    = "azkeys"
 	ModuleVersion = "v0.5.0"
 )
 

@@ -90,7 +90,7 @@ type CreateKeyOptions struct {
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -164,7 +164,7 @@ type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	CurveName *CurveName `json:"crv,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
@@ -252,7 +252,7 @@ type CreateOctKeyOptions struct {
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -325,7 +325,7 @@ type CreateRSAKeyOptions struct {
 	// The public exponent for a RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
@@ -682,7 +682,7 @@ func (s *DeleteKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (D
 
 // ResumeToken returns a token for resuming polling at a later time
 func (s *DeleteKeyPoller) ResumeToken() (string, error) {
-	return string(s.resumeToken), nil
+	return s.resumeToken, nil
 }
 
 // BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
@@ -707,7 +707,8 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 		}
 		resumeToken = string(resumeTokenMarshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &delResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &delResp)
 		if err != nil {
 			return nil, err
 		}
@@ -826,7 +827,8 @@ func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDel
 	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
-// PollUntilDone is the method for the Response.PollUntilDone struct
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// Poll is a wait determined by the t parameter.
 func (p *RecoverDeletedKeyPoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
 		_, err := p.Poll(ctx)
@@ -872,7 +874,7 @@ func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDel
 
 // ResumeToken returns a token for resuming polling at a later time
 func (r *RecoverDeletedKeyPoller) ResumeToken() (string, error) {
-	return string(r.resumeToken), nil
+	return r.resumeToken, nil
 }
 
 // BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
@@ -897,7 +899,8 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 		}
 		resumeToken = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &recoverResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &recoverResp)
 		if err != nil {
 			return nil, err
 		}
@@ -1159,7 +1162,7 @@ type ImportKeyOptions struct {
 	// The key management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Tag contains application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 

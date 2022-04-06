@@ -144,5 +144,5 @@ func PossibleKeyTypeValues() []KeyType {
 
 // convert KeyType to *generated.JSONWebKeyType
 func (j KeyType) toGenerated() *generated.JSONWebKeyType {
-	return generated.JSONWebKeyType(j).ToPtr()
+	return to.Ptr(generated.JSONWebKeyType(j))
 }

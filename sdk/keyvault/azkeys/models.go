@@ -112,8 +112,8 @@ type Key struct {
 	// Key identifier.
 	ID *string
 
-	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	KeyType *KeyType
+	// READ-ONLY; The name of the key
+	Name *string
 }
 
 // convert the options to generated.KeyUpdateParameters struct

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -36,20 +36,20 @@ func (a *Attributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, &a.Created)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Created)
+				delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &a.Enabled)
-			delete(rawMsg, key)
+				err = unpopulate(val, &a.Enabled)
+				delete(rawMsg, key)
 		case "exp":
-			err = unpopulateTimeUnix(val, &a.Expires)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Expires)
+				delete(rawMsg, key)
 		case "nbf":
-			err = unpopulateTimeUnix(val, &a.NotBefore)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.NotBefore)
+				delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, &a.Updated)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -76,7 +76,7 @@ func (b *BackupKeyResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -109,29 +109,29 @@ func (d *DeletedKeyBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Attributes)
+				delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.DeletedDate)
+				delete(rawMsg, key)
 		case "key":
-			err = unpopulate(val, &d.Key)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Key)
+				delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Managed)
+				delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.RecoveryID)
+				delete(rawMsg, key)
 		case "release_policy":
-			err = unpopulate(val, &d.ReleasePolicy)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.ReleasePolicy)
+				delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+				delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Tags)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -163,26 +163,26 @@ func (d *DeletedKeyItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Attributes)
+				delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.DeletedDate)
+				delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, &d.Kid)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Kid)
+				delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Managed)
+				delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.RecoveryID)
+				delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+				delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.Tags)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -231,53 +231,53 @@ func (j *JSONWebKey) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "crv":
-			err = unpopulate(val, &j.Crv)
-			delete(rawMsg, key)
+				err = unpopulate(val, &j.Crv)
+				delete(rawMsg, key)
 		case "d":
 			err = runtime.DecodeByteArray(string(val), &j.D, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "dp":
 			err = runtime.DecodeByteArray(string(val), &j.DP, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "dq":
 			err = runtime.DecodeByteArray(string(val), &j.DQ, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "e":
 			err = runtime.DecodeByteArray(string(val), &j.E, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "k":
 			err = runtime.DecodeByteArray(string(val), &j.K, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "key_ops":
-			err = unpopulate(val, &j.KeyOps)
-			delete(rawMsg, key)
+				err = unpopulate(val, &j.KeyOps)
+				delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, &j.Kid)
-			delete(rawMsg, key)
+				err = unpopulate(val, &j.Kid)
+				delete(rawMsg, key)
 		case "kty":
-			err = unpopulate(val, &j.Kty)
-			delete(rawMsg, key)
+				err = unpopulate(val, &j.Kty)
+				delete(rawMsg, key)
 		case "n":
 			err = runtime.DecodeByteArray(string(val), &j.N, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "p":
 			err = runtime.DecodeByteArray(string(val), &j.P, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "q":
 			err = runtime.DecodeByteArray(string(val), &j.Q, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "qi":
 			err = runtime.DecodeByteArray(string(val), &j.QI, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "key_hsm":
 			err = runtime.DecodeByteArray(string(val), &j.T, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "x":
 			err = runtime.DecodeByteArray(string(val), &j.X, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "y":
 			err = runtime.DecodeByteArray(string(val), &j.Y, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -310,29 +310,29 @@ func (k *KeyAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, &k.Created)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.Created)
+				delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &k.Enabled)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Enabled)
+				delete(rawMsg, key)
 		case "exp":
-			err = unpopulateTimeUnix(val, &k.Expires)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.Expires)
+				delete(rawMsg, key)
 		case "exportable":
-			err = unpopulate(val, &k.Exportable)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Exportable)
+				delete(rawMsg, key)
 		case "nbf":
-			err = unpopulateTimeUnix(val, &k.NotBefore)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.NotBefore)
+				delete(rawMsg, key)
 		case "recoverableDays":
-			err = unpopulate(val, &k.RecoverableDays)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.RecoverableDays)
+				delete(rawMsg, key)
 		case "recoveryLevel":
-			err = unpopulate(val, &k.RecoveryLevel)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.RecoveryLevel)
+				delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, &k.Updated)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -417,19 +417,19 @@ func (k *KeyOperationResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "aad":
 			err = runtime.DecodeByteArray(string(val), &k.AdditionalAuthenticatedData, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "tag":
 			err = runtime.DecodeByteArray(string(val), &k.AuthenticationTag, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "iv":
 			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, &k.Kid)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Kid)
+				delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Result, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -460,19 +460,19 @@ func (k *KeyOperationsParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "aad":
 			err = runtime.DecodeByteArray(string(val), &k.AAD, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Algorithm)
+				delete(rawMsg, key)
 		case "iv":
 			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "tag":
 			err = runtime.DecodeByteArray(string(val), &k.Tag, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -500,14 +500,14 @@ func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentType":
-			err = unpopulate(val, &k.ContentType)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.ContentType)
+				delete(rawMsg, key)
 		case "data":
 			err = runtime.DecodeByteArray(string(val), &k.EncodedPolicy, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "immutable":
-			err = unpopulate(val, &k.Immutable)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Immutable)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -534,7 +534,7 @@ func (k *KeyRestoreParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.KeyBundleBackup, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -571,14 +571,14 @@ func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, &k.Created)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.Created)
+				delete(rawMsg, key)
 		case "expiryTime":
-			err = unpopulate(val, &k.ExpiryTime)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.ExpiryTime)
+				delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, &k.Updated)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &k.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -605,11 +605,11 @@ func (k *KeySignParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Algorithm)
+				delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -647,14 +647,14 @@ func (k *KeyVerifyParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
+				err = unpopulate(val, &k.Algorithm)
+				delete(rawMsg, key)
 		case "digest":
 			err = runtime.DecodeByteArray(string(val), &k.Digest, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Signature, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -681,7 +681,7 @@ func (r *RandomBytes) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &r.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -716,3 +716,4 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
+

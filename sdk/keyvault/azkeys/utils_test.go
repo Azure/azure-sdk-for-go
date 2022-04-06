@@ -210,7 +210,7 @@ func validateKey(t *testing.T, key *Key) {
 	validateProperties(t, key.Properties)
 	require.NotNil(t, key.JSONWebKey)
 	require.NotNil(t, key.ID)
-	require.NotNil(t, key.KeyType)
+	require.NotNil(t, key.Name)
 }
 
 func validateProperties(t *testing.T, props *Properties) {
@@ -221,24 +221,12 @@ func validateProperties(t *testing.T, props *Properties) {
 	if props.Enabled == nil {
 		t.Fatalf("expected Enabled to be not nil")
 	}
-	// if props.ExpiresOn == nil {
-	// 	t.Fatalf("expected ExpiresOn to be not nil")
-	// }
-	// if props.Exportable == nil {
-	// 	t.Fatalf("expected Exportable to be not nil")
-	// }
 	if props.ID == nil {
 		t.Fatalf("expected ID to be not nil")
 	}
-	// if props.Managed == nil {
-	// 	t.Fatalf("expected Managed to be not nil")
-	// }
 	if props.Name == nil {
 		t.Fatalf("expected Name to be not nil")
 	}
-	// if props.NotBefore == nil {
-	// 	t.Fatalf("expected NotBefore to be not nil")
-	// }
 	if props.RecoverableDays == nil {
 		t.Fatalf("expected RecoverableDays to be not nil")
 	}

@@ -2,7 +2,11 @@
 
 ## 0.5.0 (2022-04-05)
 
+### Features Added
+* Added the Name property on `Key`
+
 ### Breaking Changes
+* Requires go 1.18
 * `ListDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListDeletedKeysPage, error)` for paging over deleted keys.
 * `ListPropertiesOfKeyVersionssPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
 * Removing `RawResponse *http.Response` from `crypto` response types
@@ -15,6 +19,7 @@
 * Added a `ToPtr` method on `KeyType` constant
 
 ### Breaking Changes
+* Requires go 1.18
 * Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
 * Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
 * Renamed `JSONWebKeyOperation` to `Operation`.

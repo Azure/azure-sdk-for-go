@@ -396,12 +396,9 @@ func (u RotationPolicy) toGenerated() generated.KeyRotationPolicy {
 	if u.Attributes != nil {
 		attribs = u.Attributes.toGenerated()
 	}
-	var la []*generated.LifetimeActions
-	if la != nil {
-		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
-		for i, l := range u.LifetimeActions {
-			la[i] = l.toGenerated()
-		}
+	la := make([]*generated.LifetimeActions, len(u.LifetimeActions))
+	for i, l := range u.LifetimeActions {
+		la[i] = l.toGenerated()
 	}
 
 	return generated.KeyRotationPolicy{

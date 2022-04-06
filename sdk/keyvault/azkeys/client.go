@@ -23,7 +23,7 @@ import (
 // Client is the struct for interacting with a KeyVault Keys instance
 type Client struct {
 	kvClient *generated.KeyVaultClient
-	vaultUrl string
+	vaultURL string
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -63,13 +63,13 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		kvClient: generated.NewKeyVaultClient(pl),
-		vaultUrl: vaultUrl,
+		vaultURL: vaultUrl,
 	}, nil
 }
 
 // VaultURL returns a string of the vault URL
 func (c *Client) VaultURL() string {
-	return c.vaultUrl
+	return c.vaultURL
 }
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
@@ -77,7 +77,7 @@ type CreateKeyOptions struct {
 	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
 	Curve *CurveName `json:"crv,omitempty"`
 
-	// The attributes of a key managed by the key vault service.
+	// The properties of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`
 
@@ -151,7 +151,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 		options = &CreateKeyOptions{}
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), options.toGenerated())
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultURL, name, options.toKeyCreateParameters(keyType), options.toGenerated())
 	if err != nil {
 		return CreateKeyResponse{}, err
 	}
@@ -170,7 +170,7 @@ type CreateECKeyOptions struct {
 	// Whether to create an EC key with HSM protection
 	HardwareProtected *bool
 
-	// The attributes of a key managed by the key vault service.
+	// The properties of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`
 
@@ -229,7 +229,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 		keyType = KeyTypeECHSM
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultURL, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
 		return CreateECKeyResponse{}, err
 	}
@@ -245,7 +245,7 @@ type CreateOctKeyOptions struct {
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	Size *int32 `json:"key_size,omitempty"`
 
-	// The attributes of a key managed by the key vault service.
+	// The properties of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`
 
@@ -306,7 +306,7 @@ func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateO
 		options = &CreateOctKeyOptions{}
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultURL, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
 		return CreateOctKeyResponse{}, err
 	}
@@ -328,7 +328,7 @@ type CreateRSAKeyOptions struct {
 	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// The attributes of a key managed by the key vault service.
+	// The properties of a key managed by the key vault service.
 	Properties *Properties  `json:"attributes,omitempty"`
 	Operations []*Operation `json:"key_ops,omitempty"`
 
@@ -388,7 +388,7 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 		keyType = KeyTypeRSAHSM
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultURL, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
 		return CreateRSAKeyResponse{}, err
 	}
@@ -435,7 +435,7 @@ func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *run
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetKeysCreateRequest(ctx, c.vaultUrl, &generated.KeyVaultClientGetKeysOptions{})
+				req, err = c.kvClient.GetKeysCreateRequest(ctx, c.vaultURL, &generated.KeyVaultClientGetKeysOptions{})
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -489,7 +489,7 @@ func (c *Client) GetKey(ctx context.Context, name string, options *GetKeyOptions
 		options = &GetKeyOptions{}
 	}
 
-	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, name, options.Version, &generated.KeyVaultClientGetKeyOptions{})
+	resp, err := c.kvClient.GetKey(ctx, c.vaultURL, name, options.Version, &generated.KeyVaultClientGetKeyOptions{})
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
@@ -535,7 +535,7 @@ func (c *Client) GetDeletedKey(ctx context.Context, name string, options *GetDel
 		options = &GetDeletedKeyOptions{}
 	}
 
-	resp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
+	resp, err := c.kvClient.GetDeletedKey(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
@@ -570,7 +570,7 @@ func (c *Client) PurgeDeletedKey(ctx context.Context, name string, options *Purg
 	if options == nil {
 		options = &PurgeDeletedKeyOptions{}
 	}
-	resp, err := c.kvClient.PurgeDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
+	resp, err := c.kvClient.PurgeDeletedKey(ctx, c.vaultURL, name, options.toGenerated())
 	return purgeDeletedKeyResponseFromGenerated(resp), err
 }
 
@@ -696,7 +696,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 	var delResp generated.KeyVaultClientDeleteKeyResponse
 	var err error
 	if options.ResumeToken == nil {
-		delResp, err = c.kvClient.DeleteKey(ctx, c.vaultUrl, name, options.toGenerated())
+		delResp, err = c.kvClient.DeleteKey(ctx, c.vaultURL, name, options.toGenerated())
 		if err != nil {
 			return nil, err
 		}
@@ -714,7 +714,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 		}
 	}
 
-	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, name, nil)
+	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultURL, name, nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -723,7 +723,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 	}
 
 	return &DeleteKeyPoller{
-		vaultUrl:       c.vaultUrl,
+		vaultUrl:       c.vaultURL,
 		keyName:        name,
 		client:         c.kvClient,
 		deleteResponse: delResp,
@@ -771,7 +771,7 @@ func (c *Client) BackupKey(ctx context.Context, name string, options *BackupKeyO
 		options = &BackupKeyOptions{}
 	}
 
-	resp, err := c.kvClient.BackupKey(ctx, c.vaultUrl, name, options.toGenerated())
+	resp, err := c.kvClient.BackupKey(ctx, c.vaultURL, name, options.toGenerated())
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
@@ -888,7 +888,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 	var recoverResp generated.KeyVaultClientRecoverDeletedKeyResponse
 	var err error
 	if options.ResumeToken == nil {
-		recoverResp, err = c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, name, options.toGenerated())
+		recoverResp, err = c.kvClient.RecoverDeletedKey(ctx, c.vaultURL, name, options.toGenerated())
 		if err != nil {
 			return nil, err
 		}
@@ -908,7 +908,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 
 	var getRawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
-	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, name, "", nil)
+	getResp, err := c.kvClient.GetKey(ctx, c.vaultURL, name, "", nil)
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		if httpErr.StatusCode != http.StatusNotFound {
@@ -920,7 +920,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 		lastResponse:    getResp,
 		keyName:         name,
 		client:          c.kvClient,
-		vaultUrl:        c.vaultUrl,
+		vaultUrl:        c.vaultURL,
 		recoverResponse: recoverResp,
 		lastRawResponse: getRawResp,
 		resumeToken:     resumeToken,
@@ -963,7 +963,7 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *Upda
 	}
 	resp, err := c.kvClient.UpdateKey(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		name,
 		version,
 		key.toKeyUpdateParameters(),
@@ -1008,7 +1008,7 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *runtime.Pager
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetDeletedKeysCreateRequest(ctx, c.vaultUrl, options.toGenerated())
+				req, err = c.kvClient.GetDeletedKeysCreateRequest(ctx, c.vaultURL, options.toGenerated())
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -1088,7 +1088,7 @@ func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListProper
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetKeyVersionsCreateRequest(ctx, c.vaultUrl, keyName, options.toGenerated())
+				req, err = c.kvClient.GetKeyVersionsCreateRequest(ctx, c.vaultURL, keyName, options.toGenerated())
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -1146,7 +1146,7 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 		options = &RestoreKeyBackupOptions{}
 	}
 
-	resp, err := c.kvClient.RestoreKey(ctx, c.vaultUrl, generated.KeyRestoreParameters{KeyBundleBackup: keyBackup}, options.toGenerated())
+	resp, err := c.kvClient.RestoreKey(ctx, c.vaultURL, generated.KeyRestoreParameters{KeyBundleBackup: keyBackup}, options.toGenerated())
 	if err != nil {
 		return RestoreKeyBackupResponse{}, err
 	}
@@ -1205,7 +1205,7 @@ func (c *Client) ImportKey(ctx context.Context, name string, key JSONWebKey, opt
 		options = &ImportKeyOptions{}
 	}
 
-	resp, err := c.kvClient.ImportKey(ctx, c.vaultUrl, name, options.toImportKeyParameters(key), &generated.KeyVaultClientImportKeyOptions{})
+	resp, err := c.kvClient.ImportKey(ctx, c.vaultURL, name, options.toImportKeyParameters(key), &generated.KeyVaultClientImportKeyOptions{})
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
@@ -1237,7 +1237,7 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 
 	resp, err := c.kvClient.GetRandomBytes(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		generated.GetRandomBytesRequest{Count: count},
 		options.toGenerated(),
 	)
@@ -1275,7 +1275,7 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 
 	resp, err := c.kvClient.RotateKey(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		keyName,
 		options.toGenerated(),
 	)
@@ -1340,7 +1340,7 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, keyName string, optio
 
 	resp, err := c.kvClient.GetKeyRotationPolicy(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		keyName,
 		options.toGenerated(),
 	)
@@ -1378,7 +1378,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 
 	resp, err := c.kvClient.Release(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
@@ -1436,7 +1436,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, policy RotationPolicy, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	resp, err := c.kvClient.UpdateKeyRotationPolicy(
 		ctx,
-		c.vaultUrl,
+		c.vaultURL,
 		keyName,
 		policy.toGenerated(),
 		&generated.KeyVaultClientUpdateKeyRotationPolicyOptions{},

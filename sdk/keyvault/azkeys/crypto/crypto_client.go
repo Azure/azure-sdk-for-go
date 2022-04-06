@@ -123,11 +123,11 @@ type EncryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AuthData []byte `json:"aad,omitempty"`
 
-	// Initialization vector for symmetric algorithms.
-	IV []byte `json:"iv,omitempty"`
-
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthTag []byte `json:"tag,omitempty"`
+
+	// Initialization vector for symmetric algorithms.
+	IV []byte `json:"iv,omitempty"`
 }
 
 func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, value []byte) generated.KeyOperationsParameters {
@@ -145,14 +145,19 @@ type EncryptResponse struct {
 	// The algorithm used to encrypt
 	Algorithm *EncryptionAlg
 
-	AuthData []byte
+	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+	AuthData []byte `json:"aad,omitempty"`
 
-	AuthTag []byte
+	// The tag to authenticate when performing decryption with an authenticated algorithm.
+	AuthTag []byte `json:"tag,omitempty"`
 
+	// The encrypted data
 	Ciphertext []byte
 
-	IV []byte
+	// Initialization vector for symmetric algorithms.
+	IV []byte `json:"iv,omitempty"`
 
+	// The key ID used to encrypt
 	KeyID *string
 }
 
@@ -199,11 +204,11 @@ type DecryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AuthData []byte `json:"aad,omitempty"`
 
-	// Initialization vector for symmetric algorithms.
-	IV []byte `json:"iv,omitempty"`
-
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthTag []byte `json:"tag,omitempty"`
+
+	// Initialization vector for symmetric algorithms.
+	IV []byte `json:"iv,omitempty"`
 }
 
 func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, value []byte) generated.KeyOperationsParameters {
@@ -334,7 +339,7 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlg, value 
 
 // UnwrapKeyResponse contains the response for the Client.UnwrapKey method
 type UnwrapKeyResponse struct {
-	// Algorithm used to unwrap
+	// Alg used to unwrap
 	Algorithm *WrapAlg
 
 	// The unwrapped data
@@ -431,7 +436,9 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlg, digest []byte
 }
 
 // VerifyOptions contains the optional parameters for the Client.Verify method
-type VerifyOptions struct{}
+type VerifyOptions struct {
+	// placeholder for future optional parameters
+}
 
 func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 	return &generated.KeyVaultClientVerifyOptions{}
@@ -439,14 +446,14 @@ func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 
 // VerifyResponse contains the response for the Client.Verify method
 type VerifyResponse struct {
+	// Algorithm used to verify
+	Algorithm *SignatureAlg
+
 	// READ-ONLY; True if the signature is verified, otherwise false.
 	IsValid *bool `json:"value,omitempty" azure:"ro"`
 
 	// ID for the key used to verify
 	KeyID *string
-
-	// Algorithm used to verify
-	Algorithm *SignatureAlg
 }
 
 func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse, id *string, alg SignatureAlg) VerifyResponse {

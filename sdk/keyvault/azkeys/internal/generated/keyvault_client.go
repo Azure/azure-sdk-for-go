@@ -374,7 +374,7 @@ func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedKeysOptions contains the optional parameters for the KeyVaultClient.GetDeletedKeys method.
-func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) (*runtime.Pager[KeyVaultClientGetDeletedKeysResponse]) {
+func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedKeysResponse]{
 		More: func(page KeyVaultClientGetDeletedKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -543,7 +543,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Resp
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
-func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) (*runtime.Pager[KeyVaultClientGetKeyVersionsResponse]) {
+func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeyVersionsResponse]{
 		More: func(page KeyVaultClientGetKeyVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -610,7 +610,7 @@ func (client *KeyVaultClient) GetKeyVersionsHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
-func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) (*runtime.Pager[KeyVaultClientGetKeysResponse]) {
+func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeysResponse]{
 		More: func(page KeyVaultClientGetKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1357,4 +1357,3 @@ func (client *KeyVaultClient) wrapKeyHandleResponse(resp *http.Response) (KeyVau
 	}
 	return result, nil
 }
-

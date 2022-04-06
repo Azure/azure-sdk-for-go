@@ -55,7 +55,7 @@ type DeletedKeyBundle struct {
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-// be true.
+	// be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
@@ -80,7 +80,7 @@ type DeletedKeyItem struct {
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-// be true.
+	// be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
@@ -93,7 +93,7 @@ type DeletedKeyListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted keys in the vault along with a link to the next page of deleted
-// keys
+	// keys
 	Value []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -133,7 +133,7 @@ type JSONWebKey struct {
 	E []byte `json:"e,omitempty"`
 
 	// Symmetric key.
-	K []byte `json:"k,omitempty"`
+	K      []byte    `json:"k,omitempty"`
 	KeyOps []*string `json:"key_ops,omitempty"`
 
 	// Key identifier.
@@ -185,8 +185,8 @@ type KeyAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
-// the key can be permanently deleted by a privileged user; otherwise, only the system
-// can purge the key, at the end of the retention interval.
+	// the key can be permanently deleted by a privileged user; otherwise, only the system
+	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -208,7 +208,7 @@ type KeyBundle struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-// be true.
+	// be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
@@ -221,8 +221,8 @@ type KeyCreateParameters struct {
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -279,7 +279,7 @@ type KeyItem struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-// be true.
+	// be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
@@ -366,7 +366,7 @@ type KeyReleasePolicy struct {
 	EncodedPolicy []byte `json:"data,omitempty"`
 
 	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
-// under any circumstances.
+	// under any circumstances.
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
@@ -388,8 +388,8 @@ type KeyRotationPolicy struct {
 	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
 
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two
-// items at maximum: one for rotate, one for notify. Notification time would be
-// default to 30 days before expiry and it is not configurable.
+	// items at maximum: one for rotate, one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
 	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
 
 	// READ-ONLY; The key policy id.
@@ -399,7 +399,7 @@ type KeyRotationPolicy struct {
 // KeyRotationPolicyAttributes - The key rotation policy attributes.
 type KeyRotationPolicyAttributes struct {
 	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples:
-// 90 days: P90D, 3 months: P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
+	// 90 days: P90D, 3 months: P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 
 	// READ-ONLY; The key rotation policy created time in UTC.
@@ -594,7 +594,7 @@ type LifetimeActions struct {
 // LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
 type LifetimeActionsTrigger struct {
 	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
-// days : "P90D"
+	// days : "P90D"
 	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
 
 	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
@@ -612,4 +612,3 @@ type RandomBytes struct {
 	// REQUIRED; The bytes encoded as a base64url string.
 	Value []byte `json:"value,omitempty"`
 }
-

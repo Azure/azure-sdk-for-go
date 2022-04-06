@@ -127,4 +127,3 @@ type KeyVaultClientVerifyResponse struct {
 type KeyVaultClientWrapKeyResponse struct {
 	KeyOperationResult
 }
-

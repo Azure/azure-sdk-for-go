@@ -30,7 +30,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		client, err = azsecrets.NewClient(v, cred, nil)
 		if err == nil {
-			pager := client.ListSecrets(nil)
+			pager := client.ListPropertiesOfSecrets(nil)
 			for pager.More() {
 				_, err := pager.NextPage(context.Background())
 				if err != nil {

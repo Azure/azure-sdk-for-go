@@ -6,13 +6,13 @@ replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../../../../azide
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.14.0
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.6.0
+	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.7.0
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.22.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.1 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.2.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.2 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.3.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0 // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/google/uuid v1.1.1 // indirect

@@ -19,7 +19,7 @@ import (
 // AdministratorContact - Details of the organization administrator of the certificate issuer.
 type AdministratorContact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"first_name,omitempty"`
@@ -40,7 +40,7 @@ type Properties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
@@ -56,15 +56,19 @@ type Properties struct {
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
+	// READ-ONLY; The ID of the certificate
 	ID *string
 
+	// READ-ONLY; The name of the certificate
 	Name *string
 
 	// Application specific metadata in the form of key-value pairs
 	Tags map[string]string `json:"tags,omitempty"`
 
+	// READ-ONLY; The vault URL for the certificate
 	VaultURL *string
 
+	// READ-ONLY; The version for the certificate
 	Version *string
 
 	// Thumbprint of the certificate.
@@ -79,7 +83,7 @@ func (c *Properties) toGenerated() *generated.CertificateAttributes {
 	return &generated.CertificateAttributes{
 		Created:         c.CreatedOn,
 		Enabled:         c.Enabled,
-		Expires:         c.Expires,
+		Expires:         c.ExpiresOn,
 		NotBefore:       c.NotBefore,
 		RecoverableDays: c.RecoverableDays,
 		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(c.RecoveryLevel),
@@ -96,7 +100,7 @@ func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string
 
 	return &Properties{
 		Enabled:         g.Enabled,
-		Expires:         g.Expires,
+		ExpiresOn:         g.Expires,
 		NotBefore:       g.NotBefore,
 		CreatedOn:       g.Created,
 		UpdatedOn:       g.Updated,
@@ -119,11 +123,11 @@ type Certificate struct {
 	// CER contents of x509 certificate.
 	CER []byte `json:"cer,omitempty"`
 
-	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
-	ContentType *string `json:"contentType,omitempty"`
-
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the certificate
+	Name *string
 
 	// READ-ONLY; The key ID.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
@@ -161,13 +165,14 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 		return Certificate{}
 	}
 
+	_, name, _ := shared.ParseID(g.ID)
 	return Certificate{
-		Properties:  propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
-		CER:         g.Cer,
-		ContentType: g.ContentType,
-		ID:          g.ID,
-		KeyID:       g.Kid,
-		SecretID:    g.Sid,
+		Properties: propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+		CER:        g.Cer,
+		ID:         g.ID,
+		Name:       name,
+		KeyID:      g.Kid,
+		SecretID:   g.Sid,
 	}
 }
 
@@ -313,7 +318,7 @@ type Policy struct {
 // NewDefaultCertificatePolicy returns a Policy with IssuerName "Self" and Subject "CN=DefaultPolicy"
 func NewDefaultCertificatePolicy() Policy {
 	return Policy{
-		IssuerParameters: &IssuerParameters{IssuerName: (*string)(to.Ptr(WellKnownIssuerSelf))},
+		IssuerParameters: &IssuerParameters{IssuerName: (*string)(to.Ptr(WellKnownIssuerNamesSelf))},
 		X509Properties:   &X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
 	}
 }
@@ -378,7 +383,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 // Contact - The contact information for the vault certificates.
 type Contact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// Name.
 	Name *string `json:"name,omitempty"`
@@ -391,9 +396,9 @@ func contactListFromGenerated(g []*generated.Contact) []*Contact {
 	var ret []*Contact
 	for _, c := range g {
 		ret = append(ret, &Contact{
-			EmailAddress: c.EmailAddress,
-			Name:         c.Name,
-			Phone:        c.Phone,
+			Email: c.EmailAddress,
+			Name:  c.Name,
+			Phone: c.Phone,
 		})
 	}
 	return ret
@@ -416,7 +421,7 @@ func (c *Contacts) toGenerated() generated.Contacts {
 	var contacts []*generated.Contact
 	for _, contact := range c.ContactList {
 		contacts = append(contacts, &generated.Contact{
-			EmailAddress: contact.EmailAddress,
+			EmailAddress: contact.Email,
 			Name:         contact.Name,
 			Phone:        contact.Phone,
 		})
@@ -448,6 +453,9 @@ type DeletedCertificate struct {
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
+	// READ-ONLY; The name of the certificate
+	Name *string
+
 	// READ-ONLY; The key ID.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
@@ -468,6 +476,9 @@ type DeletedCertificateItem struct {
 
 	// Certificate identifier.
 	ID *string `json:"id,omitempty"`
+
+	// READ-ONLY; The name of the certificate
+	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
@@ -577,9 +588,12 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 type LifetimeAction struct {
 	// The action that will be executed.
 	Action *PolicyAction `json:"action,omitempty"`
+	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
+	// be between 1 and 972 (36 * 27).
+	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
-	// The condition that will execute the action.
-	Trigger *Trigger `json:"trigger,omitempty"`
+	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
 }
 
 func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
@@ -587,7 +601,10 @@ func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
 		Action: &generated.Action{
 			ActionType: (*generated.ActionType)(l.Action),
 		},
-		Trigger: l.Trigger.toGenerated(),
+		Trigger: &generated.Trigger{
+			DaysBeforeExpiry:   l.DaysBeforeExpiry,
+			LifetimePercentage: l.LifetimePercentage,
+		},
 	}
 }
 
@@ -597,11 +614,9 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 	}
 
 	return &LifetimeAction{
-		Action: (*PolicyAction)(g.Action.ActionType),
-		Trigger: &Trigger{
-			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
-			LifetimePercentage: g.Trigger.LifetimePercentage,
-		},
+		Action:             (*PolicyAction)(g.Action.ActionType),
+		DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
+		LifetimePercentage: g.Trigger.LifetimePercentage,
 	}
 }
 
@@ -614,7 +629,7 @@ type SubjectAlternativeNames struct {
 	Emails []*string `json:"emails,omitempty"`
 
 	// User principal names.
-	Upns []*string `json:"upns,omitempty"`
+	UserPrincipalNames []*string `json:"upns,omitempty"`
 }
 
 func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNames {
@@ -625,7 +640,7 @@ func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNam
 	return &generated.SubjectAlternativeNames{
 		DNSNames: s.DNSNames,
 		Emails:   s.Emails,
-		Upns:     s.Upns,
+		Upns:     s.UserPrincipalNames,
 	}
 }
 
@@ -637,28 +652,7 @@ func subjectAlternativeNamesFromGenerated(g *generated.SubjectAlternativeNames) 
 	return &SubjectAlternativeNames{
 		DNSNames: g.DNSNames,
 		Emails:   g.Emails,
-		Upns:     g.Upns,
-	}
-}
-
-// Trigger - A condition to be satisfied for an action to be executed.
-type Trigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
-	// be between 1 and 972 (36 * 27).
-	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
-
-	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
-	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
-}
-
-func (t *Trigger) toGenerated() *generated.Trigger {
-	if t == nil {
-		return nil
-	}
-
-	return &generated.Trigger{
-		DaysBeforeExpiry:   t.DaysBeforeExpiry,
-		LifetimePercentage: t.LifetimePercentage,
+		UserPrincipalNames:     g.Upns,
 	}
 }
 

@@ -369,10 +369,10 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.Ptr("John"),
-				LastName:     to.Ptr("Doe"),
-				EmailAddress: to.Ptr("admin@microsoft.com"),
-				Phone:        to.Ptr("4255555555"),
+				FirstName: to.Ptr("John"),
+				LastName:  to.Ptr("Doe"),
+				Email:     to.Ptr("admin@microsoft.com"),
+				Phone:     to.Ptr("4255555555"),
 			},
 		},
 	})
@@ -397,10 +397,10 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.Ptr("John"),
-				LastName:     to.Ptr("Doe"),
-				EmailAddress: to.Ptr("admin@microsoft.com"),
-				Phone:        to.Ptr("4255555555"),
+				FirstName: to.Ptr("John"),
+				LastName:  to.Ptr("Doe"),
+				Email:     to.Ptr("admin@microsoft.com"),
+				Phone:     to.Ptr("4255555555"),
 			},
 		},
 	})
@@ -422,19 +422,19 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	createResp.Issuer.AdministratorContacts = []*AdministratorContact{
 		{
-			FirstName:    to.Ptr("Jane"),
-			LastName:     to.Ptr("Doey"),
-			EmailAddress: to.Ptr("admin2@microsoft.com"),
-			Phone:        to.Ptr("4266666666"),
+			FirstName: to.Ptr("Jane"),
+			LastName:  to.Ptr("Doey"),
+			Email:     to.Ptr("admin2@microsoft.com"),
+			Phone:     to.Ptr("4266666666"),
 		},
 	}
 	// Update the certificate issuer
-	updateResp, err := client.UpdateIssuer(ctx, *createResp.Issuer, nil)
+	updateResp, err := client.UpdateIssuer(ctx, createResp.Issuer, nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(updateResp.Issuer.AdministratorContacts))
 	require.Equal(t, "Jane", *updateResp.Issuer.AdministratorContacts[0].FirstName)
 	require.Equal(t, "Doey", *updateResp.Issuer.AdministratorContacts[0].LastName)
-	require.Equal(t, "admin2@microsoft.com", *updateResp.Issuer.AdministratorContacts[0].EmailAddress)
+	require.Equal(t, "admin2@microsoft.com", *updateResp.Issuer.AdministratorContacts[0].Email)
 	require.Equal(t, "4266666666", *updateResp.Issuer.AdministratorContacts[0].Phone)
 
 	// Delete the first issuer
@@ -454,19 +454,19 @@ func TestClient_ContactsCRUD(t *testing.T) {
 	require.NoError(t, err)
 
 	contacts := Contacts{ContactList: []*Contact{
-		{EmailAddress: to.Ptr("admin@microsoft.com"), Name: to.Ptr("John Doe"), Phone: to.Ptr("1111111111")},
-		{EmailAddress: to.Ptr("admin@contoso.com"), Name: to.Ptr("Jane Doey"), Phone: to.Ptr("2222222222")},
+		{Email: to.Ptr("admin@microsoft.com"), Name: to.Ptr("John Doe"), Phone: to.Ptr("1111111111")},
+		{Email: to.Ptr("admin@contoso.com"), Name: to.Ptr("Jane Doey"), Phone: to.Ptr("2222222222")},
 	}}
 
-	resp, err := client.SetContacts(ctx, contacts, nil)
+	resp, err := client.SetContacts(ctx, contacts.ContactList, nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(resp.ContactList))
 
 	getResp, err := client.GetContacts(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(getResp.ContactList))
-	require.Equal(t, "admin@microsoft.com", *getResp.ContactList[0].EmailAddress)
-	require.Equal(t, "admin@contoso.com", *getResp.ContactList[1].EmailAddress)
+	require.Equal(t, "admin@microsoft.com", *getResp.ContactList[0].Email)
+	require.Equal(t, "admin@contoso.com", *getResp.ContactList[1].Email)
 	require.Equal(t, "John Doe", *getResp.ContactList[0].Name)
 	require.Equal(t, "Jane Doey", *getResp.ContactList[1].Name)
 	require.Equal(t, "1111111111", *getResp.ContactList[0].Phone)
@@ -501,7 +501,7 @@ func TestPolicy(t *testing.T) {
 		ReuseKey:   to.Ptr(true),
 		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: to.Ptr(PolicyActionEmailContacts), LifetimePercentage: to.Ptr(int32(98))},
 		},
 		ContentType: to.Ptr(CertificateContentTypePKCS12),
 		X509Properties: &X509CertificateProperties{
@@ -563,7 +563,7 @@ func TestCRUDOperations(t *testing.T) {
 		ReuseKey:   to.Ptr(true),
 		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: to.Ptr(PolicyActionEmailContacts), Trigger: &Trigger{LifetimePercentage: to.Ptr(int32(98))}},
+			{Action: to.Ptr(PolicyActionEmailContacts), LifetimePercentage: to.Ptr(int32(98))},
 		},
 		ContentType: to.Ptr(CertificateContentTypePKCS12),
 		X509Properties: &X509CertificateProperties{
@@ -796,7 +796,7 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 		X509Properties: &X509CertificateProperties{
 			Subject: to.Ptr("CN=DefaultPolicy"),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				Upns: []*string{to.Ptr("john.doe@domain.com")},
+				UserPrincipalNames: []*string{to.Ptr("john.doe@domain.com")},
 			},
 		},
 	}, nil)

@@ -195,7 +195,8 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 		}
 		rt = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &createResp)
+		rt = *options.ResumeToken
+		err = json.Unmarshal([]byte(rt), &createResp)
 		if err != nil {
 			return nil, err
 		}
@@ -273,8 +274,8 @@ type GetCertificateOperationResponse struct {
 }
 
 // GetCertificateOperation gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
-func (c *Client) GetCertificateOperation(ctx context.Context, name string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
-	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, name, options.toGenerated())
+func (c *Client) GetCertificateOperation(ctx context.Context, certificateName string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
+	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
@@ -311,6 +312,7 @@ type DeleteCertificateResponse struct {
 }
 
 func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCertificateResponse) DeleteCertificateResponse {
+	_, name, _ := shared.ParseID(g.ID)
 	return DeleteCertificateResponse{
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         g.RecoveryID,
@@ -320,6 +322,7 @@ func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCert
 			CER:                g.Cer,
 			ContentType:        g.ContentType,
 			ID:                 g.ID,
+			Name:               name,
 			KeyID:              g.Kid,
 			Policy:             certificatePolicyFromGenerated(g.Policy),
 			SecretID:           g.Sid,
@@ -417,7 +420,8 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 		}
 		resumeToken = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &delResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &delResp)
 		if err != nil {
 			return nil, err
 		}
@@ -457,8 +461,8 @@ type PurgeDeletedCertificateResponse struct {
 
 // PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
-func (c *Client) PurgeDeletedCertificate(ctx context.Context, name string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
-	_, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, name, options.toGenerated())
+func (c *Client) PurgeDeletedCertificate(ctx context.Context, certificateName string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
+	_, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
 		return PurgeDeletedCertificateResponse{}, err
 	}
@@ -482,12 +486,13 @@ type GetDeletedCertificateResponse struct {
 
 // GetDeletedCertificate retrieves the deleted certificate information plus its attributes, such as retention interval, scheduled permanent deletion
 // and the current deletion recovery level. This operation requires the certificates/get permission.
-func (c *Client) GetDeletedCertificate(ctx context.Context, name string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
-	resp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, name, options.toGenerated())
+func (c *Client) GetDeletedCertificate(ctx context.Context, certificateName string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
+	resp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
 		return GetDeletedCertificateResponse{}, err
 	}
 
+	_, name, _ := shared.ParseID(resp.ID)
 	return GetDeletedCertificateResponse{
 		DeletedCertificate: DeletedCertificate{
 			RecoveryID:         resp.RecoveryID,
@@ -497,6 +502,7 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, name string, options
 			CER:                resp.Cer,
 			ContentType:        resp.ContentType,
 			ID:                 resp.ID,
+			Name:               name,
 			KeyID:              resp.Kid,
 			Policy:             certificatePolicyFromGenerated(resp.Policy),
 			SecretID:           resp.Sid,
@@ -521,8 +527,8 @@ type BackupCertificateResponse struct {
 
 // BackupCertificate requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded.
 // This operation requires the certificates/backup permission.
-func (c *Client) BackupCertificate(ctx context.Context, name string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
-	resp, err := c.genClient.BackupCertificate(ctx, c.vaultURL, name, options.toGenerated())
+func (c *Client) BackupCertificate(ctx context.Context, certificateName string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
+	resp, err := c.genClient.BackupCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
 		return BackupCertificateResponse{}, err
 	}
@@ -555,7 +561,7 @@ type ImportCertificateResponse struct {
 // ImportCertificate imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires the
 // certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the certificate is in PEM format
 // the PEM file must contain the key as well as x509 certificates. Key Vault will only accept a key in PKCS#8 format.
-func (c *Client) ImportCertificate(ctx context.Context, name string, certificate []byte, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
+func (c *Client) ImportCertificate(ctx context.Context, certificateName string, certificate []byte, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
 	if options == nil {
 		options = &ImportCertificateOptions{}
 	}
@@ -566,7 +572,7 @@ func (c *Client) ImportCertificate(ctx context.Context, name string, certificate
 	resp, err := c.genClient.ImportCertificate(
 		ctx,
 		c.vaultURL,
-		name,
+		certificateName,
 		generated.CertificateImportParameters{
 			Base64EncodedCertificate: to.Ptr(string(certificate)),
 			CertificateAttributes: &generated.CertificateAttributes{
@@ -748,7 +754,7 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 
 // CreateIssuerResponse contains response fields for Client.CreateIssuer
 type CreateIssuerResponse struct {
-	Issuer *Issuer
+	Issuer
 }
 
 // CreateIssuer adds or updates the specified certificate issuer. This operation requires the certificates/setissuers permission.
@@ -768,7 +774,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 			a := make([]*generated.AdministratorDetails, len(options.AdministratorContacts))
 			for idx, v := range options.AdministratorContacts {
 				a[idx] = &generated.AdministratorDetails{
-					EmailAddress: v.EmailAddress,
+					EmailAddress: v.Email,
 					FirstName:    v.FirstName,
 					LastName:     v.LastName,
 					Phone:        v.Phone,
@@ -796,7 +802,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	}
 
 	cr := CreateIssuerResponse{}
-	cr.Issuer = &Issuer{
+	cr.Issuer = Issuer{
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 		Provider:    resp.Provider,
 		ID:          resp.ID,
@@ -814,10 +820,10 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
 			for idx, v := range resp.OrganizationDetails.AdminDetails {
 				adminDetails[idx] = &AdministratorContact{
-					EmailAddress: v.EmailAddress,
-					FirstName:    v.FirstName,
-					LastName:     v.LastName,
-					Phone:        v.Phone,
+					Email:     v.EmailAddress,
+					FirstName: v.FirstName,
+					LastName:  v.LastName,
+					Phone:     v.Phone,
 				}
 			}
 		}
@@ -840,7 +846,7 @@ func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificate
 
 // GetIssuerResponse contains response fields for ClientGetIssuer
 type GetIssuerResponse struct {
-	Issuer *Issuer
+	Issuer
 }
 
 // GetIssuer returns the specified certificate issuer resources in the specified key vault. This operation
@@ -852,7 +858,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}
 
 	g := GetIssuerResponse{}
-	g.Issuer = &Issuer{
+	g.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -870,10 +876,10 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
 			for idx, v := range resp.OrganizationDetails.AdminDetails {
 				adminDetails[idx] = &AdministratorContact{
-					EmailAddress: v.EmailAddress,
-					FirstName:    v.FirstName,
-					LastName:     v.LastName,
-					Phone:        v.Phone,
+					Email:     v.EmailAddress,
+					FirstName: v.FirstName,
+					LastName:  v.LastName,
+					Phone:     v.Phone,
 				}
 			}
 		}
@@ -955,7 +961,7 @@ func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCerti
 
 // DeleteIssuerResponse contains response fields for Client.DeleteIssuer
 type DeleteIssuerResponse struct {
-	Issuer *Issuer
+	Issuer
 }
 
 // DeleteIssuer permanently removes the specified certificate issuer from the vault. This operation requires the certificates/manageissuers/deleteissuers permission.
@@ -966,7 +972,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 	}
 
 	d := DeleteIssuerResponse{}
-	d.Issuer = &Issuer{
+	d.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -984,10 +990,10 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
 			for idx, v := range resp.OrganizationDetails.AdminDetails {
 				adminDetails[idx] = &AdministratorContact{
-					EmailAddress: v.EmailAddress,
-					FirstName:    v.FirstName,
-					LastName:     v.LastName,
-					Phone:        v.Phone,
+					Email:     v.EmailAddress,
+					FirstName: v.FirstName,
+					LastName:  v.LastName,
+					Phone:     v.Phone,
 				}
 			}
 		}
@@ -1024,7 +1030,7 @@ func (i *Issuer) toUpdateParameters() generated.CertificateIssuerUpdateParameter
 			a := make([]*generated.AdministratorDetails, len(i.AdministratorContacts))
 			for idx, v := range i.AdministratorContacts {
 				a[idx] = &generated.AdministratorDetails{
-					EmailAddress: v.EmailAddress,
+					EmailAddress: v.Email,
 					FirstName:    v.FirstName,
 					LastName:     v.LastName,
 					Phone:        v.Phone,
@@ -1045,7 +1051,7 @@ func (i *Issuer) toUpdateParameters() generated.CertificateIssuerUpdateParameter
 
 // UpdateIssuerResponse contains response fields for Client.UpdateIssuer
 type UpdateIssuerResponse struct {
-	Issuer *Issuer
+	Issuer
 }
 
 // UpdateIssuer performs an update on the specified certificate issuer entity. This operation requires
@@ -1063,7 +1069,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 	}
 
 	u := UpdateIssuerResponse{}
-	u.Issuer = &Issuer{
+	u.Issuer = Issuer{
 		ID:          resp.ID,
 		Provider:    resp.Provider,
 		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
@@ -1081,10 +1087,10 @@ func (c *Client) UpdateIssuer(ctx context.Context, certificateIssuer Issuer, opt
 			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
 			for idx, v := range resp.OrganizationDetails.AdminDetails {
 				adminDetails[idx] = &AdministratorContact{
-					EmailAddress: v.EmailAddress,
-					FirstName:    v.FirstName,
-					LastName:     v.LastName,
-					Phone:        v.Phone,
+					Email:     v.EmailAddress,
+					FirstName: v.FirstName,
+					LastName:  v.LastName,
+					Phone:     v.Phone,
 				}
 			}
 		}
@@ -1110,11 +1116,12 @@ type SetContactsResponse struct {
 }
 
 // SetContacts sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
-func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *SetContactsOptions) (SetContactsResponse, error) {
+func (c *Client) SetContacts(ctx context.Context, contacts []*Contact, options *SetContactsOptions) (SetContactsResponse, error) {
+	contactList := Contacts{ContactList: contacts}
 	resp, err := c.genClient.SetCertificateContacts(
 		ctx,
 		c.vaultURL,
-		contacts.toGenerated(),
+		contactList.toGenerated(),
 		options.toGenerated(),
 	)
 
@@ -1506,7 +1513,8 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 		}
 		resumeToken = string(marshalled)
 	} else {
-		err = json.Unmarshal([]byte(*options.ResumeToken), &recoverResp)
+		resumeToken = *options.ResumeToken
+		err = json.Unmarshal([]byte(resumeToken), &recoverResp)
 		if err != nil {
 			return nil, err
 		}
@@ -1546,9 +1554,11 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 		certs = make([]*DeletedCertificateItem, len(g.Value))
 
 		for i, c := range g.Value {
+			_, name, _ := shared.ParseID(c.ID)
 			certs[i] = &DeletedCertificateItem{
 				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID, c.X509Thumbprint),
 				ID:                 c.ID,
+				Name:               name,
 				RecoveryID:         c.RecoveryID,
 				DeletedOn:          c.DeletedDate,
 				ScheduledPurgeDate: c.ScheduledPurgeDate,

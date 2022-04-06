@@ -108,18 +108,18 @@ func PossibleCertificateContentTypeValues() []CertificateContentType {
 	}
 }
 
-// WellKnownIssuer names you can use when creating a certificate policy
-type WellKnownIssuer string
+// WellKnownIssuerNames names you can use when creating a certificate policy
+type WellKnownIssuerNames string
 
 const (
-	WellKnownIssuerSelf    WellKnownIssuer = "Self"
-	WellKnownIssuerUnknown WellKnownIssuer = "Unknown"
+	WellKnownIssuerNamesSelf    WellKnownIssuerNames = "Self"
+	WellKnownIssuerNamesUnknown WellKnownIssuerNames = "Unknown"
 )
 
-// PossibleWellKnownIssuerValues returns a slice of all possible WellKnownIssuer values.
-func PossibleWellKnownIssuerValues() []WellKnownIssuer {
-	return []WellKnownIssuer{
-		WellKnownIssuerSelf,
-		WellKnownIssuerUnknown,
+// PossibleWellKnownIssuerNamesValues returns a slice of all possible WellKnownIssuer values.
+func PossibleWellKnownIssuerNamesValues() []WellKnownIssuerNames {
+	return []WellKnownIssuerNames{
+		WellKnownIssuerNamesSelf,
+		WellKnownIssuerNamesUnknown,
 	}
 }

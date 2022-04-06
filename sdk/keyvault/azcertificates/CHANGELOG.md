@@ -20,10 +20,6 @@
 * Removed the `Trigger` struct and elevated it to the `LifetimeAction`
 * Renamed `DeletedDate` to `DeletedOn` and `Expires` to `ExpiresOn`
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.2.0 (2022-03-08)
 
 ### Breaking Changes

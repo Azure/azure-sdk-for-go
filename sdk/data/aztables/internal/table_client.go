@@ -27,7 +27,7 @@ import (
 type TableClient struct {
 	endpoint string
 	version  Enum0
-	Pl       runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
@@ -41,7 +41,7 @@ func NewTableClient(endpoint string, version Enum0, options *azcore.ClientOption
 	client := &TableClient{
 		endpoint: endpoint,
 		version:  version,
-		Pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
+		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -57,7 +57,7 @@ func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1,
 	if err != nil {
 		return TableClientCreateResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientCreateResponse{}, err
 	}
@@ -93,7 +93,7 @@ func (client *TableClient) createCreateRequest(ctx context.Context, dataServiceV
 
 // createHandleResponse handles the Create response.
 func (client *TableClient) createHandleResponse(resp *http.Response) (TableClientCreateResponse, error) {
-	result := TableClientCreateResponse{RawResponse: resp}
+	result := TableClientCreateResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -128,7 +128,7 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableClientDeleteResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientDeleteResponse{}, err
 	}
@@ -159,7 +159,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 
 // deleteHandleResponse handles the Delete response.
 func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClientDeleteResponse, error) {
-	result := TableClientDeleteResponse{RawResponse: resp}
+	result := TableClientDeleteResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -195,7 +195,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableClientDeleteEntityResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientDeleteEntityResponse{}, err
 	}
@@ -205,7 +205,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion 
 	return client.deleteEntityHandleResponse(resp)
 }
 
-// deleteEntityCreateRequest creates the DeleteEntity request.
+// DeleteEntityCreateRequest creates the DeleteEntity request.
 func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, tableClientDeleteEntityOptions *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
@@ -244,7 +244,7 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataSe
 
 // deleteEntityHandleResponse handles the DeleteEntity response.
 func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (TableClientDeleteEntityResponse, error) {
-	result := TableClientDeleteEntityResponse{RawResponse: resp}
+	result := TableClientDeleteEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -275,7 +275,7 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, co
 	if err != nil {
 		return TableClientGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientGetAccessPolicyResponse{}, err
 	}
@@ -312,7 +312,7 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
 func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (TableClientGetAccessPolicyResponse, error) {
-	result := TableClientGetAccessPolicyResponse{RawResponse: resp}
+	result := TableClientGetAccessPolicyResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -347,7 +347,7 @@ func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableClientInsertEntityResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientInsertEntityResponse{}, err
 	}
@@ -357,7 +357,7 @@ func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion 
 	return client.insertEntityHandleResponse(resp)
 }
 
-// insertEntityCreateRequest creates the InsertEntity request.
+// InsertEntityCreateRequest creates the InsertEntity request.
 func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, tableClientInsertEntityOptions *TableClientInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
@@ -393,7 +393,7 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataSe
 
 // insertEntityHandleResponse handles the InsertEntity response.
 func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (TableClientInsertEntityResponse, error) {
-	result := TableClientInsertEntityResponse{RawResponse: resp}
+	result := TableClientInsertEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -439,7 +439,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion E
 	if err != nil {
 		return TableClientMergeEntityResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientMergeEntityResponse{}, err
 	}
@@ -449,7 +449,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion E
 	return client.mergeEntityHandleResponse(resp)
 }
 
-// mergeEntityCreateRequest creates the MergeEntity request.
+// MergeEntityCreateRequest creates the MergeEntity request.
 func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableClientMergeEntityOptions *TableClientMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
@@ -493,7 +493,7 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataSer
 
 // mergeEntityHandleResponse handles the MergeEntity response.
 func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (TableClientMergeEntityResponse, error) {
-	result := TableClientMergeEntityResponse{RawResponse: resp}
+	result := TableClientMergeEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -522,22 +522,22 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 // TableClientQueryOptions - TableClientQueryOptions contains the optional parameters for the TableClient.Query method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, tableClientQueryOptions *TableClientQueryOptions, queryOptions *QueryOptions) (TableClientQueryResponse, error) {
-	req, err := client.QueryCreateRequest(ctx, dataServiceVersion, tableClientQueryOptions, queryOptions)
+	req, err := client.queryCreateRequest(ctx, dataServiceVersion, tableClientQueryOptions, queryOptions)
 	if err != nil {
 		return TableClientQueryResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientQueryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TableClientQueryResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.QueryHandleResponse(resp)
+	return client.queryHandleResponse(resp)
 }
 
 // queryCreateRequest creates the Query request.
-func (client *TableClient) QueryCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableClientQueryOptions *TableClientQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableClientQueryOptions *TableClientQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -569,9 +569,9 @@ func (client *TableClient) QueryCreateRequest(ctx context.Context, dataServiceVe
 	return req, nil
 }
 
-// QueryHandleResponse handles the Query response.
-func (client *TableClient) QueryHandleResponse(resp *http.Response) (TableClientQueryResponse, error) {
-	result := TableClientQueryResponse{RawResponse: resp}
+// queryHandleResponse handles the Query response.
+func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClientQueryResponse, error) {
+	result := TableClientQueryResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -609,7 +609,7 @@ func (client *TableClient) QueryEntities(ctx context.Context, dataServiceVersion
 	if err != nil {
 		return TableClientQueryEntitiesResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientQueryEntitiesResponse{}, err
 	}
@@ -664,7 +664,7 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, dataS
 
 // queryEntitiesHandleResponse handles the QueryEntities response.
 func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (TableClientQueryEntitiesResponse, error) {
-	result := TableClientQueryEntitiesResponse{RawResponse: resp}
+	result := TableClientQueryEntitiesResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -707,7 +707,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 	if err != nil {
 		return TableClientQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -761,7 +761,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 
 // queryEntityWithPartitionAndRowKeyHandleResponse handles the QueryEntityWithPartitionAndRowKey response.
 func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp *http.Response) (TableClientQueryEntityWithPartitionAndRowKeyResponse, error) {
-	result := TableClientQueryEntityWithPartitionAndRowKeyResponse{RawResponse: resp}
+	result := TableClientQueryEntityWithPartitionAndRowKeyResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -803,7 +803,7 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, co
 	if err != nil {
 		return TableClientSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientSetAccessPolicyResponse{}, err
 	}
@@ -847,7 +847,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
 func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (TableClientSetAccessPolicyResponse, error) {
-	result := TableClientSetAccessPolicyResponse{RawResponse: resp}
+	result := TableClientSetAccessPolicyResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -881,7 +881,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableClientUpdateEntityResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TableClientUpdateEntityResponse{}, err
 	}
@@ -891,7 +891,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion 
 	return client.updateEntityHandleResponse(resp)
 }
 
-// updateEntityCreateRequest creates the UpdateEntity request.
+// UpdateEntityCreateRequest creates the UpdateEntity request.
 func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableClientUpdateEntityOptions *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
@@ -935,7 +935,7 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataSe
 
 // updateEntityHandleResponse handles the UpdateEntity response.
 func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (TableClientUpdateEntityResponse, error) {
-	result := TableClientUpdateEntityResponse{RawResponse: resp}
+	result := TableClientUpdateEntityResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}

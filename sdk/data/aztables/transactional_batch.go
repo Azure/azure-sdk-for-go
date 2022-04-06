@@ -218,7 +218,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
-	qo := &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
+	qo := &generated.QueryOptions{Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata)}
 
 	operationWriter, err := writer.CreatePart(h)
 	if err != nil {
@@ -264,7 +264,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			t.name,
 			&generated.TableClientInsertEntityOptions{
 				TableEntityProperties: entity,
-				ResponsePreference:    generated.ResponseFormatReturnNoContent.ToPtr(),
+				ResponsePreference:    to.Ptr(generated.ResponseFormatReturnNoContent),
 			},
 			qo,
 		)

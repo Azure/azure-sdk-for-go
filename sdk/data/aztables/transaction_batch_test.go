@@ -34,7 +34,7 @@ func TestBatchAdd(t *testing.T) {
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 
-			pager := client.List(nil)
+			pager := client.ListEntities(nil)
 			count := 0
 			for pager.More() {
 				response, err := pager.NextPage(ctx)
@@ -76,7 +76,7 @@ func TestBatchInsert(t *testing.T) {
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 
-			pager := client.List(nil)
+			pager := client.ListEntities(nil)
 			count := 0
 			for pager.More() {
 				response, err := pager.NextPage(ctx)
@@ -114,10 +114,10 @@ func TestBatchMixed(t *testing.T) {
 			_, err = client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 
-			var qResp ListEntitiesPageResponse
+			var qResp ListEntitiesResponse
 			filter := "RowKey eq '1'"
 			list := &ListEntitiesOptions{Filter: &filter}
-			pager := client.List(list)
+			pager := client.ListEntities(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -172,7 +172,7 @@ func TestBatchMixed(t *testing.T) {
 			_, err = client.SubmitTransaction(ctx, batch2, nil)
 			require.NoError(t, err)
 
-			pager = client.List(list)
+			pager = client.ListEntities(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)

@@ -377,7 +377,7 @@ func main() {
     options := &aztables.ListEntitiesOptions{
         Filter: &filter,
         Select: to.Ptr("RowKey,Value,Product,Available"),
-        Top: to.Ptr(int32(15)),
+        Top: to.Ptr(int32(((15),
     }
 
 	pager := client.List(options)
@@ -490,7 +490,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(10))})
+    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(((10)})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -506,7 +506,7 @@ func main() {
     }
 
     newPager := client.List(&aztables.ListEntitiesOptions{
-        Top:          to.Ptr(int32(10)),
+        Top:          to.Ptr(int32(((10),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),
     })

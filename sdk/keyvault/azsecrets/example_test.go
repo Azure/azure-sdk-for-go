@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -51,7 +51,7 @@ func ExampleClient_SetSecret() {
 		panic(err)
 	}
 
-	fmt.Printf("Set secret %s", *resp.ID)
+	fmt.Printf("Set secret %s", *resp.Secret.ID)
 }
 
 func ExampleClient_GetSecret() {
@@ -71,7 +71,7 @@ func ExampleClient_GetSecret() {
 		panic(err)
 	}
 
-	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.ID, *resp.Value)
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
 }
 
 func ExampleClient_BeginDeleteSecret() {
@@ -97,7 +97,7 @@ func ExampleClient_BeginDeleteSecret() {
 	}
 }
 
-func ExampleClient_ListSecrets() {
+func ExampleClient_ListPropertiesOfSecrets() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleClient_ListSecrets() {
 		panic(err)
 	}
 
-	pager := client.ListSecrets(nil)
+	pager := client.ListPropertiesOfSecrets(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -226,20 +226,27 @@ func ExampleClient_UpdateSecretProperties() {
 		panic(err)
 	}
 
-	options := &azsecrets.UpdateSecretPropertiesOptions{
-		ContentType: to.StringPtr("password"),
-		Tags: map[string]string{
-			"Tag1": "TagVal1",
-		},
-		Properties: &azsecrets.Properties{
-			Enabled:   to.BoolPtr(true),
-			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
-			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
-		},
-	}
-	resp, err := client.UpdateSecretProperties(context.Background(), "secret-to-update", options)
+	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Updated secret with ID: %s\n", *resp.ID)
+
+	if getResp.Secret.Properties == nil {
+		getResp.Secret.Properties = &azsecrets.Properties{}
+	}
+	getResp.Secret.Properties = &azsecrets.Properties{
+		Enabled:     to.Ptr(true),
+		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
+		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
+		ContentType: to.Ptr("password"),
+		Tags:        map[string]string{"Tag1": "Tag1Value"},
+		// Remember to preserve the name and version
+		Name:    getResp.Secret.Properties.Name,
+		Version: getResp.Secret.Properties.Version,
+	}
+	resp, err := client.UpdateSecretProperties(context.Background(), getResp.Secret, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
 }

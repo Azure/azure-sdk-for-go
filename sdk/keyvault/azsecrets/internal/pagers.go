@@ -50,7 +50,7 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) (Ke
 	if err != nil {
 		return KeyVaultClientGetDeletedSecretsResponse{}, err
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedSecretsResponse{}, err
 	}
@@ -58,7 +58,7 @@ func (p *KeyVaultClientGetDeletedSecretsPager) NextPage(ctx context.Context) (Ke
 
 		return KeyVaultClientGetDeletedSecretsResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getDeletedSecretsHandleResponse(resp)
+	result, err := p.client.GetDeletedSecretsHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetDeletedSecretsResponse{}, err
 	}
@@ -99,7 +99,7 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) (Ke
 	if err != nil {
 		return KeyVaultClientGetSecretVersionsResponse{}, err
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetSecretVersionsResponse{}, err
 	}
@@ -107,7 +107,7 @@ func (p *KeyVaultClientGetSecretVersionsPager) NextPage(ctx context.Context) (Ke
 
 		return KeyVaultClientGetSecretVersionsResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getSecretVersionsHandleResponse(resp)
+	result, err := p.client.GetSecretVersionsHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetSecretVersionsResponse{}, err
 	}
@@ -148,7 +148,7 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) (KeyVaultC
 	if err != nil {
 		return KeyVaultClientGetSecretsResponse{}, err
 	}
-	resp, err := p.client.pl.Do(req)
+	resp, err := p.client.Pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetSecretsResponse{}, err
 	}
@@ -156,7 +156,7 @@ func (p *KeyVaultClientGetSecretsPager) NextPage(ctx context.Context) (KeyVaultC
 
 		return KeyVaultClientGetSecretsResponse{}, runtime.NewResponseError(resp)
 	}
-	result, err := p.client.getSecretsHandleResponse(resp)
+	result, err := p.client.GetSecretsHandleResponse(resp)
 	if err != nil {
 		return KeyVaultClientGetSecretsResponse{}, err
 	}

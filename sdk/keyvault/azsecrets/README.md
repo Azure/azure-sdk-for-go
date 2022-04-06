@@ -22,7 +22,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Prerequisites
 * An [Azure subscription][azure_sub]
-* Go version 1.16 or later
+* Go version 1.18 or later
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique names):
 
   (Optional) if you want a new resource group to hold the Key Vault:
@@ -171,7 +171,7 @@ func main() {
 		panic(err)
 	}
 
-	secretName := "mySecretName"
+	secretName := "mySecret"
 	secretValue := "mySecretValue"
 
 	resp, err := client.SetSecret(context.TODO(), secretName, secretValue, nil)
@@ -179,7 +179,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Set secret %s", *resp.ID)
+	fmt.Printf("Set secret %s", *resp.Secret.ID)
 }
 ```
 
@@ -213,7 +213,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.ID, *resp.Value)
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
 }
 ```
 
@@ -242,22 +242,29 @@ func main() {
 		panic(err)
 	}
 
-	options := &azsecrets.UpdateSecretPropertiesOptions{
-		ContentType: to.StringPtr("password"),
-		Tags: map[string]string{
-			"Tag1": "TagVal1",
-		},
-		Properties: &azsecrets.Properties{
-			Enabled:   to.BoolPtr(true),
-			ExpiresOn: to.TimePtr(time.Now().Add(48 * time.Hour)),
-			NotBefore: to.TimePtr(time.Now().Add(-24 * time.Hour)),
-		},
-	}
-	resp, err := client.UpdateSecretProperties(context.Background(), "secret-to-update", options)
+	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Updated secret with ID: %s\n", *resp.ID)
+
+	if getResp.Secret.Properties == nil {
+		getResp.Secret.Properties = &azsecrets.Properties{}
+	}
+	getResp.Secret.Properties = &azsecrets.Properties{
+		Enabled:     to.Ptr(true),
+		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
+		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
+		ContentType: to.Ptr("password"),
+		Tags:        map[string]string{"Tag1": "Tag1Value"},
+		// Remember to preserve the name and version
+		Name:    getResp.Secret.Properties.Name,
+		Version: getResp.Secret.Properties.Version,
+	}
+	resp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
 }
 ```
 
@@ -290,7 +297,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// This is optional if you don't care when the secret is deleted
+
+	// If you do not care when the secret is deleted, you do not have to
+	// call resp.PollUntilDone. If you need to know when it's done use
+	// the PollUntilDone method.
 	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
 	if err != nil {
 		panic(err)
@@ -299,7 +309,7 @@ func main() {
 ```
 
 ### List secrets
-[ListSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.ListSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[ListPropertiesOfSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.ListPropertiesOfSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
 import (
@@ -323,7 +333,7 @@ func main() {
 		panic(err)
 	}
 
-	pager := client.ListSecrets(nil)
+	pager := client.ListPropertiesOfSecrets(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

@@ -636,8 +636,15 @@ func TestMergeCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "mergeCertificate")
 	require.NoError(t, err)
 
-	certPolicy := NewDefaultCertificatePolicy()
-	certPolicy.IssuerParameters.CertificateTransparency = to.Ptr(false)
+	certPolicy := Policy{
+		IssuerParameters: &IssuerParameters{
+			IssuerName:              to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
+		},
+		X509Properties: &X509CertificateProperties{
+			Subject: to.Ptr("CN=MyCert"),
+		},
+	}
 
 	// Load public key
 	data, err := ioutil.ReadFile("testdata/ca.crt")

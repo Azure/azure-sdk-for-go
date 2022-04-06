@@ -14,7 +14,7 @@ module: azcertificates
 openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.37"
-module-version: 0.2.1
+use: "@autorest/go@4.0.0-preview.38"
+module-version: 0.3.0
 export-clients: true
 ```

@@ -93,6 +93,8 @@ func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, pollerResp.ID)
 
+	defer cleanUp(t, client, certName)
+
 	// want to interface with x509 std library
 	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)

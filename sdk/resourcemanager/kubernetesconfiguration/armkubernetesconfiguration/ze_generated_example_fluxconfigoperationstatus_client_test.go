@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetFluxConfigurationAsyncOperationStatus.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetFluxConfigurationAsyncOperationStatus.json
 func ExampleFluxConfigOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,8 +26,8 @@ func ExampleFluxConfigOperationStatusClient_Get() {
 	client := armkubernetesconfiguration.NewFluxConfigOperationStatusClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		"<operation-id>",

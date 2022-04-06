@@ -10,27 +10,27 @@ package armkubernetesconfiguration
 
 const (
 	moduleName    = "armkubernetesconfiguration"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
-// ClusterTypes - Cluster types
-type ClusterTypes string
+// AKSIdentityType - The identity type.
+type AKSIdentityType string
 
 const (
-	ClusterTypesConnectedClusters ClusterTypes = "connectedClusters"
-	ClusterTypesManagedClusters   ClusterTypes = "managedClusters"
+	AKSIdentityTypeSystemAssigned AKSIdentityType = "SystemAssigned"
+	AKSIdentityTypeUserAssigned   AKSIdentityType = "UserAssigned"
 )
 
-// PossibleClusterTypesValues returns the possible values for the ClusterTypes const type.
-func PossibleClusterTypesValues() []ClusterTypes {
-	return []ClusterTypes{
-		ClusterTypesConnectedClusters,
-		ClusterTypesManagedClusters,
+// PossibleAKSIdentityTypeValues returns the possible values for the AKSIdentityType const type.
+func PossibleAKSIdentityTypeValues() []AKSIdentityType {
+	return []AKSIdentityType{
+		AKSIdentityTypeSystemAssigned,
+		AKSIdentityTypeUserAssigned,
 	}
 }
 
-// ToPtr returns a *ClusterTypes pointing to the current value.
-func (c ClusterTypes) ToPtr() *ClusterTypes {
+// ToPtr returns a *AKSIdentityType pointing to the current value.
+func (c AKSIdentityType) ToPtr() *AKSIdentityType {
 	return &c
 }
 
@@ -83,46 +83,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 
 // ToPtr returns a *CreatedByType pointing to the current value.
 func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
-type ExtensionsClusterResourceName string
-
-const (
-	ExtensionsClusterResourceNameConnectedClusters ExtensionsClusterResourceName = "connectedClusters"
-	ExtensionsClusterResourceNameManagedClusters   ExtensionsClusterResourceName = "managedClusters"
-)
-
-// PossibleExtensionsClusterResourceNameValues returns the possible values for the ExtensionsClusterResourceName const type.
-func PossibleExtensionsClusterResourceNameValues() []ExtensionsClusterResourceName {
-	return []ExtensionsClusterResourceName{
-		ExtensionsClusterResourceNameConnectedClusters,
-		ExtensionsClusterResourceNameManagedClusters,
-	}
-}
-
-// ToPtr returns a *ExtensionsClusterResourceName pointing to the current value.
-func (c ExtensionsClusterResourceName) ToPtr() *ExtensionsClusterResourceName {
-	return &c
-}
-
-type ExtensionsClusterRp string
-
-const (
-	ExtensionsClusterRpMicrosoftContainerService ExtensionsClusterRp = "Microsoft.ContainerService"
-	ExtensionsClusterRpMicrosoftKubernetes       ExtensionsClusterRp = "Microsoft.Kubernetes"
-)
-
-// PossibleExtensionsClusterRpValues returns the possible values for the ExtensionsClusterRp const type.
-func PossibleExtensionsClusterRpValues() []ExtensionsClusterRp {
-	return []ExtensionsClusterRp{
-		ExtensionsClusterRpMicrosoftContainerService,
-		ExtensionsClusterRpMicrosoftKubernetes,
-	}
-}
-
-// ToPtr returns a *ExtensionsClusterRp pointing to the current value.
-func (c ExtensionsClusterRp) ToPtr() *ExtensionsClusterRp {
 	return &c
 }
 

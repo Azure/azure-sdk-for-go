@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetFluxConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetFluxConfiguration.json
 func ExampleFluxConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,8 +29,8 @@ func ExampleFluxConfigurationsClient_Get() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		nil)
@@ -40,7 +40,7 @@ func ExampleFluxConfigurationsClient_Get() {
 	log.Printf("Response result: %#v\n", res.FluxConfigurationsClientGetResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateFluxConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,8 +50,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfiguration{
@@ -68,16 +68,14 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 				Kustomizations: map[string]*armkubernetesconfiguration.KustomizationDefinition{
 					"srs-kustomization1": {
 						Path:                  to.StringPtr("<path>"),
-						DependsOn:             []*armkubernetesconfiguration.DependsOnDefinition{},
+						DependsOn:             []*string{},
 						SyncIntervalInSeconds: to.Int64Ptr(600),
 						TimeoutInSeconds:      to.Int64Ptr(600),
 					},
 					"srs-kustomization2": {
 						Path: to.StringPtr("<path>"),
-						DependsOn: []*armkubernetesconfiguration.DependsOnDefinition{
-							{
-								KustomizationName: to.StringPtr("<kustomization-name>"),
-							}},
+						DependsOn: []*string{
+							to.StringPtr("srs-kustomization1")},
 						Prune:                  to.BoolPtr(false),
 						RetryIntervalInSeconds: to.Int64Ptr(600),
 						SyncIntervalInSeconds:  to.Int64Ptr(600),
@@ -101,7 +99,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.FluxConfigurationsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/PatchFluxConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,8 +109,8 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfigurationPatch{
@@ -144,7 +142,7 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteFluxConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,8 +152,8 @@ func ExampleFluxConfigurationsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		&armkubernetesconfiguration.FluxConfigurationsClientBeginDeleteOptions{ForceDelete: nil})
@@ -168,7 +166,7 @@ func ExampleFluxConfigurationsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListFluxConfigurations.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListFluxConfigurations.json
 func ExampleFluxConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,8 +175,8 @@ func ExampleFluxConfigurationsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		nil)
 	for {

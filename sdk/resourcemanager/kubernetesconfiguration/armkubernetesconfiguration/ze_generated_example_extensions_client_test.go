@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateExtension.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateExtension.json
 func ExampleExtensionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,8 +29,8 @@ func ExampleExtensionsClient_BeginCreate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.Extension{
@@ -63,7 +63,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	log.Printf("Response result: %#v\n", res.ExtensionsClientCreateResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetExtension.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,8 +73,8 @@ func ExampleExtensionsClient_Get() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<extension-name>",
 		nil)
@@ -84,7 +84,7 @@ func ExampleExtensionsClient_Get() {
 	log.Printf("Response result: %#v\n", res.ExtensionsClientGetResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteExtension.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteExtension.json
 func ExampleExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,8 +94,8 @@ func ExampleExtensionsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<extension-name>",
 		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil})
@@ -108,7 +108,7 @@ func ExampleExtensionsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/PatchExtension.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchExtension.json
 func ExampleExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,8 +118,8 @@ func ExampleExtensionsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.PatchExtension{
@@ -145,7 +145,7 @@ func ExampleExtensionsClient_BeginUpdate() {
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListExtensions.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListExtensions.json
 func ExampleExtensionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,8 +154,8 @@ func ExampleExtensionsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		nil)
 	for {

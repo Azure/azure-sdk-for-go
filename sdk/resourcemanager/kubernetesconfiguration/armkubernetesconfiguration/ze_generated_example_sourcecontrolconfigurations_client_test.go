@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetSourceControlConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetSourceControlConfiguration.json
 func ExampleSourceControlConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,8 +29,8 @@ func ExampleSourceControlConfigurationsClient_Get() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		nil)
@@ -40,7 +40,7 @@ func ExampleSourceControlConfigurationsClient_Get() {
 	log.Printf("Response result: %#v\n", res.SourceControlConfigurationsClientGetResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateSourceControlConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateSourceControlConfiguration.json
 func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,8 +50,8 @@ func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		armkubernetesconfiguration.SourceControlConfiguration{
@@ -80,7 +80,7 @@ func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.SourceControlConfigurationsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteSourceControlConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteSourceControlConfiguration.json
 func ExampleSourceControlConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,8 +90,8 @@ func ExampleSourceControlConfigurationsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		nil)
@@ -104,7 +104,7 @@ func ExampleSourceControlConfigurationsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListSourceControlConfiguration.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListSourceControlConfiguration.json
 func ExampleSourceControlConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,8 +113,8 @@ func ExampleSourceControlConfigurationsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		nil)
 	for {

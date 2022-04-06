@@ -40,38 +40,29 @@ type BucketDefinition struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// ClusterExtensionTypeClientGetOptions contains the optional parameters for the ClusterExtensionTypeClient.Get method.
-type ClusterExtensionTypeClientGetOptions struct {
-	// placeholder for future optional parameters
-}
+// BucketPatchDefinition - Parameters to reconcile to the GitRepository source kind type.
+type BucketPatchDefinition struct {
+	// Plaintext access key used to securely access the S3 bucket
+	AccessKey *string `json:"accessKey,omitempty"`
 
-// ClusterExtensionTypesClientListOptions contains the optional parameters for the ClusterExtensionTypesClient.List method.
-type ClusterExtensionTypesClientListOptions struct {
-	// placeholder for future optional parameters
-}
+	// The bucket name to sync from the url endpoint for the flux configuration.
+	BucketName *string `json:"bucketName,omitempty"`
 
-// ClusterScopeSettings - Extension scope settings
-type ClusterScopeSettings struct {
-	// Extension scope settings
-	Properties *ClusterScopeSettingsProperties `json:"properties,omitempty"`
+	// Specify whether to use insecure communication when puling data from the S3 bucket.
+	Insecure *bool `json:"insecure,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
+	// configuration secrets.
+	LocalAuthRef *string `json:"localAuthRef,omitempty"`
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// The interval at which to re-reconcile the cluster git repository source with the remote.
+	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
+	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
+	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
 
-// ClusterScopeSettingsProperties - Extension scope settings
-type ClusterScopeSettingsProperties struct {
-	// Describes if multiple instances of the extension are allowed
-	AllowMultipleInstances *bool `json:"allowMultipleInstances,omitempty"`
-
-	// Default extension release namespace
-	DefaultReleaseNamespace *string `json:"defaultReleaseNamespace,omitempty"`
+	// The URL to sync for the flux configuration S3 bucket.
+	URL *string `json:"url,omitempty"`
 }
 
 // ComplianceStatus - Compliance Status details
@@ -126,13 +117,6 @@ func (c *ComplianceStatus) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// DependsOnDefinition - Specify which kustomizations must succeed reconciliation on the cluster prior to reconciling this
-// kustomization
-type DependsOnDefinition struct {
-	// Name of the kustomization to claim dependency on
-	KustomizationName *string `json:"kustomizationName,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -222,7 +206,8 @@ type ExtensionProperties struct {
 	// Status from this extension.
 	Statuses []*ExtensionStatus `json:"statuses,omitempty"`
 
-	// Version of the extension for this extension, if it is 'pinned' to a specific version. autoUpgradeMinorVersion must be 'false'.
+	// User-specified version of the extension for this extension to 'pin'. To use 'version', autoUpgradeMinorVersion must be
+	// 'false'.
 	Version *string `json:"version,omitempty"`
 
 	// READ-ONLY; Custom Location settings properties.
@@ -230,6 +215,9 @@ type ExtensionProperties struct {
 
 	// READ-ONLY; Error information from the Agent - e.g. errors during installation.
 	ErrorInfo *ErrorDetail `json:"errorInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; Installed version of the extension.
+	InstalledVersion *string `json:"installedVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; Uri of the Helm package
 	PackageURI *string `json:"packageUri,omitempty" azure:"ro"`
@@ -248,6 +236,7 @@ func (e ExtensionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customLocationSettings", e.CustomLocationSettings)
 	populate(objectMap, "errorInfo", e.ErrorInfo)
 	populate(objectMap, "extensionType", e.ExtensionType)
+	populate(objectMap, "installedVersion", e.InstalledVersion)
 	populate(objectMap, "packageUri", e.PackageURI)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "releaseTrain", e.ReleaseTrain)
@@ -260,7 +249,7 @@ func (e ExtensionProperties) MarshalJSON() ([]byte, error) {
 // ExtensionPropertiesAksAssignedIdentity - Identity of the Extension resource in an AKS cluster
 type ExtensionPropertiesAksAssignedIdentity struct {
 	// The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *AKSIdentityType `json:"type,omitempty"`
 
 	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
@@ -285,95 +274,6 @@ type ExtensionStatus struct {
 
 	// DateLiteral (per ISO8601) noting the time of installation status.
 	Time *string `json:"time,omitempty"`
-}
-
-// ExtensionType - Represents an Extension Type.
-type ExtensionType struct {
-	// REQUIRED; Describes the Resource Type properties.
-	Properties *ExtensionTypeProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// ExtensionTypeList - List Extension Types
-type ExtensionTypeList struct {
-	// The link to fetch the next page of Extension Types
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of Extension Types
-	Value []*ExtensionType `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtensionTypeList.
-func (e ExtensionTypeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// ExtensionTypeProperties - Properties of the connected cluster.
-type ExtensionTypeProperties struct {
-	// READ-ONLY; Cluster types
-	ClusterTypes *ClusterTypes `json:"clusterTypes,omitempty" azure:"ro"`
-
-	// READ-ONLY; Extension release train: preview or stable
-	ReleaseTrains []*string `json:"releaseTrains,omitempty" azure:"ro"`
-
-	// READ-ONLY; Extension scopes
-	SupportedScopes *SupportedScopes `json:"supportedScopes,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtensionTypeProperties.
-func (e ExtensionTypeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clusterTypes", e.ClusterTypes)
-	populate(objectMap, "releaseTrains", e.ReleaseTrains)
-	populate(objectMap, "supportedScopes", e.SupportedScopes)
-	return json.Marshal(objectMap)
-}
-
-// ExtensionTypeVersionsClientListOptions contains the optional parameters for the ExtensionTypeVersionsClient.List method.
-type ExtensionTypeVersionsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionVersionList - List versions for an Extension
-type ExtensionVersionList struct {
-	// The link to fetch the next page of Extension Types
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Versions available for this Extension Type
-	Versions []*ExtensionVersionListVersionsItem `json:"versions,omitempty"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtensionVersionList.
-func (e ExtensionVersionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "systemData", e.SystemData)
-	populate(objectMap, "versions", e.Versions)
-	return json.Marshal(objectMap)
-}
-
-type ExtensionVersionListVersionsItem struct {
-	// The release train for this Extension Type
-	ReleaseTrain *string `json:"releaseTrain,omitempty"`
-
-	// Versions available for this Extension Type and release train
-	Versions []*string `json:"versions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtensionVersionListVersionsItem.
-func (e ExtensionVersionListVersionsItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "releaseTrain", e.ReleaseTrain)
-	populate(objectMap, "versions", e.Versions)
-	return json.Marshal(objectMap)
 }
 
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
@@ -460,7 +360,7 @@ func (f FluxConfigurationPatch) MarshalJSON() ([]byte, error) {
 // FluxConfigurationPatchProperties - Updatable properties of an Flux Configuration Patch Request
 type FluxConfigurationPatchProperties struct {
 	// Parameters to reconcile to the Bucket source kind type.
-	Bucket *BucketDefinition `json:"bucket,omitempty"`
+	Bucket *BucketPatchDefinition `json:"bucket,omitempty"`
 
 	// Key-value pairs of protected configuration settings for the configuration
 	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
@@ -524,17 +424,20 @@ type FluxConfigurationProperties struct {
 	// READ-ONLY; Error message returned to the user in the case of provisioning failure.
 	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
 
-	// READ-ONLY; Datetime the fluxConfiguration last synced its source on the cluster.
-	LastSourceUpdatedAt *time.Time `json:"lastSourceUpdatedAt,omitempty" azure:"ro"`
-
-	// READ-ONLY; Branch and SHA of the last source commit synced with the cluster.
-	LastSourceUpdatedCommitID *string `json:"lastSourceUpdatedCommitId,omitempty" azure:"ro"`
-
 	// READ-ONLY; Status of the creation of the fluxConfiguration.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user).
 	RepositoryPublicKey *string `json:"repositoryPublicKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; Branch and/or SHA of the source commit synced with the cluster.
+	SourceSyncedCommitID *string `json:"sourceSyncedCommitId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datetime the fluxConfiguration synced its source on the cluster.
+	SourceUpdatedAt *time.Time `json:"sourceUpdatedAt,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datetime the fluxConfiguration synced its status on the cluster with Azure.
+	StatusUpdatedAt *time.Time `json:"statusUpdatedAt,omitempty" azure:"ro"`
 
 	// READ-ONLY; Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
 	// provisioned by the fluxConfiguration.
@@ -550,13 +453,14 @@ func (f FluxConfigurationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "errorMessage", f.ErrorMessage)
 	populate(objectMap, "gitRepository", f.GitRepository)
 	populate(objectMap, "kustomizations", f.Kustomizations)
-	populateTimeRFC3339(objectMap, "lastSourceUpdatedAt", f.LastSourceUpdatedAt)
-	populate(objectMap, "lastSourceUpdatedCommitId", f.LastSourceUpdatedCommitID)
 	populate(objectMap, "namespace", f.Namespace)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
 	populate(objectMap, "repositoryPublicKey", f.RepositoryPublicKey)
 	populate(objectMap, "scope", f.Scope)
 	populate(objectMap, "sourceKind", f.SourceKind)
+	populate(objectMap, "sourceSyncedCommitId", f.SourceSyncedCommitID)
+	populateTimeRFC3339(objectMap, "sourceUpdatedAt", f.SourceUpdatedAt)
+	populateTimeRFC3339(objectMap, "statusUpdatedAt", f.StatusUpdatedAt)
 	populate(objectMap, "statuses", f.Statuses)
 	populate(objectMap, "suspend", f.Suspend)
 	return json.Marshal(objectMap)
@@ -589,12 +493,6 @@ func (f *FluxConfigurationProperties) UnmarshalJSON(data []byte) error {
 		case "kustomizations":
 			err = unpopulate(val, &f.Kustomizations)
 			delete(rawMsg, key)
-		case "lastSourceUpdatedAt":
-			err = unpopulateTimeRFC3339(val, &f.LastSourceUpdatedAt)
-			delete(rawMsg, key)
-		case "lastSourceUpdatedCommitId":
-			err = unpopulate(val, &f.LastSourceUpdatedCommitID)
-			delete(rawMsg, key)
 		case "namespace":
 			err = unpopulate(val, &f.Namespace)
 			delete(rawMsg, key)
@@ -609,6 +507,15 @@ func (f *FluxConfigurationProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceKind":
 			err = unpopulate(val, &f.SourceKind)
+			delete(rawMsg, key)
+		case "sourceSyncedCommitId":
+			err = unpopulate(val, &f.SourceSyncedCommitID)
+			delete(rawMsg, key)
+		case "sourceUpdatedAt":
+			err = unpopulateTimeRFC3339(val, &f.SourceUpdatedAt)
+			delete(rawMsg, key)
+		case "statusUpdatedAt":
+			err = unpopulateTimeRFC3339(val, &f.StatusUpdatedAt)
 			delete(rawMsg, key)
 		case "statuses":
 			err = unpopulate(val, &f.Statuses)
@@ -736,6 +643,7 @@ type HelmOperatorProperties struct {
 	ChartVersion *string `json:"chartVersion,omitempty"`
 }
 
+// HelmReleasePropertiesDefinition - Properties for HelmRelease objects
 type HelmReleasePropertiesDefinition struct {
 	// Total number of times that the HelmRelease failed to install or upgrade
 	FailureCount *int64 `json:"failureCount,omitempty"`
@@ -769,7 +677,7 @@ type Identity struct {
 type KustomizationDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
 	// have completed their reconciliation.
-	DependsOn []*DependsOnDefinition `json:"dependsOn,omitempty"`
+	DependsOn []*string `json:"dependsOn,omitempty"`
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
 	Force *bool `json:"force,omitempty"`
@@ -788,6 +696,9 @@ type KustomizationDefinition struct {
 
 	// The maximum time to attempt to reconcile the Kustomization on the cluster.
 	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+
+	// READ-ONLY; Name of the Kustomization, matching the key in the Kustomizations object map.
+	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KustomizationDefinition.
@@ -795,6 +706,7 @@ func (k KustomizationDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "dependsOn", k.DependsOn)
 	populate(objectMap, "force", k.Force)
+	populate(objectMap, "name", k.Name)
 	populate(objectMap, "path", k.Path)
 	populate(objectMap, "prune", k.Prune)
 	populate(objectMap, "retryIntervalInSeconds", k.RetryIntervalInSeconds)
@@ -808,7 +720,7 @@ func (k KustomizationDefinition) MarshalJSON() ([]byte, error) {
 type KustomizationPatchDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
 	// have completed their reconciliation.
-	DependsOn []*DependsOnDefinition `json:"dependsOn,omitempty"`
+	DependsOn []*string `json:"dependsOn,omitempty"`
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
 	Force *bool `json:"force,omitempty"`
@@ -840,11 +752,6 @@ func (k KustomizationPatchDefinition) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "syncIntervalInSeconds", k.SyncIntervalInSeconds)
 	populate(objectMap, "timeoutInSeconds", k.TimeoutInSeconds)
 	return json.Marshal(objectMap)
-}
-
-// LocationExtensionTypesClientListOptions contains the optional parameters for the LocationExtensionTypesClient.List method.
-type LocationExtensionTypesClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ObjectReferenceDefinition - Object reference to a Kubernetes object on a cluster
@@ -1289,15 +1196,6 @@ type SourceControlConfigurationsClientGetOptions struct {
 // method.
 type SourceControlConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// SupportedScopes - Extension scopes
-type SupportedScopes struct {
-	// Scope settings
-	ClusterScopeSettings *ClusterScopeSettings `json:"clusterScopeSettings,omitempty"`
-
-	// Default extension scopes: cluster or namespace
-	DefaultScope *string `json:"defaultScope,omitempty"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

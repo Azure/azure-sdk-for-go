@@ -15,42 +15,6 @@ import (
 	"time"
 )
 
-// ClusterExtensionTypeClientGetResponse contains the response from method ClusterExtensionTypeClient.Get.
-type ClusterExtensionTypeClientGetResponse struct {
-	ClusterExtensionTypeClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClusterExtensionTypeClientGetResult contains the result from method ClusterExtensionTypeClient.Get.
-type ClusterExtensionTypeClientGetResult struct {
-	ExtensionType
-}
-
-// ClusterExtensionTypesClientListResponse contains the response from method ClusterExtensionTypesClient.List.
-type ClusterExtensionTypesClientListResponse struct {
-	ClusterExtensionTypesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClusterExtensionTypesClientListResult contains the result from method ClusterExtensionTypesClient.List.
-type ClusterExtensionTypesClientListResult struct {
-	ExtensionTypeList
-}
-
-// ExtensionTypeVersionsClientListResponse contains the response from method ExtensionTypeVersionsClient.List.
-type ExtensionTypeVersionsClientListResponse struct {
-	ExtensionTypeVersionsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ExtensionTypeVersionsClientListResult contains the result from method ExtensionTypeVersionsClient.List.
-type ExtensionTypeVersionsClientListResult struct {
-	ExtensionVersionList
-}
-
 // ExtensionsClientCreatePollerResponse contains the response from method ExtensionsClient.Create.
 type ExtensionsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
@@ -409,18 +373,6 @@ type FluxConfigurationsClientUpdateResponse struct {
 // FluxConfigurationsClientUpdateResult contains the result from method FluxConfigurationsClient.Update.
 type FluxConfigurationsClientUpdateResult struct {
 	FluxConfiguration
-}
-
-// LocationExtensionTypesClientListResponse contains the response from method LocationExtensionTypesClient.List.
-type LocationExtensionTypesClientListResponse struct {
-	LocationExtensionTypesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationExtensionTypesClientListResult contains the result from method LocationExtensionTypesClient.List.
-type LocationExtensionTypesClientListResult struct {
-	ExtensionTypeList
 }
 
 // OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.

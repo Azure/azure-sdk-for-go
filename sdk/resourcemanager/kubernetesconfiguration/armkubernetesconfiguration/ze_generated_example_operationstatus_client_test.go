@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetExtensionAsyncOperationStatus.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetExtensionAsyncOperationStatus.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,8 +26,8 @@ func ExampleOperationStatusClient_Get() {
 	client := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		"<extension-name>",
 		"<operation-id>",
@@ -38,7 +38,7 @@ func ExampleOperationStatusClient_Get() {
 	log.Printf("Response result: %#v\n", res.OperationStatusClientGetResult)
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListAsyncOperationStatus.json
+// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListAsyncOperationStatus.json
 func ExampleOperationStatusClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,8 +47,8 @@ func ExampleOperationStatusClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.ExtensionsClusterRp("Microsoft.Kubernetes"),
-		armkubernetesconfiguration.ExtensionsClusterResourceName("connectedClusters"),
+		"<cluster-rp>",
+		"<cluster-resource-name>",
 		"<cluster-name>",
 		nil)
 	for {

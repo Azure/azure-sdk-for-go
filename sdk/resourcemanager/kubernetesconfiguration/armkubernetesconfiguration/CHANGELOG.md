@@ -1,5 +1,107 @@
 # Release History
 
+## 0.4.0 (2022-04-06)
+### Breaking Changes
+
+- Function `*ExtensionsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, Extension, *ExtensionsClientBeginCreateOptions)` to `(context.Context, string, string, string, string, string, Extension, *ExtensionsClientBeginCreateOptions)`
+- Function `*FluxConfigurationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, FluxConfigurationPatch, *FluxConfigurationsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, FluxConfigurationPatch, *FluxConfigurationsClientBeginUpdateOptions)`
+- Function `*FluxConfigurationsClient.List` parameter(s) have been changed from `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *FluxConfigurationsClientListOptions)` to `(string, string, string, string, *FluxConfigurationsClientListOptions)`
+- Function `*ExtensionsClient.List` parameter(s) have been changed from `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *ExtensionsClientListOptions)` to `(string, string, string, string, *ExtensionsClientListOptions)`
+- Function `*SourceControlConfigurationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, SourceControlConfiguration, *SourceControlConfigurationsClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, SourceControlConfiguration, *SourceControlConfigurationsClientCreateOrUpdateOptions)`
+- Function `*FluxConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *FluxConfigurationsClientGetOptions)` to `(context.Context, string, string, string, string, string, *FluxConfigurationsClientGetOptions)`
+- Function `*SourceControlConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *SourceControlConfigurationsClientGetOptions)` to `(context.Context, string, string, string, string, string, *SourceControlConfigurationsClientGetOptions)`
+- Function `*FluxConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, FluxConfiguration, *FluxConfigurationsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, FluxConfiguration, *FluxConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*FluxConfigOperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, string, *FluxConfigOperationStatusClientGetOptions)` to `(context.Context, string, string, string, string, string, string, *FluxConfigOperationStatusClientGetOptions)`
+- Function `*ExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *ExtensionsClientBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *ExtensionsClientBeginDeleteOptions)`
+- Function `*SourceControlConfigurationsClient.List` parameter(s) have been changed from `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *SourceControlConfigurationsClientListOptions)` to `(string, string, string, string, *SourceControlConfigurationsClientListOptions)`
+- Function `*OperationStatusClient.List` parameter(s) have been changed from `(string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, *OperationStatusClientListOptions)` to `(string, string, string, string, *OperationStatusClientListOptions)`
+- Function `*SourceControlConfigurationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *SourceControlConfigurationsClientBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *SourceControlConfigurationsClientBeginDeleteOptions)`
+- Function `*ExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *ExtensionsClientGetOptions)` to `(context.Context, string, string, string, string, string, *ExtensionsClientGetOptions)`
+- Function `*FluxConfigurationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, *FluxConfigurationsClientBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *FluxConfigurationsClientBeginDeleteOptions)`
+- Function `*ExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, PatchExtension, *ExtensionsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, PatchExtension, *ExtensionsClientBeginUpdateOptions)`
+- Function `*OperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, ExtensionsClusterRp, ExtensionsClusterResourceName, string, string, string, *OperationStatusClientGetOptions)` to `(context.Context, string, string, string, string, string, string, *OperationStatusClientGetOptions)`
+- Type of `ExtensionPropertiesAksAssignedIdentity.Type` has been changed from `*string` to `*AKSIdentityType`
+- Type of `KustomizationPatchDefinition.DependsOn` has been changed from `[]*DependsOnDefinition` to `[]*string`
+- Type of `FluxConfigurationPatchProperties.Bucket` has been changed from `*BucketDefinition` to `*BucketPatchDefinition`
+- Type of `KustomizationDefinition.DependsOn` has been changed from `[]*DependsOnDefinition` to `[]*string`
+- Const `ExtensionsClusterRpMicrosoftContainerService` has been removed
+- Const `ClusterTypesManagedClusters` has been removed
+- Const `ExtensionsClusterResourceNameConnectedClusters` has been removed
+- Const `ExtensionsClusterResourceNameManagedClusters` has been removed
+- Const `ClusterTypesConnectedClusters` has been removed
+- Const `ExtensionsClusterRpMicrosoftKubernetes` has been removed
+- Function `*ClusterExtensionTypesClientListPager.NextPage` has been removed
+- Function `*ExtensionTypeVersionsClientListPager.NextPage` has been removed
+- Function `*ExtensionTypeVersionsClient.List` has been removed
+- Function `ExtensionVersionListVersionsItem.MarshalJSON` has been removed
+- Function `*LocationExtensionTypesClientListPager.PageResponse` has been removed
+- Function `*LocationExtensionTypesClient.List` has been removed
+- Function `*LocationExtensionTypesClientListPager.NextPage` has been removed
+- Function `*ExtensionTypeVersionsClientListPager.PageResponse` has been removed
+- Function `*ExtensionTypeVersionsClientListPager.Err` has been removed
+- Function `NewExtensionTypeVersionsClient` has been removed
+- Function `ClusterTypes.ToPtr` has been removed
+- Function `ExtensionTypeList.MarshalJSON` has been removed
+- Function `ExtensionsClusterRp.ToPtr` has been removed
+- Function `*ClusterExtensionTypesClientListPager.Err` has been removed
+- Function `NewClusterExtensionTypesClient` has been removed
+- Function `ExtensionTypeProperties.MarshalJSON` has been removed
+- Function `PossibleClusterTypesValues` has been removed
+- Function `ExtensionsClusterResourceName.ToPtr` has been removed
+- Function `ExtensionVersionList.MarshalJSON` has been removed
+- Function `NewClusterExtensionTypeClient` has been removed
+- Function `*LocationExtensionTypesClientListPager.Err` has been removed
+- Function `PossibleExtensionsClusterRpValues` has been removed
+- Function `PossibleExtensionsClusterResourceNameValues` has been removed
+- Function `*ClusterExtensionTypesClient.List` has been removed
+- Function `*ClusterExtensionTypesClientListPager.PageResponse` has been removed
+- Function `NewLocationExtensionTypesClient` has been removed
+- Function `*ClusterExtensionTypeClient.Get` has been removed
+- Struct `ClusterExtensionTypeClient` has been removed
+- Struct `ClusterExtensionTypeClientGetOptions` has been removed
+- Struct `ClusterExtensionTypeClientGetResponse` has been removed
+- Struct `ClusterExtensionTypeClientGetResult` has been removed
+- Struct `ClusterExtensionTypesClient` has been removed
+- Struct `ClusterExtensionTypesClientListOptions` has been removed
+- Struct `ClusterExtensionTypesClientListPager` has been removed
+- Struct `ClusterExtensionTypesClientListResponse` has been removed
+- Struct `ClusterExtensionTypesClientListResult` has been removed
+- Struct `ClusterScopeSettings` has been removed
+- Struct `ClusterScopeSettingsProperties` has been removed
+- Struct `DependsOnDefinition` has been removed
+- Struct `ExtensionType` has been removed
+- Struct `ExtensionTypeList` has been removed
+- Struct `ExtensionTypeProperties` has been removed
+- Struct `ExtensionTypeVersionsClient` has been removed
+- Struct `ExtensionTypeVersionsClientListOptions` has been removed
+- Struct `ExtensionTypeVersionsClientListPager` has been removed
+- Struct `ExtensionTypeVersionsClientListResponse` has been removed
+- Struct `ExtensionTypeVersionsClientListResult` has been removed
+- Struct `ExtensionVersionList` has been removed
+- Struct `ExtensionVersionListVersionsItem` has been removed
+- Struct `LocationExtensionTypesClient` has been removed
+- Struct `LocationExtensionTypesClientListOptions` has been removed
+- Struct `LocationExtensionTypesClientListPager` has been removed
+- Struct `LocationExtensionTypesClientListResponse` has been removed
+- Struct `LocationExtensionTypesClientListResult` has been removed
+- Struct `SupportedScopes` has been removed
+- Field `LastSourceUpdatedAt` of struct `FluxConfigurationProperties` has been removed
+- Field `LastSourceUpdatedCommitID` of struct `FluxConfigurationProperties` has been removed
+
+### Features Added
+
+- New const `AKSIdentityTypeUserAssigned`
+- New const `AKSIdentityTypeSystemAssigned`
+- New function `PossibleAKSIdentityTypeValues() []AKSIdentityType`
+- New function `AKSIdentityType.ToPtr() *AKSIdentityType`
+- New struct `BucketPatchDefinition`
+- New field `InstalledVersion` in struct `ExtensionProperties`
+- New field `StatusUpdatedAt` in struct `FluxConfigurationProperties`
+- New field `SourceSyncedCommitID` in struct `FluxConfigurationProperties`
+- New field `SourceUpdatedAt` in struct `FluxConfigurationProperties`
+- New field `Name` in struct `KustomizationDefinition`
+
+
 ## 0.3.0 (2022-02-22)
 ### Breaking Changes
 

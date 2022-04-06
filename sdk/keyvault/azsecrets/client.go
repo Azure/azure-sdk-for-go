@@ -313,7 +313,7 @@ func (s *DeleteSecretPoller) PollUntilDone(ctx context.Context, t time.Duration)
 
 // ResumeToken returns a token for resuming polling at a later time
 func (s *DeleteSecretPoller) ResumeToken() (string, error) {
-	return string(s.resumeToken), nil
+	return s.resumeToken, nil
 }
 
 // BeginDeleteSecret deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
@@ -678,7 +678,7 @@ func (b *RecoverDeletedSecretPoller) PollUntilDone(ctx context.Context, t time.D
 
 // ResumeToken returns a token for resuming polling at a later time
 func (s *RecoverDeletedSecretPoller) ResumeToken() (string, error) {
-	return string(s.resumeToken), nil
+	return s.resumeToken, nil
 }
 
 // BeginRecoverDeletedSecretOptions contains the optional parameters for the Client.BeginRecoverDeletedSecret operation

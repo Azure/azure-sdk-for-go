@@ -9,7 +9,7 @@
 package internal
 
 const (
-	ModuleName    = "internal"
+	ModuleName    = "azsecrets"
 	ModuleVersion = "v0.7.0"
 )
 

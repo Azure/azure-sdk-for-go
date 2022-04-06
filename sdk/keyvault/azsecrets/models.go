@@ -21,7 +21,7 @@ type DeletedSecret struct {
 	// The secret id.
 	ID *string `json:"id,omitempty"`
 
-	// The name of the string
+	// Name of the secret
 	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted secret.

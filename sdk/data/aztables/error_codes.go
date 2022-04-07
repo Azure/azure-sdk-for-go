@@ -37,6 +37,7 @@ const (
 	InvalidXMLDocument                   TableErrorCode = "InvalidXmlDocument"
 	InvalidXMLNodeValue                  TableErrorCode = "InvalidXmlNodeValue"
 	JSONFormatNotSupported               TableErrorCode = "JsonFormatNotSupported"
+	JSONVerboseFormatNotSupported        TableErrorCode = "JsonVerboseFormatNotSupported"
 	Md5Mismatch                          TableErrorCode = "Md5Mismatch"
 	MetadataTooLarge                     TableErrorCode = "MetadataTooLarge"
 	MethodNotAllowed                     TableErrorCode = "MethodNotAllowed"

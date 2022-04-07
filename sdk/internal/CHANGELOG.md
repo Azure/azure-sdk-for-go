@@ -1,15 +1,20 @@
 # Release History
 
-## 0.9.2 (Unreleased)
+## 0.9.3 (Unreleased)
 
 ### Features Added
-* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.9.2 (2022-04-04)
+
+### Features Added
+* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
+* Added the `perf` library for performance testing client SDKs
 
 ## 0.9.1 (2022-02-01)
 

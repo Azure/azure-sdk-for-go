@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -34,7 +34,7 @@ type Poller struct {
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, pollerID string) (*Poller, error) {
+func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string) (*Poller, error) {
 	log.Write(log.EventLRO, "Using Operation-Location poller.")
 	opURL := resp.Header.Get(shared.HeaderOperationLocation)
 	if opURL == "" {
@@ -61,6 +61,7 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	// calculate the tentative final GET URL.
 	// can change if we receive a resourceLocation.
 	// it's ok for it to be empty in some cases.
+	// TODO: finalState
 	finalGET := ""
 	if resp.Request.Method == http.MethodPatch || resp.Request.Method == http.MethodPut {
 		finalGET = resp.Request.URL.String()

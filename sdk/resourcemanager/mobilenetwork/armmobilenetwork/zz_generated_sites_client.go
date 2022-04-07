@@ -116,7 +116,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -187,7 +187,7 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -291,7 +291,7 @@ func (client *SitesClient) listByMobileNetworkCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +352,7 @@ func (client *SitesClient) updateTagsCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

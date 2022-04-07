@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -12,6 +12,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -97,34 +98,6 @@ func TestHasStatusCode(t *testing.T) {
 	}
 }
 
-func TestEndpointToScope(t *testing.T) {
-	knownClouds := map[string][]string{
-		chinaCloudARMScope:  {"https://foo.management.chinacloudapi.cn", "https://management.chinacloudapi.cn"},
-		publicCloudARMScope: {"https://centraluseuap.management.azure.com", "https://management.azure.com"},
-		usGovCloudARMScope:  {"https://foo.management.usgovcloudapi.net", "https://management.usgovcloudapi.net"},
-	}
-	for expected, endpoints := range knownClouds {
-		for _, endpoint := range endpoints {
-			if actual := EndpointToScope(endpoint); actual != expected {
-				t.Fatalf(`unexpected scope "%s" for endpoint "%s"`, actual, endpoint)
-			}
-			if actual := EndpointToScope(endpoint + "/"); actual != expected {
-				t.Fatalf(`unexpected scope "%s" for endpoint "%s"/`, actual, endpoint)
-			}
-		}
-	}
-
-	// legacy behavior for unknown clouds: add "//.default" suffix to endpoint
-	for _, endpoint := range []string{"localhost", "http://foo.bar"} {
-		if actual := EndpointToScope(endpoint); actual != endpoint+"//.default" {
-			t.Fatalf(`unexpected scope "%s" for endpoint "%s"`, actual, endpoint)
-		}
-		if actual := EndpointToScope(endpoint + "/"); actual != endpoint+"//.default" {
-			t.Fatalf(`unexpected scope "%s" for endpoint "%s"/`, actual, endpoint)
-		}
-	}
-}
-
 func TestPayload(t *testing.T) {
 	const val = "payload"
 	resp := &http.Response{
@@ -202,5 +175,14 @@ func TestNopClosingBytesReader(t *testing.T) {
 	_, err = ncbr.Seek(-int64(len(val2)+1), io.SeekCurrent)
 	if err == nil {
 		t.Fatal("unexpected nil error")
+	}
+}
+
+func TestTypeOfT(t *testing.T) {
+	if tt := TypeOfT[bool](); tt != reflect.TypeOf(true) {
+		t.Fatalf("unexpected type %s", tt)
+	}
+	if tt := TypeOfT[int32](); tt == reflect.TypeOf(3.14) {
+		t.Fatal("didn't expect types to match")
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -202,4 +202,44 @@ func toBytes(s string, t *testing.T) []byte {
 	ret, err := hex.DecodeString(s)
 	require.NoError(t, err)
 	return ret
+}
+
+func validateKey(t *testing.T, key *Key) {
+	require.NotNil(t, key)
+	require.NotNil(t, key.Properties)
+	validateProperties(t, key.Properties)
+	require.NotNil(t, key.JSONWebKey)
+	require.NotNil(t, key.ID)
+	require.NotNil(t, key.Name)
+}
+
+func validateProperties(t *testing.T, props *Properties) {
+	require.NotNil(t, props)
+	if props.CreatedOn == nil {
+		t.Fatalf("expected CreatedOn to be not nil")
+	}
+	if props.Enabled == nil {
+		t.Fatalf("expected Enabled to be not nil")
+	}
+	if props.ID == nil {
+		t.Fatalf("expected ID to be not nil")
+	}
+	if props.Name == nil {
+		t.Fatalf("expected Name to be not nil")
+	}
+	if props.RecoverableDays == nil {
+		t.Fatalf("expected RecoverableDays to be not nil")
+	}
+	if props.RecoveryLevel == nil {
+		t.Fatalf("expected RecoveryLevel to be not nil")
+	}
+	if props.UpdatedOn == nil {
+		t.Fatalf("expected UpdatedOn to be not nil")
+	}
+	if props.VaultURL == nil {
+		t.Fatalf("expected VaultURL to be not nil")
+	}
+	if props.Version == nil {
+		t.Fatalf("expected Version to be not nil")
+	}
 }

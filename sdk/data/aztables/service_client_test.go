@@ -106,8 +106,10 @@ func TestQueryTable(t *testing.T) {
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
+				require.LessOrEqual(t, len(resp.Tables), 2)
 				resultCount += len(resp.Tables)
 				pageCount++
+				fmt.Printf("pageCount: %d\tresultCount: %d\n", pageCount, resultCount)
 			}
 
 			require.Equal(t, resultCount, tableCount-1)
@@ -206,19 +208,21 @@ func TestSetLogging(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	logging := Logging{
-		Read:    to.BoolPtr(true),
-		Write:   to.BoolPtr(true),
-		Delete:  to.BoolPtr(true),
-		Version: to.StringPtr("1.0"),
+	getResp, err := service.GetProperties(ctx, nil)
+	require.NoError(t, err)
+
+	getResp.Logging = &Logging{
+		Read:    to.Ptr(true),
+		Write:   to.Ptr(true),
+		Delete:  to.Ptr(true),
+		Version: to.Ptr("1.0"),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
 		},
 	}
-	props := ServiceProperties{Logging: &logging}
 
-	resp, err := service.SetProperties(ctx, props, nil)
+	resp, err := service.SetProperties(ctx, getResp.ServiceProperties, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
@@ -227,29 +231,31 @@ func TestSetLogging(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.Logging.Read, *received.Logging.Read)
-	require.Equal(t, *props.Logging.Write, *received.Logging.Write)
-	require.Equal(t, *props.Logging.Delete, *received.Logging.Delete)
-	require.Equal(t, *props.Logging.RetentionPolicy.Enabled, *received.Logging.RetentionPolicy.Enabled)
-	require.Equal(t, *props.Logging.RetentionPolicy.Days, *received.Logging.RetentionPolicy.Days)
+	require.Equal(t, *getResp.Logging.Read, *received.Logging.Read)
+	require.Equal(t, *getResp.Logging.Write, *received.Logging.Write)
+	require.Equal(t, *getResp.Logging.Delete, *received.Logging.Delete)
+	require.Equal(t, *getResp.Logging.RetentionPolicy.Enabled, *received.Logging.RetentionPolicy.Enabled)
+	require.Equal(t, *getResp.Logging.RetentionPolicy.Days, *received.Logging.RetentionPolicy.Days)
 }
 
 func TestSetHoursMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
-		},
-		Version: to.StringPtr("1.0"),
-	}
-	props := ServiceProperties{HourMetrics: &metrics}
+	getResp, err := service.GetProperties(ctx, nil)
+	require.NoError(t, err)
 
-	resp, err := service.SetProperties(ctx, props, nil)
+	getResp.HourMetrics = &Metrics{
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
+		},
+		Version: to.Ptr("1.0"),
+	}
+
+	resp, err := service.SetProperties(ctx, getResp.ServiceProperties, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
@@ -258,28 +264,30 @@ func TestSetHoursMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.HourMetrics.Enabled, *received.HourMetrics.Enabled)
-	require.Equal(t, *props.HourMetrics.IncludeAPIs, *received.HourMetrics.IncludeAPIs)
-	require.Equal(t, *props.HourMetrics.RetentionPolicy.Days, *received.HourMetrics.RetentionPolicy.Days)
-	require.Equal(t, *props.HourMetrics.RetentionPolicy.Enabled, *received.HourMetrics.RetentionPolicy.Enabled)
+	require.Equal(t, *getResp.HourMetrics.Enabled, *received.HourMetrics.Enabled)
+	require.Equal(t, *getResp.HourMetrics.IncludeAPIs, *received.HourMetrics.IncludeAPIs)
+	require.Equal(t, *getResp.HourMetrics.RetentionPolicy.Days, *received.HourMetrics.RetentionPolicy.Days)
+	require.Equal(t, *getResp.HourMetrics.RetentionPolicy.Enabled, *received.HourMetrics.RetentionPolicy.Enabled)
 }
 
 func TestSetMinuteMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(5),
-		},
-		Version: to.StringPtr("1.0"),
-	}
-	props := ServiceProperties{MinuteMetrics: &metrics}
+	getResp, err := service.GetProperties(ctx, nil)
+	require.NoError(t, err)
 
-	resp, err := service.SetProperties(ctx, props, nil)
+	getResp.MinuteMetrics = &Metrics{
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(5)),
+		},
+		Version: to.Ptr("1.0"),
+	}
+
+	resp, err := service.SetProperties(ctx, getResp.ServiceProperties, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
@@ -288,26 +296,30 @@ func TestSetMinuteMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.MinuteMetrics.Enabled, *received.MinuteMetrics.Enabled)
-	require.Equal(t, *props.MinuteMetrics.IncludeAPIs, *received.MinuteMetrics.IncludeAPIs)
-	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Days, *received.MinuteMetrics.RetentionPolicy.Days)
-	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Enabled, *received.MinuteMetrics.RetentionPolicy.Enabled)
+	require.Equal(t, *getResp.MinuteMetrics.Enabled, *received.MinuteMetrics.Enabled)
+	require.Equal(t, *getResp.MinuteMetrics.IncludeAPIs, *received.MinuteMetrics.IncludeAPIs)
+	require.Equal(t, *getResp.MinuteMetrics.RetentionPolicy.Days, *received.MinuteMetrics.RetentionPolicy.Days)
+	require.Equal(t, *getResp.MinuteMetrics.RetentionPolicy.Enabled, *received.MinuteMetrics.RetentionPolicy.Enabled)
 }
 
 func TestSetCors(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	corsRules1 := CorsRule{
-		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
-		AllowedMethods:  to.StringPtr("PUT"),
-		AllowedOrigins:  to.StringPtr("www.xyz.com"),
-		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
-		MaxAgeInSeconds: to.Int32Ptr(500),
-	}
-	props := ServiceProperties{Cors: []*CorsRule{&corsRules1}}
+	getResp, err := service.GetProperties(ctx, nil)
+	require.NoError(t, err)
 
-	resp, err := service.SetProperties(ctx, props, nil)
+	getResp.Cors = []*CorsRule{
+		{
+			AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
+			AllowedMethods:  to.Ptr("PUT"),
+			AllowedOrigins:  to.Ptr("www.xyz.com"),
+			ExposedHeaders:  to.Ptr("x-ms-meta-source*"),
+			MaxAgeInSeconds: to.Ptr(int32(500)),
+		},
+	}
+
+	resp, err := service.SetProperties(ctx, getResp.ServiceProperties, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
@@ -316,11 +328,11 @@ func TestSetCors(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.Cors[0].AllowedHeaders, *received.Cors[0].AllowedHeaders)
-	require.Equal(t, *props.Cors[0].AllowedMethods, *received.Cors[0].AllowedMethods)
-	require.Equal(t, *props.Cors[0].AllowedOrigins, *received.Cors[0].AllowedOrigins)
-	require.Equal(t, *props.Cors[0].ExposedHeaders, *received.Cors[0].ExposedHeaders)
-	require.Equal(t, *props.Cors[0].MaxAgeInSeconds, *received.Cors[0].MaxAgeInSeconds)
+	require.Equal(t, *getResp.Cors[0].AllowedHeaders, *received.Cors[0].AllowedHeaders)
+	require.Equal(t, *getResp.Cors[0].AllowedMethods, *received.Cors[0].AllowedMethods)
+	require.Equal(t, *getResp.Cors[0].AllowedOrigins, *received.Cors[0].AllowedOrigins)
+	require.Equal(t, *getResp.Cors[0].ExposedHeaders, *received.Cors[0].ExposedHeaders)
+	require.Equal(t, *getResp.Cors[0].MaxAgeInSeconds, *received.Cors[0].MaxAgeInSeconds)
 }
 
 func TestSetTooManyCors(t *testing.T) {
@@ -328,11 +340,11 @@ func TestSetTooManyCors(t *testing.T) {
 	defer delete()
 
 	corsRules1 := CorsRule{
-		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
-		AllowedMethods:  to.StringPtr("PUT"),
-		AllowedOrigins:  to.StringPtr("www.xyz.com"),
-		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
-		MaxAgeInSeconds: to.Int32Ptr(500),
+		AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
+		AllowedMethods:  to.Ptr("PUT"),
+		AllowedOrigins:  to.Ptr("www.xyz.com"),
+		ExposedHeaders:  to.Ptr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Ptr(int32(500)),
 	}
 	props := ServiceProperties{Cors: make([]*CorsRule, 0)}
 	for i := 0; i < 6; i++ {
@@ -348,13 +360,13 @@ func TestRetentionTooLong(t *testing.T) {
 	defer delete()
 
 	metrics := Metrics{
-		Enabled:     to.BoolPtr(true),
-		IncludeAPIs: to.BoolPtr(true),
+		Enabled:     to.Ptr(true),
+		IncludeAPIs: to.Ptr(true),
 		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(true),
-			Days:    to.Int32Ptr(366),
+			Enabled: to.Ptr(true),
+			Days:    to.Ptr(int32(366)),
 		},
-		Version: to.StringPtr("1.0"),
+		Version: to.Ptr("1.0"),
 	}
 	props := ServiceProperties{MinuteMetrics: &metrics}
 
@@ -373,7 +385,7 @@ func TestGetAccountSASToken(t *testing.T) {
 	start := time.Date(2021, time.September, 8, 14, 30, 0, 0, time.UTC)
 	end := start.AddDate(0, 0, 1)
 
-	sas, err := service.GetAccountSASToken(resources, perms, start, end)
+	sas, err := service.GetAccountSASURL(resources, perms, start, end)
 	require.NoError(t, err)
 	require.Equal(t, "https://myAccountName.table.core.windows.net/?se=2021-09-09T14%3A30%3A00Z&sig=m%2F%2FxhMvxidHaswzZRpyuiHykqnTppPi%2BQ9S5xHMksIQ%3D&sp=r&spr=https&srt=s&ss=t&st=2021-09-08T14%3A30%3A00Z&sv=2019-02-02", sas)
 }
@@ -386,6 +398,6 @@ func TestGetAccountSASTokenError(t *testing.T) {
 	resources := AccountSASResourceTypes{Service: true}
 	perms := AccountSASPermissions{Read: true}
 
-	_, err = service.GetAccountSASToken(resources, perms, time.Now(), time.Now().Add(time.Hour))
+	_, err = service.GetAccountSASURL(resources, perms, time.Now(), time.Now().Add(time.Hour))
 	require.Error(t, err)
 }

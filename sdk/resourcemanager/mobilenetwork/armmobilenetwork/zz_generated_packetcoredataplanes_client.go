@@ -116,7 +116,7 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -188,7 +188,7 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -240,7 +240,7 @@ func (client *PacketCoreDataPlanesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -293,7 +293,7 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -355,7 +355,7 @@ func (client *PacketCoreDataPlanesClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

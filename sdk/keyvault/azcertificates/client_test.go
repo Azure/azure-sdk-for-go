@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -48,14 +48,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "beginCreate")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
@@ -66,7 +59,44 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 
 	// want to interface with x509 std library
 
-	mid := base64.StdEncoding.EncodeToString(pollerResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
+	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	// load certificate request
+	csrblock, _ := pem.Decode([]byte(csr))
+	require.NotNil(t, csrblock)
+	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	require.NoError(t, err)
+	require.NoError(t, req.CheckSignature())
+}
+
+func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "beginCreateRehydrate")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	rt, err := resp.ResumeToken()
+	require.NoError(t, err)
+
+	newPoller, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), &BeginCreateCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	pollerResp, err := newPoller.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	defer cleanUp(t, client, certName)
+
+	// want to interface with x509 std library
+	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
 	// load certificate request
@@ -87,14 +117,7 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "createCert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
@@ -119,6 +142,47 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestClient_BeginDeleteCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "createCertRehydrate")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	rt, err := delResp.ResumeToken()
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteCertificate(ctx, certName, &BeginDeleteCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	delPollerResp, err := poller.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	deletedResp, err := client.GetDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Contains(t, *deletedResp.ID, certName)
+
+	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+}
+
 func TestClient_GetCertificateOperation(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -129,14 +193,7 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	_, err = resp.PollUntilDone(ctx, delay())
@@ -158,14 +215,7 @@ func TestClient_CancelCertificateOperation(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	_, err = client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	_, err = client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 
 	cancelResp, err := client.CancelCertificateOperation(ctx, certName, nil)
@@ -194,14 +244,7 @@ func TestClient_BackupCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 	_, err = resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
@@ -223,6 +266,7 @@ func TestClient_ListCertificates(t *testing.T) {
 	createdCount := 0
 	for i := 0; i < 4; i++ {
 		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		fmt.Println(name)
 		require.NoError(t, err)
 		createCert(t, client, name)
 		defer cleanUp(t, client, name)
@@ -231,11 +275,14 @@ func TestClient_ListCertificates(t *testing.T) {
 
 	time.Sleep(10 * delay())
 
-	pager := client.ListCertificates(nil)
+	pager := client.ListPropertiesOfCertificates(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
 		createdCount -= len(page.Certificates)
+		for _, c := range page.Certificates {
+			fmt.Println(*c.ID)
+		}
 	}
 
 	require.Equal(t, 0, createdCount)
@@ -254,7 +301,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
-	pager := client.ListCertificateVersions(name, nil)
+	pager := client.ListPropertiesOfCertificateVersions(name, nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -268,7 +315,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListCertificateVersions(name, nil)
+	pager = client.ListPropertiesOfCertificateVersions(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -282,7 +329,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListCertificateVersions(name, nil)
+	pager = client.ListPropertiesOfCertificateVersions(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -323,47 +370,48 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	resp, err := client.CreateIssuer(ctx, issuerName, "Test", &CreateIssuerOptions{
 		Credentials: &IssuerCredentials{
-			AccountID: to.StringPtr("keyvaultuser"),
+			AccountID: to.Ptr("keyvaultuser"),
 		},
-		Enabled: to.BoolPtr(true),
+		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.StringPtr("John"),
-				LastName:     to.StringPtr("Doe"),
-				EmailAddress: to.StringPtr("admin@microsoft.com"),
-				Phone:        to.StringPtr("4255555555"),
+				FirstName: to.Ptr("John"),
+				LastName:  to.Ptr("Doe"),
+				Email:     to.Ptr("admin@microsoft.com"),
+				Phone:     to.Ptr("4255555555"),
 			},
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *resp.Provider, "Test")
-	require.Equal(t, *resp.Credentials.AccountID, "keyvaultuser")
-	require.Contains(t, *resp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+	require.Equal(t, *resp.Issuer.Provider, "Test")
+	require.Equal(t, *resp.Issuer.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *resp.Issuer.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 
 	getResp, err := client.GetIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Provider, "Test")
-	require.Equal(t, *getResp.Credentials.AccountID, "keyvaultuser")
-	require.Contains(t, *getResp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+	require.Equal(t, *getResp.Issuer.Provider, "Test")
+	require.Equal(t, *getResp.Issuer.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *getResp.Issuer.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 
 	issuerName2, err := createRandomName(t, "issuer2")
 	require.NoError(t, err)
 
-	_, err = client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
+	createResp, err := client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
 		Credentials: &IssuerCredentials{
-			AccountID: to.StringPtr("keyvaultuser2"),
+			AccountID: to.Ptr("keyvaultuser2"),
 		},
-		Enabled: to.BoolPtr(true),
+		Enabled: to.Ptr(true),
 		AdministratorContacts: []*AdministratorContact{
 			{
-				FirstName:    to.StringPtr("John"),
-				LastName:     to.StringPtr("Doe"),
-				EmailAddress: to.StringPtr("admin@microsoft.com"),
-				Phone:        to.StringPtr("4255555555"),
+				FirstName: to.Ptr("John"),
+				LastName:  to.Ptr("Doe"),
+				Email:     to.Ptr("admin@microsoft.com"),
+				Phone:     to.Ptr("4255555555"),
 			},
 		},
 	})
 	require.NoError(t, err)
+	require.Equal(t, issuerName2, *createResp.Issuer.Name)
 
 	// List operation
 	pager := client.ListPropertiesOfIssuers(nil)
@@ -378,23 +426,22 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	}
 	require.GreaterOrEqual(t, count, 2)
 
-	// Update the certificate issuer
-	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{
-		AdministratorContacts: []*AdministratorContact{
-			{
-				FirstName:    to.StringPtr("Jane"),
-				LastName:     to.StringPtr("Doey"),
-				EmailAddress: to.StringPtr("admin2@microsoft.com"),
-				Phone:        to.StringPtr("4266666666"),
-			},
+	createResp.Issuer.AdministratorContacts = []*AdministratorContact{
+		{
+			FirstName: to.Ptr("Jane"),
+			LastName:  to.Ptr("Doey"),
+			Email:     to.Ptr("admin2@microsoft.com"),
+			Phone:     to.Ptr("4266666666"),
 		},
-	})
+	}
+	// Update the certificate issuer
+	updateResp, err := client.UpdateIssuer(ctx, createResp.Issuer, nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(updateResp.AdministratorContacts))
-	require.Equal(t, "Jane", *updateResp.AdministratorContacts[0].FirstName)
-	require.Equal(t, "Doey", *updateResp.AdministratorContacts[0].LastName)
-	require.Equal(t, "admin2@microsoft.com", *updateResp.AdministratorContacts[0].EmailAddress)
-	require.Equal(t, "4266666666", *updateResp.AdministratorContacts[0].Phone)
+	require.Equal(t, 1, len(updateResp.Issuer.AdministratorContacts))
+	require.Equal(t, "Jane", *updateResp.Issuer.AdministratorContacts[0].FirstName)
+	require.Equal(t, "Doey", *updateResp.Issuer.AdministratorContacts[0].LastName)
+	require.Equal(t, "admin2@microsoft.com", *updateResp.Issuer.AdministratorContacts[0].Email)
+	require.Equal(t, "4266666666", *updateResp.Issuer.AdministratorContacts[0].Phone)
 
 	// Delete the first issuer
 	_, err = client.DeleteIssuer(ctx, issuerName, nil)
@@ -413,19 +460,19 @@ func TestClient_ContactsCRUD(t *testing.T) {
 	require.NoError(t, err)
 
 	contacts := Contacts{ContactList: []*Contact{
-		{EmailAddress: to.StringPtr("admin@microsoft.com"), Name: to.StringPtr("John Doe"), Phone: to.StringPtr("1111111111")},
-		{EmailAddress: to.StringPtr("admin@contoso.com"), Name: to.StringPtr("Jane Doey"), Phone: to.StringPtr("2222222222")},
+		{Email: to.Ptr("admin@microsoft.com"), Name: to.Ptr("John Doe"), Phone: to.Ptr("1111111111")},
+		{Email: to.Ptr("admin@contoso.com"), Name: to.Ptr("Jane Doey"), Phone: to.Ptr("2222222222")},
 	}}
 
-	resp, err := client.SetContacts(ctx, contacts, nil)
+	resp, err := client.SetContacts(ctx, contacts.ContactList, nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(resp.ContactList))
 
 	getResp, err := client.GetContacts(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(getResp.ContactList))
-	require.Equal(t, "admin@microsoft.com", *getResp.ContactList[0].EmailAddress)
-	require.Equal(t, "admin@contoso.com", *getResp.ContactList[1].EmailAddress)
+	require.Equal(t, "admin@microsoft.com", *getResp.ContactList[0].Email)
+	require.Equal(t, "admin@contoso.com", *getResp.ContactList[1].Email)
 	require.Equal(t, "John Doe", *getResp.ContactList[0].Name)
 	require.Equal(t, "Jane Doey", *getResp.ContactList[1].Name)
 	require.Equal(t, "1111111111", *getResp.ContactList[0].Phone)
@@ -450,28 +497,26 @@ func TestPolicy(t *testing.T) {
 	certName, err := createRandomName(t, "policyCertificate")
 	require.NoError(t, err)
 
-	policy := CertificatePolicy{
+	policy := Policy{
 		IssuerParameters: &IssuerParameters{
-			CertificateTransparency: to.BoolPtr(false),
-			Name:                    to.StringPtr("Self"),
+			CertificateTransparency: to.Ptr(false),
+			IssuerName:              to.Ptr("Self"),
 		},
-		Exportable: to.BoolPtr(true),
-		KeySize:    to.Int32Ptr(2048),
-		ReuseKey:   to.BoolPtr(true),
-		KeyType:    CertificateKeyTypeRSA.ToPtr(),
+		Exportable: to.Ptr(true),
+		KeySize:    to.Ptr(int32(2048)),
+		ReuseKey:   to.Ptr(true),
+		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
+			{Action: to.Ptr(PolicyActionEmailContacts), LifetimePercentage: to.Ptr(int32(98))},
 		},
-		SecretProperties: &SecretProperties{
-			ContentType: to.StringPtr("application/x-pkcs12"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.StringPtr("1.3.6.1.5.5.7.3.1"), to.StringPtr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
-			Subject:          to.StringPtr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Int32Ptr(12),
+		ContentType: to.Ptr(CertificateContentTypePKCS12),
+		X509Properties: &X509CertificateProperties{
+			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsages:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			Subject:           to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				DNSNames: []*string{to.StringPtr("sdk.azure-int.net")},
+				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
 		},
 	}
@@ -483,21 +528,21 @@ func TestPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure policies are equal
-	require.Equal(t, *policy.IssuerParameters.Name, *receivedPolicy.CertificatePolicy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *receivedPolicy.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *receivedPolicy.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *receivedPolicy.ContentType)
 
 	// Update the policy
-	policy.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeySize = to.Int32Ptr(256)
-	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyType = to.Ptr(KeyTypeEC)
+	policy.KeySize = to.Ptr(int32(256))
+	policy.KeyCurveName = to.Ptr(KeyCurveNameP256)
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.CertificatePolicy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *updateResp.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
@@ -514,28 +559,26 @@ func TestCRUDOperations(t *testing.T) {
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 
-	policy := CertificatePolicy{
+	policy := Policy{
 		IssuerParameters: &IssuerParameters{
-			CertificateTransparency: to.BoolPtr(false),
-			Name:                    to.StringPtr("Self"),
+			CertificateTransparency: to.Ptr(false),
+			IssuerName:              to.Ptr("Self"),
 		},
-		Exportable: to.BoolPtr(true),
-		KeySize:    to.Int32Ptr(2048),
-		ReuseKey:   to.BoolPtr(true),
-		KeyType:    CertificateKeyTypeRSA.ToPtr(),
+		Exportable: to.Ptr(true),
+		KeySize:    to.Ptr(int32(2048)),
+		ReuseKey:   to.Ptr(true),
+		KeyType:    to.Ptr(KeyTypeRSA),
 		LifetimeActions: []*LifetimeAction{
-			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
+			{Action: to.Ptr(PolicyActionEmailContacts), LifetimePercentage: to.Ptr(int32(98))},
 		},
-		SecretProperties: &SecretProperties{
-			ContentType: to.StringPtr("application/x-pkcs12"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Ekus:             []*string{to.StringPtr("1.3.6.1.5.5.7.3.1"), to.StringPtr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage:         []*CerificateKeyUsage{CertificateKeyUsageDecipherOnly.ToPtr()},
-			Subject:          to.StringPtr("CN=DefaultPolicy"),
-			ValidityInMonths: to.Int32Ptr(12),
+		ContentType: to.Ptr(CertificateContentTypePKCS12),
+		X509Properties: &X509CertificateProperties{
+			EnhancedKeyUsages: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsages:         []*KeyUsage{to.Ptr(KeyUsageDecipherOnly)},
+			Subject:           to.Ptr("CN=DefaultPolicy"),
+			ValidityInMonths:  to.Ptr(int32(12)),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				DNSNames: []*string{to.StringPtr("sdk.azure-int.net")},
+				DNSNames: []*string{to.Ptr("sdk.azure-int.net")},
 			},
 		},
 	}
@@ -562,23 +605,27 @@ func TestCRUDOperations(t *testing.T) {
 	// require.NotNil(t, parsedCert)
 
 	// Update the policy
-	policy.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeySize = to.Int32Ptr(256)
-	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyType = to.Ptr(KeyTypeEC)
+	policy.KeySize = to.Ptr(int32(256))
+	policy.KeyCurveName = to.Ptr(KeyCurveNameP256)
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.CertificatePolicy.IssuerParameters.Name)
+	require.Equal(t, *policy.IssuerParameters.IssuerName, *updateResp.Policy.IssuerParameters.IssuerName)
 	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
-	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
+	require.Equal(t, *policy.ContentType, *updateResp.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
-	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{Tags: map[string]string{"tag1": "updated_values1"}})
+	if received.Properties.Tags == nil {
+		received.Properties.Tags = map[string]string{}
+	}
+	received.Properties.Tags["tag1"] = "updated_values1"
+	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)
-	require.Equal(t, "updated_values1", updatePropsResp.Tags["tag1"])
+	require.Equal(t, "updated_values1", updatePropsResp.Properties.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
 }
 
@@ -595,13 +642,13 @@ func TestMergeCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "mergeCertificate")
 	require.NoError(t, err)
 
-	certPolicy := CertificatePolicy{
+	certPolicy := Policy{
 		IssuerParameters: &IssuerParameters{
-			Name:                    to.StringPtr("Unknown"),
-			CertificateTransparency: to.BoolPtr(false),
+			IssuerName:              to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=MyCert"),
+		X509Properties: &X509CertificateProperties{
+			Subject: to.Ptr("CN=MyCert"),
 		},
 	}
 
@@ -630,7 +677,7 @@ func TestMergeCertificate(t *testing.T) {
 	certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
 	require.NoError(t, err)
 
-	mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(certOpResp.CSR)
 	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
 	// load certificate request
@@ -648,8 +695,8 @@ func TestMergeCertificate(t *testing.T) {
 		Subject:            req.Subject,
 		PublicKey:          req.PublicKey,
 		PublicKeyAlgorithm: req.PublicKeyAlgorithm,
-		Signature:          req.Signature,
 		SignatureAlgorithm: req.SignatureAlgorithm,
+		Signature:          req.Signature,
 	}
 
 	certBytes, err := x509.CreateCertificate(rand.Reader, &cert, caCert, req.PublicKey, pkey)
@@ -675,14 +722,7 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	certName, err := createRandomName(t, "certRecover")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
-		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
-		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
 	require.NoError(t, err)
 	defer cleanUp(t, client, certName)
 
@@ -708,6 +748,50 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	require.Contains(t, *recoveredResp.ID, certName)
 }
 
+func TestClient_BeginRecoverDeletedCertificateRehydrated(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "certBeginRecoverRehydrated")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), nil)
+	require.NoError(t, err)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	recover, err := client.BeginRecoverDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	rt, err := recover.ResumeToken()
+	require.NoError(t, err)
+
+	poller, err := client.BeginRecoverDeletedCertificate(ctx, certName, &BeginRecoverDeletedCertificateOptions{ResumeToken: &rt})
+	require.NoError(t, err)
+
+	recoveredResp, err := poller.PollUntilDone(ctx, time.Second)
+	require.NoError(t, err)
+	require.Contains(t, *recoveredResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+}
+
 func TestClient_RestoreCertificateBackup(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -718,14 +802,14 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 	certName, err := createRandomName(t, "certRestore")
 	require.NoError(t, err)
 
-	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+	resp, err := client.BeginCreateCertificate(ctx, certName, Policy{
 		IssuerParameters: &IssuerParameters{
-			Name: to.StringPtr("Self"),
+			IssuerName: to.Ptr("Self"),
 		},
-		X509CertificateProperties: &X509CertificateProperties{
-			Subject: to.StringPtr("CN=DefaultPolicy"),
+		X509Properties: &X509CertificateProperties{
+			Subject: to.Ptr("CN=DefaultPolicy"),
 			SubjectAlternativeNames: &SubjectAlternativeNames{
-				Upns: []*string{to.StringPtr("john.doe@domain.com")},
+				UserPrincipalNames: []*string{to.Ptr("john.doe@domain.com")},
 			},
 		},
 	}, nil)

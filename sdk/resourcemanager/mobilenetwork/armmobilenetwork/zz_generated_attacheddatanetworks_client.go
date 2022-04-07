@@ -96,6 +96,10 @@ func (client *AttachedDataNetworksClient) createOrUpdate(ctx context.Context, re
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters AttachedDataNetwork, options *AttachedDataNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -112,16 +116,12 @@ func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -173,6 +173,10 @@ func (client *AttachedDataNetworksClient) deleteOperation(ctx context.Context, r
 // deleteCreateRequest creates the Delete request.
 func (client *AttachedDataNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -189,16 +193,12 @@ func (client *AttachedDataNetworksClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -230,6 +230,10 @@ func (client *AttachedDataNetworksClient) Get(ctx context.Context, resourceGroup
 // getCreateRequest creates the Get request.
 func (client *AttachedDataNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -246,16 +250,12 @@ func (client *AttachedDataNetworksClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -292,6 +292,10 @@ func (client *AttachedDataNetworksClient) ListByPacketCoreDataPlane(resourceGrou
 // listByPacketCoreDataPlaneCreateRequest creates the ListByPacketCoreDataPlane request.
 func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -304,16 +308,12 @@ func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneCreateRequest
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -355,6 +355,10 @@ func (client *AttachedDataNetworksClient) UpdateTags(ctx context.Context, resour
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *AttachedDataNetworksClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters TagsObject, options *AttachedDataNetworksClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -371,16 +375,12 @@ func (client *AttachedDataNetworksClient) updateTagsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
 )
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-list-all-filter-by-created.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-created.json
 func ExampleJobsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleJobsClient_List() {
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-get-by-name.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-get-by-name.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleJobsClient_Get() {
 	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-create.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-create.json
 func ExampleJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleJobsClient_Create() {
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-delete.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-delete.json
 func ExampleJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleJobsClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-update.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-update.json
 func ExampleJobsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleJobsClient_Update() {
 	log.Printf("Response result: %#v\n", res.JobsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/jobs-cancel.json
+// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-cancel.json
 func ExampleJobsClient_CancelJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

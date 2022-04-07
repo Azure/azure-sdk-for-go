@@ -72,9 +72,19 @@ func TestAMQPLinksBasic(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	lwr, err := links.Get(context.Background())
 	require.NoError(t, err)
@@ -93,14 +103,24 @@ func TestAMQPLinksLive(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
 	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
@@ -148,7 +168,7 @@ func TestAMQPLinksLive(t *testing.T) {
 }
 
 func TestAMQPLinksLiveRecoverLink(t *testing.T) {
-	// we're not going to use this client for tehse tests.
+	// we're not going to use this client for these tests.
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
@@ -156,14 +176,24 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
 	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
@@ -184,14 +214,24 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	wg := sync.WaitGroup{}
 
@@ -211,6 +251,14 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 }
 
 func TestAMQPLinksLiveRaceLink(t *testing.T) {
+	endCapture := test.CaptureLogsForTest()
+	defer func() {
+		messages := endCapture()
+		for _, msg := range messages {
+			fmt.Printf("%s\n", msg)
+		}
+	}()
+
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
@@ -218,16 +266,24 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	test.EnableStdoutLogging()
-
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	wg := sync.WaitGroup{}
 
@@ -254,14 +310,24 @@ func TestAMQPLinksRetry(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
 
 	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
@@ -286,21 +352,39 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
 	require.NoError(t, err)
 
-	defer func() { _ = ns.Close(context.Background()) }()
+	defer func() { _ = ns.Close(context.Background(), false) }()
 
 	createLinksCalled := 0
 
-	links := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		_ = links.Close(context.Background(), true)
+	}()
 
 	createLinksCalled2 := 0
 
-	links2 := NewAMQPLinks(ns, entityPath, func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-		createLinksCalled2++
-		return newLinksForAMQPLinksTest(entityPath, session)
+	links2 := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			createLinksCalled2++
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
 	})
+
+	defer func() {
+		_ = links2.Close(context.Background(), true)
+	}()
 
 	wg := sync.WaitGroup{}
 
@@ -327,7 +411,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	go func() {
 		defer wg.Done()
 
-		err = links2.RecoverIfNeeded(context.Background(), lwr2.ID, &amqp.DetachError{})
+		err := links2.RecoverIfNeeded(context.Background(), lwr2.ID, &amqp.DetachError{})
 		require.NoError(t, err)
 	}()
 
@@ -367,9 +451,19 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 			sender := &FakeAMQPSender{}
 			ns := &FakeNS{}
 
-			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-				return sender, receiver, nil
+			links := NewAMQPLinks(NewAMQPLinksArgs{
+				NS:         ns,
+				EntityPath: "entityPath",
+				CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+					return sender, receiver, nil
+				},
+				GetRecoveryKindFunc: GetRecoveryKind,
 			})
+
+			defer func() {
+				err := links.Close(context.Background(), true)
+				require.NoError(t, err)
+			}()
 
 			_, err := links.Get(context.Background())
 			require.NoError(t, err)
@@ -387,9 +481,19 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		sender := &FakeAMQPSender{}
 		ns := &FakeNS{}
 
-		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-			return sender, receiver, nil
+		links := NewAMQPLinks(NewAMQPLinksArgs{
+			NS:         ns,
+			EntityPath: "entityPath",
+			CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			},
+			GetRecoveryKindFunc: GetRecoveryKind,
 		})
+
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
@@ -406,9 +510,19 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		sender := &FakeAMQPSender{}
 		ns := &FakeNS{}
 
-		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-			return sender, receiver, nil
+		links := NewAMQPLinks(NewAMQPLinksArgs{
+			NS:         ns,
+			EntityPath: "entityPath",
+			CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			},
+			GetRecoveryKindFunc: GetRecoveryKind,
 		})
+
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
@@ -425,9 +539,19 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		sender := &FakeAMQPSender{}
 		ns := &FakeNS{}
 
-		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-			return sender, receiver, nil
+		links := NewAMQPLinks(NewAMQPLinksArgs{
+			NS:         ns,
+			EntityPath: "entityPath",
+			CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return sender, receiver, nil
+			},
+			GetRecoveryKindFunc: GetRecoveryKind,
 		})
+
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
@@ -471,19 +595,28 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		}
 
 		t.Run(testName, func(t *testing.T) {
+			endLogging := test.CaptureLogsForTest()
+			defer endLogging()
+
 			receiver := &FakeAMQPReceiver{}
 			sender := &FakeAMQPSender{}
 			ns := &FakeNS{}
 
-			links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-				return sender, receiver, nil
+			links := NewAMQPLinks(NewAMQPLinksArgs{
+				NS:         ns,
+				EntityPath: "entityPath",
+				CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+					return sender, receiver, nil
+				},
+				GetRecoveryKindFunc: GetRecoveryKind,
 			})
 
-			var attempts []int32
+			defer func() {
+				err := links.Close(context.Background(), true)
+				require.NoError(t, err)
+			}()
 
-			var logMessages []string
-			removeLogging := test.CaptureLogsForTest(&logMessages)
-			defer removeLogging()
+			var attempts []int32
 
 			err := links.Retry(context.Background(), "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
@@ -494,6 +627,8 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			require.Equal(t, testData.Err, err)
 			require.Equal(t, testData.Attempts, attempts)
+
+			logMessages := endLogging()
 
 			if testData.ExpectReset {
 				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
@@ -511,17 +646,27 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		receiver := &FakeAMQPReceiver{}
 		ns := &FakeNS{}
 
-		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-			return nil, receiver, nil
+		links := NewAMQPLinks(NewAMQPLinksArgs{
+			NS:         ns,
+			EntityPath: "entityPath",
+			CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return nil, receiver, nil
+			},
+			GetRecoveryKindFunc: GetRecoveryKind,
 		})
 
-		var messages []string
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
-		cleanup := test.CaptureLogsForTest(&messages)
-		defer cleanup()
+		endCapture := test.CaptureLogsForTest()
+		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.DetachError{})
 		require.NoError(t, err)
+
+		messages := endCapture()
 
 		require.Equal(t, []string{
 			"[azsb.Conn] Recovering link for error link detached, reason: *Error(nil)",
@@ -534,17 +679,26 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		receiver := &FakeAMQPReceiver{}
 		ns := &FakeNS{}
 
-		links := NewAMQPLinks(ns, "entityPath", func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-			return nil, receiver, nil
+		links := NewAMQPLinks(NewAMQPLinksArgs{
+			NS:         ns,
+			EntityPath: "entityPath",
+			CreateLinkFunc: func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+				return nil, receiver, nil
+			}, GetRecoveryKindFunc: GetRecoveryKind,
 		})
 
-		var messages []string
+		defer func() {
+			err := links.Close(context.Background(), true)
+			require.NoError(t, err)
+		}()
 
-		cleanup := test.CaptureLogsForTest(&messages)
-		defer cleanup()
+		endCapture := test.CaptureLogsForTest()
+		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
 		require.NoError(t, err)
+
+		messages := endCapture()
 
 		require.Equal(t, []string{
 			"[azsb.Conn] Recovering link for error amqp: connection closed",

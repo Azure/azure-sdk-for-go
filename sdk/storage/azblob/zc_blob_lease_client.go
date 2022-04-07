@@ -11,27 +11,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
+// BlobLeaseClient represents lease client on blob
 type BlobLeaseClient struct {
 	BlobClient
 	leaseID *string
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
+// NewBlobLeaseClient is constructor for BlobLeaseClient
+func (b *BlobClient) NewBlobLeaseClient(leaseID *string) (*BlobLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()
 		if err != nil {
-			return BlobLeaseClient{}, err
+			return nil, err
 		}
 		leaseID = to.StringPtr(generatedUuid.String())
 	}
-	return BlobLeaseClient{
-		BlobClient: b,
+	return &BlobLeaseClient{
+		BlobClient: *b,
 		leaseID:    leaseID,
 	}, nil
 }
 
-// AcquireLease acquires a lease on the blob for write and delete operations. The lease Duration must be between
-// 15 to 60 seconds, or infinite (-1).
+// AcquireLease acquires a lease on the blob for write and delete operations.
+//The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *AcquireLeaseBlobOptions) (BlobAcquireLeaseResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := options.pointers()

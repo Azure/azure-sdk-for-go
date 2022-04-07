@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,31 +7,19 @@
 package azcertificates
 
 import (
+	"encoding/json"
+	"fmt"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
-
-// Action - The action that will be executed.
-type Action struct {
-	// The type of the action.
-	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
-}
-
-func (a *Action) toGenerated() *generated.Action {
-	if a == nil {
-		return nil
-	}
-
-	return &generated.Action{
-		ActionType: (*generated.ActionType)(a.ActionType),
-	}
-}
 
 // AdministratorContact - Details of the organization administrator of the certificate issuer.
 type AdministratorContact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"first_name,omitempty"`
@@ -43,19 +31,19 @@ type AdministratorContact struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
-// CertificateProperties - The certificate management properties.
-type CertificateProperties struct {
+// Properties - The certificate management properties.
+type Properties struct {
+	// READ-ONLY; Creation time in UTC.
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -66,81 +54,98 @@ type CertificateProperties struct {
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the certificate
+	ID *string
+
+	// READ-ONLY; The name of the certificate
+	Name *string
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// READ-ONLY; The vault URL for the certificate
+	VaultURL *string
+
+	// READ-ONLY; The version for the certificate
+	Version *string
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
 }
 
-func (c *CertificateProperties) toGenerated() *generated.CertificateAttributes {
+func (c *Properties) toGenerated() *generated.CertificateAttributes {
 	if c == nil {
 		return nil
 	}
 
 	return &generated.CertificateAttributes{
-		Created:         c.Created,
+		Created:         c.CreatedOn,
 		Enabled:         c.Enabled,
-		Expires:         c.Expires,
+		Expires:         c.ExpiresOn,
 		NotBefore:       c.NotBefore,
 		RecoverableDays: c.RecoverableDays,
 		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(c.RecoveryLevel),
-		Updated:         c.Updated,
+		Updated:         c.UpdatedOn,
 	}
 }
 
-func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *CertificateProperties {
+func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string, id *string, thumbprint []byte) *Properties {
 	if g == nil {
 		return nil
 	}
 
-	return &CertificateProperties{
+	vaulURL, name, version := shared.ParseID(id)
+
+	return &Properties{
 		Enabled:         g.Enabled,
-		Expires:         g.Expires,
+		ExpiresOn:       g.Expires,
 		NotBefore:       g.NotBefore,
-		Created:         g.Created,
-		Updated:         g.Updated,
+		CreatedOn:       g.Created,
+		UpdatedOn:       g.Updated,
 		RecoverableDays: g.RecoverableDays,
 		RecoveryLevel:   (*string)(g.RecoveryLevel),
+		Tags:            tags,
+		ID:              id,
+		Name:            name,
+		VaultURL:        vaulURL,
+		Version:         version,
+		X509Thumbprint:  thumbprint,
 	}
 }
 
-// KeyVaultCertificate - A certificate bundle consists of a certificate (X509) plus its properties.
-type KeyVaultCertificate struct {
+// Certificate - A certificate bundle consists of a certificate (X509) plus its properties.
+type Certificate struct {
 	// The certificate attributes.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
-
-	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
-	ContentType *string `json:"contentType,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the certificate
+	Name *string
 
 	// READ-ONLY; The key ID.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-// KeyVaultCertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
-type KeyVaultCertificateWithPolicy struct {
+// CertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
+type CertificateWithPolicy struct {
 	// The certificate attributes.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string `json:"contentType,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -149,29 +154,25 @@ type KeyVaultCertificateWithPolicy struct {
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
-	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+	Policy *Policy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-func certificateFromGenerated(g *generated.CertificateBundle) KeyVaultCertificate {
+func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 	if g == nil {
-		return KeyVaultCertificate{}
+		return Certificate{}
 	}
 
-	return KeyVaultCertificate{
-		Properties:     certificateAttributesFromGenerated(g.Attributes),
-		Cer:            g.Cer,
-		ContentType:    g.ContentType,
-		Tags:           convertGeneratedMap(g.Tags),
-		ID:             g.ID,
-		KeyID:          g.Kid,
-		SecretID:       g.Sid,
-		X509Thumbprint: g.X509Thumbprint,
+	_, name, _ := shared.ParseID(g.ID)
+	return Certificate{
+		Properties: propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+		CER:        g.Cer,
+		ID:         g.ID,
+		Name:       name,
+		KeyID:      g.Kid,
+		SecretID:   g.Sid,
 	}
 }
 
@@ -181,10 +182,22 @@ type CertificateOperationError struct {
 	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key vault server error.
-	InnerError *CertificateOperationError `json:"innererror,omitempty" azure:"ro"`
+	innerError *CertificateOperationError
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	message *string
+}
+
+// Error returns the error string detailing why the Certificate Operation failed.
+func (c *CertificateOperationError) Error() string {
+	if c == nil {
+		return ""
+	}
+	marshalled, err := json.Marshal(*c)
+	if err != nil {
+		return fmt.Sprintf("could not turn operation error into a string: %v", err)
+	}
+	return string(marshalled)
 }
 
 func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationError {
@@ -194,13 +207,13 @@ func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationErro
 
 	return &CertificateOperationError{
 		Code:       g.Code,
-		Message:    g.Message,
-		InnerError: certificateErrorFromGenerated(g.InnerError),
+		message:    g.Message,
+		innerError: certificateErrorFromGenerated(g.InnerError),
 	}
 }
 
-// CertificateIssuerItem - The certificate issuer item containing certificate issuer metadata.
-type CertificateIssuerItem struct {
+// IssuerItem - The certificate issuer item containing certificate issuer metadata.
+type IssuerItem struct {
 	// Certificate Identifier.
 	ID *string `json:"id,omitempty"`
 
@@ -208,36 +221,30 @@ type CertificateIssuerItem struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
-func certificateIssuerItemFromGenerated(g *generated.CertificateIssuerItem) *CertificateIssuerItem {
+func certificateIssuerItemFromGenerated(g *generated.CertificateIssuerItem) *IssuerItem {
 	if g == nil {
 		return nil
 	}
 
-	return &CertificateIssuerItem{ID: g.ID, Provider: g.Provider}
+	return &IssuerItem{ID: g.ID, Provider: g.Provider}
 }
 
 // CertificateItem - The certificate item containing certificate metadata.
 type CertificateItem struct {
 	// The certificate management attributes.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Certificate identifier.
 	ID *string `json:"id,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
 }
 
-// CertificateOperation - A certificate operation is returned in case of asynchronous requests.
-type CertificateOperation struct {
+// Operation - A certificate operation is returned in case of asynchronous requests.
+type Operation struct {
 	// Indicates if cancellation was requested on the certificate operation.
 	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
 
 	// The certificate signing request (CSR) that is being used in the certificate operation.
-	Csr []byte `json:"csr,omitempty"`
+	CSR []byte `json:"csr,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
 	Error *CertificateOperationError `json:"error,omitempty"`
@@ -261,10 +268,10 @@ type CertificateOperation struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-func certificateOperationFromGenerated(g generated.CertificateOperation) CertificateOperation {
-	return CertificateOperation{
+func certificateOperationFromGenerated(g generated.CertificateOperation) Operation {
+	return Operation{
 		CancellationRequested: g.CancellationRequested,
-		Csr:                   g.Csr,
+		CSR:                   g.Csr,
 		Error:                 certificateErrorFromGenerated(g.Error),
 		IssuerParameters:      issuerParametersFromGenerated(g.IssuerParameters),
 		RequestID:             g.RequestID,
@@ -275,16 +282,16 @@ func certificateOperationFromGenerated(g generated.CertificateOperation) Certifi
 	}
 }
 
-// CertificatePolicy - Management policy for a certificate.
-type CertificatePolicy struct {
+// Policy - Management policy for a certificate.
+type Policy struct {
 	// The certificate properties.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	KeyCurveName *CertificateKeyCurveName `json:"crv,omitempty"`
+	KeyCurveName *KeyCurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
@@ -293,7 +300,7 @@ type CertificatePolicy struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// The type of key pair to be used for the certificate.
-	KeyType *CertificateKeyType `json:"kty,omitempty"`
+	KeyType *KeyType `json:"kty,omitempty"`
 
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`
@@ -301,14 +308,22 @@ type CertificatePolicy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a certificate.
 	LifetimeActions []*LifetimeAction `json:"lifetime_actions,omitempty"`
 
-	// Properties of the secret backing a certificate.
-	SecretProperties *SecretProperties `json:"secret_props,omitempty"`
+	// ContentType of the downloaded certificate
+	ContentType *CertificateContentType `json:"secret_props,omitempty"`
 
 	// Properties of the X509 component of a certificate.
-	X509CertificateProperties *X509CertificateProperties `json:"x509_props,omitempty"`
+	X509Properties *X509CertificateProperties `json:"x509_props,omitempty"`
 }
 
-func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
+// NewDefaultCertificatePolicy returns a Policy with IssuerName "Self" and Subject "CN=DefaultPolicy"
+func NewDefaultCertificatePolicy() Policy {
+	return Policy{
+		IssuerParameters: &IssuerParameters{IssuerName: (*string)(to.Ptr(WellKnownIssuerNamesSelf))},
+		X509Properties:   &X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
+	}
+}
+
+func (c *Policy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
 	if c == nil {
 		return nil
 	}
@@ -332,13 +347,13 @@ func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.
 		Attributes:                c.Properties.toGenerated(),
 		IssuerParameters:          c.IssuerParameters.toGenerated(),
 		KeyProperties:             keyProps,
-		SecretProperties:          c.SecretProperties.toGenerated(),
+		SecretProperties:          &generated.SecretProperties{ContentType: (*string)(c.ContentType)},
 		LifetimeActions:           la,
-		X509CertificateProperties: c.X509CertificateProperties.toGenerated(),
+		X509CertificateProperties: c.X509Properties.toGenerated(),
 	}
 }
 
-func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *CertificatePolicy {
+func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 	if g == nil {
 		return nil
 	}
@@ -348,27 +363,27 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Certificate
 		la = append(la, lifetimeActionFromGenerated(l))
 	}
 
-	c := &CertificatePolicy{}
+	c := &Policy{}
 	if g.KeyProperties != nil {
-		c.KeyCurveName = (*CertificateKeyCurveName)(g.KeyProperties.Curve)
+		c.KeyCurveName = (*KeyCurveName)(g.KeyProperties.Curve)
 		c.Exportable = g.KeyProperties.Exportable
 		c.KeySize = g.KeyProperties.KeySize
-		c.KeyType = (*CertificateKeyType)(g.KeyProperties.KeyType)
+		c.KeyType = (*KeyType)(g.KeyProperties.KeyType)
 		c.ReuseKey = g.KeyProperties.ReuseKey
 	}
 
-	c.Properties = certificateAttributesFromGenerated(g.Attributes)
+	c.Properties = propertiesFromGenerated(g.Attributes, nil, nil, nil)
 	c.IssuerParameters = issuerParametersFromGenerated(g.IssuerParameters)
 	c.LifetimeActions = la
-	c.SecretProperties = &SecretProperties{ContentType: g.SecretProperties.ContentType}
-	c.X509CertificateProperties = x509CertificatePropertiesFromGenerated(g.X509CertificateProperties)
+	c.ContentType = (*CertificateContentType)(g.SecretProperties.ContentType)
+	c.X509Properties = x509CertificatePropertiesFromGenerated(g.X509CertificateProperties)
 	return c
 }
 
 // Contact - The contact information for the vault certificates.
 type Contact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// Name.
 	Name *string `json:"name,omitempty"`
@@ -381,9 +396,9 @@ func contactListFromGenerated(g []*generated.Contact) []*Contact {
 	var ret []*Contact
 	for _, c := range g {
 		ret = append(ret, &Contact{
-			EmailAddress: c.EmailAddress,
-			Name:         c.Name,
-			Phone:        c.Phone,
+			Email: c.EmailAddress,
+			Name:  c.Name,
+			Phone: c.Phone,
 		})
 	}
 	return ret
@@ -406,7 +421,7 @@ func (c *Contacts) toGenerated() generated.Contacts {
 	var contacts []*generated.Contact
 	for _, contact := range c.ContactList {
 		contacts = append(contacts, &generated.Contact{
-			EmailAddress: contact.EmailAddress,
+			EmailAddress: contact.Email,
 			Name:         contact.Name,
 			Phone:        contact.Phone,
 		})
@@ -421,10 +436,10 @@ func (c *Contacts) toGenerated() generated.Contacts {
 // DeletedCertificate consists of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedCertificate struct {
 	// The certificate properties.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// CER contents of x509 certificate.
-	Cer []byte `json:"cer,omitempty"`
+	CER []byte `json:"cer,omitempty"`
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string `json:"contentType,omitempty"`
@@ -432,65 +447,59 @@ type DeletedCertificate struct {
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the certificate
+	Name *string
 
 	// READ-ONLY; The key ID.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
-	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+	Policy *Policy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
 type DeletedCertificateItem struct {
 	// The certificate management properties.
-	Properties *CertificateProperties `json:"attributes,omitempty"`
+	Properties *Properties `json:"attributes,omitempty"`
 
 	// Certificate identifier.
 	ID *string `json:"id,omitempty"`
 
+	// READ-ONLY; The name of the certificate
+	Name *string
+
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
-
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// CertificateIssuer - The issuer for Key Vault certificate.
-type CertificateIssuer struct {
+// Issuer - The issuer for Key Vault certificate.
+type Issuer struct {
 	// Determines whether the issuer is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
@@ -506,6 +515,9 @@ type CertificateIssuer struct {
 
 	// READ-ONLY; Identifier for the issuer object.
 	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name is the name of the issuer
+	Name *string
 }
 
 // IssuerCredentials - The credentials to be used for the certificate issuer.
@@ -544,8 +556,8 @@ type IssuerParameters struct {
 	// Certificate type as supported by the provider (optional); for example 'OV-SSL', 'EV-SSL'
 	CertificateType *string `json:"cty,omitempty"`
 
-	// Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-	Name *string `json:"name,omitempty"`
+	// IssuerName of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
+	IssuerName *string `json:"name,omitempty"`
 }
 
 func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
@@ -556,7 +568,7 @@ func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
 	return &generated.IssuerParameters{
 		CertificateTransparency: i.CertificateTransparency,
 		CertificateType:         i.CertificateType,
-		Name:                    i.Name,
+		Name:                    i.IssuerName,
 	}
 }
 
@@ -568,23 +580,31 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 	return &IssuerParameters{
 		CertificateTransparency: g.CertificateTransparency,
 		CertificateType:         g.CertificateType,
-		Name:                    g.Name,
+		IssuerName:              g.Name,
 	}
 }
 
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
-	Action *Action `json:"action,omitempty"`
+	Action *PolicyAction `json:"action,omitempty"`
+	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
+	// be between 1 and 972 (36 * 27).
+	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
-	// The condition that will execute the action.
-	Trigger *Trigger `json:"trigger,omitempty"`
+	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
 }
 
 func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
 	return &generated.LifetimeAction{
-		Action:  l.Action.toGenerated(),
-		Trigger: l.Trigger.toGenerated(),
+		Action: &generated.Action{
+			ActionType: (*generated.ActionType)(l.Action),
+		},
+		Trigger: &generated.Trigger{
+			DaysBeforeExpiry:   l.DaysBeforeExpiry,
+			LifetimePercentage: l.LifetimePercentage,
+		},
 	}
 }
 
@@ -594,29 +614,9 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 	}
 
 	return &LifetimeAction{
-		Action: &Action{
-			ActionType: (*CertificatePolicyAction)(g.Action.ActionType),
-		},
-		Trigger: &Trigger{
-			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
-			LifetimePercentage: g.Trigger.LifetimePercentage,
-		},
-	}
-}
-
-// SecretProperties - Properties of the key backing a certificate.
-type SecretProperties struct {
-	// The media type (MIME type).
-	ContentType *string `json:"contentType,omitempty"`
-}
-
-func (s *SecretProperties) toGenerated() *generated.SecretProperties {
-	if s == nil {
-		return nil
-	}
-
-	return &generated.SecretProperties{
-		ContentType: s.ContentType,
+		Action:             (*PolicyAction)(g.Action.ActionType),
+		DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
+		LifetimePercentage: g.Trigger.LifetimePercentage,
 	}
 }
 
@@ -629,7 +629,7 @@ type SubjectAlternativeNames struct {
 	Emails []*string `json:"emails,omitempty"`
 
 	// User principal names.
-	Upns []*string `json:"upns,omitempty"`
+	UserPrincipalNames []*string `json:"upns,omitempty"`
 }
 
 func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNames {
@@ -640,7 +640,7 @@ func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNam
 	return &generated.SubjectAlternativeNames{
 		DNSNames: s.DNSNames,
 		Emails:   s.Emails,
-		Upns:     s.Upns,
+		Upns:     s.UserPrincipalNames,
 	}
 }
 
@@ -650,40 +650,19 @@ func subjectAlternativeNamesFromGenerated(g *generated.SubjectAlternativeNames) 
 	}
 
 	return &SubjectAlternativeNames{
-		DNSNames: g.DNSNames,
-		Emails:   g.Emails,
-		Upns:     g.Upns,
-	}
-}
-
-// Trigger - A condition to be satisfied for an action to be executed.
-type Trigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
-	// be between 1 and 972 (36 * 27).
-	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
-
-	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
-	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
-}
-
-func (t *Trigger) toGenerated() *generated.Trigger {
-	if t == nil {
-		return nil
-	}
-
-	return &generated.Trigger{
-		DaysBeforeExpiry:   t.DaysBeforeExpiry,
-		LifetimePercentage: t.LifetimePercentage,
+		DNSNames:           g.DNSNames,
+		Emails:             g.Emails,
+		UserPrincipalNames: g.Upns,
 	}
 }
 
 // X509CertificateProperties - Properties of the X509 component of a certificate.
 type X509CertificateProperties struct {
 	// The enhanced key usage.
-	Ekus []*string `json:"ekus,omitempty"`
+	EnhancedKeyUsages []*string `json:"ekus,omitempty"`
 
 	// List of key usages.
-	KeyUsage []*CerificateKeyUsage `json:"key_usage,omitempty"`
+	KeyUsages []*KeyUsage `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.
 	Subject *string `json:"subject,omitempty"`
@@ -701,12 +680,12 @@ func (x *X509CertificateProperties) toGenerated() *generated.X509CertificateProp
 	}
 
 	var keyUsage []*generated.KeyUsageType
-	for _, k := range x.KeyUsage {
+	for _, k := range x.KeyUsages {
 		keyUsage = append(keyUsage, (*generated.KeyUsageType)(k))
 	}
 
 	return &generated.X509CertificateProperties{
-		Ekus:                    x.Ekus,
+		Ekus:                    x.EnhancedKeyUsages,
 		KeyUsage:                keyUsage,
 		Subject:                 x.Subject,
 		SubjectAlternativeNames: x.SubjectAlternativeNames.toGenerated(),
@@ -719,15 +698,15 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		return nil
 	}
 
-	var ku []*CerificateKeyUsage
+	var ku []*KeyUsage
 	for _, k := range g.KeyUsage {
-		ku = append(ku, (*CerificateKeyUsage)(k))
+		ku = append(ku, (*KeyUsage)(k))
 	}
 
 	return &X509CertificateProperties{
-		Ekus:                    g.Ekus,
+		EnhancedKeyUsages:       g.Ekus,
 		Subject:                 g.Subject,
-		KeyUsage:                ku,
+		KeyUsages:               ku,
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
 		ValidityInMonths:        g.ValidityInMonths,
 	}

@@ -11,6 +11,7 @@ func rangeToString(offset, count int64) string {
 	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
 }
 
+// CreatePageBlobOptions provides set of configurations for CreatePageBlob operation
 type CreatePageBlobOptions struct {
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
@@ -47,6 +48,7 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHea
 	return options, o.HTTPHeaders, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
 }
 
+// UploadPagesOptions provides set of configurations for UploadPages operation
 type UploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	PageRange                 *HttpRange
@@ -78,6 +80,7 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
+// UploadPagesFromURLOptions provides set of configurations for UploadPagesFromURL operation
 type UploadPagesFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
@@ -105,6 +108,7 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.SourceModifiedAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
+// ClearPagesOptions provides set of configurations for ClearPages operation
 type ClearPagesOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
@@ -121,6 +125,7 @@ func (o *ClearPagesOptions) pointers() (*CpkInfo, *CpkScopeInfo, *SequenceNumber
 	return o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
+// GetPageRangesOptions provides set of configurations for GetPageRanges operation
 type GetPageRangesOptions struct {
 	Snapshot *string
 
@@ -136,6 +141,7 @@ func (o *GetPageRangesOptions) pointers() (*string, *LeaseAccessConditions, *Mod
 	return o.Snapshot, leaseAccessConditions, modifiedAccessConditions
 }
 
+// ResizePageBlobOptions provides set of configurations for ResizePageBlob operation
 type ResizePageBlobOptions struct {
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
@@ -151,6 +157,7 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 	return o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
 }
 
+// UpdateSequenceNumberPageBlob provides set of configurations for UpdateSequenceNumber operation
 type UpdateSequenceNumberPageBlob struct {
 	ActionType         *SequenceNumberActionType
 	BlobSequenceNumber *int64
@@ -175,6 +182,7 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 	return options, o.ActionType, leaseAccessConditions, modifiedAccessConditions
 }
 
+// CopyIncrementalPageBlobOptions provides set of configurations for StartCopyIncremental operation
 type CopyIncrementalPageBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 

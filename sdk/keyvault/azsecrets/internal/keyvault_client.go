@@ -11,13 +11,14 @@ package internal
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
@@ -33,7 +34,7 @@ func NewKeyVaultClient(options *azcore.ClientOptions) *KeyVaultClient {
 		options = &azcore.ClientOptions{}
 	}
 	client := &KeyVaultClient{
-		Pl: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
+		Pl: runtime.NewPipeline(ModuleName, ModuleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -73,7 +74,7 @@ func (client *KeyVaultClient) backupSecretCreateRequest(ctx context.Context, vau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -81,7 +82,7 @@ func (client *KeyVaultClient) backupSecretCreateRequest(ctx context.Context, vau
 
 // backupSecretHandleResponse handles the BackupSecret response.
 func (client *KeyVaultClient) backupSecretHandleResponse(resp *http.Response) (KeyVaultClientBackupSecretResponse, error) {
-	result := KeyVaultClientBackupSecretResponse{RawResponse: resp}
+	result := KeyVaultClientBackupSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupSecretResult); err != nil {
 		return KeyVaultClientBackupSecretResponse{}, err
 	}
@@ -123,7 +124,7 @@ func (client *KeyVaultClient) deleteSecretCreateRequest(ctx context.Context, vau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,7 +132,7 @@ func (client *KeyVaultClient) deleteSecretCreateRequest(ctx context.Context, vau
 
 // deleteSecretHandleResponse handles the DeleteSecret response.
 func (client *KeyVaultClient) deleteSecretHandleResponse(resp *http.Response) (KeyVaultClientDeleteSecretResponse, error) {
-	result := KeyVaultClientDeleteSecretResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretBundle); err != nil {
 		return KeyVaultClientDeleteSecretResponse{}, err
 	}
@@ -174,7 +175,7 @@ func (client *KeyVaultClient) getDeletedSecretCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -182,7 +183,7 @@ func (client *KeyVaultClient) getDeletedSecretCreateRequest(ctx context.Context,
 
 // getDeletedSecretHandleResponse handles the GetDeletedSecret response.
 func (client *KeyVaultClient) getDeletedSecretHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedSecretResponse, error) {
-	result := KeyVaultClientGetDeletedSecretResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretBundle); err != nil {
 		return KeyVaultClientGetDeletedSecretResponse{}, err
 	}
@@ -220,7 +221,7 @@ func (client *KeyVaultClient) GetDeletedSecretsCreateRequest(ctx context.Context
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -228,7 +229,7 @@ func (client *KeyVaultClient) GetDeletedSecretsCreateRequest(ctx context.Context
 
 // GetDeletedSecretsHandleResponse handles the GetDeletedSecrets response.
 func (client *KeyVaultClient) GetDeletedSecretsHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedSecretsResponse, error) {
-	result := KeyVaultClientGetDeletedSecretsResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretListResult); err != nil {
 		return KeyVaultClientGetDeletedSecretsResponse{}, err
 	}
@@ -276,7 +277,7 @@ func (client *KeyVaultClient) getSecretCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -284,7 +285,7 @@ func (client *KeyVaultClient) getSecretCreateRequest(ctx context.Context, vaultB
 
 // getSecretHandleResponse handles the GetSecret response.
 func (client *KeyVaultClient) getSecretHandleResponse(resp *http.Response) (KeyVaultClientGetSecretResponse, error) {
-	result := KeyVaultClientGetSecretResponse{RawResponse: resp}
+	result := KeyVaultClientGetSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
 		return KeyVaultClientGetSecretResponse{}, err
 	}
@@ -327,7 +328,7 @@ func (client *KeyVaultClient) GetSecretVersionsCreateRequest(ctx context.Context
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -335,7 +336,7 @@ func (client *KeyVaultClient) GetSecretVersionsCreateRequest(ctx context.Context
 
 // GetSecretVersionsHandleResponse handles the GetSecretVersions response.
 func (client *KeyVaultClient) GetSecretVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretVersionsResponse, error) {
-	result := KeyVaultClientGetSecretVersionsResponse{RawResponse: resp}
+	result := KeyVaultClientGetSecretVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
 		return KeyVaultClientGetSecretVersionsResponse{}, err
 	}
@@ -373,7 +374,7 @@ func (client *KeyVaultClient) GetSecretsCreateRequest(ctx context.Context, vault
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -381,7 +382,7 @@ func (client *KeyVaultClient) GetSecretsCreateRequest(ctx context.Context, vault
 
 // GetSecretsHandleResponse handles the GetSecrets response.
 func (client *KeyVaultClient) GetSecretsHandleResponse(resp *http.Response) (KeyVaultClientGetSecretsResponse, error) {
-	result := KeyVaultClientGetSecretsResponse{RawResponse: resp}
+	result := KeyVaultClientGetSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
 		return KeyVaultClientGetSecretsResponse{}, err
 	}
@@ -408,7 +409,7 @@ func (client *KeyVaultClient) PurgeDeletedSecret(ctx context.Context, vaultBaseU
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return KeyVaultClientPurgeDeletedSecretResponse{}, runtime.NewResponseError(resp)
 	}
-	return KeyVaultClientPurgeDeletedSecretResponse{RawResponse: resp}, nil
+	return KeyVaultClientPurgeDeletedSecretResponse{}, nil
 }
 
 // purgeDeletedSecretCreateRequest creates the PurgeDeletedSecret request.
@@ -425,7 +426,7 @@ func (client *KeyVaultClient) purgeDeletedSecretCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -467,7 +468,7 @@ func (client *KeyVaultClient) recoverDeletedSecretCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -475,7 +476,7 @@ func (client *KeyVaultClient) recoverDeletedSecretCreateRequest(ctx context.Cont
 
 // recoverDeletedSecretHandleResponse handles the RecoverDeletedSecret response.
 func (client *KeyVaultClient) recoverDeletedSecretHandleResponse(resp *http.Response) (KeyVaultClientRecoverDeletedSecretResponse, error) {
-	result := KeyVaultClientRecoverDeletedSecretResponse{RawResponse: resp}
+	result := KeyVaultClientRecoverDeletedSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
 		return KeyVaultClientRecoverDeletedSecretResponse{}, err
 	}
@@ -513,7 +514,7 @@ func (client *KeyVaultClient) restoreSecretCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -521,7 +522,7 @@ func (client *KeyVaultClient) restoreSecretCreateRequest(ctx context.Context, va
 
 // restoreSecretHandleResponse handles the RestoreSecret response.
 func (client *KeyVaultClient) restoreSecretHandleResponse(resp *http.Response) (KeyVaultClientRestoreSecretResponse, error) {
-	result := KeyVaultClientRestoreSecretResponse{RawResponse: resp}
+	result := KeyVaultClientRestoreSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
 		return KeyVaultClientRestoreSecretResponse{}, err
 	}
@@ -564,7 +565,7 @@ func (client *KeyVaultClient) setSecretCreateRequest(ctx context.Context, vaultB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -572,7 +573,7 @@ func (client *KeyVaultClient) setSecretCreateRequest(ctx context.Context, vaultB
 
 // setSecretHandleResponse handles the SetSecret response.
 func (client *KeyVaultClient) setSecretHandleResponse(resp *http.Response) (KeyVaultClientSetSecretResponse, error) {
-	result := KeyVaultClientSetSecretResponse{RawResponse: resp}
+	result := KeyVaultClientSetSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
 		return KeyVaultClientSetSecretResponse{}, err
 	}
@@ -621,7 +622,7 @@ func (client *KeyVaultClient) updateSecretCreateRequest(ctx context.Context, vau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.2")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -629,7 +630,7 @@ func (client *KeyVaultClient) updateSecretCreateRequest(ctx context.Context, vau
 
 // updateSecretHandleResponse handles the UpdateSecret response.
 func (client *KeyVaultClient) updateSecretHandleResponse(resp *http.Response) (KeyVaultClientUpdateSecretResponse, error) {
-	result := KeyVaultClientUpdateSecretResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
 		return KeyVaultClientUpdateSecretResponse{}, err
 	}

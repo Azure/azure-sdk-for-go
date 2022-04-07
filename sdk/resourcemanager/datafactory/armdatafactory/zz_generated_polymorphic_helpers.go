@@ -80,6 +80,8 @@ func unmarshalActivityClassification(rawMsg json.RawMessage) (ActivityClassifica
 		b = &IfConditionActivity{}
 	case "Lookup":
 		b = &LookupActivity{}
+	case "Script":
+		b = &ScriptActivity{}
 	case "SetVariable":
 		b = &SetVariableActivity{}
 	case "SqlServerStoredProcedure":
@@ -1111,6 +1113,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &PrestoLinkedService{}
 	case "QuickBooks":
 		b = &QuickBooksLinkedService{}
+	case "Quickbase":
+		b = &QuickbaseLinkedService{}
 	case "Responsys":
 		b = &ResponsysLinkedService{}
 	case "RestService":
@@ -1141,6 +1145,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SharePointOnlineListLinkedService{}
 	case "Shopify":
 		b = &ShopifyLinkedService{}
+	case "Smartsheet":
+		b = &SmartsheetLinkedService{}
 	case "Snowflake":
 		b = &SnowflakeLinkedService{}
 	case "Spark":
@@ -1151,6 +1157,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SquareLinkedService{}
 	case "Sybase":
 		b = &SybaseLinkedService{}
+	case "TeamDesk":
+		b = &TeamDeskLinkedService{}
 	case "Teradata":
 		b = &TeradataLinkedService{}
 	case "Vertica":
@@ -1159,6 +1167,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &WebLinkedService{}
 	case "Xero":
 		b = &XeroLinkedService{}
+	case "Zendesk":
+		b = &ZendeskLinkedService{}
 	case "Zoho":
 		b = &ZohoLinkedService{}
 	default:

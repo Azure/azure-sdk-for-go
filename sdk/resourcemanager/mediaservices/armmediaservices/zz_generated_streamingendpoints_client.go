@@ -35,17 +35,17 @@ type StreamingEndpointsClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewStreamingEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingEndpointsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &StreamingEndpointsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -117,7 +117,7 @@ func (client *StreamingEndpointsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.AutoStart != nil {
 		reqQP.Set("autoStart", strconv.FormatBool(*options.AutoStart))
 	}
@@ -192,7 +192,7 @@ func (client *StreamingEndpointsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -243,7 +243,7 @@ func (client *StreamingEndpointsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *StreamingEndpointsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,6 +306,66 @@ func (client *StreamingEndpointsClient) listHandleResponse(resp *http.Response) 
 	result := StreamingEndpointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingEndpointListResult); err != nil {
 		return StreamingEndpointsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// SKUs - List streaming endpoint supported skus.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
+// options - StreamingEndpointsClientSKUsOptions contains the optional parameters for the StreamingEndpointsClient.SKUs method.
+func (client *StreamingEndpointsClient) SKUs(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, options *StreamingEndpointsClientSKUsOptions) (StreamingEndpointsClientSKUsResponse, error) {
+	req, err := client.skUsCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, options)
+	if err != nil {
+		return StreamingEndpointsClientSKUsResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return StreamingEndpointsClientSKUsResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StreamingEndpointsClientSKUsResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.skUsHandleResponse(resp)
+}
+
+// skUsCreateRequest creates the SKUs request.
+func (client *StreamingEndpointsClient) skUsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, options *StreamingEndpointsClientSKUsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/streamingEndpoints/{streamingEndpointName}/skus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if streamingEndpointName == "" {
+		return nil, errors.New("parameter streamingEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{streamingEndpointName}", url.PathEscape(streamingEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// skUsHandleResponse handles the SKUs response.
+func (client *StreamingEndpointsClient) skUsHandleResponse(resp *http.Response) (StreamingEndpointsClientSKUsResponse, error) {
+	result := StreamingEndpointsClientSKUsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingEndpointSKUInfoListResult); err != nil {
+		return StreamingEndpointsClientSKUsResponse{}, err
 	}
 	return result, nil
 }
@@ -377,7 +437,7 @@ func (client *StreamingEndpointsClient) scaleCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -449,7 +509,7 @@ func (client *StreamingEndpointsClient) startCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -521,7 +581,7 @@ func (client *StreamingEndpointsClient) stopCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -594,7 +654,7 @@ func (client *StreamingEndpointsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

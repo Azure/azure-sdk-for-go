@@ -52,9 +52,9 @@ client := armmonitor.NewAlertRuleIncidentsClient(<subscription ID>, cred, &optio
 
 ## More sample code
 
-- [Action Group](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/action_group)
-- [Activity Log Alert](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/activity_log_alert)
-- [Log Profile](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/log_profile)
+- [Action Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/monitor/action_group)
+- [Activity Log Alert](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/monitor/activity_log_alert)
+- [Log Profile](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/monitor/log_profile)
 
 ## Provide Feedback
 

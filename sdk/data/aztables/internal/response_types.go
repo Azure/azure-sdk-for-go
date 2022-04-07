@@ -8,20 +8,10 @@
 
 package internal
 
-import (
-	"net/http"
-	"time"
-)
+import "time"
 
 // ServiceClientGetPropertiesResponse contains the response from method ServiceClient.GetProperties.
 type ServiceClientGetPropertiesResponse struct {
-	ServiceClientGetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceClientGetPropertiesResult contains the result from method ServiceClient.GetProperties.
-type ServiceClientGetPropertiesResult struct {
 	TableServiceProperties
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
@@ -35,13 +25,6 @@ type ServiceClientGetPropertiesResult struct {
 
 // ServiceClientGetStatisticsResponse contains the response from method ServiceClient.GetStatistics.
 type ServiceClientGetStatisticsResponse struct {
-	ServiceClientGetStatisticsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceClientGetStatisticsResult contains the result from method ServiceClient.GetStatistics.
-type ServiceClientGetStatisticsResult struct {
 	TableServiceStats
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
@@ -58,13 +41,6 @@ type ServiceClientGetStatisticsResult struct {
 
 // ServiceClientSetPropertiesResponse contains the response from method ServiceClient.SetProperties.
 type ServiceClientSetPropertiesResponse struct {
-	ServiceClientSetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServiceClientSetPropertiesResult contains the result from method ServiceClient.SetProperties.
-type ServiceClientSetPropertiesResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -77,13 +53,6 @@ type ServiceClientSetPropertiesResult struct {
 
 // TableClientCreateResponse contains the response from method TableClient.Create.
 type TableClientCreateResponse struct {
-	TableClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientCreateResult contains the result from method TableClient.Create.
-type TableClientCreateResult struct {
 	TableResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -103,13 +72,6 @@ type TableClientCreateResult struct {
 
 // TableClientDeleteEntityResponse contains the response from method TableClient.DeleteEntity.
 type TableClientDeleteEntityResponse struct {
-	TableClientDeleteEntityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientDeleteEntityResult contains the result from method TableClient.DeleteEntity.
-type TableClientDeleteEntityResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -125,13 +87,6 @@ type TableClientDeleteEntityResult struct {
 
 // TableClientDeleteResponse contains the response from method TableClient.Delete.
 type TableClientDeleteResponse struct {
-	TableClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientDeleteResult contains the result from method TableClient.Delete.
-type TableClientDeleteResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -147,13 +102,6 @@ type TableClientDeleteResult struct {
 
 // TableClientGetAccessPolicyResponse contains the response from method TableClient.GetAccessPolicy.
 type TableClientGetAccessPolicyResponse struct {
-	TableClientGetAccessPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientGetAccessPolicyResult contains the result from method TableClient.GetAccessPolicy.
-type TableClientGetAccessPolicyResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
 
@@ -172,13 +120,6 @@ type TableClientGetAccessPolicyResult struct {
 
 // TableClientInsertEntityResponse contains the response from method TableClient.InsertEntity.
 type TableClientInsertEntityResponse struct {
-	TableClientInsertEntityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientInsertEntityResult contains the result from method TableClient.InsertEntity.
-type TableClientInsertEntityResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -206,13 +147,6 @@ type TableClientInsertEntityResult struct {
 
 // TableClientMergeEntityResponse contains the response from method TableClient.MergeEntity.
 type TableClientMergeEntityResponse struct {
-	TableClientMergeEntityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientMergeEntityResult contains the result from method TableClient.MergeEntity.
-type TableClientMergeEntityResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -231,13 +165,6 @@ type TableClientMergeEntityResult struct {
 
 // TableClientQueryEntitiesResponse contains the response from method TableClient.QueryEntities.
 type TableClientQueryEntitiesResponse struct {
-	TableClientQueryEntitiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientQueryEntitiesResult contains the result from method TableClient.QueryEntities.
-type TableClientQueryEntitiesResult struct {
 	TableEntityQueryResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -260,13 +187,6 @@ type TableClientQueryEntitiesResult struct {
 
 // TableClientQueryEntityWithPartitionAndRowKeyResponse contains the response from method TableClient.QueryEntityWithPartitionAndRowKey.
 type TableClientQueryEntityWithPartitionAndRowKeyResponse struct {
-	TableClientQueryEntityWithPartitionAndRowKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientQueryEntityWithPartitionAndRowKeyResult contains the result from method TableClient.QueryEntityWithPartitionAndRowKey.
-type TableClientQueryEntityWithPartitionAndRowKeyResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -294,13 +214,6 @@ type TableClientQueryEntityWithPartitionAndRowKeyResult struct {
 
 // TableClientQueryResponse contains the response from method TableClient.Query.
 type TableClientQueryResponse struct {
-	TableClientQueryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientQueryResult contains the result from method TableClient.Query.
-type TableClientQueryResult struct {
 	TableQueryResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -320,13 +233,6 @@ type TableClientQueryResult struct {
 
 // TableClientSetAccessPolicyResponse contains the response from method TableClient.SetAccessPolicy.
 type TableClientSetAccessPolicyResponse struct {
-	TableClientSetAccessPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientSetAccessPolicyResult contains the result from method TableClient.SetAccessPolicy.
-type TableClientSetAccessPolicyResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -342,13 +248,6 @@ type TableClientSetAccessPolicyResult struct {
 
 // TableClientUpdateEntityResponse contains the response from method TableClient.UpdateEntity.
 type TableClientUpdateEntityResponse struct {
-	TableClientUpdateEntityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TableClientUpdateEntityResult contains the result from method TableClient.UpdateEntity.
-type TableClientUpdateEntityResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 

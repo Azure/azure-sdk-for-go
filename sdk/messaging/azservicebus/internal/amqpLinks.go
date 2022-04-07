@@ -49,7 +49,7 @@ type AMQPLinks interface {
 
 	// CloseIfNeeded closes the links or connection if the error is recoverable.
 	// Use this if you don't want to recreate the connection/links at this point.
-	CloseIfNeeded(ctx context.Context, err error) recoveryKind
+	CloseIfNeeded(ctx context.Context, err error) RecoveryKind
 
 	// ClosedPermanently is true if AMQPLinks.Close(ctx, true) has been called.
 	ClosedPermanently() bool
@@ -76,6 +76,8 @@ type AMQPLinksImpl struct {
 	audience       string
 	createLink     CreateLinkFunc
 
+	getRecoveryKindFunc func(err error) RecoveryKind
+
 	mu sync.RWMutex
 
 	// RPCLink lets you interact with the $management link for your entity.
@@ -93,8 +95,8 @@ type AMQPLinksImpl struct {
 	// Recover() does not affect this value.
 	closedPermanently bool
 
-	cancelAuthRefreshLink     func() <-chan struct{}
-	cancelAuthRefreshMgmtLink func() <-chan struct{}
+	cancelAuthRefreshLink     func()
+	cancelAuthRefreshMgmtLink func()
 
 	ns NamespaceForAMQPLinks
 }
@@ -103,16 +105,24 @@ type AMQPLinksImpl struct {
 // *amqp.Sender or a *amqp.Receiver. AMQPLinks handles it either way.
 type CreateLinkFunc func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error)
 
+type NewAMQPLinksArgs struct {
+	NS                  NamespaceForAMQPLinks
+	EntityPath          string
+	CreateLinkFunc      CreateLinkFunc
+	GetRecoveryKindFunc func(err error) RecoveryKind
+}
+
 // NewAMQPLinks creates a session, starts the claim refresher and creates an associated
 // management link for a specific entity path.
-func NewAMQPLinks(ns NamespaceForAMQPLinks, entityPath string, createLink CreateLinkFunc) AMQPLinks {
+func NewAMQPLinks(args NewAMQPLinksArgs) AMQPLinks {
 	l := &AMQPLinksImpl{
-		entityPath:        entityPath,
-		managementPath:    fmt.Sprintf("%s/$management", entityPath),
-		audience:          ns.GetEntityAudience(entityPath),
-		createLink:        createLink,
-		closedPermanently: false,
-		ns:                ns,
+		entityPath:          args.EntityPath,
+		managementPath:      fmt.Sprintf("%s/$management", args.EntityPath),
+		audience:            args.NS.GetEntityAudience(args.EntityPath),
+		createLink:          args.CreateLinkFunc,
+		closedPermanently:   false,
+		getRecoveryKindFunc: args.GetRecoveryKindFunc,
+		ns:                  args.NS,
 	}
 
 	return l
@@ -189,9 +199,9 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 	default:
 	}
 
-	sbe := GetSBErrInfo(origErr)
+	rk := links.getRecoveryKindFunc(origErr)
 
-	if sbe.RecoveryKind == RecoveryKindLink {
+	if rk == RecoveryKindLink {
 		if err := links.recoverLink(ctx, theirID); err != nil {
 			log.Writef(EventConn, "failed to recreate link: %s", err.Error())
 			return err
@@ -199,7 +209,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 		log.Writef(EventConn, "Recovered links")
 		return nil
-	} else if sbe.RecoveryKind == RecoveryKindConn {
+	} else if rk == RecoveryKindConn {
 		if err := links.recoverConnection(ctx, theirID); err != nil {
 			log.Writef(EventConn, "failed to recreate connection: %s", err.Error())
 			return err
@@ -293,6 +303,10 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 
 	didQuickRetry := false
 
+	isFatalErrorFunc := func(err error) bool {
+		return l.getRecoveryKindFunc(err) == RecoveryKindFatal
+	}
+
 	return utils.Retry(ctx, name, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
@@ -335,7 +349,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 		}
 
 		return nil
-	}, IsFatalSBError, o)
+	}, isFatalErrorFunc, o)
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.
@@ -368,18 +382,18 @@ func (l *AMQPLinksImpl) Close(ctx context.Context, permanent bool) error {
 // eats the cost of recovery, instead of doing it immediately. This is useful
 // if you're trying to exit out of a function quickly but still need to react
 // to a returned error.
-func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	rk := GetRecoveryKind(err)
+	rk := l.getRecoveryKindFunc(err)
 
 	switch rk {
 	case RecoveryKindLink:
 		_ = l.closeWithoutLocking(ctx, false)
 		return rk
 	case RecoveryKindConn:
-		_ = l.ns.Close(ctx)
+		_ = l.ns.Close(ctx, false)
 		_ = l.closeWithoutLocking(ctx, false)
 		return rk
 	case RecoveryKindFatal:
@@ -399,7 +413,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	_ = l.closeWithoutLocking(ctx, false)
 
 	var err error
-	l.cancelAuthRefreshLink, err = l.ns.NegotiateClaim(ctx, l.entityPath)
+	l.cancelAuthRefreshLink, _, err = l.ns.NegotiateClaim(ctx, l.entityPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -408,7 +422,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	l.cancelAuthRefreshMgmtLink, err = l.ns.NegotiateClaim(ctx, l.managementPath)
+	l.cancelAuthRefreshMgmtLink, _, err = l.ns.NegotiateClaim(ctx, l.managementPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -19,12 +19,6 @@ import (
 
 // Kind is the identifier of this type in a resume token.
 const Kind = "Azure-AsyncOperation"
-
-const (
-	finalStateAsync = "azure-async-operation"
-	finalStateLoc   = "location" //nolint
-	finalStateOrig  = "original-uri"
-)
 
 // Applicable returns true if the LRO is using Azure-AsyncOperation.
 func Applicable(resp *http.Response) bool {
@@ -49,14 +43,14 @@ type Poller struct {
 	Method string `json:"method"`
 
 	// The value of final-state-via from swagger, can be the empty string.
-	FinalState string `json:"finalState"`
+	FinalState pollers.FinalStateVia `json:"finalState"`
 
 	// The LRO's current state.
 	CurState string `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response and final-state type.
-func New(resp *http.Response, finalState string, pollerID string) (*Poller, error) {
+func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string) (*Poller, error) {
 	log.Write(log.EventLRO, "Using Azure-AsyncOperation poller.")
 	asyncURL := resp.Header.Get(shared.HeaderAzureAsync)
 	if asyncURL == "" {
@@ -115,9 +109,9 @@ func (p *Poller) FinalGetURL() string {
 		// for PATCH and PUT, the final GET is on the original resource URL
 		return p.OrigURL
 	} else if p.Method == http.MethodPost {
-		if p.FinalState == finalStateAsync {
+		if p.FinalState == pollers.FinalStateViaAzureAsyncOp {
 			return ""
-		} else if p.FinalState == finalStateOrig {
+		} else if p.FinalState == pollers.FinalStateViaOriginalURI {
 			return p.OrigURL
 		} else if p.LocURL != "" {
 			// ideally FinalState would be set to "location" but it isn't always.

@@ -49,7 +49,7 @@ func Example() {
 	// ===== 1. Create a container =====
 
 	// First, create a container client, and use the Create method to create a new container in your account
-	container := service.NewContainerClient("mycontainer")
+	container, _ := service.NewContainerClient("mycontainer")
 	// All functions that make service requests have an options struct as the final parameter.
 	// The options struct allows you to specify optional parameters such as metadata, public access types, etc.
 	// If you want to use the default options, pass in nil.
@@ -62,7 +62,7 @@ func Example() {
 	data := "Hello world!"
 
 	// Create a new BlockBlobClient from the ContainerClient
-	blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
+	blockBlob, _ := container.NewBlockBlobClient("HelloWorld.txt")
 
 	// Upload data to the block blob
 	_, err = blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(data)), nil)
@@ -344,7 +344,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	}
 
 	// Upload a simple blob.
-	blob := container.NewBlockBlobClient("HelloWorld.txt")
+	blob, _ := container.NewBlockBlobClient("HelloWorld.txt")
 
 	_, err = blob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Hello World!")), nil)
 	if err != nil {
@@ -441,7 +441,7 @@ func ExampleBlobAccessConditions() {
 	showResultUpload(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err := blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
@@ -450,10 +450,11 @@ func ExampleBlobAccessConditions() {
 				},
 			},
 		},
-	))
+	)
+	showResult(&downloadResp, err)
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err = blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
@@ -461,7 +462,8 @@ func ExampleBlobAccessConditions() {
 					IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))},
 			},
 		},
-	))
+	)
+	showResult(&downloadResp, err)
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
 	showResultUpload(blockBlob.Upload(
@@ -475,12 +477,13 @@ func ExampleBlobAccessConditions() {
 	))
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	showResult(blockBlob.Download(
+	downloadResp, err = blockBlob.Download(
 		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
-		}))
+		})
+	showResult(&downloadResp, err)
 
 	// Upload content if the blob doesn't already exist (fails):
 	showResultUpload(blockBlob.Upload(
@@ -868,7 +871,7 @@ func Example_blobSnapshots() {
 	}
 
 	// Create a BlockBlobClient object to a blob in the container.
-	baseBlobClient := containerClient.NewBlockBlobClient("Original.txt")
+	baseBlobClient, _ := containerClient.NewBlockBlobClient("Original.txt")
 
 	// Create the original blob:
 	_, err = baseBlobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), nil)
@@ -907,7 +910,7 @@ func Example_blobSnapshots() {
 	fmt.Println(b.String())
 
 	// Show snapshot blob via original blob URI & snapshot time:
-	snapshotBlobClient := baseBlobClient.WithSnapshot(snapshot)
+	snapshotBlobClient, _ := baseBlobClient.WithSnapshot(snapshot)
 	get, err = snapshotBlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -925,7 +928,7 @@ func Example_blobSnapshots() {
 	fmt.Println(b.String())
 
 	// FYI: You can get the base blob URL from one of its snapshot by passing "" to WithSnapshot:
-	baseBlobClient = snapshotBlobClient.WithSnapshot("")
+	baseBlobClient, _ = snapshotBlobClient.WithSnapshot("")
 
 	// Show all blobs in the container with their snapshots:
 	// List the blob(s) in our container; since a container may hold millions of blobs, this is done 1 segment at a time.
@@ -981,7 +984,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
-	blobClient := containerClient.NewBlockBlobClient("Data.bin")
+	blobClient, _ := containerClient.NewBlockBlobClient("Data.bin")
 
 	// requestBody is the stream of data to write
 	requestBody := streaming.NopCloser(strings.NewReader("Some text to write"))

@@ -218,7 +218,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
-	qo := &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
+	qo := &generated.QueryOptions{Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata)}
 
 	operationWriter, err := writer.CreatePart(h)
 	if err != nil {
@@ -264,7 +264,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			t.name,
 			&generated.TableClientInsertEntityOptions{
 				TableEntityProperties: entity,
-				ResponsePreference:    generated.ResponseFormatReturnNoContent.ToPtr(),
+				ResponsePreference:    to.Ptr(generated.ResponseFormatReturnNoContent),
 			},
 			qo,
 		)
@@ -276,7 +276,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeInsertMerge:
 		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
-			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+			opts.IfMatch = to.Ptr(string(*transactionAction.IfMatch))
 		}
 		req, err = t.client.MergeEntityCreateRequest(
 			ctx,
@@ -298,7 +298,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeInsertReplace:
 		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
-			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+			opts.IfMatch = to.Ptr(string(*transactionAction.IfMatch))
 		}
 		req, err = t.client.UpdateEntityCreateRequest(
 			ctx,

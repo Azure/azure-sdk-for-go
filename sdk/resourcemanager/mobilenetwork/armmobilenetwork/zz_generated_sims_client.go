@@ -111,7 +111,7 @@ func (client *SimsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -177,7 +177,7 @@ func (client *SimsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -223,7 +223,7 @@ func (client *SimsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -271,7 +271,7 @@ func (client *SimsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -313,7 +313,7 @@ func (client *SimsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -369,7 +369,7 @@ func (client *SimsClient) updateTagsCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:54:54 GMT
+      - Tue, 15 Mar 2022 13:21:24 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerdelete?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:54:49 GMT
+      - Tue, 15 Mar 2022 13:21:24 GMT
       Etag:
-      - '"0x8DA02A5ED7203E3"'
+      - '"0x8DA0686B46F9C37"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:54:50 GMT
+      - Tue, 15 Mar 2022 13:21:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f47384-201e-0062-528e-344d5f000000
+      - 21b901e1-001e-004a-436f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -46,9 +46,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:54:55 GMT
+      - Tue, 15 Mar 2022 13:21:25 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerdelete?restype=container
@@ -59,11 +59,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:54:49 GMT
+      - Tue, 15 Mar 2022 13:21:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f474f0-201e-0062-278e-344d5f000000
+      - 21b903e9-001e-004a-206f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted
@@ -78,28 +78,28 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:54:55 GMT
+      - Tue, 15 Mar 2022 13:21:25 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerdelete?comp=acl&restype=container
     method: GET
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72\x4E\x6F\x74\x46\x6F\x75\x6E\x64\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x63\x6F\x6E\x74\x61\x69\x6E\x65\x72\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x65\x78\x69\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x64\x36\x66\x34\x37\x36\x39\x66\x2D\x32\x30\x31\x65\x2D\x30\x30\x36\x32\x2D\x33\x62\x38\x65\x2D\x33\x34\x34\x64\x35\x66\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x32\x2D\x30\x33\x2D\x31\x30\x54\x31\x34\x3A\x35\x34\x3A\x35\x30\x2E\x37\x38\x35\x35\x33\x33\x35\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72\x4E\x6F\x74\x46\x6F\x75\x6E\x64\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x63\x6F\x6E\x74\x61\x69\x6E\x65\x72\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x65\x78\x69\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x32\x31\x62\x39\x30\x36\x39\x64\x2D\x30\x30\x31\x65\x2D\x30\x30\x34\x61\x2D\x30\x36\x36\x66\x2D\x33\x38\x32\x63\x66\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x32\x2D\x30\x33\x2D\x31\x35\x54\x31\x33\x3A\x32\x31\x3A\x32\x35\x2E\x36\x36\x39\x39\x37\x33\x32\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "225"
       Content-Type:
       - application/xml
       Date:
-      - Thu, 10 Mar 2022 14:54:50 GMT
+      - Tue, 15 Mar 2022 13:21:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ContainerNotFound
       X-Ms-Request-Id:
-      - d6f4769f-201e-0062-3b8e-344d5f000000
+      - 21b9069d-001e-004a-066f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 404 The specified container does not exist.

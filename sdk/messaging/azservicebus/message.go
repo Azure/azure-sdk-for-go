@@ -243,11 +243,11 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		}
 
 		if deadLetterErrorDescription, ok := amqpMsg.ApplicationProperties["DeadLetterErrorDescription"]; ok {
-			msg.DeadLetterErrorDescription = to.StringPtr(deadLetterErrorDescription.(string))
+			msg.DeadLetterErrorDescription = to.Ptr(deadLetterErrorDescription.(string))
 		}
 
 		if deadLetterReason, ok := amqpMsg.ApplicationProperties["DeadLetterReason"]; ok {
-			msg.DeadLetterReason = to.StringPtr(deadLetterReason.(string))
+			msg.DeadLetterReason = to.Ptr(deadLetterReason.(string))
 		}
 	}
 
@@ -258,11 +258,11 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		}
 
 		if sequenceNumber, ok := amqpMsg.Annotations[sequenceNumberAnnotation]; ok {
-			msg.SequenceNumber = to.Int64Ptr(sequenceNumber.(int64))
+			msg.SequenceNumber = to.Ptr(sequenceNumber.(int64))
 		}
 
 		if partitionKey, ok := amqpMsg.Annotations[partitionKeyAnnotation]; ok {
-			msg.PartitionKey = to.StringPtr(partitionKey.(string))
+			msg.PartitionKey = to.Ptr(partitionKey.(string))
 		}
 
 		if enqueuedTime, ok := amqpMsg.Annotations[enqueuedTimeAnnotation]; ok {
@@ -271,7 +271,7 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		}
 
 		if deadLetterSource, ok := amqpMsg.Annotations[deadLetterSourceAnnotation]; ok {
-			msg.DeadLetterSource = to.StringPtr(deadLetterSource.(string))
+			msg.DeadLetterSource = to.Ptr(deadLetterSource.(string))
 		}
 
 		if scheduledEnqueueTime, ok := amqpMsg.Annotations[scheduledEnqueuedTimeAnnotation]; ok {
@@ -280,11 +280,11 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		}
 
 		if enqueuedSequenceNumber, ok := amqpMsg.Annotations[enqueuedSequenceNumberAnnotation]; ok {
-			msg.EnqueuedSequenceNumber = to.Int64Ptr(enqueuedSequenceNumber.(int64))
+			msg.EnqueuedSequenceNumber = to.Ptr(enqueuedSequenceNumber.(int64))
 		}
 
 		if viaPartitionKey, ok := amqpMsg.Annotations[viaPartitionKeyAnnotation]; ok {
-			msg.TransactionPartitionKey = to.StringPtr(viaPartitionKey.(string))
+			msg.TransactionPartitionKey = to.Ptr(viaPartitionKey.(string))
 		}
 
 		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {

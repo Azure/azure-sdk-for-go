@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -157,8 +157,7 @@ func (req *Request) Close() error {
 
 // Clone returns a deep copy of the request with its context changed to ctx.
 func (req *Request) Clone(ctx context.Context) *Request {
-	r2 := Request{}
-	r2 = *req
+	r2 := *req
 	r2.req = req.req.Clone(ctx)
 	return &r2
 }

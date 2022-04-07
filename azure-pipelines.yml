@@ -18,12 +18,12 @@ jobs:
   - job: Build_Test
     strategy:
       matrix:
-        Linux_Go116:
-          pool.name: azsdk-pool-mms-ubuntu-2004-general
-          go.version: '1.16.7'
         Linux_Go117:
           pool.name: azsdk-pool-mms-ubuntu-2004-general
-          go.version: '1.17'
+          go.version: '1.17.8'
+        Linux_Go118:
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
+          go.version: '1.18'
 
     pool:
       name: $(pool.name)
@@ -105,7 +105,11 @@ jobs:
       failOnStderr: true
       condition: succeededOrFailed()
 
-    - script: gofmt -s -l -d $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          gofmt -s -l -d $(find . -name '*.go' -print) >&2
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
       failOnStderr: true

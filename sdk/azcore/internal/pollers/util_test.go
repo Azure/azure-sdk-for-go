@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -48,6 +48,37 @@ func TestStatusCodeValid(t *testing.T) {
 	}
 	if StatusCodeValid(&http.Response{StatusCode: http.StatusInternalServerError}) {
 		t.Fatal("unexpected valid code")
+	}
+}
+
+func TestPollerTypeName(t *testing.T) {
+	n, err := PollerTypeName[int]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != "int" {
+		t.Fatalf("unexpected type name %s", n)
+	}
+	n, err = PollerTypeName[struct{}]()
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if n != "" {
+		t.Fatal("expected empty type name")
+	}
+	n, err = PollerTypeName[interface{}]()
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if n != "" {
+		t.Fatal("expected empty type name")
+	}
+	n, err = PollerTypeName[*float64]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != "*float64" {
+		t.Fatalf("unexpected type name %s", n)
 	}
 }
 

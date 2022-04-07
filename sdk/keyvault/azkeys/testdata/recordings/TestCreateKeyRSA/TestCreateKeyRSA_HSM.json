@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -27,7 +27,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -81,7 +81,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935hsm/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935hsm/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -135,7 +135,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -187,7 +187,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -241,7 +241,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -295,7 +295,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -321,7 +321,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935hsm?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key2103710935hsm?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -373,7 +373,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -427,7 +427,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -481,7 +481,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key2103710935hsm?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -507,7 +507,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/invalidName%21@%23$/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/invalidName%21@%23$/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",

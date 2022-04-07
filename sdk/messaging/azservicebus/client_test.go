@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -54,7 +55,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
-	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
+	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, nil)
@@ -68,7 +69,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
 
 	for _, m := range messages {
-		err = receiver.CompleteMessage(context.TODO(), m)
+		err = receiver.CompleteMessage(context.TODO(), m, nil)
 		require.NoError(t, err)
 	}
 
@@ -103,7 +104,7 @@ func TestNewClientWithWebsockets(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	// we have to test this down here since the connection is lazy initialized.
@@ -140,7 +141,7 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello world"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
@@ -171,7 +172,7 @@ func TestNewClientNewSenderNotFound(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
 	defer cancel()
 
-	err = sender.SendMessage(ctx, &Message{Body: []byte("hello")})
+	err = sender.SendMessage(ctx, &Message{Body: []byte("hello")}, nil)
 	assertRPCNotFound(t, err)
 }
 
@@ -223,6 +224,38 @@ func TestNewClientNewSessionReceiverNotFound(t *testing.T) {
 	receiver, err = client.AcceptNextSessionForQueue(ctx, "non-existent-queue", nil)
 	require.Nil(t, receiver)
 	assertRPCNotFound(t, err)
+}
+
+func TestClientCloseVsClosePermanently(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+	client, err := NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, client.Close(context.Background()))
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	receiver, err = client.NewReceiverForSubscription("topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sender)
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptSessionForSubscription(context.Background(), "topic", "subscription", "session-id-that-is-not-used", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
+
+	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), "topic", "subscription", nil)
+	require.EqualError(t, err, "client has been closed by user")
+	require.Nil(t, sessionReceiver)
 }
 
 func TestNewClientUnitTests(t *testing.T) {
@@ -314,5 +347,5 @@ func assertRPCNotFound(t *testing.T, err error) {
 	}
 
 	require.ErrorAs(t, err, &rpcError)
-	require.Equal(t, 404, rpcError.RPCCode())
+	require.Equal(t, http.StatusNotFound, rpcError.RPCCode())
 }

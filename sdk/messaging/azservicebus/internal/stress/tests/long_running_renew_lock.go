@@ -27,7 +27,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 
 	err = sender.SendMessage(context.Background(), &azservicebus.Message{
 		Body: []byte("ping"),
-	})
+	}, nil)
 	sc.PanicOnError("failed to send message", err)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -48,12 +48,12 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 		}
 
 		i++
-		err := receiver.RenewMessageLock(ctx, messages[0])
+		err := receiver.RenewMessageLock(ctx, messages[0], nil)
 
 		if err == context.Canceled || err == context.DeadlineExceeded {
 			log.Printf("Cancellation/deadline exceeded. Can stop, will complete message now")
 
-			err = receiver.CompleteMessage(context.Background(), messages[0])
+			err = receiver.CompleteMessage(context.Background(), messages[0], nil)
 			sc.PanicOnError("failed to complete message", err)
 			break
 		}

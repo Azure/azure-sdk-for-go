@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyDelete.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyDelete.json
 func ExampleSimPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleSimPoliciesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyGet.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyGet.json
 func ExampleSimPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSimPoliciesClient_Get() {
 	log.Printf("Response result: %#v\n", res.SimPoliciesClientGetResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyCreate.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyCreate.json
 func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.SimPoliciesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyUpdateTags.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyUpdateTags.json
 func ExampleSimPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	log.Printf("Response result: %#v\n", res.SimPoliciesClientUpdateTagsResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyListByMobileNetwork.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyListByMobileNetwork.json
 func ExampleSimPoliciesClient_ListByMobileNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

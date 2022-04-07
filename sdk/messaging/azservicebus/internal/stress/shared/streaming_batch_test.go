@@ -18,7 +18,7 @@ type fakeBatch struct {
 	messages []*azservicebus.Message
 }
 
-func (fb *fakeBatch) AddMessage(msg *azservicebus.Message) error {
+func (fb *fakeBatch) AddMessage(msg *azservicebus.Message, options *azservicebus.AddMessageOptions) error {
 	if len(fb.messages) == fb.max {
 		return azservicebus.ErrMessageTooLarge
 	}
@@ -66,7 +66,7 @@ func TestStreamingBatch(t *testing.T) {
 	for i := 0; i < currentBatch().max; i++ {
 		err = streamingBatch.Add(ctx, &azservicebus.Message{
 			Body: []byte(fmt.Sprintf("%d", i)),
-		})
+		}, nil)
 		require.NoError(t, err)
 		require.Empty(t, sender.sent, "Nothing will be sent yet, since the batch is not yet full")
 	}
@@ -77,7 +77,7 @@ func TestStreamingBatch(t *testing.T) {
 	// 3. Add this new message to the new batch
 	err = streamingBatch.Add(ctx, &azservicebus.Message{
 		Body: []byte("last"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	// check what's been sent.
@@ -109,7 +109,7 @@ func TestStreamingBatchTooLargeToFitByItself(t *testing.T) {
 	// 3. Add this new message to the new batch
 	err = streamingBatch.Add(ctx, &azservicebus.Message{
 		Body: []byte("last"),
-	})
+	}, nil)
 
 	// This is the only fatal case for the streaming batch - when we have a message that literally can't be sent.
 	// There's no good strategy here, the user has to make a decision about whether to keep the message, etc...

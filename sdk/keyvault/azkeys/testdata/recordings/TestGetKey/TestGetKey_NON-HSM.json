@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -91,7 +91,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key398251057/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -142,7 +142,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/invalidkey%5B%5D%28%29/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/invalidkey%5B%5D%28%29/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",

@@ -68,6 +68,9 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: IncludeRelease
+    type: boolean
+    default: false
 
 
 stages:
@@ -79,23 +82,15 @@ stages:
         - template: ../variables/globals.yml
       strategy:
         matrix:
-          Linux_Go117:
+          Linux_Go118:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.17'
-          Windows_Go117:
+            go.version: '1.18'
+          Windows_Go118:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019
-            go.version: '1.17'
+            go.version: '1.18'
             generate.bom: true
-          Linux_Go116:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.16.7'
-          Windows_Go116:
-            pool.name: azsdk-pool-mms-win-2019-general
-            image.name: MMS2019
-            go.version: '1.16.7'
       pool:
         name: $(pool.name)
         vmImage: $(image.name)
@@ -117,6 +112,7 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           TestProxy: true
+          TestRunTime: ${{ parameters.TestRunTime }}
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
@@ -137,7 +133,7 @@ stages:
 
       - task: GoTool@0
         inputs:
-          version: '1.17'
+          version: '1.18'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml
@@ -191,16 +187,21 @@ stages:
                   Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
                   Cloud: ${{ cloud.key }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-go-release.yml
-      parameters:
-        DependsOn:
-          - Build
-          # Copy cloud conditional logic from live test stage
-          - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
-            - ${{ each cloud in parameters.CloudConfig }}:
-              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-                - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-                  - ${{ cloud.key }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  # The Prerelease and Release stages are conditioned on:
+  # 1. Internal trigger, not Pull Request trigger
+  # 2. Not weekly build
+  # 3. Manual trigger or force IncludeRelease
+  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+    - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
+      - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+        - template: archetype-go-release.yml
+          parameters:
+            DependsOn:
+              - Build
+              # Copy cloud conditional logic from live test stage
+              - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+                - ${{ each cloud in parameters.CloudConfig }}:
+                  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                      - ${{ cloud.key }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}

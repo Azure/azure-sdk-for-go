@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -91,7 +91,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -146,7 +146,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -201,7 +201,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -256,7 +256,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -311,7 +311,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":method": "POST",
@@ -366,7 +366,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/versions?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625/versions?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -459,7 +459,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key231821625?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -512,7 +512,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -546,7 +546,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -580,7 +580,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -614,7 +614,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -648,7 +648,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -682,7 +682,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -716,7 +716,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -750,7 +750,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -784,7 +784,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -818,7 +818,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":method": "GET",
@@ -872,7 +872,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key231821625?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",

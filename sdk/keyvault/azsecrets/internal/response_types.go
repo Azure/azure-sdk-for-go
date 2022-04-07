@@ -8,142 +8,62 @@
 
 package internal
 
-import "net/http"
-
 // KeyVaultClientBackupSecretResponse contains the response from method KeyVaultClient.BackupSecret.
 type KeyVaultClientBackupSecretResponse struct {
-	KeyVaultClientBackupSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientBackupSecretResult contains the result from method KeyVaultClient.BackupSecret.
-type KeyVaultClientBackupSecretResult struct {
 	BackupSecretResult
 }
 
 // KeyVaultClientDeleteSecretResponse contains the response from method KeyVaultClient.DeleteSecret.
 type KeyVaultClientDeleteSecretResponse struct {
-	KeyVaultClientDeleteSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientDeleteSecretResult contains the result from method KeyVaultClient.DeleteSecret.
-type KeyVaultClientDeleteSecretResult struct {
 	DeletedSecretBundle
 }
 
 // KeyVaultClientGetDeletedSecretResponse contains the response from method KeyVaultClient.GetDeletedSecret.
 type KeyVaultClientGetDeletedSecretResponse struct {
-	KeyVaultClientGetDeletedSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedSecretResult contains the result from method KeyVaultClient.GetDeletedSecret.
-type KeyVaultClientGetDeletedSecretResult struct {
 	DeletedSecretBundle
 }
 
 // KeyVaultClientGetDeletedSecretsResponse contains the response from method KeyVaultClient.GetDeletedSecrets.
 type KeyVaultClientGetDeletedSecretsResponse struct {
-	KeyVaultClientGetDeletedSecretsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedSecretsResult contains the result from method KeyVaultClient.GetDeletedSecrets.
-type KeyVaultClientGetDeletedSecretsResult struct {
 	DeletedSecretListResult
 }
 
 // KeyVaultClientGetSecretResponse contains the response from method KeyVaultClient.GetSecret.
 type KeyVaultClientGetSecretResponse struct {
-	KeyVaultClientGetSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretResult contains the result from method KeyVaultClient.GetSecret.
-type KeyVaultClientGetSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientGetSecretVersionsResponse contains the response from method KeyVaultClient.GetSecretVersions.
 type KeyVaultClientGetSecretVersionsResponse struct {
-	KeyVaultClientGetSecretVersionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretVersionsResult contains the result from method KeyVaultClient.GetSecretVersions.
-type KeyVaultClientGetSecretVersionsResult struct {
 	SecretListResult
 }
 
 // KeyVaultClientGetSecretsResponse contains the response from method KeyVaultClient.GetSecrets.
 type KeyVaultClientGetSecretsResponse struct {
-	KeyVaultClientGetSecretsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretsResult contains the result from method KeyVaultClient.GetSecrets.
-type KeyVaultClientGetSecretsResult struct {
 	SecretListResult
 }
 
 // KeyVaultClientPurgeDeletedSecretResponse contains the response from method KeyVaultClient.PurgeDeletedSecret.
 type KeyVaultClientPurgeDeletedSecretResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // KeyVaultClientRecoverDeletedSecretResponse contains the response from method KeyVaultClient.RecoverDeletedSecret.
 type KeyVaultClientRecoverDeletedSecretResponse struct {
-	KeyVaultClientRecoverDeletedSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRecoverDeletedSecretResult contains the result from method KeyVaultClient.RecoverDeletedSecret.
-type KeyVaultClientRecoverDeletedSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientRestoreSecretResponse contains the response from method KeyVaultClient.RestoreSecret.
 type KeyVaultClientRestoreSecretResponse struct {
-	KeyVaultClientRestoreSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRestoreSecretResult contains the result from method KeyVaultClient.RestoreSecret.
-type KeyVaultClientRestoreSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientSetSecretResponse contains the response from method KeyVaultClient.SetSecret.
 type KeyVaultClientSetSecretResponse struct {
-	KeyVaultClientSetSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientSetSecretResult contains the result from method KeyVaultClient.SetSecret.
-type KeyVaultClientSetSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientUpdateSecretResponse contains the response from method KeyVaultClient.UpdateSecret.
 type KeyVaultClientUpdateSecretResponse struct {
-	KeyVaultClientUpdateSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientUpdateSecretResult contains the result from method KeyVaultClient.UpdateSecret.
-type KeyVaultClientUpdateSecretResult struct {
 	SecretBundle
 }

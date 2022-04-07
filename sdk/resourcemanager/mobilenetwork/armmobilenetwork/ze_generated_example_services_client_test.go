@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/ServiceDelete.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceDelete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/ServiceGet.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceGet.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleServicesClient_Get() {
 	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/ServiceCreate.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceCreate.json
 func ExampleServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/ServiceUpdateTags.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceUpdateTags.json
 func ExampleServicesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleServicesClient_UpdateTags() {
 	log.Printf("Response result: %#v\n", res.ServicesClientUpdateTagsResult)
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/ServiceListByMobileNetwork.json
+// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceListByMobileNetwork.json
 func ExampleServicesClient_ListByMobileNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

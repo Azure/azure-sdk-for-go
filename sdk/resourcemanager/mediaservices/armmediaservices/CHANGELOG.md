@@ -1,5 +1,168 @@
 # Release History
 
+## 0.4.0 (2022-04-04)
+### Breaking Changes
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*H264Layer.GetLayer` has been removed
+- Function `H264Layer.MarshalJSON` has been removed
+- Function `VideoLayer.MarshalJSON` has been removed
+- Function `JpgLayer.MarshalJSON` has been removed
+- Function `*PNGLayer.GetLayer` has been removed
+- Function `*H265VideoLayer.UnmarshalJSON` has been removed
+- Function `*VideoLayer.GetLayer` has been removed
+- Function `*H265Layer.GetLayer` has been removed
+- Function `*JpgLayer.UnmarshalJSON` has been removed
+- Function `*VideoLayer.GetVideoLayer` has been removed
+- Function `*H265Layer.UnmarshalJSON` has been removed
+- Function `*H264Layer.GetVideoLayer` has been removed
+- Function `*H265VideoLayer.GetH265VideoLayer` has been removed
+- Function `*H265Layer.GetH265VideoLayer` has been removed
+- Function `*H265VideoLayer.GetLayer` has been removed
+- Function `*PNGLayer.UnmarshalJSON` has been removed
+- Function `PNGLayer.MarshalJSON` has been removed
+- Function `*H264Layer.UnmarshalJSON` has been removed
+- Function `*Layer.GetLayer` has been removed
+- Function `H265VideoLayer.MarshalJSON` has been removed
+- Function `*VideoLayer.UnmarshalJSON` has been removed
+- Function `H265Layer.MarshalJSON` has been removed
+- Function `*JpgLayer.GetLayer` has been removed
+- Struct `ErrorResponse` has been removed
+- Field `ODataType` of struct `Layer` has been removed
+- Field `ODataType` of struct `JpgLayer` has been removed
+- Field `ODataType` of struct `VideoLayer` has been removed
+- Field `ODataType` of struct `PNGLayer` has been removed
+- Field `ODataType` of struct `H265Layer` has been removed
+- Field `ODataType` of struct `H265VideoLayer` has been removed
+- Field `ODataType` of struct `H264Layer` has been removed
+
+### Features Added
+
+- New const `H264RateControlModeABR`
+- New const `H264RateControlModeCRF`
+- New const `H265VideoProfileMain10`
+- New const `VisibilityHidden`
+- New const `StreamOptionsFlagLowLatencyV2`
+- New const `ProvisioningStateFailed`
+- New const `VisibilityVisible`
+- New const `ProvisioningStateSucceeded`
+- New const `H264RateControlModeCBR`
+- New const `ProvisioningStateInProgress`
+- New function `NewTracksClient(string, azcore.TokenCredential, *arm.ClientOptions) *TracksClient`
+- New function `*TracksClientCreateOrUpdatePollerResponse.Resume(context.Context, *TracksClient, string) error`
+- New function `*StreamingEndpointsClient.SKUs(context.Context, string, string, string, *StreamingEndpointsClientSKUsOptions) (StreamingEndpointsClientSKUsResponse, error)`
+- New function `*TracksClientDeletePoller.ResumeToken() (string, error)`
+- New function `StreamingEndpointSKUInfoListResult.MarshalJSON() ([]byte, error)`
+- New function `*TextTrack.GetTrackBase() *TrackBase`
+- New function `*TracksClient.BeginUpdateTrackData(context.Context, string, string, string, string, *TracksClientBeginUpdateTrackDataOptions) (TracksClientUpdateTrackDataPollerResponse, error)`
+- New function `*OperationResultsClient.Get(context.Context, string, string, string, string, string, *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error)`
+- New function `*TracksClientUpdateTrackDataPollerResponse.Resume(context.Context, *TracksClient, string) error`
+- New function `*TracksClient.BeginUpdate(context.Context, string, string, string, string, AssetTrack, *TracksClientBeginUpdateOptions) (TracksClientUpdatePollerResponse, error)`
+- New function `TracksClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TracksClientCreateOrUpdateResponse, error)`
+- New function `*TracksClientUpdatePoller.FinalResponse(context.Context) (TracksClientUpdateResponse, error)`
+- New function `AssetTrack.MarshalJSON() ([]byte, error)`
+- New function `*TracksClientUpdatePoller.Done() bool`
+- New function `*TracksClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*TracksClient.List(context.Context, string, string, string, *TracksClientListOptions) (TracksClientListResponse, error)`
+- New function `AudioTrack.MarshalJSON() ([]byte, error)`
+- New function `*TracksClientUpdatePollerResponse.Resume(context.Context, *TracksClient, string) error`
+- New function `*TracksClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TracksClientDeletePoller.FinalResponse(context.Context) (TracksClientDeleteResponse, error)`
+- New function `*TracksClientUpdateTrackDataPoller.FinalResponse(context.Context) (TracksClientUpdateTrackDataResponse, error)`
+- New function `TextTrack.MarshalJSON() ([]byte, error)`
+- New function `ProvisioningState.ToPtr() *ProvisioningState`
+- New function `NewOperationStatusesClient(string, azcore.TokenCredential, *arm.ClientOptions) *OperationStatusesClient`
+- New function `NewOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) *OperationResultsClient`
+- New function `*AudioTrack.GetTrackBase() *TrackBase`
+- New function `*TracksClient.BeginCreateOrUpdate(context.Context, string, string, string, string, AssetTrack, *TracksClientBeginCreateOrUpdateOptions) (TracksClientCreateOrUpdatePollerResponse, error)`
+- New function `*TracksClientUpdateTrackDataPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TracksClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TracksClientDeletePoller.Done() bool`
+- New function `*TracksClientUpdateTrackDataPoller.ResumeToken() (string, error)`
+- New function `TracksClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TracksClientDeleteResponse, error)`
+- New function `*TracksClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `Visibility.ToPtr() *Visibility`
+- New function `TracksClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TracksClientUpdateResponse, error)`
+- New function `*TextTrack.UnmarshalJSON([]byte) error`
+- New function `*TracksClient.BeginDelete(context.Context, string, string, string, string, *TracksClientBeginDeleteOptions) (TracksClientDeletePollerResponse, error)`
+- New function `AssetTrackProperties.MarshalJSON() ([]byte, error)`
+- New function `AssetTrackCollection.MarshalJSON() ([]byte, error)`
+- New function `*TracksClientUpdateTrackDataPoller.Done() bool`
+- New function `*AssetTrackProperties.UnmarshalJSON([]byte) error`
+- New function `PossibleVisibilityValues() []Visibility`
+- New function `PossibleH264RateControlModeValues() []H264RateControlMode`
+- New function `VideoTrack.MarshalJSON() ([]byte, error)`
+- New function `*AudioTrack.UnmarshalJSON([]byte) error`
+- New function `*TracksClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*AssetTrackOperationStatus.UnmarshalJSON([]byte) error`
+- New function `TracksClientUpdateTrackDataPollerResponse.PollUntilDone(context.Context, time.Duration) (TracksClientUpdateTrackDataResponse, error)`
+- New function `*OperationStatusesClient.Get(context.Context, string, string, string, string, string, *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error)`
+- New function `*TracksClientCreateOrUpdatePoller.Done() bool`
+- New function `*TracksClient.Get(context.Context, string, string, string, string, *TracksClientGetOptions) (TracksClientGetResponse, error)`
+- New function `H264RateControlMode.ToPtr() *H264RateControlMode`
+- New function `*VideoTrack.UnmarshalJSON([]byte) error`
+- New function `AssetTrackOperationStatus.MarshalJSON() ([]byte, error)`
+- New function `*TrackBase.GetTrackBase() *TrackBase`
+- New function `PossibleProvisioningStateValues() []ProvisioningState`
+- New function `*VideoTrack.GetTrackBase() *TrackBase`
+- New function `*TracksClientCreateOrUpdatePoller.FinalResponse(context.Context) (TracksClientCreateOrUpdateResponse, error)`
+- New function `*TracksClientDeletePollerResponse.Resume(context.Context, *TracksClient, string) error`
+- New struct `ArmStreamingEndpointCapacity`
+- New struct `ArmStreamingEndpointCurrentSKU`
+- New struct `ArmStreamingEndpointSKU`
+- New struct `ArmStreamingEndpointSKUInfo`
+- New struct `AssetTrack`
+- New struct `AssetTrackCollection`
+- New struct `AssetTrackOperationStatus`
+- New struct `AssetTrackProperties`
+- New struct `AudioTrack`
+- New struct `HlsSettings`
+- New struct `OperationResultsClient`
+- New struct `OperationResultsClientGetOptions`
+- New struct `OperationResultsClientGetResponse`
+- New struct `OperationResultsClientGetResult`
+- New struct `OperationStatusesClient`
+- New struct `OperationStatusesClientGetOptions`
+- New struct `OperationStatusesClientGetResponse`
+- New struct `OperationStatusesClientGetResult`
+- New struct `StreamingEndpointSKUInfoListResult`
+- New struct `StreamingEndpointsClientSKUsOptions`
+- New struct `StreamingEndpointsClientSKUsResponse`
+- New struct `StreamingEndpointsClientSKUsResult`
+- New struct `TextTrack`
+- New struct `TrackBase`
+- New struct `TracksClient`
+- New struct `TracksClientBeginCreateOrUpdateOptions`
+- New struct `TracksClientBeginDeleteOptions`
+- New struct `TracksClientBeginUpdateOptions`
+- New struct `TracksClientBeginUpdateTrackDataOptions`
+- New struct `TracksClientCreateOrUpdatePoller`
+- New struct `TracksClientCreateOrUpdatePollerResponse`
+- New struct `TracksClientCreateOrUpdateResponse`
+- New struct `TracksClientCreateOrUpdateResult`
+- New struct `TracksClientDeletePoller`
+- New struct `TracksClientDeletePollerResponse`
+- New struct `TracksClientDeleteResponse`
+- New struct `TracksClientGetOptions`
+- New struct `TracksClientGetResponse`
+- New struct `TracksClientGetResult`
+- New struct `TracksClientListOptions`
+- New struct `TracksClientListResponse`
+- New struct `TracksClientListResult`
+- New struct `TracksClientUpdatePoller`
+- New struct `TracksClientUpdatePollerResponse`
+- New struct `TracksClientUpdateResponse`
+- New struct `TracksClientUpdateResult`
+- New struct `TracksClientUpdateTrackDataPoller`
+- New struct `TracksClientUpdateTrackDataPollerResponse`
+- New struct `TracksClientUpdateTrackDataResponse`
+- New struct `VideoTrack`
+- New field `Crf` in struct `H264Layer`
+- New field `SKU` in struct `StreamingEndpoint`
+- New field `RateControlMode` in struct `H264Video`
+- New field `Crf` in struct `H265Layer`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

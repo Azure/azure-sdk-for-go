@@ -111,7 +111,7 @@ func (client *PacketCoreControlPlanesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -178,7 +178,7 @@ func (client *PacketCoreControlPlanesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +225,7 @@ func (client *PacketCoreControlPlanesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -273,7 +273,7 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +316,7 @@ func (client *PacketCoreControlPlanesClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *PacketCoreControlPlanesClient) updateTagsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

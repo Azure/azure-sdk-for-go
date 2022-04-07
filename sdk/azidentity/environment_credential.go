@@ -20,10 +20,6 @@ const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
 	azcore.ClientOptions
-
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
@@ -66,7 +62,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
-		o := &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		o := &ClientSecretCredentialOptions{ClientOptions: options.ClientOptions}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
 			return nil, err
@@ -83,7 +79,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		o := &ClientCertificateCredentialOptions{ClientOptions: options.ClientOptions}
 		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
 			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
 		}
@@ -96,7 +92,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			log.Write(EventAuthentication, "EnvironmentCredential will authenticate with UsernamePasswordCredential")
-			o := &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+			o := &UsernamePasswordCredentialOptions{ClientOptions: options.ClientOptions}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
 				return nil, err

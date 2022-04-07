@@ -52,10 +52,10 @@ client := armcontainerregistry.NewImportPipelinesClient(<subscription ID>, cred,
 
 ## More sample code
 
-- [Container Registry](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/registry)
-- [Replication](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/replication)
-- [Container Task](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/task)
-- [Container Token](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/token)
+- [Container Registry](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/registry)
+- [Replication](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/replication)
+- [Container Task](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/task)
+- [Container Token](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/token)
 
 ## Provide Feedback
 

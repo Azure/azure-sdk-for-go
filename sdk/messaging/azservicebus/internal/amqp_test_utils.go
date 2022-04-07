@@ -62,6 +62,7 @@ type FakeAMQPReceiver struct {
 
 	PrefetchedCalled int
 	ReceiveCalled    int
+	ReceiveFn        func(ctx context.Context) (*amqp.Message, error)
 
 	ReceiveResults []struct {
 		M *amqp.Message
@@ -103,6 +104,10 @@ func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 // is empty, will block on ctx.Done().
 func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	r.ReceiveCalled++
+
+	if r.ReceiveFn != nil {
+		return r.ReceiveFn(ctx)
+	}
 
 	if len(r.ReceiveResults) == 0 {
 		<-ctx.Done()
@@ -168,7 +173,7 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
 	l.CloseIfNeededCalled++
 	return GetRecoveryKind(err)
 }
@@ -187,15 +192,13 @@ func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	return nil
 }
 
-func (ns *FakeNS) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
+func (ns *FakeNS) NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error) {
 	ch := make(chan struct{})
 	close(ch)
 
 	ns.claimNegotiated++
 
-	return func() <-chan struct{} {
-		return ch
-	}, nil
+	return func() {}, ch, nil
 }
 
 func (ns *FakeNS) GetEntityAudience(entityPath string) string {
@@ -216,11 +219,15 @@ func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, err
 	return true, nil
 }
 
-func (ns *FakeNS) Close(ctx context.Context) error {
+func (ns *FakeNS) Close(ctx context.Context, permanently bool) error {
 	ns.CloseCalled++
 	return nil
 }
 
-func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
+func (ns *FakeNS) Check() error {
+	return nil
+}
+
+func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc, getRecoveryKindFunc func(err error) RecoveryKind) AMQPLinks {
 	return ns.AMQPLinks
 }

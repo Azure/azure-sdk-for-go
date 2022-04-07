@@ -52,14 +52,14 @@ client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
 
 ## More sample code
 
-- [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/availabilityset)
-- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=compute/createVM)
-- [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=compute/dedicated_host)
-- [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=compute/disk)
-- [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=compute/gallery)
-- [Proximity Placement Group](https://aka.ms/azsdk/go/mgmt/samples?path=compute/proximity)
-- [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=compute/snapshot)
-- [Virtual Machine Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/vmscaleset)
+- [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/availabilityset)
+- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/createVM)
+- [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/dedicated_host)
+- [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/disk)
+- [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/gallery)
+- [Proximity Placement Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/proximity)
+- [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/snapshot)
+- [Virtual Machine Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/vmscaleset)
 
 ## Provide Feedback
 

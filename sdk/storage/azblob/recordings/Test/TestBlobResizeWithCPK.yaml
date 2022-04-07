@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:35 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizewithcpk01?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:30 GMT
+      - Tue, 15 Mar 2022 13:18:54 GMT
       Etag:
-      - '"0x8DA02A59A43C128"'
+      - '"0x8DA06865B2F1765"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:30 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f0c8e8-201e-0062-698e-344d5f000000
+      - 21b5e256-001e-004a-596f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -48,13 +48,13 @@ interactions:
       Content-Length:
       - "0"
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:35 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -71,23 +71,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:30 GMT
+      - Tue, 15 Mar 2022 13:18:54 GMT
       Etag:
-      - '"0x8DA02A59A70C4E9"'
+      - '"0x8DA06865B6C1957"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Request-Id:
-      - d6f0ca6a-201e-0062-518e-344d5f000000
+      - 21b5e43b-001e-004a-106f-382cf7000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2022-03-10T14:52:31.0287593Z"
+      - "2022-03-15T13:18:55.5541847Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -100,11 +100,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Blob-Content-Length:
       - "512"
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:35 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -121,17 +121,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:30 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Etag:
-      - '"0x8DA02A59A970BFD"'
+      - '"0x8DA06865B917636"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
       - "0"
       X-Ms-Request-Id:
-      - d6f0cc49-201e-0062-048e-344d5f000000
+      - 21b5e581-001e-004a-326f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -146,9 +146,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:36 GMT
+      - Tue, 15 Mar 2022 13:18:56 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -169,11 +169,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Etag:
-      - '"0x8DA02A59A970BFD"'
+      - '"0x8DA06865B917636"'
       Last-Modified:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -181,7 +181,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Is-Current-Version:
@@ -191,13 +191,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - d6f0ce4f-201e-0062-658e-344d5f000000
+      - 21b5e69c-001e-004a-306f-382cf7000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2022-03-10T14:52:31.0287593Z"
+      - "2022-03-15T13:18:55.5541847Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -210,9 +210,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.17.7; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Thu, 10 Mar 2022 14:52:36 GMT
+      - Tue, 15 Mar 2022 13:18:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizewithcpk01?restype=container
@@ -223,11 +223,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 10 Mar 2022 14:52:31 GMT
+      - Tue, 15 Mar 2022 13:18:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d6f0d07c-201e-0062-628e-344d5f000000
+      - 21b5e876-001e-004a-596f-382cf7000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

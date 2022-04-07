@@ -1,12 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key1190835325/create?api-version=7.3-preview",
+        ":path": "/keys/key1190835325/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -39,12 +39,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key1190835325/create?api-version=7.3-preview",
+        ":path": "/keys/key1190835325/create?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -97,12 +97,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/rotationpolicy?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325/rotationpolicy?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "PUT",
-        ":path": "/keys/key1190835325/rotationpolicy?api-version=7.3-preview",
+        ":path": "/keys/key1190835325/rotationpolicy?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -162,12 +162,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key1190835325?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/key1190835325?api-version=7.3-preview",
+        ":path": "/keys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -219,12 +219,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -256,12 +256,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -293,12 +293,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -330,12 +330,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -367,12 +367,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -404,12 +404,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -461,12 +461,12 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key1190835325?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/deletedkeys/key1190835325?api-version=7.3-preview",
+        ":path": "/deletedkeys/key1190835325?api-version=7.3",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",

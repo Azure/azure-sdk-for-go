@@ -5,6 +5,7 @@ package azblob
 
 import "net/http"
 
+// ResponseError is a wrapper of error passed from service
 type ResponseError interface {
 	Error() string
 	Unwrap() error

@@ -3,6 +3,7 @@
 
 package azblob
 
+// CreateAppendBlobOptions provides set of configurations for Create Append Blob operation
 type CreateAppendBlobOptions struct {
 	BlobAccessConditions *BlobAccessConditions
 
@@ -41,6 +42,7 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTT
 	return &options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// AppendBlockOptions provides set of configurations for AppendBlock operation
 type AppendBlockOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 []byte
@@ -66,6 +68,7 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
+// AppendBlockURLOptions provides set of configurations for AppendBlockFromURL operation
 type AppendBlockURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
@@ -101,6 +104,7 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 		leaseAccessConditions, o.SourceModifiedAccessConditions
 }
 
+// SealAppendBlobOptions provides set of configurations for SealAppendBlob operation
 type SealAppendBlobOptions struct {
 	BlobAccessConditions           *BlobAccessConditions
 	AppendPositionAccessConditions *AppendPositionAccessConditions

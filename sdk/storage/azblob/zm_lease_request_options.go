@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
+// AcquireLeaseBlobOptions provides set of configurations for AcquireLeaseBlob operation
 type AcquireLeaseBlobOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
@@ -25,6 +26,7 @@ func (o *AcquireLeaseBlobOptions) pointers() (*BlobAcquireLeaseOptions, *Modifie
 	}, o.ModifiedAccessConditions
 }
 
+// BreakLeaseBlobOptions provides set of configurations for BreakLeaseBlob operation
 type BreakLeaseBlobOptions struct {
 	// For a break operation, proposed Duration the lease should continue before it is broken, in seconds, between 0 and 60. This
 	// break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease
@@ -50,6 +52,7 @@ func (o *BreakLeaseBlobOptions) pointers() (*BlobBreakLeaseOptions, *ModifiedAcc
 	return nil, o.ModifiedAccessConditions
 }
 
+// ChangeLeaseBlobOptions provides set of configurations for ChangeLeaseBlob operation
 type ChangeLeaseBlobOptions struct {
 	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -72,6 +75,7 @@ func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAcc
 	return o.ProposedLeaseID, o.ModifiedAccessConditions, nil
 }
 
+// ReleaseLeaseBlobOptions provides set of configurations for ReleaseLeaseBlob operation
 type ReleaseLeaseBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -84,6 +88,7 @@ func (o *ReleaseLeaseBlobOptions) pointers() (blobReleaseLeaseOptions *BlobRelea
 	return nil, o.ModifiedAccessConditions
 }
 
+// RenewLeaseBlobOptions provides set of configurations for RenewLeaseBlob operation
 type RenewLeaseBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -96,6 +101,7 @@ func (o *RenewLeaseBlobOptions) pointers() (blobRenewLeaseOptions *BlobRenewLeas
 	return nil, o.ModifiedAccessConditions
 }
 
+// AcquireLeaseContainerOptions provides set of configurations for AcquireLeaseContainer operation
 type AcquireLeaseContainerOptions struct {
 	Duration                 *int32
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -112,6 +118,7 @@ func (o *AcquireLeaseContainerOptions) pointers() (*ContainerAcquireLeaseOptions
 	return containerAcquireLeaseOptions, o.ModifiedAccessConditions
 }
 
+// BreakLeaseContainerOptions provides set of configurations for BreakLeaseContainer operation
 type BreakLeaseContainerOptions struct {
 	BreakPeriod              *int32
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -129,6 +136,7 @@ func (o *BreakLeaseContainerOptions) pointers() (*ContainerBreakLeaseOptions, *M
 	return containerBreakLeaseOptions, o.ModifiedAccessConditions
 }
 
+// ChangeLeaseContainerOptions provides set of configurations for ChangeLeaseContainer operation
 type ChangeLeaseContainerOptions struct {
 	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -152,6 +160,7 @@ func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseID *string, modif
 
 }
 
+// RenewLeaseContainerOptions provides set of configurations for RenewLeaseContainer operation
 type RenewLeaseContainerOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -165,6 +174,7 @@ func (o *RenewLeaseContainerOptions) pointers() (containerRenewLeaseOptions *Con
 	return nil, o.ModifiedAccessConditions
 }
 
+// ReleaseLeaseContainerOptions provides set of configurations for ReleaseLeaseContainer operation
 type ReleaseLeaseContainerOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

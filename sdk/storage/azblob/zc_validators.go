@@ -12,6 +12,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Raw converts PageRange into primitive start, end integers of type int64
 func (pr *PageRange) Raw() (start, end int64) {
 	if pr.Start != nil {
 		start = *pr.Start

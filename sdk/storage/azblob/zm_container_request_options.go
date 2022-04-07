@@ -3,6 +3,7 @@
 
 package azblob
 
+// CreateContainerOptions provides set of configurations for CreateContainer operation
 type CreateContainerOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
@@ -27,6 +28,7 @@ func (o *CreateContainerOptions) pointers() (*ContainerCreateOptions, *Container
 	return &basicOptions, o.cpkScope
 }
 
+// DeleteContainerOptions provides set of configurations for DeleteContainer operation
 type DeleteContainerOptions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -40,12 +42,13 @@ func (o *DeleteContainerOptions) pointers() (*ContainerDeleteOptions, *LeaseAcce
 	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
-type GetPropertiesOptionsContainer struct {
+// GetPropertiesContainerOptions provides set of configurations for GetPropertiesContainer operation
+type GetPropertiesContainerOptions struct {
 	ContainerGetPropertiesOptions *ContainerGetPropertiesOptions
 	LeaseAccessConditions         *LeaseAccessConditions
 }
 
-func (o *GetPropertiesOptionsContainer) pointers() (*ContainerGetPropertiesOptions, *LeaseAccessConditions) {
+func (o *GetPropertiesContainerOptions) pointers() (*ContainerGetPropertiesOptions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -53,6 +56,7 @@ func (o *GetPropertiesOptionsContainer) pointers() (*ContainerGetPropertiesOptio
 	return o.ContainerGetPropertiesOptions, o.LeaseAccessConditions
 }
 
+// GetAccessPolicyOptions provides set of configurations for GetAccessPolicy operation
 type GetAccessPolicyOptions struct {
 	ContainerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions
 	LeaseAccessConditions           *LeaseAccessConditions
@@ -66,6 +70,7 @@ func (o *GetAccessPolicyOptions) pointers() (*ContainerGetAccessPolicyOptions, *
 	return o.ContainerGetAccessPolicyOptions, o.LeaseAccessConditions
 }
 
+// SetAccessPolicyOptions provides set of configurations for SetAccessPolicy operation
 type SetAccessPolicyOptions struct {
 	// At least Access and ContainerACL must be specified
 	ContainerSetAccessPolicyOptions ContainerSetAccessPolicyOptions
@@ -80,6 +85,7 @@ func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *L
 	return o.ContainerSetAccessPolicyOptions, lac, mac
 }
 
+// SetMetadataContainerOptions provides set of configurations for SetMetadataContainer operation
 type SetMetadataContainerOptions struct {
 	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions

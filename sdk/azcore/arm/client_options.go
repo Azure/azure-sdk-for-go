@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -7,18 +7,6 @@
 package arm
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-
-// Endpoint is the base URL for Azure Resource Manager.
-type Endpoint string
-
-const (
-	// AzureChina is the Azure Resource Manager China cloud endpoint.
-	AzureChina Endpoint = "https://management.chinacloudapi.cn/"
-	// AzureGovernment is the Azure Resource Manager US government cloud endpoint.
-	AzureGovernment Endpoint = "https://management.usgovcloudapi.net/"
-	// AzurePublicCloud is the Azure Resource Manager public cloud endpoint.
-	AzurePublicCloud Endpoint = "https://management.azure.com/"
-)
 
 // ClientOptions contains configuration settings for a client's pipeline.
 type ClientOptions struct {
@@ -29,7 +17,4 @@ type ClientOptions struct {
 
 	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
-
-	// Endpoint is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
-	Endpoint Endpoint
 }

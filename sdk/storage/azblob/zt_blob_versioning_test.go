@@ -139,12 +139,14 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
-		blobURL := containerClient.NewBlockBlobClient(blobName)
-		resp, err := blobURL.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
+		blobClient, _ := containerClient.NewBlockBlobClient(blobName)
+		resp, err := blobClient.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
 		_assert.Nil(err)
 		_assert.NotNil(resp.VersionID)
 
-		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
+		blobClientWithVersionID, err := blobClient.WithVersionID(*resp.VersionID)
+		_assert.Nil(err)
+		dResp, err := blobClientWithVersionID.Download(ctx, nil)
 		_assert.Nil(err)
 		d1, err := ioutil.ReadAll(dResp.Body(nil))
 		_assert.Nil(err)
@@ -277,7 +279,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
-	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
@@ -303,7 +305,9 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 
 	// Deleting the 2nd and 3rd versions
 	for i := 0; i < 3; i++ {
-		deleteResp, err := bbClient.WithVersionID(versions[i]).Delete(ctx, nil)
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_assert.Nil(err)
+		deleteResp, err := bbClientWithVersionID.Delete(ctx, nil)
 		_assert.Nil(err)
 		_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
 	}
@@ -321,7 +325,9 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	_assert.Len(found, 2)
 
 	for i := 3; i < 5; i++ {
-		downloadResp, err := bbClient.WithVersionID(versions[i]).Download(ctx, nil)
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_assert.Nil(err)
+		downloadResp, err := bbClientWithVersionID.Download(ctx, nil)
 		_assert.Nil(err)
 		destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 		_assert.Nil(err)
@@ -465,7 +471,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
@@ -490,6 +496,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -506,7 +513,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	testSize := 2 * 1024 * 1024 // 1MB
 	r, _ := getRandomDataAndReader(testSize)
 	ctx := context.Background() // Use default Background context
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	// Prepare source blob for copy.
 	uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(r), nil)

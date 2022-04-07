@@ -15,10 +15,8 @@ if ($goModFiles.Length -eq 0) {
 
 $hasError = $false
 foreach ($goMod in $goModFiles) {
-    Write-Host $goMod.Directory
-    $packageProperties = Get-GoModuleProperties $goMod.Directory
-    Write-Host "Props $packageProperties"
-    if (-Not ($goMod.FullName -Like "*testdata*")) {
+    $mod = Get-GoModuleProperties ($goMod -replace ".*\/azure-sdk-for-go\/")
+    if ($mod -ne $null) {
         $name = $goMod.FullName
         $patternMatches = Get-Content $name | Select-String -Pattern "replace "
         if ($patternMatches.Length -ne 0) {

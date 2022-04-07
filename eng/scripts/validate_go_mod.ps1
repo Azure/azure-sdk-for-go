@@ -7,14 +7,13 @@ Push-Location sdk/$serviceDir
 $goModFiles = Get-ChildItem -Path . -Filter go.mod -Recurse
 
 if ($goModFiles.Length -eq 0) {
-    Write-Host "Could not find a go.mod file in the directory $(pwd)"
+    Write-Host "Could not find a go.mod file in the directory $(Get-Location)"
     exit 1
 }
 
 $hasError = $false
 foreach ($goMod in $goModFiles) {
     if (-Not ($goMod.FullName -Like "*testdata*")) {
-        Write-Host $goMod.FullName
         $name = $goMod.FullName
         $patternMatches = Get-Content $name | Select-String -Pattern "replace "
         if ($patternMatches.Length -ne 0) {

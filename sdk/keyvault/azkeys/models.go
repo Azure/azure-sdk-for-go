@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,11 +9,16 @@ package azkeys
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Properties - The properties of a key managed by the key vault service.
 type Properties struct {
+	// READ-ONLY; Creation time in UTC.
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -23,11 +28,17 @@ type Properties struct {
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
 
+	// ID identifies the key
+	ID *string
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+
+	// Name of the key
+	Name *string
+
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -35,10 +46,19 @@ type Properties struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
 	// the key can be permanently deleted by a privileged user; otherwise, only the system
 	// can purge the key, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// Tags contain application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+
+	// VaultURL for the key
+	VaultURL *string
+
+	// Version of the key
+	Version *string
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
@@ -48,7 +68,7 @@ func (k *Properties) toGenerated() *generated.KeyAttributes {
 	}
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
-		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
+		RecoveryLevel:   toGeneratedDeletionRecoveryLevel(k.RecoveryLevel),
 		Enabled:         k.Enabled,
 		Expires:         k.ExpiresOn,
 		NotBefore:       k.NotBefore,
@@ -59,20 +79,26 @@ func (k *Properties) toGenerated() *generated.KeyAttributes {
 }
 
 // converts *generated.KeyAttributes to *KeyAttributes
-func keyPropertiesFromGenerated(i *generated.KeyAttributes) *Properties {
+func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *string, version *string, managed *bool, vaultURL *string, tags map[string]*string) *Properties {
 	if i == nil {
 		return &Properties{}
 	}
 
 	return &Properties{
+		CreatedOn:       i.Created,
 		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
+		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
 		NotBefore:       i.NotBefore,
-		CreatedOn:       i.Created,
 		UpdatedOn:       i.Updated,
 		Exportable:      i.Exportable,
+		ID:              id,
+		Name:            name,
+		Version:         version,
+		Managed:         managed,
+		Tags:            convertGeneratedMap(tags),
+		VaultURL:        vaultURL,
 	}
 }
 
@@ -87,11 +113,30 @@ type Key struct {
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	// ID identifies the key
+	ID *string
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
+	// READ-ONLY; The name of the key
+	Name *string
+}
+
+// convert the options to generated.KeyUpdateParameters struct
+func (k Key) toKeyUpdateParameters() generated.KeyUpdateParameters {
+	var attribs *generated.KeyAttributes
+	if k.Properties != nil {
+		attribs = k.Properties.toGenerated()
+	}
+
+	var tags map[string]*string
+	if k.Properties != nil && k.Properties.Tags != nil {
+		tags = convertToGeneratedMap(k.Properties.Tags)
+	}
+
+	return generated.KeyUpdateParameters{
+		KeyAttributes: attribs,
+		ReleasePolicy: k.ReleasePolicy.toGenerated(),
+		Tags:          tags,
+	}
 }
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
@@ -115,7 +160,7 @@ type JSONWebKey struct {
 	K      []byte    `json:"k,omitempty"`
 	KeyOps []*string `json:"key_ops,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
@@ -196,14 +241,11 @@ type KeyItem struct {
 	// The key management properties.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
+	// Name of the key
+	Name *string
 }
 
 // convert *generated.KeyItem to *KeyItem
@@ -212,11 +254,11 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 		return nil
 	}
 
+	_, name, _ := shared.ParseID(i.Kid)
 	return &KeyItem{
-		Properties: keyPropertiesFromGenerated(i.Attributes),
+		Properties: keyPropertiesFromGenerated(i.Attributes, nil, nil, nil, i.Managed, nil, i.Tags),
 		ID:         i.Kid,
-		Tags:       convertGeneratedMap(i.Tags),
-		Managed:    i.Managed,
+		Name:       name,
 	}
 }
 
@@ -234,15 +276,8 @@ type DeletedKey struct {
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -253,13 +288,16 @@ type DeletedKeyItem struct {
 	// The key management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Key identifier.
+	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
+
+	// Name of the key
+	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
+	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC
@@ -279,6 +317,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		return nil
 	}
 
+	_, name, _ := shared.ParseID(i.Kid)
 	return &DeletedKeyItem{
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
@@ -290,9 +329,10 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 			CreatedOn:       i.Attributes.Created,
 			UpdatedOn:       i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
 		},
 		ID:      i.Kid,
+		Name:    name,
 		Tags:    convertGeneratedMap(i.Tags),
 		Managed: i.Managed,
 	}
@@ -351,11 +391,29 @@ type RotationPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+func (u RotationPolicy) toGenerated() generated.KeyRotationPolicy {
+	var attribs *generated.KeyRotationPolicyAttributes
+	if u.Attributes != nil {
+		attribs = u.Attributes.toGenerated()
+	}
+	la := make([]*generated.LifetimeActions, len(u.LifetimeActions))
+	for i, l := range u.LifetimeActions {
+		la[i] = l.toGenerated()
+	}
+
+	return generated.KeyRotationPolicy{
+		ID:              u.ID,
+		LifetimeActions: la,
+		Attributes:      attribs,
+	}
+}
+
 // RotationPolicyAttributes - The key rotation policy attributes.
 type RotationPolicyAttributes struct {
-	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months:
-	// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
-	ExpiryTime *string `json:"expiryTime,omitempty"`
+	// ExpiresIn will be applied on the new key version. It should be at least 28 days.
+	// It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months: P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
+	// It should be at least 28 days.
+	ExpiresIn *string `json:"expiryTime,omitempty"`
 
 	// READ-ONLY; The key rotation policy created time in UTC.
 	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
@@ -366,7 +424,7 @@ type RotationPolicyAttributes struct {
 
 func (k RotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
 	return &generated.KeyRotationPolicyAttributes{
-		ExpiryTime: k.ExpiryTime,
+		ExpiryTime: k.ExpiresIn,
 		Created:    k.CreatedOn,
 		Updated:    k.UpdatedOn,
 	}
@@ -406,7 +464,7 @@ func lifetimeActionsFromGenerated(i *generated.LifetimeActions) *LifetimeActions
 			TimeBeforeExpiry: i.Trigger.TimeBeforeExpiry,
 		},
 		Action: &LifetimeActionsType{
-			Type: (*ActionType)(i.Action.Type),
+			Type: (*RotationAction)(i.Action.Type),
 		},
 	}
 }
@@ -414,7 +472,7 @@ func lifetimeActionsFromGenerated(i *generated.LifetimeActions) *LifetimeActions
 // LifetimeActionsType - The action that will be executed.
 type LifetimeActionsType struct {
 	// The type of the action.
-	Type *ActionType `json:"type,omitempty"`
+	Type *RotationAction `json:"type,omitempty"`
 }
 
 // LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.

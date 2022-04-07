@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -45,18 +45,18 @@ func TestClient_EncryptDecrypt(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)
 
-	encryptResponse, err := cryptoClient.Encrypt(ctx, EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
+	encryptResponse, err := cryptoClient.Encrypt(ctx, EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
 	require.NoError(t, err)
 	require.NotNil(t, encryptResponse)
 
-	decryptResponse, err := cryptoClient.Decrypt(ctx, EncryptionAlgorithmRSAOAEP, encryptResponse.Result, nil)
+	decryptResponse, err := cryptoClient.Decrypt(ctx, EncryptionAlgRSAOAEP, encryptResponse.Ciphertext, nil)
 	require.NoError(t, err)
-	require.Equal(t, decryptResponse.Result, []byte("plaintext"))
+	require.Equal(t, decryptResponse.Plaintext, []byte("plaintext"))
 }
 
 func TestClient_WrapUnwrap(t *testing.T) {
@@ -70,7 +70,7 @@ func TestClient_WrapUnwrap(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)
@@ -78,13 +78,13 @@ func TestClient_WrapUnwrap(t *testing.T) {
 	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
 
 	// Wrap
-	wrapResp, err := cryptoClient.WrapKey(ctx, WrapAlgorithmRSAOAEP, keyBytes, nil)
+	wrapResp, err := cryptoClient.WrapKey(ctx, WrapAlgRSAOAEP, keyBytes, nil)
 	require.NoError(t, err)
 
 	// Unwrap
-	unwrapResp, err := cryptoClient.UnwrapKey(ctx, WrapAlgorithmRSAOAEP, wrapResp.Result, nil)
+	unwrapResp, err := cryptoClient.UnwrapKey(ctx, WrapAlgRSAOAEP, wrapResp.EncryptedKey, nil)
 	require.NoError(t, err)
-	require.Equal(t, keyBytes, unwrapResp.Result)
+	require.Equal(t, keyBytes, unwrapResp.Key)
 
 }
 
@@ -99,7 +99,7 @@ func TestClient_SignVerify(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
 	require.NoError(t, err)
-	key := resp.JSONWebKey
+	key := resp.Key.JSONWebKey
 
 	cryptoClient, err := createCryptoClient(t, *key.ID)
 	require.NoError(t, err)
@@ -109,10 +109,10 @@ func TestClient_SignVerify(t *testing.T) {
 	require.NoError(t, err)
 	digest := hasher.Sum(nil)
 
-	signResponse, err := cryptoClient.Sign(ctx, SignatureAlgorithmRS256, digest, nil)
+	signResponse, err := cryptoClient.Sign(ctx, SignatureAlgRS256, digest, nil)
 	require.NoError(t, err)
 
-	verifyResponse, err := cryptoClient.Verify(ctx, SignatureAlgorithmRS256, digest, signResponse.Result, nil)
+	verifyResponse, err := cryptoClient.Verify(ctx, SignatureAlgRS256, digest, signResponse.Signature, nil)
 	require.NoError(t, err)
 	require.True(t, *verifyResponse.IsValid)
 }

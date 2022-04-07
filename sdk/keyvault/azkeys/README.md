@@ -16,7 +16,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Prerequisites
 * An [Azure subscription][azure_sub]
-* Go version 1.16 or higher
+* Go version 1.18 or higher
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique
 names):
 
@@ -165,20 +165,20 @@ func main() {
     }
 
     // Create RSA Key
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 
     // Create EC Key
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 ```
 
@@ -208,7 +208,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
 }
 ```
 
@@ -233,18 +233,19 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
-		Tags: map[string]string{
-			"Tag1": "val1",
-		},
-		Properties: &azkeys.Properties{
-			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
-		},
-	})
+	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
+
+	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
+	resp.Key.Properties.Enabled = to.Ptr(true)
+
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
 }
 ```
 
@@ -273,7 +274,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
 	if err != nil {
 		panic(err)
@@ -304,27 +304,29 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
-		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiryTime: to.StringPtr("P90D"),
-		},
-		LifetimeActions: []*azkeys.LifetimeActions{
-			{
-				Action: &azkeys.LifetimeActionsType{
-					Type: azkeys.ActionTypeNotify.ToPtr(),
-				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
-					TimeBeforeExpiry: to.StringPtr("P30D"),
-				},
+	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
+	getResp.LifetimeActions = []*azkeys.LifetimeActions{
+		{
+			Action: &azkeys.LifetimeActionsType{
+				Type: to.Ptr(azkeys.RotationActionNotify),
+			},
+			Trigger: &azkeys.LifetimeActionsTrigger{
+				TimeBeforeExpiry: to.Ptr("P30D"),
 			},
 		},
-	})
+	}
+
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Updated key rotation policy for: ", *resp.ID)
 
-    // To rotate a key
 	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
 	if err != nil {
 		panic(err)
@@ -370,37 +372,6 @@ func main() {
 	}
 }
 ```
-
-### Cryptographic operations
-[CryptographyClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto#Client)
-enables cryptographic operations (encrypt/decrypt, wrap/unwrap, sign/verify) using a particular key.
-
-```go
-import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-)
-
-func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := crypto.NewClient("https://<my-keyvault-url>.vault.azure.net/keys/<my-key>", cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	encryptResponse, err := client.Encrypt(context.TODO(), crypto.EncryptionAlgorithmRSAOAEP, []byte("plaintext"), nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(encryptResponse.Result)
-}
-```
-
-See the [package documentation][crypto_client_docs] for more details of the cryptography API.
 
 ## Troubleshooting
 

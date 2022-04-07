@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -43,12 +43,12 @@ func ExampleClient_CreateRSAKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Int32Ptr(2048)})
+	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 
 func ExampleClient_CreateECKey() {
@@ -63,12 +63,12 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.CurveNameP256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
-	fmt.Println(*resp.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 
 func ExampleClient_GetKey() {
@@ -87,7 +87,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.JSONWebKey.ID)
+	fmt.Println(*resp.Key.JSONWebKey.ID)
 }
 
 func ExampleClient_UpdateKeyProperties() {
@@ -102,18 +102,19 @@ func ExampleClient_UpdateKeyProperties() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
-		Tags: map[string]string{
-			"Tag1": "val1",
-		},
-		Properties: &azkeys.Properties{
-			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
-		},
-	})
+	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("RecoverLevel: %s\tTag1: %s\n", *resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
+
+	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
+	resp.Key.Properties.Enabled = to.Ptr(true)
+
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -175,27 +176,29 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 		panic(err)
 	}
 
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", &azkeys.UpdateKeyRotationPolicyOptions{
-		Attributes: &azkeys.RotationPolicyAttributes{
-			ExpiryTime: to.StringPtr("P90D"),
-		},
-		LifetimeActions: []*azkeys.LifetimeActions{
-			{
-				Action: &azkeys.LifetimeActionsType{
-					Type: azkeys.ActionTypeNotify.ToPtr(),
-				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
-					TimeBeforeExpiry: to.StringPtr("P30D"),
-				},
+	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
+	getResp.LifetimeActions = []*azkeys.LifetimeActions{
+		{
+			Action: &azkeys.LifetimeActionsType{
+				Type: to.Ptr(azkeys.RotationActionNotify),
+			},
+			Trigger: &azkeys.LifetimeActionsTrigger{
+				TimeBeforeExpiry: to.Ptr("P30D"),
 			},
 		},
-	})
+	}
+
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Updated key rotation policy for: ", *resp.ID)
 
-	//
 	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
 	if err != nil {
 		panic(err)

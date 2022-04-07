@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,13 +11,12 @@ package generated
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
@@ -375,20 +374,36 @@ func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedKeysOptions contains the optional parameters for the KeyVaultClient.GetDeletedKeys method.
-func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *KeyVaultClientGetDeletedKeysPager {
-	return &KeyVaultClientGetDeletedKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeletedKeysCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedKeysResponse]{
+		More: func(page KeyVaultClientGetDeletedKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedKeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetDeletedKeysResponse) (KeyVaultClientGetDeletedKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.GetDeletedKeysCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetDeletedKeysResponse{}, err
+			}
+			resp, err := client.Pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetDeletedKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetDeletedKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.GetDeletedKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
-// getDeletedKeysCreateRequest creates the GetDeletedKeys request.
-func (client *KeyVaultClient) getDeletedKeysCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) (*policy.Request, error) {
+// GetDeletedKeysCreateRequest creates the GetDeletedKeys request.
+func (client *KeyVaultClient) GetDeletedKeysCreateRequest(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/deletedkeys"
@@ -406,8 +421,8 @@ func (client *KeyVaultClient) getDeletedKeysCreateRequest(ctx context.Context, v
 	return req, nil
 }
 
-// getDeletedKeysHandleResponse handles the GetDeletedKeys response.
-func (client *KeyVaultClient) getDeletedKeysHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeysResponse, error) {
+// GetDeletedKeysHandleResponse handles the GetDeletedKeys response.
+func (client *KeyVaultClient) GetDeletedKeysHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeysResponse, error) {
 	result := KeyVaultClientGetDeletedKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyListResult); err != nil {
 		return KeyVaultClientGetDeletedKeysResponse{}, err
@@ -528,20 +543,36 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Resp
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
-func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *KeyVaultClientGetKeyVersionsPager {
-	return &KeyVaultClientGetKeyVersionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getKeyVersionsCreateRequest(ctx, vaultBaseURL, keyName, options)
+func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeyVersionsResponse]{
+		More: func(page KeyVaultClientGetKeyVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetKeyVersionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetKeyVersionsResponse) (KeyVaultClientGetKeyVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.GetKeyVersionsCreateRequest(ctx, vaultBaseURL, keyName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetKeyVersionsResponse{}, err
+			}
+			resp, err := client.Pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetKeyVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetKeyVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.GetKeyVersionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
-// getKeyVersionsCreateRequest creates the GetKeyVersions request.
-func (client *KeyVaultClient) getKeyVersionsCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) (*policy.Request, error) {
+// GetKeyVersionsCreateRequest creates the GetKeyVersions request.
+func (client *KeyVaultClient) GetKeyVersionsCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys/{key-name}/versions"
@@ -563,8 +594,8 @@ func (client *KeyVaultClient) getKeyVersionsCreateRequest(ctx context.Context, v
 	return req, nil
 }
 
-// getKeyVersionsHandleResponse handles the GetKeyVersions response.
-func (client *KeyVaultClient) getKeyVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetKeyVersionsResponse, error) {
+// GetKeyVersionsHandleResponse handles the GetKeyVersions response.
+func (client *KeyVaultClient) GetKeyVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetKeyVersionsResponse, error) {
 	result := KeyVaultClientGetKeyVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeyVaultClientGetKeyVersionsResponse{}, err
@@ -579,16 +610,32 @@ func (client *KeyVaultClient) getKeyVersionsHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
-func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *KeyVaultClientGetKeysPager {
-	return &KeyVaultClientGetKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.GetKeysCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeysResponse]{
+		More: func(page KeyVaultClientGetKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetKeysResponse) (KeyVaultClientGetKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.GetKeysCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetKeysResponse{}, err
+			}
+			resp, err := client.Pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.GetKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // GetKeysCreateRequest creates the GetKeys request.

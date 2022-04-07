@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package generated
 
 const (
-	ModuleName    = "generated"
-	ModuleVersion = "v0.4.1"
+	ModuleName    = "azkeys"
+	ModuleVersion = "v0.5.0"
 )
 
 // ActionType - The type of the action.
@@ -30,11 +30,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeRotate,
 		ActionTypeNotify,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
@@ -90,11 +85,6 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	}
 }
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &c
-}
-
 // JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 type JSONWebKeyCurveName string
 
@@ -117,11 +107,6 @@ func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 		JSONWebKeyCurveNameP384,
 		JSONWebKeyCurveNameP521,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
-	return &c
 }
 
 // JSONWebKeyEncryptionAlgorithm - algorithm identifier
@@ -166,11 +151,6 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 	}
 }
 
-// ToPtr returns a *JSONWebKeyEncryptionAlgorithm pointing to the current value.
-func (c JSONWebKeyEncryptionAlgorithm) ToPtr() *JSONWebKeyEncryptionAlgorithm {
-	return &c
-}
-
 // JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
 type JSONWebKeyOperation string
 
@@ -197,11 +177,6 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 		JSONWebKeyOperationVerify,
 		JSONWebKeyOperationWrapKey,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
-func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
-	return &c
 }
 
 // JSONWebKeySignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm
@@ -250,11 +225,6 @@ func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm
 	}
 }
 
-// ToPtr returns a *JSONWebKeySignatureAlgorithm pointing to the current value.
-func (c JSONWebKeySignatureAlgorithm) ToPtr() *JSONWebKeySignatureAlgorithm {
-	return &c
-}
-
 // JSONWebKeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 type JSONWebKeyType string
 
@@ -285,11 +255,6 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	}
 }
 
-// ToPtr returns a *JSONWebKeyType pointing to the current value.
-func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
-	return &c
-}
-
 // KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
 type KeyEncryptionAlgorithm string
 
@@ -306,9 +271,4 @@ func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
 		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
 		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
 	}
-}
-
-// ToPtr returns a *KeyEncryptionAlgorithm pointing to the current value.
-func (c KeyEncryptionAlgorithm) ToPtr() *KeyEncryptionAlgorithm {
-	return &c
 }

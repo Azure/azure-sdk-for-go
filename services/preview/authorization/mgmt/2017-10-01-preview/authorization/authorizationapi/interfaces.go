@@ -44,9 +44,9 @@ var _ RoleDefinitionsClientAPI = (*authorization.RoleDefinitionsClient)(nil)
 
 // ProviderOperationsMetadataClientAPI contains the set of methods on the ProviderOperationsMetadataClient type.
 type ProviderOperationsMetadataClientAPI interface {
-	Get(ctx context.Context, resourceProviderNamespace string, APIVersion string, expand string) (result authorization.ProviderOperationsMetadata, err error)
-	List(ctx context.Context, APIVersion string, expand string) (result authorization.ProviderOperationsMetadataListResultPage, err error)
-	ListComplete(ctx context.Context, APIVersion string, expand string) (result authorization.ProviderOperationsMetadataListResultIterator, err error)
+	Get(ctx context.Context, resourceProviderNamespace string, expand string) (result authorization.ProviderOperationsMetadata, err error)
+	List(ctx context.Context, expand string) (result authorization.ProviderOperationsMetadataListResultPage, err error)
+	ListComplete(ctx context.Context, expand string) (result authorization.ProviderOperationsMetadataListResultIterator, err error)
 }
 
 var _ ProviderOperationsMetadataClientAPI = (*authorization.ProviderOperationsMetadataClient)(nil)

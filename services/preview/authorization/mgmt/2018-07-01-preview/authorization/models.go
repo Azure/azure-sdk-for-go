@@ -541,6 +541,47 @@ type DenyAssignmentProperties struct {
 	IsSystemProtected *bool `json:"isSystemProtected,omitempty"`
 }
 
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
 // Permission role definition permissions.
 type Permission struct {
 	// Actions - Allowed actions.
@@ -712,18 +753,16 @@ func NewPermissionGetResultPage(cur PermissionGetResult, getNextPage func(contex
 	}
 }
 
-// Principal deny assignment principal.
+// Principal the name of the entity last modified it
 type Principal struct {
-	// ID - READ-ONLY; Object ID of the Azure AD principal (user, group, or service principal) to which the deny assignment applies. An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// ID - The id of the principal made changes
 	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Type of object represented by principal id (user, group, or service principal). An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// DisplayName - The name of the principal made changes
+	DisplayName *string `json:"displayName,omitempty"`
+	// Type - Type of principal such as user , group etc
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Principal.
-func (p Principal) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
+	// Email - Email of principal
+	Email *string `json:"email,omitempty"`
 }
 
 // ProviderOperation operation

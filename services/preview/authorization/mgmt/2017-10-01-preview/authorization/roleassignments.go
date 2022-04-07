@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -40,7 +41,8 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
 // for a resource.
-// roleAssignmentName - the name of the role assignment to create. It can be any valid GUID.
+// roleAssignmentName - a GUID for the role assignment to create. The name must be unique and different for
+// each role assignment.
 // parameters - parameters for the role assignment.
 func (client RoleAssignmentsClient) Create(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
 	if tracing.IsEnabled() {
@@ -259,7 +261,7 @@ func (client RoleAssignmentsClient) DeleteSender(req *http.Request) (*http.Respo
 func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -332,7 +334,7 @@ func (client RoleAssignmentsClient) DeleteByIDSender(req *http.Request) (*http.R
 func (client RoleAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -503,6 +505,12 @@ func (client RoleAssignmentsClient) List(ctx context.Context, filter string) (re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authorization.RoleAssignmentsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
@@ -609,7 +617,7 @@ func (client RoleAssignmentsClient) ListComplete(ctx context.Context, filter str
 
 // ListForResource gets role assignments for a resource.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceProviderNamespace - the namespace of the resource provider.
 // parentResourcePath - the parent resource identity.
 // resourceType - the resource type of the resource.
@@ -628,6 +636,15 @@ func (client RoleAssignmentsClient) ListForResource(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authorization.RoleAssignmentsClient", "ListForResource", err.Error())
+	}
+
 	result.fn = client.listForResourceNextResults
 	req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
@@ -739,7 +756,7 @@ func (client RoleAssignmentsClient) ListForResourceComplete(ctx context.Context,
 
 // ListForResourceGroup gets role assignments for a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // filter - the filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
 // above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
 // for the specified principal.
@@ -754,6 +771,15 @@ func (client RoleAssignmentsClient) ListForResourceGroup(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authorization.RoleAssignmentsClient", "ListForResourceGroup", err.Error())
+	}
+
 	result.fn = client.listForResourceGroupNextResults
 	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, filter)
 	if err != nil {

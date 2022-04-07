@@ -72,7 +72,7 @@ func (client ProviderOperationsMetadataClient) Get(ctx context.Context, resource
 // GetPreparer prepares the Get request.
 func (client ProviderOperationsMetadataClient) GetPreparer(ctx context.Context, resourceProviderNamespace string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
+		"resourceProviderNamespace": resourceProviderNamespace,
 	}
 
 	const APIVersion = "2018-01-01-preview"

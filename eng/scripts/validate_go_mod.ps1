@@ -2,7 +2,7 @@ Param(
     [string] $serviceDir
 )
 
-. (Join-Path $PSScriptRoot . Language-Settings.ps1)
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
 Push-Location sdk/$serviceDir
 
@@ -16,7 +16,7 @@ if ($goModFiles.Length -eq 0) {
 $hasError = $false
 foreach ($goMod in $goModFiles) {
     $mod = Get-GoModuleProperties ($goMod -replace ".*\/azure-sdk-for-go\/")
-    if ($mod -ne $null) {
+    if ($mod) {
         $name = $goMod.FullName
         $patternMatches = Get-Content $name | Select-String -Pattern "replace "
         if ($patternMatches.Length -ne 0) {

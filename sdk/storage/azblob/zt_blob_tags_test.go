@@ -522,7 +522,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_assert.Equal(resp.RawResponse.StatusCode, 204)
 
 	include := []ListBlobsIncludeItem{ListBlobsIncludeItemTags}
-	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 		Include: include,
 	})
 
@@ -688,7 +688,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		Range: &HttpRange{offset, count},
+		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
 	_assert.Nil(err)

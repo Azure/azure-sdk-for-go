@@ -101,7 +101,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 //	_assert.Nil(err)
 //	_assert.NotNil(resp.VersionID)
 //
-//	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+//	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 //		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
 //	})
 //
@@ -186,7 +186,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
 //
-//	listPager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+//	listPager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 //		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
 //	})
 //
@@ -291,7 +291,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 		versions = append(versions, *uploadResp.VersionID)
 	}
 
-	listPager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+	listPager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
 	})
 
@@ -312,7 +312,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 		_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
 	}
 
-	listPager = containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+	listPager = containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
 	})
 
@@ -526,7 +526,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert.Equal(csResp.RawResponse.StatusCode, 201)
 	_assert.NotNil(csResp.VersionID)
 
-	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
 	})
 
@@ -543,7 +543,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_assert.Nil(err)
 	_assert.Equal(deleteResp.RawResponse.StatusCode, 202)
 
-	pager = containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+	pager = containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots, ListBlobsIncludeItemVersions},
 	})
 
@@ -576,7 +576,7 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	r, _ := generateData(contentSize)
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		Range: &HttpRange{offset, count},
+		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_assert.Nil(err)

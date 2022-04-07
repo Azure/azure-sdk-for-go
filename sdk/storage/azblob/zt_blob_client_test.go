@@ -1516,33 +1516,6 @@ func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 	_assert.NotNil(err)
 }
 
-func (s *azblobUnrecordedTestSuite) TestDontKnow() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerClient, err := svcClient.NewContainerClient(generateContainerName(testName))
-	_assert.Nil(err)
-	resp, err := containerClient.Create(ctx, &ContainerCreateOptions{Metadata: basicMetadata})
-	_assert.Nil(err)
-	_ = resp
-	defer deleteContainer(_assert, containerClient)
-
-	blobName := generateBlobName(testName)
-	bbClient, err := containerClient.NewBlockBlobClient(blobName)
-	_assert.Nil(err)
-
-	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-
-	_, err = bbClient.Download(ctx, nil)
-	_assert.Nil(err)
-}
-
 func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2064,7 +2037,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	_assert.Nil(err)
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
-////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
 ////		Include: include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
@@ -2088,7 +2061,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	_assert.Nil(err)
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
-////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
 ////		Include: include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)

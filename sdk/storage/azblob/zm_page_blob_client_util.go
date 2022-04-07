@@ -62,6 +62,7 @@ func (o *PageBlobCreateOptions) format() (*pageBlobClientCreateOptions, *BlobHTT
 	return options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// PageBlobCreateResponse contains the response from method PageBlobClient.Create.
 type PageBlobCreateResponse struct {
 	pageBlobClientCreateResponse
 }
@@ -75,7 +76,7 @@ func toPageBlobCreateResponse(resp pageBlobClientCreateResponse) PageBlobCreateR
 // PageBlobUploadPagesOptions provides set of configurations for UploadPages operation
 type PageBlobUploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
-	Range                     *HttpRange
+	PageRange                 *HttpRange
 	TransactionalContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
@@ -97,14 +98,15 @@ func (o *PageBlobUploadPagesOptions) format() (*pageBlobClientUploadPagesOptions
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
 
-	if o.Range != nil {
-		options.Range = o.Range.format()
+	if o.PageRange != nil {
+		options.Range = o.PageRange.format()
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.format()
 	return options, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
+// PageBlobUploadPagesResponse contains the response from method PageBlobClient.UploadPages.
 type PageBlobUploadPagesResponse struct {
 	pageBlobClientUploadPagesResponse
 }
@@ -151,6 +153,7 @@ func (o *PageBlobUploadPagesFromURLOptions) format() (*pageBlobClientUploadPages
 	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
+// PageBlobUploadPagesFromURLResponse contains the response from method PageBlobClient.UploadPagesFromURL
 type PageBlobUploadPagesFromURLResponse struct {
 	pageBlobClientUploadPagesFromURLResponse
 }
@@ -161,7 +164,7 @@ func toPageBlobUploadPagesFromURLResponse(resp pageBlobClientUploadPagesFromURLR
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobClearPagesOptions provides set of configurations for ClearPages operation
+// PageBlobClearPagesOptions provides set of configurations for PageBlobClient.ClearPages operation
 type PageBlobClearPagesOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
@@ -179,6 +182,7 @@ func (o *PageBlobClearPagesOptions) format() (*LeaseAccessConditions, *CpkInfo,
 	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
+// PageBlobClearPagesResponse contains the response from method PageBlobClient.ClearPages
 type PageBlobClearPagesResponse struct {
 	pageBlobClientClearPagesResponse
 }
@@ -209,7 +213,7 @@ type PageBlobGetPageRangesOptions struct {
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Optional, you can specify whether a particular range of the blob is read
-	Range *HttpRange
+	PageRange *HttpRange
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob]
@@ -227,11 +231,12 @@ func (o *PageBlobGetPageRangesOptions) format() (*pageBlobClientGetPageRangesOpt
 	return &pageBlobClientGetPageRangesOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
-		Range:      o.Range.format(),
+		Range:      o.PageRange.format(),
 		Snapshot:   o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 }
 
+// PageBlobGetPageRangesPager provides operations for iterating over paged responses
 type PageBlobGetPageRangesPager struct {
 	*pageBlobClientGetPageRangesPager
 }
@@ -242,6 +247,7 @@ func toPageBlobGetPageRangesPager(resp *pageBlobClientGetPageRangesPager) *PageB
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// PageBlobGetPageRangesDiffOptions provides set of configurations for PageBlobClient.GetPageRangesDiff operation
 type PageBlobGetPageRangesDiffOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -266,7 +272,7 @@ type PageBlobGetPageRangesDiffOptions struct {
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Optional, you can specify whether a particular range of the blob is read
-	Range *HttpRange
+	PageRange *HttpRange
 
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
@@ -287,12 +293,13 @@ func (o *PageBlobGetPageRangesDiffOptions) format() (*pageBlobClientGetPageRange
 		Maxresults:      o.MaxResults,
 		PrevSnapshotURL: o.PrevSnapshotURL,
 		Prevsnapshot:    o.PrevSnapshot,
-		Range:           o.Range.format(),
+		Range:           o.PageRange.format(),
 		Snapshot:        o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 
 }
 
+// PageBlobGetPageRangesDiffPager provides operations for iterating over paged responses
 type PageBlobGetPageRangesDiffPager struct {
 	*pageBlobClientGetPageRangesDiffPager
 }
@@ -303,7 +310,7 @@ func toPageBlobGetPageRangesDiffPager(resp *pageBlobClientGetPageRangesDiffPager
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobResizeOptions provides set of configurations for ResizePageBlob operation
+// PageBlobResizeOptions provides set of configurations for PageBlobClient.Resize operation
 type PageBlobResizeOptions struct {
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
@@ -319,6 +326,7 @@ func (o *PageBlobResizeOptions) format() (*pageBlobClientResizeOptions, *LeaseAc
 	return nil, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// PageBlobResizeResponse contains the response from method PageBlobClient.Resize
 type PageBlobResizeResponse struct {
 	pageBlobClientResizeResponse
 }
@@ -329,7 +337,7 @@ func toPageBlobResizeResponse(resp pageBlobClientResizeResponse) PageBlobResizeR
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobUpdateSequenceNumberOptions provides set of configurations for UpdateSequenceNumber operation
+// PageBlobUpdateSequenceNumberOptions provides set of configurations for PageBlobClient.UpdateSequenceNumber operation
 type PageBlobUpdateSequenceNumberOptions struct {
 	ActionType *SequenceNumberActionType
 
@@ -355,6 +363,7 @@ func (o *PageBlobUpdateSequenceNumberOptions) format() (*SequenceNumberActionTyp
 	return o.ActionType, options, leaseAccessConditions, modifiedAccessConditions
 }
 
+// PageBlobUpdateSequenceNumberResponse contains the response from method PageBlobClient.UpdateSequenceNumber
 type PageBlobUpdateSequenceNumberResponse struct {
 	pageBlobClientUpdateSequenceNumberResponse
 }
@@ -365,7 +374,7 @@ func toPageBlobUpdateSequenceNumberResponse(resp pageBlobClientUpdateSequenceNum
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobCopyIncrementalOptions provides set of configurations for StartCopyIncremental operation
+// PageBlobCopyIncrementalOptions provides set of configurations for PageBlobClient.StartCopyIncremental operation
 type PageBlobCopyIncrementalOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -378,6 +387,7 @@ func (o *PageBlobCopyIncrementalOptions) format() (*pageBlobClientCopyIncrementa
 	return nil, o.ModifiedAccessConditions
 }
 
+// PageBlobCopyIncrementalResponse contains the response from method PageBlobClient.StartCopyIncremental
 type PageBlobCopyIncrementalResponse struct {
 	pageBlobClientCopyIncrementalResponse
 }

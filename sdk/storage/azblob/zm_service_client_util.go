@@ -16,6 +16,7 @@ func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ServiceGetAccountInfoOptions provides set of options for ServiceClient.GetAccountInfo
 type ServiceGetAccountInfoOptions struct {
 	// placeholder for future options
 }
@@ -24,6 +25,7 @@ func (o *ServiceGetAccountInfoOptions) format() *serviceClientGetAccountInfoOpti
 	return nil
 }
 
+// ServiceGetAccountInfoResponse contains the response from ServiceClient.GetAccountInfo
 type ServiceGetAccountInfoResponse struct {
 	serviceClientGetAccountInfoResponse
 }
@@ -93,6 +95,7 @@ func (o *ListContainersOptions) format() *serviceClientListContainersSegmentOpti
 	}
 }
 
+// ServiceListContainersSegmentPager provides operations for iterating over paged responses.
 type ServiceListContainersSegmentPager struct {
 	serviceClientListContainersSegmentPager
 }
@@ -103,6 +106,7 @@ func toServiceListContainersSegmentPager(resp serviceClientListContainersSegment
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ServiceGetPropertiesOptions provides set of options for ServiceClient.GetProperties
 type ServiceGetPropertiesOptions struct {
 	// placeholder for future options
 }
@@ -111,6 +115,7 @@ func (o *ServiceGetPropertiesOptions) format() *serviceClientGetPropertiesOption
 	return nil
 }
 
+// ServiceGetPropertiesResponse contains the response from ServiceClient.GetProperties
 type ServiceGetPropertiesResponse struct {
 	serviceClientGetPropertiesResponse
 }
@@ -121,6 +126,7 @@ func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ServiceSetPropertiesOptions provides set of options for ServiceClient.SetProperties
 type ServiceSetPropertiesOptions struct {
 	// The set of CORS rules.
 	Cors []*CorsRule
@@ -161,6 +167,7 @@ func (o *ServiceSetPropertiesOptions) format() (StorageServiceProperties, *servi
 	}, nil
 }
 
+// ServiceSetPropertiesResponse contains the response from ServiceClient.SetProperties
 type ServiceSetPropertiesResponse struct {
 	serviceClientSetPropertiesResponse
 }
@@ -171,6 +178,7 @@ func toServiceSetPropertiesResponse(resp serviceClientSetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ServiceGetStatisticsOptions provides set of options for ServiceClient.GetStatistics
 type ServiceGetStatisticsOptions struct {
 	// placeholder for future options
 }
@@ -179,6 +187,7 @@ func (o *ServiceGetStatisticsOptions) format() *serviceClientGetStatisticsOption
 	return nil
 }
 
+// ServiceGetStatisticsResponse contains the response from ServiceClient.GetStatistics.
 type ServiceGetStatisticsResponse struct {
 	serviceClientGetStatisticsResponse
 }
@@ -189,7 +198,7 @@ func toServiceGetStatisticsResponse(resp serviceClientGetStatisticsResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ServiceFilterBlobsOptions provides set of configurations for ServiceFilterBlobsByTags operation
+// ServiceFilterBlobsOptions provides set of configurations for ServiceClient.FindBlobsByTags
 type ServiceFilterBlobsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker
 	// value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value
@@ -215,7 +224,7 @@ func (o *ServiceFilterBlobsOptions) pointer() *serviceClientFilterBlobsOptions {
 	}
 }
 
-// ServiceFilterBlobsResponse provides wrapper on serviceClientFilterBlobsResponse
+// ServiceFilterBlobsResponse contains the response from ServiceClient.FindBlobsByTags
 type ServiceFilterBlobsResponse struct {
 	serviceClientFilterBlobsResponse
 }

@@ -192,13 +192,9 @@ func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *ContainerSetAc
 // ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobFlatSegmentOptions) *ContainerListBlobFlatSegmentPager {
+func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *ContainerListBlobFlatPager {
 	listOptions := o.format()
 	pager := c.client.ListBlobFlatSegment(listOptions)
-	//// override the generated pager to insert our handleError(error)
-	//if pager.Err() != nil {
-	//	return pager
-	//}
 
 	// override the advancer
 	pager.advancer = func(ctx context.Context, response containerClientListBlobFlatSegmentResponse) (*policy.Request, error) {
@@ -217,7 +213,7 @@ func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobFlatSegmentOptions) 
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
+func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobsHierarchyOptions) *ContainerListBlobHierarchyPager {
 	listOptions := o.format()
 	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
 

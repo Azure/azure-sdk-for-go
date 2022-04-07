@@ -539,6 +539,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 	time.Sleep(time.Second * 5)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

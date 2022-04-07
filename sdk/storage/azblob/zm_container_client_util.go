@@ -55,6 +55,7 @@ func (o *ContainerDeleteOptions) format() (*containerClientDeleteOptions, *Lease
 	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// ContainerDeleteResponse contains the response from method ContainerClient.Delete.
 type ContainerDeleteResponse struct {
 	containerClientDeleteResponse
 }
@@ -78,6 +79,7 @@ func (o *ContainerGetPropertiesOptions) format() (*containerClientGetPropertiesO
 	return nil, o.LeaseAccessConditions
 }
 
+// ContainerGetPropertiesResponse contains the response from method ContainerClient.GetProperties
 type ContainerGetPropertiesResponse struct {
 	containerClientGetPropertiesResponse
 }
@@ -103,6 +105,7 @@ func (o *ContainerSetMetadataOptions) format() (*containerClientSetMetadataOptio
 	return &containerClientSetMetadataOptions{Metadata: o.Metadata}, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// ContainerSetMetadataResponse contains the response from method containerClient.SetMetadata
 type ContainerSetMetadataResponse struct {
 	containerClientSetMetadataResponse
 }
@@ -126,6 +129,7 @@ func (o *ContainerGetAccessPolicyOptions) format() (*containerClientGetAccessPol
 	return nil, o.LeaseAccessConditions
 }
 
+// ContainerGetAccessPolicyResponse contains the response from method ContainerClient.GetAccessPolicy.
 type ContainerGetAccessPolicyResponse struct {
 	containerClientGetAccessPolicyResponse
 }
@@ -136,7 +140,7 @@ func toContainerGetAccessPolicyResponse(resp containerClientGetAccessPolicyRespo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ContainerSetAccessPolicyOptions provides set of configurations for SetAccessPolicy operation
+// ContainerSetAccessPolicyOptions provides set of configurations for ContainerClient.SetAccessPolicy operation
 type ContainerSetAccessPolicyOptions struct {
 	AccessConditions *ContainerAccessConditions
 	// Specifies whether data in the container may be accessed publicly and the level of access
@@ -163,6 +167,7 @@ func (o *ContainerSetAccessPolicyOptions) format() (*containerClientSetAccessPol
 	}, lac, mac
 }
 
+// ContainerSetAccessPolicyResponse contains the response from method ContainerClient.SetAccessPolicy
 type ContainerSetAccessPolicyResponse struct {
 	containerClientSetAccessPolicyResponse
 }
@@ -173,7 +178,8 @@ func toContainerSetAccessPolicyResponse(resp containerClientSetAccessPolicyRespo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type ContainerListBlobFlatSegmentOptions struct {
+// ContainerListBlobsFlatOptions provides set of configurations for SetAccessPolicy operation
+type ContainerListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
@@ -187,12 +193,12 @@ type ContainerListBlobFlatSegmentOptions struct {
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
 	// return fewer results than specified by maxresults, or than the default of 5000.
-	Maxresults *int32
+	MaxResults *int32
 	// Filters the results to return only containers whose name begins with the specified prefix.
 	Prefix *string
 }
 
-func (o *ContainerListBlobFlatSegmentOptions) format() *containerClientListBlobFlatSegmentOptions {
+func (o *ContainerListBlobsFlatOptions) format() *containerClientListBlobFlatSegmentOptions {
 	if o == nil {
 		return nil
 	}
@@ -200,22 +206,24 @@ func (o *ContainerListBlobFlatSegmentOptions) format() *containerClientListBlobF
 	return &containerClientListBlobFlatSegmentOptions{
 		Include:    o.Include,
 		Marker:     o.Marker,
-		Maxresults: o.Maxresults,
+		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
 	}
 }
 
-type ContainerListBlobFlatSegmentPager struct {
+// ContainerListBlobFlatPager provides operations for iterating over paged responses
+type ContainerListBlobFlatPager struct {
 	*containerClientListBlobFlatSegmentPager
 }
 
-func toContainerListBlobFlatSegmentPager(resp *containerClientListBlobFlatSegmentPager) *ContainerListBlobFlatSegmentPager {
-	return &ContainerListBlobFlatSegmentPager{resp}
+func toContainerListBlobFlatSegmentPager(resp *containerClientListBlobFlatSegmentPager) *ContainerListBlobFlatPager {
+	return &ContainerListBlobFlatPager{resp}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type ContainerListBlobHierarchySegmentOptions struct {
+//ContainerListBlobsHierarchyOptions provides set of configurations for ContainerClient.ListBlobsHierarchy
+type ContainerListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
@@ -229,12 +237,12 @@ type ContainerListBlobHierarchySegmentOptions struct {
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
 	// return fewer results than specified by maxresults, or than the default of 5000.
-	Maxresults *int32
+	MaxResults *int32
 	// Filters the results to return only containers whose name begins with the specified prefix.
 	Prefix *string
 }
 
-func (o *ContainerListBlobHierarchySegmentOptions) format() *containerClientListBlobHierarchySegmentOptions {
+func (o *ContainerListBlobsHierarchyOptions) format() *containerClientListBlobHierarchySegmentOptions {
 	if o == nil {
 		return nil
 	}
@@ -242,18 +250,19 @@ func (o *ContainerListBlobHierarchySegmentOptions) format() *containerClientList
 	return &containerClientListBlobHierarchySegmentOptions{
 		Include:    o.Include,
 		Marker:     o.Marker,
-		Maxresults: o.Maxresults,
+		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
 	}
 }
 
-type ContainerListBlobHierarchySegmentPager struct {
+// ContainerListBlobHierarchyPager provides operations for iterating over paged responses.
+type ContainerListBlobHierarchyPager struct {
 	containerClientListBlobHierarchySegmentPager
 }
 
-func toContainerListBlobHierarchySegmentPager(resp *containerClientListBlobHierarchySegmentPager) *ContainerListBlobHierarchySegmentPager {
+func toContainerListBlobHierarchySegmentPager(resp *containerClientListBlobHierarchySegmentPager) *ContainerListBlobHierarchyPager {
 	if resp == nil {
 		return nil
 	}
-	return &ContainerListBlobHierarchySegmentPager{*resp}
+	return &ContainerListBlobHierarchyPager{*resp}
 }

@@ -826,6 +826,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// PageRange struct
 type PageRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -834,6 +835,7 @@ type PageRange struct {
 	Start *int64 `xml:"Start"`
 }
 
+// QueryFormat struct
 type QueryFormat struct {
 	// REQUIRED; The quick query format type.
 	Type *QueryFormatType `xml:"Type"`
@@ -874,6 +876,7 @@ func (q QueryRequest) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+//QuerySerialization struct
 type QuerySerialization struct {
 	// REQUIRED
 	Format *QueryFormat `xml:"Format"`

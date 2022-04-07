@@ -13,6 +13,7 @@ const (
 	moduleVersion = "v0.3.0"
 )
 
+// AccessTier enum
 type AccessTier string
 
 const (
@@ -57,6 +58,7 @@ func (c AccessTier) ToPtr() *AccessTier {
 	return &c
 }
 
+// AccountKind enum
 type AccountKind string
 
 const (
@@ -83,6 +85,7 @@ func (c AccountKind) ToPtr() *AccountKind {
 	return &c
 }
 
+// ArchiveStatus enum
 type ArchiveStatus string
 
 const (
@@ -103,6 +106,7 @@ func (c ArchiveStatus) ToPtr() *ArchiveStatus {
 	return &c
 }
 
+// BlobExpiryOptions enum
 type BlobExpiryOptions string
 
 const (
@@ -150,6 +154,7 @@ func (c BlobGeoReplicationStatus) ToPtr() *BlobGeoReplicationStatus {
 	return &c
 }
 
+// BlobImmutabilityPolicyMode enum
 type BlobImmutabilityPolicyMode string
 
 const (
@@ -172,6 +177,7 @@ func (c BlobImmutabilityPolicyMode) ToPtr() *BlobImmutabilityPolicyMode {
 	return &c
 }
 
+// BlobType enum
 type BlobType string
 
 const (
@@ -194,6 +200,7 @@ func (c BlobType) ToPtr() *BlobType {
 	return &c
 }
 
+// BlockListType enum
 type BlockListType string
 
 const (
@@ -216,6 +223,7 @@ func (c BlockListType) ToPtr() *BlockListType {
 	return &c
 }
 
+// CopyStatusType enum
 type CopyStatusType string
 
 const (
@@ -240,6 +248,7 @@ func (c CopyStatusType) ToPtr() *CopyStatusType {
 	return &c
 }
 
+// DeleteSnapshotsOptionType enum
 type DeleteSnapshotsOptionType string
 
 const (
@@ -260,6 +269,7 @@ func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
 	return &c
 }
 
+// EncryptionAlgorithmType enum
 type EncryptionAlgorithmType string
 
 const (
@@ -280,6 +290,7 @@ func (c EncryptionAlgorithmType) ToPtr() *EncryptionAlgorithmType {
 	return &c
 }
 
+// LeaseDurationType enum
 type LeaseDurationType string
 
 const (
@@ -300,6 +311,7 @@ func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
+// LeaseStateType enum
 type LeaseStateType string
 
 const (
@@ -326,6 +338,7 @@ func (c LeaseStateType) ToPtr() *LeaseStateType {
 	return &c
 }
 
+// LeaseStatusType enum
 type LeaseStatusType string
 
 const (
@@ -346,6 +359,7 @@ func (c LeaseStatusType) ToPtr() *LeaseStatusType {
 	return &c
 }
 
+// ListBlobsIncludeItem enum
 type ListBlobsIncludeItem string
 
 const (
@@ -382,6 +396,7 @@ func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
 	return &c
 }
 
+// ListContainersIncludeType enum
 type ListContainersIncludeType string
 
 const (
@@ -404,6 +419,7 @@ func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
 	return &c
 }
 
+// PremiumPageBlobAccessTier enum
 type PremiumPageBlobAccessTier string
 
 const (
@@ -442,6 +458,7 @@ func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
 	return &c
 }
 
+// PublicAccessType enum
 type PublicAccessType string
 
 const (
@@ -509,6 +526,7 @@ func (c RehydratePriority) ToPtr() *RehydratePriority {
 	return &c
 }
 
+// SKUName enum
 type SKUName string
 
 const (
@@ -535,6 +553,7 @@ func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
 
+// SequenceNumberActionType enum
 type SequenceNumberActionType string
 
 const (
@@ -800,6 +819,7 @@ func (c StorageErrorCode) ToPtr() *StorageErrorCode {
 	return &c
 }
 
+// BlobDeleteType enum
 type BlobDeleteType string
 
 const (

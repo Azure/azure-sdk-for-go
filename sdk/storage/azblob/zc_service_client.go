@@ -182,7 +182,7 @@ func (s *ServiceClient) GetProperties(ctx context.Context, o *ServiceGetProperti
 	getPropertiesOptions := o.format()
 	resp, err := s.client.GetProperties(ctx, getPropertiesOptions)
 
-	return ServiceGetPropertiesResponse{resp}, handleError(err)
+	return toServiceGetPropertiesResponse(resp), handleError(err)
 }
 
 // SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.

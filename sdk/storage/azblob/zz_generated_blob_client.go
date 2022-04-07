@@ -603,7 +603,7 @@ func (client *blobClient) createSnapshotCreateRequest(ctx context.Context, blobC
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -726,7 +726,7 @@ func (client *blobClient) deleteCreateRequest(ctx context.Context, blobClientDel
 		reqQP.Set("timeout", strconv.FormatInt(int64(*blobClientDeleteOptions.Timeout), 10))
 	}
 	if blobClientDeleteOptions != nil && blobClientDeleteOptions.BlobDeleteType != nil {
-		reqQP.Set("deletetype", "Permanent")
+		reqQP.Set("deletetype", string(*blobClientDeleteOptions.BlobDeleteType))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -857,7 +857,7 @@ func (client *blobClient) Download(ctx context.Context, blobClientDownloadOption
 	if err != nil {
 		return blobClientDownloadResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusPartialContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusPartialContent, http.StatusNotModified) {
 		return blobClientDownloadResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.downloadHandleResponse(resp)
@@ -900,7 +900,7 @@ func (client *blobClient) downloadCreateRequest(ctx context.Context, blobClientD
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
@@ -1132,6 +1132,9 @@ func (client *blobClient) downloadHandleResponse(resp *http.Response) (blobClien
 		}
 		result.ContentCRC64 = contentCRC64
 	}
+	if val := resp.Header.Get("x-ms-error-code"); val != "" {
+		result.ErrorCode = &val
+	}
 	return result, nil
 }
 
@@ -1246,7 +1249,7 @@ func (client *blobClient) getPropertiesCreateRequest(ctx context.Context, blobCl
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
@@ -1635,7 +1638,7 @@ func (client *blobClient) queryCreateRequest(ctx context.Context, blobClientQuer
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
@@ -2390,7 +2393,7 @@ func (client *blobClient) setMetadataCreateRequest(ctx context.Context, blobClie
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)

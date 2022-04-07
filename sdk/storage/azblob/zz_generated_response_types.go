@@ -505,6 +505,9 @@ type blobClientDownloadResult struct {
 	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
 
+	// ErrorCode contains the information returned from the x-ms-error-code header response.
+	ErrorCode *string
+
 	// ImmutabilityPolicyExpiresOn contains the information returned from the x-ms-immutability-policy-until-date header response.
 	ImmutabilityPolicyExpiresOn *time.Time
 

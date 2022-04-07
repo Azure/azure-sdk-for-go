@@ -243,20 +243,17 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
-	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := PageBlobUploadPagesOptions{Range: &HttpRange{offset, count}}
-	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(context.Background(), r, &PageBlobUploadPagesOptions{Range: NewHttpRange(int64(0), int64(contentSize))})
 	_assert.Nil(err)
 
 	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	_assert.Nil(err)
 
-	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-	uploadPagesOptions1 := PageBlobUploadPagesOptions{Range: &HttpRange{offset1, count1}}
-	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
+	r1 := getReaderToGeneratedBytes(contentSize)
+	_, err = pbClient.UploadPages(context.Background(), r1, &PageBlobUploadPagesOptions{Range: NewHttpRange(int64(contentSize), int64(contentSize))})
 	_assert.Nil(err)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{Range: &HttpRange{Offset: 0, Count: int64(4096)}, Snapshot: snapshotResp.Snapshot})
+	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{Range: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
 
 	for pager.NextPage(ctx) {
 		pageListResp := pager.PageResponse()
@@ -265,15 +262,15 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 		_assert.NotNil(pageRangeResp)
 		_assert.Len(pageRangeResp, 1)
 		rawStart, rawEnd := (pageRangeResp)[0].Raw()
-		_assert.Equal(rawStart, offset1)
-		_assert.Equal(rawEnd, end1)
+		_assert.Equal(rawStart, int64(2048))
+		_assert.Equal(rawEnd, int64(4095))
 	}
 
 	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, nil)
 	_assert.Nil(err)
 	_assert.Equal(clearResp.RawResponse.StatusCode, 201)
 
-	pager = pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{Range: &HttpRange{Offset: 0, Count: int64(4095)}, Snapshot: snapshotResp.Snapshot})
+	pager = pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{Range: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
 
 	for pager.NextPage(ctx) {
 		pageListResp := pager.PageResponse()
@@ -2632,8 +2629,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	defer deleteContainer(_assert, containerClient)
 
 	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
-		Range:    NewHttpRange(0, 0),
-		Snapshot: to.StringPtr(snapshotStr),
+		Range:        NewHttpRange(0, 0),
+		PrevSnapshot: to.StringPtr(snapshotStr),
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: to.StringPtr("garbage"),
@@ -2641,8 +2638,9 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 		}})
 
 	for pager.NextPage(ctx) {
-		_assert.NotNil(pager.Err())
-		validateStorageError(_assert, pager.Err(), StorageErrorCodeConditionNotMet)
+		_assert.Nil(pager.Err())
+		resp := pager.PageResponse()
+		validateDiffPageRanges(_assert, resp.PageList, pager.Err())
 	}
 }
 
@@ -2656,8 +2654,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
-		Range:    NewHttpRange(0, 0),
-		Snapshot: to.StringPtr(snapshot),
+		Range:        NewHttpRange(0, 0),
+		PrevSnapshot: to.StringPtr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		},

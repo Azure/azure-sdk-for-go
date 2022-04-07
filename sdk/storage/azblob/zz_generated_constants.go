@@ -127,6 +127,29 @@ func (c BlobExpiryOptions) ToPtr() *BlobExpiryOptions {
 	return &c
 }
 
+// BlobGeoReplicationStatus - The status of the secondary location
+type BlobGeoReplicationStatus string
+
+const (
+	BlobGeoReplicationStatusLive        BlobGeoReplicationStatus = "live"
+	BlobGeoReplicationStatusBootstrap   BlobGeoReplicationStatus = "bootstrap"
+	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = "unavailable"
+)
+
+// PossibleBlobGeoReplicationStatusValues returns the possible values for the BlobGeoReplicationStatus const type.
+func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
+	return []BlobGeoReplicationStatus{
+		BlobGeoReplicationStatusLive,
+		BlobGeoReplicationStatusBootstrap,
+		BlobGeoReplicationStatusUnavailable,
+	}
+}
+
+// ToPtr returns a *BlobGeoReplicationStatus pointing to the current value.
+func (c BlobGeoReplicationStatus) ToPtr() *BlobGeoReplicationStatus {
+	return &c
+}
+
 type BlobImmutabilityPolicyMode string
 
 const (
@@ -237,26 +260,23 @@ func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
 	return &c
 }
 
-// GeoReplicationStatusType - The status of the secondary location
-type GeoReplicationStatusType string
+type EncryptionAlgorithmType string
 
 const (
-	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
-	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = "None"
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{
-		GeoReplicationStatusTypeBootstrap,
-		GeoReplicationStatusTypeLive,
-		GeoReplicationStatusTypeUnavailable,
+// PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
+func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
+	return []EncryptionAlgorithmType{
+		EncryptionAlgorithmTypeNone,
+		EncryptionAlgorithmTypeAES256,
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
-func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
+// ToPtr returns a *EncryptionAlgorithmType pointing to the current value.
+func (c EncryptionAlgorithmType) ToPtr() *EncryptionAlgorithmType {
 	return &c
 }
 
@@ -777,5 +797,25 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 
 // ToPtr returns a *StorageErrorCode pointing to the current value.
 func (c StorageErrorCode) ToPtr() *StorageErrorCode {
+	return &c
+}
+
+type BlobDeleteType string
+
+const (
+	BlobDeleteTypeNone      BlobDeleteType = "None"
+	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
+)
+
+// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
+func PossibleBlobDeleteTypeValues() []BlobDeleteType {
+	return []BlobDeleteType{
+		BlobDeleteTypeNone,
+		BlobDeleteTypePermanent,
+	}
+}
+
+// ToPtr returns a *BlobDeleteType pointing to the current value.
+func (c BlobDeleteType) ToPtr() *BlobDeleteType {
 	return &c
 }

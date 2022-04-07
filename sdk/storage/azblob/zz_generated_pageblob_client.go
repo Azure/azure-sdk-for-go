@@ -88,7 +88,7 @@ func (client *pageBlobClient) clearPagesCreateRequest(ctx context.Context, conte
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -355,7 +355,7 @@ func (client *pageBlobClient) createCreateRequest(ctx context.Context, contentLe
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -729,7 +729,7 @@ func (client *pageBlobClient) resizeCreateRequest(ctx context.Context, blobConte
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -961,7 +961,7 @@ func (client *pageBlobClient) uploadPagesCreateRequest(ctx context.Context, cont
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -1128,7 +1128,7 @@ func (client *pageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)

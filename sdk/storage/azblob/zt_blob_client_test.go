@@ -1794,12 +1794,10 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
@@ -1807,14 +1805,14 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	access := ModifiedAccessConditions{
-		IfModifiedSince: &currentTime,
-	}
-	options := BlobDownloadOptions{
-		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
-	}
-	_, err = bbClient.Download(ctx, &options)
-	_assert.NotNil(err)
+	resp, err := bbClient.Download(ctx, &BlobDownloadOptions{
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		}},
+	})
+	_assert.Nil(err)
+	_assert.Equal(*resp.ErrorCode, string(StorageErrorCodeConditionNotMet))
+
 }
 
 func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
@@ -1998,8 +1996,9 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 		},
 	}
 
-	_, err = bbClient.Download(ctx, &options)
-	_assert.NotNil(err)
+	resp2, err := bbClient.Download(ctx, &options)
+	_assert.Nil(err)
+	_assert.Equal(*resp2.ErrorCode, string(StorageErrorCodeConditionNotMet))
 }
 
 func (s *azblobTestSuite) TestBlobDeleteNonExistent() {

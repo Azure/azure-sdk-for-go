@@ -1006,6 +1006,7 @@ func (s *azblobUnrecordedTestSuite) TestContainerListBlobs() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 	bbClients := make([]*BlockBlobClient, 10)
 	for i := 0; i < 10; i++ {
 		bbClients[i], err = getBlockBlobClient("blob"+strconv.Itoa(i), containerClient)

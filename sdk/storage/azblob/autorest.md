@@ -29,7 +29,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: false
-use: "@autorest/go@4.0.0-preview.35"
+use: "@autorest/go@4.0.0-preview.36"
 ```
 
 ### Fix BlobMetadata.
@@ -44,6 +44,7 @@ directive:
 ```
 
 ### Don't include container name or blob in path - we have direct URIs.
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -78,3 +79,93 @@ directive:
     }
 ```
 
+### Remove DataLakeStorageError
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.DataLakeStorageError;
+```
+
+### Fix 304s
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}"]
+  transform: >
+    $.get.responses["304"] = {
+      "description": "The condition specified using HTTP conditional header(s) is not met.",
+      "x-az-response-name": "ConditionNotMetError",
+      "headers": { "x-ms-error-code": { "x-ms-client-name": "ErrorCode", "type": "string" } }
+    };
+```
+
+### Fix GeoReplication
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.GeoReplication.properties.Status["x-ms-enum"];
+    $.GeoReplication.properties.Status["x-ms-enum"] = {
+        "name": "BlobGeoReplicationStatus",
+        "modelAsString": false
+    };
+```
+
+### Fix RehydratePriority
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.RehydratePriority["x-ms-enum"];
+    $.RehydratePriority["x-ms-enum"] = {
+        "name": "RehydratePriority",
+        "modelAsString": false
+    };
+```
+
+### Fix BlobDeleteType
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.BlobDeleteType.enum;
+    $.BlobDeleteType.enum = [
+        "None",
+        "Permanent"
+    ];
+```
+
+### Fix EncryptionAlgorithm
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.EncryptionAlgorithm.enum;
+    $.EncryptionAlgorithm.enum = [
+      "None",
+      "AES256"
+    ];
+```
+
+### Fix XML string "ObjectReplicationMetadata" to "OrMetadata"
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.BlobItemInternal.properties["OrMetadata"] = $.BlobItemInternal.properties["ObjectReplicationMetadata"];
+    delete $.BlobItemInternal.properties["ObjectReplicationMetadata"];
+```

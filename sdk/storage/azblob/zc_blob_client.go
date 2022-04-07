@@ -119,11 +119,16 @@ func (b *BlobClient) Download(ctx context.Context, options *BlobDownloadOptions)
 	if options != nil && options.Count != nil {
 		count = *options.Count
 	}
+
+	eTag := ""
+	if dr.ETag != nil {
+		eTag = *dr.ETag
+	}
 	return BlobDownloadResponse{
 		b:                          b,
 		blobClientDownloadResponse: dr,
 		ctx:                        ctx,
-		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
+		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
 	}, err
 }

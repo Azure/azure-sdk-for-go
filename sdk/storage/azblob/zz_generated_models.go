@@ -188,8 +188,8 @@ type BlobItemInternal struct {
 	Metadata map[string]*string `xml:"Metadata"`
 
 	// Dictionary of
-	ObjectReplicationMetadata map[string]*string `xml:"OrMetadata"`
-	VersionID                 *string            `xml:"VersionId"`
+	OrMetadata map[string]*string `xml:"OrMetadata"`
+	VersionID  *string            `xml:"VersionId"`
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type BlobItemInternal.
@@ -197,8 +197,8 @@ func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	type alias BlobItemInternal
 	aux := &struct {
 		*alias
-		Metadata                  additionalProperties `xml:"Metadata"`
-		ObjectReplicationMetadata additionalProperties `xml:"OrMetadata"`
+		Metadata   additionalProperties `xml:"Metadata"`
+		OrMetadata additionalProperties `xml:"OrMetadata"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -206,7 +206,7 @@ func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 		return err
 	}
 	b.Metadata = (map[string]*string)(aux.Metadata)
-	b.ObjectReplicationMetadata = (map[string]*string)(aux.ObjectReplicationMetadata)
+	b.OrMetadata = (map[string]*string)(aux.OrMetadata)
 	return nil
 }
 
@@ -555,8 +555,8 @@ type CorsRule struct {
 // CpkInfo contains a group of parameters for the blobClient.Download method.
 type CpkInfo struct {
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
-	// if the x-ms-encryption-key header is provided.. Specifying any value will set the value to AES256.
-	EncryptionAlgorithm *string
+	// if the x-ms-encryption-key header is provided.
+	EncryptionAlgorithm *EncryptionAlgorithmType
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see
 	// Encryption at Rest for Azure Storage Services.
@@ -639,7 +639,7 @@ type GeoReplication struct {
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location
-	Status *GeoReplicationStatusType `xml:"Status"`
+	Status *BlobGeoReplicationStatus `xml:"Status"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type GeoReplication.
@@ -804,7 +804,7 @@ type ModifiedAccessConditions struct {
 type PageList struct {
 	ClearRange []*ClearRange `xml:"ClearRange"`
 	NextMarker *string       `xml:"NextMarker"`
-	PageRange  []*PageRange  `xml:"Range"`
+	PageRange  []*PageRange  `xml:"PageRange"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type PageList.
@@ -813,7 +813,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		ClearRange *[]*ClearRange `xml:"ClearRange"`
-		PageRange  *[]*PageRange  `xml:"Range"`
+		PageRange  *[]*PageRange  `xml:"PageRange"`
 	}{
 		alias: (*alias)(&p),
 	}
@@ -847,8 +847,8 @@ type QueryFormat struct {
 	// json text configuration
 	JSONTextConfiguration *JSONTextConfiguration `xml:"JsonTextConfiguration"`
 
-	// Any object
-	ParquetTextConfiguration map[string]interface{} `xml:"ParquetTextConfiguration"`
+	// Anything
+	ParquetTextConfiguration interface{} `xml:"ParquetTextConfiguration"`
 }
 
 // QueryRequest - Groups the set of query request settings.
@@ -939,10 +939,6 @@ type StaticWebsite struct {
 	// The default name of the index page under each directory
 	IndexDocument *string `xml:"IndexDocument"`
 }
-
-//type StorageError struct {
-//	Message *string `json:"Message,omitempty"`
-//}
 
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {
@@ -1233,9 +1229,8 @@ type blobClientDeleteImmutabilityPolicyOptions struct {
 
 // blobClientDeleteOptions contains the optional parameters for the blobClient.Delete method.
 type blobClientDeleteOptions struct {
-	// Optional. Only possible value is 'permanent', which specifies to permanently delete a blob if blob soft delete is enabled..
-	// Specifying any value will set the value to Permanent.
-	BlobDeleteType *string
+	// Optional. Only possible value is 'permanent', which specifies to permanently delete a blob if blob soft delete is enabled.
+	BlobDeleteType *BlobDeleteType
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob
 	// itself

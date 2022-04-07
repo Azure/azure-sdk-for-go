@@ -204,6 +204,14 @@ func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOp
 	getPageRangesDiffPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesDiffResponse) (*policy.Request, error) {
 		getPageRangesDiffOptions.Marker = response.NextMarker
 		req, err := pb.client.getPageRangesDiffCreateRequest(ctx, getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+		if err != nil {
+			return nil, handleError(err)
+		}
+		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+		if err != nil {
+			return nil, handleError(err)
+		}
+		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, handleError(err)
 	}
 

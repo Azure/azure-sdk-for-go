@@ -117,7 +117,7 @@ func (client *blockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -402,7 +402,7 @@ func (client *blockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -573,7 +573,7 @@ func (client *blockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -696,7 +696,7 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
@@ -854,7 +854,7 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header.Set("x-ms-encryption-key-sha256", *cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header.Set("x-ms-encryption-algorithm", "AES256")
+		req.Raw().Header.Set("x-ms-encryption-algorithm", string(*cpkInfo.EncryptionAlgorithm))
 	}
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Raw().Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)

@@ -24,7 +24,7 @@ Set Blob Properties, Set Blob Metadata, Get Blob, Get Blob Properties, Get Blob 
 */
 var testEncryptedKey = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
 var testEncryptedHash = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
-var testEncryptionAlgorithm = "AES256"
+var testEncryptionAlgorithm = EncryptionAlgorithmTypeAES256
 var testCPKByValue = CpkInfo{
 	EncryptionKey:       &testEncryptedKey,
 	EncryptionKeySHA256: &testEncryptedHash,

@@ -132,6 +132,7 @@ func toBlobDeleteResponse(resp blobClientDeleteResponse) BlobDeleteResponse {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// BlobUndeleteOptions provides set of configurations for Blob Undelete operation
 type BlobUndeleteOptions struct {
 }
 

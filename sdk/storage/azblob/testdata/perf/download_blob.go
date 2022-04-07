@@ -54,7 +54,10 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		return nil, err
 	}
 
-	blobClient := containerClient.NewBlockBlobClient(d.blobName)
+	blobClient, err := containerClient.NewBlockBlobClient(d.blobName)
+	if err != nil {
+		return nil, err
+	}
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)
 	if err != nil {
@@ -88,7 +91,7 @@ type downloadPerfTest struct {
 	*downloadTestGlobal
 	perf.PerfTestOptions
 	data       io.ReadSeekCloser
-	blobClient azblob.BlockBlobClient
+	blobClient *azblob.BlockBlobClient
 }
 
 // NewPerfTest is called once per goroutine
@@ -109,7 +112,10 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	if err != nil {
 		return nil, err
 	}
-	bc := containerClient.NewBlockBlobClient(d.blobName)
+	bc, err := containerClient.NewBlockBlobClient(d.blobName)
+	if err != nil {
+		return nil, err
+	}
 	d.blobClient = bc
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)

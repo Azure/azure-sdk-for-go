@@ -29,7 +29,7 @@ type uploadTestGlobal struct {
 	perf.PerfTestOptions
 	containerName         string
 	blobName              string
-	globalContainerClient azblob.ContainerClient
+	globalContainerClient *azblob.ContainerClient
 }
 
 // NewUploadTest is called once per process
@@ -67,7 +67,7 @@ type uploadPerfTest struct {
 	*uploadTestGlobal
 	perf.PerfTestOptions
 	data       io.ReadSeekCloser
-	blobClient azblob.BlockBlobClient
+	blobClient *azblob.BlockBlobClient
 }
 
 // NewPerfTest is called once per goroutine
@@ -92,7 +92,10 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 	if err != nil {
 		return nil, err
 	}
-	bc := containerClient.NewBlockBlobClient(u.blobName)
+	bc, err := containerClient.NewBlockBlobClient(u.blobName)
+	if err != nil {
+		return nil, err
+	}
 	u.blobClient = bc
 
 	data, err := perf.NewRandomStream(uploadTestOpts.size)

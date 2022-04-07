@@ -53,7 +53,10 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	}
 
 	for i := 0; i < 100; i++ {
-		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
+		blobClient, err := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
+		if err != nil {
+			return nil, err
+		}
 		_, err = blobClient.Upload(
 			context.Background(),
 			NopCloser(bytes.NewReader([]byte(""))),
@@ -85,7 +88,7 @@ func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 type listPerfTest struct {
 	*listTestGlobal
 	perf.PerfTestOptions
-	containerClient azblob.ContainerClient
+	containerClient *azblob.ContainerClient
 }
 
 // NewPerfTest is called once per goroutine

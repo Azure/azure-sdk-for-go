@@ -187,6 +187,11 @@ func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *
 		if err != nil {
 			return nil, handleError(err)
 		}
+		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+		if err != nil {
+			return nil, handleError(err)
+		}
+		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, nil
 	}
 
@@ -212,7 +217,7 @@ func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOp
 			return nil, handleError(err)
 		}
 		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, handleError(err)
+		return req, nil
 	}
 
 	return toPageBlobGetPageRangesDiffPager(getPageRangesDiffPager)

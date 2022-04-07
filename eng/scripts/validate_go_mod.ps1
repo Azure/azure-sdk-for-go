@@ -13,11 +13,14 @@ if ($goModFiles.Length -eq 0) {
 
 $hasError = $false
 foreach ($goMod in $goModFiles) {
-    $name = $goMod.FullName
-    $patternMatches = Get-Content $name | Select-String -Pattern "replace "
-    if ($patternMatches.Length -ne 0) {
-        Write-Host "Found a replace directive in go.mod file at $name"
-        $hasError = $true
+    if (-Not ($goMod.FullName -Like "*testdata*")) {
+        Write-Host $goMod.FullName
+        $name = $goMod.FullName
+        $patternMatches = Get-Content $name | Select-String -Pattern "replace "
+        if ($patternMatches.Length -ne 0) {
+            Write-Host "Found a replace directive in go.mod file at $name"
+            $hasError = $true
+        }
     }
 }
 

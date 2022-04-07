@@ -16,7 +16,6 @@ import (
 // ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client    *containerClient
-	conn      *connection
 	sharedKey *SharedKeyCredential
 }
 
@@ -30,22 +29,20 @@ func NewContainerClient(containerURL string, cred azcore.TokenCredential, option
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(containerURL, authPolicy, conOptions)
+	conn := newConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
 // NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
 func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (*ContainerClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(containerURL, nil, conOptions)
+	conn := newConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
@@ -54,11 +51,10 @@ func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredent
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(containerURL, authPolicy, conOptions)
+	conn := newConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client:    newContainerClient(conn.Endpoint(), conn.Pipeline()),
-		conn:      conn,
 		sharedKey: cred,
 	}, nil
 }
@@ -81,8 +77,7 @@ func (c *ContainerClient) NewBlobClient(blobName string) (*BlobClient, error) {
 	blobURL := appendToURLPath(c.URL(), blobName)
 
 	return &BlobClient{
-		client:    newBlobClient(blobURL, c.conn.Pipeline()),
-		conn:      c.conn,
+		client:    newBlobClient(blobURL, c.client.pl),
 		sharedKey: c.sharedKey,
 	}, nil
 }
@@ -97,11 +92,10 @@ func (c *ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClien
 
 	return &AppendBlobClient{
 		BlobClient: BlobClient{
-			client:    newBlobClient(blobURL, c.conn.Pipeline()),
-			conn:      c.conn,
+			client:    newBlobClient(blobURL, c.client.pl),
 			sharedKey: c.sharedKey,
 		},
-		client: newAppendBlobClient(blobURL, c.conn.Pipeline()),
+		client: newAppendBlobClient(blobURL, c.client.pl),
 	}, nil
 }
 
@@ -115,11 +109,10 @@ func (c *ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient,
 
 	return &BlockBlobClient{
 		BlobClient: BlobClient{
-			client:    newBlobClient(blobURL, c.conn.Pipeline()),
-			conn:      c.conn,
+			client:    newBlobClient(blobURL, c.client.pl),
 			sharedKey: c.sharedKey,
 		},
-		client: newBlockBlobClient(blobURL, c.conn.Pipeline()),
+		client: newBlockBlobClient(blobURL, c.client.pl),
 	}, nil
 }
 
@@ -132,11 +125,10 @@ func (c *ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, e
 
 	return &PageBlobClient{
 		BlobClient: BlobClient{
-			client:    newBlobClient(blobURL, c.conn.Pipeline()),
-			conn:      c.conn,
+			client:    newBlobClient(blobURL, c.client.pl),
 			sharedKey: c.sharedKey,
 		},
-		client: newPageBlobClient(blobURL, c.conn.Pipeline()),
+		client: newPageBlobClient(blobURL, c.client.pl),
 	}, nil
 }
 
@@ -228,21 +220,12 @@ func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobFlatSegmentOptions) 
 func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
 	listOptions := o.format()
 	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
-	//// override the generated pager to insert our handleError(error)
-	//if pager.Err() != nil {
-	//	return pager
-	//}
 
 	// override the advancer
 	pager.advancer = func(ctx context.Context, response containerClientListBlobHierarchySegmentResponse) (*policy.Request, error) {
 		listOptions.Marker = response.NextMarker
 		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, listOptions)
 	}
-
-	// todo: come here
-	//p.errorer = func(response *azcore.Response) error {
-	//	return handleError(c.client.listBlobHierarchySegmentHandleError(response))
-	//}
 
 	return toContainerListBlobHierarchySegmentPager(pager)
 }

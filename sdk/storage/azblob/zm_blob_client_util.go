@@ -45,10 +45,7 @@ func (o *BlobDownloadOptions) format() (*blobClientDownloadOptions, *LeaseAccess
 
 	basics := blobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
-		Range: HttpRange{
-			Offset: offset,
-			Count:  count,
-		}.format(),
+		Range:              (&HttpRange{Offset: offset, Count: count}).format(),
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.format()

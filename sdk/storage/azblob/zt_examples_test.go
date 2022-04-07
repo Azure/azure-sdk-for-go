@@ -809,7 +809,7 @@ func ExampleAppendBlobClient() {
 //	_, err = blobClient.UploadPages(
 //		context.TODO(),
 //		streaming.NopCloser(bytes.NewReader(page)),
-//		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
+//		&azblob.PageBlobUploadPagesOptions{Range: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
 //	)
 //	if err != nil {
 //		log.Fatal(err)
@@ -819,7 +819,7 @@ func ExampleAppendBlobClient() {
 //	if err != nil {
 //		log.Fatal(err)
 //	}
-//	for _, pr := range getPages.PageList.PageRange {
+//	for _, pr := range getPages.PageList.Range {
 //		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 //	}
 //
@@ -832,7 +832,7 @@ func ExampleAppendBlobClient() {
 //	if err != nil {
 //		log.Fatal(err)
 //	}
-//	for _, pr := range getPages.PageList.PageRange {
+//	for _, pr := range getPages.PageList.Range {
 //		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 //	}
 //

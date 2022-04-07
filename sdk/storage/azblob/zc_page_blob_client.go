@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/url"
 
@@ -29,13 +30,12 @@ func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *Cli
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:   conn,
 		},
 	}, nil
 }
@@ -44,13 +44,12 @@ func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *Cli
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*PageBlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, nil, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:   conn,
 		},
 	}, nil
 }
@@ -61,13 +60,12 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client:    newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:      conn,
 			sharedKey: cred,
 		},
 	}, nil
@@ -83,11 +81,11 @@ func (pb *PageBlobClient) WithSnapshot(snapshot string) (*PageBlobClient, error)
 	p.Snapshot = snapshot
 
 	endpoint := p.URL()
+	pipeline := pb.client.pl
 	return &PageBlobClient{
-		client: newPageBlobClient(endpoint, pb.conn.Pipeline()),
+		client: newPageBlobClient(endpoint, pipeline),
 		BlobClient: BlobClient{
-			client:    newBlobClient(endpoint, pb.conn.Pipeline()),
-			conn:      pb.conn,
+			client:    newBlobClient(endpoint, pipeline),
 			sharedKey: pb.sharedKey,
 		},
 	}, nil
@@ -104,11 +102,11 @@ func (pb *PageBlobClient) WithVersionID(versionID string) (*PageBlobClient, erro
 	p.VersionID = versionID
 	endpoint := p.URL()
 
+	pipeline := pb.client.pl
 	return &PageBlobClient{
-		client: newPageBlobClient(endpoint, pb.conn.Pipeline()),
+		client: newPageBlobClient(endpoint, pipeline),
 		BlobClient: BlobClient{
-			client:    newBlobClient(endpoint, pb.conn.Pipeline()),
-			conn:      pb.conn,
+			client:    newBlobClient(endpoint, pipeline),
 			sharedKey: pb.sharedKey,
 		},
 	}, nil
@@ -182,6 +180,16 @@ func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *
 
 	pageBlobGetPageRangesPager := pb.client.GetPageRanges(getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
 
+	// Fixing Advancer
+	pageBlobGetPageRangesPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesResponse) (*policy.Request, error) {
+		getPageRangesOptions.Marker = response.NextMarker
+		req, err := pb.client.getPageRangesCreateRequest(ctx, getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
+		if err != nil {
+			return nil, handleError(err)
+		}
+		return req, nil
+	}
+
 	return toPageBlobGetPageRangesPager(pageBlobGetPageRangesPager)
 }
 
@@ -190,7 +198,14 @@ func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *
 func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOptions) *PageBlobGetPageRangesDiffPager {
 	getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
 
-	getPageRangesDiffPager := pb.client.GetPageRangesDiff(&getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+	getPageRangesDiffPager := pb.client.GetPageRangesDiff(getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+
+	// Fixing Advancer
+	getPageRangesDiffPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesDiffResponse) (*policy.Request, error) {
+		getPageRangesDiffOptions.Marker = response.NextMarker
+		req, err := pb.client.getPageRangesDiffCreateRequest(ctx, getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+		return req, handleError(err)
+	}
 
 	return toPageBlobGetPageRangesDiffPager(getPageRangesDiffPager)
 }

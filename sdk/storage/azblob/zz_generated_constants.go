@@ -9,7 +9,7 @@
 package azblob
 
 const (
-	moduleName    = ""
+	moduleName    = "azblob"
 	moduleVersion = "v0.3.0"
 )
 

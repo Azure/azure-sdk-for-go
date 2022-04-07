@@ -804,7 +804,7 @@ type ModifiedAccessConditions struct {
 type PageList struct {
 	ClearRange []*ClearRange `xml:"ClearRange"`
 	NextMarker *string       `xml:"NextMarker"`
-	PageRange  []*PageRange  `xml:"PageRange"`
+	PageRange  []*PageRange  `xml:"Range"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type PageList.
@@ -813,7 +813,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		ClearRange *[]*ClearRange `xml:"ClearRange"`
-		PageRange  *[]*PageRange  `xml:"PageRange"`
+		PageRange  *[]*PageRange  `xml:"Range"`
 	}{
 		alias: (*alias)(&p),
 	}

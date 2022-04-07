@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"strconv"
@@ -993,6 +994,37 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	}
 
 	_assert.Nil(pager.Err())
+}
+
+func (s *azblobUnrecordedTestSuite) TestContainerListBlobs() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	bbClients := make([]*BlockBlobClient, 10)
+	for i := 0; i < 10; i++ {
+		bbClients[i], err = getBlockBlobClient("blob"+strconv.Itoa(i), containerClient)
+		_assert.Nil(err)
+		cResp, err := bbClients[i].Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &BlockBlobUploadOptions{Metadata: basicMetadata, TagsMap: basicMetadata})
+		_assert.Nil(err)
+		_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	}
+
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Maxresults: to.Int32Ptr(4),
+		Include:    []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata, ListBlobsIncludeItemTags},
+	})
+	for pager.NextPage(ctx) {
+		err := pager.Err()
+		resp := pager.PageResponse()
+		_ = err
+		_ = resp
+	}
 }
 
 func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {

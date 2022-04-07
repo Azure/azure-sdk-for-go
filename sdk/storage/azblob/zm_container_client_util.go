@@ -143,6 +143,12 @@ type ContainerSetAccessPolicyOptions struct {
 	Access *PublicAccessType
 	// the acls for the container
 	ContainerACL []*SignedIdentifier
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
+	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
+	Timeout *int32
 }
 
 func (o *ContainerSetAccessPolicyOptions) format() (*containerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -153,6 +159,7 @@ func (o *ContainerSetAccessPolicyOptions) format() (*containerClientSetAccessPol
 	return &containerClientSetAccessPolicyOptions{
 		Access:       o.Access,
 		ContainerACL: o.ContainerACL,
+		RequestID:    o.RequestID,
 	}, lac, mac
 }
 

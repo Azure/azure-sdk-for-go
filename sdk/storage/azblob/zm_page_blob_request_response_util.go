@@ -75,7 +75,7 @@ func toPageBlobCreateResponse(resp pageBlobClientCreateResponse) PageBlobCreateR
 // PageBlobUploadPagesOptions provides set of configurations for UploadPages operation
 type PageBlobUploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
-	PageRange                 *HttpRange
+	Range                     *HttpRange
 	TransactionalContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
@@ -97,8 +97,8 @@ func (o *PageBlobUploadPagesOptions) format() (*pageBlobClientUploadPagesOptions
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
 
-	if o.PageRange != nil {
-		options.Range = o.PageRange.format()
+	if o.Range != nil {
+		options.Range = o.Range.format()
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.format()
@@ -209,8 +209,7 @@ type PageBlobGetPageRangesOptions struct {
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	Range *HttpRange
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob]
@@ -228,7 +227,7 @@ func (o *PageBlobGetPageRangesOptions) format() (*pageBlobClientGetPageRangesOpt
 	return &pageBlobClientGetPageRangesOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
-		Range:      getSourceRange(o.Offset, o.Count),
+		Range:      o.Range.format(),
 		Snapshot:   o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 }
@@ -267,8 +266,7 @@ type PageBlobGetPageRangesDiffOptions struct {
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	Range *HttpRange
 
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
@@ -278,18 +276,18 @@ type PageBlobGetPageRangesDiffOptions struct {
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *PageBlobGetPageRangesDiffOptions) format() (pageBlobClientGetPageRangesDiffOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *PageBlobGetPageRangesDiffOptions) format() (*pageBlobClientGetPageRangesDiffOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
-		return pageBlobClientGetPageRangesDiffOptions{}, nil, nil
+		return nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.format()
-	return pageBlobClientGetPageRangesDiffOptions{
+	return &pageBlobClientGetPageRangesDiffOptions{
 		Marker:          o.Marker,
 		Maxresults:      o.MaxResults,
 		PrevSnapshotURL: o.PrevSnapshotURL,
 		Prevsnapshot:    o.PrevSnapshot,
-		Range:           getSourceRange(o.Offset, o.Count),
+		Range:           o.Range.format(),
 		Snapshot:        o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 

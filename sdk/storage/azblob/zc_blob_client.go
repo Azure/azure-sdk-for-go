@@ -15,7 +15,6 @@ import (
 // BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client    *blobClient
-	conn      *connection
 	sharedKey *SharedKeyCredential
 }
 
@@ -24,22 +23,20 @@ func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientO
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
 // NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
 func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, nil, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
@@ -48,11 +45,10 @@ func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, optio
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client:    newBlobClient(blobURL, conn.Pipeline()),
-		conn:      conn,
 		sharedKey: cred,
 	}, nil
 }
@@ -80,11 +76,10 @@ func (b *BlobClient) WithSnapshot(snapshot string) (*BlobClient, error) {
 		return nil, err
 	}
 	p.Snapshot = snapshot
-	conn := b.conn
-	conn.u = p.URL()
+
+	pipeline := b.client.pl
 	return &BlobClient{
-		client:    newBlobClient(p.URL(), conn.Pipeline()),
-		conn:      conn,
+		client:    newBlobClient(p.URL(), pipeline),
 		sharedKey: b.sharedKey,
 	}, nil
 }
@@ -97,11 +92,10 @@ func (b *BlobClient) WithVersionID(versionID string) (*BlobClient, error) {
 		return nil, err
 	}
 	p.VersionID = versionID
-	conn := b.conn
-	conn.u = p.URL()
+
+	pipeline := b.client.pl
 	return &BlobClient{
-		client:    newBlobClient(p.URL(), conn.Pipeline()),
-		conn:      conn,
+		client:    newBlobClient(p.URL(), pipeline),
 		sharedKey: b.sharedKey,
 	}, nil
 }

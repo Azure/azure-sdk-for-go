@@ -27,7 +27,6 @@ const (
 // ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client    *serviceClient
-	conn      *connection
 	sharedKey *SharedKeyCredential
 }
 
@@ -42,11 +41,10 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(serviceURL, authPolicy, conOptions)
+	conn := newConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
@@ -54,11 +52,10 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(serviceURL, nil, conOptions)
+	conn := newConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
-		conn:   conn,
 	}, nil
 }
 
@@ -68,11 +65,10 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(serviceURL, authPolicy, conOptions)
+	conn := newConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client:    newServiceClient(conn.Endpoint(), conn.Pipeline()),
-		conn:      conn,
 		sharedKey: cred,
 	}, nil
 }
@@ -93,10 +89,9 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
 func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
-	containerURL := appendToURLPath(s.conn.Endpoint(), containerName)
+	containerURL := appendToURLPath(s.client.endpoint, containerName)
 	return &ContainerClient{
-		client:    newContainerClient(containerURL, s.conn.Pipeline()),
-		conn:      s.conn,
+		client:    newContainerClient(containerURL, s.client.pl),
 		sharedKey: s.sharedKey,
 	}, nil
 }
@@ -246,7 +241,7 @@ func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissio
 		return "", err
 	}
 
-	endpoint := s.conn.Endpoint()
+	endpoint := s.client.endpoint
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

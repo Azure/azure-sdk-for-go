@@ -816,7 +816,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 //
 //	offset, count := int64(0), int64(contentSize)
 //	uploadPagesOptions := PageBlobUploadPagesOptions{
-//		PageRange: &HttpRange{offset, count},
+//		Range: &HttpRange{offset, count},
 //		CpkInfo:   &testCPKByValue,
 //	}
 //	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -826,7 +826,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
 //	_assert.Nil(err)
-//	pageListResp := resp.PageList.PageRange
+//	pageListResp := resp.PageList.Range
 //	start, end := int64(0), int64(contentSize-1)
 //	rawStart, rawEnd := pageListResp[0].Raw()
 //	_assert.Equal(rawStart, start)
@@ -873,7 +873,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 //
 //	offset, count := int64(0), int64(contentSize)
 //	uploadPagesOptions := PageBlobUploadPagesOptions{
-//		PageRange:    &HttpRange{offset, count},
+//		Range:    &HttpRange{offset, count},
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -883,9 +883,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
 //	_assert.Nil(err)
-//	pageListResp := resp.PageList.PageRange
+//	pageListResp := resp.PageList.Range
 //	start, end := int64(0), int64(contentSize-1)
-//	// _assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+//	// _assert((*pageListResp)[0], chk.DeepEquals, Range{Start: &start, End: &end})
 //	rawStart, rawEnd := pageListResp[0].Raw()
 //	_assert.Equal(rawStart, start)
 //	_assert.Equal(rawEnd, end)
@@ -926,7 +926,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		Range: &HttpRange{offset, count},
 	}
 	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
@@ -1011,7 +1011,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		Range: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
@@ -1084,7 +1084,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		Range: &HttpRange{offset, count},
 	}
 	uploadResp, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
@@ -1176,7 +1176,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	contentSize := 2 * 1024
 //	r := getReaderToGeneratedBytes(contentSize)
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
+//	uploadPagesOptions := PageBlobUploadPagesOptions{Range: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
 //	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 //	_assert.Nil(err)
 //
@@ -1187,13 +1187,13 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	_assert.Nil(err)
 //
 //	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-//	uploadPagesOptions1 := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
+//	uploadPagesOptions1 := PageBlobUploadPagesOptions{Range: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
 //	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 //	_assert.Nil(err)
 //
 //	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
 //	_assert.Nil(err)
-//	pageRangeResp := pageListResp.PageList.PageRange
+//	pageRangeResp := pageListResp.PageList.Range
 //	_assert.NotNil(pageRangeResp)
 //	_assert.Len(pageRangeResp, 1)
 //	rawStart, rawEnd := pageRangeResp[0].Raw()
@@ -1209,7 +1209,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //
 //	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
 //	_assert.Nil(err)
-//	_assert.Nil(pageListResp.PageList.PageRange)
+//	_assert.Nil(pageListResp.PageList.Range)
 //}
 
 func (s *azblobTestSuite) TestBlobResizeWithCPK() {

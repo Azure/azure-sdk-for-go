@@ -22,13 +22,12 @@ func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *C
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:   conn,
 		},
 	}, nil
 }
@@ -36,13 +35,12 @@ func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *C
 // NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
 func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*AppendBlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, nil, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:   conn,
 		},
 	}, nil
 }
@@ -52,13 +50,12 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, authPolicy, conOptions)
+	conn := newConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),
 		BlobClient: BlobClient{
 			client:    newBlobClient(conn.Endpoint(), conn.Pipeline()),
-			conn:      conn,
 			sharedKey: cred,
 		},
 	}, nil
@@ -74,12 +71,12 @@ func (ab *AppendBlobClient) WithSnapshot(snapshot string) (*AppendBlobClient, er
 
 	p.Snapshot = snapshot
 	endpoint := p.URL()
+	pipeline := ab.client.pl
 
 	return &AppendBlobClient{
-		client: newAppendBlobClient(endpoint, ab.conn.Pipeline()),
+		client: newAppendBlobClient(endpoint, pipeline),
 		BlobClient: BlobClient{
-			client:    newBlobClient(endpoint, ab.conn.Pipeline()),
-			conn:      ab.conn,
+			client:    newBlobClient(endpoint, pipeline),
 			sharedKey: ab.sharedKey,
 		},
 	}, nil
@@ -95,12 +92,12 @@ func (ab *AppendBlobClient) WithVersionID(versionID string) (*AppendBlobClient, 
 
 	p.VersionID = versionID
 	endpoint := p.URL()
+	pipeline := ab.client.pl
 
 	return &AppendBlobClient{
-		client: newAppendBlobClient(endpoint, ab.conn.Pipeline()),
+		client: newAppendBlobClient(endpoint, pipeline),
 		BlobClient: BlobClient{
-			client:    newBlobClient(endpoint, ab.conn.Pipeline()),
-			conn:      ab.conn,
+			client:    newBlobClient(endpoint, pipeline),
 			sharedKey: ab.sharedKey,
 		},
 	}, nil

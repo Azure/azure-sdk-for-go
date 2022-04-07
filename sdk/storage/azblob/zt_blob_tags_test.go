@@ -688,7 +688,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := PageBlobUploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		Range: &HttpRange{offset, count},
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
 	_assert.Nil(err)

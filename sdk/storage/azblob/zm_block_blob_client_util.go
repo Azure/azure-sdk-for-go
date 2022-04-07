@@ -44,6 +44,7 @@ func (o *BlockBlobUploadOptions) format() (*blockBlobClientUploadOptions, *BlobH
 	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// BlockBlobUploadResponse contains the response from method BlockBlobClient.Upload.
 type BlockBlobUploadResponse struct {
 	blockBlobClientUploadResponse
 }
@@ -78,6 +79,7 @@ func (o *BlockBlobStageBlockOptions) format() (*blockBlobClientStageBlockOptions
 	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
+// BlockBlobStageBlockResponse contains the response from method BlockBlobClient.StageBlock.
 type BlockBlobStageBlockResponse struct {
 	blockBlobClientStageBlockResponse
 }
@@ -125,6 +127,7 @@ func (o *BlockBlobStageBlockFromURLOptions) format() (*blockBlobClientStageBlock
 	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
 }
 
+// BlockBlobStageBlockFromURLResponse contains the response from method BlockBlobClient.StageBlockFromURL.
 type BlockBlobStageBlockFromURLResponse struct {
 	blockBlobClientStageBlockFromURLResponse
 }
@@ -168,6 +171,7 @@ func (o *BlockBlobCommitBlockListOptions) format() (*blockBlobClientCommitBlockL
 	return options, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// BlockBlobCommitBlockListResponse contains the response from method BlockBlobClient.CommitBlockList.
 type BlockBlobCommitBlockListResponse struct {
 	blockBlobClientCommitBlockListResponse
 }
@@ -193,6 +197,7 @@ func (o *BlockBlobGetBlockListOptions) format() (*blockBlobClientGetBlockListOpt
 	return &blockBlobClientGetBlockListOptions{Snapshot: o.Snapshot}, leaseAccessConditions, modifiedAccessConditions
 }
 
+// BlockBlobGetBlockListResponse contains the response from method BlockBlobClient.GetBlockList.
 type BlockBlobGetBlockListResponse struct {
 	blockBlobClientGetBlockListResponse
 }
@@ -252,6 +257,7 @@ func (o *BlockBlobCopyFromURLOptions) format() (*blobClientCopyFromURLOptions, *
 	return options, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }
 
+// BlockBlobCopyFromURLResponse contains the response from method BlockBlobClient.CopyFromURL.
 type BlockBlobCopyFromURLResponse struct {
 	blobClientCopyFromURLResponse
 }

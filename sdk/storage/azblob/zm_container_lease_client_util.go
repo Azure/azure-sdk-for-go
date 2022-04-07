@@ -40,6 +40,7 @@ func (o *ContainerAcquireLeaseOptions) format() (containerClientAcquireLeaseOpti
 	return containerAcquireLeaseOptions, o.ModifiedAccessConditions
 }
 
+// ContainerAcquireLeaseResponse contains the response from method ContainerLeaseClient.AcquireLease.
 type ContainerAcquireLeaseResponse struct {
 	containerClientAcquireLeaseResponse
 }
@@ -68,6 +69,7 @@ func (o *ContainerBreakLeaseOptions) format() (*containerClientBreakLeaseOptions
 	return containerBreakLeaseOptions, o.ModifiedAccessConditions
 }
 
+// ContainerBreakLeaseResponse contains the response from method ContainerLeaseClient.BreakLease.
 type ContainerBreakLeaseResponse struct {
 	containerClientBreakLeaseResponse
 }
@@ -101,6 +103,7 @@ func (o *ContainerChangeLeaseOptions) format() (*string, *containerClientChangeL
 	return o.ProposedLeaseID, nil, o.ModifiedAccessConditions, err
 }
 
+// ContainerChangeLeaseResponse contains the response from method ContainerLeaseClient.ChangeLease.
 type ContainerChangeLeaseResponse struct {
 	containerClientChangeLeaseResponse
 }
@@ -124,6 +127,7 @@ func (o *ContainerReleaseLeaseOptions) format() (*containerClientReleaseLeaseOpt
 	return nil, o.ModifiedAccessConditions
 }
 
+// ContainerReleaseLeaseResponse contains the response from method ContainerLeaseClient.ReleaseLease.
 type ContainerReleaseLeaseResponse struct {
 	containerClientReleaseLeaseResponse
 }
@@ -147,6 +151,7 @@ func (o *ContainerRenewLeaseOptions) format() (*containerClientRenewLeaseOptions
 	return nil, o.ModifiedAccessConditions
 }
 
+// ContainerRenewLeaseResponse contains the response from method ContainerLeaseClient.RenewLease.
 type ContainerRenewLeaseResponse struct {
 	containerClientRenewLeaseResponse
 }

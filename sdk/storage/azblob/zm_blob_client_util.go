@@ -121,6 +121,7 @@ func (o *BlobDeleteOptions) format() (*blobClientDeleteOptions, *LeaseAccessCond
 	return &basics, o.BlobAccessConditions.LeaseAccessConditions, o.BlobAccessConditions.ModifiedAccessConditions
 }
 
+// BlobDeleteResponse contains the response from method BlobClient.Delete.
 type BlobDeleteResponse struct {
 	blobClientDeleteResponse
 }
@@ -138,6 +139,7 @@ func (o *BlobUndeleteOptions) format() *blobClientUndeleteOptions {
 	return nil
 }
 
+// BlobUndeleteResponse contains the response from method BlobClient.Undelete.
 type BlobUndeleteResponse struct {
 	blobClientUndeleteResponse
 }
@@ -166,6 +168,7 @@ func (o *BlobSetTierOptions) format() (*blobClientSetTierOptions, *LeaseAccessCo
 	return &basics, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// BlobSetTierResponse contains the response from method BlobClient.SetTier.
 type BlobSetTierResponse struct {
 	blobClientSetTierResponse
 }
@@ -236,6 +239,7 @@ func (o *BlobSetHTTPHeadersOptions) format() (*blobClientSetHTTPHeadersOptions, 
 	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// BlobSetHTTPHeadersResponse contains the response from method BlobClient.SetHTTPHeaders.
 type BlobSetHTTPHeadersResponse struct {
 	blobClientSetHTTPHeadersResponse
 }
@@ -263,6 +267,7 @@ func (o *BlobSetMetadataOptions) format() (leaseAccessConditions *LeaseAccessCon
 	return o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
 }
 
+// BlobSetMetadataResponse contains the response from method BlobClient.SetMetadata.
 type BlobSetMetadataResponse struct {
 	blobClientSetMetadataResponse
 }
@@ -295,6 +300,7 @@ func (o *BlobCreateSnapshotOptions) format() (blobSetMetadataOptions *blobClient
 	return &basics, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+// BlobCreateSnapshotResponse contains the response from method BlobClient.CreateSnapshot
 type BlobCreateSnapshotResponse struct {
 	blobClientCreateSnapshotResponse
 }
@@ -355,6 +361,7 @@ func (o *BlobStartCopyOptions) format() (blobStartCopyFromUrlOptions *blobClient
 	return &basics, o.SourceModifiedAccessConditions, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+// BlobStartCopyFromURLResponse contains the response from method BlobClient.StartCopyFromURL.
 type BlobStartCopyFromURLResponse struct {
 	blobClientStartCopyFromURLResponse
 }
@@ -378,6 +385,7 @@ func (o *BlobAbortCopyOptions) format() (blobAbortCopyFromUrlOptions *blobClient
 	return nil, o.LeaseAccessConditions
 }
 
+// BlobAbortCopyFromURLResponse contains the response from method BlobClient.AbortCopyFromURL
 type BlobAbortCopyFromURLResponse struct {
 	blobClientAbortCopyFromURLResponse
 }
@@ -419,6 +427,7 @@ func (o *BlobSetTagsOptions) format() (*blobClientSetTagsOptions, *ModifiedAcces
 	return options, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+// BlobSetTagsResponse contains the response from method BlobClient.SetTags
 type BlobSetTagsResponse struct {
 	blobClientSetTagsResponse
 }
@@ -455,6 +464,7 @@ func (o *BlobGetTagsOptions) format() (*blobClientGetTagsOptions, *ModifiedAcces
 	return options, modifiedAccessConditions, leaseAccessConditions
 }
 
+// BlobGetTagsResponse contains the response from method BlobClient.GetTags
 type BlobGetTagsResponse struct {
 	blobClientGetTagsResponse
 }

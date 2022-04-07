@@ -101,6 +101,7 @@ type ArrowField struct {
 	Scale     *int32  `xml:"Scale"`
 }
 
+// BlobFlatListSegment struct
 type BlobFlatListSegment struct {
 	// REQUIRED
 	BlobItems []*BlobItemInternal `xml:"Blob"`
@@ -140,6 +141,7 @@ type BlobHTTPHeaders struct {
 	BlobContentType *string
 }
 
+// BlobHierarchyListSegment struct
 type BlobHierarchyListSegment struct {
 	// REQUIRED
 	BlobItems    []*BlobItemInternal `xml:"Blob"`
@@ -210,6 +212,7 @@ func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	return nil
 }
 
+// BlobPrefix struct
 type BlobPrefix struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
@@ -331,6 +334,7 @@ func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 	return nil
 }
 
+// BlobTag struct
 type BlobTag struct {
 	// REQUIRED
 	Key *string `xml:"Key"`
@@ -370,6 +374,7 @@ type Block struct {
 	Size *int64 `xml:"Size"`
 }
 
+// BlockList struct
 type BlockList struct {
 	CommittedBlocks   []*Block `xml:"CommittedBlocks>Block"`
 	UncommittedBlocks []*Block `xml:"UncommittedBlocks>Block"`
@@ -394,6 +399,7 @@ func (b BlockList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// BlockLookupList struct
 type BlockLookupList struct {
 	Committed   []*string `xml:"Committed"`
 	Latest      []*string `xml:"Latest"`
@@ -424,6 +430,7 @@ func (b BlockLookupList) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return e.EncodeElement(aux, start)
 }
 
+// ClearRange enum
 type ClearRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`

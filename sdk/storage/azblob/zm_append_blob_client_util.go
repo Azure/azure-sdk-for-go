@@ -52,6 +52,7 @@ func (o *AppendBlobCreateOptions) format() (*appendBlobClientCreateOptions, *Blo
 	return &options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// AppendBlobCreateResponse contains the response from method AppendBlobClient.Create.
 type AppendBlobCreateResponse struct {
 	appendBlobClientCreateResponse
 }
@@ -91,6 +92,7 @@ func (o *AppendBlobAppendBlockOptions) format() (*appendBlobClientAppendBlockOpt
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
+// AppendBlobAppendBlockResponse contains the response from method AppendBlobClient.AppendBlock.
 type AppendBlobAppendBlockResponse struct {
 	appendBlobClientAppendBlockResponse
 }
@@ -141,6 +143,7 @@ func (o *AppendBlobAppendBlockFromURLOptions) format() (*appendBlobClientAppendB
 	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
+// AppendBlobAppendBlockFromURLResponse contains the response from method AppendBlobClient.AppendBlockFromURL.
 type AppendBlobAppendBlockFromURLResponse struct {
 	appendBlobClientAppendBlockFromURLResponse
 }
@@ -166,6 +169,7 @@ func (o *AppendBlobSealOptions) format() (leaseAccessConditions *LeaseAccessCond
 	return
 }
 
+// AppendBlobSealResponse contains the response from method AppendBlobClient.Seal.
 type AppendBlobSealResponse struct {
 	appendBlobClientSealResponse
 }

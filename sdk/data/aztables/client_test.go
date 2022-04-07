@@ -6,16 +6,32 @@ package aztables
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/stretchr/testify/require"
 )
 
 var services = []string{"storage", "cosmos"}
+
+type ODataError struct {
+	Error ODataMessage `json:"odata.error"`
+}
+
+type ODataMessage struct {
+	Code  TableErrorCode `json:"code"`
+	Value ODataValue     `json:"message"`
+}
+
+type ODataValue struct {
+	Language string `json:"lang"`
+	Value    string `json:"value"`
+}
 
 func TestServiceErrors(t *testing.T) {
 	for _, service := range services {
@@ -26,6 +42,20 @@ func TestServiceErrors(t *testing.T) {
 			// Create a duplicate table to produce an error
 			_, err := client.CreateTable(ctx, nil)
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
+
+			body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
+			require.NoError(t, err)
+			fmt.Println(string(body))
+
+			var m ODataError
+			err = json.Unmarshal(body, &m)
+			fmt.Println(m)
+			require.NoError(t, err)
+			require.Equal(t, TableAlreadyExists, m.Error.Code)
+			require.NotEqual(t, "", m.Error.Value.Language)
+			require.NotEqual(t, "", m.Error.Value.Value)
 		})
 	}
 }

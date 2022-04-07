@@ -565,3 +565,53 @@ func ExampleServiceClient_SetProperties() {
 		panic(err)
 	}
 }
+
+type ODataError struct {
+	Error ODataMessage `json:"odata.error"`
+}
+
+type ODataMessage struct {
+	Code  aztables.TableErrorCode `json:"code"`
+	Value ODataValue              `json:"message"`
+}
+
+type ODataValue struct {
+	Language string `json:"lang"`
+	Value    string `json:"value"`
+}
+
+func ExampleTableErrorCode() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = service.CreateTable(context.TODO(), "myTable", nil)
+	if err != nil {
+		errorCode := RetrieveTableErrorCode(err)
+		if errorCode != nil {
+			// check the error to recover
+			switch *errorCode {
+			case aztables.TableAlreadyExists:
+				fmt.Println("table already exists")
+			case aztables.TableBeingDeleted:
+				fmt.Println("table is being deleted, try again after a back off")
+			default:
+				fmt.Println(errorCode)
+			}
+		}
+	}
+}
+
+func RetrieveTableErrorCode(err error) *aztables.TableErrorCode {
+	// fill in later
+}

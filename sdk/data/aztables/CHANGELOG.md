@@ -3,6 +3,7 @@
 ## 0.7.1 (Unreleased)
 
 ### Features Added
+* Added `TableErrorCode` for determining reasons of failures
 
 ### Breaking Changes
 

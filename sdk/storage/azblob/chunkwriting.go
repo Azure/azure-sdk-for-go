@@ -21,8 +21,8 @@ import (
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
 // This allows us to provide a local implementation that fakes the server for hermetic testing.
 type blockWriter interface {
-	StageBlock(context.Context, string, io.ReadSeekCloser, *StageBlockOptions) (BlockBlobStageBlockResponse, error)
-	CommitBlockList(context.Context, []string, *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error)
+	StageBlock(context.Context, string, io.ReadSeekCloser, *BlockBlobStageBlockOptions) (BlockBlobStageBlockResponse, error)
+	CommitBlockList(context.Context, []string, *BlockBlobCommitBlockListOptions) (BlockBlobCommitBlockListResponse, error)
 }
 
 // copyFromReader copies a source io.Reader to blob storage using concurrent uploads.

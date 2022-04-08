@@ -107,7 +107,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		connStr,
 		u.listTestGlobal.containerName,
 		&azblob.ClientOptions{
-			Transporter: u.PerfTestOptions.Transporter,
+			Transport: u.PerfTestOptions.Transporter,
 		},
 	)
 	if err != nil {
@@ -120,8 +120,8 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 
 func (m *listPerfTest) Run(ctx context.Context) error {
 	c := int32(listTestOpts.count)
-	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{
-		Maxresults: &c,
+	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobsFlatOptions{
+		MaxResults: &c,
 	})
 	for pager.NextPage(context.Background()) {
 	}

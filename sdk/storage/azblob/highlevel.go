@@ -56,17 +56,17 @@ type HighLevelUploadToBlockBlobOption struct {
 	TransactionalContentMD5 *[]byte
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
-	leaseAccessConditions, _ := o.BlobAccessConditions.pointers()
-	return &StageBlockOptions{
+func (o *HighLevelUploadToBlockBlobOption) getStageBlockOptions() *BlockBlobStageBlockOptions {
+	leaseAccessConditions, _ := o.BlobAccessConditions.format()
+	return &BlockBlobStageBlockOptions{
 		CpkInfo:               o.CpkInfo,
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
 	}
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
-	return &UploadBlockBlobOptions{
+func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *BlockBlobUploadOptions {
+	return &BlockBlobUploadOptions{
 		TagsMap:              o.TagsMap,
 		Metadata:             o.Metadata,
 		Tier:                 o.AccessTier,
@@ -77,8 +77,8 @@ func (o *HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBl
 	}
 }
 
-func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *CommitBlockListOptions {
-	return &CommitBlockListOptions{
+func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
+	return &BlockBlobCommitBlockListOptions{
 		BlobTagsMap:     o.TagsMap,
 		Metadata:        o.Metadata,
 		Tier:            o.AccessTier,
@@ -213,15 +213,15 @@ type HighLevelDownloadFromBlobOptions struct {
 	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPropertiesOptions {
-	return &GetBlobPropertiesOptions{
+func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *BlobGetPropertiesOptions {
+	return &BlobGetPropertiesOptions{
 		BlobAccessConditions: o.BlobAccessConditions,
 		CpkInfo:              o.CpkInfo,
 	}
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadBlobOptions {
-	return &DownloadBlobOptions{
+func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *BlobDownloadOptions {
+	return &BlobDownloadOptions{
 		BlobAccessConditions: o.BlobAccessConditions,
 		CpkInfo:              o.CpkInfo,
 		CpkScopeInfo:         o.CpkScopeInfo,
@@ -587,12 +587,27 @@ func (u *UploadStreamToBlockBlobOptions) defaults() error {
 	u.transferMangerNotSet = true
 	return nil
 }
-func (u *UploadStreamToBlockBlobOptions) getStageBlockOptions() *StageBlockOptions {
-	return &StageBlockOptions{}
+func (u *UploadStreamToBlockBlobOptions) getStageBlockOptions() *BlockBlobStageBlockOptions {
+	leaseAccessConditions, _ := u.BlobAccessConditions.format()
+	return &BlockBlobStageBlockOptions{
+		CpkInfo:               u.CpkInfo,
+		CpkScopeInfo:          u.CpkScopeInfo,
+		LeaseAccessConditions: leaseAccessConditions,
+	}
 }
 
-func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBlockListOptions {
-	return &CommitBlockListOptions{}
+func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
+	options := &BlockBlobCommitBlockListOptions{
+		BlobTagsMap:          u.BlobTagsMap,
+		Metadata:             u.Metadata,
+		Tier:                 u.AccessTier,
+		BlobHTTPHeaders:      u.HTTPHeaders,
+		CpkInfo:              u.CpkInfo,
+		CpkScopeInfo:         u.CpkScopeInfo,
+		BlobAccessConditions: u.BlobAccessConditions,
+	}
+
+	return options
 }
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.

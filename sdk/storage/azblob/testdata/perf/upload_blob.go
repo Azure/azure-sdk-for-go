@@ -86,7 +86,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		connStr,
 		u.uploadTestGlobal.containerName,
 		&azblob.ClientOptions{
-			Transporter: u.PerfTestOptions.Transporter,
+			Transport: u.PerfTestOptions.Transporter,
 		},
 	)
 	if err != nil {

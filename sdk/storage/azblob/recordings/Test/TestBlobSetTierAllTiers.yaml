@@ -10,11 +10,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:53 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers?restype=container
     method: PUT
   response:
@@ -23,17 +23,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:53 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       Etag:
-      - '"0x8DA06867E473032"'
+      - '"0x8DA18916DDDD802"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b73bbc-001e-004a-1a6f-382cf7000000
+      - 4fcdbc72-901e-0077-7a7a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
@@ -50,13 +50,13 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
     method: PUT
   response:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 15 Mar 2022 13:19:53 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Etag:
-      - '"0x8DA06867E84CAF5"'
+      - '"0x8DA18916E15A62C"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 21b73d9f-001e-004a-3e6f-382cf7000000
+      - 4fcdbecf-901e-0077-297a-4a5aec000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:54.4362741Z"
+      - "2022-04-07T12:23:32.2583596Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,13 +96,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - Hot
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -111,13 +111,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b73f4e-001e-004a-416f-382cf7000000
+      - 4fcdc005-901e-0077-437a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -130,11 +130,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:31 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -149,21 +149,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Etag:
-      - '"0x8DA06867E84CAF5"'
+      - '"0x8DA18916E15A62C"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Hot
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -171,13 +171,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 21b74125-001e-004a-726f-382cf7000000
+      - 4fcdc19a-901e-0077-2d7a-4a5aec000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:54.4362741Z"
+      - "2022-04-07T12:23:32.2583596Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -190,13 +190,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - Cool
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -205,13 +205,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b7428a-001e-004a-2e6f-382cf7000000
+      - 4fcdc356-901e-0077-4e7a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -224,11 +224,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -243,21 +243,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       Etag:
-      - '"0x8DA06867E84CAF5"'
+      - '"0x8DA18916E15A62C"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Cool
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -265,13 +265,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 21b743a8-001e-004a-1e6f-382cf7000000
+      - 4fcdc5c8-901e-0077-117a-4a5aec000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:54.4362741Z"
+      - "2022-04-07T12:23:32.2583596Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -284,13 +284,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - Archive
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -299,13 +299,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b744e9-001e-004a-446f-382cf7000000
+      - 4fcdc7d7-901e-0077-7c7a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -318,11 +318,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -337,21 +337,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:55 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       Etag:
-      - '"0x8DA06867E84CAF5"'
+      - '"0x8DA18916E15A62C"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Archive
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:54 GMT
+      - Thu, 07 Apr 2022 12:23:32 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -359,13 +359,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 21b746ae-001e-004a-616f-382cf7000000
+      - 4fcdc93b-901e-0077-4a7a-4a5aec000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:54.4362741Z"
+      - "2022-04-07T12:23:32.2583596Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -378,11 +378,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers?restype=container
     method: PUT
   response:
@@ -391,17 +391,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Etag:
-      - '"0x8DA068680203A11"'
+      - '"0x8DA18916F83B098"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f028-701c-0022-4f6f-389825000000
+      - 842b7feb-a01c-0064-187a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
@@ -416,15 +416,15 @@ interactions:
       Content-Length:
       - "0"
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: PUT
   response:
@@ -433,19 +433,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f02d-701c-0022-546f-389825000000
+      - 842b7ff7-a01c-0064-247a-4a46b3000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
@@ -458,13 +458,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P4
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -473,13 +473,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f033-701c-0022-5a6f-389825000000
+      - 842b8005-a01c-0064-327a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -492,11 +492,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -509,11 +509,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:56 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -523,17 +523,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f039-701c-0022-606f-389825000000
+      - 842b802d-a01c-0064-5a7a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -546,13 +546,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P6
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -561,13 +561,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f03b-701c-0022-626f-389825000000
+      - 842b803c-a01c-0064-697a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -580,11 +580,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -597,11 +597,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -611,17 +611,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f03e-701c-0022-656f-389825000000
+      - 842b8051-a01c-0064-7e7a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -634,13 +634,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P10
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -649,13 +649,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f045-701c-0022-6c6f-389825000000
+      - 842b8064-a01c-0064-117a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -668,11 +668,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -685,11 +685,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -699,17 +699,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f04d-701c-0022-746f-389825000000
+      - 842b807b-a01c-0064-287a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -722,13 +722,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P20
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -737,13 +737,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f054-701c-0022-7b6f-389825000000
+      - 842b808b-a01c-0064-387a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -756,11 +756,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -773,11 +773,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -787,17 +787,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f05f-701c-0022-066f-389825000000
+      - 842b80a3-a01c-0064-507a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -810,13 +810,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P30
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -825,13 +825,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f068-701c-0022-0f6f-389825000000
+      - 842b80c0-a01c-0064-6d7a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -844,11 +844,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -861,11 +861,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -875,17 +875,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f06f-701c-0022-166f-389825000000
+      - 842b80d1-a01c-0064-7e7a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -898,13 +898,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P40
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -913,13 +913,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f078-701c-0022-1f6f-389825000000
+      - 842b80e8-a01c-0064-157a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -932,11 +932,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:58 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -949,11 +949,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -963,17 +963,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f07f-701c-0022-266f-389825000000
+      - 842b80f8-a01c-0064-257a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -986,13 +986,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Access-Tier:
       - P50
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:58 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
     method: PUT
   response:
@@ -1001,13 +1001,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f086-701c-0022-2d6f-389825000000
+      - 842b8108-a01c-0064-357a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -1020,11 +1020,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:58 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
     method: HEAD
   response:
@@ -1037,11 +1037,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Etag:
-      - '"0x8DA06868029CACA"'
+      - '"0x8DA18916F8AE31F"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -1051,17 +1051,17 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - a4b8f08c-701c-0022-336f-389825000000
+      - 842b8113-a01c-0064-407a-4a46b3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 200 OK
     code: 200
     duration: ""
@@ -1074,11 +1074,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:58 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiers?restype=container
     method: DELETE
   response:
@@ -1087,13 +1087,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - a4b8f092-701c-0022-396f-389825000000
+      - 842b8124-a01c-0064-517a-4a46b3000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 202 Accepted
     code: 202
     duration: ""
@@ -1106,11 +1106,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:58 GMT
+      - Thu, 07 Apr 2022 12:23:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers?restype=container
     method: DELETE
   response:
@@ -1119,13 +1119,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:57 GMT
+      - Thu, 07 Apr 2022 12:23:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b74f0e-001e-004a-5e6f-382cf7000000
+      - 4fcdd1d4-901e-0077-427a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 202 Accepted
     code: 202
     duration: ""

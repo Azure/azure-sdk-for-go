@@ -28,7 +28,7 @@ To create a client object, you will need the account's blob service endpoint URL
 Types of Credentials
 
 The clients support different forms of authentication.
-The azblob library supports any of the `azcore.TokenCredential` interfaces, authorization via a Connection String,
+The azblob library supports any of the `azcore.TokenCredential` interfaces, authorization via a connection String,
 or authorization with a Shared Access Signature token.
 
 Using a Shared Key
@@ -52,7 +52,7 @@ Use the key as the credential parameter to authenticate the client:
 	serviceClient, err := azblob.NewServiceClient("https://<my_account_name>.blob.core.windows.net/", cred, nil)
 	handle(err)
 
-Using a Connection String
+Using a connection String
 
 Depending on your use case and authorization method, you may prefer to initialize a client instance with a connection string instead of providing the account URL and credential separately.
 To do this, pass the connection string to the service client's `NewServiceClientFromConnectionString` method.
@@ -105,13 +105,13 @@ There are three different clients provided to interact with the various componen
     * Get and set account settings.
     * Query, create, and delete containers within the account.
 
-2. **`ContainerClient`**
+2. **`containerClient`**
     * Get and set container access settings, properties, and metadata.
     * Create, delete, and query blobs within the container.
     * `ContainerLeaseClient` to support container lease management.
 
 3. **`BlobClient`**
-    * `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
+    * `appendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
     * Get and set blob properties.
     * Perform CRUD operations on a given blob.
     * `BlobLeaseClient` to support blob lease management.

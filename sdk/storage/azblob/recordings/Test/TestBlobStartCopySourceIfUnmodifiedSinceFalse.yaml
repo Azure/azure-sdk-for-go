@@ -10,11 +10,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:21:01 GMT
+      - Thu, 07 Apr 2022 12:24:44 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopysourceifunmodifiedsincefalse?restype=container
     method: PUT
   response:
@@ -23,17 +23,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:21:01 GMT
+      - Thu, 07 Apr 2022 12:24:44 GMT
       Etag:
-      - '"0x8DA0686A6B53CF0"'
+      - '"0x8DA18919982B2CB"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:21:01 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b8876a-001e-004a-7a6f-382cf7000000
+      - 4fcf38b5-901e-0077-7c7a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
@@ -50,13 +50,13 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:21:02 GMT
+      - Thu, 07 Apr 2022 12:24:44 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopysourceifunmodifiedsincefalse/gotestblobblobstartcopysourceifunmodifiedsincefalse
     method: PUT
   response:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 15 Mar 2022 13:21:01 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       Etag:
-      - '"0x8DA0686A6EC1C1D"'
+      - '"0x8DA189199BADA84"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:21:02 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 21b88979-001e-004a-5f6f-382cf7000000
+      - 4fcf3a5a-901e-0077-727a-4a5aec000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:21:02.2222365Z"
+      - "2022-04-07T12:24:45.4830724Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,34 +96,34 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Copy-Source:
       - https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopysourceifunmodifiedsincefalse/gotestblobblobstartcopysourceifunmodifiedsincefalse
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:21:02 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       X-Ms-Source-If-Unmodified-Since:
-      - Tue, 15 Mar 2022 13:20:51 GMT
+      - Thu, 07 Apr 2022 12:24:35 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopysourceifunmodifiedsincefalse/dstgotestblobblobstartcopysourceifunmodifiedsincefalse
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x53\x6F\x75\x72\x63\x65\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x6F\x75\x72\x63\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x32\x31\x62\x38\x38\x61\x64\x38\x2D\x30\x30\x31\x65\x2D\x30\x30\x34\x61\x2D\x32\x36\x36\x66\x2D\x33\x38\x32\x63\x66\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x32\x2D\x30\x33\x2D\x31\x35\x54\x31\x33\x3A\x32\x31\x3A\x30\x32\x2E\x34\x39\x37\x32\x36\x34\x38\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x53\x6F\x75\x72\x63\x65\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x6F\x75\x72\x63\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x34\x66\x63\x66\x33\x63\x32\x37\x2D\x39\x30\x31\x65\x2D\x30\x30\x37\x37\x2D\x37\x34\x37\x61\x2D\x34\x61\x35\x61\x65\x63\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x32\x2D\x30\x34\x2D\x30\x37\x54\x31\x32\x3A\x32\x34\x3A\x34\x35\x2E\x38\x38\x38\x36\x32\x35\x30\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "265"
       Content-Type:
       - application/xml
       Date:
-      - Tue, 15 Mar 2022 13:21:01 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - SourceConditionNotMet
       X-Ms-Request-Id:
-      - 21b88ad8-001e-004a-266f-382cf7000000
+      - 4fcf3c27-901e-0077-747a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 412 The source condition specified using HTTP conditional header(s) is
       not met.
     code: 412
@@ -137,11 +137,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:21:02 GMT
+      - Thu, 07 Apr 2022 12:24:45 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopysourceifunmodifiedsincefalse?restype=container
     method: DELETE
   response:
@@ -150,13 +150,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:21:02 GMT
+      - Thu, 07 Apr 2022 12:24:46 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b88d1d-001e-004a-3d6f-382cf7000000
+      - 4fcf3e0a-901e-0077-1a7a-4a5aec000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 202 Accepted
     code: 202
     duration: ""

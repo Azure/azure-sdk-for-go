@@ -10,7 +10,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 	"io"
 	"io/ioutil"
@@ -42,8 +41,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
+	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -411,9 +410,8 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: recording,
-					Retry:     policy.RetryOptions{MaxRetries: -1}},
+				Transport: recording,
+				Retry:     policy.RetryOptions{MaxRetries: -1},
 			}
 		}
 	}
@@ -441,9 +439,8 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: recording,
-					Retry:     policy.RetryOptions{MaxRetries: -1}},
+				Transport: recording,
+				Retry:     policy.RetryOptions{MaxRetries: -1},
 			}
 		}
 	}

@@ -477,122 +477,6 @@ type AzureADOnlyAuthProperties struct {
 	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
 }
 
-// BackupLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
-type BackupLongTermRetentionPoliciesCreateOrUpdateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(BackupLongTermRetentionPoliciesClient) (BackupLongTermRetentionPolicy, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *BackupLongTermRetentionPoliciesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for BackupLongTermRetentionPoliciesCreateOrUpdateFuture.Result.
-func (future *BackupLongTermRetentionPoliciesCreateOrUpdateFuture) result(client BackupLongTermRetentionPoliciesClient) (bltrp BackupLongTermRetentionPolicy, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		bltrp.Response.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if bltrp.Response.Response, err = future.GetResult(sender); err == nil && bltrp.Response.Response.StatusCode != http.StatusNoContent {
-		bltrp, err = client.CreateOrUpdateResponder(bltrp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", bltrp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// BackupLongTermRetentionPolicy a long term retention policy.
-type BackupLongTermRetentionPolicy struct {
-	autorest.Response `json:"-"`
-	// LongTermRetentionPolicyProperties - Resource properties.
-	*LongTermRetentionPolicyProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackupLongTermRetentionPolicy.
-func (bltrp BackupLongTermRetentionPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bltrp.LongTermRetentionPolicyProperties != nil {
-		objectMap["properties"] = bltrp.LongTermRetentionPolicyProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for BackupLongTermRetentionPolicy struct.
-func (bltrp *BackupLongTermRetentionPolicy) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var longTermRetentionPolicyProperties LongTermRetentionPolicyProperties
-				err = json.Unmarshal(*v, &longTermRetentionPolicyProperties)
-				if err != nil {
-					return err
-				}
-				bltrp.LongTermRetentionPolicyProperties = &longTermRetentionPolicyProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				bltrp.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				bltrp.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				bltrp.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
 // BackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type BackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
@@ -966,6 +850,63 @@ func (cnar CheckNameAvailabilityResponse) MarshalJSON() ([]byte, error) {
 type CompleteDatabaseRestoreDefinition struct {
 	// LastBackupName - The last backup name to apply
 	LastBackupName *string `json:"lastBackupName,omitempty"`
+}
+
+// CopyLongTermRetentionBackupParameters contains the information necessary to perform long term retention
+// backup copy operation.
+type CopyLongTermRetentionBackupParameters struct {
+	// CopyLongTermRetentionBackupParametersProperties - Resource properties.
+	*CopyLongTermRetentionBackupParametersProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CopyLongTermRetentionBackupParameters.
+func (cltrbp CopyLongTermRetentionBackupParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cltrbp.CopyLongTermRetentionBackupParametersProperties != nil {
+		objectMap["properties"] = cltrbp.CopyLongTermRetentionBackupParametersProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CopyLongTermRetentionBackupParameters struct.
+func (cltrbp *CopyLongTermRetentionBackupParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var copyLongTermRetentionBackupParametersProperties CopyLongTermRetentionBackupParametersProperties
+				err = json.Unmarshal(*v, &copyLongTermRetentionBackupParametersProperties)
+				if err != nil {
+					return err
+				}
+				cltrbp.CopyLongTermRetentionBackupParametersProperties = &copyLongTermRetentionBackupParametersProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// CopyLongTermRetentionBackupParametersProperties contains the properties to perform long term retention
+// backup copy operation.
+type CopyLongTermRetentionBackupParametersProperties struct {
+	// TargetSubscriptionID - The subscription that owns the target server
+	TargetSubscriptionID *string `json:"targetSubscriptionId,omitempty"`
+	// TargetResourceGroup - The resource group that owns the target server
+	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	// TargetServerResourceID - The resource Id of the target server that owns the database
+	TargetServerResourceID *string `json:"targetServerResourceId,omitempty"`
+	// TargetServerFullyQualifiedDomainName - The fully qualified domain name of the target server
+	TargetServerFullyQualifiedDomainName *string `json:"targetServerFullyQualifiedDomainName,omitempty"`
+	// TargetDatabaseName - The name of the database owns the copied backup.
+	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
+	// TargetBackupStorageRedundancy - The storage redundancy type of the copied backup. Possible values include: 'TargetBackupStorageRedundancyGeo', 'TargetBackupStorageRedundancyLocal', 'TargetBackupStorageRedundancyZone'
+	TargetBackupStorageRedundancy TargetBackupStorageRedundancy `json:"targetBackupStorageRedundancy,omitempty"`
 }
 
 // CreateDatabaseRestorePointDefinition contains the information necessary to perform a create database
@@ -1514,6 +1455,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -2071,14 +2015,16 @@ type DatabaseProperties struct {
 	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
 	// HighAvailabilityReplicaCount - The number of secondary replicas associated with the database that are used to provide high availability.
 	HighAvailabilityReplicaCount *int32 `json:"highAvailabilityReplicaCount,omitempty"`
-	// SecondaryType - The secondary type of the database if it is a secondary.  Valid values are Geo and Named. Possible values include: 'Geo', 'Named'
+	// SecondaryType - The secondary type of the database if it is a secondary.  Valid values are Geo and Named. Possible values include: 'SecondaryTypeGeo', 'SecondaryTypeNamed'
 	SecondaryType SecondaryType `json:"secondaryType,omitempty"`
 	// CurrentSku - READ-ONLY; The name and tier of the SKU.
 	CurrentSku *Sku `json:"currentSku,omitempty"`
 	// AutoPauseDelay - Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
 	AutoPauseDelay *int32 `json:"autoPauseDelay,omitempty"`
-	// StorageAccountType - The storage account type used to store backups for this database. Possible values include: 'GRS', 'LRS', 'ZRS'
-	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// CurrentBackupStorageRedundancy - READ-ONLY; The storage account type used to store backups for this database. Possible values include: 'CurrentBackupStorageRedundancyGeo', 'CurrentBackupStorageRedundancyLocal', 'CurrentBackupStorageRedundancyZone'
+	CurrentBackupStorageRedundancy CurrentBackupStorageRedundancy `json:"currentBackupStorageRedundancy,omitempty"`
+	// RequestedBackupStorageRedundancy - The storage account type to be used to store backups for this database. Possible values include: 'RequestedBackupStorageRedundancyGeo', 'RequestedBackupStorageRedundancyLocal', 'RequestedBackupStorageRedundancyZone'
+	RequestedBackupStorageRedundancy RequestedBackupStorageRedundancy `json:"requestedBackupStorageRedundancy,omitempty"`
 	// MinCapacity - Minimal capacity that database will always have allocated, if not paused
 	MinCapacity *float64 `json:"minCapacity,omitempty"`
 	// PausedDate - READ-ONLY; The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
@@ -2149,8 +2095,8 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	if dp.AutoPauseDelay != nil {
 		objectMap["autoPauseDelay"] = dp.AutoPauseDelay
 	}
-	if dp.StorageAccountType != "" {
-		objectMap["storageAccountType"] = dp.StorageAccountType
+	if dp.RequestedBackupStorageRedundancy != "" {
+		objectMap["requestedBackupStorageRedundancy"] = dp.RequestedBackupStorageRedundancy
 	}
 	if dp.MinCapacity != nil {
 		objectMap["minCapacity"] = dp.MinCapacity
@@ -5394,6 +5340,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -5773,6 +5722,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -10312,6 +10264,79 @@ func NewLongTermRetentionBackupListResultPage(cur LongTermRetentionBackupListRes
 	}
 }
 
+// LongTermRetentionBackupOperationResult a LongTermRetentionBackup operation result resource.
+type LongTermRetentionBackupOperationResult struct {
+	autorest.Response `json:"-"`
+	// LongTermRetentionOperationResultProperties - Resource properties.
+	*LongTermRetentionOperationResultProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermRetentionBackupOperationResult.
+func (ltrbor LongTermRetentionBackupOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ltrbor.LongTermRetentionOperationResultProperties != nil {
+		objectMap["properties"] = ltrbor.LongTermRetentionOperationResultProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LongTermRetentionBackupOperationResult struct.
+func (ltrbor *LongTermRetentionBackupOperationResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var longTermRetentionOperationResultProperties LongTermRetentionOperationResultProperties
+				err = json.Unmarshal(*v, &longTermRetentionOperationResultProperties)
+				if err != nil {
+					return err
+				}
+				ltrbor.LongTermRetentionOperationResultProperties = &longTermRetentionOperationResultProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ltrbor.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ltrbor.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ltrbor.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // LongTermRetentionBackupProperties properties of a long term retention backup
 type LongTermRetentionBackupProperties struct {
 	// ServerName - READ-ONLY; The server name that the backup database belong to.
@@ -10326,12 +10351,105 @@ type LongTermRetentionBackupProperties struct {
 	BackupTime *date.Time `json:"backupTime,omitempty"`
 	// BackupExpirationTime - READ-ONLY; The time the long term retention backup will expire.
 	BackupExpirationTime *date.Time `json:"backupExpirationTime,omitempty"`
+	// BackupStorageRedundancy - READ-ONLY; The storage redundancy type of the backup. Possible values include: 'Geo', 'Local', 'Zone'
+	BackupStorageRedundancy BackupStorageRedundancy `json:"backupStorageRedundancy,omitempty"`
+	// RequestedBackupStorageRedundancy - The storage redundancy type of the backup. Possible values include: 'Geo', 'Local', 'Zone'
+	RequestedBackupStorageRedundancy BackupStorageRedundancy `json:"requestedBackupStorageRedundancy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LongTermRetentionBackupProperties.
 func (ltrbp LongTermRetentionBackupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ltrbp.RequestedBackupStorageRedundancy != "" {
+		objectMap["requestedBackupStorageRedundancy"] = ltrbp.RequestedBackupStorageRedundancy
+	}
 	return json.Marshal(objectMap)
+}
+
+// LongTermRetentionBackupsCopyByResourceGroupFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type LongTermRetentionBackupsCopyByResourceGroupFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LongTermRetentionBackupsClient) (LongTermRetentionBackupOperationResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LongTermRetentionBackupsCopyByResourceGroupFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LongTermRetentionBackupsCopyByResourceGroupFuture.Result.
+func (future *LongTermRetentionBackupsCopyByResourceGroupFuture) result(client LongTermRetentionBackupsClient) (ltrbor LongTermRetentionBackupOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsCopyByResourceGroupFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ltrbor.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionBackupsCopyByResourceGroupFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ltrbor.Response.Response, err = future.GetResult(sender); err == nil && ltrbor.Response.Response.StatusCode != http.StatusNoContent {
+		ltrbor, err = client.CopyByResourceGroupResponder(ltrbor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsCopyByResourceGroupFuture", "Result", ltrbor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LongTermRetentionBackupsCopyFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LongTermRetentionBackupsCopyFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LongTermRetentionBackupsClient) (LongTermRetentionBackupOperationResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LongTermRetentionBackupsCopyFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LongTermRetentionBackupsCopyFuture.Result.
+func (future *LongTermRetentionBackupsCopyFuture) result(client LongTermRetentionBackupsClient) (ltrbor LongTermRetentionBackupOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsCopyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ltrbor.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionBackupsCopyFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ltrbor.Response.Response, err = future.GetResult(sender); err == nil && ltrbor.Response.Response.StatusCode != http.StatusNoContent {
+		ltrbor, err = client.CopyResponder(ltrbor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsCopyFuture", "Result", ltrbor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // LongTermRetentionBackupsDeleteByResourceGroupFuture an abstraction for monitoring and retrieving the
@@ -10405,6 +10523,92 @@ func (future *LongTermRetentionBackupsDeleteFuture) result(client LongTermRetent
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// LongTermRetentionBackupsUpdateByResourceGroupFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type LongTermRetentionBackupsUpdateByResourceGroupFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LongTermRetentionBackupsClient) (LongTermRetentionBackupOperationResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LongTermRetentionBackupsUpdateByResourceGroupFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LongTermRetentionBackupsUpdateByResourceGroupFuture.Result.
+func (future *LongTermRetentionBackupsUpdateByResourceGroupFuture) result(client LongTermRetentionBackupsClient) (ltrbor LongTermRetentionBackupOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsUpdateByResourceGroupFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ltrbor.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionBackupsUpdateByResourceGroupFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ltrbor.Response.Response, err = future.GetResult(sender); err == nil && ltrbor.Response.Response.StatusCode != http.StatusNoContent {
+		ltrbor, err = client.UpdateByResourceGroupResponder(ltrbor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsUpdateByResourceGroupFuture", "Result", ltrbor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LongTermRetentionBackupsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LongTermRetentionBackupsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LongTermRetentionBackupsClient) (LongTermRetentionBackupOperationResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LongTermRetentionBackupsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LongTermRetentionBackupsUpdateFuture.Result.
+func (future *LongTermRetentionBackupsUpdateFuture) result(client LongTermRetentionBackupsClient) (ltrbor LongTermRetentionBackupOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ltrbor.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionBackupsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ltrbor.Response.Response, err = future.GetResult(sender); err == nil && ltrbor.Response.Response.StatusCode != http.StatusNoContent {
+		ltrbor, err = client.UpdateResponder(ltrbor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsUpdateFuture", "Result", ltrbor.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -10482,16 +10686,311 @@ func (future *LongTermRetentionManagedInstanceBackupsDeleteFuture) result(client
 	return
 }
 
-// LongTermRetentionPolicyProperties properties of a long term retention policy
-type LongTermRetentionPolicyProperties struct {
-	// WeeklyRetention - The weekly retention policy for an LTR backup in an ISO 8601 format.
-	WeeklyRetention *string `json:"weeklyRetention,omitempty"`
-	// MonthlyRetention - The monthly retention policy for an LTR backup in an ISO 8601 format.
-	MonthlyRetention *string `json:"monthlyRetention,omitempty"`
-	// YearlyRetention - The yearly retention policy for an LTR backup in an ISO 8601 format.
-	YearlyRetention *string `json:"yearlyRetention,omitempty"`
-	// WeekOfYear - The week of year to take the yearly backup in an ISO 8601 format.
-	WeekOfYear *int32 `json:"weekOfYear,omitempty"`
+// LongTermRetentionOperationResultProperties contains the operation result properties for long term
+// retention backup operation.
+type LongTermRetentionOperationResultProperties struct {
+	// RequestID - READ-ONLY; Request Id.
+	RequestID *uuid.UUID `json:"requestId,omitempty"`
+	// OperationType - READ-ONLY; Operation type.
+	OperationType *string `json:"operationType,omitempty"`
+	// FromBackupResourceID - READ-ONLY; Source backup resource id
+	FromBackupResourceID *string `json:"fromBackupResourceId,omitempty"`
+	// ToBackupResourceID - READ-ONLY; Target backup resource id
+	ToBackupResourceID *string `json:"toBackupResourceId,omitempty"`
+	// TargetBackupStorageRedundancy - READ-ONLY; The storage redundancy type of the copied backup. Possible values include: 'Geo', 'Local', 'Zone'
+	TargetBackupStorageRedundancy BackupStorageRedundancy `json:"targetBackupStorageRedundancy,omitempty"`
+	// Status - READ-ONLY; Operation status
+	Status *string `json:"status,omitempty"`
+	// Message - READ-ONLY; Progress message
+	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermRetentionOperationResultProperties.
+func (ltrorp LongTermRetentionOperationResultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// LongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type LongTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(LongTermRetentionPoliciesClient) (LongTermRetentionPolicy, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *LongTermRetentionPoliciesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for LongTermRetentionPoliciesCreateOrUpdateFuture.Result.
+func (future *LongTermRetentionPoliciesCreateOrUpdateFuture) result(client LongTermRetentionPoliciesClient) (ltrp LongTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ltrp.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ltrp.Response.Response, err = future.GetResult(sender); err == nil && ltrp.Response.Response.StatusCode != http.StatusNoContent {
+		ltrp, err = client.CreateOrUpdateResponder(ltrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesCreateOrUpdateFuture", "Result", ltrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LongTermRetentionPolicy a long term retention policy.
+type LongTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// BaseLongTermRetentionPolicyProperties - Resource properties.
+	*BaseLongTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermRetentionPolicy.
+func (ltrp LongTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ltrp.BaseLongTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = ltrp.BaseLongTermRetentionPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LongTermRetentionPolicy struct.
+func (ltrp *LongTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var baseLongTermRetentionPolicyProperties BaseLongTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &baseLongTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				ltrp.BaseLongTermRetentionPolicyProperties = &baseLongTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ltrp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ltrp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ltrp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// LongTermRetentionPolicyListResult a list of long term retention policies.
+type LongTermRetentionPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]LongTermRetentionPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermRetentionPolicyListResult.
+func (ltrplr LongTermRetentionPolicyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// LongTermRetentionPolicyListResultIterator provides access to a complete listing of
+// LongTermRetentionPolicy values.
+type LongTermRetentionPolicyListResultIterator struct {
+	i    int
+	page LongTermRetentionPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *LongTermRetentionPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *LongTermRetentionPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter LongTermRetentionPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter LongTermRetentionPolicyListResultIterator) Response() LongTermRetentionPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter LongTermRetentionPolicyListResultIterator) Value() LongTermRetentionPolicy {
+	if !iter.page.NotDone() {
+		return LongTermRetentionPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the LongTermRetentionPolicyListResultIterator type.
+func NewLongTermRetentionPolicyListResultIterator(page LongTermRetentionPolicyListResultPage) LongTermRetentionPolicyListResultIterator {
+	return LongTermRetentionPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ltrplr LongTermRetentionPolicyListResult) IsEmpty() bool {
+	return ltrplr.Value == nil || len(*ltrplr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (ltrplr LongTermRetentionPolicyListResult) hasNextLink() bool {
+	return ltrplr.NextLink != nil && len(*ltrplr.NextLink) != 0
+}
+
+// longTermRetentionPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ltrplr LongTermRetentionPolicyListResult) longTermRetentionPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !ltrplr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ltrplr.NextLink)))
+}
+
+// LongTermRetentionPolicyListResultPage contains a page of LongTermRetentionPolicy values.
+type LongTermRetentionPolicyListResultPage struct {
+	fn     func(context.Context, LongTermRetentionPolicyListResult) (LongTermRetentionPolicyListResult, error)
+	ltrplr LongTermRetentionPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *LongTermRetentionPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.ltrplr)
+		if err != nil {
+			return err
+		}
+		page.ltrplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *LongTermRetentionPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page LongTermRetentionPolicyListResultPage) NotDone() bool {
+	return !page.ltrplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page LongTermRetentionPolicyListResultPage) Response() LongTermRetentionPolicyListResult {
+	return page.ltrplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page LongTermRetentionPolicyListResultPage) Values() []LongTermRetentionPolicy {
+	if page.ltrplr.IsEmpty() {
+		return nil
+	}
+	return *page.ltrplr.Value
+}
+
+// Creates a new instance of the LongTermRetentionPolicyListResultPage type.
+func NewLongTermRetentionPolicyListResultPage(cur LongTermRetentionPolicyListResult, getNextPage func(context.Context, LongTermRetentionPolicyListResult) (LongTermRetentionPolicyListResult, error)) LongTermRetentionPolicyListResultPage {
+	return LongTermRetentionPolicyListResultPage{
+		fn:     getNextPage,
+		ltrplr: cur,
+	}
 }
 
 // MaintenanceConfigurationCapability the maintenance configuration capability
@@ -17507,7 +18006,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ResourceIdentity struct {
 	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
+	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned'
 	Type IdentityType `json:"type,omitempty"`
 	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
@@ -19247,6 +19746,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -24535,24 +25037,18 @@ func (future *SyncMembersUpdateFuture) result(client SyncMembersClient) (sm Sync
 
 // SystemData metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// CreatedBy - READ-ONLY; A string identifier for the identity that created the resource.
+	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - READ-ONLY; The type of identity that created the resource: <User|Application|ManagedIdentity|Key>. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
-	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC).
+	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// LastModifiedBy - READ-ONLY; A string identifier for the identity that last modified the resource.
+	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource: <User|Application|ManagedIdentity|Key>. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - READ-ONLY; The timestamp of last modification (UTC).
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SystemData.
-func (sd SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // TdeCertificate a TDE certificate that can be uploaded into a server.
@@ -25090,6 +25586,53 @@ type TransparentDataEncryptionProperties struct {
 type UnlinkParameters struct {
 	// ForcedTermination - Determines whether link will be terminated in a forced or a friendly way.
 	ForcedTermination *bool `json:"forcedTermination,omitempty"`
+}
+
+// UpdateLongTermRetentionBackupParameters contains the information necessary to perform long term
+// retention backup update operation.
+type UpdateLongTermRetentionBackupParameters struct {
+	// UpdateLongTermRetentionBackupParametersProperties - Resource properties.
+	*UpdateLongTermRetentionBackupParametersProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateLongTermRetentionBackupParameters.
+func (ultrbp UpdateLongTermRetentionBackupParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ultrbp.UpdateLongTermRetentionBackupParametersProperties != nil {
+		objectMap["properties"] = ultrbp.UpdateLongTermRetentionBackupParametersProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateLongTermRetentionBackupParameters struct.
+func (ultrbp *UpdateLongTermRetentionBackupParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var updateLongTermRetentionBackupParametersProperties UpdateLongTermRetentionBackupParametersProperties
+				err = json.Unmarshal(*v, &updateLongTermRetentionBackupParametersProperties)
+				if err != nil {
+					return err
+				}
+				ultrbp.UpdateLongTermRetentionBackupParametersProperties = &updateLongTermRetentionBackupParametersProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// UpdateLongTermRetentionBackupParametersProperties contains the properties to perform long term retention
+// backup copy operation.
+type UpdateLongTermRetentionBackupParametersProperties struct {
+	// RequestedBackupStorageRedundancy - The storage redundancy type of the copied backup. Possible values include: 'RequestedBackupStorageRedundancyGeo', 'RequestedBackupStorageRedundancyLocal', 'RequestedBackupStorageRedundancyZone'
+	RequestedBackupStorageRedundancy RequestedBackupStorageRedundancy `json:"requestedBackupStorageRedundancy,omitempty"`
 }
 
 // UpsertManagedServerOperationParameters ...

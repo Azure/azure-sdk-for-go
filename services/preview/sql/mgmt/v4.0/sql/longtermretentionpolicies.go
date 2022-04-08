@@ -14,23 +14,23 @@ import (
 	"net/http"
 )
 
-// BackupLongTermRetentionPoliciesClient is the the Azure SQL Database management API provides a RESTful set of web
-// services that interact with Azure SQL Database services to manage your databases. The API enables you to create,
-// retrieve, update, and delete databases.
-type BackupLongTermRetentionPoliciesClient struct {
+// LongTermRetentionPoliciesClient is the the Azure SQL Database management API provides a RESTful set of web services
+// that interact with Azure SQL Database services to manage your databases. The API enables you to create, retrieve,
+// update, and delete databases.
+type LongTermRetentionPoliciesClient struct {
 	BaseClient
 }
 
-// NewBackupLongTermRetentionPoliciesClient creates an instance of the BackupLongTermRetentionPoliciesClient client.
-func NewBackupLongTermRetentionPoliciesClient(subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return NewBackupLongTermRetentionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLongTermRetentionPoliciesClient creates an instance of the LongTermRetentionPoliciesClient client.
+func NewLongTermRetentionPoliciesClient(subscriptionID string) LongTermRetentionPoliciesClient {
+	return NewLongTermRetentionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBackupLongTermRetentionPoliciesClientWithBaseURI creates an instance of the BackupLongTermRetentionPoliciesClient
-// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
-// (sovereign clouds, Azure stack).
-func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return BackupLongTermRetentionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLongTermRetentionPoliciesClientWithBaseURI creates an instance of the LongTermRetentionPoliciesClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
+func NewLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) LongTermRetentionPoliciesClient {
+	return LongTermRetentionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate sets a database's long term retention policy.
@@ -40,9 +40,9 @@ func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscri
 // serverName - the name of the server.
 // databaseName - the name of the database.
 // parameters - the long term retention policy info.
-func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupLongTermRetentionPolicy) (result BackupLongTermRetentionPoliciesCreateOrUpdateFuture, err error) {
+func (client LongTermRetentionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters LongTermRetentionPolicy) (result LongTermRetentionPoliciesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BackupLongTermRetentionPoliciesClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPoliciesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -53,13 +53,13 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdate(ctx context.C
 	}
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, databaseName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -67,7 +67,7 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdate(ctx context.C
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupLongTermRetentionPolicy) (*http.Request, error) {
+func (client LongTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters LongTermRetentionPolicy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"policyName":        autorest.Encode("path", "default"),
@@ -76,7 +76,7 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx c
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -93,7 +93,7 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx c
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateSender(req *http.Request) (future BackupLongTermRetentionPoliciesCreateOrUpdateFuture, err error) {
+func (client LongTermRetentionPoliciesClient) CreateOrUpdateSender(req *http.Request) (future LongTermRetentionPoliciesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
@@ -109,7 +109,7 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateSender(req *ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result BackupLongTermRetentionPolicy, err error) {
+func (client LongTermRetentionPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result LongTermRetentionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -125,9 +125,9 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateResponder(resp
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // databaseName - the name of the database.
-func (client BackupLongTermRetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result BackupLongTermRetentionPolicy, err error) {
+func (client LongTermRetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result LongTermRetentionPolicy, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BackupLongTermRetentionPoliciesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPoliciesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -138,20 +138,20 @@ func (client BackupLongTermRetentionPoliciesClient) Get(ctx context.Context, res
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -159,7 +159,7 @@ func (client BackupLongTermRetentionPoliciesClient) Get(ctx context.Context, res
 }
 
 // GetPreparer prepares the Get request.
-func (client BackupLongTermRetentionPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
+func (client LongTermRetentionPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"policyName":        autorest.Encode("path", "default"),
@@ -168,7 +168,7 @@ func (client BackupLongTermRetentionPoliciesClient) GetPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -183,13 +183,13 @@ func (client BackupLongTermRetentionPoliciesClient) GetPreparer(ctx context.Cont
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client BackupLongTermRetentionPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LongTermRetentionPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client BackupLongTermRetentionPoliciesClient) GetResponder(resp *http.Response) (result BackupLongTermRetentionPolicy, err error) {
+func (client LongTermRetentionPoliciesClient) GetResponder(resp *http.Response) (result LongTermRetentionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -205,33 +205,38 @@ func (client BackupLongTermRetentionPoliciesClient) GetResponder(resp *http.Resp
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // databaseName - the name of the database.
-func (client BackupLongTermRetentionPoliciesClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result BackupLongTermRetentionPolicy, err error) {
+func (client LongTermRetentionPoliciesClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result LongTermRetentionPolicyListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BackupLongTermRetentionPoliciesClient.ListByDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPoliciesClient.ListByDatabase")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.ltrplr.Response.Response != nil {
+				sc = result.ltrplr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listByDatabaseNextResults
 	req, err := client.ListByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "ListByDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "ListByDatabase", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByDatabaseSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "ListByDatabase", resp, "Failure sending request")
+		result.ltrplr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "ListByDatabase", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByDatabaseResponder(resp)
+	result.ltrplr, err = client.ListByDatabaseResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "ListByDatabase", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "ListByDatabase", resp, "Failure responding to request")
+		return
+	}
+	if result.ltrplr.hasNextLink() && result.ltrplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 		return
 	}
 
@@ -239,7 +244,7 @@ func (client BackupLongTermRetentionPoliciesClient) ListByDatabase(ctx context.C
 }
 
 // ListByDatabasePreparer prepares the ListByDatabase request.
-func (client BackupLongTermRetentionPoliciesClient) ListByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
+func (client LongTermRetentionPoliciesClient) ListByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -247,7 +252,7 @@ func (client BackupLongTermRetentionPoliciesClient) ListByDatabasePreparer(ctx c
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -262,18 +267,55 @@ func (client BackupLongTermRetentionPoliciesClient) ListByDatabasePreparer(ctx c
 
 // ListByDatabaseSender sends the ListByDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client BackupLongTermRetentionPoliciesClient) ListByDatabaseSender(req *http.Request) (*http.Response, error) {
+func (client LongTermRetentionPoliciesClient) ListByDatabaseSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDatabaseResponder handles the response to the ListByDatabase request. The method always
 // closes the http.Response Body.
-func (client BackupLongTermRetentionPoliciesClient) ListByDatabaseResponder(resp *http.Response) (result BackupLongTermRetentionPolicy, err error) {
+func (client LongTermRetentionPoliciesClient) ListByDatabaseResponder(resp *http.Response) (result LongTermRetentionPolicyListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByDatabaseNextResults retrieves the next set of results, if any.
+func (client LongTermRetentionPoliciesClient) listByDatabaseNextResults(ctx context.Context, lastResults LongTermRetentionPolicyListResult) (result LongTermRetentionPolicyListResult, err error) {
+	req, err := lastResults.longTermRetentionPolicyListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "listByDatabaseNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "listByDatabaseNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionPoliciesClient", "listByDatabaseNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
+func (client LongTermRetentionPoliciesClient) ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result LongTermRetentionPolicyListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionPoliciesClient.ListByDatabase")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByDatabase(ctx, resourceGroupName, serverName, databaseName)
 	return
 }

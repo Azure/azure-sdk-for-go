@@ -1514,6 +1514,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -2083,6 +2086,20 @@ type DatabaseProperties struct {
 	PausedDate *date.Time `json:"pausedDate,omitempty"`
 	// ResumedDate - READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is paused.
 	ResumedDate *date.Time `json:"resumedDate,omitempty"`
+	// SourceResourceID - The resource identifier of the source associated with the create operation of this database.
+	//
+	// When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+	//
+	// When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of an existing database or existing sql pool, and restorePointInTime must be specified.
+	//
+	// When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or restorable dropped sql pool.
+	//
+	// When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable sql pool.
+	//
+	// This property allows to restore across subscriptions which is only supported for DataWarehouse edition.
+	//
+	// When source subscription belongs to a different tenant than target subscription, “x-ms-authorization-auxiliary” header must contain authentication token for the source tenant. For more details about “x-ms-authorization-auxiliary” header see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseProperties.
@@ -2147,6 +2164,9 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dp.MinCapacity != nil {
 		objectMap["minCapacity"] = dp.MinCapacity
+	}
+	if dp.SourceResourceID != nil {
+		objectMap["sourceResourceId"] = dp.SourceResourceID
 	}
 	return json.Marshal(objectMap)
 }
@@ -2595,12 +2615,12 @@ func (future *DatabasesUpgradeDataWarehouseFuture) result(client DatabasesClient
 	return
 }
 
-// DatabaseUpdate a database resource.
+// DatabaseUpdate a database update resource.
 type DatabaseUpdate struct {
 	// Sku - The name and tier of the SKU.
 	Sku *Sku `json:"sku,omitempty"`
-	// DatabaseProperties - Resource properties.
-	*DatabaseProperties `json:"properties,omitempty"`
+	// DatabaseUpdateProperties - Resource properties.
+	*DatabaseUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
@@ -2611,8 +2631,8 @@ func (du DatabaseUpdate) MarshalJSON() ([]byte, error) {
 	if du.Sku != nil {
 		objectMap["sku"] = du.Sku
 	}
-	if du.DatabaseProperties != nil {
-		objectMap["properties"] = du.DatabaseProperties
+	if du.DatabaseUpdateProperties != nil {
+		objectMap["properties"] = du.DatabaseUpdateProperties
 	}
 	if du.Tags != nil {
 		objectMap["tags"] = du.Tags
@@ -2640,12 +2660,12 @@ func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var databaseProperties DatabaseProperties
-				err = json.Unmarshal(*v, &databaseProperties)
+				var databaseUpdateProperties DatabaseUpdateProperties
+				err = json.Unmarshal(*v, &databaseUpdateProperties)
 				if err != nil {
 					return err
 				}
-				du.DatabaseProperties = &databaseProperties
+				du.DatabaseUpdateProperties = &databaseUpdateProperties
 			}
 		case "tags":
 			if v != nil {
@@ -2660,6 +2680,156 @@ func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// DatabaseUpdateProperties a database update properties.
+type DatabaseUpdateProperties struct {
+	// CreateMode - Specifies the mode of database creation.
+	//
+	// Default: regular database creation.
+	//
+	// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+	//
+	// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+	//
+	// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+	//
+	// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+	//
+	// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+	//
+	// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+	//
+	// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'CreateModeDefault', 'CreateModeCopy', 'CreateModeSecondary', 'CreateModePointInTimeRestore', 'CreateModeRestore', 'CreateModeRecovery', 'CreateModeRestoreExternalBackup', 'CreateModeRestoreExternalBackupSecondary', 'CreateModeRestoreLongTermRetentionBackup', 'CreateModeOnlineSecondary'
+	CreateMode CreateMode `json:"createMode,omitempty"`
+	// Collation - The collation of the database.
+	Collation *string `json:"collation,omitempty"`
+	// MaxSizeBytes - The max size of the database expressed in bytes.
+	MaxSizeBytes *int64 `json:"maxSizeBytes,omitempty"`
+	// SampleName - The name of the sample schema to apply when creating this database. Possible values include: 'AdventureWorksLT', 'WideWorldImportersStd', 'WideWorldImportersFull'
+	SampleName SampleName `json:"sampleName,omitempty"`
+	// ElasticPoolID - The resource identifier of the elastic pool containing this database.
+	ElasticPoolID *string `json:"elasticPoolId,omitempty"`
+	// SourceDatabaseID - The resource identifier of the source database associated with create operation of this database.
+	SourceDatabaseID *string `json:"sourceDatabaseId,omitempty"`
+	// Status - READ-ONLY; The status of the database. Possible values include: 'DatabaseStatusOnline', 'DatabaseStatusRestoring', 'DatabaseStatusRecoveryPending', 'DatabaseStatusRecovering', 'DatabaseStatusSuspect', 'DatabaseStatusOffline', 'DatabaseStatusStandby', 'DatabaseStatusShutdown', 'DatabaseStatusEmergencyMode', 'DatabaseStatusAutoClosed', 'DatabaseStatusCopying', 'DatabaseStatusCreating', 'DatabaseStatusInaccessible', 'DatabaseStatusOfflineSecondary', 'DatabaseStatusPausing', 'DatabaseStatusPaused', 'DatabaseStatusResuming', 'DatabaseStatusScaling', 'DatabaseStatusOfflineChangingDwPerformanceTiers', 'DatabaseStatusOnlineChangingDwPerformanceTiers', 'DatabaseStatusDisabled'
+	Status DatabaseStatus `json:"status,omitempty"`
+	// DatabaseID - READ-ONLY; The ID of the database.
+	DatabaseID *uuid.UUID `json:"databaseId,omitempty"`
+	// CreationDate - READ-ONLY; The creation date of the database (ISO8601 format).
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// CurrentServiceObjectiveName - READ-ONLY; The current service level objective name of the database.
+	CurrentServiceObjectiveName *string `json:"currentServiceObjectiveName,omitempty"`
+	// RequestedServiceObjectiveName - READ-ONLY; The requested service level objective name of the database.
+	RequestedServiceObjectiveName *string `json:"requestedServiceObjectiveName,omitempty"`
+	// DefaultSecondaryLocation - READ-ONLY; The default secondary region for this database.
+	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
+	// FailoverGroupID - READ-ONLY; Failover Group resource identifier that this database belongs to.
+	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
+	// RestorePointInTime - Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
+	// SourceDatabaseDeletionDate - Specifies the time that the database was deleted.
+	SourceDatabaseDeletionDate *date.Time `json:"sourceDatabaseDeletionDate,omitempty"`
+	// RecoveryServicesRecoveryPointID - The resource identifier of the recovery point associated with create operation of this database.
+	RecoveryServicesRecoveryPointID *string `json:"recoveryServicesRecoveryPointId,omitempty"`
+	// LongTermRetentionBackupResourceID - The resource identifier of the long term retention backup associated with create operation of this database.
+	LongTermRetentionBackupResourceID *string `json:"longTermRetentionBackupResourceId,omitempty"`
+	// RecoverableDatabaseID - The resource identifier of the recoverable database associated with create operation of this database.
+	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
+	// RestorableDroppedDatabaseID - The resource identifier of the restorable dropped database associated with create operation of this database.
+	RestorableDroppedDatabaseID *string `json:"restorableDroppedDatabaseId,omitempty"`
+	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
+	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
+	// ZoneRedundant - Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// LicenseType - The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'
+	LicenseType DatabaseLicenseType `json:"licenseType,omitempty"`
+	// MaxLogSizeBytes - READ-ONLY; The max log size for this database.
+	MaxLogSizeBytes *int64 `json:"maxLogSizeBytes,omitempty"`
+	// EarliestRestoreDate - READ-ONLY; This records the earliest start date and time that restore is available for this database (ISO8601 format).
+	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+	// ReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'
+	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
+	// ReadReplicaCount - The number of readonly secondary replicas associated with the database.
+	ReadReplicaCount *int32 `json:"readReplicaCount,omitempty"`
+	// CurrentSku - READ-ONLY; The name and tier of the SKU.
+	CurrentSku *Sku `json:"currentSku,omitempty"`
+	// AutoPauseDelay - Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+	AutoPauseDelay *int32 `json:"autoPauseDelay,omitempty"`
+	// StorageAccountType - The storage account type used to store backups for this database. Possible values include: 'GRS', 'LRS', 'ZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// MinCapacity - Minimal capacity that database will always have allocated, if not paused
+	MinCapacity *float64 `json:"minCapacity,omitempty"`
+	// PausedDate - READ-ONLY; The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
+	PausedDate *date.Time `json:"pausedDate,omitempty"`
+	// ResumedDate - READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is paused.
+	ResumedDate *date.Time `json:"resumedDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseUpdateProperties.
+func (dup DatabaseUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dup.CreateMode != "" {
+		objectMap["createMode"] = dup.CreateMode
+	}
+	if dup.Collation != nil {
+		objectMap["collation"] = dup.Collation
+	}
+	if dup.MaxSizeBytes != nil {
+		objectMap["maxSizeBytes"] = dup.MaxSizeBytes
+	}
+	if dup.SampleName != "" {
+		objectMap["sampleName"] = dup.SampleName
+	}
+	if dup.ElasticPoolID != nil {
+		objectMap["elasticPoolId"] = dup.ElasticPoolID
+	}
+	if dup.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = dup.SourceDatabaseID
+	}
+	if dup.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = dup.RestorePointInTime
+	}
+	if dup.SourceDatabaseDeletionDate != nil {
+		objectMap["sourceDatabaseDeletionDate"] = dup.SourceDatabaseDeletionDate
+	}
+	if dup.RecoveryServicesRecoveryPointID != nil {
+		objectMap["recoveryServicesRecoveryPointId"] = dup.RecoveryServicesRecoveryPointID
+	}
+	if dup.LongTermRetentionBackupResourceID != nil {
+		objectMap["longTermRetentionBackupResourceId"] = dup.LongTermRetentionBackupResourceID
+	}
+	if dup.RecoverableDatabaseID != nil {
+		objectMap["recoverableDatabaseId"] = dup.RecoverableDatabaseID
+	}
+	if dup.RestorableDroppedDatabaseID != nil {
+		objectMap["restorableDroppedDatabaseId"] = dup.RestorableDroppedDatabaseID
+	}
+	if dup.CatalogCollation != "" {
+		objectMap["catalogCollation"] = dup.CatalogCollation
+	}
+	if dup.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = dup.ZoneRedundant
+	}
+	if dup.LicenseType != "" {
+		objectMap["licenseType"] = dup.LicenseType
+	}
+	if dup.ReadScale != "" {
+		objectMap["readScale"] = dup.ReadScale
+	}
+	if dup.ReadReplicaCount != nil {
+		objectMap["readReplicaCount"] = dup.ReadReplicaCount
+	}
+	if dup.AutoPauseDelay != nil {
+		objectMap["autoPauseDelay"] = dup.AutoPauseDelay
+	}
+	if dup.StorageAccountType != "" {
+		objectMap["storageAccountType"] = dup.StorageAccountType
+	}
+	if dup.MinCapacity != nil {
+		objectMap["minCapacity"] = dup.MinCapacity
+	}
+	return json.Marshal(objectMap)
 }
 
 // DatabaseUsage the database usages.
@@ -5375,6 +5545,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -5754,6 +5927,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -11153,109 +11329,6 @@ func (mdp ManagedDatabaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ManagedDatabaseRestoreDetailsProperties the managed database's restore details properties.
-type ManagedDatabaseRestoreDetailsProperties struct {
-	// Status - READ-ONLY; Restore status.
-	Status *string `json:"status,omitempty"`
-	// CurrentRestoringFileName - READ-ONLY; Current restoring file name.
-	CurrentRestoringFileName *string `json:"currentRestoringFileName,omitempty"`
-	// LastRestoredFileName - READ-ONLY; Last restored file name.
-	LastRestoredFileName *string `json:"lastRestoredFileName,omitempty"`
-	// LastRestoredFileTime - READ-ONLY; Last restored file time.
-	LastRestoredFileTime *date.Time `json:"lastRestoredFileTime,omitempty"`
-	// PercentCompleted - READ-ONLY; Percent completed.
-	PercentCompleted *float64 `json:"percentCompleted,omitempty"`
-	// UnrestorableFiles - READ-ONLY; List of unrestorable files.
-	UnrestorableFiles *[]string `json:"unrestorableFiles,omitempty"`
-	// NumberOfFilesDetected - READ-ONLY; Number of files detected.
-	NumberOfFilesDetected *int64 `json:"numberOfFilesDetected,omitempty"`
-	// LastUploadedFileName - READ-ONLY; Last uploaded file name.
-	LastUploadedFileName *string `json:"lastUploadedFileName,omitempty"`
-	// LastUploadedFileTime - READ-ONLY; Last uploaded file time.
-	LastUploadedFileTime *date.Time `json:"lastUploadedFileTime,omitempty"`
-	// BlockReason - READ-ONLY; The reason why restore is in Blocked state.
-	BlockReason *string `json:"blockReason,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ManagedDatabaseRestoreDetailsProperties.
-func (mdrdp ManagedDatabaseRestoreDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// ManagedDatabaseRestoreDetailsResult a managed database restore details.
-type ManagedDatabaseRestoreDetailsResult struct {
-	autorest.Response `json:"-"`
-	// ManagedDatabaseRestoreDetailsProperties - Resource properties.
-	*ManagedDatabaseRestoreDetailsProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ManagedDatabaseRestoreDetailsResult.
-func (mdrdr ManagedDatabaseRestoreDetailsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdrdr.ManagedDatabaseRestoreDetailsProperties != nil {
-		objectMap["properties"] = mdrdr.ManagedDatabaseRestoreDetailsProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ManagedDatabaseRestoreDetailsResult struct.
-func (mdrdr *ManagedDatabaseRestoreDetailsResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var managedDatabaseRestoreDetailsProperties ManagedDatabaseRestoreDetailsProperties
-				err = json.Unmarshal(*v, &managedDatabaseRestoreDetailsProperties)
-				if err != nil {
-					return err
-				}
-				mdrdr.ManagedDatabaseRestoreDetailsProperties = &managedDatabaseRestoreDetailsProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				mdrdr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				mdrdr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				mdrdr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
 // ManagedDatabasesCompleteRestoreFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedDatabasesCompleteRestoreFuture struct {
@@ -14315,6 +14388,48 @@ type ManagedInstancePairInfo struct {
 	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
 }
 
+// ManagedInstancePecProperty a private endpoint connection under a managed instance
+type ManagedInstancePecProperty struct {
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Properties - READ-ONLY; Private endpoint connection properties
+	Properties *ManagedInstancePrivateEndpointConnectionProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstancePecProperty.
+func (mipp ManagedInstancePecProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ManagedInstancePrivateEndpointConnectionProperties properties of a private endpoint connection.
+type ManagedInstancePrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - Private endpoint which the connection belongs to.
+	PrivateEndpoint *ManagedInstancePrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - Connection State of the Private Endpoint Connection.
+	PrivateLinkServiceConnectionState *ManagedInstancePrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - READ-ONLY; State of the Private Endpoint Connection.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstancePrivateEndpointConnectionProperties.
+func (mipecp ManagedInstancePrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mipecp.PrivateEndpoint != nil {
+		objectMap["privateEndpoint"] = mipecp.PrivateEndpoint
+	}
+	if mipecp.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = mipecp.PrivateLinkServiceConnectionState
+	}
+	return json.Marshal(objectMap)
+}
+
+// ManagedInstancePrivateEndpointProperty ...
+type ManagedInstancePrivateEndpointProperty struct {
+	// ID - Resource id of the private endpoint.
+	ID *string `json:"id,omitempty"`
+}
+
 // ManagedInstancePrivateLinkServiceConnectionStateProperty ...
 type ManagedInstancePrivateLinkServiceConnectionStateProperty struct {
 	// Status - The private link service connection status.
@@ -14388,10 +14503,14 @@ type ManagedInstanceProperties struct {
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
 	// MaintenanceConfigurationID - Specifies maintenance configuration id to apply to this managed instance.
 	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections on a managed instance.
+	PrivateEndpointConnections *[]ManagedInstancePecProperty `json:"privateEndpointConnections,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
 	// StorageAccountType - The storage account type used to store backups for this instance. The options are LRS (LocallyRedundantStorage), ZRS (ZoneRedundantStorage) and GRS (GeoRedundantStorage). Possible values include: 'GRS', 'LRS', 'ZRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// ZoneRedundant - Whether or not the multi-az is enabled.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedInstanceProperties.
@@ -14450,6 +14569,9 @@ func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mip.StorageAccountType != "" {
 		objectMap["storageAccountType"] = mip.StorageAccountType
+	}
+	if mip.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = mip.ZoneRedundant
 	}
 	return json.Marshal(objectMap)
 }
@@ -14655,6 +14777,8 @@ func (future *ManagedInstanceTdeCertificatesCreateFuture) result(client ManagedI
 type ManagedInstanceUpdate struct {
 	// Sku - Managed instance sku
 	Sku *Sku `json:"sku,omitempty"`
+	// Identity - Managed instance identity
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 	// ManagedInstanceProperties - Resource properties.
 	*ManagedInstanceProperties `json:"properties,omitempty"`
 	// Tags - Resource tags.
@@ -14666,6 +14790,9 @@ func (miu ManagedInstanceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if miu.Sku != nil {
 		objectMap["sku"] = miu.Sku
+	}
+	if miu.Identity != nil {
+		objectMap["identity"] = miu.Identity
 	}
 	if miu.ManagedInstanceProperties != nil {
 		objectMap["properties"] = miu.ManagedInstanceProperties
@@ -14693,6 +14820,15 @@ func (miu *ManagedInstanceUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				miu.Sku = &sku
+			}
+		case "identity":
+			if v != nil {
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				miu.Identity = &identity
 			}
 		case "properties":
 			if v != nil {
@@ -15472,7 +15608,7 @@ func (ma MetricAvailability) MarshalJSON() ([]byte, error) {
 type MetricDefinition struct {
 	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// PrimaryAggregationType - READ-ONLY; The primary aggregation type defining how metric values are displayed. Possible values include: 'None', 'Average', 'Count', 'Minimum', 'Maximum', 'Total'
+	// PrimaryAggregationType - READ-ONLY; The primary aggregation type defining how metric values are displayed. Possible values include: 'PrimaryAggregationTypeNone', 'PrimaryAggregationTypeAverage', 'PrimaryAggregationTypeCount', 'PrimaryAggregationTypeMinimum', 'PrimaryAggregationTypeMaximum', 'PrimaryAggregationTypeTotal'
 	PrimaryAggregationType PrimaryAggregationType `json:"primaryAggregationType,omitempty"`
 	// ResourceURI - READ-ONLY; The resource uri of the database.
 	ResourceURI *string `json:"resourceUri,omitempty"`
@@ -16442,6 +16578,78 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// QueryMetricInterval properties of a query metrics interval.
+type QueryMetricInterval struct {
+	// IntervalStartTime - READ-ONLY; The start time for the metric interval (ISO-8601 format).
+	IntervalStartTime *string `json:"intervalStartTime,omitempty"`
+	// IntervalType - READ-ONLY; Interval type (length). Possible values include: 'PT1H', 'P1D'
+	IntervalType QueryTimeGrainType `json:"intervalType,omitempty"`
+	// ExecutionCount - READ-ONLY; Execution count of a query in this interval.
+	ExecutionCount *int64 `json:"executionCount,omitempty"`
+	// Metrics - List of metric objects for this interval
+	Metrics *[]QueryMetricProperties `json:"metrics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryMetricInterval.
+func (qmi QueryMetricInterval) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qmi.Metrics != nil {
+		objectMap["metrics"] = qmi.Metrics
+	}
+	return json.Marshal(objectMap)
+}
+
+// QueryMetricProperties properties of a topquery metric in one interval.
+type QueryMetricProperties struct {
+	// Name - READ-ONLY; The name information for the metric.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - READ-ONLY; The UI appropriate name for the metric.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Unit - READ-ONLY; The unit of the metric. Possible values include: 'Percentage', 'KB', 'Microseconds', 'Count'
+	Unit QueryMetricUnitType `json:"unit,omitempty"`
+	// Value - READ-ONLY; The value of the metric.
+	Value *float64 `json:"value,omitempty"`
+	// Min - READ-ONLY; Metric value when min() aggregate function is used over the interval.
+	Min *float64 `json:"min,omitempty"`
+	// Max - READ-ONLY; Metric value when max() aggregate function is used over the interval.
+	Max *float64 `json:"max,omitempty"`
+	// Avg - READ-ONLY; Metric value when avg() aggregate function is used over the interval.
+	Avg *float64 `json:"avg,omitempty"`
+	// Sum - READ-ONLY; Metric value when sum() aggregate function is used over the interval.
+	Sum *float64 `json:"sum,omitempty"`
+	// Stdev - READ-ONLY; Metric value when stdev aggregate function is used over the interval.
+	Stdev *float64 `json:"stdev,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryMetricProperties.
+func (qmp QueryMetricProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// QueryStatisticsProperties properties of a query execution statistics.
+type QueryStatisticsProperties struct {
+	// DatabaseName - READ-ONLY; Database name of the database in which this query was executed.
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// QueryID - READ-ONLY; Unique query id (unique within one database).
+	QueryID *string `json:"queryId,omitempty"`
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
+	EndTime *string `json:"endTime,omitempty"`
+	// Intervals - List of intervals with appropriate metric data
+	Intervals *[]QueryMetricInterval `json:"intervals,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryStatisticsProperties.
+func (qsp QueryStatisticsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qsp.Intervals != nil {
+		objectMap["intervals"] = qsp.Intervals
+	}
+	return json.Marshal(objectMap)
+}
+
 // ReadScaleCapability the read scale capability.
 type ReadScaleCapability struct {
 	// MaxNumberOfReplicas - READ-ONLY; The maximum number of read scale replicas.
@@ -17307,7 +17515,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ResourceIdentity struct {
 	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'SystemAssigned'
+	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned'
 	Type IdentityType `json:"type,omitempty"`
 	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
@@ -19047,6 +19255,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// USER_CHANGE_PASSWORD_GROUP
 	// BATCH_STARTED_GROUP
 	// BATCH_COMPLETED_GROUP
+	// DBCC_GROUP
+	// DATABASE_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_CHANGE_GROUP
 	//
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
 	//
@@ -24125,6 +24336,198 @@ func (future *TdeCertificatesCreateFuture) result(client TdeCertificatesClient) 
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// TopQueries ...
+type TopQueries struct {
+	// NumberOfQueries - READ-ONLY; Requested number of top queries.
+	NumberOfQueries *int32 `json:"numberOfQueries,omitempty"`
+	// AggregationFunction - READ-ONLY; Aggregation function used to calculate query metrics.
+	AggregationFunction *string `json:"aggregationFunction,omitempty"`
+	// ObservationMetric - READ-ONLY; Metric used to rank queries.
+	ObservationMetric *string `json:"observationMetric,omitempty"`
+	// IntervalType - READ-ONLY; Interval type (length). Possible values include: 'PT1H', 'P1D'
+	IntervalType QueryTimeGrainType `json:"intervalType,omitempty"`
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
+	EndTime *string `json:"endTime,omitempty"`
+	// Queries - List of top resource consuming queries with appropriate metric data
+	Queries *[]QueryStatisticsProperties `json:"queries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopQueries.
+func (tq TopQueries) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tq.Queries != nil {
+		objectMap["queries"] = tq.Queries
+	}
+	return json.Marshal(objectMap)
+}
+
+// TopQueriesListResult a list of top resource consuming queries on managed instance
+type TopQueriesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]TopQueries `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopQueriesListResult.
+func (tqlr TopQueriesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// TopQueriesListResultIterator provides access to a complete listing of TopQueries values.
+type TopQueriesListResultIterator struct {
+	i    int
+	page TopQueriesListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *TopQueriesListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TopQueriesListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *TopQueriesListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter TopQueriesListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter TopQueriesListResultIterator) Response() TopQueriesListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter TopQueriesListResultIterator) Value() TopQueries {
+	if !iter.page.NotDone() {
+		return TopQueries{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the TopQueriesListResultIterator type.
+func NewTopQueriesListResultIterator(page TopQueriesListResultPage) TopQueriesListResultIterator {
+	return TopQueriesListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (tqlr TopQueriesListResult) IsEmpty() bool {
+	return tqlr.Value == nil || len(*tqlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (tqlr TopQueriesListResult) hasNextLink() bool {
+	return tqlr.NextLink != nil && len(*tqlr.NextLink) != 0
+}
+
+// topQueriesListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (tqlr TopQueriesListResult) topQueriesListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !tqlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(tqlr.NextLink)))
+}
+
+// TopQueriesListResultPage contains a page of TopQueries values.
+type TopQueriesListResultPage struct {
+	fn   func(context.Context, TopQueriesListResult) (TopQueriesListResult, error)
+	tqlr TopQueriesListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *TopQueriesListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TopQueriesListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.tqlr)
+		if err != nil {
+			return err
+		}
+		page.tqlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *TopQueriesListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page TopQueriesListResultPage) NotDone() bool {
+	return !page.tqlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page TopQueriesListResultPage) Response() TopQueriesListResult {
+	return page.tqlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page TopQueriesListResultPage) Values() []TopQueries {
+	if page.tqlr.IsEmpty() {
+		return nil
+	}
+	return *page.tqlr.Value
+}
+
+// Creates a new instance of the TopQueriesListResultPage type.
+func NewTopQueriesListResultPage(cur TopQueriesListResult, getNextPage func(context.Context, TopQueriesListResult) (TopQueriesListResult, error)) TopQueriesListResultPage {
+	return TopQueriesListResultPage{
+		fn:   getNextPage,
+		tqlr: cur,
+	}
 }
 
 // TrackedResource ARM tracked top level resource.

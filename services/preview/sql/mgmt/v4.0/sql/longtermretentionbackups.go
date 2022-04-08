@@ -33,6 +33,181 @@ func NewLongTermRetentionBackupsClientWithBaseURI(baseURI string, subscriptionID
 	return LongTermRetentionBackupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Copy copy an existing long term retention backup.
+// Parameters:
+// locationName - the location of the database.
+// longTermRetentionServerName - the name of the server
+// longTermRetentionDatabaseName - the name of the database
+// backupName - the backup name.
+// parameters - the parameters needed for long term retention copy request
+func (client LongTermRetentionBackupsClient) Copy(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters) (result LongTermRetentionBackupsCopyFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.Copy")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CopyPreparer(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "Copy", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CopySender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "Copy", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CopyPreparer prepares the Copy request.
+func (client LongTermRetentionBackupsClient) CopyPreparer(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupName":                    autorest.Encode("path", backupName),
+		"locationName":                  autorest.Encode("path", locationName),
+		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
+		"longTermRetentionServerName":   autorest.Encode("path", longTermRetentionServerName),
+		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CopySender sends the Copy request. The method will close the
+// http.Response Body if it receives an error.
+func (client LongTermRetentionBackupsClient) CopySender(req *http.Request) (future LongTermRetentionBackupsCopyFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// CopyResponder handles the response to the Copy request. The method always
+// closes the http.Response Body.
+func (client LongTermRetentionBackupsClient) CopyResponder(resp *http.Response) (result LongTermRetentionBackupOperationResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CopyByResourceGroup copy an existing long term retention backup to a different server.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// locationName - the location of the database.
+// longTermRetentionServerName - the name of the server
+// longTermRetentionDatabaseName - the name of the database
+// backupName - the backup name.
+// parameters - the parameters needed for long term retention copy request
+func (client LongTermRetentionBackupsClient) CopyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters) (result LongTermRetentionBackupsCopyByResourceGroupFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.CopyByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CopyByResourceGroupPreparer(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "CopyByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CopyByResourceGroupSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "CopyByResourceGroup", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CopyByResourceGroupPreparer prepares the CopyByResourceGroup request.
+func (client LongTermRetentionBackupsClient) CopyByResourceGroupPreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupName":                    autorest.Encode("path", backupName),
+		"locationName":                  autorest.Encode("path", locationName),
+		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
+		"longTermRetentionServerName":   autorest.Encode("path", longTermRetentionServerName),
+		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CopyByResourceGroupSender sends the CopyByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client LongTermRetentionBackupsClient) CopyByResourceGroupSender(req *http.Request) (future LongTermRetentionBackupsCopyByResourceGroupFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// CopyByResourceGroupResponder handles the response to the CopyByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client LongTermRetentionBackupsClient) CopyByResourceGroupResponder(resp *http.Response) (result LongTermRetentionBackupOperationResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Delete deletes a long term retention backup.
 // Parameters:
 // locationName - the location of the database
@@ -75,7 +250,7 @@ func (client LongTermRetentionBackupsClient) DeletePreparer(ctx context.Context,
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -160,7 +335,7 @@ func (client LongTermRetentionBackupsClient) DeleteByResourceGroupPreparer(ctx c
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -249,7 +424,7 @@ func (client LongTermRetentionBackupsClient) GetPreparer(ctx context.Context, lo
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -332,7 +507,7 @@ func (client LongTermRetentionBackupsClient) GetByResourceGroupPreparer(ctx cont
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -370,7 +545,7 @@ func (client LongTermRetentionBackupsClient) GetByResourceGroupResponder(resp *h
 // longTermRetentionDatabaseName - the name of the database
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByDatabase")
 		defer func() {
@@ -409,7 +584,7 @@ func (client LongTermRetentionBackupsClient) ListByDatabase(ctx context.Context,
 }
 
 // ListByDatabasePreparer prepares the ListByDatabase request.
-func (client LongTermRetentionBackupsClient) ListByDatabasePreparer(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByDatabasePreparer(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":                  autorest.Encode("path", locationName),
 		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
@@ -417,7 +592,7 @@ func (client LongTermRetentionBackupsClient) ListByDatabasePreparer(ctx context.
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -476,7 +651,7 @@ func (client LongTermRetentionBackupsClient) listByDatabaseNextResults(ctx conte
 }
 
 // ListByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByDatabase")
 		defer func() {
@@ -496,7 +671,7 @@ func (client LongTermRetentionBackupsClient) ListByDatabaseComplete(ctx context.
 // locationName - the location of the database
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByLocation")
 		defer func() {
@@ -535,13 +710,13 @@ func (client LongTermRetentionBackupsClient) ListByLocation(ctx context.Context,
 }
 
 // ListByLocationPreparer prepares the ListByLocation request.
-func (client LongTermRetentionBackupsClient) ListByLocationPreparer(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByLocationPreparer(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":   autorest.Encode("path", locationName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -600,7 +775,7 @@ func (client LongTermRetentionBackupsClient) listByLocationNextResults(ctx conte
 }
 
 // ListByLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByLocation")
 		defer func() {
@@ -624,7 +799,7 @@ func (client LongTermRetentionBackupsClient) ListByLocationComplete(ctx context.
 // longTermRetentionDatabaseName - the name of the database
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupDatabase")
 		defer func() {
@@ -663,7 +838,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabase(ctx con
 }
 
 // ListByResourceGroupDatabasePreparer prepares the ListByResourceGroupDatabase request.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabasePreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabasePreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":                  autorest.Encode("path", locationName),
 		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
@@ -672,7 +847,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabasePreparer
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -731,7 +906,7 @@ func (client LongTermRetentionBackupsClient) listByResourceGroupDatabaseNextResu
 }
 
 // ListByResourceGroupDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupDatabase")
 		defer func() {
@@ -753,7 +928,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupDatabaseComplete
 // locationName - the location of the database
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupLocation")
 		defer func() {
@@ -792,14 +967,14 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupLocation(ctx con
 }
 
 // ListByResourceGroupLocationPreparer prepares the ListByResourceGroupLocation request.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupLocationPreparer(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupLocationPreparer(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":      autorest.Encode("path", locationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -858,7 +1033,7 @@ func (client LongTermRetentionBackupsClient) listByResourceGroupLocationNextResu
 }
 
 // ListByResourceGroupLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupLocation")
 		defer func() {
@@ -881,7 +1056,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupLocationComplete
 // longTermRetentionServerName - the name of the server
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupServer")
 		defer func() {
@@ -920,7 +1095,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupServer(ctx conte
 }
 
 // ListByResourceGroupServerPreparer prepares the ListByResourceGroupServer request.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupServerPreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupServerPreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":                autorest.Encode("path", locationName),
 		"longTermRetentionServerName": autorest.Encode("path", longTermRetentionServerName),
@@ -928,7 +1103,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupServerPreparer(c
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -987,7 +1162,7 @@ func (client LongTermRetentionBackupsClient) listByResourceGroupServerNextResult
 }
 
 // ListByResourceGroupServerComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByResourceGroupServer")
 		defer func() {
@@ -1008,7 +1183,7 @@ func (client LongTermRetentionBackupsClient) ListByResourceGroupServerComplete(c
 // longTermRetentionServerName - the name of the server
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionBackupsClient) ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionBackupsClient) ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByServer")
 		defer func() {
@@ -1047,14 +1222,14 @@ func (client LongTermRetentionBackupsClient) ListByServer(ctx context.Context, l
 }
 
 // ListByServerPreparer prepares the ListByServer request.
-func (client LongTermRetentionBackupsClient) ListByServerPreparer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (*http.Request, error) {
+func (client LongTermRetentionBackupsClient) ListByServerPreparer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":                autorest.Encode("path", locationName),
 		"longTermRetentionServerName": autorest.Encode("path", longTermRetentionServerName),
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-03-01-preview"
+	const APIVersion = "2020-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1113,7 +1288,7 @@ func (client LongTermRetentionBackupsClient) listByServerNextResults(ctx context
 }
 
 // ListByServerComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionBackupsClient) ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState LongTermRetentionDatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionBackupsClient) ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result LongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.ListByServer")
 		defer func() {
@@ -1125,5 +1300,180 @@ func (client LongTermRetentionBackupsClient) ListByServerComplete(ctx context.Co
 		}()
 	}
 	result.page, err = client.ListByServer(ctx, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState)
+	return
+}
+
+// Update updates an existing long term retention backup.
+// Parameters:
+// locationName - the location of the database.
+// longTermRetentionServerName - the name of the server
+// longTermRetentionDatabaseName - the name of the database
+// backupName - the backup name.
+// parameters - the requested backup resource state
+func (client LongTermRetentionBackupsClient) Update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters) (result LongTermRetentionBackupsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.Update")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdatePreparer(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "Update", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client LongTermRetentionBackupsClient) UpdatePreparer(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupName":                    autorest.Encode("path", backupName),
+		"locationName":                  autorest.Encode("path", locationName),
+		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
+		"longTermRetentionServerName":   autorest.Encode("path", longTermRetentionServerName),
+		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client LongTermRetentionBackupsClient) UpdateSender(req *http.Request) (future LongTermRetentionBackupsUpdateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client LongTermRetentionBackupsClient) UpdateResponder(resp *http.Response) (result LongTermRetentionBackupOperationResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateByResourceGroup updates an existing long term retention backup.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// locationName - the location of the database.
+// longTermRetentionServerName - the name of the server
+// longTermRetentionDatabaseName - the name of the database
+// backupName - the backup name.
+// parameters - the requested backup resource state
+func (client LongTermRetentionBackupsClient) UpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters) (result LongTermRetentionBackupsUpdateByResourceGroupFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionBackupsClient.UpdateByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateByResourceGroupPreparer(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "UpdateByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateByResourceGroupSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionBackupsClient", "UpdateByResourceGroup", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateByResourceGroupPreparer prepares the UpdateByResourceGroup request.
+func (client LongTermRetentionBackupsClient) UpdateByResourceGroupPreparer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"backupName":                    autorest.Encode("path", backupName),
+		"locationName":                  autorest.Encode("path", locationName),
+		"longTermRetentionDatabaseName": autorest.Encode("path", longTermRetentionDatabaseName),
+		"longTermRetentionServerName":   autorest.Encode("path", longTermRetentionServerName),
+		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateByResourceGroupSender sends the UpdateByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client LongTermRetentionBackupsClient) UpdateByResourceGroupSender(req *http.Request) (future LongTermRetentionBackupsUpdateByResourceGroupFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpdateByResourceGroupResponder handles the response to the UpdateByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client LongTermRetentionBackupsClient) UpdateByResourceGroupResponder(resp *http.Response) (result LongTermRetentionBackupOperationResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

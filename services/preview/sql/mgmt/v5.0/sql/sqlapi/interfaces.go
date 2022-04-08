@@ -22,14 +22,6 @@ type RecoverableDatabasesClientAPI interface {
 
 var _ RecoverableDatabasesClientAPI = (*sql.RecoverableDatabasesClient)(nil)
 
-// ServerConnectionPoliciesClientAPI contains the set of methods on the ServerConnectionPoliciesClient type.
-type ServerConnectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerConnectionPolicy) (result sql.ServerConnectionPolicy, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerConnectionPolicy, err error)
-}
-
-var _ ServerConnectionPoliciesClientAPI = (*sql.ServerConnectionPoliciesClient)(nil)
-
 // DataMaskingPoliciesClientAPI contains the set of methods on the DataMaskingPoliciesClient type.
 type DataMaskingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.DataMaskingPolicy) (result sql.DataMaskingPolicy, err error)
@@ -86,29 +78,14 @@ type ElasticPoolsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolsDeleteFuture, err error)
 	Failover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolsFailoverFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPool, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultIterator, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string, skip *int64) (result sql.ElasticPoolListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string, skip *int64) (result sql.ElasticPoolListResultIterator, err error)
 	ListMetricDefinitions(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.MetricDefinitionListResult, err error)
 	ListMetrics(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string) (result sql.MetricListResult, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters sql.ElasticPoolUpdate) (result sql.ElasticPoolsUpdateFuture, err error)
 }
 
 var _ ElasticPoolsClientAPI = (*sql.ElasticPoolsClient)(nil)
-
-// ReplicationLinksClientAPI contains the set of methods on the ReplicationLinksClient type.
-type ReplicationLinksClientAPI interface {
-	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result autorest.Response, err error)
-	Failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverFuture, err error)
-	FailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverAllowDataLossFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLink, err error)
-	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResultIterator, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ReplicationLinkListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ReplicationLinkListResultIterator, err error)
-	Unlink(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters sql.UnlinkParameters) (result sql.ReplicationLinksUnlinkFuture, err error)
-}
-
-var _ ReplicationLinksClientAPI = (*sql.ReplicationLinksClient)(nil)
 
 // ServerCommunicationLinksClientAPI contains the set of methods on the ServerCommunicationLinksClient type.
 type ServerCommunicationLinksClientAPI interface {
@@ -141,21 +118,6 @@ type ElasticPoolDatabaseActivitiesClientAPI interface {
 }
 
 var _ ElasticPoolDatabaseActivitiesClientAPI = (*sql.ElasticPoolDatabaseActivitiesClient)(nil)
-
-// TransparentDataEncryptionsClientAPI contains the set of methods on the TransparentDataEncryptionsClient type.
-type TransparentDataEncryptionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.TransparentDataEncryption) (result sql.TransparentDataEncryption, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.TransparentDataEncryption, err error)
-}
-
-var _ TransparentDataEncryptionsClientAPI = (*sql.TransparentDataEncryptionsClient)(nil)
-
-// TransparentDataEncryptionActivitiesClientAPI contains the set of methods on the TransparentDataEncryptionActivitiesClient type.
-type TransparentDataEncryptionActivitiesClientAPI interface {
-	ListByConfiguration(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.TransparentDataEncryptionActivityListResult, err error)
-}
-
-var _ TransparentDataEncryptionActivitiesClientAPI = (*sql.TransparentDataEncryptionActivitiesClient)(nil)
 
 // ServerUsagesClientAPI contains the set of methods on the ServerUsagesClient type.
 type ServerUsagesClientAPI interface {
@@ -503,54 +465,6 @@ type CapabilitiesClientAPI interface {
 
 var _ CapabilitiesClientAPI = (*sql.CapabilitiesClient)(nil)
 
-// LongTermRetentionBackupsClientAPI contains the set of methods on the LongTermRetentionBackupsClient type.
-type LongTermRetentionBackupsClientAPI interface {
-	Copy(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyFuture, err error)
-	CopyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyByResourceGroupFuture, err error)
-	Delete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteFuture, err error)
-	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteByResourceGroupFuture, err error)
-	Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
-	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
-	ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	Update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateFuture, err error)
-	UpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateByResourceGroupFuture, err error)
-}
-
-var _ LongTermRetentionBackupsClientAPI = (*sql.LongTermRetentionBackupsClient)(nil)
-
-// LongTermRetentionManagedInstanceBackupsClientAPI contains the set of methods on the LongTermRetentionManagedInstanceBackupsClient type.
-type LongTermRetentionManagedInstanceBackupsClientAPI interface {
-	Delete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteFuture, err error)
-	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture, err error)
-	Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
-	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
-	ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-}
-
-var _ LongTermRetentionManagedInstanceBackupsClientAPI = (*sql.LongTermRetentionManagedInstanceBackupsClient)(nil)
-
 // LongTermRetentionPoliciesClientAPI contains the set of methods on the LongTermRetentionPoliciesClient type.
 type LongTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.LongTermRetentionPolicy) (result sql.LongTermRetentionPoliciesCreateOrUpdateFuture, err error)
@@ -655,29 +569,6 @@ type ManagedDatabaseSecurityEventsClientAPI interface {
 }
 
 var _ ManagedDatabaseSecurityEventsClientAPI = (*sql.ManagedDatabaseSecurityEventsClient)(nil)
-
-// ManagedDatabaseSensitivityLabelsClientAPI contains the set of methods on the ManagedDatabaseSensitivityLabelsClient type.
-type ManagedDatabaseSensitivityLabelsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, parameters sql.SensitivityLabel) (result sql.SensitivityLabel, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	DisableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	EnableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
-	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
-	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
-	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
-	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.SensitivityLabelUpdateList) (result autorest.Response, err error)
-}
-
-var _ ManagedDatabaseSensitivityLabelsClientAPI = (*sql.ManagedDatabaseSensitivityLabelsClient)(nil)
-
-// ManagedDatabaseRecommendedSensitivityLabelsClientAPI contains the set of methods on the ManagedDatabaseRecommendedSensitivityLabelsClient type.
-type ManagedDatabaseRecommendedSensitivityLabelsClientAPI interface {
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error)
-}
-
-var _ ManagedDatabaseRecommendedSensitivityLabelsClientAPI = (*sql.ManagedDatabaseRecommendedSensitivityLabelsClient)(nil)
 
 // ManagedDatabaseTablesClientAPI contains the set of methods on the ManagedDatabaseTablesClient type.
 type ManagedDatabaseTablesClientAPI interface {
@@ -813,25 +704,6 @@ type ManagedInstancePrivateLinkResourcesClientAPI interface {
 
 var _ ManagedInstancePrivateLinkResourcesClientAPI = (*sql.ManagedInstancePrivateLinkResourcesClient)(nil)
 
-// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
-type ManagedInstancesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
-	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, expand string) (result sql.ManagedInstance, err error)
-	List(ctx context.Context, expand string) (result sql.ManagedInstanceListResultPage, err error)
-	ListComplete(ctx context.Context, expand string) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string, expand string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string, expand string) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultPage, err error)
-	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result sql.ManagedInstanceListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
-}
-
-var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
-
 // ManagedInstanceTdeCertificatesClientAPI contains the set of methods on the ManagedInstanceTdeCertificatesClient type.
 type ManagedInstanceTdeCertificatesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.TdeCertificate) (result sql.ManagedInstanceTdeCertificatesCreateFuture, err error)
@@ -879,14 +751,6 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*sql.OperationsClient)(nil)
 
-// OperationsHealthClientAPI contains the set of methods on the OperationsHealthClient type.
-type OperationsHealthClientAPI interface {
-	ListByLocation(ctx context.Context, locationName string) (result sql.OperationsHealthListResultPage, err error)
-	ListByLocationComplete(ctx context.Context, locationName string) (result sql.OperationsHealthListResultIterator, err error)
-}
-
-var _ OperationsHealthClientAPI = (*sql.OperationsHealthClient)(nil)
-
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
@@ -926,29 +790,6 @@ type RestorePointsClientAPI interface {
 }
 
 var _ RestorePointsClientAPI = (*sql.RestorePointsClient)(nil)
-
-// SensitivityLabelsClientAPI contains the set of methods on the SensitivityLabelsClient type.
-type SensitivityLabelsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters sql.SensitivityLabel) (result sql.SensitivityLabel, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
-	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
-	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
-	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
-	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.SensitivityLabelUpdateList) (result autorest.Response, err error)
-}
-
-var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)
-
-// RecommendedSensitivityLabelsClientAPI contains the set of methods on the RecommendedSensitivityLabelsClient type.
-type RecommendedSensitivityLabelsClientAPI interface {
-	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error)
-}
-
-var _ RecommendedSensitivityLabelsClientAPI = (*sql.RecommendedSensitivityLabelsClient)(nil)
 
 // ServerAdvisorsClientAPI contains the set of methods on the ServerAdvisorsClient type.
 type ServerAdvisorsClientAPI interface {
@@ -1105,8 +946,8 @@ type SyncGroupsClientAPI interface {
 	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultIterator, err error)
 	ListHubSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
 	ListHubSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
-	ListLogs(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultPage, err error)
-	ListLogsComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultIterator, err error)
+	ListLogs(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter sql.SyncGroupsType, continuationToken string) (result sql.SyncGroupLogListResultPage, err error)
+	ListLogsComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter sql.SyncGroupsType, continuationToken string) (result sql.SyncGroupLogListResultIterator, err error)
 	ListSyncDatabaseIds(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultPage, err error)
 	ListSyncDatabaseIdsComplete(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultIterator, err error)
 	RefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsRefreshHubSchemaFuture, err error)
@@ -1194,6 +1035,16 @@ type WorkloadGroupsClientAPI interface {
 
 var _ WorkloadGroupsClientAPI = (*sql.WorkloadGroupsClient)(nil)
 
+// TransparentDataEncryptionsClientAPI contains the set of methods on the TransparentDataEncryptionsClient type.
+type TransparentDataEncryptionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.LogicalDatabaseTransparentDataEncryption) (result sql.LogicalDatabaseTransparentDataEncryption, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LogicalDatabaseTransparentDataEncryption, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LogicalDatabaseTransparentDataEncryptionListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LogicalDatabaseTransparentDataEncryptionListResultIterator, err error)
+}
+
+var _ TransparentDataEncryptionsClientAPI = (*sql.TransparentDataEncryptionsClient)(nil)
+
 // BackupShortTermRetentionPoliciesClientAPI contains the set of methods on the BackupShortTermRetentionPoliciesClient type.
 type BackupShortTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
@@ -1234,8 +1085,8 @@ var _ DatabaseUsagesClientAPI = (*sql.DatabaseUsagesClient)(nil)
 
 // LedgerDigestUploadsClientAPI contains the set of methods on the LedgerDigestUploadsClient type.
 type LedgerDigestUploadsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.LedgerDigestUploads) (result sql.LedgerDigestUploads, err error)
-	Disable(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LedgerDigestUploads, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.LedgerDigestUploads) (result sql.LedgerDigestUploadsCreateOrUpdateFuture, err error)
+	Disable(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LedgerDigestUploadsDisableFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LedgerDigestUploads, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LedgerDigestUploadsListResultPage, err error)
 	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LedgerDigestUploadsListResultIterator, err error)
@@ -1253,24 +1104,6 @@ type OutboundFirewallRulesClientAPI interface {
 }
 
 var _ OutboundFirewallRulesClientAPI = (*sql.OutboundFirewallRulesClient)(nil)
-
-// RestorableDroppedDatabasesClientAPI contains the set of methods on the RestorableDroppedDatabasesClient type.
-type RestorableDroppedDatabasesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, serverName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedDatabase, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.RestorableDroppedDatabaseListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.RestorableDroppedDatabaseListResultIterator, err error)
-}
-
-var _ RestorableDroppedDatabasesClientAPI = (*sql.RestorableDroppedDatabasesClient)(nil)
-
-// RestorableDroppedManagedDatabasesClientAPI contains the set of methods on the RestorableDroppedManagedDatabasesClient type.
-type RestorableDroppedManagedDatabasesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedManagedDatabase, err error)
-	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultPage, err error)
-	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultIterator, err error)
-}
-
-var _ RestorableDroppedManagedDatabasesClientAPI = (*sql.RestorableDroppedManagedDatabasesClient)(nil)
 
 // ServersClientAPI contains the set of methods on the ServersClient type.
 type ServersClientAPI interface {
@@ -1295,3 +1128,217 @@ type UsagesClientAPI interface {
 }
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
+
+// LongTermRetentionBackupsClientAPI contains the set of methods on the LongTermRetentionBackupsClient type.
+type LongTermRetentionBackupsClientAPI interface {
+	Copy(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyFuture, err error)
+	CopyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyByResourceGroupFuture, err error)
+	Delete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteFuture, err error)
+	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteByResourceGroupFuture, err error)
+	Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
+	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
+	ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	Update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateFuture, err error)
+	UpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateByResourceGroupFuture, err error)
+}
+
+var _ LongTermRetentionBackupsClientAPI = (*sql.LongTermRetentionBackupsClient)(nil)
+
+// LongTermRetentionManagedInstanceBackupsClientAPI contains the set of methods on the LongTermRetentionManagedInstanceBackupsClient type.
+type LongTermRetentionManagedInstanceBackupsClientAPI interface {
+	Delete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteFuture, err error)
+	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture, err error)
+	Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
+	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
+	ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+}
+
+var _ LongTermRetentionManagedInstanceBackupsClientAPI = (*sql.LongTermRetentionManagedInstanceBackupsClient)(nil)
+
+// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
+type ManagedInstancesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, expand string) (result sql.ManagedInstance, err error)
+	List(ctx context.Context, expand string) (result sql.ManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context, expand string) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string, expand string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string, expand string) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result sql.ManagedInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
+}
+
+var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
+
+// RestorableDroppedDatabasesClientAPI contains the set of methods on the RestorableDroppedDatabasesClient type.
+type RestorableDroppedDatabasesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, serverName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedDatabase, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.RestorableDroppedDatabaseListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.RestorableDroppedDatabaseListResultIterator, err error)
+}
+
+var _ RestorableDroppedDatabasesClientAPI = (*sql.RestorableDroppedDatabasesClient)(nil)
+
+// RestorableDroppedManagedDatabasesClientAPI contains the set of methods on the RestorableDroppedManagedDatabasesClient type.
+type RestorableDroppedManagedDatabasesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedManagedDatabase, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultIterator, err error)
+}
+
+var _ RestorableDroppedManagedDatabasesClientAPI = (*sql.RestorableDroppedManagedDatabasesClient)(nil)
+
+// ServerConnectionPoliciesClientAPI contains the set of methods on the ServerConnectionPoliciesClient type.
+type ServerConnectionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerConnectionPolicy) (result sql.ServerConnectionPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerConnectionPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerConnectionPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerConnectionPolicyListResultIterator, err error)
+}
+
+var _ ServerConnectionPoliciesClientAPI = (*sql.ServerConnectionPoliciesClient)(nil)
+
+// DistributedAvailabilityGroupsClientAPI contains the set of methods on the DistributedAvailabilityGroupsClient type.
+type DistributedAvailabilityGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters sql.DistributedAvailabilityGroup) (result sql.DistributedAvailabilityGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string) (result sql.DistributedAvailabilityGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string) (result sql.DistributedAvailabilityGroup, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.DistributedAvailabilityGroupsListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.DistributedAvailabilityGroupsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters sql.DistributedAvailabilityGroup) (result sql.DistributedAvailabilityGroupsUpdateFuture, err error)
+}
+
+var _ DistributedAvailabilityGroupsClientAPI = (*sql.DistributedAvailabilityGroupsClient)(nil)
+
+// ServerTrustCertificatesClientAPI contains the set of methods on the ServerTrustCertificatesClient type.
+type ServerTrustCertificatesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters sql.ServerTrustCertificate) (result sql.ServerTrustCertificatesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string) (result sql.ServerTrustCertificatesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string) (result sql.ServerTrustCertificate, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ServerTrustCertificatesListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ServerTrustCertificatesListResultIterator, err error)
+}
+
+var _ ServerTrustCertificatesClientAPI = (*sql.ServerTrustCertificatesClient)(nil)
+
+// IPv6FirewallRulesClientAPI contains the set of methods on the IPv6FirewallRulesClient type.
+type IPv6FirewallRulesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters sql.IPv6FirewallRule) (result sql.IPv6FirewallRule, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string) (result sql.IPv6FirewallRule, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.IPv6FirewallRuleListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.IPv6FirewallRuleListResultIterator, err error)
+}
+
+var _ IPv6FirewallRulesClientAPI = (*sql.IPv6FirewallRulesClient)(nil)
+
+// ReplicationLinksClientAPI contains the set of methods on the ReplicationLinksClient type.
+type ReplicationLinksClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result autorest.Response, err error)
+	Failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverFuture, err error)
+	FailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverAllowDataLossFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLink, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResultIterator, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ReplicationLinkListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ReplicationLinkListResultIterator, err error)
+}
+
+var _ ReplicationLinksClientAPI = (*sql.ReplicationLinksClient)(nil)
+
+// ManagedDatabaseSensitivityLabelsClientAPI contains the set of methods on the ManagedDatabaseSensitivityLabelsClient type.
+type ManagedDatabaseSensitivityLabelsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, parameters sql.SensitivityLabel) (result sql.SensitivityLabel, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	DisableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	EnableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.SensitivityLabelUpdateList) (result autorest.Response, err error)
+}
+
+var _ ManagedDatabaseSensitivityLabelsClientAPI = (*sql.ManagedDatabaseSensitivityLabelsClient)(nil)
+
+// ManagedDatabaseRecommendedSensitivityLabelsClientAPI contains the set of methods on the ManagedDatabaseRecommendedSensitivityLabelsClient type.
+type ManagedDatabaseRecommendedSensitivityLabelsClientAPI interface {
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error)
+}
+
+var _ ManagedDatabaseRecommendedSensitivityLabelsClientAPI = (*sql.ManagedDatabaseRecommendedSensitivityLabelsClient)(nil)
+
+// ManagedServerDNSAliasesClientAPI contains the set of methods on the ManagedServerDNSAliasesClient type.
+type ManagedServerDNSAliasesClientAPI interface {
+	Acquire(ctx context.Context, resourceGroupName string, managedInstanceName string, DNSAliasName string, parameters sql.ManagedServerDNSAliasAcquisition) (result sql.ManagedServerDNSAliasesAcquireFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, DNSAliasName string, parameters sql.ManagedServerDNSAliasCreation) (result sql.ManagedServerDNSAliasesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, DNSAliasName string) (result sql.ManagedServerDNSAliasesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, DNSAliasName string) (result sql.ManagedServerDNSAlias, err error)
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedServerDNSAliasListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedServerDNSAliasListResultIterator, err error)
+}
+
+var _ ManagedServerDNSAliasesClientAPI = (*sql.ManagedServerDNSAliasesClient)(nil)
+
+// SensitivityLabelsClientAPI contains the set of methods on the SensitivityLabelsClient type.
+type SensitivityLabelsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters sql.SensitivityLabel) (result sql.SensitivityLabel, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.SensitivityLabelUpdateList) (result autorest.Response, err error)
+}
+
+var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)
+
+// RecommendedSensitivityLabelsClientAPI contains the set of methods on the RecommendedSensitivityLabelsClient type.
+type RecommendedSensitivityLabelsClientAPI interface {
+	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error)
+}
+
+var _ RecommendedSensitivityLabelsClientAPI = (*sql.RecommendedSensitivityLabelsClient)(nil)
+
+// EndpointCertificatesClientAPI contains the set of methods on the EndpointCertificatesClient type.
+type EndpointCertificatesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, endpointType string) (result sql.EndpointCertificate, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.EndpointCertificateListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.EndpointCertificateListResultIterator, err error)
+}
+
+var _ EndpointCertificatesClientAPI = (*sql.EndpointCertificatesClient)(nil)

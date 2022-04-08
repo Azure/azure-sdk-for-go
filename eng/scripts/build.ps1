@@ -9,8 +9,8 @@ param(
     [switch]$format,
     [switch]$tidy,
     [string]$config = "autorest.md",
-    [string]$autorestVersion = "3.7.3",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.36",
+    [string]$autorestVersion = "3.8.2",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.38",
     [string]$outputFolder
 )
 

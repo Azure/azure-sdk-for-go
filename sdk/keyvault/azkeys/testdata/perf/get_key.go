@@ -14,9 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-type getCertificatesTestOptions struct{}
+type getKeysTestOptions struct{}
 
-var getCertTestOpts decryptTestOptions = decryptTestOptions{}
+var getCertTestOpts getKeysTestOptions = getKeysTestOptions{}
 
 type GetKeyTest struct {
 	perf.PerfTestOptions
@@ -74,7 +74,7 @@ func (gct *GetKeyTest) GlobalCleanup(ctx context.Context) error {
 type GetKeyPerfTest struct {
 	*GetKeyTest
 	perf.PerfTestOptions
-	client          *azkeys.Client
+	client  *azkeys.Client
 	keyName string
 }
 
@@ -84,7 +84,7 @@ func (gct *GetKeyTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOp
 		GetKeyTest:      gct,
 		PerfTestOptions: *options,
 		client:          gct.client,
-		keyName: gct.keyName,
+		keyName:         gct.keyName,
 	}, nil
 }
 

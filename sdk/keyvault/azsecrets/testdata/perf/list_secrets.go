@@ -28,15 +28,15 @@ func registerListSecrets() {
 	flag.IntVar(&getListSecretsTestOpts.count, "count", 100, "number of secrets to create")
 }
 
-type ListSecretsTest struct {
+type listSecretsTest struct {
 	perf.PerfTestOptions
 	secretName string
 	client     *azsecrets.Client
 }
 
-// NewListSecretsTest is called once per process
-func NewListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &ListSecretsTest{
+// newListSecretsTest is called once per process
+func newListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &listSecretsTest{
 		PerfTestOptions: options,
 		secretName:      "livekvtestlistsecretperfsecret",
 	}
@@ -68,7 +68,7 @@ func NewListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf
 	return d, nil
 }
 
-func (gct *ListSecretsTest) GlobalCleanup(ctx context.Context) error {
+func (gct *listSecretsTest) GlobalCleanup(ctx context.Context) error {
 	for i := 0; i < getListSecretsTestOpts.count; i++ {
 		poller, err := gct.client.BeginDeleteSecret(ctx, fmt.Sprintf("%s%d", gct.secretName, i), nil)
 		if err != nil {
@@ -88,20 +88,20 @@ func (gct *ListSecretsTest) GlobalCleanup(ctx context.Context) error {
 	return nil
 }
 
-type ListSecretsPerfTest struct {
+type listSecretsPerfTest struct {
 	client     *azsecrets.Client
 	secretName string
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *ListSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &ListSecretsPerfTest{
+func (gct *listSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &listSecretsPerfTest{
 		client:     gct.client,
 		secretName: gct.secretName,
 	}, nil
 }
 
-func (gcpt *ListSecretsPerfTest) Run(ctx context.Context) error {
+func (gcpt *listSecretsPerfTest) Run(ctx context.Context) error {
 	pager := gcpt.client.ListPropertiesOfSecrets(nil)
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
@@ -112,6 +112,6 @@ func (gcpt *ListSecretsPerfTest) Run(ctx context.Context) error {
 	return nil
 }
 
-func (*ListSecretsPerfTest) Cleanup(ctx context.Context) error {
+func (*listSecretsPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

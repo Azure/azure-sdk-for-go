@@ -19,15 +19,15 @@ type getSecretTestOptions struct{}
 
 var getSecretTestOpts getSecretTestOptions = getSecretTestOptions{}
 
-type GetSecretTest struct {
+type getSecretTest struct {
 	perf.PerfTestOptions
 	secretName string
 	client     *azsecrets.Client
 }
 
-// NewGetSecretTest is called once per process
-func NewGetSecretTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &GetSecretTest{
+// newGetSecretTest is called once per process
+func newGetSecretTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &getSecretTest{
 		PerfTestOptions: options,
 		secretName:      "livekvtestgetsecretperfsecret",
 	}
@@ -57,7 +57,7 @@ func NewGetSecretTest(ctx context.Context, options perf.PerfTestOptions) (perf.G
 	return d, nil
 }
 
-func (gct *GetSecretTest) GlobalCleanup(ctx context.Context) error {
+func (gct *getSecretTest) GlobalCleanup(ctx context.Context) error {
 	poller, err := gct.client.BeginDeleteSecret(ctx, gct.secretName, nil)
 	if err != nil {
 		return err
@@ -72,24 +72,24 @@ func (gct *GetSecretTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type GetSecretPerfTest struct {
+type getSecretPerfTest struct {
 	client     *azsecrets.Client
 	secretName string
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *GetSecretTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &GetSecretPerfTest{
+func (gct *getSecretTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &getSecretPerfTest{
 		client:     gct.client,
 		secretName: gct.secretName,
 	}, nil
 }
 
-func (gcpt *GetSecretPerfTest) Run(ctx context.Context) error {
+func (gcpt *getSecretPerfTest) Run(ctx context.Context) error {
 	_, err := gcpt.client.GetSecret(ctx, gcpt.secretName, nil)
 	return err
 }
 
-func (*GetSecretPerfTest) Cleanup(ctx context.Context) error {
+func (*getSecretPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

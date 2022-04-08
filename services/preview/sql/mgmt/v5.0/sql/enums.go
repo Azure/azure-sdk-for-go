@@ -213,6 +213,8 @@ type BackupStorageRedundancy string
 const (
 	// BackupStorageRedundancyGeo ...
 	BackupStorageRedundancyGeo BackupStorageRedundancy = "Geo"
+	// BackupStorageRedundancyGeoZone ...
+	BackupStorageRedundancyGeoZone BackupStorageRedundancy = "GeoZone"
 	// BackupStorageRedundancyLocal ...
 	BackupStorageRedundancyLocal BackupStorageRedundancy = "Local"
 	// BackupStorageRedundancyZone ...
@@ -221,24 +223,7 @@ const (
 
 // PossibleBackupStorageRedundancyValues returns an array of possible values for the BackupStorageRedundancy const type.
 func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
-	return []BackupStorageRedundancy{BackupStorageRedundancyGeo, BackupStorageRedundancyLocal, BackupStorageRedundancyZone}
-}
-
-// BackupStorageRedundancy1 enumerates the values for backup storage redundancy 1.
-type BackupStorageRedundancy1 string
-
-const (
-	// BackupStorageRedundancy1Geo ...
-	BackupStorageRedundancy1Geo BackupStorageRedundancy1 = "Geo"
-	// BackupStorageRedundancy1Local ...
-	BackupStorageRedundancy1Local BackupStorageRedundancy1 = "Local"
-	// BackupStorageRedundancy1Zone ...
-	BackupStorageRedundancy1Zone BackupStorageRedundancy1 = "Zone"
-)
-
-// PossibleBackupStorageRedundancy1Values returns an array of possible values for the BackupStorageRedundancy1 const type.
-func PossibleBackupStorageRedundancy1Values() []BackupStorageRedundancy1 {
-	return []BackupStorageRedundancy1{BackupStorageRedundancy1Geo, BackupStorageRedundancy1Local, BackupStorageRedundancy1Zone}
+	return []BackupStorageRedundancy{BackupStorageRedundancyGeo, BackupStorageRedundancyGeoZone, BackupStorageRedundancyLocal, BackupStorageRedundancyZone}
 }
 
 // BlobAuditingPolicyState enumerates the values for blob auditing policy state.
@@ -455,21 +440,19 @@ func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{CreateModeCopy, CreateModeDefault, CreateModeOnlineSecondary, CreateModePointInTimeRestore, CreateModeRecovery, CreateModeRestore, CreateModeRestoreExternalBackup, CreateModeRestoreExternalBackupSecondary, CreateModeRestoreLongTermRetentionBackup, CreateModeSecondary}
 }
 
-// CurrentBackupStorageRedundancy enumerates the values for current backup storage redundancy.
-type CurrentBackupStorageRedundancy string
+// DatabaseIdentityType enumerates the values for database identity type.
+type DatabaseIdentityType string
 
 const (
-	// CurrentBackupStorageRedundancyGeo ...
-	CurrentBackupStorageRedundancyGeo CurrentBackupStorageRedundancy = "Geo"
-	// CurrentBackupStorageRedundancyLocal ...
-	CurrentBackupStorageRedundancyLocal CurrentBackupStorageRedundancy = "Local"
-	// CurrentBackupStorageRedundancyZone ...
-	CurrentBackupStorageRedundancyZone CurrentBackupStorageRedundancy = "Zone"
+	// DatabaseIdentityTypeNone ...
+	DatabaseIdentityTypeNone DatabaseIdentityType = "None"
+	// DatabaseIdentityTypeUserAssigned ...
+	DatabaseIdentityTypeUserAssigned DatabaseIdentityType = "UserAssigned"
 )
 
-// PossibleCurrentBackupStorageRedundancyValues returns an array of possible values for the CurrentBackupStorageRedundancy const type.
-func PossibleCurrentBackupStorageRedundancyValues() []CurrentBackupStorageRedundancy {
-	return []CurrentBackupStorageRedundancy{CurrentBackupStorageRedundancyGeo, CurrentBackupStorageRedundancyLocal, CurrentBackupStorageRedundancyZone}
+// PossibleDatabaseIdentityTypeValues returns an array of possible values for the DatabaseIdentityType const type.
+func PossibleDatabaseIdentityTypeValues() []DatabaseIdentityType {
+	return []DatabaseIdentityType{DatabaseIdentityTypeNone, DatabaseIdentityTypeUserAssigned}
 }
 
 // DatabaseLicenseType enumerates the values for database license type.
@@ -563,13 +546,19 @@ const (
 	DatabaseStatusShutdown DatabaseStatus = "Shutdown"
 	// DatabaseStatusStandby ...
 	DatabaseStatusStandby DatabaseStatus = "Standby"
+	// DatabaseStatusStarting ...
+	DatabaseStatusStarting DatabaseStatus = "Starting"
+	// DatabaseStatusStopped ...
+	DatabaseStatusStopped DatabaseStatus = "Stopped"
+	// DatabaseStatusStopping ...
+	DatabaseStatusStopping DatabaseStatus = "Stopping"
 	// DatabaseStatusSuspect ...
 	DatabaseStatusSuspect DatabaseStatus = "Suspect"
 )
 
 // PossibleDatabaseStatusValues returns an array of possible values for the DatabaseStatus const type.
 func PossibleDatabaseStatusValues() []DatabaseStatus {
-	return []DatabaseStatus{DatabaseStatusAutoClosed, DatabaseStatusCopying, DatabaseStatusCreating, DatabaseStatusDisabled, DatabaseStatusEmergencyMode, DatabaseStatusInaccessible, DatabaseStatusOffline, DatabaseStatusOfflineChangingDwPerformanceTiers, DatabaseStatusOfflineSecondary, DatabaseStatusOnline, DatabaseStatusOnlineChangingDwPerformanceTiers, DatabaseStatusPaused, DatabaseStatusPausing, DatabaseStatusRecovering, DatabaseStatusRecoveryPending, DatabaseStatusRestoring, DatabaseStatusResuming, DatabaseStatusScaling, DatabaseStatusShutdown, DatabaseStatusStandby, DatabaseStatusSuspect}
+	return []DatabaseStatus{DatabaseStatusAutoClosed, DatabaseStatusCopying, DatabaseStatusCreating, DatabaseStatusDisabled, DatabaseStatusEmergencyMode, DatabaseStatusInaccessible, DatabaseStatusOffline, DatabaseStatusOfflineChangingDwPerformanceTiers, DatabaseStatusOfflineSecondary, DatabaseStatusOnline, DatabaseStatusOnlineChangingDwPerformanceTiers, DatabaseStatusPaused, DatabaseStatusPausing, DatabaseStatusRecovering, DatabaseStatusRecoveryPending, DatabaseStatusRestoring, DatabaseStatusResuming, DatabaseStatusScaling, DatabaseStatusShutdown, DatabaseStatusStandby, DatabaseStatusStarting, DatabaseStatusStopped, DatabaseStatusStopping, DatabaseStatusSuspect}
 }
 
 // DataMaskingFunction enumerates the values for data masking function.
@@ -720,13 +709,15 @@ const (
 	IdentityTypeNone IdentityType = "None"
 	// IdentityTypeSystemAssigned ...
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	// IdentityTypeSystemAssignedUserAssigned ...
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
 	// IdentityTypeUserAssigned ...
 	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{IdentityTypeNone, IdentityTypeSystemAssigned, IdentityTypeUserAssigned}
+	return []IdentityType{IdentityTypeNone, IdentityTypeSystemAssigned, IdentityTypeSystemAssignedUserAssigned, IdentityTypeUserAssigned}
 }
 
 // ImplementationMethod enumerates the values for implementation method.
@@ -1286,23 +1277,41 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ProvisioningState1 string
 
 const (
+	// ProvisioningState1Accepted ...
+	ProvisioningState1Accepted ProvisioningState1 = "Accepted"
+	// ProvisioningState1Canceled ...
+	ProvisioningState1Canceled ProvisioningState1 = "Canceled"
+	// ProvisioningState1Created ...
+	ProvisioningState1Created ProvisioningState1 = "Created"
 	// ProvisioningState1Creating ...
 	ProvisioningState1Creating ProvisioningState1 = "Creating"
+	// ProvisioningState1Deleted ...
+	ProvisioningState1Deleted ProvisioningState1 = "Deleted"
 	// ProvisioningState1Deleting ...
 	ProvisioningState1Deleting ProvisioningState1 = "Deleting"
 	// ProvisioningState1Failed ...
 	ProvisioningState1Failed ProvisioningState1 = "Failed"
+	// ProvisioningState1NotSpecified ...
+	ProvisioningState1NotSpecified ProvisioningState1 = "NotSpecified"
+	// ProvisioningState1Registering ...
+	ProvisioningState1Registering ProvisioningState1 = "Registering"
+	// ProvisioningState1Running ...
+	ProvisioningState1Running ProvisioningState1 = "Running"
 	// ProvisioningState1Succeeded ...
 	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+	// ProvisioningState1TimedOut ...
+	ProvisioningState1TimedOut ProvisioningState1 = "TimedOut"
 	// ProvisioningState1Unknown ...
 	ProvisioningState1Unknown ProvisioningState1 = "Unknown"
+	// ProvisioningState1Unrecognized ...
+	ProvisioningState1Unrecognized ProvisioningState1 = "Unrecognized"
 	// ProvisioningState1Updating ...
 	ProvisioningState1Updating ProvisioningState1 = "Updating"
 )
 
 // PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
 func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded, ProvisioningState1Unknown, ProvisioningState1Updating}
+	return []ProvisioningState1{ProvisioningState1Accepted, ProvisioningState1Canceled, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Deleted, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1NotSpecified, ProvisioningState1Registering, ProvisioningState1Running, ProvisioningState1Succeeded, ProvisioningState1TimedOut, ProvisioningState1Unknown, ProvisioningState1Unrecognized, ProvisioningState1Updating}
 }
 
 // QueryMetricUnitType enumerates the values for query metric unit type.
@@ -1453,6 +1462,21 @@ func PossibleReplicationLinkTypeValues() []ReplicationLinkType {
 	return []ReplicationLinkType{ReplicationLinkTypeGEO, ReplicationLinkTypeNAMED}
 }
 
+// ReplicationMode enumerates the values for replication mode.
+type ReplicationMode string
+
+const (
+	// ReplicationModeAsync ...
+	ReplicationModeAsync ReplicationMode = "Async"
+	// ReplicationModeSync ...
+	ReplicationModeSync ReplicationMode = "Sync"
+)
+
+// PossibleReplicationModeValues returns an array of possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{ReplicationModeAsync, ReplicationModeSync}
+}
+
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
 
@@ -1506,23 +1530,6 @@ const (
 // PossibleReplicaTypeValues returns an array of possible values for the ReplicaType const type.
 func PossibleReplicaTypeValues() []ReplicaType {
 	return []ReplicaType{ReplicaTypePrimary, ReplicaTypeReadableSecondary}
-}
-
-// RequestedBackupStorageRedundancy enumerates the values for requested backup storage redundancy.
-type RequestedBackupStorageRedundancy string
-
-const (
-	// RequestedBackupStorageRedundancyGeo ...
-	RequestedBackupStorageRedundancyGeo RequestedBackupStorageRedundancy = "Geo"
-	// RequestedBackupStorageRedundancyLocal ...
-	RequestedBackupStorageRedundancyLocal RequestedBackupStorageRedundancy = "Local"
-	// RequestedBackupStorageRedundancyZone ...
-	RequestedBackupStorageRedundancyZone RequestedBackupStorageRedundancy = "Zone"
-)
-
-// PossibleRequestedBackupStorageRedundancyValues returns an array of possible values for the RequestedBackupStorageRedundancy const type.
-func PossibleRequestedBackupStorageRedundancyValues() []RequestedBackupStorageRedundancy {
-	return []RequestedBackupStorageRedundancy{RequestedBackupStorageRedundancyGeo, RequestedBackupStorageRedundancyLocal, RequestedBackupStorageRedundancyZone}
 }
 
 // RestorePointType enumerates the values for restore point type.
@@ -1875,6 +1882,21 @@ func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
 	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
 }
 
+// ServicePrincipalType enumerates the values for service principal type.
+type ServicePrincipalType string
+
+const (
+	// ServicePrincipalTypeNone ...
+	ServicePrincipalTypeNone ServicePrincipalType = "None"
+	// ServicePrincipalTypeSystemAssigned ...
+	ServicePrincipalTypeSystemAssigned ServicePrincipalType = "SystemAssigned"
+)
+
+// PossibleServicePrincipalTypeValues returns an array of possible values for the ServicePrincipalType const type.
+func PossibleServicePrincipalTypeValues() []ServicePrincipalType {
+	return []ServicePrincipalType{ServicePrincipalTypeNone, ServicePrincipalTypeSystemAssigned}
+}
+
 // State enumerates the values for state.
 type State string
 
@@ -1943,23 +1965,6 @@ const (
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{StorageAccountTypeGRS, StorageAccountTypeLRS, StorageAccountTypeZRS}
-}
-
-// StorageAccountType1 enumerates the values for storage account type 1.
-type StorageAccountType1 string
-
-const (
-	// StorageAccountType1GRS ...
-	StorageAccountType1GRS StorageAccountType1 = "GRS"
-	// StorageAccountType1LRS ...
-	StorageAccountType1LRS StorageAccountType1 = "LRS"
-	// StorageAccountType1ZRS ...
-	StorageAccountType1ZRS StorageAccountType1 = "ZRS"
-)
-
-// PossibleStorageAccountType1Values returns an array of possible values for the StorageAccountType1 const type.
-func PossibleStorageAccountType1Values() []StorageAccountType1 {
-	return []StorageAccountType1{StorageAccountType1GRS, StorageAccountType1LRS, StorageAccountType1ZRS}
 }
 
 // StorageKeyType enumerates the values for storage key type.
@@ -2066,6 +2071,25 @@ func PossibleSyncGroupStateValues() []SyncGroupState {
 	return []SyncGroupState{SyncGroupStateError, SyncGroupStateGood, SyncGroupStateNotReady, SyncGroupStateProgressing, SyncGroupStateWarning}
 }
 
+// SyncGroupsType enumerates the values for sync groups type.
+type SyncGroupsType string
+
+const (
+	// SyncGroupsTypeAll ...
+	SyncGroupsTypeAll SyncGroupsType = "All"
+	// SyncGroupsTypeError ...
+	SyncGroupsTypeError SyncGroupsType = "Error"
+	// SyncGroupsTypeSuccess ...
+	SyncGroupsTypeSuccess SyncGroupsType = "Success"
+	// SyncGroupsTypeWarning ...
+	SyncGroupsTypeWarning SyncGroupsType = "Warning"
+)
+
+// PossibleSyncGroupsTypeValues returns an array of possible values for the SyncGroupsType const type.
+func PossibleSyncGroupsTypeValues() []SyncGroupsType {
+	return []SyncGroupsType{SyncGroupsTypeAll, SyncGroupsTypeError, SyncGroupsTypeSuccess, SyncGroupsTypeWarning}
+}
+
 // SyncMemberDbType enumerates the values for sync member db type.
 type SyncMemberDbType string
 
@@ -2145,39 +2169,6 @@ func PossibleTableTemporalTypeValues() []TableTemporalType {
 	return []TableTemporalType{TableTemporalTypeHistoryTable, TableTemporalTypeNonTemporalTable, TableTemporalTypeSystemVersionedTemporalTable}
 }
 
-// TargetBackupStorageRedundancy enumerates the values for target backup storage redundancy.
-type TargetBackupStorageRedundancy string
-
-const (
-	// TargetBackupStorageRedundancyGeo ...
-	TargetBackupStorageRedundancyGeo TargetBackupStorageRedundancy = "Geo"
-	// TargetBackupStorageRedundancyLocal ...
-	TargetBackupStorageRedundancyLocal TargetBackupStorageRedundancy = "Local"
-	// TargetBackupStorageRedundancyZone ...
-	TargetBackupStorageRedundancyZone TargetBackupStorageRedundancy = "Zone"
-)
-
-// PossibleTargetBackupStorageRedundancyValues returns an array of possible values for the TargetBackupStorageRedundancy const type.
-func PossibleTargetBackupStorageRedundancyValues() []TargetBackupStorageRedundancy {
-	return []TargetBackupStorageRedundancy{TargetBackupStorageRedundancyGeo, TargetBackupStorageRedundancyLocal, TargetBackupStorageRedundancyZone}
-}
-
-// TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
-// status.
-type TransparentDataEncryptionActivityStatus string
-
-const (
-	// TransparentDataEncryptionActivityStatusDecrypting ...
-	TransparentDataEncryptionActivityStatusDecrypting TransparentDataEncryptionActivityStatus = "Decrypting"
-	// TransparentDataEncryptionActivityStatusEncrypting ...
-	TransparentDataEncryptionActivityStatusEncrypting TransparentDataEncryptionActivityStatus = "Encrypting"
-)
-
-// PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
-func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEncryptionActivityStatus {
-	return []TransparentDataEncryptionActivityStatus{TransparentDataEncryptionActivityStatusDecrypting, TransparentDataEncryptionActivityStatusEncrypting}
-}
-
 // TransparentDataEncryptionState enumerates the values for transparent data encryption state.
 type TransparentDataEncryptionState string
 
@@ -2191,21 +2182,6 @@ const (
 // PossibleTransparentDataEncryptionStateValues returns an array of possible values for the TransparentDataEncryptionState const type.
 func PossibleTransparentDataEncryptionStateValues() []TransparentDataEncryptionState {
 	return []TransparentDataEncryptionState{TransparentDataEncryptionStateDisabled, TransparentDataEncryptionStateEnabled}
-}
-
-// TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
-type TransparentDataEncryptionStatus string
-
-const (
-	// TransparentDataEncryptionStatusDisabled ...
-	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = "Disabled"
-	// TransparentDataEncryptionStatusEnabled ...
-	TransparentDataEncryptionStatusEnabled TransparentDataEncryptionStatus = "Enabled"
-)
-
-// PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
-func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
-	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
 }
 
 // UnitDefinitionType enumerates the values for unit definition type.

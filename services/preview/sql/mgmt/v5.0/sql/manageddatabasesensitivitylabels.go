@@ -89,7 +89,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) CreateOrUpdatePreparer(ctx 
 		"tableName":              autorest.Encode("path", tableName),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -178,7 +178,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) DeletePreparer(ctx context.
 		"tableName":              autorest.Encode("path", tableName),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -263,7 +263,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) DisableRecommendationPrepar
 		"tableName":              autorest.Encode("path", tableName),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,7 +349,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) EnableRecommendationPrepare
 		"tableName":              autorest.Encode("path", tableName),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -435,7 +435,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) GetPreparer(ctx context.Con
 		"tableName":              autorest.Encode("path", tableName),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -463,6 +463,131 @@ func (client ManagedDatabaseSensitivityLabelsClient) GetResponder(resp *http.Res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByDatabase gets the sensitivity labels of a given database
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// managedInstanceName - the name of the managed instance.
+// databaseName - the name of the database.
+// filter - an OData filter expression that filters elements in the collection.
+func (client ManagedDatabaseSensitivityLabelsClient) ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result SensitivityLabelListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedDatabaseSensitivityLabelsClient.ListByDatabase")
+		defer func() {
+			sc := -1
+			if result.sllr.Response.Response != nil {
+				sc = result.sllr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listByDatabaseNextResults
+	req, err := client.ListByDatabasePreparer(ctx, resourceGroupName, managedInstanceName, databaseName, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "ListByDatabase", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByDatabaseSender(req)
+	if err != nil {
+		result.sllr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "ListByDatabase", resp, "Failure sending request")
+		return
+	}
+
+	result.sllr, err = client.ListByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "ListByDatabase", resp, "Failure responding to request")
+		return
+	}
+	if result.sllr.hasNextLink() && result.sllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListByDatabasePreparer prepares the ListByDatabase request.
+func (client ManagedDatabaseSensitivityLabelsClient) ListByDatabasePreparer(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"databaseName":        autorest.Encode("path", databaseName),
+		"managedInstanceName": autorest.Encode("path", managedInstanceName),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/sensitivityLabels", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByDatabaseSender sends the ListByDatabase request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedDatabaseSensitivityLabelsClient) ListByDatabaseSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByDatabaseResponder handles the response to the ListByDatabase request. The method always
+// closes the http.Response Body.
+func (client ManagedDatabaseSensitivityLabelsClient) ListByDatabaseResponder(resp *http.Response) (result SensitivityLabelListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByDatabaseNextResults retrieves the next set of results, if any.
+func (client ManagedDatabaseSensitivityLabelsClient) listByDatabaseNextResults(ctx context.Context, lastResults SensitivityLabelListResult) (result SensitivityLabelListResult, err error) {
+	req, err := lastResults.sensitivityLabelListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "listByDatabaseNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "listByDatabaseNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabaseSensitivityLabelsClient", "listByDatabaseNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ManagedDatabaseSensitivityLabelsClient) ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result SensitivityLabelListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedDatabaseSensitivityLabelsClient.ListByDatabase")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByDatabase(ctx, resourceGroupName, managedInstanceName, databaseName, filter)
 	return
 }
 
@@ -520,7 +645,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) ListCurrentByDatabasePrepar
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -652,7 +777,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) ListRecommendedByDatabasePr
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -777,7 +902,7 @@ func (client ManagedDatabaseSensitivityLabelsClient) UpdatePreparer(ctx context.
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-11-01-preview"
+	const APIVersion = "2021-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

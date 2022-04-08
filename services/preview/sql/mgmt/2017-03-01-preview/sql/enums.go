@@ -386,13 +386,19 @@ func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
 type IdentityType string
 
 const (
+	// None ...
+	None IdentityType = "None"
 	// SystemAssigned ...
 	SystemAssigned IdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
+	// UserAssigned ...
+	UserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{SystemAssigned}
+	return []IdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
 }
 
 // JobAgentState enumerates the values for job agent state.
@@ -704,23 +710,23 @@ func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
 type PrimaryAggregationType string
 
 const (
-	// Average ...
-	Average PrimaryAggregationType = "Average"
-	// Count ...
-	Count PrimaryAggregationType = "Count"
-	// Maximum ...
-	Maximum PrimaryAggregationType = "Maximum"
-	// Minimum ...
-	Minimum PrimaryAggregationType = "Minimum"
-	// None ...
-	None PrimaryAggregationType = "None"
-	// Total ...
-	Total PrimaryAggregationType = "Total"
+	// PrimaryAggregationTypeAverage ...
+	PrimaryAggregationTypeAverage PrimaryAggregationType = "Average"
+	// PrimaryAggregationTypeCount ...
+	PrimaryAggregationTypeCount PrimaryAggregationType = "Count"
+	// PrimaryAggregationTypeMaximum ...
+	PrimaryAggregationTypeMaximum PrimaryAggregationType = "Maximum"
+	// PrimaryAggregationTypeMinimum ...
+	PrimaryAggregationTypeMinimum PrimaryAggregationType = "Minimum"
+	// PrimaryAggregationTypeNone ...
+	PrimaryAggregationTypeNone PrimaryAggregationType = "None"
+	// PrimaryAggregationTypeTotal ...
+	PrimaryAggregationTypeTotal PrimaryAggregationType = "Total"
 )
 
 // PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
-	return []PrimaryAggregationType{Average, Count, Maximum, Minimum, None, Total}
+	return []PrimaryAggregationType{PrimaryAggregationTypeAverage, PrimaryAggregationTypeCount, PrimaryAggregationTypeMaximum, PrimaryAggregationTypeMinimum, PrimaryAggregationTypeNone, PrimaryAggregationTypeTotal}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -1383,23 +1389,23 @@ func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryption
 type UnitDefinitionType string
 
 const (
-	// UnitDefinitionTypeBytes ...
-	UnitDefinitionTypeBytes UnitDefinitionType = "Bytes"
-	// UnitDefinitionTypeBytesPerSecond ...
-	UnitDefinitionTypeBytesPerSecond UnitDefinitionType = "BytesPerSecond"
-	// UnitDefinitionTypeCount ...
-	UnitDefinitionTypeCount UnitDefinitionType = "Count"
-	// UnitDefinitionTypeCountPerSecond ...
-	UnitDefinitionTypeCountPerSecond UnitDefinitionType = "CountPerSecond"
-	// UnitDefinitionTypePercent ...
-	UnitDefinitionTypePercent UnitDefinitionType = "Percent"
-	// UnitDefinitionTypeSeconds ...
-	UnitDefinitionTypeSeconds UnitDefinitionType = "Seconds"
+	// Bytes ...
+	Bytes UnitDefinitionType = "Bytes"
+	// BytesPerSecond ...
+	BytesPerSecond UnitDefinitionType = "BytesPerSecond"
+	// Count ...
+	Count UnitDefinitionType = "Count"
+	// CountPerSecond ...
+	CountPerSecond UnitDefinitionType = "CountPerSecond"
+	// Percent ...
+	Percent UnitDefinitionType = "Percent"
+	// Seconds ...
+	Seconds UnitDefinitionType = "Seconds"
 )
 
 // PossibleUnitDefinitionTypeValues returns an array of possible values for the UnitDefinitionType const type.
 func PossibleUnitDefinitionTypeValues() []UnitDefinitionType {
-	return []UnitDefinitionType{UnitDefinitionTypeBytes, UnitDefinitionTypeBytesPerSecond, UnitDefinitionTypeCount, UnitDefinitionTypeCountPerSecond, UnitDefinitionTypePercent, UnitDefinitionTypeSeconds}
+	return []UnitDefinitionType{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
 }
 
 // UnitType enumerates the values for unit type.

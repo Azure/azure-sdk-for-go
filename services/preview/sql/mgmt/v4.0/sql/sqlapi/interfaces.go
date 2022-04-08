@@ -471,37 +471,6 @@ type JobVersionsClientAPI interface {
 
 var _ JobVersionsClientAPI = (*sql.JobVersionsClient)(nil)
 
-// LongTermRetentionBackupsClientAPI contains the set of methods on the LongTermRetentionBackupsClient type.
-type LongTermRetentionBackupsClientAPI interface {
-	Delete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteFuture, err error)
-	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteByResourceGroupFuture, err error)
-	Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
-	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
-	ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-	ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
-	ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
-}
-
-var _ LongTermRetentionBackupsClientAPI = (*sql.LongTermRetentionBackupsClient)(nil)
-
-// BackupLongTermRetentionPoliciesClientAPI contains the set of methods on the BackupLongTermRetentionPoliciesClient type.
-type BackupLongTermRetentionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupLongTermRetentionPolicy) (result sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicy, err error)
-	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicy, err error)
-}
-
-var _ BackupLongTermRetentionPoliciesClientAPI = (*sql.BackupLongTermRetentionPoliciesClient)(nil)
-
 // ManagedBackupShortTermRetentionPoliciesClientAPI contains the set of methods on the ManagedBackupShortTermRetentionPoliciesClient type.
 type ManagedBackupShortTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedBackupShortTermRetentionPolicy) (result sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
@@ -807,17 +776,6 @@ type UsagesClientAPI interface {
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
 
-// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
-type PrivateEndpointConnectionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
-}
-
-var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
-
 // PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
 type PrivateLinkResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, groupName string) (result sql.PrivateLinkResource, err error)
@@ -856,18 +814,18 @@ type LongTermRetentionManagedInstanceBackupsClientAPI interface {
 	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture, err error)
 	Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
 	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
-	ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState1) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState1) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState2) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState2) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState3) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState3) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState4) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState4) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState5) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState5) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
-	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState6) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
-	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState6) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
 }
 
 var _ LongTermRetentionManagedInstanceBackupsClientAPI = (*sql.LongTermRetentionManagedInstanceBackupsClient)(nil)
@@ -1053,3 +1011,50 @@ type ServerDevOpsAuditSettingsClientAPI interface {
 }
 
 var _ ServerDevOpsAuditSettingsClientAPI = (*sql.ServerDevOpsAuditSettingsClient)(nil)
+
+// LongTermRetentionBackupsClientAPI contains the set of methods on the LongTermRetentionBackupsClient type.
+type LongTermRetentionBackupsClientAPI interface {
+	Copy(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyFuture, err error)
+	CopyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.CopyLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsCopyByResourceGroupFuture, err error)
+	Delete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteFuture, err error)
+	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackupsDeleteByResourceGroupFuture, err error)
+	Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
+	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
+	ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
+	Update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateFuture, err error)
+	UpdateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters sql.UpdateLongTermRetentionBackupParameters) (result sql.LongTermRetentionBackupsUpdateByResourceGroupFuture, err error)
+}
+
+var _ LongTermRetentionBackupsClientAPI = (*sql.LongTermRetentionBackupsClient)(nil)
+
+// LongTermRetentionPoliciesClientAPI contains the set of methods on the LongTermRetentionPoliciesClient type.
+type LongTermRetentionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.LongTermRetentionPolicy) (result sql.LongTermRetentionPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LongTermRetentionPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LongTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.LongTermRetentionPolicyListResultIterator, err error)
+}
+
+var _ LongTermRetentionPoliciesClientAPI = (*sql.LongTermRetentionPoliciesClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
